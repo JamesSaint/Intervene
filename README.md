@@ -13,7 +13,7 @@ Intervene operates in the gap between governance design and operational reality.
 
 The live site is hosted at:
 
-**https://jamessaint.github.io/Human-Integrity-Advisory/**
+**https://jamessaint.github.io/Intervene/**
 
 ## Operational Layers
 
@@ -85,7 +85,7 @@ Full brand token reference is in `brand-sheet.html`.
 Every public page includes:
 
 - Unique `<title>` and meta description
-- Canonical URL pointed to `jamessaint.github.io/Human-Integrity-Advisory`
+- Canonical URL pointed to `jamessaint.github.io/Intervene`
 - `index, follow` robots directive on public pages; `noindex, nofollow` on legal and utility pages
 - Full Open Graph tag set (og:title, og:description, og:url, og:image, og:image:alt)
 - Twitter/X card tags (summary_large_image)
@@ -97,7 +97,7 @@ OG images are served from `assets/og/` and should be 1200x630px PNG.
 ## Local Development
 
 ```bash
-git clone https://github.com/jamessaint/Human-Integrity-Advisory.git
+git clone https://github.com/jamessaint/Intervene.git
 ```
 
 Open any HTML file directly in a browser. No tooling, build step, or local server required.
@@ -112,7 +112,7 @@ npx serve .
 
 Changes pushed to the `main` branch publish automatically via GitHub Pages to:
 
-**https://jamessaint.github.io/Human-Integrity-Advisory/**
+**https://jamessaint.github.io/Intervene/**
 
 When a custom domain is configured, update all canonical URLs, OG URLs, schema URLs, `robots.txt`, and `sitemap.xml` to reflect the new domain before going live.
 
