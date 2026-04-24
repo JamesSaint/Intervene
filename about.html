@@ -1,223 +1,366 @@
-<!DOCTYPE html>
-<html lang="en-GB">
+<!doctype html>
+<html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About | Intervene Advisory</title>
-<meta name="description" content="An independent advisory for high-stakes decisions. Intervene exists because the most dangerous failures are often visible only after the organisation has already lost the ability to intervene.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://jamessaint.github.io/Intervene/about.html">
-<meta name="theme-color" content="#0a0a0a"><meta name="color-scheme" content="dark">
-<link rel="icon" href="assets/icons/favicon.ico" sizes="any">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="hia.css">
-<meta property="og:type" content="website"><meta property="og:site_name" content="Intervene Advisory">
-<meta property="og:title" content="About | Intervene Advisory">
-<meta property="og:description" content="Independent integrity advisory for high-stakes decisions. Clarity over complexity. Refusal to mistake governance documents for actual control.">
-<meta property="og:url" content="https://jamessaint.github.io/Intervene/about.html">
-<meta property="og:image" content="https://jamessaint.github.io/Intervene/assets/og/og-about.png">
-<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="About Intervene Advisory"><meta property="og:locale" content="en_GB">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="About | Intervene"><meta name="twitter:description" content="Independent integrity advisory for high-stakes decisions."><meta name="twitter:image" content="https://jamessaint.github.io/Intervene/assets/og/og-about.png"><meta name="twitter:image:alt" content="About Intervene">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"AboutPage","name":"About Intervene Advisory","url":"https://jamessaint.github.io/Intervene/about.html","mainEntity":{"@type":"Organization","name":"Intervene Advisory","description":"Independent integrity advisory for high-stakes decisions.","founder":{"@type":"Person","name":"James Saint"}}}</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>About · Intervene Advisory</title>
+<meta name="description" content="Intervene Advisory is an independent practice for high-stakes decisions on consequential AI systems. Founded by James Saint." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
-.founder-wrap { display:flex; align-items:flex-start; gap:clamp(24px,4vw,40px); }
-.founder-photo { flex-shrink:0; width:clamp(160px,22vw,240px); aspect-ratio:3/4; background:var(--surface2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; }
-.founder-photo-label { font-size:0.72rem; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:var(--text-faint); text-align:center; padding:16px; }
-.founder-info { flex:1; }
-.founder-name { font-size:0.78rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); margin-bottom:4px; }
-.founder-role-label { font-size:0.72rem; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-sub); margin-bottom:22px; }
-.sector-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); }
-.sector-cell { background:var(--surface); padding:18px 20px; font-size:0.78rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--text); }
-@media(max-width:600px){
-  .founder-wrap{flex-direction:column;}
-  .founder-photo{width:100%;aspect-ratio:16/9;}
-  .sector-grid{grid-template-columns:1fr 1fr;}
-}
+  :root {
+    --ink: #0e0f12; --ink-2: #16181c; --rule: #2a2d33; --rule-soft: #1e2025;
+    --cream: #ece7dc; --cream-dim: #b8b4aa; --cream-fade: #6f6c66;
+    --amber: #c9a772; --amber-dim: #8a7450;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Instrument Sans', 'Helvetica Neue', sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--ink); color: var(--cream); font-family: var(--sans); font-size: 16px; line-height: 1.6; font-feature-settings: "ss01"; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  a { color: inherit; text-decoration: none; }
+
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(14,15,18,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
+  .nav-inner { max-width: 1320px; margin: 0 auto; padding: 18px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+  .brand { font-family: var(--sans); font-weight: 600; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cream); }
+  .brand span { color: var(--cream-fade); font-weight: 400; margin-left: 14px; letter-spacing: 0.24em; }
+  .nav-links { display: flex; gap: 30px; font-family: var(--sans); font-size: 13px; letter-spacing: 0.04em; }
+  .nav-links a { color: var(--cream-dim); transition: color 150ms; position: relative; }
+  .nav-links a:hover { color: var(--cream); }
+  .nav-links a.active { color: var(--cream); }
+  .nav-links a.active::after { content: ''; position: absolute; bottom: -23px; left: 0; right: 0; height: 1px; background: var(--amber); }
+  .nav-cta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber); padding: 10px 18px; border: 1px solid var(--amber-dim); transition: all 180ms; }
+  .nav-cta:hover { background: var(--amber); color: var(--ink); }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 40px; }
+  .wrap-wide { max-width: 1320px; margin: 0 auto; padding: 0 40px; }
+
+  .hero { padding: 90px 0 70px; border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber); margin-bottom: 26px; }
+  h1.page-title { font-family: var(--serif); font-weight: 300; font-size: clamp(44px, 6vw, 84px); line-height: 1.0; letter-spacing: -0.022em; color: var(--cream); max-width: 18ch; margin-bottom: 28px; }
+  h1.page-title em { font-style: italic; color: var(--amber); font-weight: 300; }
+  .lede { font-family: var(--serif); font-weight: 300; font-style: italic; font-size: clamp(19px, 1.6vw, 26px); line-height: 1.4; color: var(--cream-dim); max-width: 52ch; }
+
+  section.block { padding: 80px 0; border-bottom: 1px solid var(--rule); }
+  .block-num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--amber); margin-bottom: 18px; }
+  h2.block-title { font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.05; letter-spacing: -0.018em; color: var(--cream); max-width: 24ch; margin-bottom: 22px; }
+  h2.block-title em { font-style: italic; color: var(--amber); }
+
+  /* Prose */
+  .prose { max-width: 64ch; }
+  .prose p { font-size: 17px; line-height: 1.65; color: var(--cream); margin-bottom: 22px; }
+  .prose p.dim { color: var(--cream-dim); }
+  .prose p em { color: var(--amber); font-style: italic; font-family: var(--serif); font-weight: 300; }
+  .prose strong { color: var(--cream); font-weight: 500; }
+
+  /* Founder */
+  .founder { display: grid; grid-template-columns: 280px 1fr; gap: 56px; margin-top: 32px; align-items: start; }
+  .founder-photo { width: 260px; height: 320px; background: var(--ink-2); border: 1px solid var(--rule); position: relative; overflow: hidden; }
+  .founder-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.15) contrast(1.02); display: block; }
+  .founder-photo::after { content: ''; position: absolute; inset: 0; border: 1px solid rgba(201,167,114,0.12); pointer-events: none; }
+  .founder-body .label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--amber); margin-bottom: 12px; text-transform: uppercase; }
+  .founder-body h3 { font-family: var(--serif); font-weight: 500; font-size: 34px; line-height: 1.1; color: var(--cream); margin-bottom: 6px; letter-spacing: -0.01em; }
+  .founder-body .role { font-family: var(--serif); font-style: italic; font-weight: 300; font-size: 18px; color: var(--cream-dim); margin-bottom: 26px; }
+  .founder-body .bio { font-family: var(--sans); font-size: 16px; line-height: 1.65; color: var(--cream); max-width: 60ch; margin-bottom: 22px; }
+  .founder-body .bio strong { color: var(--amber); font-weight: 500; }
+  .founder-body .bio em { font-family: var(--serif); font-style: italic; color: var(--cream-dim); }
+  .founder-body .credential { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--rule); display: grid; grid-template-columns: 160px 1fr; gap: 18px; }
+  .founder-body .credential .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream-fade); padding-top: 3px; }
+  .founder-body .credential .v { font-family: var(--sans); font-size: 14px; color: var(--cream); line-height: 1.5; }
+
+  /* EDIT placeholder styling */
+  .edit { background: rgba(184,68,56,0.08); border-left: 2px solid var(--red); padding: 2px 8px; color: var(--red); font-family: var(--mono); font-size: 0.88em; letter-spacing: 0.02em; }
+
+  /* Stance grid */
+  .stance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 32px; border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+  .stance-cell { padding: 32px 36px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .stance-cell .snum { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--amber); margin-bottom: 14px; }
+  .stance-cell h4 { font-family: var(--serif); font-size: 22px; font-weight: 500; color: var(--cream); line-height: 1.15; margin-bottom: 12px; letter-spacing: -0.008em; }
+  .stance-cell p { font-size: 14.5px; color: var(--cream-dim); line-height: 1.55; max-width: 46ch; }
+
+  /* Sectors */
+  .sectors { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 28px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .sector-cell { padding: 28px 24px; border-right: 1px solid var(--rule); }
+  .sector-cell:last-child { border-right: none; }
+  .sector-cell .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--amber); text-transform: uppercase; margin-bottom: 10px; }
+  .sector-cell h4 { font-family: var(--serif); font-size: 20px; color: var(--cream); margin-bottom: 10px; font-weight: 500; }
+  .sector-cell p { font-size: 13.5px; color: var(--cream-dim); line-height: 1.5; }
+
+  /* Not section */
+  .not-list { margin-top: 22px; }
+  .not-item { padding: 18px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: baseline; }
+  .not-item:first-child { border-top: 1px solid var(--rule); }
+  .not-item .label { font-family: var(--mono); font-size: 11px; color: var(--red); letter-spacing: 0.16em; text-transform: uppercase; }
+  .not-item .text { font-family: var(--sans); font-size: 15px; color: var(--cream); line-height: 1.5; }
+
+  /* CTA */
+  .cta { padding: 100px 0 110px; border-bottom: 1px solid var(--rule); }
+  .cta h2 { font-family: var(--serif); font-weight: 300; font-size: clamp(32px, 4.2vw, 56px); line-height: 1.05; letter-spacing: -0.02em; color: var(--cream); margin-bottom: 24px; max-width: 28ch; }
+  .cta h2 em { font-style: italic; color: var(--amber); }
+  .cta p { font-family: var(--serif); font-style: italic; font-size: 19px; color: var(--cream-dim); margin-bottom: 36px; max-width: 54ch; }
+  .cta-btn { display: inline-block; font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); background: var(--amber); padding: 16px 28px; transition: all 180ms; }
+  .cta-btn:hover { background: var(--cream); }
+
+  /* Footer */
+  footer { padding: 56px 0 40px; background: var(--ink-2); border-top: 1px solid var(--rule); }
+  .foot-inner { display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; flex-wrap: wrap; }
+  .foot-brand { font-family: var(--sans); font-weight: 600; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cream); }
+  .foot-brand span { color: var(--cream-fade); font-weight: 400; margin-left: 14px; letter-spacing: 0.24em; }
+  .foot-brand small { display: block; font-family: var(--serif); font-style: italic; font-weight: 300; font-size: 13px; color: var(--cream-fade); letter-spacing: 0; text-transform: none; margin-top: 10px; max-width: 50ch; }
+  .foot-links { display: flex; gap: 28px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--cream-fade); text-transform: uppercase; }
+  .foot-links a:hover { color: var(--amber); }
+  .foot-copy { margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--cream-fade); text-transform: uppercase; }
+
+  /* Edit notice banner */
+  .edit-notice { background: rgba(184,68,56,0.08); border-top: 2px solid var(--red); border-bottom: 2px solid var(--red); padding: 14px 0; }
+  .edit-notice .inner { max-width: 1120px; margin: 0 auto; padding: 0 40px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--red); display: flex; align-items: center; gap: 14px; }
+  .edit-notice .inner strong { color: var(--cream); text-transform: uppercase; letter-spacing: 0.18em; }
+  @media print { .edit-notice { display: none; } .edit { background: yellow; color: black; } }
+
+  @media (max-width: 900px) {
+    .nav-inner { padding: 16px 24px; gap: 16px; flex-wrap: wrap; }
+    .nav-links { order: 3; width: 100%; gap: 20px; }
+    .nav-links a.active::after { bottom: -17px; }
+    .wrap, .wrap-wide { padding: 0 24px; }
+    .founder { grid-template-columns: 1fr; gap: 32px; }
+    .stance-grid { grid-template-columns: 1fr; }
+    .sectors { grid-template-columns: 1fr; }
+    .sector-cell { border-right: none; border-bottom: 1px solid var(--rule); }
+    .sector-cell:last-child { border-bottom: none; }
+    .not-item { grid-template-columns: 1fr; gap: 8px; }
+  }
 </style>
 </head>
 <body>
-<nav class="nav" aria-label="Primary navigation">
- <div class="nav-inner">
- <a href="index.html" class="nav-mark" aria-label="Intervene Advisory home">
- <div class="nav-mark-icon"><div class="nm-line"></div><div class="nm-stroke"></div><div class="nm-line"></div></div>
- <span class="nav-mark-text">Intervene Advisory</span>
- </a>
- <ul class="nav-links" role="list">
- <li><a href="index.html">Home</a></li>
- <li><a href="method.html">Method</a></li>
- <li><a href="services.html">Services</a></li>
- <li><a href="about.html" class="current">About</a></li>
- </ul>
- <a href="contact.html" class="nav-enquire">Enquire</a>
- <button class="nav-hamburger" id="hamburger" aria-expanded="false" aria-label="Open navigation">
- <span></span><span></span><span></span>
- </button>
- </div>
+
+<!-- Remove this banner before publishing -->
+<div class="edit-notice">
+  <div class="inner">
+    <strong>Draft · Before publishing:</strong>
+    <span>Replace every <span class="edit">EDIT:...</span> marker with your specific, verifiable facts. Do not publish with markers in place.</span>
+  </div>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">Intervene<span>Advisory</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="method.html">Method</a>
+      <a href="services.html">Services</a>
+      <a href="about.html" class="active">About</a>
+      <a href="sample-report.html">Sample Report</a>
+    </div>
+    <a href="contact.html" class="nav-cta">Enquire</a>
+  </div>
 </nav>
-<div class="nav-mobile" id="mobile-nav" aria-hidden="true">
- <ul role="list">
- <li><a href="index.html">Home</a></li>
- <li><a href="method.html">Method</a></li>
- <li><a href="services.html">Services</a></li>
- <li><a href="about.html">About</a></li>
- <li><a href="contact.html">Contact</a></li>
- </ul>
- <a href="contact.html" class="nav-mobile-cta">Request a confidential discussion</a>
-</div>
 
-<header class="page-hero">
-  <div class="page-hero-inner">
-    <p class="page-eyebrow">About</p>
-    <h1 class="page-h1">Why Intervene exists</h1>
-    <p class="page-lede">Intervene exists because the most dangerous failures are often visible only after the organisation has already lost the ability to act.</p>
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">About · 2026</div>
+    <h1 class="page-title">An <em>independent</em> practice. One principal.<br/>Specific experience.</h1>
+    <p class="lede">Intervene Advisory exists because the most dangerous failures in AI systems are often visible only after the organisation has already lost the ability to act.</p>
   </div>
-</header>
-
-<main>
-
-<!-- 00 FOUNDER
-<section>
-<div class="page-wrap">
-  <div class="section-hd reveal"><span class="section-num">00</span><span class="section-label">Founder</span><div class="section-rule"></div></div>
-  <div class="founder-wrap reveal">
-    <div class="founder-photo">
-      <!--
-        Add headshot: replace this div's contents with
-        <img src="assets/images/james-saint.jpg" alt="James Saint, founder" style="width:100%;height:100%;object-fit:cover;">
-      --><!--
-      <p class="founder-photo-label">Photo<br>James Saint<br>Founder</p>
-    </div>
-    <div class="founder-info">
-      <p class="founder-name">James Saint</p>
-      <p class="founder-role-label">Founder</p>
-      <p>Intervene Advisory is founded by James Saint. The practice is grounded in applied experience with AI systems in financial intelligence and transaction surveillance environments: operational exposure to how high-consequence decisions are made, contested, escalated, and overridden under real conditions.</p>
-      <p>That experience produced a specific insight. Governance frameworks are designed for control, but most organisations have never tested whether that control actually works when a system fails at speed. Intervene exists to close that gap.</p>
-      <p>The technical methodology behind Intervene Core is informed by collaboration with Professor Nicholas Ryman-Tubb (University of Surrey) on neural network explainability and the conditions under which human decision-makers can meaningfully oversee automated systems.</p>
-    </div>
-  </div>
-</div>
-</section> -->
-
-<!-- 01 WHAT WE ARE -->
-<section>
-<div class="page-wrap">
-  <div class="section-hd reveal"><span class="section-num">00</span><span class="section-label">Founder</span><div class="section-rule"></div></div>
-  <div class="founder-wrap reveal">
-    <div class="founder-photo">
-        <img src="assets/images/james-saint.jpg" alt="James Saint, founder" style="width:100%;height:100%;object-fit:cover;">
-    </div>
-    <div class="founder-info">
-      <p class="founder-name">James Saint</p>
-      <p class="founder-role-label">Founder</p>
-      <p><strong style="color:var(--text);font-weight:600;">James Saint</strong> is the founder of Human Integrity Advisory. His background is in applied AI systems within financial intelligence environments: operational exposure to how AI-driven decisions are made, contested, and escalated in high-consequence contexts.</p>
-      <p>HIA's technical grounding is informed by collaborative work with Professor Nicholas Ryman-Tubb (University of Surrey) on neural network explainability. The combination of operational experience and rigorous academic foundation is what separates HIA from advisory built on frameworks alone.</p>
-      <!-- <div class="block-note" style="margin-top:16px;">To add a headshot: save as <code style="font-size:0.9em;color:var(--text-sub);">assets/images/james-saint.jpg</code> and replace the placeholder div above.</div> -->
-    </div>
-  </div>
-</div>
 </section>
 
-<section>
-<div class="page-wrap">
-  <div class="section-hd reveal"><span class="section-num">01</span><span class="section-label">Why HIA exists</span><div class="section-rule"></div></div>
-  <div class="grid-2 reveal">
-    <div class="block block-accent">
-      <p>Intervene Advisory is an independent advisory practice for high-stakes decisions.</p>
-      <p>We work with leaders responsible for systems where the gap between governance design and operational reality is not academic. Where the cost of discovering that gap in real time is not recoverable.</p>
-      <p>Our work begins where governance design ends. The moment control is tested against reality.</p>
-    </div>
-    <div class="block">
-      <p>This is not ethics consulting. It is not AI safety philosophy. It is the practical assessment of whether your organisation can intervene in its own systems before a decision becomes irreversible.</p>
-      <div class="block-note" style="margin-top:18px;">Intervene does not provide reassurance. We provide an accurate account of whether your organisation can act when it needs to.</div>
+<section class="block">
+  <div class="wrap">
+    <div class="block-num">§ 01 · Founder</div>
+    <h2 class="block-title">James Saint. <em>Operator, not theorist.</em></h2>
+
+    <div class="founder">
+      <div class="founder-photo">
+        <img src="assets/images/james-saint.jpg" alt="James Saint, founder" onerror="this.style.display='none'" />
+      </div>
+      <div class="founder-body">
+        <div class="label">Founder · Principal Advisor</div>
+        <h3>James Saint</h3>
+        <div class="role">Founder, Human Integrity Advisory · Principal, Intervene Advisory Ltd</div>
+
+        <p class="bio">
+          <span class="edit">EDIT: One sentence stating specific professional history with NAMED employer(s) and years. Template:</span>
+          "Before founding Human Integrity Advisory in 2026, <strong>James spent <span class="edit">EDIT: N</span> years building production AI decisioning and surveillance systems at <span class="edit">EDIT: named firm(s) — e.g. a top-five UK bank, a tier-one investment bank, or a financial intelligence function</span>, with direct operational responsibility for <span class="edit">EDIT: specific system types — e.g. real-time transaction monitoring, model risk escalation, AML alert triage</span> across <span class="edit">EDIT: scale qualifier — e.g. multi-jurisdiction deployments / a portfolio handling N billion transactions annually</span>."</strong>
+        </p>
+
+        <p class="bio">
+          <em>Where to put the escalation discipline.</em> Much of the work sits at the point where model output contests with human authority: what the system surfaced, who had the authority to contest it, how long that contestation took, and what it cost when the authority arrived too late. That specific operational exposure — not theoretical AI safety — is the foundation of the AGDA methodology.
+        </p>
+
+        <p class="bio">
+          The technical grounding of AGDA draws on collaborative work with <strong>Professor Nicholas Ryman-Tubb</strong> (University of Surrey), whose research into neural network explainability and financial-crime pattern detection <span class="edit">EDIT: state the specific contribution — e.g. "informed the Delusion Gap Index calibration" / "shaped the evidence-grade capping rules" / "provided external review of the Failure Mode Catalogue v1.0"</span>.
+        </p>
+
+        <div class="credential">
+          <div class="k">Prior experience</div>
+          <div class="v"><span class="edit">EDIT: comma-separated named firms or specific system-type scope. Example: "8 years in model risk and financial intelligence at [firm 1] and [firm 2]; led [specific named system or programme]."</span></div>
+        </div>
+        <div class="credential">
+          <div class="k">Academic collaboration</div>
+          <div class="v">Prof. Nicholas Ryman-Tubb, University of Surrey · <span class="edit">EDIT: specific collaboration scope and dates</span></div>
+        </div>
+        <div class="credential">
+          <div class="k">Regulatory fluency</div>
+          <div class="v">PRA SS1/23 model risk · FCA SMCR · EU AI Act high-risk classifications · DORA Articles 8 &amp; 28 · NIST AI RMF</div>
+        </div>
+        <div class="credential">
+          <div class="k">Based</div>
+          <div class="v">London, United Kingdom · working internationally with in-person sessions on invitation</div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 </section>
 
-<!-- 02 WHAT WE STAND FOR -->
-<section>
-<div class="page-wrap">
-  <div class="section-hd reveal"><span class="section-num">02</span><span class="section-label">What we stand for</span><div class="section-rule"></div></div>
-  <div class="grid-2 reveal">
-    <div class="block">
-      <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Independent judgement</p>
-      <p>No vendor affiliations. No framework allegiances. No commercial pressure to shape findings. Our interests are aligned with an accurate answer, not a reassuring one.</p>
-    </div>
-    <div class="block">
-      <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Pattern recognition</p>
-      <p>System failure rarely announces itself. We work upstream of visible crisis, where the signals are still subtle and the cost of acting is still low.</p>
-    </div>
-    <div class="block">
-      <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Clarity over complexity</p>
-      <p>A board that cannot act on the finding cannot govern the system. We write what the decision owner needs, not what the framework requires.</p>
-    </div>
-    <div class="block">
-      <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Refusal of false control</p>
-      <p>Governance documents are not operational control. The distinction matters. We refuse to mistake the first for the second.</p>
+<section class="block">
+  <div class="wrap">
+    <div class="block-num">§ 02 · Why this exists</div>
+    <h2 class="block-title">Governance design ends where operational reality begins. <em>That is where our work starts.</em></h2>
+
+    <div class="prose">
+      <p>Intervene Advisory is an independent advisory practice for high-stakes decisions on consequential AI systems. We work with leaders responsible for systems where the gap between governance design and operational reality is not academic — where the cost of discovering that gap in real time is not recoverable.</p>
+
+      <p class="dim">Our work begins where governance design ends: the moment control is tested against reality. This is not ethics consulting. It is not AI safety philosophy. It is the practical, attested assessment of whether your organisation can intervene in its own systems before a decision becomes irreversible.</p>
+
+      <p>We publish our methodology. <strong>AGDA Thesis v1.0</strong> and <strong>Failure Mode Catalogue v1.0</strong> are citeable works — eight falsifiable claims, forty canonical failure modes, open to criticism. The engine's output is cryptographically signed; any regulator or internal audit function can verify the computation without contacting us. <em>Opinion is not reproducible. Signed computation is.</em></p>
+
+      <p class="dim">Intervene does not provide reassurance. We provide an accurate account of whether your organisation can act when it needs to.</p>
     </div>
   </div>
-</div>
 </section>
 
-<!-- 03 INDEPENDENCE -->
-<section>
-<div class="page-wrap">
-  <div class="section-hd reveal"><span class="section-num">03</span><span class="section-label">Independence</span><div class="section-rule"></div></div>
-  <div class="block block-accent reveal" style="max-width:760px;">
-    <p>Intervene operates independently of all technology vendors, governance bodies, and advisory networks. Assessments are not shaped by the interests of any framework vendor or by the relationships that govern how most advisory work is commissioned.</p>
-    <p>Where Intervene works alongside specialist governance firms, we do so as a separate, independent voice. The governance layer and the intervention layer must be assessed independently to have any value.</p>
+<section class="block">
+  <div class="wrap-wide">
+    <div class="block-num">§ 03 · What we stand for</div>
+    <h2 class="block-title">Four commitments. <em>Operationally testable.</em></h2>
+
+    <div class="stance-grid">
+      <div class="stance-cell">
+        <div class="snum">01</div>
+        <h4>Independent judgement</h4>
+        <p>No technology vendor affiliations. No compliance-platform resale. No advisory-network alignment. Our interests are aligned with an accurate answer, not a reassuring one. Channel partnerships with specialist firms are disclosed in writing to every client.</p>
+      </div>
+      <div class="stance-cell">
+        <div class="snum">02</div>
+        <h4>Published methodology</h4>
+        <p>The thesis, failure mode catalogue, and corpus governance are public and citeable. The calibration, weights, and scoring thresholds are trade secret. You can read how we think; the engine that applies that thinking is protected so that it produces consistent answers across clients.</p>
+      </div>
+      <div class="stance-cell">
+        <div class="snum">03</div>
+        <h4>Verifiable computation</h4>
+        <p>Every verdict is signed with Ed25519 and a public verifier is available as a standalone utility. Your internal audit, board, or a regulator can verify the signature on any finding without our cooperation. This is the feature that converts "trust our judgement" into "verify the computation yourself."</p>
+      </div>
+      <div class="stance-cell">
+        <div class="snum">04</div>
+        <h4>Refusal of false control</h4>
+        <p>We refuse engagements where our findings would conflict with a standing advisory relationship with the client's board. We refuse to soften findings for commercial reasons. We refuse to scope an assessment we cannot do properly. Independence is the product.</p>
+      </div>
+    </div>
   </div>
-</div>
 </section>
 
-<!-- 04 WHERE WE WORK -->
-<section>
-<div class="page-wrap">
-  <div class="section-hd reveal"><span class="section-num">04</span><span class="section-label">Where we work</span><div class="section-rule"></div></div>
-  <div class="sector-grid reveal">
-    <div class="sector-cell">Financial Services</div>
-    <div class="sector-cell">Critical Infrastructure</div>
-    <div class="sector-cell">Regulated Technology</div>
-    <div class="sector-cell">Healthcare Systems</div>
-    <div class="sector-cell">Defence &amp; Intelligence</div>
-    <div class="sector-cell">Professional Services</div>
+<section class="block">
+  <div class="wrap-wide">
+    <div class="block-num">§ 04 · Where we work</div>
+    <h2 class="block-title">Three sectors by default. <em>Two more on invitation.</em></h2>
+
+    <div class="sectors">
+      <div class="sector-cell">
+        <div class="k">Primary</div>
+        <h4>UK-regulated financial services</h4>
+        <p>Banks, insurers, investment firms, clearing houses. PRA SS1/23 intervention capability, FCA SMCR function-holder evidence, DORA ICT risk mapping. The sector where the regulatory pressure and the failure-cost asymmetry are both highest.</p>
+      </div>
+      <div class="sector-cell">
+        <div class="k">Primary</div>
+        <h4>EU high-risk AI operators</h4>
+        <p>Organisations deploying AI systems classified as high-risk under the EU AI Act. Evidence for Article 9 risk management, Article 13 transparency, Article 14 human oversight, Article 72 post-market monitoring. Operationally testable, not documentary.</p>
+      </div>
+      <div class="sector-cell">
+        <div class="k">Primary</div>
+        <h4>Critical national infrastructure</h4>
+        <p>Energy, water, clearing, payments. Where a model or automated control surface operates inside a reversibility window of hours, not days, and the consequence of mis-intervention is non-local.</p>
+      </div>
+    </div>
+
+    <div class="sectors" style="margin-top:0; border-top:none;">
+      <div class="sector-cell">
+        <div class="k">Invitation only</div>
+        <h4>Healthcare systems</h4>
+        <p>Clinical decision-support and diagnostic AI where the reversibility window is measured in minutes. Engagements taken only where a named clinical governance partner is already in place.</p>
+      </div>
+      <div class="sector-cell">
+        <div class="k">Invitation only</div>
+        <h4>Defence &amp; intelligence</h4>
+        <p>Sovereign-capability AI systems where the operational environment and security requirements place additional constraints on engagement shape. Taken only through named sponsoring government entities.</p>
+      </div>
+      <div class="sector-cell">
+        <div class="k">—</div>
+        <h4 style="color:var(--cream-fade);">Not currently served</h4>
+        <p>Consumer internet · generic enterprise productivity · non-regulated B2B SaaS · advertising technology. The framework applies; the regulatory and failure-cost asymmetry is not severe enough to warrant our engagement model.</p>
+      </div>
+    </div>
   </div>
-  <p class="reveal" style="margin-top:28px;max-width:640px;color:var(--text-sub);font-size:0.92rem;">Based in the United Kingdom. Working with clients internationally through remote advisory and selected in-person sessions.</p>
-</div>
 </section>
 
-<!-- 05 CTA -->
-<section style="border-bottom:none;">
-<div class="page-wrap">
-  <div class="cta-band reveal">
-    <h2>If this is relevant to what you are facing, let us talk.</h2>
+<section class="block">
+  <div class="wrap">
+    <div class="block-num">§ 05 · What we are not</div>
+    <h2 class="block-title">Specificity is the service. <em>So is what we refuse to do.</em></h2>
+
+    <div class="not-list">
+      <div class="not-item">
+        <div class="label">Not</div>
+        <div class="text">A compliance dashboard. Drata, Vanta, Secureframe and others track documentary state well. We answer a different question.</div>
+      </div>
+      <div class="not-item">
+        <div class="label">Not</div>
+        <div class="text">A Big-4 practice. We are a boutique. We partner with Big-4 practices where a channel arrangement is appropriate and disclosed.</div>
+      </div>
+      <div class="not-item">
+        <div class="label">Not</div>
+        <div class="text">A policy-writing firm. We assess whether the policy executes under pressure, not whether the policy is well-drafted.</div>
+      </div>
+      <div class="not-item">
+        <div class="label">Not</div>
+        <div class="text">A model-testing service. Credo AI, Holistic AI, Fairly AI and others do model-surface testing. We assess the control surface around the model.</div>
+      </div>
+      <div class="not-item">
+        <div class="label">Not</div>
+        <div class="text">An implementation partner. We do not install the remediation we recommend. We hand the remediation to you, an internal programme, or a named delivery partner.</div>
+      </div>
+      <div class="not-item">
+        <div class="label">Not</div>
+        <div class="text">An AI safety think-tank. Our work is operational, not doctrinal. The product is a signed assessment, not a position paper.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>If this is relevant to what you are facing, <em>let us talk.</em></h2>
     <p>No questionnaire. No preparatory documents. A direct exchange to establish whether Intervene is a fit.</p>
-    <div class="cta-pair">
-      <a href="contact.html" class="btn-gold">Request a confidential discussion</a>
-    </div>
+    <a href="contact.html" class="cta-btn">Request a conversation</a>
   </div>
-</div>
 </section>
 
-</main>
 <footer>
-  <div class="footer-inner">
-    <div class="footer-mark">
-      <div class="footer-mark-icon"><div class="fm-line"></div><div class="fm-stroke"></div><div class="fm-line"></div></div>
-      <span class="footer-mark-text">Intervene Advisory</span>
+  <div class="wrap-wide">
+    <div class="foot-inner">
+      <div class="foot-brand">Intervene<span>Advisory</span>
+        <small>Independent intervention-capability assessment for regulated AI systems. Human Integrity Advisory, United Kingdom.</small>
+      </div>
+      <div class="foot-links">
+        <a href="contact.html">Contact</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="gdpr.html">GDPR</a>
+      </div>
     </div>
-    <div class="footer-right">
-      <ul class="footer-links" role="list">
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="terms.html">Terms &amp; Conditions</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
-        <li><a href="gdpr.html">GDPR</a></li>
-      </ul>
-      <span class="footer-copy">&copy;&nbsp;2026 Intervene Advisory &middot; All rights reserved.</span>
-    </div>
+    <div class="foot-copy">© 2026 Intervene Advisory Ltd · All rights reserved · AGDA™ and InterveneCore™ are trademarks of Human Integrity Advisory</div>
   </div>
 </footer>
-<script src="hia.js"></script>
+
 </body>
 </html>

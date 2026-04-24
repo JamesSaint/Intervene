@@ -1,316 +1,550 @@
-<!DOCTYPE html>
-<html lang="en-GB">
+<!doctype html>
+<html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Method | How We Assess Intervention Capability | Intervene Advisory</title>
-<meta name="description" content="Intervene's method tests whether your organisation can actually intervene when it matters. A proprietary assessment engine, a three-stage engagement, and findings built for decision-makers.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://jamessaint.github.io/Intervene/method.html">
-<meta name="theme-color" content="#0a0a0a"><meta name="color-scheme" content="dark">
-<link rel="icon" href="assets/icons/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
-<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="hia.css">
-<meta property="og:type" content="website"><meta property="og:site_name" content="Intervene Advisory">
-<meta property="og:title" content="Method | How We Assess Intervention Capability | Intervene Advisory">
-<meta property="og:description" content="A proprietary assessment engine, a three-stage engagement, and findings built for decision-makers.">
-<meta property="og:url" content="https://jamessaint.github.io/Intervene/method.html">
-<meta property="og:image" content="https://jamessaint.github.io/Intervene/assets/og/og-home.png">
-<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Intervene Method"><meta property="og:locale" content="en_GB">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Method | Intervene"><meta name="twitter:description" content="A proprietary assessment engine and a three-stage engagement process for testing intervention capability."><meta name="twitter:image" content="https://jamessaint.github.io/Intervene/assets/og/og-home.png"><meta name="twitter:image:alt" content="Intervene Method">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Method","description":"Intervene Advisory's proprietary method for assessing intervention capability in high-stakes systems.","url":"https://jamessaint.github.io/Intervene/method.html","isPartOf":{"@type":"WebSite","name":"Intervene Advisory","url":"https://jamessaint.github.io/Intervene/"},"publisher":{"@type":"Organization","name":"Intervene Advisory","url":"https://jamessaint.github.io/Intervene/"}}</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Method · Intervene Advisory</title>
+<meta name="description" content="AGDA — the deterministic intervention-capability engine. Evidence-grade capping, chain-ceiling propagation, cryptographic attestation. Published methodology." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #0e0f12; --ink-2: #16181c; --rule: #2a2d33; --rule-soft: #1e2025;
+    --cream: #ece7dc; --cream-dim: #b8b4aa; --cream-fade: #6f6c66;
+    --amber: #c9a772; --amber-dim: #8a7450;
+    --red: #b84438; --green: #6a8a5c; --amber-mid: #d4b981;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Instrument Sans', 'Helvetica Neue', sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--ink); color: var(--cream); font-family: var(--sans); font-size: 16px; line-height: 1.55; font-feature-settings: "ss01"; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  a { color: inherit; text-decoration: none; }
+
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(14,15,18,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
+  .nav-inner { max-width: 1320px; margin: 0 auto; padding: 18px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+  .brand { font-family: var(--sans); font-weight: 600; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cream); }
+  .brand span { color: var(--cream-fade); font-weight: 400; margin-left: 14px; letter-spacing: 0.24em; }
+  .nav-links { display: flex; gap: 30px; font-family: var(--sans); font-size: 13px; letter-spacing: 0.04em; }
+  .nav-links a { color: var(--cream-dim); transition: color 150ms; position: relative; }
+  .nav-links a:hover { color: var(--cream); }
+  .nav-links a.active { color: var(--cream); }
+  .nav-links a.active::after { content: ''; position: absolute; bottom: -23px; left: 0; right: 0; height: 1px; background: var(--amber); }
+  .nav-cta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber); padding: 10px 18px; border: 1px solid var(--amber-dim); transition: all 180ms; }
+  .nav-cta:hover { background: var(--amber); color: var(--ink); }
+
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 40px; }
+  .narrow { max-width: 960px; margin: 0 auto; padding: 0 40px; }
+
+  .hero { padding: 90px 0 70px; border-bottom: 1px solid var(--rule); }
+  .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber); margin-bottom: 26px; }
+  h1.page-title { font-family: var(--serif); font-weight: 300; font-size: clamp(44px, 6vw, 84px); line-height: 1.0; letter-spacing: -0.022em; color: var(--cream); max-width: 20ch; margin-bottom: 28px; }
+  h1.page-title em { font-style: italic; color: var(--amber); font-weight: 300; }
+  .lede { font-family: var(--serif); font-weight: 300; font-style: italic; font-size: clamp(19px, 1.6vw, 24px); line-height: 1.4; color: var(--cream-dim); max-width: 54ch; }
+
+  section.block { padding: 80px 0; border-bottom: 1px solid var(--rule); }
+  .block-num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--amber); margin-bottom: 18px; }
+  h2.block-title { font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.05; letter-spacing: -0.018em; color: var(--cream); max-width: 28ch; margin-bottom: 22px; }
+  h2.block-title em { font-style: italic; color: var(--amber); }
+  .block-sub { font-family: var(--sans); font-size: 16px; color: var(--cream-dim); max-width: 66ch; line-height: 1.6; margin-bottom: 18px; }
+  .block-sub strong { color: var(--cream); font-weight: 500; }
+  .block-sub em { color: var(--amber); font-family: var(--serif); font-style: italic; font-weight: 300; }
+
+  /* Chain diagram */
+  .chain { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 30px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .chain-stage { padding: 26px 24px; border-right: 1px solid var(--rule); }
+  .chain-stage:last-child { border-right: none; }
+  .chain-stage .t { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
+  .chain-stage .s { font-family: var(--serif); font-size: 26px; line-height: 1.1; color: var(--cream); margin-bottom: 12px; font-weight: 500; }
+  .chain-stage .q { font-family: var(--sans); font-size: 13px; line-height: 1.5; color: var(--cream-dim); }
+
+  /* Pull quote */
+  .pull { font-family: var(--serif); font-weight: 300; font-style: italic; font-size: clamp(22px, 2.6vw, 34px); line-height: 1.25; color: var(--cream); max-width: 36ch; letter-spacing: -0.01em; margin-top: 40px; }
+  .pull em { color: var(--amber); font-style: italic; }
+
+  /* Dimensions */
+  .dim-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 28px; border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+  .dim-cell { padding: 26px 22px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .dim-cell .n { font-family: var(--mono); font-size: 11px; color: var(--amber); letter-spacing: 0.14em; margin-bottom: 10px; }
+  .dim-cell h4 { font-family: var(--serif); font-size: 22px; color: var(--cream); font-weight: 500; margin-bottom: 8px; letter-spacing: -0.005em; }
+  .dim-cell p { font-size: 13px; color: var(--cream-dim); line-height: 1.5; }
+
+  /* Evidence cap scale */
+  .cap-scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 30px; border-top: 1px solid var(--rule); }
+  .cap-cell { padding: 24px 22px 26px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); position: relative; }
+  .cap-cell:last-child { border-right: none; }
+  .cap-cell .g { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--amber); margin-bottom: 14px; }
+  .cap-cell .mean { font-family: var(--serif); font-size: 18px; color: var(--cream); font-weight: 500; margin-bottom: 12px; line-height: 1.2; letter-spacing: -0.005em; }
+  .cap-cell p { font-size: 12.5px; color: var(--cream-dim); line-height: 1.45; margin-bottom: 18px; min-height: 56px; }
+  .cap-cell .max { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding-top: 14px; border-top: 1px solid var(--rule); }
+  .cap-cell[data-band="red"] .max { color: var(--red); }
+  .cap-cell[data-band="amber"] .max { color: var(--amber); }
+  .cap-cell[data-band="green"] .max { color: var(--green); }
+
+  /* Integrity positions */
+  .pos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; margin-top: 28px; border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+  .pos-cell { padding: 32px 36px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .pos-cell .n { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--amber); margin-bottom: 14px; }
+  .pos-cell h4 { font-family: var(--serif); font-size: 22px; color: var(--cream); font-weight: 500; line-height: 1.2; margin-bottom: 12px; letter-spacing: -0.008em; }
+  .pos-cell h4 em { color: var(--amber); font-style: italic; }
+  .pos-cell p { font-size: 14px; color: var(--cream-dim); line-height: 1.55; max-width: 48ch; }
+  .pos-cell p strong { color: var(--cream); font-weight: 500; }
+
+  /* Chain ceiling visualization */
+  .ceiling {
+    margin-top: 32px;
+    padding: 40px 48px;
+    background: var(--ink-2);
+    border: 1px solid var(--rule);
+  }
+  .ceiling-bars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; align-items: end; margin-bottom: 22px; min-height: 160px; }
+  .ceiling-bar { display: flex; flex-direction: column; align-items: center; }
+  .ceiling-bar .bar { width: 100%; background: linear-gradient(to top, var(--amber), var(--amber-mid)); border-top: 2px solid var(--cream); position: relative; }
+  .ceiling-bar .bar .claim { position: absolute; right: -4px; top: -22px; border-right: 2px dashed var(--red); height: 20px; width: 0; }
+  .ceiling-bar .bar .claim-label { position: absolute; right: -56px; top: -24px; font-family: var(--mono); font-size: 9px; color: var(--red); letter-spacing: 0.08em; white-space: nowrap; }
+  .ceiling-bar .stage-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--cream-dim); margin-top: 10px; text-transform: uppercase; }
+  .ceiling-bar .score { font-family: var(--serif); font-size: 18px; color: var(--cream); margin-top: 4px; font-weight: 500; }
+  .ceiling-explain { font-family: var(--sans); font-size: 14px; color: var(--cream-dim); line-height: 1.55; padding-top: 22px; border-top: 1px solid var(--rule); }
+  .ceiling-explain strong { color: var(--cream); font-weight: 500; }
+
+  /* Attestation envelope visualization */
+  .att-envelope { margin-top: 32px; padding: 36px 40px; background: var(--ink-2); border: 1px solid var(--amber-dim); font-family: var(--mono); font-size: 13px; line-height: 1.9; color: var(--cream); }
+  .att-envelope .hdr { color: var(--amber); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
+  .att-envelope .k { color: var(--cream-fade); }
+  .att-envelope .v { color: var(--cream); }
+  .att-envelope .v.hash { color: var(--amber-mid); }
+  .att-envelope .meta { color: var(--cream-fade); font-size: 11px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--rule); line-height: 1.6; }
+
+  /* Stages / process */
+  .stages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 28px; }
+  .stage { padding: 32px 36px 32px 0; border-top: 1px solid var(--rule); }
+  .stage:not(:last-child) { border-right: 1px solid var(--rule); padding-right: 36px; }
+  .stage:not(:first-child) { padding-left: 36px; }
+  .stage .t { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--amber); margin-bottom: 14px; }
+  .stage h4 { font-family: var(--serif); font-size: 26px; font-weight: 500; color: var(--cream); line-height: 1.15; margin-bottom: 16px; letter-spacing: -0.01em; }
+  .stage .stage-lede { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--cream-dim); margin-bottom: 22px; line-height: 1.5; }
+  .stage ul { list-style: none; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--rule); }
+  .stage ul li { font-size: 13.5px; color: var(--cream); padding: 5px 0 5px 14px; position: relative; line-height: 1.5; }
+  .stage ul li::before { content: ''; position: absolute; left: 0; top: 12px; width: 6px; height: 1px; background: var(--amber-dim); }
+
+  /* Published methodology */
+  .pubs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; margin-top: 28px; border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+  .pub { padding: 28px 32px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .pub .tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--amber); text-transform: uppercase; margin-bottom: 10px; }
+  .pub h4 { font-family: var(--serif); font-size: 20px; color: var(--cream); font-weight: 500; margin-bottom: 8px; letter-spacing: -0.008em; }
+  .pub .v { font-family: var(--mono); font-size: 11px; color: var(--cream-fade); letter-spacing: 0.08em; margin-bottom: 14px; }
+  .pub p { font-size: 13.5px; color: var(--cream-dim); line-height: 1.5; margin-bottom: 12px; }
+  .pub .cite { font-family: var(--mono); font-size: 11px; color: var(--cream-fade); letter-spacing: 0.04em; padding-top: 14px; border-top: 1px solid var(--rule); line-height: 1.5; }
+
+  /* CTA */
+  .cta { padding: 100px 0 110px; border-bottom: 1px solid var(--rule); }
+  .cta h2 { font-family: var(--serif); font-weight: 300; font-size: clamp(32px, 4.2vw, 56px); line-height: 1.05; letter-spacing: -0.02em; color: var(--cream); margin-bottom: 24px; max-width: 26ch; }
+  .cta h2 em { font-style: italic; color: var(--amber); }
+  .cta p { font-family: var(--serif); font-style: italic; font-size: 19px; color: var(--cream-dim); margin-bottom: 36px; max-width: 54ch; }
+  .cta-btn { display: inline-block; font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); background: var(--amber); padding: 16px 28px; transition: all 180ms; }
+  .cta-btn:hover { background: var(--cream); }
+  .cta-btn.ghost { background: transparent; color: var(--cream); border: 1px solid var(--rule); margin-left: 14px; }
+  .cta-btn.ghost:hover { border-color: var(--amber); color: var(--amber); }
+
+  /* Footer */
+  footer { padding: 56px 0 40px; background: var(--ink-2); border-top: 1px solid var(--rule); }
+  .foot-inner { display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; flex-wrap: wrap; }
+  .foot-brand { font-family: var(--sans); font-weight: 600; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cream); }
+  .foot-brand span { color: var(--cream-fade); font-weight: 400; margin-left: 14px; letter-spacing: 0.24em; }
+  .foot-brand small { display: block; font-family: var(--serif); font-style: italic; font-weight: 300; font-size: 13px; color: var(--cream-fade); letter-spacing: 0; text-transform: none; margin-top: 10px; max-width: 50ch; }
+  .foot-links { display: flex; gap: 28px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--cream-fade); text-transform: uppercase; }
+  .foot-links a:hover { color: var(--amber); }
+  .foot-copy { margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--cream-fade); text-transform: uppercase; }
+
+  @media (max-width: 900px) {
+    .nav-inner { padding: 16px 24px; gap: 16px; flex-wrap: wrap; }
+    .nav-links { order: 3; width: 100%; gap: 20px; }
+    .nav-links a.active::after { bottom: -17px; }
+    .wrap, .narrow { padding: 0 24px; }
+    .chain { grid-template-columns: 1fr 1fr; }
+    .chain-stage { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .chain-stage:nth-child(even) { border-right: none; }
+    .dim-grid { grid-template-columns: 1fr 1fr; }
+    .cap-scale { grid-template-columns: 1fr 1fr; }
+    .pos-grid { grid-template-columns: 1fr; }
+    .ceiling { padding: 24px 20px; }
+    .ceiling-bars { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .att-envelope { padding: 22px 20px; font-size: 11px; overflow-x: auto; }
+    .stages { grid-template-columns: 1fr; }
+    .stage { padding: 28px 0 !important; border-right: none !important; }
+    .pubs { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
-<nav class="nav" aria-label="Primary navigation">
- <div class="nav-inner">
- <a href="index.html" class="nav-mark" aria-label="Intervene Advisory home">
- <div class="nav-mark-icon"><div class="nm-line"></div><div class="nm-stroke"></div><div class="nm-line"></div></div>
- <span class="nav-mark-text">Intervene Advisory</span>
- </a>
- <ul class="nav-links" role="list">
- <li><a href="index.html">Home</a></li>
- <li><a href="method.html" class="current">Method</a></li>
- <li><a href="services.html">Services</a></li>
- <li><a href="about.html">About</a></li>
- </ul>
- <a href="contact.html" class="nav-enquire">Enquire</a>
- <button class="nav-hamburger" id="hamburger" aria-expanded="false" aria-label="Open navigation">
- <span></span><span></span><span></span>
- </button>
- </div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">Intervene<span>Advisory</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="method.html" class="active">Method</a>
+      <a href="services.html">Services</a>
+      <a href="about.html">About</a>
+      <a href="sample-report.html">Sample Report</a>
+    </div>
+    <a href="contact.html" class="nav-cta">Enquire</a>
+  </div>
 </nav>
-<div class="nav-mobile" id="mobile-nav" aria-hidden="true">
- <ul role="list">
- <li><a href="index.html">Home</a></li>
- <li><a href="method.html">Method</a></li>
- <li><a href="services.html">Services</a></li>
- <li><a href="about.html">About</a></li>
- <li><a href="contact.html">Contact</a></li>
- </ul>
- <a href="contact.html" class="nav-mobile-cta">Request a confidential discussion</a>
-</div>
 
-<header class="page-hero">
-  <div class="page-hero-inner">
-    <p class="page-eyebrow">Method</p>
-    <h1 class="page-h1">How we see what others miss</h1>
-    <p class="page-lede">Most governance reviews ask whether a framework exists. We test whether it works. A proprietary assessment engine, a defined engagement process, and findings written for decision-makers.</p>
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Method · 2026</div>
+    <h1 class="page-title">A deterministic engine, <em>not a methodology deck.</em></h1>
+    <p class="lede">AGDA™ scores intervention capability against evidence, not against intention. Published methodology. Cryptographically attested output. The calculations that matter, made legible.</p>
   </div>
-</header>
-
-<main>
-
-<!-- 01 THE ASSESSMENT ENGINE -->
-<section>
-<div class="page-wrap">
-  <div class="section-hd reveal"><span class="section-num">01</span><span class="section-label">The assessment engine</span><div class="section-rule"></div></div>
-  <div class="grid-2 reveal">
-    <div class="block block-accent">
-      <p style="font-size:1.05rem;font-weight:600;color:var(--white);line-height:1.5;margin-bottom:16px;">InterveneCore&trade; is how we structure what we find.</p>
-      <p>Not a product. Not a platform. A proprietary method for determining whether an organisation can intervene in time, with the right authority, on evidence it can trust.</p>
-      <p>It turns the question "are we in control?" into something testable. The answer is often uncomfortable. It is always specific.</p>
-    </div>
-    <div class="block">
-      <ul class="dash-list">
-        <li>Operated by senior Intervene advisors, not licensed to clients.</li>
-        <li>Applied to real systems and real authority structures, not theoretical scenarios.</li>
-        <li>Calibrated to operational reality, not documented intent.</li>
-        <li>Produces findings a board can act on, not reassurance it can file.</li>
-      </ul>
-    </div>
-  </div>
-</div>
 </section>
 
-<!-- 02 EIGHT DIMENSIONS -->
-<section>
-<div class="page-wrap">
-  <div class="section-hd reveal"><span class="section-num">02</span><span class="section-label">Eight dimensions of control</span><div class="section-rule"></div></div>
-  <p class="reveal" style="max-width:660px;margin-bottom:32px;">Every assessment tests eight dimensions. These are the conditions that determine whether control is real or inherited from a document no one has stress-tested.</p>
-  <style>
-  .dim-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--border);
-  }
-  .dim-cell {
-    background: var(--surface);
-    padding: 32px 26px 28px;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    min-height: 196px;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.15s;
-  }
-  .dim-cell:hover { background: var(--surface2); }
-  .dim-cell::before {
-    content: attr(data-n);
-    position: absolute;
-    top: -4px; right: 14px;
-    font-size: 5.5rem;
-    font-weight: 800;
-    color: rgba(201,182,148,0.055);
-    line-height: 1;
-    letter-spacing: -0.04em;
-    pointer-events: none;
-    transition: color 0.2s;
-  }
-  .dim-cell:hover::before { color: rgba(201,182,148,0.10); }
-  .dim-cell-num {
-    font-size: 0.52rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-  .dim-cell-title {
-    font-size: 0.92rem;
-    font-weight: 700;
-    color: var(--white);
-    letter-spacing: 0.04em;
-    margin-bottom: 12px;
-    line-height: 1.3;
-  }
-  .dim-cell-body {
-    font-size: 0.82rem;
-    color: var(--text-sub);
-    line-height: 1.75;
-    flex: 1;
-  }
-  @media (max-width: 840px) {
-    .dim-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 480px) {
-    .dim-grid { grid-template-columns: 1fr; }
-    .dim-cell { min-height: auto; }
-  }
-  </style>
-  <div class="dim-grid reveal">
-    <div class="dim-cell" data-n="01">
-      <p class="dim-cell-num">01</p>
-      <p class="dim-cell-title">Signal</p>
-      <p class="dim-cell-body">Does the system surface the conditions that require human attention, clearly and in time?</p>
-    </div>
-    <div class="dim-cell" data-n="02">
-      <p class="dim-cell-num">02</p>
-      <p class="dim-cell-title">Escalation</p>
-      <p class="dim-cell-body">Does a signal reach the person with authority to act before the window to act has closed?</p>
-    </div>
-    <div class="dim-cell" data-n="03">
-      <p class="dim-cell-num">03</p>
-      <p class="dim-cell-title">Decision</p>
-      <p class="dim-cell-body">Can the decision be made under pressure, with incomplete information and real constraints?</p>
-    </div>
-    <div class="dim-cell" data-n="04">
-      <p class="dim-cell-num">04</p>
-      <p class="dim-cell-title">Intervention</p>
-      <p class="dim-cell-body">Can action be taken at the moment it matters, not after the consequence has compounded?</p>
-    </div>
-    <div class="dim-cell" data-n="05">
-      <p class="dim-cell-num">05</p>
-      <p class="dim-cell-title">Accountability</p>
-      <p class="dim-cell-body">Is responsibility assigned in practice, not only on paper? Does it survive organisational change?</p>
-    </div>
-    <div class="dim-cell" data-n="06">
-      <p class="dim-cell-num">06</p>
-      <p class="dim-cell-title">Human oversight</p>
-      <p class="dim-cell-body">Is oversight informed, authorised, and capable of altering outcomes? Or is it ceremonial?</p>
-    </div>
-    <div class="dim-cell" data-n="07">
-      <p class="dim-cell-num">07</p>
-      <p class="dim-cell-title">Auditability</p>
-      <p class="dim-cell-body">Is the decision trail complete, reliable, and defensible to the people who will later ask what happened?</p>
-    </div>
-    <div class="dim-cell" data-n="08">
-      <p class="dim-cell-num">08</p>
-      <p class="dim-cell-title">Capacity</p>
-      <p class="dim-cell-body">Are the people, authority, and resources required to act actually present when the moment arrives?</p>
-    </div>
-  </div>
-</div>
-</section>
+<section class="block">
+  <div class="wrap">
+    <div class="block-num">§ 01 · The Assertion</div>
+    <h2 class="block-title">Governance is a <em>timed causal chain,</em> not a portfolio of artefacts.</h2>
+    <p class="block-sub">You cannot escalate what you did not detect. You cannot decide on what was not escalated. You cannot intervene without a decision. The chain is ordered because causation is ordered. Each stage is necessary. <strong>None is sufficient.</strong></p>
 
-<!-- 03 THREE STAGES -->
-<section>
-<div class="page-wrap">
-  <div class="section-hd reveal"><span class="section-num">03</span><span class="section-label">Three stages</span><div class="section-rule"></div></div>
-  <p class="reveal" style="max-width:660px;margin-bottom:32px;">Every engagement follows the same structure. Each stage produces a clear output before the next begins. No stage proceeds without written agreement on scope and outcome.</p>
-  <div class="timeline reveal">
-    <div class="tl-item">
-      <div class="tl-node">01</div>
-      <div class="tl-body">
-        <div class="tl-label">Exposure</div>
-        <div class="tl-text">We identify the system, the decision context, the risk scenario, and the assumed intervention path. The purpose is to establish what the organisation believes to be true and where that belief is untested.</div>
+    <div class="chain">
+      <div class="chain-stage">
+        <div class="t">Stage 1</div>
+        <div class="s">Signal</div>
+        <div class="q">Did the problem generate a detectable signal?</div>
       </div>
-      <div class="tl-time">Stage 1</div>
-    </div>
-    <div class="tl-item crit">
-      <div class="tl-node">02</div>
-      <div class="tl-body">
-        <div class="tl-label">Reality Testing</div>
-        <div class="tl-text">We test whether signal, escalation, decision, and intervention can actually happen under time pressure and dependency constraints. The question is not whether a framework exists. The question is whether the people responsible can act when it matters.</div>
+      <div class="chain-stage">
+        <div class="t">Stage 2</div>
+        <div class="s">Escalation</div>
+        <div class="q">Did the signal reach an authority with decision rights?</div>
       </div>
-      <div class="tl-time">Stage 2</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-node">03</div>
-      <div class="tl-body">
-        <div class="tl-label">Decision Support</div>
-        <div class="tl-text">Findings are prioritised, specific, and delivered directly to the board or executive team. The purpose is a decision the organisation can make with confidence, not a report it files with compliance.</div>
+      <div class="chain-stage">
+        <div class="t">Stage 3</div>
+        <div class="s">Decision</div>
+        <div class="q">Was a decision to intervene made?</div>
       </div>
-      <div class="tl-time">Stage 3</div>
+      <div class="chain-stage">
+        <div class="t">Stage 4</div>
+        <div class="s">Intervention</div>
+        <div class="q">Did the action take effect before harm became irreversible?</div>
+      </div>
     </div>
-  </div>
 
-  <div class="grid-3 reveal" style="margin-top:32px;">
-    <div class="block">
-      <p style="font-size:0.6rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">Stage 1 output</p>
-      <ul class="dash-list">
-        <li>Written scope and decision map.</li>
-        <li>System, risk scenario, and authority chain documented.</li>
-        <li>Assumed intervention path, recorded as stated.</li>
-      </ul>
-    </div>
-    <div class="block">
-      <p style="font-size:0.6rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">Stage 2 output</p>
-      <ul class="dash-list">
-        <li>Assessment of signal, escalation, decision, and intervention under pressure.</li>
-        <li>Identification of where the chain breaks, and why.</li>
-        <li>Dependency and timing analysis.</li>
-      </ul>
-    </div>
-    <div class="block">
-      <p style="font-size:0.6rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">Stage 3 output</p>
-      <ul class="dash-list">
-        <li>Board-ready executive summary.</li>
-        <li>Prioritised findings with specific decision points.</li>
-        <li>Direct presentation to the decision owner.</li>
-      </ul>
-    </div>
+    <p class="pull">A chain's capability equals its <em>weakest stage.</em> Averaging dimensions into a composite score is marketing. The chain is the control.</p>
   </div>
-</div>
 </section>
 
-<!-- 04 SCOPE AND CONFIDENTIALITY -->
-<section>
-<div class="page-wrap">
-  <div class="section-hd reveal"><span class="section-num">04</span><span class="section-label">Scope and confidentiality</span><div class="section-rule"></div></div>
-  <div class="grid-2 reveal">
-    <div class="block block-accent">
-      <p>Every engagement is scoped in writing before work begins. The scope defines what will be assessed, what it will produce, and the boundaries of the advisory relationship. There is no informal work, no unscoped access, and no drift.</p>
-      <p>Confidentiality is structural. Findings go to named decision-makers and no one else. Intervene does not publish case studies, name clients, or discuss engagements outside the room.</p>
-    </div>
-    <div class="block">
-      <ul class="dash-list">
-        <li>Written scope before any work begins.</li>
-        <li>Named decision-makers. Nothing shared beyond them.</li>
-        <li>Independent. No vendor, framework, or advisory network alignment.</li>
-        <li>Clean exit. Each engagement ends with a defined handover.</li>
-      </ul>
+<section class="block">
+  <div class="wrap">
+    <div class="block-num">§ 02 · Eight Dimensions</div>
+    <h2 class="block-title">The four chain stages, <em>plus the four conditions</em> that determine whether each stage holds.</h2>
+    <p class="block-sub">AGDA scores every assessed control along eight dimensions. The first four map to the chain stages. The remaining four are the operational conditions that determine whether control is real or inherited from a document that has not been stress-tested.</p>
+
+    <div class="dim-grid">
+      <div class="dim-cell">
+        <div class="n">D1</div>
+        <h4>Signal</h4>
+        <p>Does the system surface the conditions that require human attention, clearly and in time?</p>
+      </div>
+      <div class="dim-cell">
+        <div class="n">D2</div>
+        <h4>Escalation</h4>
+        <p>Does a signal reach a person with authority to act before the window to act has closed?</p>
+      </div>
+      <div class="dim-cell">
+        <div class="n">D3</div>
+        <h4>Decision</h4>
+        <p>Can the decision be made under pressure, with incomplete information and real constraints?</p>
+      </div>
+      <div class="dim-cell">
+        <div class="n">D4</div>
+        <h4>Intervention</h4>
+        <p>Can action be taken at the moment it matters, not after the consequence has compounded?</p>
+      </div>
+      <div class="dim-cell">
+        <div class="n">D5</div>
+        <h4>Accountability</h4>
+        <p>Is responsibility assigned in practice, not only on paper? Does it survive organisational change?</p>
+      </div>
+      <div class="dim-cell">
+        <div class="n">D6</div>
+        <h4>Human oversight</h4>
+        <p>Is oversight informed, authorised, and capable of altering outcomes? Or is it ceremonial?</p>
+      </div>
+      <div class="dim-cell">
+        <div class="n">D7</div>
+        <h4>Auditability</h4>
+        <p>Is the decision trail complete, reliable, and defensible to the people who will later ask what happened?</p>
+      </div>
+      <div class="dim-cell">
+        <div class="n">D8</div>
+        <h4>Capacity</h4>
+        <p>Are the people, authority, and resources required to act actually present when the moment arrives?</p>
+      </div>
     </div>
   </div>
-</div>
 </section>
 
-<!-- 05 CTA -->
-<section style="border-bottom:none;">
-<div class="page-wrap">
-  <div class="cta-band reveal">
-    <h2>Find out whether your control holds.</h2>
-    <p>A short, confidential conversation to understand the systems in question and whether an assessment is the right next step.</p>
-    <div class="cta-pair">
-      <a href="contact.html" class="btn-gold">Request a confidential discussion</a>
-      <a href="services.html" class="btn-outline">See the services</a>
+<section class="block">
+  <div class="wrap">
+    <div class="block-num">§ 03 · Evidence-Grade Capping</div>
+    <h2 class="block-title">Paper evidence <em>caps at amber.</em> You cannot reach green on a policy alone.</h2>
+    <p class="block-sub">Most scoring systems treat documented intention and stress-tested capability as comparable. They are not. AGDA enforces an evidence-grade ceiling on every claim — applied <em>before</em> weighting. The lowest-evidence claim anchors the dimension. This is the single rule competitors cannot match without rebuilding their engine.</p>
+
+    <div class="cap-scale">
+      <div class="cap-cell" data-band="red">
+        <div class="g">Grade 0</div>
+        <div class="mean">Assumed</div>
+        <p>We say we can do it. No record exists.</p>
+        <div class="max">Caps at 1 / 5</div>
+      </div>
+      <div class="cap-cell" data-band="red">
+        <div class="g">Grade 1</div>
+        <div class="mean">Documented in policy</div>
+        <p>The policy describes the capability. It has not been tested.</p>
+        <div class="max">Caps at 2 / 5</div>
+      </div>
+      <div class="cap-cell" data-band="amber">
+        <div class="g">Grade 2</div>
+        <div class="mean">Tested in drill</div>
+        <p>A tabletop or drill has exercised the capability under controlled conditions.</p>
+        <div class="max">Caps at 3 / 5</div>
+      </div>
+      <div class="cap-cell" data-band="amber">
+        <div class="g">Grade 3</div>
+        <div class="mean">Operational in production</div>
+        <p>The capability is running in production against real events.</p>
+        <div class="max">Caps at 4 / 5</div>
+      </div>
+      <div class="cap-cell" data-band="green">
+        <div class="g">Grade 4</div>
+        <div class="mean">Stress-validated under realistic pressure</div>
+        <p>The capability has worked against the specific stressors it is designed for.</p>
+        <div class="max">Clears to 5 / 5</div>
+      </div>
+    </div>
+
+    <p class="block-sub" style="margin-top:26px;">
+      <strong>Why it matters.</strong> A client with a perfect compliance-dashboard score can fail an AGDA assessment. That is the product, not a bug. Until the control has actually worked under real pressure, its capability cannot be rated as if it had.
+    </p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="block-num">§ 04 · Chain-Ceiling Propagation</div>
+    <h2 class="block-title">A downstream stage cannot score higher than upstream, <em>plus one.</em></h2>
+    <p class="block-sub">If Detection scores 2, Intervention cannot be above 3 — regardless of what the intervention questions claim. The rule is not a heuristic; it is operational topology. You cannot intervene on what you never detected. Claimed downstream strength is latent, untestable capability.</p>
+
+    <div class="ceiling">
+      <div class="ceiling-bars">
+        <div class="ceiling-bar">
+          <div class="bar" style="height: 40%;"></div>
+          <div class="stage-label">Signal</div>
+          <div class="score">2.0</div>
+        </div>
+        <div class="ceiling-bar">
+          <div class="bar" style="height: 50%;">
+            <div class="claim"></div>
+            <div class="claim-label">Claimed: 4.0</div>
+          </div>
+          <div class="stage-label">Escalation</div>
+          <div class="score">3.0 <span style="color:var(--red); font-family:var(--mono); font-size:10px;">← capped</span></div>
+        </div>
+        <div class="ceiling-bar">
+          <div class="bar" style="height: 60%;">
+            <div class="claim"></div>
+            <div class="claim-label">Claimed: 4.5</div>
+          </div>
+          <div class="stage-label">Decision</div>
+          <div class="score">3.5 <span style="color:var(--red); font-family:var(--mono); font-size:10px;">← capped</span></div>
+        </div>
+        <div class="ceiling-bar">
+          <div class="bar" style="height: 70%;">
+            <div class="claim"></div>
+            <div class="claim-label">Claimed: 4.8</div>
+          </div>
+          <div class="stage-label">Intervention</div>
+          <div class="score">4.0 <span style="color:var(--red); font-family:var(--mono); font-size:10px;">← capped</span></div>
+        </div>
+      </div>
+      <p class="ceiling-explain">
+        <strong>Example.</strong> A bank claims intervention capability of 4.8 on a material credit model. Detection scores 2.0 because signal is limited to nightly batch review. The chain ceiling propagates the weakness forward: intervention is capped at 3.0 + 1.0 = 4.0. Claimed 4.8 is structural fiction. Submitting this to the PRA as evidence of §6 compliance would misrepresent the actual capability.
+      </p>
     </div>
   </div>
-</div>
 </section>
 
-</main>
+<section class="block">
+  <div class="wrap">
+    <div class="block-num">§ 05 · Integrity Stance</div>
+    <h2 class="block-title">Four positions the engine takes. <em>Non-negotiable.</em></h2>
+    <p class="block-sub">These are the structural rules the engine enforces, in code, on every assessment. They are what distinguishes measurement-grade assessment from narrative assessment.</p>
+
+    <div class="pos-grid">
+      <div class="pos-cell">
+        <div class="n">01</div>
+        <h4>Coincidence is <em>not a margin.</em></h4>
+        <p>Absence of incidents is evidence of untested exposure, not of effective controls. Two years without incident may reflect low traffic, favourable conditions, or vigilant operators about to leave. <strong>A control's score reflects what it can do under stress, not what has not yet been required of it.</strong></p>
+      </div>
+      <div class="pos-cell">
+        <div class="n">02</div>
+        <h4>Strong accountability cannot mask <em>weak oversight.</em></h4>
+        <p>Naming an SMF4 is a partial control. Pairing that designation with oversight authority limited to "challenge rights" is governance theatre — the accountable person cannot halt the thing they are accountable for. <strong>The engine reads the pair together, and penalises the contradiction.</strong></p>
+      </div>
+      <div class="pos-cell">
+        <div class="n">03</div>
+        <h4>Paper evidence <em>caps at amber.</em></h4>
+        <p>Policy without drill maxes at red. Drill without production maxes at amber. Production without stress validation maxes below green. <strong>Green requires evidence that the control has actually worked under real conditions.</strong> This is deliberately strict. A tool that let policy-only controls score green would be measuring intention, not capability.</p>
+      </div>
+      <div class="pos-cell">
+        <div class="n">04</div>
+        <h4>Confidence must not <em>exceed evidence.</em></h4>
+        <p>Organisations routinely express high confidence in controls whose evidence grade is low. The engine quantifies and penalises this — the Delusion Gap Index. Stated confidence exceeding evidence by 2+ points on a 5-point scale demotes the dimension. <strong>Overconfidence in weakly-evidenced controls is a governance failure, not an emotional state.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="block-num">§ 06 · Attestation</div>
+    <h2 class="block-title">Every verdict is <em>cryptographically signed.</em> The regulator can verify without us.</h2>
+    <p class="block-sub">Big-4 advisories produce PDFs. GRC platforms produce dashboards. Neither is reproducible; neither is independently verifiable. AGDA produces a deterministic signed computation — the same inputs produce the same outputs, every time, bound to a specific engine version, with a signature verifiable using a committed public key.</p>
+
+    <div class="att-envelope">
+      <div class="hdr">Attestation Envelope · Ed25519 · canonical JSON</div>
+      <div><span class="k">engineVersion</span>:     <span class="v">"1.2.0"</span></div>
+      <div><span class="k">engineHash</span>:        <span class="v hash">sha256:b2c8a1d…e7f2916</span></div>
+      <div><span class="k">inputHash</span>:         <span class="v hash">sha256:47a2e19…cd8b103</span></div>
+      <div><span class="k">outputHash</span>:        <span class="v hash">sha256:91f4c02…a6d0d4e</span></div>
+      <div><span class="k">keyId</span>:             <span class="v">"2026-04-22-1e7c3c2c"</span></div>
+      <div><span class="k">scoredAt</span>:          <span class="v">"2026-05-14T09:47:12.334Z"</span></div>
+      <div><span class="k">signature</span>:         <span class="v hash">ed25519:M4Gb2ZqAfD…pLQX7w</span></div>
+      <div class="meta">
+        verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json<br/>
+        public keys: github.com/human-integrity/agda-keys · signing history: engine-registry.jsonl
+      </div>
+    </div>
+
+    <p class="block-sub" style="margin-top:28px;">
+      <strong>What this means for an audit committee.</strong> If a regulator or internal audit function wants to verify an AGDA finding, they take the envelope, take the public key, and run the standalone verifier. They do not need to contact us. They do not need to trust our servers, our cloud, or our judgement. The signature either validates or it does not. <em>Opinion is not reproducible. A signed computation is.</em>
+    </p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="block-num">§ 07 · Engagement Shape</div>
+    <h2 class="block-title">Three stages. <em>Each one ships a written output</em> before the next begins.</h2>
+    <p class="block-sub">No stage proceeds without written agreement on scope and outcome. No informal advisory. No scope creep. The engagement shape is identical across Tier 0, Tier 1, and licensed assessments — only the depth and attestation surface change.</p>
+
+    <div class="stages">
+      <div class="stage">
+        <div class="t">Stage 1</div>
+        <h4>Exposure</h4>
+        <p class="stage-lede">We identify the system, the decision context, the risk scenario, and the assumed intervention path.</p>
+        <ul>
+          <li>Written scope and decision map</li>
+          <li>System, scenario, and authority chain documented</li>
+          <li>Assumed intervention path, recorded as stated</li>
+          <li>Evidence request list issued</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <div class="t">Stage 2</div>
+        <h4>Reality Testing</h4>
+        <p class="stage-lede">We test whether signal, escalation, decision, and intervention can actually happen — under time pressure and dependency constraints.</p>
+        <ul>
+          <li>SEDI dimension scoring against evidence grade</li>
+          <li>Chain-ceiling and contradiction analysis</li>
+          <li>Temporal gate evaluation against reversibility window</li>
+          <li>CRR portfolio classification per control</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <div class="t">Stage 3</div>
+        <h4>Decision Support</h4>
+        <p class="stage-lede">Findings are prioritised, specific, and delivered directly to the Board or executive team.</p>
+        <ul>
+          <li>Attested Failure Exposure Report issued</li>
+          <li>Regulatory mapping register finalised</li>
+          <li>Direct presentation to decision owner</li>
+          <li>Prioritised remediation, not implemented by us</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="block-num">§ 08 · Published Methodology</div>
+    <h2 class="block-title">Citeable. <em>Falsifiable.</em></h2>
+    <p class="block-sub">The methodology is public. The calibration is not. This is standard trade-secret practice: publish the interface, protect the implementation. A reader can evaluate the thinking, cite it in regulatory correspondence, and criticise the claims. Revisions are recorded; claims have revision numbers.</p>
+
+    <div class="pubs">
+      <div class="pub">
+        <div class="tag">Public · Citeable</div>
+        <h4>AGDA Thesis</h4>
+        <div class="v">v1.0 · effective 2026-04-21</div>
+        <p>The intellectual position. Eight falsifiable claims. Boundaries explicit. Where adjacent frameworks exist, their relationship is stated precisely.</p>
+        <div class="cite">Canonical citation:<br/>AGDA Thesis v1.0 (Human Integrity Advisory, 2026)</div>
+      </div>
+
+      <div class="pub">
+        <div class="tag">Public · Citeable</div>
+        <h4>Failure Mode Catalogue</h4>
+        <div class="v">v1.0 · effective 2026-04-21</div>
+        <p>Forty canonical AI governance failure modes. Each with stable identifier, detection signature, manifestation, remediation pattern, and cross-references.</p>
+        <div class="cite">Canonical citation:<br/>AGDA Failure Mode Catalogue v1.0 (Human Integrity Advisory, 2026)</div>
+      </div>
+
+      <div class="pub">
+        <div class="tag">Public · Citeable</div>
+        <h4>Corpus Governance</h4>
+        <div class="v">v1.0 · effective 2026-04-21</div>
+        <p>How the validation corpus is built, held, and retired. Hold-out integrity, inter-rater process, and revision discipline for calibration evidence.</p>
+        <div class="cite">Canonical citation:<br/>AGDA Corpus Governance v1.0 (Human Integrity Advisory, 2026)</div>
+      </div>
+
+      <div class="pub">
+        <div class="tag">Public · Citeable</div>
+        <h4>Rater Protocol</h4>
+        <div class="v">v1.0 · effective 2026-04-21</div>
+        <p>The protocol external raters follow when producing judgements against the corpus. Ensures inter-rater evidence is comparable and auditable.</p>
+        <div class="cite">Canonical citation:<br/>AGDA Rater Protocol v1.0 (Human Integrity Advisory, 2026)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>A sample Failure Exposure Report is <em>published.</em></h2>
+    <p>Redacted from a canonical banking case: material credit model, escalation break, PRA SS1/23 §6 exposure. The format, rigour, and attestation an audit committee would see.</p>
+    <a href="sample-report.html" class="cta-btn">Open the sample report</a>
+    <a href="contact.html" class="cta-btn ghost">Request a conversation</a>
+  </div>
+</section>
+
 <footer>
-  <div class="footer-inner">
-    <div class="footer-mark">
-      <div class="footer-mark-icon"><div class="fm-line"></div><div class="fm-stroke"></div><div class="fm-line"></div></div>
-      <span class="footer-mark-text">Intervene Advisory</span>
+  <div class="wrap">
+    <div class="foot-inner">
+      <div class="foot-brand">Intervene<span>Advisory</span>
+        <small>Independent intervention-capability assessment for regulated AI systems. Human Integrity Advisory, United Kingdom.</small>
+      </div>
+      <div class="foot-links">
+        <a href="contact.html">Contact</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="gdpr.html">GDPR</a>
+      </div>
     </div>
-    <div class="footer-right">
-      <ul class="footer-links" role="list">
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="terms.html">Terms &amp; Conditions</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
-        <li><a href="gdpr.html">GDPR</a></li>
-      </ul>
-      <span class="footer-copy">&copy;&nbsp;2026 Intervene Advisory &middot; All rights reserved.</span>
-    </div>
+    <div class="foot-copy">© 2026 Intervene Advisory Ltd · All rights reserved · AGDA™ and InterveneCore™ are trademarks of Human Integrity Advisory</div>
   </div>
 </footer>
-<script src="hia.js"></script>
+
 </body>
 </html>
