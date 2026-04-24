@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact | Intervene Advisory</title>
+<meta name="description" content="Request a confidential discussion with Intervene Advisory. For leaders responsible for high-stakes systems, AI deployment, operational risk, or fragile decision environments.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://jamessaint.github.io/Human-Integrity-Advisory/contact.html">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="assets/icons/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="hia.css">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Intervene Advisory">
+<meta property="og:title" content="Contact | Intervene Advisory">
+<meta property="og:description" content="Request a confidential discussion. For leaders responsible for high-stakes systems and decisions.">
+<meta property="og:url" content="https://jamessaint.github.io/Human-Integrity-Advisory/contact.html">
+<meta property="og:image" content="https://jamessaint.github.io/Human-Integrity-Advisory/assets/og/og-contact.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Contact Intervene Advisory">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Contact | Intervene">
+<meta name="twitter:description" content="Request a confidential discussion.">
+<meta name="twitter:image" content="https://jamessaint.github.io/Human-Integrity-Advisory/assets/og/og-contact.png">
+<meta name="twitter:image:alt" content="Contact Intervene">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ContactPage","name":"Contact | Intervene Advisory","url":"https://jamessaint.github.io/Human-Integrity-Advisory/contact.html"}</script>
+
+<style>
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 1px;
+  background: var(--border);
+}
+.contact-info {
+  background: var(--surface);
+  padding: clamp(32px,5vw,52px) clamp(28px,4vw,44px);
+}
+.contact-form-wrap {
+  background: var(--surface2);
+  padding: clamp(32px,5vw,52px) clamp(28px,4vw,44px);
+}
+
+.c-hd { display:flex; align-items:center; gap:14px; margin-bottom:26px; }
+.c-hd-num { font-size:0.58rem; letter-spacing:0.22em; color:var(--gold); font-weight:700; }
+.c-hd-title { font-size:0.7rem; letter-spacing:0.26em; text-transform:uppercase; color:var(--text); font-weight:700; }
+.c-hd-rule { flex:1; height:1px; background:var(--border); }
+
+.info-item { padding:16px 0; border-bottom:1px solid var(--border); }
+.info-item:last-child { border-bottom:none; }
+.info-item-label {
+  font-size:0.6rem; letter-spacing:0.22em; text-transform:uppercase;
+  color:var(--gold); font-weight:700; margin-bottom:6px;
+}
+.info-item-value {
+  font-size:clamp(0.88rem,1.9vw,0.95rem); color:var(--text-body);
+  line-height:1.75; font-weight:400; margin:0;
+}
+.info-item-value a { color:var(--text-sub); font-weight:500; transition:color 0.2s; }
+.info-item-value a:hover { color:var(--gold); opacity:1; }
+
+.form-label {
+  display:block; font-size:0.62rem; letter-spacing:0.20em; text-transform:uppercase;
+  color:var(--text-sub); font-weight:600; margin-bottom:8px;
+  border:none; background:none; padding:0;
+}
+.form-label .req { color:var(--gold); margin-left:2px; }
+
+.form-input,
+.form-textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  color: var(--text-body);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 400;
+  padding: 14px 16px;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+  line-height: 1.5;
+}
+.form-input::placeholder,
+.form-textarea::placeholder { color:var(--text-faint); }
+.form-input:focus,
+.form-textarea:focus { border-color:var(--gold); }
+.form-textarea { resize:vertical; min-height:148px; line-height:1.75; }
+
+.form-group { margin-bottom:20px; }
+.form-group:last-of-type { margin-bottom:28px; }
+.form-row-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+.form-submit {
+  width:100%; padding:18px 24px;
+  background:var(--gold); color:var(--black);
+  font-family:'Montserrat',sans-serif;
+  font-size:0.68rem; letter-spacing:0.20em; text-transform:uppercase;
+  font-weight:700; border:none; cursor:pointer;
+  transition:opacity 0.2s; min-height:56px; border-radius:0;
+  display:flex; align-items:center; justify-content:center;
+}
+.form-submit:hover    { opacity:0.85; }
+.form-submit:disabled { opacity:0.5; cursor:not-allowed; }
+
+.form-privacy {
+  font-size:0.75rem; color:var(--text-faint);
+  margin-top:16px; line-height:1.7;
+}
+
+.form-status { display:none; padding:20px 24px; margin-bottom:24px; font-size:0.92rem; font-weight:400; line-height:1.7; }
+.form-status strong { font-weight:600; }
+.form-status.is-shown.success { display:block; border-left:2px solid var(--gold); background:var(--gold-faint); color:var(--text-body); }
+.form-status.is-shown.error   { display:block; border-left:2px solid rgba(192,57,43,.8); background:rgba(192,57,43,.06); color:var(--text-body); }
+
+@media (max-width:768px) {
+  .contact-grid  { grid-template-columns:1fr; }
+  .form-row-2    { grid-template-columns:1fr; gap:0; }
+}
+@media (max-width:480px) {
+  .contact-info,
+  .contact-form-wrap { padding:22px 18px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Primary navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-mark" aria-label="Intervene Advisory home">
+      <div class="nav-mark-icon"><div class="nm-line"></div><div class="nm-stroke"></div><div class="nm-line"></div></div>
+      <span class="nav-mark-text">Intervene Advisory</span>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="method.html">Method</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <a href="contact.html" class="nav-enquire" style="background:var(--surface2);color:var(--gold);outline:1px solid var(--gold-dim);">Enquire</a>
+    <button class="nav-hamburger" id="hamburger" aria-expanded="false" aria-label="Open navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="mobile-nav" aria-hidden="true">
+  <ul role="list">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="method.html">Method</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="contact.html" class="nav-mobile-cta">Request a confidential discussion</a>
+</div>
+
+<header class="page-hero">
+  <div class="page-hero-inner">
+    <p class="page-eyebrow">Contact</p>
+    <h1 class="page-h1">Start here.</h1>
+    <p class="page-lede">Intervene works with leaders responsible for systems where the gap between governance design and operational control carries real consequence. If that describes what you are facing, the first step is a direct conversation.</p>
+  </div>
+</header>
+
+<main>
+<section style="border-bottom:none;">
+<div class="page-wrap">
+
+<div class="contact-grid">
+
+  <!-- LEFT: context -->
+  <div class="contact-info">
+
+    <div class="c-hd">
+      <span class="c-hd-num">01</span>
+      <span class="c-hd-title">Before you write</span>
+      <div class="c-hd-rule"></div>
+    </div>
+
+    <div class="block-note" style="margin-bottom:32px;">
+      Include the system, decision, or exposure prompting the enquiry. A single line is enough to establish context. The more specific, the more useful the first conversation will be.
+    </div>
+
+    <div>
+      <div class="info-item">
+        <p class="info-item-label">Direct email</p>
+        <p class="info-item-value"><a href="mailto:advisory@hia.io">advisory@hia.io</a></p>
+      </div>
+      <div class="info-item">
+        <p class="info-item-label">Confidentiality</p>
+        <p class="info-item-value">All correspondence is treated as private and off record unless explicitly agreed otherwise in writing.</p>
+      </div>
+      <div class="info-item">
+        <p class="info-item-label">Response</p>
+        <p class="info-item-value">A senior advisor will respond directly within one to two working days.</p>
+      </div>
+      <div class="info-item">
+        <p class="info-item-label">No obligation</p>
+        <p class="info-item-value">The discussion carries no commitment on either side.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: form -->
+  <div class="contact-form-wrap">
+
+    <div class="c-hd">
+      <span class="c-hd-num">02</span>
+      <span class="c-hd-title">Request a confidential discussion</span>
+      <div class="c-hd-rule"></div>
+    </div>
+
+    <div id="form-success" class="form-status success" role="alert">
+      <strong>Enquiry received.</strong><br>
+      A senior advisor will respond directly within one to two working days.
+    </div>
+    <div id="form-error" class="form-status error" role="alert">
+      <strong>Something went wrong.</strong><br>
+      Please try again or write directly to
+      <a href="mailto:advisory@hia.io" style="color:var(--text-sub);">advisory@hia.io</a>
+    </div>
+
+    <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+
+      <div class="form-group">
+        <label class="form-label" for="f-name">Name <span class="req">*</span></label>
+        <input class="form-input" type="text" id="f-name" name="full_name"
+          placeholder="Your full name" required autocomplete="name">
+      </div>
+
+      <div class="form-group">
+        <div class="form-row-2">
+          <div>
+            <label class="form-label" for="f-org">Organisation <span class="req">*</span></label>
+            <input class="form-input" type="text" id="f-org" name="organisation"
+              placeholder="Organisation name" required autocomplete="organization">
+          </div>
+          <div>
+            <label class="form-label" for="f-email">Email <span class="req">*</span></label>
+            <input class="form-input" type="email" id="f-email" name="email"
+              placeholder="you@organisation.com" required autocomplete="email">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="f-role">Role <span class="req">*</span></label>
+        <input class="form-input" type="text" id="f-role" name="role"
+          placeholder="e.g. Chief Risk Officer, Board Chair, CTO" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="f-concern">What are you concerned may fail? <span class="req">*</span></label>
+        <textarea class="form-textarea" id="f-concern" name="concern"
+          placeholder="The system, decision, or exposure prompting this enquiry. Specific is more useful than general."
+          required></textarea>
+      </div>
+
+      <input type="text" name="_gotcha" style="display:none;" tabindex="-1" autocomplete="off">
+      <input type="hidden" name="_subject" value="Intervene, New Enquiry">
+
+      <button type="submit" class="form-submit" id="submit-btn">Submit</button>
+
+      <p class="form-privacy">
+        Held in strict confidence. This is a direct line to Intervene advisors, not an automated system.
+      </p>
+
+    </form>
+
+  </div>
+
+</div>
+
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-mark">
+      <div class="footer-mark-icon"><div class="fm-line"></div><div class="fm-stroke"></div><div class="fm-line"></div></div>
+      <span class="footer-mark-text">Intervene Advisory</span>
+    </div>
+    <div class="footer-right">
+      <ul class="footer-links" role="list">
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="terms.html">Terms &amp; Conditions</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="gdpr.html">GDPR</a></li>
+      </ul>
+      <span class="footer-copy">&copy;&nbsp;2026 Intervene Advisory &middot; All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="hia.js"></script>
+<script>
+(function () {
+  var form    = document.getElementById('contact-form');
+  var success = document.getElementById('form-success');
+  var error   = document.getElementById('form-error');
+  var btn     = document.getElementById('submit-btn');
+  if (!form) return;
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var orig = btn.textContent;
+    btn.textContent = 'Sending…'; btn.disabled = true;
+    error.classList.remove('is-shown');
+    fetch(form.action, { method:'POST', body:new FormData(form), headers:{ Accept:'application/json' } })
+      .then(function (res) {
+        if (res.ok) { form.style.display = 'none'; success.classList.add('is-shown'); }
+        else { btn.textContent = orig; btn.disabled = false; error.classList.add('is-shown'); }
+      })
+      .catch(function () { btn.textContent = orig; btn.disabled = false; error.classList.add('is-shown'); });
+  });
+}());
+</script>
+
+</body>
+</html>
