@@ -35,7 +35,7 @@ All advisory work is confidential and off record unless explicitly agreed otherw
 
 ## Site Architecture
 
-Five public pages, three legal pages, one internal reference page.
+Five core public pages, three legal pages, one internal reference page, and two AGDA pages.
 
 ```
 /
@@ -48,7 +48,11 @@ Five public pages, three legal pages, one internal reference page.
 ├── privacy.html            # Privacy policy
 ├── gdpr.html               # GDPR statement
 ├── brand-sheet.html        # Internal brand reference (noindex)
-├── hia.css                 # Site styles
+├── agda_landing.html       # AGDA -- AI Governance, Measured. Verified.
+├── agda_diagrams.html      # AGDA diagrams and visual reference
+├── schema.sql              # PostgreSQL schema for AI Literacy Mindset Assessment v1.0
+├── hia.css                 # Legacy site styles
+├── style.css               # Global stylesheet v4 (black/white/gold, Montserrat)
 ├── hia.js                  # Reveal animations, counter animations, hamburger menu
 ├── robots.txt              # Crawl directives
 ├── sitemap.xml             # Public page index
@@ -57,6 +61,7 @@ Five public pages, three legal pages, one internal reference page.
     │   ├── favicons/       # Favicon set and webmanifest
     │   ├── logo/           # Logo variants (SVG, PNG, AI)
     │   ├── linkedin/       # LinkedIn-formatted brand assets
+    │   ├── james-saint.jpg # Founder portrait
     │   ├── hero-bg.png     # Homepage hero background
     │   └── hero-bg.jpg     # Homepage hero background (fallback)
     └── og/
