@@ -13,7 +13,7 @@ Intervene operates in the gap between governance design and operational reality.
 
 The live site is hosted at:
 
-**https://jamessaint.github.io/Human-Integrity-Advisory/**
+**https://jamessaint.github.io/Intervene/**
 
 ## Operational Layers
 
@@ -35,7 +35,7 @@ All advisory work is confidential and off record unless explicitly agreed otherw
 
 ## Site Architecture
 
-Five public pages, three legal pages, one internal reference page.
+Five core public pages, three legal pages, one internal reference page, and two AGDA pages.
 
 ```
 /
@@ -48,7 +48,11 @@ Five public pages, three legal pages, one internal reference page.
 ├── privacy.html            # Privacy policy
 ├── gdpr.html               # GDPR statement
 ├── brand-sheet.html        # Internal brand reference (noindex)
-├── hia.css                 # Site styles
+├── agda_landing.html       # AGDA -- AI Governance, Measured. Verified.
+├── agda_diagrams.html      # AGDA diagrams and visual reference
+├── schema.sql              # PostgreSQL schema for AI Literacy Mindset Assessment v1.0
+├── hia.css                 # Legacy site styles
+├── style.css               # Global stylesheet v4 (black/white/gold, Montserrat)
 ├── hia.js                  # Reveal animations, counter animations, hamburger menu
 ├── robots.txt              # Crawl directives
 ├── sitemap.xml             # Public page index
@@ -57,6 +61,7 @@ Five public pages, three legal pages, one internal reference page.
     │   ├── favicons/       # Favicon set and webmanifest
     │   ├── logo/           # Logo variants (SVG, PNG, AI)
     │   ├── linkedin/       # LinkedIn-formatted brand assets
+    │   ├── james-saint.jpg # Founder portrait
     │   ├── hero-bg.png     # Homepage hero background
     │   └── hero-bg.jpg     # Homepage hero background (fallback)
     └── og/
@@ -80,7 +85,7 @@ Full brand token reference is in `brand-sheet.html`.
 Every public page includes:
 
 - Unique `<title>` and meta description
-- Canonical URL pointed to `jamessaint.github.io/Human-Integrity-Advisory`
+- Canonical URL pointed to `jamessaint.github.io/Intervene`
 - `index, follow` robots directive on public pages; `noindex, nofollow` on legal and utility pages
 - Full Open Graph tag set (og:title, og:description, og:url, og:image, og:image:alt)
 - Twitter/X card tags (summary_large_image)
@@ -92,7 +97,7 @@ OG images are served from `assets/og/` and should be 1200x630px PNG.
 ## Local Development
 
 ```bash
-git clone https://github.com/jamessaint/Human-Integrity-Advisory.git
+git clone https://github.com/jamessaint/Intervene.git
 ```
 
 Open any HTML file directly in a browser. No tooling, build step, or local server required.
@@ -107,7 +112,7 @@ npx serve .
 
 Changes pushed to the `main` branch publish automatically via GitHub Pages to:
 
-**https://jamessaint.github.io/Human-Integrity-Advisory/**
+**https://jamessaint.github.io/Intervene/**
 
 When a custom domain is configured, update all canonical URLs, OG URLs, schema URLs, `robots.txt`, and `sitemap.xml` to reflect the new domain before going live.
 
