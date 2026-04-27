@@ -11,8 +11,6 @@ Intervene Group Ltd is an independent advisory practice for high-stakes decision
 
 The site is the public face of the practice — methodology, services, sample report, and contact path. It is built as a single static HTML/CSS bundle to match the editorial restraint of the Intervene brand: monochrome, typographic, instrument-grade.
 
-> Previously trading as Human Integrity Advisory (HIA). The practice rebranded to Intervene Group Ltd in 2026; the site, identity system, and trademarks have been refreshed accordingly.
-
 ## Site Architecture
 
 ```
@@ -96,4 +94,4 @@ Push to `main`. Site publishes automatically via GitHub Pages. When the custom d
 
 ## License
 
-All content is proprietary to **Intervene Group Ltd**. AGDA™ and InterveneCore™ are trademarks of Intervene Group Ltd. Viewing is permitted. Reuse, reproduction, or redistribution is not permitted without explicit written consent.
+All content is proprietary to **Intervene Group Ltd**. AGDA™ a trademark of Intervene Group Ltd. Viewing is permitted. Reuse, reproduction, or redistribution is not permitted without explicit written consent.
