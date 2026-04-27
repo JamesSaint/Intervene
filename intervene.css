@@ -265,7 +265,7 @@ input, textarea, select { font: inherit; color: inherit; }
 .intervene-logo {
   display: inline-flex;
   align-items: center;
-  gap: 25px;
+  gap: 8px;
   color: var(--ink);
   font-family: var(--sans);
 }
