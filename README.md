@@ -1,108 +1,90 @@
-# Intervene Advisory
+# Intervene
 
-![Status](https://img.shields.io/badge/status-active-blue)
-![Focus](https://img.shields.io/badge/focus-AI%20Intervention%20%26%20Governance-003366)
-![Audience](https://img.shields.io/badge/audience-Boards%20%7C%20Executives%20%7C%20Senior%20Leaders-C9B694)
-![Hosting](https://img.shields.io/badge/hosting-GitHub%20Pages-24292e)
+![Status](https://img.shields.io/badge/status-active-111111?style=flat-square)
+![Identity](https://img.shields.io/badge/identity-Intervene_v2026-111111?style=flat-square)
+![Stack](https://img.shields.io/badge/stack-HTML_+_CSS_+_vanilla_JS-111111?style=flat-square)
+![Hosting](https://img.shields.io/badge/hosting-static-111111?style=flat-square)
 
 ## Overview
 
-Intervene Advisory is an independent advisory practice for high-stakes decisions. The practice addresses a specific question most governance frameworks leave untested: **can your organisation detect, escalate, decide, and intervene before failure becomes irreversible?**
+Intervene Group Ltd is an independent advisory practice for high-stakes decisions on consequential AI and operational systems. The practice answers a question most governance frameworks leave untested: **can your organisation detect, escalate, decide, and intervene before failure becomes irreversible?**
 
-Intervene operates in the gap between governance design and operational reality. Policy defines what should happen. Intervene tests whether it can.
+The site is the public face of the practice — methodology, services, sample report, and contact path. It is built as a single static HTML/CSS bundle to match the editorial restraint of the Intervene brand: monochrome, typographic, instrument-grade.
 
-The live site is hosted at:
-
-**https://jamessaint.github.io/Intervene/**
-
-## Operational Layers
-
-- **Intervene Core** -- The proprietary assessment engine. Tests whether intervention is actually possible under real-world conditions of time, dependency, evidence, and control. Not a product sold to clients. It is how Intervene structures assessments.
-- **Intervene Labs** -- Simulation and pressure-testing capability. Where governance assumptions are tested against operational reality.
-- **Intervene Advisory** -- Senior advisory practice. Independent judgement for boards and executives facing high-stakes decisions.
-
-## What Intervene Does
-
-Three services. One question.
-
-- **Exposure Assessment** -- One system. One scenario. A clear view of where intervention breaks.
-- **Board-Level Advisory** -- Independent judgement in high-stakes decisions where internal certainty may be misleading.
-- **Ongoing Integrity Oversight** -- Continued visibility across critical systems, decision structures, and intervention capability.
-
-Engagements follow a three-stage model: **Exposure**, **Reality Testing**, **Decision Support**. Each stage produces a defined output before the next begins.
-
-All advisory work is confidential and off record unless explicitly agreed otherwise in writing.
+> Previously trading as Human Integrity Advisory (HIA). The practice rebranded to Intervene Group Ltd in 2026; the site, identity system, and trademarks have been refreshed accordingly.
 
 ## Site Architecture
 
-Five core public pages, three legal pages, one internal reference page, and two AGDA pages.
-
 ```
 /
-├── index.html              # Homepage -- positioning, services overview, authority chain
-├── method.html             # Intervene Core, eight dimensions, three-stage engagement
-├── services.html           # Three service lines with Who/Reveals/Receives structure
-├── about.html              # Founder, values, independence, sectors
-├── contact.html            # Enquiry form (Formspree)
-├── terms.html              # Terms and conditions
-├── privacy.html            # Privacy policy
-├── gdpr.html               # GDPR statement
-├── brand-sheet.html        # Internal brand reference (noindex)
-├── agda_landing.html       # AGDA -- AI Governance, Measured. Verified.
-├── agda_diagrams.html      # AGDA diagrams and visual reference
-├── schema.sql              # PostgreSQL schema for AI Literacy Mindset Assessment v1.0
-├── hia.css                 # Legacy site styles
-├── style.css               # Global stylesheet v4 (black/white/gold, Montserrat)
-├── hia.js                  # Reveal animations, counter animations, hamburger menu
-├── robots.txt              # Crawl directives
-├── sitemap.xml             # Public page index
+├── index.html                   Home — positioning, services, authority chain
+├── method.html                  AGDA methodology — chain, dimensions, capping, attestation
+├── services.html                Five tiers, four engagement shapes, MSA frame
+├── sample-report.html           Redacted Failure Exposure Report — full 13 sections
+├── about.html                   Founder, stance, sectors, what we are not
+├── contact.html                 Confidential discussion form
+├── terms.html                   Terms & conditions
+├── privacy.html                 Privacy policy
+├── gdpr.html                    UK GDPR statement
+├── intervene-brand-sheet.html   Internal brand reference (noindex)
+├── intervene-logo.html          Logo construction reference (noindex)
+├── intervene.css                Master design system
+├── intervene.js                 Nav, reveals, contact form
+├── robots.txt
+├── sitemap.xml
 └── assets/
     ├── images/
-    │   ├── favicons/       # Favicon set and webmanifest
-    │   ├── logo/           # Logo variants (SVG, PNG, AI)
-    │   ├── linkedin/       # LinkedIn-formatted brand assets
-    │   ├── james-saint.jpg # Founder portrait
-    │   ├── hero-bg.png     # Homepage hero background
-    │   └── hero-bg.jpg     # Homepage hero background (fallback)
+    │   ├── favicons/            Favicon set + webmanifest
+    │   ├── logo/                Legacy HIA logo variants (kept for reference)
+    │   ├── linkedin/            Social-format brand assets
+    │   └── james-saint.jpg      Founder portrait
     └── og/
-        └── og-home.png     # Open Graph image (1200x630)
+        └── og-home.png          Open Graph image (1200×630)
 ```
 
-## Brand and Design
+## Brand & Design
 
-- **Typeface**: Montserrat (300, 400, 500, 600, 700, 800)
-- **Surfaces**: Black `#000000`, Page BG `#0a0a0a`, Surface `#141414`, Surface2 `#1c1c1c`
-- **Accent**: Gold `#C9B694`
-- **Text**: Primary `#f0f0f0`, Body `#c8c6c4`, Sub `#a8a5a2`, Faint `#797673`
-- **Design**: Dark, minimal, architecturally sharp. No rounded corners, no gradients, no decorative flourishes.
-- **Voice**: Board-grade. No em dashes, no exclamation marks. Calm, authoritative, concrete. Sceptical of false control.
-- **No build process or framework dependencies**. Plain HTML, CSS, and vanilla JavaScript only.
+The Intervene identity is strict by design.
 
-Full brand token reference is in `brand-sheet.html`.
+| Token | Value |
+| --- | --- |
+| Ink | `#111111` |
+| Paper | `#FFFFFF` |
+| Paper Soft | `#FAFAFA` |
+| Hairline | `#E6E6E6` |
+| Muted | `#6B6B6B` |
+| Warn (rare) | `#C8322A` |
+| Sans | Inter (400 / 500) |
+| Mono | JetBrains Mono (400 / 500) |
+| Container | 1280px max · 64px gutter |
 
-## SEO and Metadata
+- **Logo** — A two-panel mark (mirrored trapezoidal panels with an 18% diagonal cut, top and bottom) sitting left of an `intervene` wordmark in Inter Medium with -0.055em tracking. Both render in CSS — no image assets required.
+- **Voice** — Board-grade. No em-dashes, no exclamation marks. Calm, authoritative, concrete. One italic accent per headline.
+- **Discipline** — No tints, no gradients, no decorative imagery. Restraint is the brand.
+
+Full token reference: `intervene-brand-sheet.html`. Logo construction: `intervene-logo.html`.
+
+## SEO & Metadata
 
 Every public page includes:
 
 - Unique `<title>` and meta description
-- Canonical URL pointed to `jamessaint.github.io/Intervene`
-- `index, follow` robots directive on public pages; `noindex, nofollow` on legal and utility pages
-- Full Open Graph tag set (og:title, og:description, og:url, og:image, og:image:alt)
-- Twitter/X card tags (summary_large_image)
-- JSON-LD structured data appropriate to each page type
-- Favicon set, webmanifest, and theme-color
+- Canonical URL pointed at `intervene.group`
+- `index, follow` on public pages; `noindex, nofollow` on legal and brand reference pages
+- Full Open Graph and Twitter card tags
+- JSON-LD structured data (Organization, WebSite) on the home page
+- Favicon set and webmanifest
 
-OG images are served from `assets/og/` and should be 1200x630px PNG.
+OG images live in `assets/og/` and should be 1200×630 PNG.
 
 ## Local Development
 
 ```bash
-git clone https://github.com/jamessaint/Intervene.git
+git clone https://github.com/JamesSaint/Intervene.git
+cd Intervene
 ```
 
-Open any HTML file directly in a browser. No tooling, build step, or local server required.
-
-For live reload during development, any static file server works:
+Open any HTML file directly in a browser — there is no build step. For live reload during development, any static server works:
 
 ```bash
 npx serve .
@@ -110,12 +92,8 @@ npx serve .
 
 ## Deployment
 
-Changes pushed to the `main` branch publish automatically via GitHub Pages to:
-
-**https://jamessaint.github.io/Intervene/**
-
-When a custom domain is configured, update all canonical URLs, OG URLs, schema URLs, `robots.txt`, and `sitemap.xml` to reflect the new domain before going live.
+Push to `main`. Site publishes automatically via GitHub Pages. When the custom domain `intervene.group` is configured, no further URL changes are required — canonical, OG, and sitemap URLs are already pointed at it.
 
 ## License
 
-All content is proprietary to **James Saint**. Viewing is permitted. Reuse, reproduction, or redistribution is not permitted without explicit written consent.
+All content is proprietary to **Intervene Group Ltd**. AGDA™ and InterveneCore™ are trademarks of Intervene Group Ltd. Viewing is permitted. Reuse, reproduction, or redistribution is not permitted without explicit written consent.
