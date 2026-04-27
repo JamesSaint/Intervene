@@ -1,1260 +1,627 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Sample Failure Exposure Report · Intervene Advisory</title>
-<meta name="description" content="Redacted sample Failure Exposure Report. Retail credit scoring model, escalation-break failure mode, PRA SS1/23 §6 intervention capability exposure." />
-<meta name="robots" content="noindex" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sample Failure Exposure Report · Intervene</title>
+<meta name="description" content="Redacted sample. Retail credit decisioning model. One trigger scenario. Escalation-break failure mode. PRA SS1/23 §6 intervention capability exposure.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://intervene.group/sample-report.html">
+<meta name="theme-color" content="#ffffff">
+
+<link rel="icon" href="assets/images/favicons/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicons/favicon-32x32.png">
+<link rel="apple-touch-icon" href="assets/images/favicons/apple-touch-icon-180x180.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="intervene.css">
+
 <style>
-  :root {
-    --ink: #0e0f12; --ink-2: #16181c; --ink-3: #1d2027; --rule: #2a2d33; --rule-soft: #1e2025;
-    --cream: #ece7dc; --cream-dim: #b8b4aa; --cream-fade: #6f6c66;
-    --amber: #c9a772; --amber-dim: #8a7450; --amber-bright: #e0c48d;
-    --red: #b84438; --red-dim: #7a2d25;
-    --amber-band: #c9a772;
-    --green: #6a8a5c; --green-dim: #4a6240;
-    --serif: 'Fraunces', Georgia, serif;
-    --sans: 'Instrument Sans', 'Helvetica Neue', sans-serif;
-    --mono: 'JetBrains Mono', ui-monospace, monospace;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--ink); color: var(--cream); font-family: var(--sans); font-size: 15px; line-height: 1.55; font-feature-settings: "ss01"; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-  a { color: inherit; text-decoration: none; }
+/* Sample-report-only refinements */
+.bar-chart-row { display: grid; grid-template-columns: 220px 1fr 80px 80px; gap: 24px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--hair); font-family: var(--mono); font-size: 12px; }
+.bar-chart-row .label { color: var(--ink); letter-spacing: 0.02em; }
+.bar-chart-row .track { background: var(--paper-mid); height: 18px; position: relative; border: 1px solid var(--hair); }
+.bar-chart-row .fill-amber { background: repeating-linear-gradient(45deg, var(--ink) 0 6px, transparent 6px 10px); height: 100%; }
+.bar-chart-row .fill-red { background: var(--ink); height: 100%; }
+.bar-chart-row .score { color: var(--ink); text-align: right; font-size: 14px; }
+.bar-chart-row .band { color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-size: 10px; text-align: right; }
+.bar-chart-row .band.red { color: var(--warn); }
 
-  /* Top nav — minimal, the report is the product */
-  .nav { position: sticky; top: 0; z-index: 50; background: rgba(14,15,18,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
-  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
-  .brand { font-family: var(--sans); font-weight: 600; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cream); }
-  .brand span { color: var(--cream-fade); font-weight: 400; margin-left: 14px; letter-spacing: 0.24em; }
-  .nav-links { display: flex; gap: 28px; font-family: var(--sans); font-size: 13px; }
-  .nav-links a { color: var(--cream-dim); transition: color 150ms; position: relative; }
-  .nav-links a:hover { color: var(--cream); }
-  .nav-links a.active { color: var(--cream); }
-  .nav-links a.active::after { content: ''; position: absolute; bottom: -21px; left: 0; right: 0; height: 1px; background: var(--amber); }
-  .nav-cta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber); padding: 10px 18px; border: 1px solid var(--amber-dim); transition: all 180ms; }
-  .nav-cta:hover { background: var(--amber); color: var(--ink); }
+.callout-red { border: 1px solid var(--warn); padding: 36px; margin-top: 32px; background: var(--paper); }
+.callout-red .lab { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warn); margin-bottom: 14px; }
+.callout-red h3 { font-size: 26px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 18px; }
+.callout-red p { font-size: 15px; color: var(--ink); line-height: 1.65; margin: 0 0 14px; max-width: 70ch; }
+.callout-red ol { padding-left: 22px; margin: 18px 0 0; }
+.callout-red li { font-size: 15px; line-height: 1.6; margin-bottom: 10px; }
 
-  /* Redaction banner */
-  .redacted-banner { background: rgba(184,68,56,0.1); border-bottom: 2px solid var(--red); padding: 14px 0; }
-  .redacted-banner .inner { max-width: 1200px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; color: var(--cream); letter-spacing: 0.06em; }
-  .redacted-banner strong { color: var(--red); text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; }
-  .redacted-banner em { font-family: var(--serif); font-style: italic; color: var(--cream-dim); font-size: 13px; letter-spacing: 0; }
+.terminal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 24px; }
+.terminal-card { border: 1px solid var(--warn); padding: 24px; }
+.terminal-card .code { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warn); margin-bottom: 8px; }
+.terminal-card .nm { font-size: 18px; font-weight: 500; letter-spacing: -0.012em; margin-bottom: 8px; }
+.terminal-card p { font-size: 13.5px; color: var(--muted); line-height: 1.55; margin: 0; }
 
-  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
-  .narrow { max-width: 900px; }
-
-  /* Report header */
-  .report-head { padding: 60px 0 48px; border-bottom: 2px solid var(--rule); }
-  .report-meta { display: flex; gap: 32px; margin-bottom: 32px; flex-wrap: wrap; }
-  .report-meta .item { }
-  .report-meta .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-fade); margin-bottom: 6px; }
-  .report-meta .v { font-family: var(--mono); font-size: 13px; color: var(--amber); letter-spacing: 0.04em; }
-  .report-title { font-family: var(--serif); font-weight: 300; font-size: clamp(36px, 4.8vw, 60px); line-height: 1.02; letter-spacing: -0.02em; color: var(--cream); max-width: 30ch; margin-bottom: 20px; }
-  .report-title em { color: var(--amber); font-style: italic; }
-  .report-sub { font-family: var(--serif); font-weight: 300; font-style: italic; font-size: clamp(17px, 1.4vw, 22px); color: var(--cream-dim); max-width: 62ch; line-height: 1.4; margin-bottom: 32px; }
-
-  /* Attestation envelope */
-  .att { background: var(--ink-2); border: 1px solid var(--amber-dim); padding: 28px 32px; margin-top: 20px; font-family: var(--mono); font-size: 12px; line-height: 1.8; color: var(--cream); }
-  .att .hdr { color: var(--amber); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-  .att .hdr .verify { color: var(--green); text-transform: uppercase; letter-spacing: 0.16em; font-size: 10px; }
-  .att .row { display: grid; grid-template-columns: 140px 1fr; gap: 14px; }
-  .att .k { color: var(--cream-fade); }
-  .att .v { color: var(--cream); word-break: break-all; }
-  .att .v.hash { color: var(--amber-bright); }
-  .att .meta { color: var(--cream-fade); font-size: 11px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--rule); line-height: 1.6; }
-
-  /* Section */
-  section.s {
-    padding: 56px 0;
-    border-bottom: 1px solid var(--rule);
-  }
-  .s-head { display: grid; grid-template-columns: 80px 1fr; gap: 32px; align-items: baseline; margin-bottom: 26px; }
-  .s-num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--amber); padding-top: 8px; }
-  .s-title { font-family: var(--serif); font-weight: 400; font-size: clamp(26px, 2.8vw, 36px); line-height: 1.05; letter-spacing: -0.015em; color: var(--cream); max-width: 28ch; }
-  .s-title em { color: var(--amber); font-style: italic; }
-  .s-body { display: grid; grid-template-columns: 80px 1fr; gap: 32px; }
-  .s-body-inner { max-width: 800px; }
-  .s-body-inner.wide { max-width: none; }
-
-  .s-body p { font-size: 15.5px; line-height: 1.65; color: var(--cream); margin-bottom: 16px; }
-  .s-body p.dim { color: var(--cream-dim); }
-  .s-body p em { color: var(--amber); font-style: italic; font-family: var(--serif); }
-  .s-body p strong { color: var(--cream); font-weight: 500; }
-  .s-body p code, .s-body p .mono { font-family: var(--mono); font-size: 0.9em; color: var(--amber-bright); background: var(--rule-soft); padding: 1px 6px; border-radius: 2px; letter-spacing: 0.02em; }
-
-  /* Exposure banner */
-  .exposure {
-    margin-top: 8px;
-    padding: 32px 36px;
-    background: var(--ink-2);
-    border: 1px solid var(--rule);
-    border-left: 4px solid var(--red);
-  }
-  .exposure .verdict-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-bottom: 24px; border-bottom: 1px solid var(--rule); padding-bottom: 22px; }
-  .exposure .vcell { padding-right: 22px; border-right: 1px solid var(--rule); }
-  .exposure .vcell:last-child { border-right: none; padding-right: 0; padding-left: 22px; }
-  .exposure .vcell:nth-child(n+2) { padding-left: 22px; }
-  .exposure .vk { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream-fade); margin-bottom: 10px; }
-  .exposure .vv { font-family: var(--serif); font-size: 22px; font-weight: 500; line-height: 1.1; color: var(--cream); letter-spacing: -0.008em; }
-  .exposure .vv.red { color: var(--red); }
-  .exposure .vv.amber-band { color: var(--amber); }
-  .exposure .statement { font-family: var(--serif); font-weight: 300; font-size: 20px; line-height: 1.45; color: var(--cream); letter-spacing: -0.005em; font-style: italic; }
-  .exposure .statement em { color: var(--amber); font-style: italic; }
-  .exposure .statement strong { color: var(--cream); font-weight: 500; font-style: normal; }
-
-  /* Tables */
-  table.data { width: 100%; border-collapse: collapse; margin-top: 18px; font-family: var(--sans); font-size: 13.5px; }
-  table.data th, table.data td { text-align: left; padding: 14px 18px 13px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
-  table.data th { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream-fade); border-bottom-color: var(--cream-fade); padding-bottom: 10px; }
-  table.data td.key { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--amber); white-space: nowrap; }
-  table.data td.num { font-family: var(--mono); font-size: 12px; color: var(--amber); white-space: nowrap; }
-  table.data td.muted { color: var(--cream-dim); }
-  table.data td strong { color: var(--cream); font-weight: 500; }
-  table.data td em { font-family: var(--serif); font-style: italic; color: var(--cream-dim); }
-  table.data .rag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 8px; border: 1px solid currentColor; display: inline-block; }
-  table.data .rag.red { color: var(--red); }
-  table.data .rag.amber { color: var(--amber); }
-  table.data .rag.green { color: var(--green); }
-
-  /* RAG score cards */
-  .rag-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 22px; border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
-  .rag-cell { padding: 22px 20px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); position: relative; }
-  .rag-cell .dim { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--cream-fade); margin-bottom: 10px; text-transform: uppercase; }
-  .rag-cell .score { font-family: var(--serif); font-size: 36px; font-weight: 300; letter-spacing: -0.02em; color: var(--cream); line-height: 1; margin-bottom: 8px; }
-  .rag-cell .score .total { font-family: var(--mono); font-size: 14px; color: var(--cream-fade); letter-spacing: 0.04em; vertical-align: 0.3em; margin-left: 2px; font-weight: 400; }
-  .rag-cell .band { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 8px; display: inline-block; border: 1px solid currentColor; margin-bottom: 10px; }
-  .rag-cell.red .band, .rag-cell.red .score { color: var(--red); }
-  .rag-cell.red { border-left: 3px solid var(--red); }
-  .rag-cell.amber .band, .rag-cell.amber .score { color: var(--amber); }
-  .rag-cell.amber { border-left: 3px solid var(--amber); }
-  .rag-cell.green .band, .rag-cell.green .score { color: var(--green); }
-  .rag-cell.green { border-left: 3px solid var(--green); }
-  .rag-cell .note { font-size: 12.5px; color: var(--cream-dim); line-height: 1.5; }
-  .rag-cell .cap-note { font-family: var(--mono); font-size: 10px; color: var(--red); margin-top: 8px; letter-spacing: 0.08em; }
-
-  /* Causal chain */
-  .chain-timing { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 22px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-  .chain-node { padding: 22px 20px; border-right: 1px solid var(--rule); }
-  .chain-node:last-child { border-right: none; }
-  .chain-node .label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--amber); margin-bottom: 8px; text-transform: uppercase; }
-  .chain-node .stage { font-family: var(--serif); font-size: 20px; color: var(--cream); margin-bottom: 12px; font-weight: 500; letter-spacing: -0.005em; }
-  .chain-node .time { font-family: var(--mono); font-size: 12px; color: var(--cream-dim); margin-bottom: 12px; letter-spacing: 0.04em; }
-  .chain-node .time strong { color: var(--amber); font-weight: 500; }
-  .chain-node .note { font-size: 12.5px; color: var(--cream-dim); line-height: 1.5; }
-  .chain-node .gate { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; }
-  .chain-node .gate.pass { color: var(--green); }
-  .chain-node .gate.fail { color: var(--red); }
-  .chain-node .gate.margin { color: var(--amber); }
-
-  /* Gate list */
-  .gates { margin-top: 22px; }
-  .gate-row { display: grid; grid-template-columns: 60px 1fr 120px 160px; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
-  .gate-row:first-child { border-top: 1px solid var(--rule); }
-  .gate-row .g-id { font-family: var(--mono); font-size: 11px; color: var(--amber); letter-spacing: 0.08em; }
-  .gate-row .g-desc { font-size: 13.5px; color: var(--cream); line-height: 1.5; }
-  .gate-row .g-desc em { color: var(--cream-dim); font-family: var(--serif); font-style: italic; }
-  .gate-row .g-val { font-family: var(--mono); font-size: 12px; color: var(--cream); letter-spacing: 0.04em; }
-  .gate-row .g-verdict { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 10px; border: 1px solid currentColor; display: inline-block; text-align: center; }
-  .gate-row .g-verdict.pass { color: var(--green); }
-  .gate-row .g-verdict.fail { color: var(--red); }
-  .gate-row .g-verdict.margin { color: var(--amber); }
-
-  /* Board conclusion callout */
-  .board-callout {
-    margin-top: 8px;
-    padding: 36px 40px;
-    background: linear-gradient(180deg, var(--ink-2) 0%, var(--ink-3) 100%);
-    border: 1px solid var(--amber-dim);
-    border-left: 4px solid var(--amber);
-  }
-  .board-callout h4 { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--amber); text-transform: uppercase; margin-bottom: 18px; }
-  .board-callout p { font-family: var(--serif); font-weight: 300; font-size: 22px; line-height: 1.4; color: var(--cream); margin-bottom: 20px; letter-spacing: -0.005em; }
-  .board-callout p.q { font-style: italic; font-size: 24px; }
-  .board-callout p em { color: var(--amber); font-style: italic; }
-  .board-callout p strong { color: var(--cream); font-weight: 500; }
-  .board-callout p:last-child { margin-bottom: 0; }
-  .board-callout .actions { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--rule); display: grid; grid-template-columns: 28px 1fr; gap: 14px 20px; }
-  .board-callout .actions .an { font-family: var(--mono); font-size: 11px; color: var(--amber); letter-spacing: 0.1em; padding-top: 3px; }
-  .board-callout .actions .ad { font-family: var(--sans); font-size: 15px; color: var(--cream); line-height: 1.5; }
-
-  /* Regulatory cards */
-  .reg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 22px; border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
-  .reg-cell { padding: 22px 24px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-  .reg-cell .framework { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--amber); margin-bottom: 6px; text-transform: uppercase; }
-  .reg-cell .article { font-family: var(--serif); font-size: 18px; color: var(--cream); margin-bottom: 10px; font-weight: 500; line-height: 1.2; }
-  .reg-cell .obligation { font-size: 12.5px; color: var(--cream-dim); line-height: 1.5; margin-bottom: 12px; }
-  .reg-cell .status { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding-top: 10px; border-top: 1px solid var(--rule); }
-  .reg-cell .status.fail { color: var(--red); }
-  .reg-cell .status.margin { color: var(--amber); }
-  .reg-cell .status.pass { color: var(--green); }
-
-  /* Framework pressure */
-  .pressure-bars { margin-top: 22px; }
-  .pressure-row { display: grid; grid-template-columns: 160px 1fr 120px 100px; gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--rule); align-items: center; }
-  .pressure-row:first-child { border-top: 1px solid var(--rule); }
-  .pressure-row .pname { font-family: var(--serif); font-size: 15px; color: var(--cream); font-weight: 500; }
-  .pressure-row .pbar-wrap { height: 8px; background: var(--rule-soft); border: 1px solid var(--rule); position: relative; }
-  .pressure-row .pbar { height: 100%; background: var(--amber); }
-  .pressure-row .pbar.red { background: var(--red); }
-  .pressure-row .pbar.amber { background: var(--amber); }
-  .pressure-row .pbar.green { background: var(--green); }
-  .pressure-row .pval { font-family: var(--mono); font-size: 12px; color: var(--cream); text-align: right; letter-spacing: 0.04em; }
-  .pressure-row .pband { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 8px; border: 1px solid currentColor; text-align: center; }
-  .pressure-row .pband.severe { color: var(--red); }
-  .pressure-row .pband.elevated { color: var(--amber); }
-  .pressure-row .pband.baseline { color: var(--green); }
-
-  /* Irreversibility */
-  .irrev { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 22px; border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
-  .irrev-cell { padding: 24px 28px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-  .irrev-cell .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--cream-fade); text-transform: uppercase; margin-bottom: 8px; }
-  .irrev-cell .v { font-family: var(--serif); font-size: 20px; color: var(--cream); margin-bottom: 8px; font-weight: 500; line-height: 1.25; }
-  .irrev-cell .v.amber { color: var(--amber); }
-  .irrev-cell .v.red { color: var(--red); }
-  .irrev-cell .v .unit { font-family: var(--mono); font-size: 13px; color: var(--cream-fade); margin-left: 6px; letter-spacing: 0.04em; }
-  .irrev-cell p { font-size: 12.5px; color: var(--cream-dim); line-height: 1.5; }
-
-  /* CRR terminals */
-  .crr-terminal { margin-top: 20px; padding: 20px 24px; background: var(--ink-2); border: 1px solid var(--rule); border-left: 3px solid var(--red); display: grid; grid-template-columns: 60px 1fr; gap: 20px; align-items: start; }
-  .crr-terminal .tcode { font-family: var(--mono); font-size: 12px; color: var(--amber); letter-spacing: 0.08em; padding-top: 2px; }
-  .crr-terminal .tlabel { font-family: var(--serif); font-size: 18px; color: var(--cream); font-weight: 500; margin-bottom: 8px; line-height: 1.25; }
-  .crr-terminal .texplain { font-size: 13px; color: var(--cream-dim); line-height: 1.55; }
-  .crr-terminal .texplain em { color: var(--amber); font-family: var(--serif); font-style: italic; }
-
-  /* Evidence register */
-  .ev-register { margin-top: 22px; }
-  .ev-row { display: grid; grid-template-columns: 60px 1fr 160px 120px; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
-  .ev-row:first-child { border-top: 1px solid var(--rule); }
-  .ev-row .ev-id { font-family: var(--mono); font-size: 11px; color: var(--amber); letter-spacing: 0.08em; }
-  .ev-row .ev-desc { font-size: 13.5px; color: var(--cream); line-height: 1.5; }
-  .ev-row .ev-desc em { color: var(--cream-dim); font-family: var(--serif); font-style: italic; }
-  .ev-row .ev-type { font-family: var(--mono); font-size: 11px; color: var(--cream-dim); letter-spacing: 0.04em; }
-  .ev-row .ev-grade { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 8px; border: 1px solid currentColor; display: inline-block; text-align: center; }
-  .ev-row .ev-grade.g0, .ev-row .ev-grade.g1 { color: var(--red); }
-  .ev-row .ev-grade.g2, .ev-row .ev-grade.g3 { color: var(--amber); }
-  .ev-row .ev-grade.g4 { color: var(--green); }
-
-  /* Scenario impact */
-  .scenario { margin-top: 8px; padding: 28px 32px; background: var(--ink-2); border: 1px solid var(--red-dim); border-left: 4px solid var(--red); }
-  .scenario .title { font-family: var(--serif); font-size: 20px; color: var(--cream); margin-bottom: 6px; font-weight: 500; }
-  .scenario .sub { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--cream-dim); margin-bottom: 20px; }
-  .scenario .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--rule); padding-top: 18px; }
-  .scenario .ic { padding-right: 20px; border-right: 1px solid var(--rule); }
-  .scenario .ic:last-child { padding-right: 0; padding-left: 20px; border-right: none; }
-  .scenario .ic:nth-child(2) { padding-left: 20px; }
-  .scenario .ic .ik { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--cream-fade); margin-bottom: 8px; text-transform: uppercase; }
-  .scenario .ic .iv { font-family: var(--serif); font-size: 17px; color: var(--cream); font-weight: 500; line-height: 1.25; }
-  .scenario .ic .iv .unit { font-family: var(--mono); font-size: 11px; color: var(--cream-fade); font-weight: 400; margin-left: 4px; letter-spacing: 0.04em; }
-
-  /* System viability */
-  .viability { margin-top: 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-  .viability .verdict-box { padding: 28px 32px; background: var(--ink-2); border: 1px solid var(--rule); border-left: 4px solid var(--red); }
-  .viability .verdict-box .label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--amber); text-transform: uppercase; margin-bottom: 14px; }
-  .viability .verdict-box .v { font-family: var(--serif); font-size: 28px; color: var(--red); margin-bottom: 14px; font-weight: 500; line-height: 1.15; letter-spacing: -0.01em; }
-  .viability .verdict-box p { font-size: 14px; color: var(--cream); line-height: 1.55; margin-bottom: 10px; }
-  .viability .verdict-box p:last-child { margin-bottom: 0; }
-  .viability .verdict-box p em { color: var(--amber); font-family: var(--serif); font-style: italic; }
-  .viability .scale-box { padding: 28px 24px; background: var(--ink-2); border: 1px solid var(--rule); }
-  .viability .scale-box .label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--amber); text-transform: uppercase; margin-bottom: 14px; }
-  .viability .scale-box .scale-v { font-family: var(--serif); font-size: 20px; color: var(--cream); margin-bottom: 12px; font-weight: 500; line-height: 1.2; }
-  .viability .scale-box p { font-size: 12.5px; color: var(--cream-dim); line-height: 1.55; }
-
-  /* CTA back to marketing pages */
-  .cta { padding: 80px 0 100px; border-bottom: 1px solid var(--rule); }
-  .cta h2 { font-family: var(--serif); font-weight: 300; font-size: clamp(28px, 3.6vw, 44px); line-height: 1.1; letter-spacing: -0.015em; color: var(--cream); margin-bottom: 20px; max-width: 28ch; }
-  .cta h2 em { font-style: italic; color: var(--amber); }
-  .cta p { font-family: var(--serif); font-style: italic; font-size: 17px; color: var(--cream-dim); margin-bottom: 32px; max-width: 52ch; }
-  .cta-btn { display: inline-block; font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); background: var(--amber); padding: 15px 26px; transition: all 180ms; }
-  .cta-btn:hover { background: var(--cream); }
-  .cta-btn.ghost { background: transparent; color: var(--cream); border: 1px solid var(--rule); margin-left: 12px; }
-  .cta-btn.ghost:hover { border-color: var(--amber); color: var(--amber); }
-
-  /* Footer */
-  footer { padding: 48px 0 36px; background: var(--ink-2); border-top: 1px solid var(--rule); }
-  .foot-inner { display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; flex-wrap: wrap; }
-  .foot-brand { font-family: var(--sans); font-weight: 600; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cream); }
-  .foot-brand span { color: var(--cream-fade); font-weight: 400; margin-left: 14px; letter-spacing: 0.24em; }
-  .foot-brand small { display: block; font-family: var(--serif); font-style: italic; font-weight: 300; font-size: 13px; color: var(--cream-fade); letter-spacing: 0; text-transform: none; margin-top: 10px; max-width: 50ch; }
-  .foot-links { display: flex; gap: 28px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--cream-fade); text-transform: uppercase; }
-  .foot-links a:hover { color: var(--amber); }
-  .foot-copy { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--cream-fade); text-transform: uppercase; }
-
-  /* Print */
-  @media print {
-    body { background: white; color: black; }
-    .nav, .redacted-banner, .cta, footer { display: none; }
-    .att { background: #fafafa; color: black; border-color: #ccc; }
-    .att .v, .att .k { color: #333; }
-    .att .v.hash { color: #7a5918; }
-    .exposure, .board-callout, .scenario, .viability .verdict-box, .viability .scale-box, .crr-terminal, .rag-cell, .chain-node { background: #fafafa; color: black; border-color: #ccc; }
-    .s-title, .report-title, .board-callout p, .exposure .statement { color: black; }
-  }
-
-  @media (max-width: 900px) {
-    .nav-inner { padding: 14px 24px; gap: 16px; flex-wrap: wrap; }
-    .nav-links { order: 3; width: 100%; gap: 20px; }
-    .nav-links a.active::after { bottom: -15px; }
-    .wrap { padding: 0 24px; }
-    .redacted-banner .inner { padding: 0 24px; }
-    .att { padding: 20px 18px; font-size: 10px; overflow-x: auto; }
-    .att .row { grid-template-columns: 1fr; gap: 4px; }
-    .s-head, .s-body { grid-template-columns: 1fr; gap: 12px; }
-    .s-num { padding-top: 0; }
-    .exposure { padding: 24px 22px; }
-    .exposure .verdict-row { grid-template-columns: 1fr 1fr; }
-    .exposure .vcell { padding: 14px !important; border-right: none !important; border-bottom: 1px solid var(--rule); }
-    .exposure .vcell:nth-child(even) { border-right: 1px solid var(--rule) !important; padding-right: 14px !important; }
-    .rag-grid { grid-template-columns: 1fr 1fr; }
-    .chain-timing { grid-template-columns: 1fr 1fr; }
-    .chain-node { border-bottom: 1px solid var(--rule); }
-    .chain-node:nth-child(odd) { border-right: 1px solid var(--rule); }
-    .chain-node:nth-child(even) { border-right: none; }
-    .gate-row { grid-template-columns: 1fr; gap: 4px; }
-    .reg-grid { grid-template-columns: 1fr; }
-    .pressure-row { grid-template-columns: 1fr 1fr; gap: 8px; }
-    .pressure-row .pbar-wrap { grid-column: 1 / -1; }
-    .irrev { grid-template-columns: 1fr; }
-    .scenario { padding: 20px 20px; }
-    .scenario .impact-grid { grid-template-columns: 1fr; }
-    .scenario .ic { padding: 14px 0 !important; border-right: none !important; border-bottom: 1px solid var(--rule); }
-    .viability { grid-template-columns: 1fr; }
-    .ev-row { grid-template-columns: 1fr; gap: 4px; }
-    .crr-terminal { grid-template-columns: 1fr; gap: 10px; }
-    .board-callout { padding: 24px 20px; }
-    .board-callout p { font-size: 17px; }
-    .board-callout p.q { font-size: 19px; }
-  }
+.viability-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 0; border: 1px solid var(--warn); margin-top: 24px; }
+.viability-grid > div { padding: 36px; }
+.viability-grid > div:first-child { border-right: 1px solid rgba(200,50,42,0.25); }
+.viability-grid .verdict { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warn); margin-bottom: 14px; }
+.viability-grid .big { font-size: 56px; font-weight: 500; letter-spacing: -0.04em; line-height: 1; margin: 0 0 18px; }
+.viability-grid .reason { font-size: 14px; color: var(--ink); line-height: 1.65; max-width: 50ch; }
+.viability-grid .scale-lab { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.viability-grid .scale-bar { height: 10px; background: var(--paper-mid); border: 1px solid var(--hair); position: relative; margin-bottom: 8px; }
+.viability-grid .scale-bar::after { content: ''; position: absolute; inset: 0 75% 0 0; background: var(--ink); }
+.viability-grid .scale-rank { font-size: 24px; font-weight: 500; letter-spacing: -0.022em; }
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="index.html" class="brand">Intervene<span>Advisory</span></a>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="method.html">Method</a>
-      <a href="services.html">Services</a>
-      <a href="about.html">About</a>
-      <a href="sample-report.html" class="active">Sample Report</a>
-    </div>
-    <a href="contact.html" class="nav-cta">Enquire</a>
-  </div>
-</nav>
-
-<div class="redacted-banner">
-  <div class="inner">
-    <div><strong>Redacted Sample</strong></div>
-    <em>Synthetic case derived from the AGDA validation corpus (BANK-CREDIT-001). Client names, identifiers, and specific model parameters have been replaced. Scores, verdicts, and structural findings reflect the methodology applied to the canonical case as-written.</em>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="left"><span class="dot"></span>Intervene · Sample Report</span>
+    <span class="right">
+      <span data-clock>00:00 UTC</span>
+      <span class="sep">·</span>
+      <span>AGDA v1.2.0</span>
+      <span class="sep">·</span>
+      <span>Redacted</span>
+    </span>
   </div>
 </div>
 
-<section class="report-head">
+<nav class="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand" aria-label="Intervene — home">
+      <div class="intervene-logo">
+        <div class="intervene-mark" aria-hidden="true">
+          <span class="panel panel-left"></span><span class="panel panel-right"></span>
+        </div>
+        <div class="intervene-wordmark">intervene</div>
+      </div>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="method.html">Method</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="sample-report.html" class="current">Sample Report</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <a href="contact.html" class="nav-cta">Enquire</a>
+    <button class="nav-toggle" aria-expanded="false" aria-label="Open navigation"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="nav-mobile" aria-hidden="true">
+  <ul role="list">
+    <li><a href="index.html"><span class="num">01</span>Home</a></li>
+    <li><a href="method.html"><span class="num">02</span>Method</a></li>
+    <li><a href="services.html"><span class="num">03</span>Services</a></li>
+    <li><a href="sample-report.html"><span class="num">04</span>Sample Report</a></li>
+    <li><a href="about.html"><span class="num">05</span>About</a></li>
+    <li><a href="contact.html"><span class="num">06</span>Contact</a></li>
+  </ul>
+  <a href="contact.html" class="nav-mobile-cta">Request a confidential discussion →</a>
+</div>
+
+<!-- REDACTION BANNER -->
+<div class="report-banner">
+  <span class="left">SAMPLE · REDACTED · Retail Credit Decisioning Model</span>
+  <span class="right">Illustrative only · Not from any single client engagement</span>
+</div>
+
+<main>
+
+<!-- COVER -->
+<section class="report-cover">
   <div class="wrap">
-    <div class="report-meta">
-      <div class="item"><div class="k">Report type</div><div class="v">Failure Exposure Report · format 1.1</div></div>
-      <div class="item"><div class="k">Engagement</div><div class="v">Tier 1 · PRA SS1/23 §6</div></div>
-      <div class="item"><div class="k">Case</div><div class="v">SAMPLE-BANK-CREDIT-001</div></div>
-      <div class="item"><div class="k">Assessed</div><div class="v">2026-05-14</div></div>
-      <div class="item"><div class="k">Classification</div><div class="v" style="color:var(--red);">Confidential · Board</div></div>
+    <div class="meta-grid">
+      <div><span class="k">System</span><span class="v">CRED-MOD-04 · Retail Credit Decisioning</span></div>
+      <div><span class="k">Scenario</span><span class="v">Macro shock · model drift</span></div>
+      <div><span class="k">Engine</span><span class="v">AGDA v1.2.0</span></div>
+      <div><span class="k">Attested</span><span class="v">2026-05-14 · Ed25519</span></div>
     </div>
 
-    <h1 class="report-title">Batch credit scoring cannot escalate within the harm window. <em>The chain breaks at stage two.</em></h1>
-    <p class="report-sub">A PRA SS1/23 §6 Intervention Capability Assessment of one material retail-credit model operating on a nightly batch cycle. Accountability and auditability are strong. Escalation is not. Under the assessed trigger scenario, the organisation cannot act before the reversibility window closes.</p>
+    <h1 class="reveal">Failure Exposure Report.<br><em>Retail credit. Escalation break.</em></h1>
+    <p class="sub reveal reveal-d1">Single material model. One trigger scenario. The chain breaks at escalation: detection works, authority does not. PRA SS1/23 §6 intervention capability is structurally below the evidence bar.</p>
 
-    <div class="att">
+    <!-- ATTESTATION ENVELOPE -->
+    <div class="envelope reveal" style="margin-top: 56px;">
       <div class="hdr">
         <span>Attestation Envelope · Ed25519 · canonical JSON</span>
-        <span class="verify">✓ signature verified</span>
+        <span>VERIFY → agda-verify@1.2.0</span>
       </div>
       <div class="row"><span class="k">engineVersion</span><span class="v">"1.2.0"</span></div>
-      <div class="row"><span class="k">engineHash</span><span class="v hash">sha256:b2c8a1d43f1e8c9a267b4e90cfd27e3a1f8ae9142bc5d2f09871ade7f2916</span></div>
-      <div class="row"><span class="k">inputHash</span><span class="v hash">sha256:47a2e19b6e3c81e4f0b91d4725a8f2e6d8c4b9017e5ae2f83b1c9d06cd8b103</span></div>
-      <div class="row"><span class="k">outputHash</span><span class="v hash">sha256:91f4c02e8d7a15c9f2e4b3a8cd1576e2b4f8e9102a7c3d5b0e4f1a9c8b6d0d4e</span></div>
+      <div class="row"><span class="k">engineHash</span><span class="v hash">sha256:b2c8a1d…e7f2916</span></div>
+      <div class="row"><span class="k">inputHash</span><span class="v hash">sha256:47a2e19…cd8b103</span></div>
+      <div class="row"><span class="k">outputHash</span><span class="v hash">sha256:91f4c02…a6d0d4e</span></div>
       <div class="row"><span class="k">keyId</span><span class="v">"2026-04-22-1e7c3c2c"</span></div>
       <div class="row"><span class="k">scoredAt</span><span class="v">"2026-05-14T09:47:12.334Z"</span></div>
-      <div class="row"><span class="k">reportFormat</span><span class="v">"1.1"</span></div>
-      <div class="row"><span class="k">caseReference</span><span class="v">"SAMPLE-BANK-CREDIT-001"</span></div>
-      <div class="row"><span class="k">signature</span><span class="v hash">ed25519:M4Gb2ZqAfD4N7jvKL5R9pQxW3T6cVbYmUzHiRnPsAtXkEdQr8LwChV2BzZyYoDpLQX7w</span></div>
+      <div class="row"><span class="k">signature</span><span class="v hash">ed25519:M4Gb2ZqAfD…pLQX7w</span></div>
       <div class="meta">
-        verify with: <strong style="color:var(--amber);">agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json</strong><br/>
-        public keys: github.com/human-integrity/agda-keys · no engine internals appear in report output
+        This report is signed using Ed25519. Any reader can verify the signature independently using <strong style="color:#fff;">agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json</strong>. Public keys are committed at github.com/intervene-group/agda-keys.
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═════════════════════ §01 — EXECUTIVE EXPOSURE STATEMENT ═════════════════════ -->
-<section class="s">
+<!-- 1. SYSTEM OVERVIEW -->
+<section class="block">
   <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 01</div>
-      <div class="s-title">Executive Exposure Statement</div>
+    <div class="section-head reveal">
+      <div class="num">§ 1 · System overview</div>
+      <h2 class="title">Material model. <em>Live decision authority.</em></h2>
+      <p class="desc">A retail credit decisioning model approving up to 18,000 unsecured applications per day across UK personal lending. Identified as material under the bank's internal model risk taxonomy.</p>
     </div>
 
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner wide">
-        <div class="exposure">
-          <div class="verdict-row">
-            <div class="vcell">
-              <div class="vk">Verdict (TTI)</div>
-              <div class="vv red">At Risk</div>
-            </div>
-            <div class="vcell">
-              <div class="vk">First Break</div>
-              <div class="vv red">Escalation</div>
-            </div>
-            <div class="vcell">
-              <div class="vk">Safe Scale</div>
-              <div class="vv amber-band">Scale-Constrained</div>
-            </div>
-            <div class="vcell">
-              <div class="vk">Regulatory Exposure</div>
-              <div class="vv red">High</div>
-            </div>
-          </div>
+    <div class="spec-list reveal">
+      <div class="spec-row"><span class="key">System ID</span><span class="val">CRED-MOD-04</span><span class="unit">Retail Credit Decisioning</span></div>
+      <div class="spec-row"><span class="key">Materiality</span><span class="val">Tier 1</span><span class="unit">internal taxonomy</span></div>
+      <div class="spec-row"><span class="key">Decision authority</span><span class="val">Approve / decline / refer</span><span class="unit">no human override on auto-decline</span></div>
+      <div class="spec-row"><span class="key">Volume</span><span class="val">~18,000 / day</span><span class="unit">UK personal lending</span></div>
+      <div class="spec-row"><span class="key">Trigger scenario</span><span class="val">Macro shock + model drift</span><span class="unit">simultaneous</span></div>
+      <div class="spec-row"><span class="key">Reversibility window</span><span class="val">~6 hours</span><span class="unit">before regulatory disclosure threshold</span></div>
+    </div>
+  </div>
+</section>
 
-          <p class="statement">The assessed system <strong>cannot escalate to a human with authority to act</strong> inside the 720-minute reversibility window governing reputational and legal recovery. Named accountability (CRO, SMF4) and strong auditability are <em>insufficient to compensate</em> — if the nightly batch cycle is the only escalation path, the chain is broken at stage two regardless of the quality of stages three and four.</p>
+<!-- 2. CONTROL REALITY INDEX -->
+<section class="block soft">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="num">§ 2 · Control Reality Index</div>
+      <h2 class="title">Per-control RAG. <em>Terminal classification.</em></h2>
+      <p class="desc">Six controls assessed against the eight AGDA dimensions. Two clear amber. Three red. One green. Terminal classification reflects what the control can do under stress, not what the policy promises.</p>
+    </div>
+
+    <table class="tbl reveal">
+      <thead>
+        <tr>
+          <th style="width:120px;">Code</th>
+          <th>Control</th>
+          <th>Assessment</th>
+          <th style="width:140px;">CRR Terminal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>C-01</td>
+          <td>Real-time decision logging</td>
+          <td class="sans">Production-grade. Stress-validated against 2024 outage. Detection capability strong; surface latency &lt;90s.</td>
+          <td><span class="pill green">GREEN</span></td>
+        </tr>
+        <tr>
+          <td>C-02</td>
+          <td>Drift monitoring (PSI / KS)</td>
+          <td class="sans">Operational in production. Threshold tuning has not been re-validated since model retrain in 2025-Q3. Caps at amber under evidence rule.</td>
+          <td><span class="pill amber">AMBER</span></td>
+        </tr>
+        <tr>
+          <td>C-03</td>
+          <td>Escalation to MRC</td>
+          <td class="sans">Documented in policy; one tabletop in 2024-Q4. Has not run live. Authority pathway terminates at a forum that meets monthly.</td>
+          <td><span class="pill red">RED</span></td>
+        </tr>
+        <tr>
+          <td>C-04</td>
+          <td>Halt authority</td>
+          <td class="sans">Three named approvers. None have authority to halt unilaterally; quorum required. No on-call rota; weekend gap.</td>
+          <td><span class="pill red">RED</span></td>
+        </tr>
+        <tr>
+          <td>C-05</td>
+          <td>Manual override on auto-decline</td>
+          <td class="sans">Designed-out. No human-in-the-loop on the high-volume decline path. Reversibility limited to next-day reprocessing.</td>
+          <td><span class="pill red">RED</span></td>
+        </tr>
+        <tr>
+          <td>C-06</td>
+          <td>Audit trail</td>
+          <td class="sans">Immutable, hashed, retained 7 years. Decision rationale captured per inference. Auditable to regulator standard.</td>
+          <td><span class="pill amber">AMBER</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 3. ESCALATION VIABILITY -->
+<section class="block">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="num">§ 3 · Escalation viability</div>
+      <h2 class="title">The chain breaks <em>at escalation.</em></h2>
+      <p class="desc">Detection works. The signal exists; the surface is fast; the audit trail is sound. The break is between detection and authority — the path between the two passes through a forum that meets monthly.</p>
+    </div>
+
+    <div class="verdict-row reveal">
+      <div class="v-cell"><div class="k">Assessment</div><div class="v">Structural failure</div></div>
+      <div class="v-cell"><div class="k">Gate status</div><div class="v">Not viable</div></div>
+      <div class="v-cell"><div class="k">Timing</div><div class="v">Authority lag &gt; window</div></div>
+      <div class="v-cell"><div class="k">Terminal</div><div class="v">RED · capped</div></div>
+    </div>
+
+    <p class="body reveal" style="margin-top: 32px; max-width: 78ch;">
+      <strong>Failure mode FM-12 · Authority Lag.</strong> The signal reaches the Model Risk Committee. The Model Risk Committee meets monthly. The reversibility window for the trigger scenario is approximately six hours. There is no out-of-cycle convening authority; there is no on-call halt authority below MRC level. <em>The pathway from detection to halt cannot complete inside the window.</em>
+    </p>
+  </div>
+</section>
+
+<!-- 4. TEMPORAL GATING -->
+<section class="block soft">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="num">§ 4 · Temporal gating &amp; causal chain</div>
+      <h2 class="title">Stage-by-stage <em>against the clock.</em></h2>
+      <p class="desc">Each chain stage measured against the gate it must clear before the next. Detection clears in under 15 minutes. Escalation does not clear at all on the relevant cadence.</p>
+    </div>
+
+    <div class="grid-cells cols-4 reveal" style="margin-top: 32px;">
+      <div class="cell">
+        <div class="n">Stage 1</div>
+        <div class="name">Signal</div>
+        <p class="text"><strong style="color:var(--ink);">~12 min</strong> to detect drift &gt; threshold. <span class="mono" style="color:var(--pass);">PASS · margin 5h 48m</span></p>
+      </div>
+      <div class="cell">
+        <div class="n">Stage 2</div>
+        <div class="name">Escalation</div>
+        <p class="text"><strong style="color:var(--ink);">≥ 7 days</strong> to next MRC. No out-of-cycle. <span class="mono" style="color:var(--warn);">FAIL · &gt; window × 28</span></p>
+      </div>
+      <div class="cell">
+        <div class="n">Stage 3</div>
+        <div class="name">Decision</div>
+        <p class="text"><strong style="color:var(--ink);">N/A</strong> — gated upstream. Authority quorum unavailable. <span class="mono" style="color:var(--warn);">FAIL · capped</span></p>
+      </div>
+      <div class="cell">
+        <div class="n">Stage 4</div>
+        <div class="name">Intervention</div>
+        <p class="text"><strong style="color:var(--ink);">N/A</strong> — no halt authority outside MRC quorum. <span class="mono" style="color:var(--warn);">FAIL · capped</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. GATE REGISTER -->
+<section class="block">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="num">§ 5 · Gate register</div>
+      <h2 class="title">Detailed temporal gates. <em>Per stage.</em></h2>
+      <p class="desc">Every temporal gate the chain must clear, with the measured value and the verdict against the reversibility window.</p>
+    </div>
+
+    <table class="tbl reveal">
+      <thead>
+        <tr><th style="width:100px;">Gate</th><th>Description</th><th style="width:160px;">Measured</th><th style="width:120px;">Verdict</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>G-01</td><td>Drift signal generation latency</td><td>~12 min</td><td><span class="pill green">PASS</span></td></tr>
+        <tr><td>G-02</td><td>Signal surfaces to first responder</td><td>~38 min</td><td><span class="pill amber">MARGIN</span></td></tr>
+        <tr><td>G-03</td><td>First responder reaches authority holder</td><td>variable · 4–96h</td><td><span class="pill red">FAIL</span></td></tr>
+        <tr><td>G-04</td><td>Authority holder reaches quorum</td><td>≥ 7 days</td><td><span class="pill red">FAIL</span></td></tr>
+        <tr><td>G-05</td><td>Quorum decision recorded</td><td>monthly cadence</td><td><span class="pill red">FAIL</span></td></tr>
+        <tr><td>G-06</td><td>Halt instruction propagated to system</td><td>~6 min (if instructed)</td><td><span class="pill green">PASS</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 6. BOARD CONCLUSION -->
+<section class="block soft">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="num">§ 6 · Board conclusion</div>
+      <h2 class="title">What the Board <em>needs to act on.</em></h2>
+      <p class="desc">The system is well-instrumented at the technical layer. The authority structure surrounding it cannot exercise control inside the window. This is a governance defect, not a model defect.</p>
+    </div>
+
+    <div class="callout-red reveal">
+      <div class="lab">▲ Action required · 30 days</div>
+      <h3>Can CRED-MOD-04 be halted within six hours of a material drift event today?</h3>
+      <p>No. The fastest credible halt path under current arrangements is approximately seven days. The Board should be aware that the model's PRA SS1/23 §6 intervention capability rating cannot be supported above amber until the authority structure is restructured to permit out-of-cycle halt.</p>
+      <ol>
+        <li><strong>Establish a named on-call halt authority</strong> with unilateral power to suspend CRED-MOD-04 between MRC sittings, with audit trail. Owner: CRO.</li>
+        <li><strong>Re-validate drift threshold tuning</strong> under stress conditions before the next regulatory submission. Owner: Head of Model Risk.</li>
+        <li><strong>Add a reversibility mechanism on the auto-decline path</strong> — same-day reprocessing rather than next-day. Owner: COO.</li>
+        <li><strong>Re-scope the quorum requirement</strong> for material model halt; consider standing delegated authority to a single senior named approver. Owner: Board / Remuneration &amp; Governance Committee.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 7. REGULATORY MAPPING -->
+<section class="block">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="num">§ 7 · Regulatory mapping</div>
+      <h2 class="title">Findings tied to <em>the framework.</em></h2>
+      <p class="desc">Where each finding sits against the article-level obligations in the relevant frameworks. Auditor-ready; cite as written.</p>
+    </div>
+
+    <table class="tbl reveal">
+      <thead>
+        <tr><th style="width:200px;">Framework</th><th>Article / Obligation</th><th style="width:140px;">Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>PRA SS1/23</td><td class="sans">§6 — Intervention capability proportionate to model materiality</td><td><span class="pill red">EXPOSED</span></td></tr>
+        <tr><td>PRA SS1/23</td><td class="sans">§4.3 — Senior management accountability for model risk</td><td><span class="pill amber">PARTIAL</span></td></tr>
+        <tr><td>FCA SMCR</td><td class="sans">SMF4 / SMF24 — Allocation of responsibility for halt authority</td><td><span class="pill red">EXPOSED</span></td></tr>
+        <tr><td>EU AI Act</td><td class="sans">Art. 14 — Human oversight (capability to interrupt)</td><td><span class="pill red">EXPOSED</span></td></tr>
+        <tr><td>EU AI Act</td><td class="sans">Art. 9 — Risk management (residual risk acceptance)</td><td><span class="pill amber">PARTIAL</span></td></tr>
+        <tr><td>DORA</td><td class="sans">Art. 6 — ICT risk management framework</td><td><span class="pill green">ALIGNED</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 8. FRAMEWORK PRESSURE -->
+<section class="block soft">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="num">§ 8 · Framework pressure</div>
+      <h2 class="title">Where the regulatory weight <em>concentrates.</em></h2>
+      <p class="desc">Not all framework citations carry equal pressure on this system. The chart below ranks the article-level obligations most exposed by the current authority gap.</p>
+    </div>
+
+    <div class="reveal" style="margin-top: 24px;">
+      <div class="bar-chart-row" style="border-top: 1px solid var(--ink); padding-top: 18px;">
+        <div class="label">PRA SS1/23 §6</div>
+        <div class="track"><div class="fill-red" style="width: 92%;"></div></div>
+        <div class="score">9.2</div>
+        <div class="band red">CRITICAL</div>
+      </div>
+      <div class="bar-chart-row">
+        <div class="label">EU AI Act Art. 14</div>
+        <div class="track"><div class="fill-red" style="width: 86%;"></div></div>
+        <div class="score">8.6</div>
+        <div class="band red">CRITICAL</div>
+      </div>
+      <div class="bar-chart-row">
+        <div class="label">FCA SMCR SMF4 / 24</div>
+        <div class="track"><div class="fill-red" style="width: 78%;"></div></div>
+        <div class="score">7.8</div>
+        <div class="band red">HIGH</div>
+      </div>
+      <div class="bar-chart-row">
+        <div class="label">PRA SS1/23 §4.3</div>
+        <div class="track"><div class="fill-amber" style="width: 54%;"></div></div>
+        <div class="score">5.4</div>
+        <div class="band">MODERATE</div>
+      </div>
+      <div class="bar-chart-row">
+        <div class="label">EU AI Act Art. 9</div>
+        <div class="track"><div class="fill-amber" style="width: 42%;"></div></div>
+        <div class="score">4.2</div>
+        <div class="band">MODERATE</div>
+      </div>
+      <div class="bar-chart-row">
+        <div class="label">DORA Art. 6</div>
+        <div class="track"><div class="fill-amber" style="width: 18%;"></div></div>
+        <div class="score">1.8</div>
+        <div class="band">LOW</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. IRREVERSIBILITY -->
+<section class="block">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="num">§ 9 · Irreversibility profile</div>
+      <h2 class="title">What is at stake <em>if the chain does not hold.</em></h2>
+      <p class="desc">The cost of failing to intervene, and the cost of intervening incorrectly. Both are bounded; neither is small.</p>
+    </div>
+
+    <div class="grid-cells cols-2 reveal" style="margin-top: 32px;">
+      <div class="cell">
+        <div class="n">I · 01</div>
+        <div class="name">Time to <em>reversal.</em></div>
+        <p class="text"><strong style="color: var(--ink); font-size: 28px; font-weight: 500; display: block; margin: 8px 0 12px; letter-spacing: -0.022em;">~6 hours</strong>Before disclosure threshold under PRA / FCA notification requirements is crossed. Beyond this window, intervention shifts from operational halt to regulatory remediation.</p>
+      </div>
+      <div class="cell">
+        <div class="n">I · 02</div>
+        <div class="name">Cost of <em>mis-intervention.</em></div>
+        <p class="text"><strong style="color: var(--ink); font-size: 28px; font-weight: 500; display: block; margin: 8px 0 12px; letter-spacing: -0.022em;">£2.4–4.1M</strong>Estimated revenue impact of a 24-hour halt in error during peak season. Material but recoverable; orders of magnitude below the cost of a non-halt during a true drift event.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. CRR TERMINALS -->
+<section class="block soft">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="num">§ 10 · CRR terminals</div>
+      <h2 class="title">Three terminal classifications <em>concentrated on authority.</em></h2>
+      <p class="desc">The Control Reality Register terminals reached for this system. Each one explains why the rating cannot be raised by remediation that does not address the underlying authority structure.</p>
+    </div>
+
+    <div class="terminal-grid reveal">
+      <div class="terminal-card">
+        <div class="code">T-04 · RED</div>
+        <div class="nm">Authority lag &gt; window.</div>
+        <p>The pathway from detection to halt instruction passes through a forum whose convening cadence exceeds the reversibility window. Cannot be remediated by faster signal.</p>
+      </div>
+      <div class="terminal-card">
+        <div class="code">T-07 · RED</div>
+        <div class="nm">Quorum unavailable on call.</div>
+        <p>Halt authority requires a quorum; no out-of-hours rota exists; no individual is authorised to act unilaterally. Structural, not procedural.</p>
+      </div>
+      <div class="terminal-card">
+        <div class="code">T-09 · RED</div>
+        <div class="nm">Reversibility designed-out.</div>
+        <p>Auto-decline path lacks an in-window reversal mechanism. Intervention on this surface is bounded by next-day reprocessing, not real-time correction.</p>
+      </div>
+      <div class="terminal-card">
+        <div class="code">T-02 · AMBER</div>
+        <div class="nm">Threshold tuning not re-validated.</div>
+        <p>Drift thresholds inherited from prior model version. Acceptable interim rating; falls to red if next retrain ships without re-validation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11. EVIDENCE REGISTER -->
+<section class="block">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="num">§ 11 · Evidence register</div>
+      <h2 class="title">Every claim, <em>graded.</em></h2>
+      <p class="desc">The evidence register that anchors every score. Lowest-grade evidence in a dimension caps the dimension. Listed in evidence-grade order, lowest first.</p>
+    </div>
+
+    <table class="tbl reveal">
+      <thead>
+        <tr><th style="width:100px;">ID</th><th>Description</th><th style="width:120px;">Type</th><th style="width:120px;">Grade</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>E-12</td><td class="sans">"On-call halt authority exists" — stated in interview, no document</td><td>Verbal</td><td><span class="pill red">G0 · Assumed</span></td></tr>
+        <tr><td>E-08</td><td class="sans">MRC charter naming halt authority</td><td>Document</td><td><span class="pill red">G1 · Policy</span></td></tr>
+        <tr><td>E-04</td><td class="sans">Tabletop exercise minutes — 2024-Q4</td><td>Drill</td><td><span class="pill amber">G2 · Drill</span></td></tr>
+        <tr><td>E-02</td><td class="sans">Production drift monitoring runtime logs (12 months)</td><td>Operational</td><td><span class="pill amber">G3 · Production</span></td></tr>
+        <tr><td>E-01</td><td class="sans">2024 outage post-mortem with timing telemetry</td><td>Stress</td><td><span class="pill green">G4 · Stress-validated</span></td></tr>
+        <tr><td>E-06</td><td class="sans">Hashed audit log sample, regulator-format export</td><td>Stress</td><td><span class="pill green">G4 · Stress-validated</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 12. SCENARIO IMPACT -->
+<section class="block soft">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="num">§ 12 · Scenario impact</div>
+      <h2 class="title">Modelled exposure <em>if the chain does not hold.</em></h2>
+      <p class="desc">Quantified consequence of the trigger scenario reaching the disclosure threshold without intervention. Drawn from the bank's own materiality matrix; not Intervene's projection.</p>
+    </div>
+
+    <div class="callout-red reveal">
+      <div class="lab">▲ Trigger scenario · macro shock + drift</div>
+      <h3>If detection-to-halt does not complete inside six hours.</h3>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 28px; border-top: 1px solid rgba(200,50,42,0.25);">
+        <div style="padding: 24px 24px 24px 0; border-right: 1px solid rgba(200,50,42,0.25);">
+          <div class="mono" style="color: var(--warn); margin-bottom: 8px;">Decisions exposed</div>
+          <div style="font-size: 32px; font-weight: 500; letter-spacing: -0.025em;">~108k</div>
+          <div class="mono" style="color: var(--muted); margin-top: 6px;">over six-hour window</div>
         </div>
-
-        <p style="margin-top:28px;">Under SS1/23 §6 the PRA expects evidence that a material model can be halted, reversed, or over-ridden <strong>inside the harm window that the model itself creates</strong>. The evidence for this system would not meet that bar. The issue is structural: the batch cycle is the monitoring, escalation, and intervention surface combined. When the cycle ends at 06:00 and the next cycle begins at 23:00, no part of the chain is available for 17 hours.</p>
-
-        <p class="dim">This report identifies three remediation paths in §08 (Board conclusion), with expected capital, operational, and regulatory-timeline implications for each.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════ §02 — TRIGGER EVENT ═════════════════════ -->
-<section class="s">
-  <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 02</div>
-      <div class="s-title">Trigger Event</div>
-    </div>
-
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner">
-        <p>The trigger scenario for this assessment is a <strong>distribution shift compounded by a regulatory 24-hour demand for model-decision justification</strong>. Specifically: the live applicant population diverges materially from the training distribution — a combination of a macroeconomic condition (real-income compression) and a product-channel change (a new partner sub-brand introduced eleven weeks before the assessment).</p>
-
-        <p>Within the scenario, the PRA requests within 24 hours a specified set of model-behaviour evidence: recent decision distributions, drift indicators, a named individual's attestation of the model's current fitness, and confirmation of any intervention taken. The scenario is not hypothetical; it matches the intervention evidence pattern the PRA requested of UK deposit-takers in three recent supervisory exercises on model risk.</p>
-
-        <p class="dim">The scenario was selected because it is the intersection the assessed system is least equipped to respond to: a condition that the nightly batch detects only retrospectively, against a regulatory clock that runs in real time.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════ §03 — DETECTION REALITY ═════════════════════ -->
-<section class="s">
-  <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 03</div>
-      <div class="s-title">Detection Reality</div>
-    </div>
-
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner wide">
-        <p>Detection operates on aggregate drift indicators computed at the end of each nightly batch, reviewed the following morning by the model-monitoring team. No real-time detection surface exists. Distribution shift can be observed <em>only in retrospect</em>, once the batch completes.</p>
-
-        <table class="data">
-          <thead>
-            <tr><th>Control surface</th><th>Observed state</th><th>Evidence grade</th><th>Latency to signal</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Batch drift indicators</strong><br/><em>PSI, CSI, score-distribution KL</em></td>
-              <td>Operational in production. Computed nightly. Review within 4 business hours of batch completion.</td>
-              <td class="num">Grade 3</td>
-              <td class="num">~8–12 hrs</td>
-            </tr>
-            <tr>
-              <td><strong>Realtime drift detection</strong></td>
-              <td>Not implemented. Monitoring design assumes distribution stability within-batch.</td>
-              <td class="num" style="color:var(--red);">Grade 0</td>
-              <td class="num" style="color:var(--red);">n/a</td>
-            </tr>
-            <tr>
-              <td><strong>Decision-level outlier flagging</strong></td>
-              <td>Documented in the operator manual; not enabled in the production pipeline.</td>
-              <td class="num" style="color:var(--red);">Grade 1</td>
-              <td class="num">indeterminate</td>
-            </tr>
-            <tr>
-              <td><strong>Complaint / ombudsman feedback</strong></td>
-              <td>Operational. Feeds into model review cycle. Latency 48–96 hrs from applicant decision.</td>
-              <td class="num">Grade 3</td>
-              <td class="num">~48–96 hrs</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <p style="margin-top:24px;"><strong>Finding.</strong> The detection surface is structurally batch-coupled. Evidence grade caps at 3, yielding a dimensional score ceiling of 4.0. The organisation's stated confidence in detection (self-reported at 4.5) exceeds the evidence grade by 1.5 points on a 5-point scale — recorded as a Delusion Gap flag under §05.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════ §04 — ESCALATION BREAKDOWN ═════════════════════ -->
-<section class="s">
-  <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 04</div>
-      <div class="s-title">Escalation Breakdown <em>— the primary failure</em></div>
-    </div>
-
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner wide">
-        <p>The escalation path is the stage where this system fails. The failure is not one of process design but of <strong>temporal cadence</strong>. The path exists and is documented; it simply cannot run fast enough against the scenario clock.</p>
-
-        <table class="data">
-          <thead>
-            <tr><th>Escalation property</th><th>Current state</th><th>Evidence grade</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Path documented</strong></td>
-              <td>Yes. Model-monitoring team → Head of Model Risk → CRO (SMF4). Documented in MRM-POL-004.</td>
-              <td class="num">Grade 1</td>
-            </tr>
-            <tr>
-              <td><strong>Tested in drill</strong></td>
-              <td>Limited. One tabletop exercise in Q2 2025. Path exercised; the tabletop did not simulate out-of-hours conditions.</td>
-              <td class="num">Grade 2</td>
-            </tr>
-            <tr>
-              <td><strong>Out-of-hours tested</strong></td>
-              <td><strong>No.</strong> The recorded mean time-to-CRO of 1,440 minutes (24 hrs) is a within-business-hours figure.</td>
-              <td class="num" style="color:var(--red);">Grade 0</td>
-            </tr>
-            <tr>
-              <td><strong>Mean time-to-authority</strong></td>
-              <td>1,440 minutes (business-hours basis). Exceeds the 720-minute reversibility window by a factor of 2.</td>
-              <td class="num" style="color:var(--red);">&gt; window</td>
-            </tr>
-            <tr>
-              <td><strong>Evidence type</strong></td>
-              <td>Policy documentation only. No telemetry, no post-exercise review, no time-stamped authority transfer record.</td>
-              <td class="num" style="color:var(--red);">policy-only</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <p style="margin-top:24px;"><strong>Structural finding.</strong> Escalation evidence caps at Grade 2 (tested in drill). Applying the evidence cap, the maximum achievable escalation score is 3.0 / 5.0. Given the measured mean-time-to-authority exceeds the reversibility window, the dimension is additionally penalised under the temporal-gating model. <em>Final escalation score: 2.4 / 5.0 — RED.</em></p>
-
-        <p class="dim">This is the first break in the intervention chain. By the chain-ceiling rule, all downstream stages (Decision, Intervention) are capped at 3.4 / 5.0 regardless of their own evidence — you cannot decide on or intervene in what was not escalated in time.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════ §05 — DECISION AUTHORITY ═════════════════════ -->
-<section class="s">
-  <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 05</div>
-      <div class="s-title">Decision Authority</div>
-    </div>
-
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner">
-        <p>Decision authority in this system is clear on paper and operationally robust <em>once escalation has occurred</em>. Named accountability (CRO, SMF4, M. Singh) is documented in the SMCR map and reflected in the Bank of England SMF register. Decision-making under incomplete information is supported by a documented runbook and a quarterly exercise.</p>
-
-        <p>The weakness is structural, not procedural: <strong>the decision-maker's authority is real but arrives too late</strong>. In the assessed scenario, by the time the CRO is formally notified, the harm window has closed. The decision that would otherwise be made under pressure cannot be made at all, because the conditions for making it materially pass before the signal reaches authority.</p>
-
-        <p class="dim"><strong>Delusion Gap flag.</strong> Self-reported organisational confidence in decision authority: 4.5 / 5.0. Measured evidence grade: 3.0. Gap: 1.5. Flagged for board awareness under §05 of the methodology: confidence materially exceeds stress-tested capability in this dimension.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════ §06 — INTERVENTION REALITY ═════════════════════ -->
-<section class="s">
-  <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 06</div>
-      <div class="s-title">Intervention Reality</div>
-    </div>
-
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner wide">
-        <p>Three intervention modes are documented. <strong>One has been tested under realistic conditions.</strong></p>
-
-        <table class="data">
-          <thead>
-            <tr><th>Mode</th><th>Documented</th><th>Tested</th><th>Time-to-effective</th><th>Evidence grade</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Revert to manual underwriting</strong></td>
-              <td class="muted">Yes</td>
-              <td class="muted">Yes · last exercised Q4 2025</td>
-              <td class="num">720 min</td>
-              <td class="num">Grade 3</td>
-            </tr>
-            <tr>
-              <td><strong>Override individual decisions</strong></td>
-              <td class="muted">Yes</td>
-              <td class="muted">No · procedural only</td>
-              <td class="num" style="color:var(--red);">indeterminate</td>
-              <td class="num" style="color:var(--red);">Grade 1</td>
-            </tr>
-            <tr>
-              <td><strong>Disable the model entirely</strong></td>
-              <td class="muted">Yes · a "kill-switch" exists</td>
-              <td class="muted">Yes · tested in technical-change-management context, not stress context</td>
-              <td class="num">≤ 60 min</td>
-              <td class="num">Grade 2</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <p style="margin-top:24px;">The kill-switch functions; it was tested during planned maintenance. What has not been tested is whether it can be <em>authorised</em> under the time pressure of the assessed scenario. The technical capacity to disable is strong; the decision-authority path to authorise the disabling under pressure is the weak link.</p>
-
-        <p>Revert-to-manual is the tested intervention mode, but its 720-minute time-to-effective exactly equals the reversibility window. The intervention is viable only if initiated at T+0; every minute of upstream latency erodes the window one-for-one.</p>
-
-        <p><strong>Finding.</strong> Intervention capacity exists in theory (score ceiling 4.0 after chain-cap from escalation). Given the upstream failure, effective intervention capability under the scenario is <code>3.2 / 5.0</code> — AMBER. This is not an intervention-capability problem; it is an escalation problem that presents as an intervention problem.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════ §07 — FIRST POINT OF IRRECOVERABLE FAILURE ═════════════════════ -->
-<section class="s">
-  <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 07</div>
-      <div class="s-title">First Point of Irrecoverable Failure</div>
-    </div>
-
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner">
-        <p><strong>Stage 2 — Escalation.</strong> The causal chain becomes irrecoverable at the moment distribution shift enters the live applicant stream and the nightly batch has not yet completed. From that moment, the organisation has no surface through which authority with intervention rights can be alerted. The chain has broken; the remaining stages are running on retrospective information against a clock the organisation cannot see.</p>
-
-        <p class="dim">Formally, the first point of irrecoverable failure is evaluated against the reversibility window: any stage where cumulative latency (upstream) plus stage latency exceeds the 720-minute window is irrecoverable. For the assessed system, cumulative latency at the end of Stage 2 (escalation) is already 1,440 minutes — 2× the window. Stage 2 is the first, not the only, irrecoverable point.</p>
-
-        <p>This distinction matters for remediation prioritisation: investment in intervention-mode testing (Stage 4) will not move the verdict while escalation remains the first break. <em>Remediation must begin upstream.</em></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════ §08 — BOARD CONCLUSION ═════════════════════ -->
-<section class="s">
-  <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 08</div>
-      <div class="s-title">Board Conclusion</div>
-    </div>
-
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner wide">
-        <div class="board-callout">
-          <h4>For the attention of the Board Risk Committee and SMF4 holder</h4>
-          <p class="q">Under PRA SS1/23 §6, would the evidence available today demonstrate intervention capability to a supervisory examination <em>within the harm window</em> of this model?</p>
-
-          <p><strong>The honest answer is no.</strong> The failure is not an absence of governance — the governance documents are substantially complete, accountability is named and registered, auditability is high-quality, and the intervention modes are available. The failure is that none of this can be invoked fast enough against a real-time clock. The batch cycle that produces the model's decisions is the same cycle that produces its monitoring, escalation, and intervention. <em>When it is down, the whole chain is down.</em></p>
-
-          <p>Three remediation paths address the structural problem, in order of capital intensity:</p>
-
-          <div class="actions">
-            <div class="an">A</div>
-            <div class="ad"><strong>Introduce a real-time outlier flag on live applications.</strong> Not full drift detection — a narrower surface that flags individual applications whose input-vector distance from the training centroid exceeds an established threshold. Estimated capital: moderate. Timeline: 8–12 weeks engineering, 4 weeks validation. Closes the first-signal gap and creates a surface capable of out-of-hours escalation.</div>
-
-            <div class="an">B</div>
-            <div class="ad"><strong>Establish an out-of-hours escalation duty roster</strong> with documented authority to halt model operation (invoking the existing kill-switch) without pre-authorisation from the CRO. Estimated capital: low. Timeline: 6–8 weeks policy, 4 weeks exercise. Does not improve detection; does shorten the escalation-to-authority gap to inside 60 minutes.</div>
-
-            <div class="an">C</div>
-            <div class="ad"><strong>Reduce the batch cycle period</strong> from nightly to four-hourly, with corresponding monitoring cadence. Estimated capital: high. Timeline: 6+ months engineering, 3 months pre-production validation, regulatory engagement required. The most structurally sound intervention; also the most disruptive to the operational stack. Not recommended as a first step.</div>
-          </div>
+        <div style="padding: 24px 24px 24px 24px; border-right: 1px solid rgba(200,50,42,0.25);">
+          <div class="mono" style="color: var(--warn); margin-bottom: 8px;">Notification trigger</div>
+          <div style="font-size: 32px; font-weight: 500; letter-spacing: -0.025em;">PRA / FCA</div>
+          <div class="mono" style="color: var(--muted); margin-top: 6px;">disclosure threshold crossed</div>
         </div>
-
-        <p style="margin-top:28px;">Intervene Advisory's position: <strong>B is the fastest path to remove the scenario-specific exposure</strong>, pursued alongside A for durable improvement. C is a strategic change, not a tactical one — appropriate to plan but not to wait for.</p>
-
-        <p class="dim">None of these recommendations are time-and-materials advisory engagements. Intervene Advisory does not implement remediation; we hand the prioritised list to your internal programme or a named delivery partner.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════ §09 — EVIDENCE REGISTER ═════════════════════ -->
-<section class="s">
-  <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 09</div>
-      <div class="s-title">Evidence Register</div>
-    </div>
-
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner wide">
-        <p>Every claim in this report is traceable to a specific piece of evidence examined during the engagement. The register below records each claim, its source, evidence type, and assigned evidence grade. <em>Evidence grade, not control quality, is what drives the dimensional score ceiling.</em></p>
-
-        <div class="ev-register">
-          <div class="ev-row">
-            <div class="ev-id">EV-01</div>
-            <div class="ev-desc">Batch drift indicators in production<br/><em>Runbook MRM-MON-004; operator console walk-through</em></div>
-            <div class="ev-type">Production · observed</div>
-            <div><span class="ev-grade g3">Grade 3</span></div>
-          </div>
-          <div class="ev-row">
-            <div class="ev-id">EV-02</div>
-            <div class="ev-desc">Absence of real-time drift detection<br/><em>Architecture diagram; engineering team confirmation</em></div>
-            <div class="ev-type">Structural · missing</div>
-            <div><span class="ev-grade g0">Grade 0</span></div>
-          </div>
-          <div class="ev-row">
-            <div class="ev-id">EV-03</div>
-            <div class="ev-desc">Documented escalation path to CRO<br/><em>MRM-POL-004 §3.2; SMCR responsibilities map</em></div>
-            <div class="ev-type">Policy</div>
-            <div><span class="ev-grade g1">Grade 1</span></div>
-          </div>
-          <div class="ev-row">
-            <div class="ev-id">EV-04</div>
-            <div class="ev-desc">Q2 2025 escalation tabletop exercise<br/><em>Exercise report; participant list; post-exercise review</em></div>
-            <div class="ev-type">Drill</div>
-            <div><span class="ev-grade g2">Grade 2</span></div>
-          </div>
-          <div class="ev-row">
-            <div class="ev-id">EV-05</div>
-            <div class="ev-desc">Absence of out-of-hours escalation test<br/><em>Exercise scheduling record; duty-roster review</em></div>
-            <div class="ev-type">Structural · missing</div>
-            <div><span class="ev-grade g0">Grade 0</span></div>
-          </div>
-          <div class="ev-row">
-            <div class="ev-id">EV-06</div>
-            <div class="ev-desc">Q4 2025 revert-to-manual exercise<br/><em>Exercise log; underwriting team engagement record</em></div>
-            <div class="ev-type">Production · tested</div>
-            <div><span class="ev-grade g3">Grade 3</span></div>
-          </div>
-          <div class="ev-row">
-            <div class="ev-id">EV-07</div>
-            <div class="ev-desc">Kill-switch tested in planned maintenance<br/><em>Change record CR-24-01088; execution log</em></div>
-            <div class="ev-type">Technical · tested</div>
-            <div><span class="ev-grade g2">Grade 2</span></div>
-          </div>
-          <div class="ev-row">
-            <div class="ev-id">EV-08</div>
-            <div class="ev-desc">Audit logs complete and tamper-evident<br/><em>Sample reconstruction exercise; retention configuration</em></div>
-            <div class="ev-type">Production · verified</div>
-            <div><span class="ev-grade g4">Grade 4</span></div>
-          </div>
-          <div class="ev-row">
-            <div class="ev-id">EV-09</div>
-            <div class="ev-desc">Human halt authority tested<br/><em>Q3 2025 exercise; CRO attestation</em></div>
-            <div class="ev-type">Drill</div>
-            <div><span class="ev-grade g2">Grade 2</span></div>
-          </div>
-          <div class="ev-row">
-            <div class="ev-id">EV-10</div>
-            <div class="ev-desc">SMF4 designation &amp; responsibilities map<br/><em>SMCR register; role descriptor; reporting lines</em></div>
-            <div class="ev-type">Policy · verified</div>
-            <div><span class="ev-grade g3">Grade 3</span></div>
-          </div>
+        <div style="padding: 24px 0 24px 24px;">
+          <div class="mono" style="color: var(--warn); margin-bottom: 8px;">Estimated remediation cost</div>
+          <div style="font-size: 32px; font-weight: 500; letter-spacing: -0.025em;">£14–22M</div>
+          <div class="mono" style="color: var(--muted); margin-top: 6px;">three-year horizon</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═════════════════════ §10 — REGULATORY MAPPING REGISTER ═════════════════════ -->
-<section class="s">
+<!-- 13. SYSTEM VIABILITY -->
+<section class="block">
   <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 10</div>
-      <div class="s-title">Regulatory Mapping Register</div>
+    <div class="section-head reveal">
+      <div class="num">§ 13 · System viability</div>
+      <h2 class="title">The single-line answer <em>for the audit committee.</em></h2>
+      <p class="desc">The verdict the chair is being asked to certify. Not a recommendation. A measurement.</p>
     </div>
 
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner wide">
-        <p>Obligation-level mapping of findings to specific regulatory articles. Each row is an obligation trigger; the status reflects the gap between the assessed capability and the obligation's evidence bar.</p>
+    <div class="viability-grid reveal">
+      <div>
+        <div class="verdict">Verdict · CRED-MOD-04</div>
+        <div class="big">RED</div>
+        <p class="reason">Detection capability is sound. Authority capability is not. Until the halt-authority structure is restructured to permit out-of-cycle action, PRA SS1/23 §6 intervention capability cannot be supported above amber. Submitting it as evidence of §6 compliance would misrepresent the actual capability.</p>
+      </div>
+      <div>
+        <div class="scale-lab">Capability rating · 0–5</div>
+        <div class="scale-bar"></div>
+        <div class="scale-rank">1.25 / 5</div>
+        <p style="font-size: 13px; color: var(--muted); line-height: 1.6; margin: 18px 0 0;">Driven by chain-ceiling propagation: signal scores 4.0 but escalation caps at 1.25, capping all downstream stages. Average is misleading. The chain is the control.</p>
+      </div>
+    </div>
 
-        <div class="reg-grid">
-          <div class="reg-cell">
-            <div class="framework">PRA SS1/23</div>
-            <div class="article">§3.3 · Ongoing Monitoring</div>
-            <div class="obligation">Firm must monitor models for performance degradation and distribution shift on a frequency proportionate to the model's risk.</div>
-            <div class="status margin">Partial · batch-only signal</div>
-          </div>
-          <div class="reg-cell">
-            <div class="framework">PRA SS1/23</div>
-            <div class="article">§5 · Governance &amp; Accountability</div>
-            <div class="obligation">Named senior-manager accountability for material models, with decision rights commensurate with the responsibility.</div>
-            <div class="status pass">Met · SMF4 designated &amp; verified</div>
-          </div>
-          <div class="reg-cell">
-            <div class="framework">PRA SS1/23</div>
-            <div class="article">§6 · Model Risk Mitigation</div>
-            <div class="obligation">Tested halt, override, and reversibility procedures inside the harm window of the model.</div>
-            <div class="status fail">Not Met · escalation exceeds window</div>
-          </div>
-          <div class="reg-cell">
-            <div class="framework">FCA Consumer Duty</div>
-            <div class="article">Cross-cutting: avoiding foreseeable harm</div>
-            <div class="obligation">Where automated decisions affect retail consumers, firms must demonstrate capability to identify and remediate foreseeable harm.</div>
-            <div class="status margin">Partial · remediation lag</div>
-          </div>
-          <div class="reg-cell">
-            <div class="framework">DORA</div>
-            <div class="article">Article 8 · ICT Risk Management</div>
-            <div class="obligation">ICT-related incidents must be detectable within time scales appropriate to the nature of the service.</div>
-            <div class="status margin">Partial · detection latency</div>
-          </div>
-          <div class="reg-cell">
-            <div class="framework">GDPR</div>
-            <div class="article">Article 22 · Automated Decisions</div>
-            <div class="obligation">Right to obtain human intervention in decisions based solely on automated processing.</div>
-            <div class="status pass">Met · manual-review path verified</div>
-          </div>
-        </div>
-
-        <p style="margin-top:28px;" class="dim">Mapping is source-cited; the full citation list is available in the supplementary register. Each obligation is tracked as a stable identifier (e.g. <code>ob.pra.ss1-23.v2023-05-17.s6.p2</code>) so that regulatory amendments propagate to assessments automatically.</p>
+    <div class="pull-quote reveal">
+      <div class="label">§ Position</div>
+      <div>
+        <p class="text">A board that cannot intervene is not a safeguard. It is <em>a witness.</em></p>
+        <p class="attr">— Intervene Group Ltd · 2026</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═════════════════════ §11 — FRAMEWORK PRESSURE ═════════════════════ -->
-<section class="s">
+<!-- CTA -->
+<section class="block tight" style="border-bottom: 0; padding-bottom: 0;">
   <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 11</div>
-      <div class="s-title">Framework Pressure</div>
-    </div>
-
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner wide">
-        <p>Regulatory pressure under each framework, weighted by the specific obligations triggered by this system and the assessed distance to each obligation's evidence bar.</p>
-
-        <div class="pressure-bars">
-          <div class="pressure-row">
-            <div class="pname">PRA SS1/23</div>
-            <div class="pbar-wrap"><div class="pbar red" style="width: 82%;"></div></div>
-            <div class="pval">0.82 / 1.0</div>
-            <div class="pband severe">Severe</div>
-          </div>
-          <div class="pressure-row">
-            <div class="pname">FCA Consumer Duty</div>
-            <div class="pbar-wrap"><div class="pbar amber" style="width: 54%;"></div></div>
-            <div class="pval">0.54 / 1.0</div>
-            <div class="pband elevated">Elevated</div>
-          </div>
-          <div class="pressure-row">
-            <div class="pname">DORA</div>
-            <div class="pbar-wrap"><div class="pbar amber" style="width: 48%;"></div></div>
-            <div class="pval">0.48 / 1.0</div>
-            <div class="pband elevated">Elevated</div>
-          </div>
-          <div class="pressure-row">
-            <div class="pname">EU AI Act</div>
-            <div class="pbar-wrap"><div class="pbar amber" style="width: 41%;"></div></div>
-            <div class="pval">0.41 / 1.0</div>
-            <div class="pband elevated">Elevated</div>
-          </div>
-          <div class="pressure-row">
-            <div class="pname">NIST AI RMF</div>
-            <div class="pbar-wrap"><div class="pbar green" style="width: 22%;"></div></div>
-            <div class="pval">0.22 / 1.0</div>
-            <div class="pband baseline">Baseline</div>
-          </div>
-          <div class="pressure-row">
-            <div class="pname">GDPR Article 22</div>
-            <div class="pbar-wrap"><div class="pbar green" style="width: 18%;"></div></div>
-            <div class="pval">0.18 / 1.0</div>
-            <div class="pband baseline">Baseline</div>
-          </div>
+    <div class="cta-band reveal">
+      <div class="cta-band-inner">
+        <div>
+          <h2>Run this <em>against your own model.</em></h2>
+          <p>The format on this page is the format your audit committee would receive. The engine, the calibration, the attestation, the regulatory mapping — applied to one of your material systems.</p>
         </div>
-
-        <p style="margin-top:24px;" class="dim">Pressure values are computed from obligation weights, evidence gaps, and condition triggers specified in the AGDA regulatory library. Values above 0.7 indicate severe exposure; 0.3–0.7 elevated; below 0.3 baseline. <strong>This system carries severe exposure under SS1/23</strong>, driven primarily by the §6 gap identified in §04 and §10.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════ §12 — SCORING RECORD ═════════════════════ -->
-<section class="s">
-  <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 12</div>
-      <div class="s-title">Scoring Record</div>
-    </div>
-
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner wide">
-        <p>Dimensional scores after evidence-grade cap and chain-ceiling propagation. Dimensions are not averaged into a composite — <em>the chain is controlled by its weakest stage</em>.</p>
-
-        <div class="rag-grid">
-          <div class="rag-cell amber">
-            <div class="dim">D1 · Signal</div>
-            <div class="score">2.8<span class="total">/5</span></div>
-            <span class="band">Amber</span>
-            <p class="note">Batch-only detection. Evidence caps dimension at 4.0. Delusion Gap of 1.5 applied.</p>
-            <div class="cap-note">↓ capped at grade 3</div>
-          </div>
-          <div class="rag-cell red">
-            <div class="dim">D2 · Escalation</div>
-            <div class="score">2.4<span class="total">/5</span></div>
-            <span class="band">Red</span>
-            <p class="note">No out-of-hours path. MTTA exceeds reversibility window by 2×. First break of the chain.</p>
-            <div class="cap-note">↓ capped at grade 2 + temporal penalty</div>
-          </div>
-          <div class="rag-cell amber">
-            <div class="dim">D3 · Decision</div>
-            <div class="score">3.1<span class="total">/5</span></div>
-            <span class="band">Amber</span>
-            <p class="note">Authority is clear and tested; chain-cap from escalation holds this at 3.4 ceiling.</p>
-            <div class="cap-note">↓ chain-ceiling from D2</div>
-          </div>
-          <div class="rag-cell amber">
-            <div class="dim">D4 · Intervention</div>
-            <div class="score">3.2<span class="total">/5</span></div>
-            <span class="band">Amber</span>
-            <p class="note">Kill-switch functional; revert-to-manual tested. Chain-capped from D2.</p>
-            <div class="cap-note">↓ chain-ceiling from D2</div>
-          </div>
-          <div class="rag-cell green">
-            <div class="dim">D5 · Accountability</div>
-            <div class="score">4.2<span class="total">/5</span></div>
-            <span class="band">Green</span>
-            <p class="note">SMF4 named, documented, verified. SMCR alignment intact.</p>
-          </div>
-          <div class="rag-cell amber">
-            <div class="dim">D6 · Human Oversight</div>
-            <div class="score">3.4<span class="total">/5</span></div>
-            <span class="band">Amber</span>
-            <p class="note">Halt authority tested; competence and capacity assessed; not stress-tested.</p>
-          </div>
-          <div class="rag-cell green">
-            <div class="dim">D7 · Auditability</div>
-            <div class="score">4.3<span class="total">/5</span></div>
-            <span class="band">Green</span>
-            <p class="note">Logs complete, tamper-evident, 95% reconstructable. 7-year retention.</p>
-          </div>
-          <div class="rag-cell amber">
-            <div class="dim">D8 · Capacity</div>
-            <div class="score">3.3<span class="total">/5</span></div>
-            <span class="band">Amber</span>
-            <p class="note">Capacity adequate for business-hours operation; insufficient for out-of-hours scenario.</p>
-          </div>
-        </div>
-
-        <p style="margin-top:28px;"><strong>No composite score is computed.</strong> The methodology does not produce an aggregate out of dimensions that cannot be traded off against each other — a strong auditability score does not compensate for a failed escalation path. The verdict is set by the chain, not the mean.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════ §13 — CONTROL REALITY INDEX ═════════════════════ -->
-<section class="s">
-  <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 13</div>
-      <div class="s-title">Control Reality Index <em>— terminal classification</em></div>
-    </div>
-
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner wide">
-        <p>The CRR portfolio classifies each assessed control against one of seven order-sensitive terminals. The terminal captures the specific way the control fails or holds — not a severity score.</p>
-
-        <div class="crr-terminal">
-          <div class="tcode">T-03</div>
-          <div>
-            <div class="tlabel">Structural Escalation Failure</div>
-            <div class="texplain"><em>The primary terminal for this system.</em> A control whose upstream signal surface is physically unable to escalate within the harm window, regardless of the quality of the downstream response. Characterised by cadence mismatch between the system's operational clock and the scenario clock. Remediation requires changing the cadence, introducing a parallel real-time surface, or accepting a narrower safe scale.</div>
-          </div>
-        </div>
-
-        <div class="crr-terminal" style="border-left-color: var(--amber);">
-          <div class="tcode">T-05</div>
-          <div>
-            <div class="tlabel">Confidence–Evidence Gap</div>
-            <div class="texplain">Secondary terminal. Organisational confidence exceeds evidenced capability by ≥1.5 points on a 5-point scale in two dimensions (D1, D3). The system is not only weaker than it needs to be — the organisation perceives it as stronger than it is, which delays remediation commitment.</div>
-          </div>
-        </div>
-
-        <div class="crr-terminal" style="border-left-color: var(--green);">
-          <div class="tcode">T-07</div>
-          <div>
-            <div class="tlabel">Accountability Terminal · Held</div>
-            <div class="texplain">Positive terminal. Named accountability aligned with decision authority and documented chain of responsibility. Not sufficient on its own — but intact and a credible foundation for remediation investment.</div>
-          </div>
+        <div class="cta-pair">
+          <a href="contact.html" class="btn">Request a discussion</a>
+          <a href="services.html" class="btn ghost">See services</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═════════════════════ §14 — SYSTEM VIABILITY ═════════════════════ -->
-<section class="s">
-  <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 14</div>
-      <div class="s-title">System Viability</div>
-    </div>
+</main>
 
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner wide">
-        <div class="viability">
-          <div class="verdict-box">
-            <div class="label">Verdict</div>
-            <div class="v">At Risk</div>
-            <p>The system is operationally viable under normal conditions and is not recommended for immediate shutdown. Under the assessed scenario, however, it cannot meet the regulatory evidence bar, and a supervisory intervention on this basis is a material risk.</p>
-            <p><em>Viability is conditional</em> on implementing remediation path A or B (§08) within 90 days and on not expanding the system's decision-influence surface during the remediation period.</p>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <div class="intervene-logo inverted">
+          <div class="intervene-mark" aria-hidden="true">
+            <span class="panel panel-left"></span><span class="panel panel-right"></span>
           </div>
-          <div class="scale-box">
-            <div class="label">Safe Scale</div>
-            <div class="scale-v">Scale-Constrained</div>
-            <p>The system should not be expanded to a new jurisdiction, product category, or volume tier during the remediation period. Expansion would compound the exposure without improving the underlying chain capability.</p>
-            <p style="margin-top:10px;">Current planned growth multiplier: 1.1× / 18 months. Recommendation: hold the multiplier at 1.0× until remediation is evidenced.</p>
-          </div>
+          <div class="intervene-wordmark">intervene</div>
         </div>
+        <span class="tag">Independent intervention-capability assessment for boards facing consequential AI and operational systems. Intervene Group Ltd, United Kingdom.</span>
+      </div>
+      <div class="foot-col">
+        <h5>Practice</h5>
+        <ul>
+          <li><a href="method.html">Method</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="sample-report.html">Sample report</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Engage</h5>
+        <ul>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="mailto:advisory@intervene.group">advisory@intervene.group</a></li>
+          <li><a href="contact.html">Confidential discussion</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Legal</h5>
+        <ul>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="gdpr.html">GDPR</a></li>
+          <li><a href="intervene-brand-sheet.html">Brand</a></li>
+        </ul>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ═════════════════════ §15 — FINAL TEMPORAL GATING ═════════════════════ -->
-<section class="s">
-  <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 15</div>
-      <div class="s-title">Final Temporal Gating</div>
+    <div class="foot-bottom">
+      <span>© 2026 Intervene Group Ltd · All rights reserved</span>
+      <span class="right">
+        <span>AGDA™ · InterveneCore™</span>
+        <span>·</span>
+        <span>Registered in England &amp; Wales</span>
+      </span>
     </div>
-
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner wide">
-        <p>Eight temporal gates are evaluated against cumulative chain latency and the 720-minute reversibility window. Failure at any gate propagates a verdict penalty; the most-downstream failing gate sets the final temporal verdict.</p>
-
-        <div class="gates">
-          <div class="gate-row">
-            <div class="g-id">G-01</div>
-            <div class="g-desc">Signal-to-observation latency<br/><em>Signal surface produces observable output within gate window</em></div>
-            <div class="g-val">~480 min</div>
-            <div><span class="g-verdict margin">Margin</span></div>
-          </div>
-          <div class="gate-row">
-            <div class="g-id">G-02</div>
-            <div class="g-desc">Observation-to-triage latency<br/><em>Observed signal enters a triage queue with an owner</em></div>
-            <div class="g-val">~240 min</div>
-            <div><span class="g-verdict pass">Pass</span></div>
-          </div>
-          <div class="gate-row">
-            <div class="g-id">G-03</div>
-            <div class="g-desc">Triage-to-escalation latency<br/><em>Triage decision reaches an authority with decision rights</em></div>
-            <div class="g-val">~1,440 min</div>
-            <div><span class="g-verdict fail">Fail</span></div>
-          </div>
-          <div class="gate-row">
-            <div class="g-id">G-04</div>
-            <div class="g-desc">Escalation-to-decision latency<br/><em>Authority makes a halt / no-halt determination</em></div>
-            <div class="g-val">n/a · upstream fail</div>
-            <div><span class="g-verdict fail">Fail</span></div>
-          </div>
-          <div class="gate-row">
-            <div class="g-id">G-05</div>
-            <div class="g-desc">Decision-to-intervention latency<br/><em>Halt instruction is issued into the operational stack</em></div>
-            <div class="g-val">n/a · upstream fail</div>
-            <div><span class="g-verdict fail">Fail</span></div>
-          </div>
-          <div class="gate-row">
-            <div class="g-id">G-06</div>
-            <div class="g-desc">Intervention-to-effect latency<br/><em>Operational stack reflects the halt</em></div>
-            <div class="g-val">≤ 60 min (technical)</div>
-            <div><span class="g-verdict pass">Pass · if reached</span></div>
-          </div>
-          <div class="gate-row">
-            <div class="g-id">G-07</div>
-            <div class="g-desc">Cumulative latency vs. reversibility window<br/><em>End-to-end latency &lt; 720 min</em></div>
-            <div class="g-val">&gt;&gt; 720 min</div>
-            <div><span class="g-verdict fail">Fail</span></div>
-          </div>
-          <div class="gate-row">
-            <div class="g-id">G-08</div>
-            <div class="g-desc">Out-of-hours capability<br/><em>Chain executes equivalently outside business hours</em></div>
-            <div class="g-val">not tested</div>
-            <div><span class="g-verdict fail">Fail</span></div>
-          </div>
-        </div>
-
-        <p style="margin-top:24px;"><strong>Final temporal verdict: FAIL</strong> at G-03 (triage-to-escalation). All downstream gates are recorded as failing; this reflects structural dependency, not independent failure.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════ §16 — CAUSAL CHAIN WITH TIMING ═════════════════════ -->
-<section class="s">
-  <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 16</div>
-      <div class="s-title">Causal Chain with Timing</div>
-    </div>
-
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner wide">
-        <p>End-to-end causal chain, with per-stage measured or inferred latency. Cumulative latency is compared against the 720-minute reversibility window.</p>
-
-        <div class="chain-timing">
-          <div class="chain-node">
-            <div class="label">Stage 1 · Signal</div>
-            <div class="stage">Batch drift detected</div>
-            <div class="time">Latency: <strong>~480 min</strong><br/>Cumulative: ~480 min</div>
-            <div class="note">Distribution shift visible only after overnight batch completes and morning review begins. Measured from the first decision affected by shift.</div>
-            <div class="gate margin">Within window (margin)</div>
-          </div>
-          <div class="chain-node">
-            <div class="label">Stage 2 · Escalation</div>
-            <div class="stage">Signal reaches CRO</div>
-            <div class="time">Latency: <strong>~960 min</strong><br/>Cumulative: ~1,440 min</div>
-            <div class="note">Business-hours path only. Out-of-hours adds a further 720+ min. First point at which the 720-min window is exceeded.</div>
-            <div class="gate fail">Window exceeded</div>
-          </div>
-          <div class="chain-node">
-            <div class="label">Stage 3 · Decision</div>
-            <div class="stage">Halt authorised</div>
-            <div class="time">Latency: <strong>~60 min</strong><br/>Cumulative: ~1,500 min</div>
-            <div class="note">Fast once signal arrives; runbook supports quick decision. Recorded for completeness — window already closed upstream.</div>
-            <div class="gate fail">Window exceeded</div>
-          </div>
-          <div class="chain-node">
-            <div class="label">Stage 4 · Intervention</div>
-            <div class="stage">Kill-switch takes effect</div>
-            <div class="time">Latency: <strong>~45 min</strong><br/>Cumulative: ~1,545 min</div>
-            <div class="note">Technical execution is fast. The system's ability to stop is not the problem. The window to stop within usefully has long since passed.</div>
-            <div class="gate fail">Window exceeded</div>
-          </div>
-        </div>
-
-        <p style="margin-top:24px;" class="dim">Latencies marked as "measured" derive from Q2/Q4 2025 exercise logs and recorded SMCR incident data. Latencies marked as "inferred" are derived from the engine's multi-factor weighting of operational evidence where direct measurements were not available. Inferred latencies carry an additional confidence discount in the scoring model.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════ §17 — SCENARIO IMPACT ═════════════════════ -->
-<section class="s">
-  <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 17</div>
-      <div class="s-title">Scenario Impact</div>
-    </div>
-
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner wide">
-        <div class="scenario">
-          <div class="title">Distribution shift × regulatory 24-hour demand</div>
-          <div class="sub">Compounding conditions. Stressor ensemble matches the exposure the system is structurally least equipped to meet.</div>
-
-          <div class="impact-grid">
-            <div class="ic">
-              <div class="ik">Dimensions pressured</div>
-              <div class="iv">Signal · Escalation<br/>Decision<span class="unit">· (chain-capped)</span></div>
-            </div>
-            <div class="ic">
-              <div class="ik">Effective reversibility</div>
-              <div class="iv">~480 min<span class="unit">vs. 720 nominal</span></div>
-            </div>
-            <div class="ic">
-              <div class="ik">Stage where scenario ends</div>
-              <div class="iv">Stage 2<span class="unit">(Escalation)</span></div>
-            </div>
-          </div>
-        </div>
-
-        <p style="margin-top:24px;">The scenario's regulatory demand compresses the effective reversibility window: from 720 minutes (the asset-class commercial window) to approximately 480 minutes (the PRA's expected evidence-response latency in a supervisory exchange). The system exceeds even the commercial window at Stage 2; against the regulatory window it fails earlier, at Stage 1.</p>
-
-        <p class="dim">Condition-based scenario overrides are applied multiplicatively, in the order specified by the engine's canonical scenario logic. Each override is recorded in the scoring audit trail with the condition it triggered and the factor applied.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════ §18 — IRREVERSIBILITY PROFILE ═════════════════════ -->
-<section class="s">
-  <div class="wrap">
-    <div class="s-head">
-      <div class="s-num">§ 18</div>
-      <div class="s-title">Irreversibility Profile</div>
-    </div>
-
-    <div class="s-body">
-      <div></div>
-      <div class="s-body-inner wide">
-        <p>Specific irreversibility properties of the decision surface. Individual credit decisions are operationally reversible (the decline can be re-underwritten) but reputationally and legally costly after the nominal window; at the severe threshold they compound across the portfolio and become effectively irrecoverable.</p>
-
-        <div class="irrev">
-          <div class="irrev-cell">
-            <div class="k">Profile</div>
-            <div class="v">Portfolio-Compounding</div>
-            <p>Individual decisions are reversible; they compound into a portfolio effect that is not. Characteristic of retail credit, insurance underwriting, and surveillance-driven transactional decisions.</p>
-          </div>
-          <div class="irrev-cell">
-            <div class="k">Nominal reversibility window</div>
-            <div class="v amber">720 min<span class="unit">· 12 hours</span></div>
-            <p>Individual decline decisions can be re-underwritten within 12 hours without material reputational cost. Beyond this threshold, ombudsman complaints and compensation liability rise sharply.</p>
-          </div>
-          <div class="irrev-cell">
-            <div class="k">Severe threshold</div>
-            <div class="v red">2,880 min<span class="unit">· 48 hours</span></div>
-            <p>Beyond 48 hours, the portfolio-level compensation and regulatory attention become effectively irrecoverable at full cost. Operational remediation continues to be possible; reputational and legal cost will not recover.</p>
-          </div>
-          <div class="irrev-cell">
-            <div class="k">Trigger description</div>
-            <div class="v">Compounding portfolio effect</div>
-            <p>Individual credit decisions compound quickly across a portfolio; reversing declined applicants becomes reputationally and legally costly after 12 hours, and effectively irrecoverable after 48.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="cta">
-  <div class="wrap">
-    <h2>This sample was generated from a canonical case. <em>Yours would be generated from yours.</em></h2>
-    <p>A Tier 1 engagement produces the equivalent document for one of your material models, under a scenario you choose, attested end-to-end, delivered to the Board in 8–10 weeks.</p>
-    <a href="contact.html" class="cta-btn">Request a conversation</a>
-    <a href="services.html" class="cta-btn ghost">See the tier ladder</a>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <div class="foot-inner">
-      <div class="foot-brand">Intervene<span>Advisory</span>
-        <small>Independent intervention-capability assessment for regulated AI systems. Human Integrity Advisory, United Kingdom.</small>
-      </div>
-      <div class="foot-links">
-        <a href="contact.html">Contact</a>
-        <a href="terms.html">Terms</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="gdpr.html">GDPR</a>
-      </div>
-    </div>
-    <div class="foot-copy">© 2026 Intervene Advisory Ltd · All rights reserved · AGDA™ and InterveneCore™ are trademarks of Human Integrity Advisory · Sample report SAMPLE-BANK-CREDIT-001</div>
   </div>
 </footer>
 
+<script src="intervene.js"></script>
 </body>
 </html>
