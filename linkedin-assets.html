@@ -1,0 +1,1524 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LinkedIn Assets · Intervene + James Saint</title>
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="icon" href="assets/images/favicons/favicon.ico" sizes="any">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink: #111111;
+    --ink-soft: #1a1a1a;
+    --paper: #ffffff;
+    --paper-soft: #fafafa;
+    --paper-mid: #f4f4f4;
+    --hair: #e6e6e6;
+    --hair-dark: #d4d4d4;
+    --muted: #6b6b6b;
+    --warn: #c8322a;
+    --pass: #2a6f4f;
+    --linkedin: #0a66c2;
+
+    --sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    --gutter: 64px;
+    --max: 1320px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection { background: var(--ink); color: var(--paper); }
+
+  /* ============== TOPBAR ============== */
+  .topbar {
+    border-bottom: 1px solid var(--hair);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: saturate(180%) blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 60;
+  }
+  .topbar-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 14px var(--gutter);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .topbar-inner .left { color: var(--ink); display: inline-flex; align-items: center; gap: 12px; }
+  .topbar-inner .left .dot { width: 6px; height: 6px; background: var(--ink); display: inline-block; }
+  .topbar-inner .right { display: inline-flex; gap: 18px; }
+  .topbar-inner .right .sep { color: var(--hair-dark); }
+
+  /* ============== HEAD ============== */
+  .head {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 96px var(--gutter) 80px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 80px;
+    align-items: end;
+    border-bottom: 1px solid var(--hair);
+  }
+  .head h1 {
+    margin: 0;
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 0.95;
+  }
+  .head h1 em { font-style: italic; font-weight: 400; }
+  .head-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .head-meta dl { margin: 0; }
+  .head-meta dl > div {
+    display: flex;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .head-meta dl > div:last-child { border-bottom: 0; }
+  .head-meta dt { color: var(--ink); width: 130px; flex-shrink: 0; }
+  .head-meta dd { margin: 0; }
+
+  /* ============== JUMP LINKS ============== */
+  .jumpbar {
+    border-bottom: 1px solid var(--hair);
+    background: var(--paper-soft);
+    position: sticky;
+    top: 47px;
+    z-index: 50;
+  }
+  .jumpbar-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 14px var(--gutter);
+    display: flex;
+    gap: 32px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    overflow-x: auto;
+  }
+  .jumpbar-inner a {
+    color: var(--muted);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 160ms;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+  }
+  .jumpbar-inner a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+  /* ============== SECTION ============== */
+  section {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 96px var(--gutter);
+    border-bottom: 1px solid var(--hair);
+  }
+  section:last-of-type { border-bottom: 0; }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: 140px 1fr 1.4fr;
+    gap: 48px;
+    margin-bottom: 64px;
+    align-items: baseline;
+  }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .section-title {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+  .section-title em { font-style: italic; font-weight: 400; }
+  .section-desc {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 52ch;
+  }
+
+  .subhead {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 18px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  /* ============== ASSET CARDS ============== */
+  .asset {
+    border: 1px solid var(--hair);
+    margin-bottom: 32px;
+    background: var(--paper);
+  }
+  .asset-head {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--hair);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .asset-title {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
+  .asset-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .asset-meta .v { color: var(--ink); }
+
+  .asset-body {
+    padding: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--paper-mid);
+    background-image:
+      linear-gradient(45deg, rgba(0,0,0,0.025) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(0,0,0,0.025) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.025) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.025) 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    overflow: auto;
+  }
+  .asset-body.solid {
+    background: var(--paper-mid);
+    background-image: none;
+  }
+  .asset-foot {
+    padding: 18px 24px;
+    border-top: 1px solid var(--hair);
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    background: var(--paper-soft);
+  }
+
+  /* asset action buttons */
+  .btn-mini {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--hair-dark);
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: background 160ms, color 160ms, border-color 160ms;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-mini:hover {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .btn-mini.copied {
+    background: var(--pass);
+    color: var(--paper);
+    border-color: var(--pass);
+  }
+
+  /* ============== INTERVENE LOGO PRIMITIVES ============== */
+  .iv-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 25px;
+    color: var(--ink);
+    font-family: var(--sans);
+  }
+  .iv-logo.inverted { color: var(--paper); }
+  .iv-wordmark {
+    font-size: 96px;
+    font-weight: 500;
+    letter-spacing: -0.055em;
+    line-height: 0.9;
+  }
+  .iv-mark {
+    --w: 44px;
+    --h: 96px;
+    --gap: 16px;
+    position: relative;
+    width: calc(var(--w) * 2 + var(--gap));
+    height: var(--h);
+    flex-shrink: 0;
+  }
+  .iv-panel {
+    position: absolute;
+    top: 0;
+    width: var(--w);
+    height: var(--h);
+    background: currentColor;
+  }
+  .iv-panel-l {
+    left: 0;
+    clip-path: polygon(0 0, 100% 18%, 100% 82%, 0 100%);
+  }
+  .iv-panel-r {
+    right: 0;
+    clip-path: polygon(100% 0, 0 18%, 0 82%, 100% 100%);
+  }
+
+  /* ============== LINKEDIN-EXACT RENDERS ============== */
+
+  /* Company square logo render (300×300) */
+  .li-company-logo-300 {
+    width: 300px;
+    height: 300px;
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .li-company-logo-300 .iv-logo { gap: 12px; }
+  .li-company-logo-300 .iv-mark {
+    --w: 28px;
+    --h: 110px;
+    --gap: 11px;
+  }
+
+  /* Mark-only square (for icon variants) */
+  .li-mark-square {
+    width: 300px;
+    height: 300px;
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .li-mark-square .iv-mark {
+    --w: 56px;
+    --h: 200px;
+    --gap: 22px;
+    color: var(--paper);
+  }
+
+  /* Company banner 1128×191 */
+  .li-company-banner {
+    width: 1128px;
+    height: 191px;
+    background: var(--ink);
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .li-company-banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+  .li-company-banner-inner {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: 36px 60px 36px 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .li-company-banner-inner .pre {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin: 0 0 12px;
+  }
+  .li-company-banner-inner .head {
+    all: unset;
+    font-family: var(--sans);
+    font-size: 36px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    color: var(--paper);
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .li-company-banner-inner .head em {
+    font-style: italic;
+    font-weight: 400;
+  }
+  .li-company-banner-inner .post {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin: 14px 0 0;
+  }
+  .li-company-banner-inner .post .dot { color: rgba(255,255,255,0.3); padding: 0 8px; }
+
+  /* Profile photo 400×400 */
+  .li-profile-photo {
+    width: 400px;
+    height: 400px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--paper-mid);
+  }
+  .li-profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 18%;
+    display: block;
+  }
+
+  /* Profile cover 1584×396 */
+  .li-profile-cover {
+    width: 1584px;
+    height: 396px;
+    background: var(--ink);
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .li-profile-cover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.022) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.022) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+  }
+
+  /* Avatar safe-zone overlay for profile cover (LinkedIn places avatar at bottom-left) */
+  .li-profile-cover .avatar-mask {
+    position: absolute;
+    left: 64px;
+    bottom: -100px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    border: 2px dashed rgba(255,255,255,0.18);
+    background: rgba(0,0,0,0.0);
+    pointer-events: none;
+    z-index: 3;
+  }
+  .li-profile-cover .avatar-mask::after {
+    content: "AVATAR ZONE";
+    position: absolute;
+    top: -22px;
+    left: 0;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .li-profile-cover-inner {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: 56px 80px 56px 80px;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .li-profile-cover-inner .left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .li-profile-cover-inner .left .id {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+  }
+  .li-profile-cover-inner .right {
+    border-left: 1px solid rgba(255,255,255,0.15);
+    padding-left: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .li-profile-cover-inner .right .head-line {
+    font-size: 44px;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 0;
+    color: var(--paper);
+  }
+  .li-profile-cover-inner .right .head-line em {
+    font-style: italic;
+    font-weight: 400;
+  }
+  .li-profile-cover-inner .right .sub-line {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin: 0;
+  }
+  .li-profile-cover-inner .right .sub-line .dot { color: rgba(255,255,255,0.3); padding: 0 6px; }
+
+  /* the cover lockup uses the intervene mark + a mono ID block */
+  .cover-lockup {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    color: var(--paper);
+  }
+  .cover-lockup .iv-mark {
+    --w: 22px;
+    --h: 64px;
+    --gap: 8px;
+  }
+  .cover-lockup .iv-wordmark {
+    font-size: 56px;
+    line-height: 0.9;
+  }
+
+  /* ============== TEXT BLOCKS ============== */
+  .copy-block {
+    border: 1px solid var(--hair);
+    background: var(--paper);
+    margin-bottom: 24px;
+  }
+  .copy-block-head {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--hair);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    background: var(--paper-soft);
+  }
+  .copy-block-head .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .copy-block-head .count {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .copy-block-head .count.over { color: var(--warn); }
+  .copy-block-body {
+    padding: 24px 20px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ink);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .copy-block-body.mono {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  /* compact two-col grid for small fields */
+  .field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 760px) {
+    .field-grid { grid-template-columns: 1fr; }
+  }
+
+  /* about / experience tables */
+  .field-table {
+    width: 100%;
+    border-top: 1px solid var(--hair);
+    margin: 0;
+  }
+  .field-table .row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--hair);
+    font-size: 14px;
+  }
+  .field-table .row .k {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .field-table .row .v { color: var(--ink); }
+  @media (max-width: 760px) {
+    .field-table .row { grid-template-columns: 1fr; gap: 6px; }
+  }
+
+  /* hashtag pills */
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border: 1px solid var(--hair-dark);
+    border-radius: 999px;
+    background: var(--paper);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 160ms, color 160ms, border-color 160ms;
+  }
+  .pill:hover {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  /* checklist */
+  .checklist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .checklist li {
+    padding: 12px 0;
+    padding-left: 28px;
+    border-bottom: 1px solid var(--hair);
+    position: relative;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .checklist li:last-child { border-bottom: 0; }
+  .checklist li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 18px;
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--ink);
+  }
+  .checklist li strong { font-weight: 500; }
+
+  /* note card */
+  .note {
+    background: var(--paper-soft);
+    border: 1px solid var(--hair);
+    border-left: 2px solid var(--ink);
+    padding: 18px 22px;
+    margin-bottom: 32px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .note strong { color: var(--ink); font-weight: 500; }
+
+  /* divider for big sections */
+  .big-divider {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+  }
+  .big-divider .inner {
+    height: 1px;
+    background: var(--ink);
+  }
+
+  /* ============== FOOTER ============== */
+  footer {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 48px var(--gutter) 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-top: 1px solid var(--hair);
+  }
+  footer .footer-mark {
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    text-transform: none;
+  }
+
+  /* ============== RESPONSIVE ============== */
+  @media (max-width: 1100px) {
+    :root { --gutter: 32px; }
+    .head { grid-template-columns: 1fr; gap: 40px; padding: 56px var(--gutter); }
+    .section-head { grid-template-columns: 1fr; gap: 16px; margin-bottom: 40px; }
+    section { padding: 56px var(--gutter); }
+  }
+  @media (max-width: 760px) {
+    :root { --gutter: 20px; }
+    .asset-body { padding: 24px 12px; }
+  }
+
+  /* ============== PRINT ============== */
+  @media print {
+    .topbar, .jumpbar, .asset-foot, footer { display: none; }
+    section { page-break-inside: avoid; padding: 32px 0; }
+    .asset { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============== TOPBAR ============== -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="left"><span class="dot"></span>Intervene · LinkedIn Asset Pack</span>
+    <span class="right">
+      <span>Internal</span>
+      <span class="sep">·</span>
+      <span>v1.0 · 2026</span>
+    </span>
+  </div>
+</div>
+
+<!-- ============== JUMPBAR ============== -->
+<div class="jumpbar">
+  <div class="jumpbar-inner">
+    <a href="#company">01 — Company · Intervene</a>
+    <a href="#company-logo">Logo</a>
+    <a href="#company-banner">Banner</a>
+    <a href="#company-text">Text</a>
+    <a href="#profile">02 — Profile · James Saint</a>
+    <a href="#profile-photo">Photo</a>
+    <a href="#profile-cover">Cover</a>
+    <a href="#profile-text">Text</a>
+    <a href="#checklist">03 — Setup checklist</a>
+  </div>
+</div>
+
+<!-- ============== HEAD ============== -->
+<header class="head">
+  <h1>LinkedIn<br>asset pack<em>.</em></h1>
+  <div class="head-meta">
+    <dl>
+      <div><dt>Document</dt><dd>LinkedIn assets &amp; copy</dd></div>
+      <div><dt>Subjects</dt><dd>Intervene Group · J. Saint</dd></div>
+      <div><dt>Version</dt><dd>1.0</dd></div>
+      <div><dt>Issued</dt><dd>April 2026</dd></div>
+      <div><dt>Format</dt><dd>HTML · self-contained</dd></div>
+      <div><dt>Use</dt><dd>Reference + screenshot source</dd></div>
+    </dl>
+  </div>
+</header>
+
+<div class="note" style="max-width: var(--max); margin: 0 auto 0; padding: 24px var(--gutter); border: 0; border-bottom: 1px solid var(--hair); border-left: 0;">
+  <strong>How to use this page.</strong> Every asset is rendered at its exact LinkedIn pixel dimensions inside the framed canvas. To export, screenshot the framed area at 1× device pixel ratio, or right-click and save the underlying SVG/PNG. Text blocks include character counts against LinkedIn's documented limits — copy with the button on each block.
+</div>
+
+<!-- ====================================================== -->
+<!-- ============== 01 · COMPANY · INTERVENE ============== -->
+<!-- ====================================================== -->
+<section id="company">
+  <div class="section-head">
+    <div class="section-num">01 — Company page</div>
+    <h2 class="section-title">Intervene <em>Group Ltd.</em></h2>
+    <p class="section-desc">The company page is the institutional surface. Tone is restrained and declarative, not promotional. Logo on Ink — never on Paper, never tinted. Banner reads as an editorial statement, not an ad.</p>
+  </div>
+
+  <!-- ============== COMPANY LOGO ============== -->
+  <h3 id="company-logo" class="subhead">A · Profile logo</h3>
+
+  <div class="asset">
+    <div class="asset-head">
+      <h4 class="asset-title">Company logo — primary lockup</h4>
+      <div class="asset-meta">
+        <span><span class="v">300 × 300 px</span></span>
+        <span>SQUARE · PNG/SVG</span>
+        <span>BG: INK #111111</span>
+        <span>UPLOAD: PROFILE</span>
+      </div>
+    </div>
+    <div class="asset-body">
+      <div class="li-company-logo-300" data-export>
+        <div class="iv-logo inverted">
+          <div class="iv-mark" aria-hidden="true">
+            <span class="iv-panel iv-panel-l"></span>
+            <span class="iv-panel iv-panel-r"></span>
+          </div>
+          <div class="iv-wordmark" style="font-size: 60px; letter-spacing: -0.055em;">intervene</div>
+        </div>
+      </div>
+    </div>
+    <div class="asset-foot">
+      <span class="btn-mini" data-render-png="li-company-300" data-target="li-company-logo-primary">Download PNG</span>
+      <span class="btn-mini" data-copy-svg="company-300">Copy SVG</span>
+      <span class="btn-mini" data-target="li-company-logo-primary" data-screenshot-hint>↑ Screenshot the framed square at 1×</span>
+    </div>
+  </div>
+
+  <div class="asset">
+    <div class="asset-head">
+      <h4 class="asset-title">Alternate — mark only (favicon / app contexts)</h4>
+      <div class="asset-meta">
+        <span><span class="v">300 × 300 px</span></span>
+        <span>SQUARE · PNG/SVG</span>
+        <span>BG: INK #111111</span>
+        <span>USE: SQUARE FEED CONTEXTS &lt; 64PX</span>
+      </div>
+    </div>
+    <div class="asset-body">
+      <div class="li-mark-square">
+        <div class="iv-mark" aria-hidden="true">
+          <span class="iv-panel iv-panel-l"></span>
+          <span class="iv-panel iv-panel-r"></span>
+        </div>
+      </div>
+    </div>
+    <div class="asset-foot">
+      <span class="btn-mini" data-screenshot-hint>↑ Use only when feed display is &lt; 64px</span>
+    </div>
+  </div>
+
+  <!-- ============== COMPANY BANNER ============== -->
+  <h3 id="company-banner" class="subhead">B · Cover banner</h3>
+
+  <div class="asset">
+    <div class="asset-head">
+      <h4 class="asset-title">Cover banner — editorial statement</h4>
+      <div class="asset-meta">
+        <span><span class="v">1128 × 191 px</span></span>
+        <span>RATIO 5.91:1</span>
+        <span>UPLOAD: COVER IMAGE</span>
+        <span>SAFE: AVOID BOTTOM-LEFT 264×72</span>
+      </div>
+    </div>
+    <div class="asset-body">
+      <div class="li-company-banner">
+        <div class="li-company-banner-inner">
+          <p class="pre">Intervene · Independent advisory · Volume 01 · 2026</p>
+          <p class="head">A board that cannot intervene is not a safeguard.<br><em>It is a witness.</em></p>
+          <p class="post">
+            <span>AGDA™</span><span class="dot">·</span>
+            <span>Deterministic engine</span><span class="dot">·</span>
+            <span>Ed25519 attested</span><span class="dot">·</span>
+            <span>London</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="asset-foot">
+      <span class="btn-mini" data-screenshot-hint>↑ Screenshot the framed banner at 1×</span>
+      <span style="font-family: var(--mono); font-size: 11px; color: var(--muted); padding: 8px 14px;">
+        On Company pages LinkedIn shows the full 1128px width on desktop; mobile crops centre-left. The bottom-left logo overlay zone is reserved by LinkedIn — keep it clear of type.
+      </span>
+    </div>
+  </div>
+
+  <!-- ============== COMPANY TEXT ============== -->
+  <h3 id="company-text" class="subhead">C · Page text</h3>
+
+  <!-- name -->
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Page name</span>
+      <span class="count" data-counter data-max="100">— / 100</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body" data-text>Intervene</div>
+  </div>
+
+  <!-- tagline -->
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Tagline (under logo)</span>
+      <span class="count" data-counter data-max="120">— / 120</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body" data-text>Independent intervention-capability assessment for boards facing consequential AI and operational systems.</div>
+  </div>
+
+  <!-- about -->
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">About / Overview</span>
+      <span class="count" data-counter data-max="2000">— / 2000</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body" data-text>Intervene is an independent advisory practice for boards and executives accountable for systems where the gap between governance design and operational reality carries real consequence.
+
+We answer one question: can the people responsible for your most consequential system actually stop it when they need to?
+
+Most assessments measure intention. Intervene measures evidence. Our methodology — AGDA™ — pairs a published, falsifiable framework with a deterministic engine that signs every verdict it produces. Eight falsifiable claims. Forty canonical failure modes. Ed25519 cryptographic attestation. A regulator or audit committee can verify a finding without contacting us.
+
+We work with three audiences:
+
+— UK-regulated financial services (PRA SS1/23, FCA SMCR, operational resilience)
+— EU high-risk AI operators (EU AI Act Annex III, conformity, post-market monitoring)
+— Critical national infrastructure (energy, water, telecoms, transport)
+
+Healthcare and defence by invitation, where independence from device vendors and appropriate clearances can be guaranteed.
+
+Three services. One question.
+
+01 · Exposure Assessment — One system. One scenario. A clear view of where intervention capability breaks down.
+02 · Board-Level Advisory — Independent judgement in high-stakes decisions where internal certainty may be misleading.
+03 · Ongoing Integrity Oversight — Standing visibility across critical systems, decision structures, and intervention capability as exposure evolves.
+
+What we are not: not a compliance dashboard, not a Big-4 advisory, not a policy-writing practice, not a model-testing lab, not an implementation partner. We do not implement what we recommend. We do not assess what we have helped to design.
+
+Senior delivery throughout. A signed verdict, not a slide.
+
+Intervene Group Ltd · Registered in England &amp; Wales · London · Global mandates.
+
+Confidential discussion: advisory@intervene.group</div>
+  </div>
+
+  <div class="field-grid">
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <span class="label">Industry</span>
+        <button class="btn-mini" data-copy>Copy</button>
+      </div>
+      <div class="copy-block-body mono" data-text>Business Consulting and Services</div>
+    </div>
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <span class="label">Company size</span>
+        <button class="btn-mini" data-copy>Copy</button>
+      </div>
+      <div class="copy-block-body mono" data-text>1 employee · Self-employed</div>
+    </div>
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <span class="label">Company type</span>
+        <button class="btn-mini" data-copy>Copy</button>
+      </div>
+      <div class="copy-block-body mono" data-text>Privately Held</div>
+    </div>
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <span class="label">Founded</span>
+        <button class="btn-mini" data-copy>Copy</button>
+      </div>
+      <div class="copy-block-body mono" data-text>2026</div>
+    </div>
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <span class="label">Headquarters</span>
+        <button class="btn-mini" data-copy>Copy</button>
+      </div>
+      <div class="copy-block-body mono" data-text>London, United Kingdom</div>
+    </div>
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <span class="label">Website</span>
+        <button class="btn-mini" data-copy>Copy</button>
+      </div>
+      <div class="copy-block-body mono" data-text>https://intervene.group</div>
+    </div>
+  </div>
+
+  <!-- specialties / hashtags -->
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Specialties (max 20, comma-separated)</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body" data-text>AI governance, intervention-capability assessment, board advisory, AGDA, EU AI Act, PRA SS1/23, FCA SMCR, operational resilience, AI assurance, deterministic attestation, regulated AI, high-risk AI, critical national infrastructure, independent advisory, decision systems, AI risk, governance assurance, audit-grade verdicts</div>
+  </div>
+
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Hashtags (associated, max 3 — set in Page admin)</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body" data-text>#AIGovernance #BoardAdvisory #AIAssurance</div>
+  </div>
+
+  <div style="margin-top: 32px;">
+    <h3 class="subhead">D · Hashtag pool (rotate on posts)</h3>
+    <div class="pills">
+      <span class="pill">#AIGovernance</span>
+      <span class="pill">#AIAssurance</span>
+      <span class="pill">#BoardAdvisory</span>
+      <span class="pill">#OperationalResilience</span>
+      <span class="pill">#EUAIAct</span>
+      <span class="pill">#PRA</span>
+      <span class="pill">#FCA</span>
+      <span class="pill">#SS123</span>
+      <span class="pill">#SMCR</span>
+      <span class="pill">#NISTAIRMF</span>
+      <span class="pill">#DORA</span>
+      <span class="pill">#GovernanceTech</span>
+      <span class="pill">#CriticalInfrastructure</span>
+      <span class="pill">#InterventionCapability</span>
+      <span class="pill">#AIRisk</span>
+      <span class="pill">#AGDA</span>
+      <span class="pill">#DeterministicAssurance</span>
+      <span class="pill">#IndependentAdvisory</span>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============== big divider ============== -->
+<div class="big-divider"><div class="inner"></div></div>
+
+<!-- ====================================================== -->
+<!-- ============== 02 · PROFILE · JAMES SAINT ============ -->
+<!-- ====================================================== -->
+<section id="profile">
+  <div class="section-head">
+    <div class="section-num">02 — Personal profile</div>
+    <h2 class="section-title">James <em>Saint.</em></h2>
+    <p class="section-desc">The personal profile is the practitioner surface. First-person but spare. The headline is the hook, the about is the case. Cover photo carries the institutional cue so the avatar does not have to.</p>
+  </div>
+
+  <!-- ============== PROFILE PHOTO ============== -->
+  <h3 id="profile-photo" class="subhead">A · Profile photo</h3>
+
+  <div class="asset">
+    <div class="asset-head">
+      <h4 class="asset-title">Profile photo — square portrait</h4>
+      <div class="asset-meta">
+        <span><span class="v">400 × 400 px</span></span>
+        <span>SQUARE · JPG</span>
+        <span>SOURCE: 1024×1376 (cropped centre-top)</span>
+      </div>
+    </div>
+    <div class="asset-body">
+      <div class="li-profile-photo">
+        <img src="assets/images/james-saint.jpg" alt="James Saint">
+      </div>
+    </div>
+    <div class="asset-foot">
+      <a class="btn-mini" href="assets/images/james-saint.jpg" download>Download original</a>
+      <span style="font-family: var(--mono); font-size: 11px; color: var(--muted); padding: 8px 14px;">
+        LinkedIn upload accepts up to 8MB; will resize to 400×400 internally and serve at 152×152 / 200×200 thumbnails.
+      </span>
+    </div>
+  </div>
+
+  <!-- ============== PROFILE COVER ============== -->
+  <h3 id="profile-cover" class="subhead">B · Cover photo</h3>
+
+  <div class="asset">
+    <div class="asset-head">
+      <h4 class="asset-title">Cover photo — institutional context</h4>
+      <div class="asset-meta">
+        <span><span class="v">1584 × 396 px</span></span>
+        <span>RATIO 4:1</span>
+        <span>BG: INK #111111</span>
+        <span>SAFE: AVATAR BL 220×220</span>
+      </div>
+    </div>
+    <div class="asset-body">
+      <div class="li-profile-cover">
+        <div class="li-profile-cover-inner">
+          <div class="left">
+            <div class="cover-lockup">
+              <div class="iv-mark" aria-hidden="true">
+                <span class="iv-panel iv-panel-l"></span>
+                <span class="iv-panel iv-panel-r"></span>
+              </div>
+              <div class="iv-wordmark">intervene</div>
+            </div>
+            <div class="id">Founder · Principal Advisor · 2026</div>
+          </div>
+          <div class="right">
+            <p class="head-line">Move first. Or be moved<br><em>by what you missed.</em></p>
+            <p class="sub-line">
+              <span>Independent advisory</span><span class="dot">·</span>
+              <span>Boards &amp; executives</span><span class="dot">·</span>
+              <span>Consequential AI</span><span class="dot">·</span>
+              <span>London</span>
+            </p>
+          </div>
+        </div>
+        <div class="avatar-mask"></div>
+      </div>
+    </div>
+    <div class="asset-foot">
+      <span class="btn-mini" data-screenshot-hint>↑ Screenshot the framed banner at 1×</span>
+      <span style="font-family: var(--mono); font-size: 11px; color: var(--muted); padding: 8px 14px;">
+        Avatar zone marked. Mobile crops the cover to ~1128×191 centred — keep the headline within the inner safe area.
+      </span>
+    </div>
+  </div>
+
+  <!-- ============== PROFILE TEXT ============== -->
+  <h3 id="profile-text" class="subhead">C · Profile text</h3>
+
+  <div class="field-grid">
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <span class="label">First name</span>
+        <button class="btn-mini" data-copy>Copy</button>
+      </div>
+      <div class="copy-block-body mono" data-text>James</div>
+    </div>
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <span class="label">Last name</span>
+        <button class="btn-mini" data-copy>Copy</button>
+      </div>
+      <div class="copy-block-body mono" data-text>Saint</div>
+    </div>
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <span class="label">Pronouns</span>
+        <button class="btn-mini" data-copy>Copy</button>
+      </div>
+      <div class="copy-block-body mono" data-text>he/him</div>
+    </div>
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <span class="label">Custom URL slug</span>
+        <button class="btn-mini" data-copy>Copy</button>
+      </div>
+      <div class="copy-block-body mono" data-text>jamessaintintervene</div>
+    </div>
+  </div>
+
+  <!-- headline -->
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Headline (max 220 chars)</span>
+      <span class="count" data-counter data-max="220">— / 220</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body" data-text>Founder &amp; Principal Advisor at Intervene · Independent intervention-capability assessment for boards facing consequential AI · Author of the AGDA framework · London</div>
+  </div>
+
+  <!-- about -->
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">About (max 2,600 chars)</span>
+      <span class="count" data-counter data-max="2600">— / 2600</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body" data-text>I founded Intervene to address a question most governance frameworks leave untested: can the people accountable for a consequential system actually stop it when they need to?
+
+The crisis begins the moment a system fails. Authority to halt it travels upward through people who often cannot act. By the time it reaches a board, the moment for low-cost intervention has frequently passed. A board that cannot intervene is not a safeguard. It is a witness.
+
+Intervene exists to close that gap before it costs you the room to act.
+
+WHAT I DO
+
+I lead independent intervention-capability assessments for boards and executives in regulated and high-stakes environments. The methodology — AGDA — is published, falsifiable, and revision-controlled. The engine that produces verdicts is deterministic and Ed25519-signed: same inputs, same outputs, every time. An audit committee or regulator can verify a finding without contacting us.
+
+WHO I WORK WITH
+
+— UK-regulated financial services (PRA SS1/23, FCA SMCR, operational resilience)
+— EU high-risk AI operators (EU AI Act Annex III)
+— Critical national infrastructure (energy, water, telecoms, transport)
+— Healthcare and defence, by invitation only
+
+BACKGROUND
+
+Two decades building, deploying, and reviewing the kinds of consequential systems that reach a board only when something has gone wrong: regulated AI deployment, decision-system design, and board-level oversight across UK and EU markets. The methodology behind Intervene is developed in academic collaboration with Prof. Nicholas Ryman-Tubb (University of Surrey), with calibration drawn from a hold-out corpus of regulated AI failure modes.
+
+WHAT I DON'T DO
+
+I do not write your AI policy. I do not stand up your controls. I do not implement what I recommend, and I do not assess what I have helped design. No leveraged engagement teams. No PowerPoint readouts. Senior delivery throughout — a signed verdict, not a slide.
+
+If the evidence does not support a green rating, the engine will not produce one — regardless of pressure. I will return findings the client did not want to hear, in writing, before the regulator does.
+
+WHEN TO REACH OUT
+
+If you are a chair, NED, CEO, CRO, CISO, GC, or Head of AI/Risk and you are not certain your organisation could stop its most consequential system right now — that is worth a conversation. Brief, confidential, no obligation either side.
+
+advisory@intervene.group · intervene.group
+
+Based in London. Global mandates.</div>
+  </div>
+
+  <!-- experience: current role -->
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Experience · Current role · Title</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body mono" data-text>Founder &amp; Principal Advisor</div>
+  </div>
+
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Experience · Current role · Company</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body mono" data-text>Intervene Group Ltd</div>
+  </div>
+
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Experience · Current role · Description</span>
+      <span class="count" data-counter data-max="2000">— / 2000</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body" data-text>Independent intervention-capability assessment for boards and executives accountable for consequential AI and operational systems.
+
+I lead the practice end-to-end: scoping, fieldwork, AGDA evaluation, and signed verdict. No leveraged teams. No implementation arm.
+
+· Exposure Assessment — one system, one scenario, a clear view of where intervention capability breaks down.
+· Board-Level Advisory — independent judgement in high-stakes decisions where internal certainty may be misleading.
+· Ongoing Integrity Oversight — standing visibility across critical systems, decision structures, and intervention capability as exposure evolves.
+
+Methodology: AGDA — eight falsifiable claims, forty canonical failure modes, deterministic engine, Ed25519 attestation.
+
+Sectors: UK-regulated financial services · EU high-risk AI · critical national infrastructure · healthcare and defence by invitation.
+
+advisory@intervene.group</div>
+  </div>
+
+  <!-- skills -->
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Top skills (pin 5 to profile)</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body" data-text>AI Governance · Board Advisory · Operational Risk · Regulatory Compliance · Independent Assurance</div>
+  </div>
+
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">All skills (paste one per line)</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body mono" data-text>AI Governance
+Board Advisory
+Operational Risk
+Regulatory Compliance
+Independent Assurance
+EU AI Act
+PRA SS1/23
+FCA SMCR
+Operational Resilience
+DORA
+NIST AI RMF
+Decision Systems
+Risk Management
+Audit
+Cryptographic Attestation
+AI Safety
+Critical National Infrastructure
+Financial Services
+Corporate Governance
+Executive Advisory</div>
+  </div>
+
+  <!-- featured links -->
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Featured · Link 1 · Title</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body mono" data-text>Intervene — Independent advisory for boards on consequential AI</div>
+  </div>
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Featured · Link 1 · URL</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body mono" data-text>https://intervene.group</div>
+  </div>
+
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Featured · Link 2 · Title</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body mono" data-text>The AGDA Method — measuring intervention capability</div>
+  </div>
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Featured · Link 2 · URL</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body mono" data-text>https://intervene.group/method.html</div>
+  </div>
+
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Featured · Link 3 · Title</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body mono" data-text>Sample report — what a signed verdict looks like</div>
+  </div>
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Featured · Link 3 · URL</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body mono" data-text>https://intervene.group/sample-report.html</div>
+  </div>
+
+  <!-- contact -->
+  <div class="field-grid">
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <span class="label">Contact · Email</span>
+        <button class="btn-mini" data-copy>Copy</button>
+      </div>
+      <div class="copy-block-body mono" data-text>advisory@intervene.group</div>
+    </div>
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <span class="label">Contact · Website</span>
+        <button class="btn-mini" data-copy>Copy</button>
+      </div>
+      <div class="copy-block-body mono" data-text>https://intervene.group</div>
+    </div>
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <span class="label">Location</span>
+        <button class="btn-mini" data-copy>Copy</button>
+      </div>
+      <div class="copy-block-body mono" data-text>London, England, United Kingdom</div>
+    </div>
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <span class="label">Industry</span>
+        <button class="btn-mini" data-copy>Copy</button>
+      </div>
+      <div class="copy-block-body mono" data-text>Business Consulting and Services</div>
+    </div>
+  </div>
+
+  <!-- services -->
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Services section · Description</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body" data-text>Independent intervention-capability assessment and board-level advisory for organisations operating consequential AI and decision systems. Three engagements: Exposure Assessment, Board-Level Advisory, Ongoing Integrity Oversight. Senior delivery throughout. Confidential, off record, no obligation: advisory@intervene.group</div>
+  </div>
+
+  <div class="copy-block">
+    <div class="copy-block-head">
+      <span class="label">Services section · Service categories (paste one per line)</span>
+      <button class="btn-mini" data-copy>Copy</button>
+    </div>
+    <div class="copy-block-body mono" data-text>Management Consulting
+Business Consulting
+Risk Management
+Strategic Planning
+Corporate Governance
+Cybersecurity
+Information Security
+Public Speaking</div>
+  </div>
+
+</section>
+
+<!-- ============== big divider ============== -->
+<div class="big-divider"><div class="inner"></div></div>
+
+<!-- ====================================================== -->
+<!-- ============== 03 · CHECKLIST ======================== -->
+<!-- ====================================================== -->
+<section id="checklist">
+  <div class="section-head">
+    <div class="section-num">03 — Setup</div>
+    <h2 class="section-title">Setup <em>checklist.</em></h2>
+    <p class="section-desc">Order matters. Set the personal profile first; the company page inherits visibility from your network. Image dimensions, character counts, and cropping vary across LinkedIn surfaces — the renders above are exact.</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 64px;">
+    <div>
+      <h3 class="subhead">Personal profile</h3>
+      <ul class="checklist">
+        <li><strong>Profile photo</strong> — upload james-saint.jpg, position centre 18% from top.</li>
+        <li><strong>Cover photo</strong> — screenshot the 1584×396 frame above, upload as JPG.</li>
+        <li><strong>Headline</strong> — paste the 220-char block.</li>
+        <li><strong>Pronouns</strong> — set to <em>he/him</em>.</li>
+        <li><strong>Custom URL</strong> — set to <em>jamessaintintervene</em>.</li>
+        <li><strong>About</strong> — paste the 2,600-char block.</li>
+        <li><strong>Experience</strong> — add Founder &amp; Principal Advisor at Intervene Group Ltd, Apr 2026 – Present.</li>
+        <li><strong>Education</strong> — add as relevant (not auto-generated here).</li>
+        <li><strong>Skills</strong> — paste 20-line list, then pin the top 5.</li>
+        <li><strong>Featured</strong> — add three links (homepage, method, sample report).</li>
+        <li><strong>Contact info</strong> — set advisory@intervene.group + intervene.group.</li>
+        <li><strong>Open-to-work</strong> — leave OFF. Open-to-providing-services ON, set categories.</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="subhead">Company page</h3>
+      <ul class="checklist">
+        <li><strong>Create page</strong> — Small business · Intervene · intervene.group · Industry: Business Consulting and Services.</li>
+        <li><strong>Logo</strong> — upload the 300×300 lockup PNG (Ink background).</li>
+        <li><strong>Cover banner</strong> — screenshot the 1128×191 frame above, upload as PNG/JPG.</li>
+        <li><strong>Tagline</strong> — paste the 120-char block.</li>
+        <li><strong>About</strong> — paste the 2,000-char overview.</li>
+        <li><strong>Specialties</strong> — paste comma-separated list (max 20).</li>
+        <li><strong>Hashtags</strong> — set #AIGovernance #BoardAdvisory #AIAssurance.</li>
+        <li><strong>Locations</strong> — add London headquarters.</li>
+        <li><strong>Founded</strong> — 2026.</li>
+        <li><strong>Company size</strong> — 1 employee.</li>
+        <li><strong>Verify</strong> — domain (intervene.group) when prompted.</li>
+        <li><strong>Connect</strong> — link the personal profile as a current employee.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top: 64px;">
+    <h3 class="subhead">Quick reference — dimensions</h3>
+    <div class="field-table">
+      <div class="row"><div class="k">Company logo</div><div class="v">300 × 300 px · square · PNG · Ink background</div></div>
+      <div class="row"><div class="k">Company banner</div><div class="v">1128 × 191 px · 5.91:1 · PNG/JPG · ≤ 8 MB</div></div>
+      <div class="row"><div class="k">Profile photo</div><div class="v">400 × 400 px · square · JPG · ≤ 8 MB · centre-crop face</div></div>
+      <div class="row"><div class="k">Profile cover</div><div class="v">1584 × 396 px · 4:1 · PNG/JPG · ≤ 8 MB · avoid bottom-left 220×220 (avatar overlay)</div></div>
+      <div class="row"><div class="k">Tagline</div><div class="v">≤ 120 characters · plain text · no emoji</div></div>
+      <div class="row"><div class="k">Company About</div><div class="v">≤ 2,000 characters · plain text · line breaks preserved</div></div>
+      <div class="row"><div class="k">Headline</div><div class="v">≤ 220 characters · plain text · no emoji</div></div>
+      <div class="row"><div class="k">Profile About</div><div class="v">≤ 2,600 characters · plain text · line breaks preserved</div></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer>
+  <div>
+    <div class="footer-mark">intervene</div>
+    <div style="margin-top: 6px;">© 2026 · LinkedIn asset pack v1.0</div>
+  </div>
+  <div style="text-align: right;">
+    Internal reference<br>
+    <span style="color: var(--ink);">advisory@intervene.group</span>
+  </div>
+</footer>
+
+<script>
+  // ============== Live char counters ==============
+  document.querySelectorAll('.copy-block').forEach(block => {
+    const counter = block.querySelector('[data-counter]');
+    const text = block.querySelector('[data-text]');
+    if (counter && text) {
+      const max = parseInt(counter.getAttribute('data-max'), 10);
+      const len = text.textContent.length;
+      counter.textContent = len + ' / ' + max;
+      if (len > max) counter.classList.add('over');
+    }
+  });
+
+  // ============== Copy buttons ==============
+  document.querySelectorAll('[data-copy]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const block = btn.closest('.copy-block');
+      const text = block.querySelector('[data-text]');
+      if (!text) return;
+      navigator.clipboard.writeText(text.textContent).then(() => {
+        const original = btn.textContent;
+        btn.textContent = 'Copied ✓';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 1400);
+      });
+    });
+  });
+
+  // ============== Smooth scroll on jump links ==============
+  document.querySelectorAll('.jumpbar-inner a, .head a').forEach(a => {
+    a.addEventListener('click', e => {
+      const href = a.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          const top = target.getBoundingClientRect().top + window.scrollY - 140;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
