@@ -1,95 +1,203 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ChainFlow from '../components/ChainFlow.astro';
+import ScopeBar from '../components/ScopeBar.astro';
 ---
 
 <BaseLayout
-  title="Intervene · Redesign Preview"
-  description="Foundation preview. The redesigned home, method, services, sample-report, positions, and field-notes ship in subsequent phases."
-  theme="dark"
+  title="Intervene · Independent Advisory"
+  description="Independent advisory for boards. We test whether your organisation can detect, escalate, decide, and intervene before failure becomes irreversible."
   current="home"
   noindex={true}
 >
-  <section class="hero block full">
-    <div class="wrap hero-inner">
-      <div class="hero-meta">
-        <span class="kicker">Volume 01 · Independent Advisory · 2026</span>
-        <span class="kicker">Redesign preview · Phase 1 of 6 · Foundation</span>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-rotator" data-hero-rotator aria-live="polite">
+        <article class="slide is-active" data-slide aria-hidden="false">
+          <h1 class="h1">
+            Move first. Or be moved <em>by what you missed.</em>
+          </h1>
+          <p class="lede slide-lede">
+            Independent advisory. We test whether your governance translates
+            to operational control, before a live failure answers the
+            question for you.
+          </p>
+        </article>
+        <article class="slide" data-slide aria-hidden="true">
+          <h1 class="h1">
+            Intervention, on evidence. <em>Not intention.</em>
+          </h1>
+          <p class="lede slide-lede">
+            AGDA scores intervention capability against evidence. Every
+            verdict is cryptographically signed. The regulator can verify
+            without us.
+          </p>
+        </article>
+        <article class="slide" data-slide aria-hidden="true">
+          <h1 class="h1">
+            A safeguard. Or <em>a witness.</em>
+          </h1>
+          <p class="lede slide-lede">
+            By the time the board is told, the window has closed. We measure
+            whether the chain holds before it has to.
+          </p>
+        </article>
       </div>
 
-      <h1 class="display d-1 reveal">
-        Move first. <span class="em">Or be moved</span><br />
-        <span class="em">by what you missed.</span>
-      </h1>
+      <div class="hero-cta reveal">
+        <a href="/contact/" class="btn">Request a discussion</a>
+        <a href="/method/" class="btn-ghost">Our method</a>
+      </div>
+    </div>
+  </section>
 
-      <div class="hero-foot reveal reveal-d2">
-        <p class="lede">
-          Your governance framework says you are in control. Intervene tests
-          whether that is true, before a live failure answers the question
-          for you. Independent. Practitioner-led. Board-grade.
-        </p>
-        <div class="hero-cta">
-          <a href="/style-guide/" class="btn">View style guide</a>
-          <a href="/contact/" class="btn-ghost">Request a discussion</a>
+  <script>
+    import { initHeroRotator } from '../lib/hero-rotator.ts';
+    initHeroRotator();
+  </script>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">The chain that decides whether you can intervene.</h2>
+      <ChainFlow />
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Three services. <em>One question.</em></h2>
+      <p class="lede muted">
+        Can the people responsible for your most consequential systems
+        actually stop them when they need to?
+      </p>
+
+      <ul class="services" role="list">
+        <li class="reveal">
+          <ScopeBar pattern="focused" duration="Point-in-time · 2–3 weeks" />
+          <h3 class="h3">Exposure assessment.</h3>
+          <p class="body muted">One system, one scenario. A clear view of where intervention breaks down.</p>
+        </li>
+        <li class="reveal">
+          <ScopeBar pattern="recurring" duration="Episodic · per decision" />
+          <h3 class="h3">Board-level advisory.</h3>
+          <p class="body muted">Independent judgement where internal certainty may be misleading.</p>
+        </li>
+        <li class="reveal">
+          <ScopeBar pattern="continuous" duration="Continuous · retainer" />
+          <h3 class="h3">Integrity oversight.</h3>
+          <p class="body muted">Continued visibility across consequential systems as exposure evolves.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block close">
+    <div class="wrap">
+      <div class="close-grid">
+        <h2 class="h2 reveal">
+          Could your organisation stop its most consequential system <em>right now?</em>
+        </h2>
+        <div class="close-cta reveal">
+          <p class="body muted">
+            If not certain, that is worth a conversation. Brief, confidential,
+            no obligation.
+          </p>
+          <a href="/contact/" class="btn">Request a discussion</a>
         </div>
       </div>
     </div>
-
-    <div class="wordmark-watermark" aria-hidden="true">intervene</div>
   </section>
 </BaseLayout>
 
 <style>
   .hero {
-    position: relative;
-    overflow: hidden;
-    padding-top: 96px;
-    padding-bottom: 144px;
+    padding-top: 160px;
+    padding-bottom: 160px;
     border-bottom: 1px solid var(--hair);
   }
-  .hero-inner {
+
+  /* Rotator: both slides occupy the same grid cell, container takes the
+     taller of the two so there is no layout shift between transitions. */
+  .hero-rotator {
     display: grid;
-    gap: 80px;
-    position: relative;
-    z-index: 2;
+    grid-template-areas: 'slide';
   }
-  .hero-meta {
+  .slide {
+    grid-area: slide;
+    opacity: 0;
+    transition: opacity 800ms cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+  .slide.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .slide .h1 { max-width: 16ch; margin: 0; }
+  .slide-lede {
+    margin-top: 56px;
+    max-width: 50ch;
+    color: var(--ink);
+  }
+
+  .hero-cta {
+    margin-top: 80px;
     display: flex;
-    justify-content: space-between;
-    gap: 24px;
+    gap: 16px;
     flex-wrap: wrap;
   }
-  .hero-foot {
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide { transition: none; }
+  }
+
+  .block .h2 { max-width: 22ch; }
+  .block > .wrap > .lede { margin-top: 16px; max-width: 50ch; }
+
+  .services {
+    list-style: none;
+    margin: 80px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 64px;
+  }
+  .services > li {
+    display: grid;
+    gap: 20px;
+    align-content: start;
+  }
+  .services .h3 { margin-top: 8px; }
+  .services p { max-width: 32ch; margin: 0; }
+
+  /* Stagger reveal across the three cards. */
+  .services > li:nth-child(1) { transition-delay: 0ms; }
+  .services > li:nth-child(2) { transition-delay: 140ms; }
+  .services > li:nth-child(3) { transition-delay: 280ms; }
+
+  .close-grid {
     display: grid;
     grid-template-columns: 1.4fr 1fr;
-    gap: 80px;
-    align-items: end;
+    gap: 96px;
+    align-items: start;
   }
-  .hero-foot .lede { color: var(--ink-soft); max-width: 56ch; }
-  .hero-cta {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    align-items: flex-start;
+  .close .h2 {
+    max-width: 18ch;
+    margin: 0;
   }
-  .wordmark-watermark {
-    position: absolute;
-    bottom: -8vw;
-    left: -1vw;
-    right: -1vw;
-    font-family: var(--font-display);
-    font-style: italic;
-    font-weight: 300;
-    font-size: 24vw;
-    line-height: 0.84;
-    letter-spacing: -0.05em;
-    color: rgba(154, 123, 63, 0.05);
-    pointer-events: none;
-    white-space: nowrap;
-    overflow: hidden;
-    z-index: 1;
-    font-variation-settings: 'opsz' 144, 'SOFT' 80;
+  .close-cta {
+    display: grid;
+    gap: 24px;
+    align-content: start;
+    padding-top: 12px;
   }
+  .close-cta .body { margin: 0; max-width: 38ch; }
+  .close-cta .btn { justify-self: start; }
+
   @media (max-width: 880px) {
-    .hero-foot { grid-template-columns: 1fr; gap: 48px; }
+    .hero { padding-top: 96px; padding-bottom: 96px; }
+    .slide-lede { margin-top: 40px; }
+    .hero-cta { margin-top: 56px; }
+    .services { grid-template-columns: 1fr; gap: 48px; }
+    .close-grid { grid-template-columns: 1fr; gap: 48px; }
   }
 </style>
