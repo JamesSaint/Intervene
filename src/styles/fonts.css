@@ -1,0 +1,10 @@
+/* ============================================================
+   intervene · type loading
+   v2.0 · 2026
+
+   Fallback type system pending GT Sectra / ABC Diatype / Berkeley Mono
+   licence purchase. Fraunces (display, variable), Geist (sans, variable),
+   Geist Mono (mono, variable). All served by Google Fonts with display=swap.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..500,0..100&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap');

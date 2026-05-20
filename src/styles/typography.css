@@ -1,0 +1,133 @@
+/* ============================================================
+   intervene · typography utilities
+   Display = Fraunces (transitional serif, variable, soft axis)
+   Body    = Geist (neo-grotesque sans, variable)
+   Mono    = Geist Mono (geometric mono)
+   ============================================================ */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.94;
+  font-feature-settings: 'ss01', 'liga', 'kern';
+  /* Fraunces optical size axis for display scale */
+  font-variation-settings: 'opsz' 144, 'SOFT' 30;
+}
+
+.display-italic {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: -0.025em;
+  line-height: 0.94;
+  font-variation-settings: 'opsz' 144, 'SOFT' 60;
+}
+
+/* Display sizes */
+.d-1 { font-size: clamp(72px, 12vw, 200px); }
+.d-2 { font-size: clamp(56px, 9vw, 140px); }
+.d-3 { font-size: clamp(40px, 6vw, 96px); }
+.d-4 { font-size: clamp(32px, 4.5vw, 64px); }
+
+/* Wordmark at extreme scale (used on dark openers) */
+.wordmark-extreme {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(14vw, 18vw, 24vw);
+  letter-spacing: -0.04em;
+  line-height: 0.84;
+  font-variation-settings: 'opsz' 144, 'SOFT' 80;
+}
+
+/* Body sizes */
+.lede {
+  font-family: var(--font-sans);
+  font-size: clamp(18px, 1.4vw, 22px);
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+
+.body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.body-sm {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.body-reading {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.65;
+  font-weight: 400;
+}
+
+/* Mono chrome — labels, kickers, status, live readouts */
+.mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.mono-md {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.mono-lg {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* Italic accent — one per headline, designed italic from variable font */
+em, .em {
+  font-style: italic;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-variation-settings: 'opsz' 144, 'SOFT' 60;
+}
+
+/* Drop-cap (Field Notes essays only) */
+.drop-cap::first-letter {
+  font-family: var(--font-display);
+  font-size: 5em;
+  line-height: 0.86;
+  font-weight: 300;
+  float: left;
+  margin: 0.04em 0.08em 0 -0.04em;
+  font-feature-settings: 'ss01';
+  font-variation-settings: 'opsz' 144, 'SOFT' 50;
+}
+
+/* Mute */
+.muted { color: var(--muted); }
+.muted-soft { color: var(--muted-soft); }
+
+/* Bronze accents (rules, focus, hover underline) */
+.bronze { color: var(--bronze); }

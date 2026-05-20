@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Intervene · Redesign Preview"
+  description="Foundation preview. The redesigned home, method, services, sample-report, positions, and field-notes ship in subsequent phases."
+  theme="dark"
+  current="home"
+  noindex={true}
+>
+  <section class="hero block full">
+    <div class="wrap hero-inner">
+      <div class="hero-meta">
+        <span class="kicker">Volume 01 · Independent Advisory · 2026</span>
+        <span class="kicker">Redesign preview · Phase 1 of 6 · Foundation</span>
+      </div>
+
+      <h1 class="display d-1 reveal">
+        Move first. <span class="em">Or be moved</span><br />
+        <span class="em">by what you missed.</span>
+      </h1>
+
+      <div class="hero-foot reveal reveal-d2">
+        <p class="lede">
+          Your governance framework says you are in control. Intervene tests
+          whether that is true, before a live failure answers the question
+          for you. Independent. Practitioner-led. Board-grade.
+        </p>
+        <div class="hero-cta">
+          <a href="/style-guide/" class="btn">View style guide</a>
+          <a href="/contact/" class="btn-ghost">Request a discussion</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="wordmark-watermark" aria-hidden="true">intervene</div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding-top: 96px;
+    padding-bottom: 144px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .hero-inner {
+    display: grid;
+    gap: 80px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .hero-foot {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 80px;
+    align-items: end;
+  }
+  .hero-foot .lede { color: var(--ink-soft); max-width: 56ch; }
+  .hero-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .wordmark-watermark {
+    position: absolute;
+    bottom: -8vw;
+    left: -1vw;
+    right: -1vw;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 24vw;
+    line-height: 0.84;
+    letter-spacing: -0.05em;
+    color: rgba(154, 123, 63, 0.05);
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    z-index: 1;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80;
+  }
+  @media (max-width: 880px) {
+    .hero-foot { grid-template-columns: 1fr; gap: 48px; }
+  }
+</style>
