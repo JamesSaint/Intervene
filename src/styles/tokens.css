@@ -1,0 +1,99 @@
+/* ============================================================
+   intervene · design tokens
+   v2.0 · 2026
+   Editorial instrument. Dark openers, cream reading pages.
+   Bronze hairline as the single accent.
+   ============================================================ */
+
+:root {
+  /* ----- Type families ----- */
+  --font-display: 'Fraunces', 'GT Sectra Fine', Georgia, 'Times New Roman', serif;
+  --font-sans:    'Geist', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:    'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* ----- Spatial ----- */
+  --gutter:       64px;
+  --gutter-tight: 32px;
+  --max:          1280px;
+  --max-narrow:   880px;
+  --max-reading:  680px;
+  --max-report:   980px;
+  --header-h:     64px;
+
+  /* ----- Signal (constant across themes) ----- */
+  --warn: #c8322a;
+  --hold: #b07a14;
+  --pass: #2a6f4f;
+
+  /* ----- Accent (constant; the single bronze) ----- */
+  --bronze:      #9a7b3f;
+  --bronze-soft: rgba(154, 123, 63, 0.22);
+
+  /* ----- Motion ----- */
+  --ease-entrance: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-state:    cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-hover:     320ms;
+  --dur-reveal:    480ms;
+  --dur-takeover-open:  620ms;
+  --dur-takeover-close: 380ms;
+}
+
+/* ============================================================
+   Light theme · default for reading pages
+   ============================================================ */
+:root,
+html[data-theme='light'] {
+  --paper:        #faf7f1;
+  --paper-soft:   #f1ede4;
+  --paper-mid:    #ece6d9;
+  --ink:          #0a0a0a;
+  --ink-soft:     #1a1a1a;
+  --hair:         #d9d2c4;
+  --hair-soft:    #e6e0d2;
+  --hair-strong:  #c4bba8;
+  --muted:        #6b6354;
+  --muted-soft:   #8a8170;
+
+  /* Inverse swatches (for inset dark bands inside a light page) */
+  --inverse-paper: #0a0a0a;
+  --inverse-ink:   #f4efe6;
+  --inverse-hair:  rgba(244, 239, 230, 0.14);
+}
+
+/* ============================================================
+   Dark theme · home + sectional openers + takeover + CTA + footer
+   ============================================================ */
+html[data-theme='dark'] {
+  --paper:        #0a0a0a;
+  --paper-soft:   #111111;
+  --paper-mid:    #1a1a1a;
+  --ink:          #f4efe6;
+  --ink-soft:     #d9d2c4;
+  --hair:         rgba(244, 239, 230, 0.14);
+  --hair-soft:    rgba(244, 239, 230, 0.08);
+  --hair-strong:  rgba(244, 239, 230, 0.28);
+  --muted:        #b8ad97;
+  --muted-soft:   #8a8170;
+
+  --inverse-paper: #faf7f1;
+  --inverse-ink:   #0a0a0a;
+  --inverse-hair:  #d9d2c4;
+}
+
+/* ============================================================
+   Reduced motion · neutralise transforms and clip-paths
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-hover: 160ms;
+    --dur-reveal: 160ms;
+    --dur-takeover-open: 160ms;
+    --dur-takeover-close: 160ms;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 160ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,373 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const swatches = {
+  light: [
+    { name: 'paper', value: '#faf7f1', token: '--paper' },
+    { name: 'paper-soft', value: '#f1ede4', token: '--paper-soft' },
+    { name: 'paper-mid', value: '#ece6d9', token: '--paper-mid' },
+    { name: 'ink', value: '#0a0a0a', token: '--ink' },
+    { name: 'ink-soft', value: '#1a1a1a', token: '--ink-soft' },
+    { name: 'muted', value: '#6b6354', token: '--muted' },
+    { name: 'hair', value: '#d9d2c4', token: '--hair' },
+    { name: 'hair-strong', value: '#c4bba8', token: '--hair-strong' },
+  ],
+  dark: [
+    { name: 'paper', value: '#0a0a0a', token: '--paper' },
+    { name: 'paper-soft', value: '#111111', token: '--paper-soft' },
+    { name: 'paper-mid', value: '#1a1a1a', token: '--paper-mid' },
+    { name: 'ink', value: '#f4efe6', token: '--ink' },
+    { name: 'ink-soft', value: '#d9d2c4', token: '--ink-soft' },
+    { name: 'muted', value: '#b8ad97', token: '--muted' },
+    { name: 'hair', value: 'rgba(244,239,230,0.14)', token: '--hair' },
+    { name: 'hair-strong', value: 'rgba(244,239,230,0.28)', token: '--hair-strong' },
+  ],
+  signal: [
+    { name: 'bronze', value: '#9a7b3f', token: '--bronze' },
+    { name: 'warn', value: '#c8322a', token: '--warn' },
+    { name: 'hold', value: '#b07a14', token: '--hold' },
+    { name: 'pass', value: '#2a6f4f', token: '--pass' },
+  ],
+};
+
+const typeScale = [
+  { class: 'display d-1', label: 'Display 1 · clamp(72–200px)', sample: 'Move first.' },
+  { class: 'display d-2', label: 'Display 2 · clamp(56–140px)', sample: 'Measurement-grade.' },
+  { class: 'display d-3', label: 'Display 3 · clamp(40–96px)', sample: 'By the time the board is told.' },
+  { class: 'display d-4', label: 'Display 4 · clamp(32–64px)', sample: 'The window has closed.' },
+];
+---
+
+<BaseLayout
+  title="Intervene · Style Guide"
+  description="Internal style guide for the Intervene v2 design system."
+  theme="light"
+  current="style-guide"
+  noindex={true}
+>
+  <section class="block">
+    <div class="wrap">
+      <span class="kicker">Internal · noindex · v2.0 · 2026</span>
+      <h1 class="display d-2" style="margin: 24px 0 32px;">Style guide.</h1>
+      <p class="lede" style="max-width: 56ch;">
+        Every token, every type utility, every spacing rule the v2 redesign
+        depends on. This page exists to verify the system end-to-end before
+        Phase 2 begins migrating the reading pages.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============== TYPOGRAPHY ============== -->
+  <section class="block">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="num">§ 01</span>
+        <h2 class="title">Typography</h2>
+        <p class="desc">
+          Fraunces display serif. Geist body sans. Geist Mono chrome. Pending
+          GT Sectra, ABC Diatype, and Berkeley Mono licence purchase.
+        </p>
+      </div>
+
+      <div class="type-stack">
+        {typeScale.map(t => (
+          <div class="type-row">
+            <span class="kicker">{t.label}</span>
+            <p class={t.class} style="margin: 12px 0 0;">{t.sample}</p>
+          </div>
+        ))}
+
+        <div class="type-row">
+          <span class="kicker">Display italic · variable SOFT 60</span>
+          <p class="display-italic d-3" style="margin: 12px 0 0;">
+            <em>not narrative.</em>
+          </p>
+        </div>
+
+        <div class="type-row">
+          <span class="kicker">Wordmark extreme · clamp(14–24vw)</span>
+          <p class="wordmark-extreme" style="margin: 12px 0 0; color: var(--bronze);">intervene</p>
+        </div>
+
+        <div class="type-row">
+          <span class="kicker">Lede · clamp(18–22px)</span>
+          <p class="lede" style="margin: 12px 0 0; max-width: 62ch;">
+            Independent advisory for boards facing irreversible exposure.
+            Deterministic, attested intervention-capability assessment for AI
+            and consequential systems.
+          </p>
+        </div>
+
+        <div class="type-row">
+          <span class="kicker">Body reading · 17px / 1.65</span>
+          <p class="body-reading" style="margin: 12px 0 0; max-width: 62ch;">
+            Most assessments measure intention. AGDA measures evidence. The
+            methodology is published; the verdict is cryptographically signed;
+            the regulator can verify it without us.
+          </p>
+        </div>
+
+        <div class="type-row">
+          <span class="kicker">Body · 16px / 1.6</span>
+          <p class="body" style="margin: 12px 0 0; max-width: 62ch;">
+            Independent advisory for boards facing irreversible exposure.
+          </p>
+        </div>
+
+        <div class="type-row">
+          <span class="kicker">Body small · 14px / 1.55</span>
+          <p class="body-sm" style="margin: 12px 0 0; max-width: 62ch;">
+            Independent advisory for boards facing irreversible exposure.
+          </p>
+        </div>
+
+        <div class="type-row">
+          <span class="kicker">Mono · 11px · uppercase · 0.08em</span>
+          <p class="mono" style="margin: 12px 0 0;">SECTION 01 · PRACTICE · VOLUME 01</p>
+        </div>
+
+        <div class="type-row">
+          <span class="kicker">Mono lg · 16px · 0.04em</span>
+          <p class="mono-lg" style="margin: 12px 0 0;">14:32 UTC</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== COLOUR ============== -->
+  <section class="block">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="num">§ 02</span>
+        <h2 class="title">Colour.</h2>
+        <p class="desc">
+          Warm cream and deep ink, with one bronze hairline as the only
+          accent. Signal red, hold amber, pass green carry over unchanged.
+        </p>
+      </div>
+
+      <div class="palette">
+        <div class="palette-group">
+          <span class="kicker">Light</span>
+          <div class="swatches">
+            {swatches.light.map(s => (
+              <div class="swatch">
+                <div class="chip" style={`background: ${s.value};`}></div>
+                <div class="meta">
+                  <span class="name">{s.name}</span>
+                  <span class="token">{s.token}</span>
+                  <span class="value">{s.value}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="palette-group inverse" style="padding: 32px; margin-top: 32px;">
+          <span class="kicker" style="color: rgba(244,239,230,0.5);">Dark</span>
+          <div class="swatches">
+            {swatches.dark.map(s => (
+              <div class="swatch dark">
+                <div class="chip" style={`background: ${s.value};`}></div>
+                <div class="meta">
+                  <span class="name">{s.name}</span>
+                  <span class="token">{s.token}</span>
+                  <span class="value">{s.value}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="palette-group" style="margin-top: 32px;">
+          <span class="kicker">Signal &amp; accent</span>
+          <div class="swatches">
+            {swatches.signal.map(s => (
+              <div class="swatch">
+                <div class="chip" style={`background: ${s.value};`}></div>
+                <div class="meta">
+                  <span class="name">{s.name}</span>
+                  <span class="token">{s.token}</span>
+                  <span class="value">{s.value}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== BUTTONS & LINKS ============== -->
+  <section class="block">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="num">§ 03</span>
+        <h2 class="title">Buttons and links.</h2>
+        <p class="desc">
+          Bronze on hover. No colour fades; underlines draw left to right at
+          320ms. Filled buttons reserved for primary CTAs; ghost buttons for
+          secondary; link style for inline.
+        </p>
+      </div>
+
+      <div class="button-grid">
+        <div>
+          <span class="kicker">Filled</span>
+          <div style="margin-top: 12px;"><a href="#" class="btn">Request a discussion</a></div>
+        </div>
+        <div>
+          <span class="kicker">Ghost</span>
+          <div style="margin-top: 12px;"><a href="#" class="btn-ghost">Our method</a></div>
+        </div>
+        <div>
+          <span class="kicker">Inline link · bronze hover</span>
+          <div style="margin-top: 12px;"><a href="#" class="link">advisory@intervene.group</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== SPATIAL ============== -->
+  <section class="block">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="num">§ 04</span>
+        <h2 class="title">Spatial.</h2>
+        <p class="desc">
+          1280px container, 64px gutter on desktop. Narrow 880px for hero
+          balance. Reading 680px for essays. Report 980px for sample-report.
+        </p>
+      </div>
+
+      <div class="spacing-stack">
+        <div class="bar" style="width: 1280px; max-width: 100%;">
+          <span class="bar-label">--max · 1280px</span>
+        </div>
+        <div class="bar" style="width: 880px; max-width: 100%;">
+          <span class="bar-label">--max-narrow · 880px</span>
+        </div>
+        <div class="bar" style="width: 680px; max-width: 100%;">
+          <span class="bar-label">--max-reading · 680px</span>
+        </div>
+        <div class="bar" style="width: 980px; max-width: 100%;">
+          <span class="bar-label">--max-report · 980px</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== INVERSE BAND ============== -->
+  <section class="block inverse" style="border-bottom: 0;">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="num">§ 05</span>
+        <h2 class="title">Inverse band.</h2>
+        <p class="desc">
+          Dark inset inside a light page. Used to make a single message the
+          load-bearing claim of a section. Ed25519 attestation belongs here.
+        </p>
+      </div>
+
+      <p class="lede" style="max-width: 56ch;">
+        Every verdict signed Ed25519. Verifiable by an audit committee using a
+        committed public key. Opinion is not reproducible. <em>A signed
+        computation is.</em>
+      </p>
+
+      <div style="margin-top: 32px; display: flex; gap: 16px;">
+        <a href="#" class="btn">Request the public key</a>
+        <a href="#" class="btn-ghost">View attestation envelope</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== MOTION ============== -->
+  <section class="block">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="num">§ 06</span>
+        <h2 class="title">Motion.</h2>
+        <p class="desc">
+          Slow. Considered. Never bouncy. Reveals unmask from the bottom edge
+          like printer plates. Honours prefers-reduced-motion.
+        </p>
+      </div>
+
+      <div class="reveal" style="padding: 32px; border: 1px solid var(--hair); background: var(--paper-soft);">
+        <span class="kicker">Reveal · base</span>
+        <p class="display d-4" style="margin: 12px 0 0;">Unmasked from below.</p>
+      </div>
+
+      <div class="reveal reveal-d2" style="margin-top: 16px; padding: 32px; border: 1px solid var(--hair); background: var(--paper-soft);">
+        <span class="kicker">Reveal · 160ms delay</span>
+        <p class="display d-4" style="margin: 12px 0 0;">Staggered.</p>
+      </div>
+
+      <div class="reveal reveal-d4" style="margin-top: 16px; padding: 32px; border: 1px solid var(--hair); background: var(--paper-soft);">
+        <span class="kicker">Reveal · 320ms delay</span>
+        <p class="display d-4" style="margin: 12px 0 0;">In sequence.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .type-stack { display: grid; gap: 56px; }
+  .type-row { padding-bottom: 32px; border-bottom: 1px solid var(--hair); }
+  .type-row:last-child { border-bottom: 0; padding-bottom: 0; }
+
+  .palette { display: grid; }
+  .palette-group { padding: 24px 0; }
+  .palette-group .kicker { display: block; margin-bottom: 24px; }
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
+  .swatch {
+    display: grid;
+    gap: 12px;
+  }
+  .swatch .chip {
+    height: 96px;
+    border: 1px solid var(--hair);
+  }
+  .swatch.dark .chip { border-color: rgba(244, 239, 230, 0.2); }
+  .swatch .meta {
+    display: grid;
+    gap: 2px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+  .swatch .name { color: var(--ink); text-transform: uppercase; }
+  .swatch .token { color: var(--muted); }
+  .swatch .value { color: var(--muted); }
+  .swatch.dark .name { color: #f4efe6; }
+  .swatch.dark .token,
+  .swatch.dark .value { color: rgba(244, 239, 230, 0.55); }
+
+  .button-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 32px;
+  }
+
+  .spacing-stack { display: grid; gap: 16px; }
+  .bar {
+    height: 32px;
+    background: var(--paper-soft);
+    border: 1px solid var(--hair);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+  }
+  .bar-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+</style>
