@@ -1,0 +1,222 @@
+---
+const bars = [
+  { stage: 'Signal',       actual: 2.0, claimed: null },
+  { stage: 'Escalation',   actual: 3.0, claimed: 4.0 },
+  { stage: 'Decision',     actual: 3.5, claimed: 4.5 },
+  { stage: 'Intervention', actual: 4.0, claimed: 4.8 },
+];
+const MAX = 5;
+const ticks = [5, 4, 3, 2, 1, 0];
+---
+
+<figure class="ceiling reveal" aria-label="Chain ceiling propagation. Claimed scores in light ghost tracks. Actual capped scores in dark bars.">
+  <div class="chart">
+    <ol class="axis-y" aria-hidden="true">
+      {ticks.map((t) => <li>{t}</li>)}
+    </ol>
+
+    <div class="plot">
+      <div class="gridlines" aria-hidden="true">
+        {[1, 2, 3, 4, 5].map((n) => (
+          <span class="gline" style={`bottom: ${(n / MAX) * 100}%`}></span>
+        ))}
+      </div>
+
+      <div class="bars">
+        {bars.map((b, i) => (
+          <div
+            class="col"
+            style={`--actual: ${(b.actual / MAX) * 100}%; --claim: ${b.claimed !== null ? (b.claimed / MAX) * 100 : 0}%; --delay: ${i * 120}ms`}
+          >
+            {b.claimed !== null && (
+              <span class="ghost" aria-label={`Claimed ${b.claimed.toFixed(1)}`}>
+                <span class="ghost-label">claimed {b.claimed.toFixed(1)}</span>
+              </span>
+            )}
+            <span class="bar" aria-label={`Capped at ${b.actual.toFixed(1)}`}>
+              <span class="score">{b.actual.toFixed(1)}</span>
+            </span>
+            <span class="stage">{b.stage}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <figcaption>
+    Detection scores 2.0 because signal is limited to nightly batch review.
+    The chain ceiling propagates forward. Intervention is capped at 4.0, not
+    the claimed 4.8.
+  </figcaption>
+</figure>
+
+<style>
+  .ceiling {
+    margin: 80px 0 0;
+    padding: 0;
+    /* parent override; children stagger on .in */
+    opacity: 1;
+    transform: none;
+  }
+
+  .chart {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 24px;
+    height: 420px;
+  }
+
+  .axis-y {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    text-align: right;
+    padding-bottom: 40px;
+  }
+
+  .plot {
+    position: relative;
+    border-left: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 40px;
+  }
+
+  .gridlines {
+    position: absolute;
+    inset: 0 0 40px 0;
+    pointer-events: none;
+  }
+  .gline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--hair-soft);
+  }
+
+  .bars {
+    position: relative;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: end;
+  }
+
+  .col {
+    position: relative;
+    height: calc(100% - 40px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  .col::before {
+    /* Stage label appears below baseline. Use the col itself as anchor. */
+    content: '';
+  }
+  .stage {
+    position: absolute;
+    bottom: -32px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .ghost,
+  .bar {
+    position: absolute;
+    bottom: 0;
+    left: 22%;
+    right: 22%;
+    display: block;
+  }
+
+  .ghost {
+    height: 0;
+    background: var(--paper-soft);
+    border: 1px solid var(--hair);
+    border-bottom: 0;
+    z-index: 1;
+    opacity: 0;
+    transition:
+      height 600ms cubic-bezier(0.65, 0, 0.35, 1),
+      opacity 360ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: var(--delay);
+  }
+  .ghost-label {
+    position: absolute;
+    top: -22px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    text-transform: lowercase;
+    opacity: 0;
+    transition: opacity 360ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: calc(var(--delay) + 700ms);
+  }
+
+  .bar {
+    height: 0;
+    background: var(--ink);
+    z-index: 2;
+    transition: height 720ms cubic-bezier(0.65, 0, 0.35, 1);
+    transition-delay: calc(var(--delay) + 200ms);
+  }
+  .score {
+    position: absolute;
+    top: -22px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink);
+    opacity: 0;
+    transition: opacity 360ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: calc(var(--delay) + 800ms);
+  }
+
+  .ceiling.in .ghost { height: var(--claim); opacity: 1; }
+  .ceiling.in .ghost-label { opacity: 1; }
+  .ceiling.in .bar { height: var(--actual); }
+  .ceiling.in .score { opacity: 1; }
+
+  figcaption {
+    margin-top: 64px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 64ch;
+  }
+
+  @media (max-width: 720px) {
+    .chart { height: 320px; gap: 16px; grid-template-columns: 24px 1fr; }
+    .axis-y { font-size: 10px; }
+    .ghost, .bar { left: 14%; right: 14%; }
+    .stage { font-size: 12px; bottom: -28px; }
+    .ghost-label { font-size: 9px; top: -18px; }
+    .score { font-size: 11px; top: -18px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ghost, .ghost-label, .bar, .score { transition: none !important; }
+    .ceiling .ghost { height: var(--claim); opacity: 1; }
+    .ceiling .ghost-label { opacity: 1; }
+    .ceiling .bar { height: var(--actual); }
+    .ceiling .score { opacity: 1; }
+  }
+</style>

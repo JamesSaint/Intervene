@@ -1,39 +1,22 @@
 ---
 import Logo from './Logo.astro';
-import LiveReadout from './LiveReadout.astro';
-
-interface Props {
-  current?: string;
-}
-
-const { current } = Astro.props;
+import MenuIcon from './MenuIcon.astro';
 ---
 
-<header class="site-header" data-current={current ?? ''}>
+<header class="site-header" data-site-header>
   <a href="#main" class="skip-link">Skip to content</a>
-
-  <div class="header-inner wrap">
-    <div class="left">
-      <Logo size="sm" href="/" />
-    </div>
-
-    <div class="centre">
-      <LiveReadout variant="inline" />
-    </div>
-
-    <div class="right">
-      <button
-        type="button"
-        class="menu-trigger"
-        aria-expanded="false"
-        aria-controls="takeover-menu"
-        data-menu-trigger
-      >
-        <span class="word">Menu</span>
-        <span class="dot" aria-hidden="true"></span>
-      </button>
-      <a href="/contact/" class="enquire">Enquire <span aria-hidden="true">→</span></a>
-    </div>
+  <div class="wrap header-inner">
+    <Logo size="sm" href="/" />
+    <button
+      type="button"
+      class="menu-trigger"
+      aria-expanded="false"
+      aria-controls="takeover-menu"
+      aria-label="Open menu"
+      data-menu-trigger
+    >
+      <MenuIcon />
+    </button>
   </div>
 </header>
 
@@ -41,104 +24,33 @@ const { current } = Astro.props;
   .site-header {
     position: sticky;
     top: 0;
-    z-index: 50;
-    background: color-mix(in srgb, var(--paper) 92%, transparent);
-    backdrop-filter: saturate(180%) blur(10px);
-    -webkit-backdrop-filter: saturate(180%) blur(10px);
+    z-index: 1100;
+    background: var(--paper);
     border-bottom: 1px solid var(--hair);
-    min-height: var(--header-h);
+    transition: border-color 200ms ease;
   }
-
+  .site-header[data-takeover-open] {
+    border-bottom-color: var(--hair);
+  }
   .header-inner {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    display: flex;
     align-items: center;
-    gap: 32px;
+    justify-content: space-between;
     min-height: var(--header-h);
-    padding-top: 14px;
-    padding-bottom: 14px;
+    padding-top: 18px;
+    padding-bottom: 18px;
   }
-
-  .left { justify-self: start; }
-  .centre { justify-self: center; }
-  .right {
-    justify-self: end;
-    display: inline-flex;
-    align-items: center;
-    gap: 24px;
-  }
-
   .menu-trigger {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink);
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 8px 0;
-    position: relative;
-  }
-  .menu-trigger .word {
-    position: relative;
-    padding-bottom: 3px;
-  }
-  .menu-trigger .word::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 1px;
-    background: var(--bronze);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform var(--dur-hover) var(--ease-state);
-  }
-  .menu-trigger:hover .word::after,
-  .menu-trigger:focus-visible .word::after,
-  .menu-trigger[aria-expanded='true'] .word::after { transform: scaleX(1); }
-  .menu-trigger .dot {
-    width: 5px;
-    height: 5px;
-    background: var(--bronze);
-    border-radius: 50%;
-    display: inline-block;
-    opacity: 0.7;
-  }
-
-  .enquire {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-right: -10px;
     color: var(--ink);
-    position: relative;
-    padding: 8px 0 11px;
   }
-  .enquire::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 6px;
-    height: 1px;
-    background: currentColor;
-    opacity: 0.3;
-    transition: background var(--dur-hover) var(--ease-state), opacity var(--dur-hover) var(--ease-state);
-  }
-  .enquire:hover {
-    color: var(--bronze);
-  }
-  .enquire:hover::after {
-    background: var(--bronze);
-    opacity: 1;
-  }
-
-  @media (max-width: 880px) {
-    .header-inner { grid-template-columns: 1fr auto; }
-    .centre { display: none; }
-    .enquire { display: none; }
+  .menu-trigger:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
   }
 </style>
