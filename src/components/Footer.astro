@@ -1,151 +1,74 @@
 ---
-import Logo from './Logo.astro';
-
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
   <div class="wrap foot-inner">
-    <div class="foot-top">
-      <div class="foot-brand">
-        <Logo size="lg" href={null} inverted />
-        <p class="tag">
-          Independent intervention-capability assessment for boards facing
-          consequential AI and operational systems. Intervene Group Ltd,
-          United Kingdom.
-        </p>
-      </div>
+    <span class="brand">intervene</span>
 
-      <nav class="foot-col" aria-label="Practice">
-        <h5 class="kicker">Practice</h5>
-        <ul role="list">
-          <li><a href="/method/" class="foot-link">Method</a></li>
-          <li><a href="/positions/" class="foot-link">Positions</a></li>
-          <li><a href="/services/" class="foot-link">Services</a></li>
-          <li><a href="/sample-report/" class="foot-link">Sample report</a></li>
-          <li><a href="/field-notes/" class="foot-link">Field notes</a></li>
-          <li><a href="/about/" class="foot-link">About</a></li>
-        </ul>
-      </nav>
+    <nav aria-label="Footer">
+      <ul role="list">
+        <li><a href="/method/">Method</a></li>
+        <li><a href="/services/">Services</a></li>
+        <li><a href="/sample-report/">Sample report</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </nav>
 
-      <nav class="foot-col" aria-label="Engage">
-        <h5 class="kicker">Engage</h5>
-        <ul role="list">
-          <li><a href="/contact/" class="foot-link">Contact</a></li>
-          <li><a href="mailto:advisory@intervene.group" class="foot-link">advisory@intervene.group</a></li>
-          <li><a href="/contact/" class="foot-link">Confidential discussion</a></li>
-        </ul>
-      </nav>
-
-      <nav class="foot-col" aria-label="Legal">
-        <h5 class="kicker">Legal</h5>
-        <ul role="list">
-          <li><a href="/legal/terms/" class="foot-link">Terms</a></li>
-          <li><a href="/legal/privacy/" class="foot-link">Privacy</a></li>
-          <li><a href="/legal/gdpr/" class="foot-link">GDPR</a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <div class="foot-bottom">
-      <span class="copy">© {year} Intervene Group Ltd · All rights reserved</span>
-      <span class="meta">
-        <span>AGDA™ · InterveneCore™</span>
-        <span class="sep">·</span>
-        <span>Registered in England &amp; Wales</span>
-      </span>
-    </div>
+    <span class="meta">© {year} Intervene Group Ltd</span>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    background: #0a0a0a;
-    color: #f4efe6;
-    padding: 96px 0 48px;
     border-top: 1px solid var(--hair);
+    padding: 80px 0;
+    background: var(--paper);
   }
-
-  .foot-top {
+  .foot-inner {
     display: grid;
-    grid-template-columns: 1.8fr 1fr 1fr 1fr;
-    gap: 64px;
-    padding-bottom: 80px;
-    border-bottom: 1px solid rgba(244, 239, 230, 0.14);
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 48px;
   }
-
-  .foot-brand .tag {
-    margin: 32px 0 0;
+  .brand {
     font-family: var(--font-sans);
-    font-size: 14px;
-    line-height: 1.6;
-    color: rgba(244, 239, 230, 0.55);
-    max-width: 36ch;
-  }
-
-  .foot-col h5 {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(244, 239, 230, 0.45);
-    margin: 0 0 24px;
+    font-size: 22px;
     font-weight: 500;
+    letter-spacing: -0.04em;
+    color: var(--ink);
   }
-  .foot-col ul {
+  nav ul {
     list-style: none;
-    padding: 0;
     margin: 0;
-    display: grid;
-    gap: 12px;
+    padding: 0;
+    display: flex;
+    gap: 32px;
+    justify-content: center;
   }
-  .foot-link {
+  nav a {
     font-family: var(--font-sans);
     font-size: 14px;
-    color: #f4efe6;
-    position: relative;
-    display: inline-block;
-    padding-bottom: 3px;
-    transition: color var(--dur-hover) var(--ease-state);
+    color: var(--ink);
+    padding-bottom: 1px;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--dur-hover) var(--ease);
   }
-  .foot-link::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 1px;
-    background: var(--bronze);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform var(--dur-hover) var(--ease-state);
+  nav a:hover { border-color: var(--ink); }
+  .meta {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--muted);
+    justify-self: end;
   }
-  .foot-link:hover { color: var(--bronze); }
-  .foot-link:hover::after { transform: scaleX(1); }
-
-  .foot-bottom {
-    padding-top: 32px;
-    display: flex;
-    justify-content: space-between;
-    gap: 24px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: rgba(244, 239, 230, 0.45);
-  }
-  .foot-bottom .sep { opacity: 0.4; padding: 0 6px; }
-
-  @media (max-width: 880px) {
-    .foot-top {
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      padding-bottom: 48px;
+  @media (max-width: 720px) {
+    .foot-inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      text-align: left;
     }
-    .foot-brand { grid-column: 1 / -1; }
-    .foot-bottom { flex-direction: column; gap: 8px; }
-  }
-  @media (max-width: 480px) {
-    .foot-top { grid-template-columns: 1fr; }
+    nav ul { justify-content: flex-start; flex-wrap: wrap; gap: 20px; }
+    .meta { justify-self: start; }
   }
 </style>
