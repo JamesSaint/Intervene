@@ -85,40 +85,50 @@ const evidence = [
 >
   <!-- COVER -->
   <section class="cover">
-    <div class="wrap-report">
-      <dl class="cover-meta">
-        {cover.map((c) => (
-          <div>
-            <dt>{c.k}</dt>
-            <dd>{c.v}</dd>
-          </div>
-        ))}
-      </dl>
+    <div class="wrap">
+      <span class="cover-kicker mono">Failure Exposure Report · Redacted</span>
 
-      <h1 class="h1 reveal">
-        Failure Exposure Report. <em>Retail credit. Escalation break.</em>
-      </h1>
-      <p class="lede muted reveal">
-        Single material model. One trigger scenario. The chain breaks at
-        escalation. Detection works. Authority does not. PRA SS1/23 §6
-        intervention capability is structurally below the evidence bar.
-      </p>
+      <div class="cover-grid">
+        <div class="cover-left">
+          <h1 class="h1 reveal">
+            Retail credit. <em>Escalation break.</em>
+          </h1>
+          <p class="lede muted reveal">
+            Single material model. One trigger scenario. The chain breaks at
+            escalation. Detection works. Authority does not. PRA SS1/23 §6
+            intervention capability is structurally below the evidence bar.
+          </p>
 
-      <pre class="envelope reveal" aria-label="Attestation envelope"><code>{`engineVersion   1.2.0
+          <dl class="cover-meta">
+            {cover.map((c) => (
+              <div>
+                <dt>{c.k}</dt>
+                <dd>{c.v}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        <aside class="cover-right reveal" aria-label="Attestation envelope">
+          <span class="env-label mono">Attestation envelope · Ed25519</span>
+          <pre class="envelope"><code>{`engineVersion   1.2.0
 engineHash      sha256:b2c8a1d…e7f2916
 inputHash       sha256:47a2e19…cd8b103
 outputHash      sha256:91f4c02…a6d0d4e
 keyId           2026-04-22-1e7c3c2c
 scoredAt        2026-05-14T09:47:12.334Z
-signature       ed25519:M4Gb2ZqAfD…pLQX7w
-
-verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json`}</code></pre>
+signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
+          <p class="env-verify mono">
+            verify · agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
+          </p>
+        </aside>
+      </div>
     </div>
   </section>
 
   <!-- 1. SYSTEM OVERVIEW -->
   <section class="block">
-    <div class="wrap-report">
+    <div class="wrap">
       <h2 class="h2">Material model. <em>Live decision authority.</em></h2>
       <p class="lede muted">
         A retail credit decisioning model approving up to 18,000 unsecured
@@ -139,7 +149,7 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
 
   <!-- 2. CONTROL REALITY INDEX -->
   <section class="block">
-    <div class="wrap-report">
+    <div class="wrap">
       <h2 class="h2">Control Reality Index.</h2>
       <p class="lede muted">
         Six controls assessed against the eight AGDA dimensions. Terminal
@@ -167,7 +177,7 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
 
   <!-- 3. ESCALATION VIABILITY -->
   <section class="block">
-    <div class="wrap-report">
+    <div class="wrap">
       <h2 class="h2">The chain breaks <em>at escalation.</em></h2>
       <p class="lede muted">
         Detection works. The signal exists. Surface is fast. Audit trail is
@@ -195,7 +205,7 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
 
   <!-- 4. TEMPORAL GATING -->
   <section class="block">
-    <div class="wrap-report">
+    <div class="wrap">
       <h2 class="h2">Stage by stage. Against the clock.</h2>
       <ul class="stage-grid" role="list">
         {stages.map((s) => (
@@ -212,7 +222,7 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
 
   <!-- 5. GATE REGISTER -->
   <section class="block">
-    <div class="wrap-report">
+    <div class="wrap">
       <h2 class="h2">Gate register.</h2>
       <p class="lede muted">
         Every temporal gate the chain must clear, with the measured value and
@@ -239,7 +249,7 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
 
   <!-- 6. BOARD CONCLUSION -->
   <section class="block">
-    <div class="wrap-report">
+    <div class="wrap">
       <h2 class="h2">What the Board <em>needs to act on.</em></h2>
       <p class="lede muted">
         The system is well-instrumented at the technical layer. The authority
@@ -269,7 +279,7 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
 
   <!-- 7. REGULATORY MAPPING -->
   <section class="block">
-    <div class="wrap-report">
+    <div class="wrap">
       <h2 class="h2">Regulatory mapping.</h2>
       <p class="lede muted">
         Where each finding sits against article-level obligations.
@@ -295,7 +305,7 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
 
   <!-- 8. FRAMEWORK PRESSURE -->
   <section class="block">
-    <div class="wrap-report">
+    <div class="wrap">
       <h2 class="h2">Framework pressure. Where the weight concentrates.</h2>
 
       <ul class="pressure" role="list">
@@ -315,7 +325,7 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
 
   <!-- 9. IRREVERSIBILITY -->
   <section class="block">
-    <div class="wrap-report">
+    <div class="wrap">
       <h2 class="h2">Irreversibility profile.</h2>
       <p class="lede muted">
         The cost of failing to intervene, and the cost of intervening
@@ -339,7 +349,7 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
 
   <!-- 10. CRR TERMINALS -->
   <section class="block">
-    <div class="wrap-report">
+    <div class="wrap">
       <h2 class="h2">CRR terminals.</h2>
       <p class="lede muted">
         Three terminal classifications concentrated on authority. Each
@@ -361,7 +371,7 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
 
   <!-- 11. EVIDENCE REGISTER -->
   <section class="block">
-    <div class="wrap-report">
+    <div class="wrap">
       <h2 class="h2">Evidence register.</h2>
       <p class="lede muted">
         Lowest-grade evidence in a dimension caps the dimension. Listed in
@@ -388,7 +398,7 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
 
   <!-- 12. SCENARIO IMPACT -->
   <section class="block">
-    <div class="wrap-report">
+    <div class="wrap">
       <h2 class="h2">Modelled exposure if the chain does not hold.</h2>
       <p class="lede muted">
         Quantified consequence of the trigger scenario reaching the disclosure
@@ -423,7 +433,7 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
 
   <!-- 13. SYSTEM VIABILITY -->
   <section class="block">
-    <div class="wrap-report">
+    <div class="wrap">
       <h2 class="h2">The single-line answer <em>for the audit committee.</em></h2>
       <p class="lede muted">
         The verdict the chair is being asked to certify. Not a recommendation.
@@ -465,7 +475,7 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
 
   <!-- CTA -->
   <section class="block tight">
-    <div class="wrap-report">
+    <div class="wrap">
       <div class="close-grid">
         <h2 class="h2">Run this <em>against your own model.</em></h2>
         <div class="close-cta">
@@ -484,16 +494,35 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
 <style>
   /* ----- COVER ----- */
   .cover {
-    padding: 96px 0 80px;
-    border-bottom: 1px solid var(--hair);
+    padding: 96px 0 96px;
+    border-bottom: 1px solid var(--ink);
   }
-  .cover-meta {
-    margin: 0 0 56px;
-    padding: 0 0 24px;
+  .cover-kicker {
+    display: block;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+    padding-bottom: 24px;
     border-bottom: 1px solid var(--hair);
+    margin-bottom: 64px;
+  }
+  .cover-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .cover .h1 { max-width: 14ch; margin: 0; }
+  .cover .lede { margin: 32px 0 0; max-width: 52ch; }
+
+  .cover-meta {
+    margin: 56px 0 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--hair);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 32px;
   }
   .cover-meta div { display: grid; gap: 6px; }
   .cover-meta dt {
@@ -507,19 +536,45 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
     margin: 0;
     font-family: var(--font-sans);
     font-size: 14px;
+    font-weight: 500;
     color: var(--ink);
   }
-  .cover .h1 { max-width: 22ch; }
-  .cover .lede { margin-top: 32px; max-width: 64ch; }
 
-  .envelope {
-    margin: 56px 0 0;
-    padding: 24px;
+  .cover-right {
+    display: grid;
+    gap: 16px;
+    padding: 32px;
     background: var(--paper-soft);
     border: 1px solid var(--hair);
+  }
+  .env-label {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--hair-strong);
+  }
+  .env-verify {
+    margin: 0;
+    padding-top: 14px;
+    border-top: 1px solid var(--hair-strong);
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+    word-break: break-all;
+  }
+
+  .envelope {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
     font-family: var(--font-mono);
     font-size: 12px;
     line-height: 1.8;
+    color: var(--ink);
     overflow-x: auto;
     white-space: pre;
   }
@@ -943,8 +998,11 @@ verify with: agda-verify --key-id 2026-04-22-1e7c3c2c --envelope ./envelope.json
 
   /* ----- RESPONSIVE ----- */
   @media (max-width: 880px) {
-    .cover { padding: 64px 0 56px; }
-    .cover-meta { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .cover { padding: 64px 0 64px; }
+    .cover-kicker { margin-bottom: 40px; }
+    .cover-grid { grid-template-columns: 1fr; gap: 48px; }
+    .cover-meta { grid-template-columns: 1fr 1fr; gap: 16px 24px; }
+    .cover-right { padding: 24px; }
     .verdict-row { grid-template-columns: 1fr 1fr; }
     .stage-grid { grid-template-columns: 1fr 1fr; }
     .bignum { grid-template-columns: 1fr; }
