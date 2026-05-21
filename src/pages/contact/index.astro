@@ -1,0 +1,243 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
+const info = [
+  { k: 'Confidentiality', v: 'All correspondence is private and off record unless explicitly agreed otherwise. NDA available before substantive discussion.' },
+  { k: 'Response window', v: 'A senior advisor responds directly within one to two working days. We do not auto-reply.' },
+  { k: 'No obligation',   v: 'An initial conversation is brief and creates no engagement. We will say if we are not the right fit.' },
+  { k: 'Office',          v: 'London, United Kingdom. Global mandates.' },
+];
+---
+
+<BaseLayout
+  title="Contact · Intervene"
+  description="Request a confidential discussion. Tell us the system, the decision, or the exposure prompting the enquiry."
+  current="contact"
+  noindex={true}
+>
+  <section class="hero">
+    <div class="wrap">
+      <h1 class="h1 reveal">Start <em>here.</em></h1>
+      <p class="lede muted reveal">
+        Tell us the system, the decision, or the exposure prompting the
+        enquiry. A single line is enough to establish context.
+      </p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="contact-grid">
+        <aside class="info-col reveal">
+          <h2 class="h2">What helps us help you.</h2>
+          <p class="body muted">
+            Include the system, decision, or exposure. We will write back. We
+            do not pre-qualify by email questionnaire.
+          </p>
+
+          <dl class="info-list">
+            {info.map((row) => (
+              <div>
+                <dt>{row.k}</dt>
+                <dd>{row.v}</dd>
+              </div>
+            ))}
+          </dl>
+        </aside>
+
+        <div class="form-col reveal">
+          <h2 class="h2">Tell us what is at stake.</h2>
+
+          <form class="form" data-contact action={FORMSPREE_ENDPOINT} method="POST" novalidate>
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input type="text" id="f-name" name="name" required autocomplete="name" />
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="f-org">Organisation</label>
+                <input type="text" id="f-org" name="organisation" required autocomplete="organization" />
+              </div>
+              <div class="field">
+                <label for="f-email">Email</label>
+                <input type="email" id="f-email" name="email" required autocomplete="email" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="f-role">Role</label>
+              <input
+                type="text"
+                id="f-role"
+                name="role"
+                placeholder="Board member · CRO · CISO · GC · Head of AI"
+                autocomplete="organization-title"
+              />
+            </div>
+
+            <div class="field">
+              <label for="f-msg">What are you concerned may fail?</label>
+              <textarea
+                id="f-msg"
+                name="message"
+                rows="5"
+                required
+                placeholder="A single line is enough."></textarea>
+            </div>
+
+            <input
+              type="text"
+              name="_gotcha"
+              class="honey"
+              tabindex="-1"
+              autocomplete="off"
+              aria-hidden="true"
+            />
+
+            <div class="submit-row">
+              <p class="small muted">
+                Held in strict confidence. Read the
+                <a href="/Intervene/legal/privacy/" class="link">privacy notice</a>.
+              </p>
+              <button type="submit" class="btn">Send enquiry</button>
+            </div>
+
+            <div class="form-status" hidden role="status"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { initContactForm } from '../../lib/contact.ts';
+    initContactForm();
+  </script>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 144px;
+    padding-bottom: 144px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .hero .h1 { max-width: 12ch; }
+  .hero .lede { margin-top: 32px; max-width: 52ch; }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 96px;
+    align-items: start;
+  }
+
+  /* Info column */
+  .info-col .h2 { max-width: 18ch; }
+  .info-col .body { margin: 16px 0 0; max-width: 36ch; }
+  .info-list {
+    margin: 40px 0 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--hair);
+    display: grid;
+    gap: 20px;
+  }
+  .info-list > div {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 16px;
+  }
+  .info-list dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .info-list dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.55;
+  }
+
+  /* Form column */
+  .form-col .h2 { max-width: 14ch; margin: 0 0 40px; }
+  .form { display: grid; gap: 20px; }
+  .field { display: grid; gap: 8px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .field label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .field input,
+  .field textarea {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color: var(--ink);
+    background: var(--paper);
+    border: 0;
+    border-bottom: 1px solid var(--hair-strong);
+    padding: 10px 0;
+    width: 100%;
+    border-radius: 0;
+    transition: border-color 180ms var(--ease);
+  }
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-bottom-color: var(--ink);
+  }
+  .field textarea { resize: vertical; min-height: 120px; line-height: 1.55; }
+
+  .honey {
+    position: absolute !important;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .submit-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    margin-top: 16px;
+    padding-top: 24px;
+    border-top: 1px solid var(--hair);
+  }
+  .submit-row .small {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    line-height: 1.55;
+    max-width: 40ch;
+  }
+
+  .form-status {
+    margin-top: 24px;
+    padding: 16px 20px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    border: 1px solid var(--hair);
+  }
+  .form-status[data-state='ok']      { border-color: var(--ink); }
+  .form-status[data-state='err']     { border-color: var(--warn); color: var(--warn); }
+  .form-status[data-state='pending'] { color: var(--muted); }
+
+  @media (max-width: 880px) {
+    .hero { padding-top: 96px; padding-bottom: 96px; }
+    .contact-grid { grid-template-columns: 1fr; gap: 64px; }
+    .info-list > div { grid-template-columns: 1fr; gap: 4px; }
+    .field-row { grid-template-columns: 1fr; }
+    .submit-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+  }
+</style>

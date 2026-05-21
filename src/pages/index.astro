@@ -1,0 +1,365 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ChainFlow from '../components/ChainFlow.astro';
+import ScopeBar from '../components/ScopeBar.astro';
+---
+
+<BaseLayout
+  title="Intervene · Independent Advisory"
+  description="Independent advisory for boards. We test whether your organisation can detect, escalate, decide, and intervene before failure becomes irreversible."
+  current="home"
+  noindex={true}
+>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-rotator" data-hero-rotator aria-live="polite">
+        <article class="slide is-active" data-slide aria-hidden="false">
+          <h1 class="h1">
+            Move first. Or be moved <em>by what you missed.</em>
+          </h1>
+          <p class="lede slide-lede">
+            Independent advisory. We test whether your governance translates
+            to operational control, before a live failure answers the
+            question for you.
+          </p>
+        </article>
+        <article class="slide" data-slide aria-hidden="true">
+          <h1 class="h1">
+            Intervention, on evidence. <em>Not intention.</em>
+          </h1>
+          <p class="lede slide-lede">
+            AGDA scores intervention capability against evidence. Every
+            verdict is cryptographically signed. The regulator can verify
+            without us.
+          </p>
+        </article>
+        <article class="slide" data-slide aria-hidden="true">
+          <h1 class="h1">
+            A safeguard. Or <em>a witness.</em>
+          </h1>
+          <p class="lede slide-lede">
+            By the time the board is told, the window has closed. We measure
+            whether the chain holds before it has to.
+          </p>
+        </article>
+      </div>
+
+      <div class="hero-cta reveal">
+        <a href="/Intervene/contact/" class="btn">Request a discussion</a>
+        <a href="/Intervene/method/" class="btn-ghost">Our method</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { initHeroRotator } from '../lib/hero-rotator.ts';
+    initHeroRotator();
+  </script>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">The chain that decides whether you can intervene.</h2>
+      <ChainFlow />
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="window-head">
+        <h2 class="h2">By the time the board is told, <em>the window has closed.</em></h2>
+        <p class="lede muted">
+          The crisis begins the moment a system fails. Authority to stop it
+          travels upward through people who cannot act. By the time it
+          reaches the board, the moment for low-cost intervention has passed.
+        </p>
+      </div>
+
+      <ol class="window-grid reveal" role="list">
+        <li class="stage">
+          <div class="chip-row">
+            <span class="time-chip">T+0</span>
+            <span class="stage-label">System event</span>
+          </div>
+          <h3 class="h3">Detection latent.</h3>
+          <p class="body muted">
+            An AI-driven decision produces outputs outside expected
+            parameters. The system runs on. No signal has reached executive
+            level. No one with authority to act has been told.
+          </p>
+          <span class="status mono">Intervention possible</span>
+        </li>
+
+        <li class="stage">
+          <div class="chip-row">
+            <span class="time-chip">T+6h</span>
+            <span class="stage-label">Operations</span>
+          </div>
+          <h3 class="h3">Authority absent.</h3>
+          <p class="body muted">
+            Deviation noticed. Damage accumulating. Signal reaches operations,
+            but the first person in the chain lacks authority to halt the
+            system. Escalation route unclear.
+          </p>
+          <span class="status mono">Intervention possible</span>
+        </li>
+
+        <li class="stage">
+          <div class="chip-row">
+            <span class="time-chip">T+18h</span>
+            <span class="stage-label">Management</span>
+          </div>
+          <h3 class="h3">Window closing.</h3>
+          <p class="body muted">
+            Still running. Cost compounding with every hour. Issue received at
+            management level. Authority to act uncertain. Escalation continues
+            upward.
+          </p>
+          <span class="status mono">Window closing</span>
+        </li>
+
+        <li class="stage critical">
+          <div class="chip-row">
+            <span class="time-chip warn">T+36h</span>
+            <span class="stage-label">Board</span>
+          </div>
+          <h3 class="h3">Witness, not safeguard.</h3>
+          <p class="body muted">
+            Uncontainable. Regulatory exposure. Reputational damage. The board
+            is informed. The intervention window has already closed. They are
+            not a safeguard. They are a witness.
+          </p>
+          <span class="status mono warn">Window closed</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Three services. <em>One question.</em></h2>
+      <p class="lede muted">
+        Can the people responsible for your most consequential systems
+        actually stop them when they need to?
+      </p>
+
+      <ul class="services" role="list">
+        <li class="reveal">
+          <ScopeBar pattern="focused" duration="Point-in-time · 2–3 weeks" />
+          <h3 class="h3">Exposure assessment.</h3>
+          <p class="body muted">One system, one scenario. A clear view of where intervention breaks down.</p>
+        </li>
+        <li class="reveal">
+          <ScopeBar pattern="recurring" duration="Episodic · per decision" />
+          <h3 class="h3">Board-level advisory.</h3>
+          <p class="body muted">Independent judgement where internal certainty may be misleading.</p>
+        </li>
+        <li class="reveal">
+          <ScopeBar pattern="continuous" duration="Continuous · retainer" />
+          <h3 class="h3">Integrity oversight.</h3>
+          <p class="body muted">Continued visibility across consequential systems as exposure evolves.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block close">
+    <div class="wrap">
+      <div class="close-grid">
+        <h2 class="h2 reveal">
+          Could your organisation stop its most consequential system <em>right now?</em>
+        </h2>
+        <div class="close-cta reveal">
+          <p class="body muted">
+            If not certain, that is worth a conversation. Brief, confidential,
+            no obligation.
+          </p>
+          <a href="/Intervene/contact/" class="btn">Request a discussion</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 160px;
+    padding-bottom: 160px;
+    border-bottom: 1px solid var(--hair);
+  }
+
+  /* Rotator: both slides occupy the same grid cell, container takes the
+     taller of the two so there is no layout shift between transitions. */
+  .hero-rotator {
+    display: grid;
+    grid-template-areas: 'slide';
+  }
+  .slide {
+    grid-area: slide;
+    opacity: 0;
+    transition: opacity 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+  .slide.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .slide .h1 { max-width: 16ch; margin: 0; }
+  .slide-lede {
+    margin-top: 56px;
+    max-width: 50ch;
+    color: var(--ink);
+  }
+
+  .hero-cta {
+    margin-top: 80px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide { transition: none; }
+  }
+
+  .block .h2 { max-width: 22ch; }
+  .block > .wrap > .lede { margin-top: 16px; max-width: 50ch; }
+
+  /* Window timeline (T+0 to T+36h) */
+  .window-head {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 80px;
+    align-items: start;
+    margin-bottom: 80px;
+  }
+  .window-head .h2 { max-width: 18ch; margin: 0; }
+  .window-head .lede { max-width: 48ch; margin: 0; padding-top: 8px; }
+
+  .window-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 32px;
+    border-top: 1px solid var(--ink);
+  }
+  .window-grid > .stage {
+    padding: 32px 0 32px;
+    display: grid;
+    gap: 16px;
+    align-content: start;
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 480ms cubic-bezier(0.4, 0, 0.2, 1),
+      transform 480ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .window-grid.in > .stage { opacity: 1; transform: none; }
+  .window-grid.in > .stage:nth-child(1) { transition-delay: 0ms; }
+  .window-grid.in > .stage:nth-child(2) { transition-delay: 140ms; }
+  .window-grid.in > .stage:nth-child(3) { transition-delay: 280ms; }
+  .window-grid.in > .stage:nth-child(4) { transition-delay: 420ms; }
+
+  .chip-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .time-chip {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 9px;
+    line-height: 1;
+  }
+  .time-chip.warn { background: var(--warn); }
+  .stage-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .window-grid .h3 { font-size: 22px; margin: 4px 0 0; }
+  .window-grid p { max-width: 32ch; margin: 0; }
+  .status {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--hair);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+  }
+  .status.warn { color: var(--warn); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .window-grid > .stage {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  .services {
+    list-style: none;
+    margin: 80px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 64px;
+  }
+  .services > li {
+    display: grid;
+    gap: 20px;
+    align-content: start;
+  }
+  .services .h3 { margin-top: 8px; }
+  .services p { max-width: 32ch; margin: 0; }
+
+  /* Stagger reveal across the three cards. */
+  .services > li:nth-child(1) { transition-delay: 0ms; }
+  .services > li:nth-child(2) { transition-delay: 140ms; }
+  .services > li:nth-child(3) { transition-delay: 280ms; }
+
+  .close-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 96px;
+    align-items: start;
+  }
+  .close .h2 {
+    max-width: 18ch;
+    margin: 0;
+  }
+  .close-cta {
+    display: grid;
+    gap: 24px;
+    align-content: start;
+    padding-top: 12px;
+  }
+  .close-cta .body { margin: 0; max-width: 38ch; }
+  .close-cta .btn { justify-self: start; }
+
+  @media (max-width: 880px) {
+    .hero { padding-top: 96px; padding-bottom: 96px; }
+    .slide-lede { margin-top: 40px; }
+    .hero-cta { margin-top: 56px; }
+    .services { grid-template-columns: 1fr; gap: 48px; }
+    .close-grid { grid-template-columns: 1fr; gap: 48px; }
+    .window-head {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+    .window-grid { grid-template-columns: 1fr 1fr; column-gap: 24px; }
+  }
+  @media (max-width: 560px) {
+    .window-grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,323 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const ladder = [
+  { tier: 'Tier 0', name: 'Exposure Scan',           desc: 'Three-week diagnostic. Single material exposure. Identifies the chain break before commissioning a flagship engagement.', price: '£25,000',     terms: '+VAT · 3 wk' },
+  { tier: 'Tier 1', name: 'Flagship Assessment',     desc: 'PRA SS1/23 §6 Intervention Capability Assessment. Attested verdict and regulatory mapping.',                              price: '£120,000',    terms: '+VAT · 8 to 10 wk' },
+  { tier: 'Tier 2', name: 'Pilot Licence',           desc: 'First-year engine licence for a single regulated entity. Includes one assisted assessment and rater training.',          price: '£45,000 / yr',  terms: '+VAT · per entity' },
+  { tier: 'Tier 3', name: 'Professional Licence',    desc: 'Annual engine licence with up to four concurrent assessments, rater certification, quarterly methodology updates.',      price: '£120,000 / yr', terms: '+VAT · 4 concurrent' },
+  { tier: 'Tier 4', name: 'Enterprise Licence',      desc: 'Unlimited internal assessments across the group. Direct engine integration, signing infrastructure, custom calibration.', price: '£275,000 / yr', terms: '+VAT · group-wide' },
+  { tier: 'Held',   name: 'Board Advisory Retainer', desc: 'Standing independent judgement for boards facing successive irreversible decisions. Strict concurrency cap. By application.', price: 'On application', terms: '+VAT · capped' },
+  { tier: 'Held',   name: 'Integrity Oversight',     desc: 'Continuous attested view across multiple consequential systems. By application after a Tier 1 baseline.',                  price: 'On application', terms: '+VAT · post Tier 1' },
+];
+
+const flagshipArtefacts = [
+  { name: 'Failure Exposure Report',     desc: 'The verdict document. Findings, evidence grade, chain ceiling exposure, board action items.' },
+  { name: 'Control Reality Index',       desc: 'Per-control RAG against eight dimensions, terminal classification, contradiction analysis.' },
+  { name: 'Regulatory Mapping Register', desc: 'Findings tied to PRA SS1/23, FCA SMCR, EU AI Act, DORA articles. Auditor-ready.' },
+  { name: 'Board Presentation',          desc: 'Direct presentation to the decision owner. Single session. No intermediation.' },
+  { name: 'Attestation Envelope',        desc: 'Ed25519 signed envelope. Engine version, input hash, output hash, key ID. Independently verifiable.' },
+];
+
+const shapes = [
+  { title: 'Exposure assessment.',   pitch: 'One system, one scenario. A clear view of where intervention capability breaks down, anchored against the PRA evidence bar.',                       price: 'From £120,000 · 8 to 10 weeks' },
+  { title: 'Board-level advisory.',  pitch: 'Independent judgement on irreversible decisions where internal certainty is structurally suspect. Off record unless agreed otherwise.',           price: 'By application' },
+  { title: 'Integrity oversight.',   pitch: 'Standing visibility across consequential systems. Quarterly attested re-scoring with drift register and escalation memos.',                       price: 'By application · post Tier 1' },
+  { title: 'Engine licensing.',      pitch: 'AGDA, rater protocol, calibration discipline, signing infrastructure. Operated in-house under licence with quarterly updates.',                  price: '£45k to £275k / year' },
+];
+
+const commitments = [
+  { h: 'Written scope before any work.', p: 'No verbal scoping. MSA, fees, deliverables, and exclusions signed before evidence is requested.' },
+  { h: 'Independence by design.',        p: 'No vendor affiliation, no referral fees, no co-marketing. We do not implement what we recommend.' },
+  { h: 'Limited concurrency.',           p: 'Small team by intent. We turn down engagements that exceed reviewable capacity.' },
+  { h: 'Insured. Indemnified.',          p: 'PI £5M E&O cover. Liability capped at fees paid. Five-year confidentiality binds both parties.' },
+];
+---
+
+<BaseLayout
+  title="Services · Intervene"
+  description="Five tiers from a three-week Exposure Scan to an enterprise engine licence. Every engagement produces a deterministic, cryptographically attested verdict."
+  current="services"
+  noindex={true}
+>
+  <section class="hero">
+    <div class="wrap">
+      <h1 class="h1 reveal">Five tiers. <em>One question.</em></h1>
+      <p class="lede muted reveal">
+        From a three-week scan to an enterprise engine licence. Every
+        engagement ships a deterministic, signed verdict on a specific
+        intervention capability.
+      </p>
+    </div>
+  </section>
+
+  <!-- LADDER -->
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Published anchors. <em>No bespoke negotiation by tier.</em></h2>
+      <p class="lede muted">
+        Design-partner discounts available on Tier 2 licences for the first
+        five reference customers in 2026.
+      </p>
+
+      <ol class="ladder reveal" role="list">
+        {ladder.map((row, i) => (
+          <li class="ladder-row" style={`--i: ${i}`}>
+            <span class="tier mono">{row.tier}</span>
+            <span class="name">{row.name}</span>
+            <span class="desc">{row.desc}</span>
+            <span class="price">
+              <span class="amount">{row.price}</span>
+              <span class="mono terms">{row.terms}</span>
+            </span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- FLAGSHIP -->
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">The flagship engagement.</h2>
+      <p class="lede muted">
+        A deterministic, signed assessment of whether a material model can be
+        halted, reversed, or over-ridden inside the PRA evidence bar. One
+        model. One scenario. Eight to ten weeks.
+      </p>
+
+      <ul class="artefacts reveal" role="list">
+        {flagshipArtefacts.map((a) => (
+          <li>
+            <h3 class="h3">{a.name}</h3>
+            <p class="body muted">{a.desc}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ENGAGEMENT SHAPES -->
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Four engagement shapes.</h2>
+      <p class="lede muted">
+        Each one self-contained. Every engagement publishes a written scope
+        before work begins. Findings, not delivery.
+      </p>
+
+      <ul class="shapes" role="list">
+        {shapes.map((s) => (
+          <li class="reveal">
+            <h3 class="h3">{s.title}</h3>
+            <p class="body muted">{s.pitch}</p>
+            <span class="mono shape-price">{s.price}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- COMMERCIAL FRAME -->
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Written. Bounded. Insurable.</h2>
+      <p class="lede muted">
+        Commercial frame is identical across tiers. Master Services Agreement
+        governs every engagement.
+      </p>
+
+      <ul class="commitments" role="list">
+        {commitments.map((c) => (
+          <li>
+            <h3 class="h3">{c.h}</h3>
+            <p class="body muted">{c.p}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="block tight">
+    <div class="wrap">
+      <div class="close-grid">
+        <h2 class="h2 reveal">
+          Tell us the system, the decision, or the exposure. <em>No deck.</em>
+        </h2>
+        <div class="close-cta reveal">
+          <p class="body muted">
+            A senior advisor responds within one to two working days.
+          </p>
+          <a href="/Intervene/contact/" class="btn">Request a conversation</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 144px;
+    padding-bottom: 144px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .hero .h1 { max-width: 14ch; }
+  .hero .lede { margin-top: 32px; max-width: 48ch; }
+
+  .block .h2 { max-width: 22ch; }
+  .block .lede { margin-top: 16px; max-width: 56ch; }
+
+  /* Ladder */
+  .ladder {
+    list-style: none;
+    margin: 80px 0 0;
+    padding: 0;
+    border-top: 1px solid var(--ink);
+  }
+  .ladder-row {
+    display: grid;
+    grid-template-columns: 90px 1.2fr 2fr 200px;
+    gap: 32px;
+    align-items: baseline;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--hair);
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 480ms cubic-bezier(0.4, 0, 0.2, 1),
+      transform 480ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: calc(var(--i) * 80ms);
+  }
+  .ladder.in .ladder-row { opacity: 1; transform: none; }
+  .ladder .tier {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+  }
+  .ladder .name {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--ink);
+  }
+  .ladder .desc {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .ladder .price {
+    text-align: right;
+    display: grid;
+    gap: 4px;
+    justify-items: end;
+  }
+  .ladder .amount {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--ink);
+  }
+  .ladder .terms {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Artefacts */
+  .artefacts {
+    list-style: none;
+    margin: 80px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    column-gap: 32px;
+    border-top: 1px solid var(--ink);
+  }
+  .artefacts > li {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--hair);
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 480ms cubic-bezier(0.4, 0, 0.2, 1),
+      transform 480ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .artefacts .h3 { font-size: 18px; }
+  .artefacts p { max-width: 28ch; margin: 0; font-size: 14px; }
+  .artefacts.in > li { opacity: 1; transform: none; }
+  .artefacts.in > li:nth-child(1) { transition-delay: 0ms; }
+  .artefacts.in > li:nth-child(2) { transition-delay: 80ms; }
+  .artefacts.in > li:nth-child(3) { transition-delay: 160ms; }
+  .artefacts.in > li:nth-child(4) { transition-delay: 240ms; }
+  .artefacts.in > li:nth-child(5) { transition-delay: 320ms; }
+
+  /* Shapes */
+  .shapes {
+    list-style: none;
+    margin: 80px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px 80px;
+  }
+  .shapes > li { display: grid; gap: 16px; }
+  .shapes p { max-width: 44ch; margin: 0; }
+  .shape-price {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 11px;
+    padding-top: 12px;
+    border-top: 1px solid var(--hair);
+  }
+
+  /* Commitments */
+  .commitments {
+    list-style: none;
+    margin: 80px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px 80px;
+  }
+  .commitments > li { display: grid; gap: 12px; }
+  .commitments p { max-width: 44ch; margin: 0; }
+
+  /* Close */
+  .close-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 96px;
+    align-items: start;
+  }
+  .close-grid .h2 { max-width: 22ch; margin: 0; }
+  .close-cta {
+    display: grid;
+    gap: 24px;
+    align-content: start;
+    padding-top: 12px;
+  }
+  .close-cta .body { margin: 0; max-width: 38ch; }
+  .close-cta .btn { justify-self: start; }
+
+  @media (max-width: 880px) {
+    .hero { padding-top: 96px; padding-bottom: 96px; }
+    .ladder-row {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding: 24px 0;
+    }
+    .ladder .price { text-align: left; justify-items: start; }
+    .artefacts { grid-template-columns: 1fr 1fr; column-gap: 24px; }
+    .shapes, .commitments { grid-template-columns: 1fr; gap: 48px; }
+    .close-grid { grid-template-columns: 1fr; gap: 48px; }
+  }
+  @media (max-width: 560px) {
+    .artefacts { grid-template-columns: 1fr; }
+  }
+</style>

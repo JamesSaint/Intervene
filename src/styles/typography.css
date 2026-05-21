@@ -1,0 +1,66 @@
+/* ============================================================
+   intervene · typography
+   Inter for everything. JetBrains Mono only where it earns.
+   ============================================================ */
+
+.h1 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(48px, 6vw, 88px);
+  letter-spacing: -0.035em;
+  line-height: 1.0;
+  margin: 0;
+}
+
+.h2 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(32px, 4vw, 56px);
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.h3 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(22px, 2vw, 28px);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.lede {
+  font-family: var(--font-sans);
+  font-size: clamp(17px, 1.3vw, 20px);
+  line-height: 1.55;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.body-sm {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  font-weight: 400;
+}
+
+em, .em {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.muted { color: var(--muted); }

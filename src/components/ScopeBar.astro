@@ -1,0 +1,82 @@
+---
+type Pattern = 'focused' | 'recurring' | 'continuous';
+interface Props {
+  pattern: Pattern;
+  duration?: string;
+}
+
+const { pattern, duration } = Astro.props;
+---
+
+<div class={`scope scope-${pattern}`} aria-hidden="true">
+  <span class="track"></span>
+  <span class="fill"></span>
+</div>
+{duration && <span class="scope-meta">{duration}</span>}
+
+<style>
+  .scope {
+    position: relative;
+    width: 160px;
+    height: 2px;
+    overflow: hidden;
+  }
+  .track {
+    position: absolute;
+    inset: 0;
+    background: var(--hair);
+  }
+  .fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 720ms cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  /* Focused: a single short block at the start. The fill itself is 25% wide;
+     the bar appears as a single thick dot at left. */
+  .scope-focused .fill {
+    width: 25%;
+    background: var(--ink);
+  }
+
+  /* Recurring: dashes spanning the full bar. */
+  .scope-recurring .fill {
+    width: 100%;
+    background-image: linear-gradient(
+      to right,
+      var(--ink) 0,
+      var(--ink) 12px,
+      transparent 12px,
+      transparent 24px
+    );
+    background-size: 24px 100%;
+  }
+
+  /* Continuous: solid line. */
+  .scope-continuous .fill {
+    width: 100%;
+    background: var(--ink);
+  }
+
+  /* Activation: the parent card has .reveal which the IntersectionObserver
+     adds .in to. We mirror that here. */
+  :global(.reveal.in) .fill { transform: scaleX(1); }
+
+  .scope-meta {
+    display: block;
+    margin-top: 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fill { transition: none; transform: scaleX(1); }
+  }
+</style>
