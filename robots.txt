@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /intervene-brand-sheet.html
-Disallow: /intervene-logo.html
-
-Sitemap: https://intervene.group/sitemap.xml
