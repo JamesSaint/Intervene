@@ -1,0 +1,84 @@
+---
+interface Props {
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  inverted?: boolean;
+  href?: string | null;
+  label?: string;
+}
+
+const {
+  size = 'sm',
+  inverted = false,
+  href = '/',
+  label = 'Intervene · home',
+} = Astro.props;
+
+const sizes = {
+  xs: { word: 16, mark: 7, height: 16, gap: 3, spacing: 4 },
+  sm: { word: 22, mark: 11, height: 26, gap: 4, spacing: 8 },
+  md: { word: 32, mark: 15, height: 32, gap: 5, spacing: 10 },
+  lg: { word: 56, mark: 26, height: 56, gap: 9, spacing: 14 },
+  xl: { word: 96, mark: 44, height: 96, gap: 16, spacing: 22 },
+};
+
+const s = sizes[size];
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag
+  class:list={['intervene-logo', { inverted }]}
+  href={href ?? undefined}
+  aria-label={href ? label : undefined}
+  style={`--word: ${s.word}px; --mark-w: ${s.mark}px; --mark-h: ${s.height}px; --mark-gap: ${s.gap}px; --spacing: ${s.spacing}px;`}
+>
+  <span class="intervene-mark" aria-hidden="true">
+    <span class="panel panel-left"></span>
+    <span class="panel panel-right"></span>
+  </span>
+  <span class="intervene-wordmark">intervene</span>
+</Tag>
+
+<style>
+  .intervene-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing);
+    color: var(--ink);
+    line-height: 1;
+    transition: color var(--dur-hover) var(--ease-state);
+  }
+  .intervene-logo.inverted { color: var(--inverse-ink); }
+
+  .intervene-wordmark {
+    font-family: var(--font-sans);
+    font-size: var(--word);
+    font-weight: 500;
+    letter-spacing: -0.055em;
+    line-height: 0.9;
+  }
+
+  .intervene-mark {
+    position: relative;
+    width: calc(var(--mark-w) * 2 + var(--mark-gap));
+    height: var(--mark-h);
+    flex-shrink: 0;
+  }
+
+  .panel {
+    position: absolute;
+    top: 0;
+    width: var(--mark-w);
+    height: var(--mark-h);
+    background: currentColor;
+  }
+  .panel-left {
+    left: 0;
+    clip-path: polygon(0 0, 100% 18%, 100% 82%, 0 100%);
+  }
+  .panel-right {
+    right: 0;
+    clip-path: polygon(100% 0, 0 18%, 0 82%, 100% 100%);
+  }
+
+  a.intervene-logo:hover { color: var(--bronze); }
+</style>

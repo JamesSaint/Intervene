@@ -1,0 +1,56 @@
+---
+import Logo from './Logo.astro';
+import MenuIcon from './MenuIcon.astro';
+---
+
+<header class="site-header" data-site-header>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <div class="wrap header-inner">
+    <Logo size="sm" href="/Intervene/" />
+    <button
+      type="button"
+      class="menu-trigger"
+      aria-expanded="false"
+      aria-controls="takeover-menu"
+      aria-label="Open menu"
+      data-menu-trigger
+    >
+      <MenuIcon />
+    </button>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1100;
+    background: var(--paper);
+    border-bottom: 1px solid var(--hair);
+    transition: border-color 200ms ease;
+  }
+  .site-header[data-takeover-open] {
+    border-bottom-color: var(--hair);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--header-h);
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+  .menu-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-right: -10px;
+    color: var(--ink);
+  }
+  .menu-trigger:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+</style>

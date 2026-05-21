@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Style guide"
+  description="Internal style guide."
+  current="style-guide"
+  noindex={true}
+>
+  <section class="block">
+    <div class="wrap">
+      <h1 class="h1">Style guide.</h1>
+      <p class="lede muted" style="margin-top: 24px; max-width: 56ch;">
+        Inter and JetBrains Mono. Monochrome. No accent colour.
+      </p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Type.</h2>
+      <div class="stack">
+        <div>
+          <span class="mono muted">H1</span>
+          <p class="h1">Move first. Or be moved <em>by what you missed.</em></p>
+        </div>
+        <div>
+          <span class="mono muted">H2</span>
+          <p class="h2">Three services. <em>One question.</em></p>
+        </div>
+        <div>
+          <span class="mono muted">H3</span>
+          <p class="h3">Exposure assessment.</p>
+        </div>
+        <div>
+          <span class="mono muted">Lede</span>
+          <p class="lede">
+            Independent advisory for boards facing irreversible exposure.
+            Deterministic, attested intervention-capability assessment.
+          </p>
+        </div>
+        <div>
+          <span class="mono muted">Body</span>
+          <p class="body">
+            One system. One scenario. A clear view of where intervention
+            capability breaks down.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Colour.</h2>
+      <div class="palette">
+        <div class="sw"><div class="chip" style="background: #111;"></div><span class="mono">ink · #111111</span></div>
+        <div class="sw"><div class="chip" style="background: #fff; border: 1px solid var(--hair);"></div><span class="mono">paper · #FFFFFF</span></div>
+        <div class="sw"><div class="chip" style="background: #fafafa;"></div><span class="mono">paper-soft · #FAFAFA</span></div>
+        <div class="sw"><div class="chip" style="background: #e6e6e6;"></div><span class="mono">hair · #E6E6E6</span></div>
+        <div class="sw"><div class="chip" style="background: #6b6b6b;"></div><span class="mono">muted · #6B6B6B</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Buttons.</h2>
+      <div class="row">
+        <a href="#" class="btn">Request a discussion</a>
+        <a href="#" class="btn-ghost">Our method</a>
+        <a href="#" class="link">Inline link</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .stack { display: grid; gap: 48px; margin-top: 48px; max-width: 880px; }
+  .stack > div > .mono { display: block; margin-bottom: 12px; }
+  .palette {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
+  .sw .chip { height: 96px; }
+  .sw .mono { display: block; margin-top: 12px; color: var(--muted); }
+  .row { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+</style>
