@@ -1,0 +1,381 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const commitments = [
+  { h: 'Independent judgement.',         p: 'No vendor affiliation, no referral fees, no co-marketing. We do not implement what we recommend.' },
+  { h: 'Published methodology.',         p: 'Theses, catalogues, and rater protocols are public and citeable. Calibration held private as trade secret.' },
+  { h: 'Verifiable computation.',        p: 'Every verdict Ed25519 signed. Inputs and outputs hashed. An audit committee can verify without contacting us.' },
+  { h: 'Refusal of false control.',      p: 'If the evidence does not support green, the engine will not produce green. Findings the client did not want, in writing, before the regulator does.' },
+];
+
+const sectorsPrimary = [
+  { h: 'UK-regulated financial services.', p: 'Banks, asset managers, insurers under PRA / FCA jurisdiction with material AI deployment.' },
+  { h: 'EU high-risk AI operators.',       p: 'Annex III high-risk systems under the EU AI Act. Conformity assessment, post-market monitoring.' },
+  { h: 'Critical national infrastructure.', p: 'Energy, water, telecoms, transport. Operators where intervention failure compounds across dependency chains.' },
+];
+
+const sectorsInvite = [
+  { h: 'Healthcare systems.',  p: 'Clinical decision support and diagnostic AI. By invitation, where independence from device vendors can be guaranteed.' },
+  { h: 'Defence & intelligence.', p: 'Autonomous decision systems and human-on-the-loop frameworks. With appropriate clearances and engagement letters.' },
+];
+
+const notServed = [
+  { h: 'Not a compliance dashboard.',     p: 'Vanta, Drata, OneTrust handle compliance evidence. We measure whether capability holds under stress.' },
+  { h: 'Not a Big-4 advisory.',           p: 'No leveraged teams, no slide decks, no implementation arm. Senior delivery throughout. A signed verdict.' },
+  { h: 'Not a policy-writing practice.',  p: 'We do not draft your AI policy. We measure whether the controls behind it produce what the policy claims.' },
+  { h: 'Not a model-testing lab.',        p: 'Red-team labs test models. We test whether the chain around the model can act on what the lab finds.' },
+  { h: 'Not an implementation partner.',  p: 'No standing-up of controls, no platform integration, no runbook ops. Remediation belongs to you or someone else.' },
+  { h: 'Not an AI safety think-tank.',    p: 'Operational, not philosophical. A verdict on a specific system, not a paper on AI risk in general.' },
+];
+---
+
+<BaseLayout
+  title="About · Intervene"
+  description="One principal. Specific experience. Independent advisory for boards facing irreversible exposure on consequential AI and operational systems."
+  current="about"
+  noindex={true}
+>
+  <section class="hero">
+    <div class="wrap">
+      <h1 class="h1 reveal">An independent practice. <em>One principal.</em></h1>
+      <p class="lede muted reveal">
+        Intervene exists because the gap between governance design and
+        operational reality is where boards lose the room to intervene.
+      </p>
+    </div>
+  </section>
+
+  <!-- FOUNDER -->
+  <section class="block">
+    <div class="wrap">
+      <div class="founder">
+        <figure class="portrait reveal">
+          <img src="/Intervene/assets/images/james-saint.jpg" alt="James Saint, Founder and Principal Advisor, Intervene" loading="lazy" />
+          <figcaption>James Saint · London · 2026</figcaption>
+        </figure>
+
+        <div class="bio reveal">
+          <h2 class="h2">James Saint.</h2>
+          <p class="mono role">Founder · Principal Advisor</p>
+
+          <p class="body">
+            James founded Intervene to address one question: can the people
+            accountable for a consequential system actually stop it when they
+            need to? The discipline is the discipline of where to put the
+            escalation.
+          </p>
+
+          <p class="body muted">
+            Intervene's methodology is developed in academic collaboration
+            with Prof. Nicholas Ryman-Tubb, University of Surrey, calibrated
+            against a hold-out corpus of regulated AI failure modes.
+          </p>
+
+          <dl class="specs">
+            <div><dt>Prior experience</dt><dd>AI deployment, fintech, infrastructure. UK and EU.</dd></div>
+            <div><dt>Academic collaboration</dt><dd>University of Surrey. AGDA calibration.</dd></div>
+            <div><dt>Regulatory fluency</dt><dd>PRA SS1/23 · FCA SMCR · EU AI Act · DORA · NIST AI RMF.</dd></div>
+            <div><dt>Based</dt><dd>London, United Kingdom. Global mandates.</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY THIS EXISTS -->
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">Governance design ends where <em>operational reality begins.</em></h2>
+      <p class="lede muted">
+        Big-4 advisories produce decks. GRC platforms produce dashboards.
+        Neither is reproducible. Neither answers the only question that
+        matters when a system is failing in real time.
+      </p>
+
+      <p class="body">
+        A published, falsifiable methodology paired with a deterministic
+        engine that signs every verdict is a better answer to a regulator
+        than a slide. It is also a better answer to an audit committee asked
+        to certify something it cannot verify on its own.
+      </p>
+
+      <p class="body muted aside">
+        Opinion is not reproducible. Signed computation is.
+      </p>
+    </div>
+  </section>
+
+  <!-- COMMITMENTS -->
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Four commitments. <em>Each one structural.</em></h2>
+      <p class="lede muted">
+        Operating constraints, codified into how we accept work, how we
+        calibrate, what we will and will not deliver.
+      </p>
+
+      <ul class="commitments" role="list">
+        {commitments.map((c) => (
+          <li>
+            <h3 class="h3">{c.h}</h3>
+            <p class="body muted">{c.p}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTORS -->
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Specific sectors. <em>By design.</em></h2>
+      <p class="lede muted">
+        Three primary sectors. Two by invitation. Some we deliberately do
+        not serve.
+      </p>
+
+      <div class="sector-group">
+        <span class="mono group-label">Primary</span>
+        <ul class="sectors three" role="list">
+          {sectorsPrimary.map((s) => (
+            <li>
+              <h3 class="h3">{s.h}</h3>
+              <p class="body muted">{s.p}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="sector-group">
+        <span class="mono group-label">By invitation</span>
+        <ul class="sectors two" role="list">
+          {sectorsInvite.map((s) => (
+            <li>
+              <h3 class="h3">{s.h}</h3>
+              <p class="body muted">{s.p}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="sector-group not-served">
+        <span class="mono group-label">Not currently served</span>
+        <p class="body muted not-text">
+          Consumer internet, enterprise productivity, B2B SaaS, advertising
+          tech. Not because the work is unimportant, but because Intervene's
+          calibration corpus and rater pool are tuned to regulated,
+          board-accountable systems.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT WE ARE NOT -->
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">What we <em>are not.</em></h2>
+      <p class="lede muted">
+        Good practices occupy the adjacent ground. Knowing the difference
+        avoids procurement confusion later.
+      </p>
+
+      <ul class="not-list" role="list">
+        {notServed.map((n) => (
+          <li>
+            <h3 class="h3">{n.h}</h3>
+            <p class="body muted">{n.p}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="block tight">
+    <div class="wrap">
+      <div class="close-grid">
+        <h2 class="h2 reveal">If this is relevant to what you are facing, <em>let us talk.</em></h2>
+        <div class="close-cta reveal">
+          <p class="body muted">
+            A senior advisor responds within one to two working days.
+          </p>
+          <a href="/Intervene/contact/" class="btn">Request a discussion</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 144px;
+    padding-bottom: 144px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .hero .h1 { max-width: 16ch; }
+  .hero .lede { margin-top: 32px; max-width: 52ch; }
+
+  .block .h2 { max-width: 24ch; }
+  .block .lede { margin-top: 16px; max-width: 56ch; }
+
+  /* Founder */
+  .founder {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .portrait {
+    margin: 0;
+    display: grid;
+    gap: 16px;
+  }
+  .portrait img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: grayscale(1);
+    transition: filter 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .portrait:hover img { filter: grayscale(0); }
+  .portrait figcaption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .bio { display: grid; gap: 16px; align-content: start; }
+  .bio .h2 { margin: 0; }
+  .bio .role {
+    color: var(--muted);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 11px;
+  }
+  .bio .body { margin: 8px 0 0; max-width: 56ch; }
+
+  .specs {
+    margin: 32px 0 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--hair);
+    display: grid;
+    gap: 16px;
+  }
+  .specs > div {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 24px;
+    align-items: baseline;
+  }
+  .specs dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .specs dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--ink);
+  }
+
+  /* Aside quote */
+  .aside {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--hair);
+    font-style: italic;
+    max-width: 60ch;
+  }
+
+  /* Commitments */
+  .commitments {
+    list-style: none;
+    margin: 80px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px 80px;
+  }
+  .commitments > li { display: grid; gap: 12px; }
+  .commitments p { max-width: 44ch; margin: 0; }
+
+  /* Sectors */
+  .sector-group { margin-top: 64px; }
+  .sector-group:first-of-type { margin-top: 80px; }
+  .group-label {
+    display: block;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .sectors {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 48px 64px;
+  }
+  .sectors.three { grid-template-columns: 1fr 1fr 1fr; }
+  .sectors.two   { grid-template-columns: 1fr 1fr; }
+  .sectors > li  { display: grid; gap: 12px; }
+  .sectors p     { max-width: 36ch; margin: 0; }
+  .not-served    { padding-top: 24px; }
+  .not-text      { max-width: 76ch; margin: 0; }
+
+  /* Not list (what we are not) */
+  .not-list {
+    list-style: none;
+    margin: 80px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 48px;
+    border-top: 1px solid var(--hair);
+  }
+  .not-list > li {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--hair);
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+  .not-list p { max-width: 32ch; margin: 0; }
+
+  /* Close */
+  .close-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 96px;
+    align-items: start;
+  }
+  .close-grid .h2 { max-width: 24ch; margin: 0; }
+  .close-cta {
+    display: grid;
+    gap: 24px;
+    align-content: start;
+    padding-top: 12px;
+  }
+  .close-cta .body { margin: 0; max-width: 38ch; }
+  .close-cta .btn { justify-self: start; }
+
+  @media (max-width: 880px) {
+    .hero { padding-top: 96px; padding-bottom: 96px; }
+    .founder { grid-template-columns: 1fr; gap: 48px; }
+    .commitments { grid-template-columns: 1fr; gap: 48px; }
+    .sectors.three, .sectors.two { grid-template-columns: 1fr; gap: 40px; }
+    .not-list { grid-template-columns: 1fr 1fr; }
+    .specs > div { grid-template-columns: 1fr; gap: 4px; }
+    .close-grid { grid-template-columns: 1fr; gap: 48px; }
+  }
+  @media (max-width: 560px) {
+    .not-list { grid-template-columns: 1fr; }
+  }
+</style>

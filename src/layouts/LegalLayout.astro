@@ -1,0 +1,80 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  heading: string;
+  updated: string;
+  current?: string;
+}
+
+const { title, description, heading, updated, current } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} current={current} noindex={true}>
+  <section class="legal-hero">
+    <div class="wrap-reading">
+      <p class="mono updated">Last updated · {updated}</p>
+      <h1 class="h1">{heading}</h1>
+    </div>
+  </section>
+
+  <section class="block legal-body">
+    <div class="wrap-reading">
+      <slot />
+    </div>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  .legal-hero {
+    padding-top: 96px;
+    padding-bottom: 56px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .legal-hero .updated {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+    margin: 0 0 24px;
+  }
+  .legal-hero .h1 { max-width: 18ch; margin: 0; }
+
+  .legal-body { padding: 80px 0; }
+  .legal-body h2 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    margin: 56px 0 12px;
+    color: var(--ink);
+  }
+  .legal-body h2:first-child { margin-top: 0; }
+  .legal-body p,
+  .legal-body li {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+  .legal-body p { margin: 0 0 18px; }
+  .legal-body ul {
+    margin: 0 0 18px;
+    padding-left: 22px;
+  }
+  .legal-body li { margin-bottom: 8px; }
+  .legal-body strong { font-weight: 500; }
+  .legal-body a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--hair-strong);
+    transition: border-color 180ms var(--ease);
+  }
+  .legal-body a:hover { border-bottom-color: var(--ink); }
+
+  @media (max-width: 720px) {
+    .legal-hero { padding-top: 64px; padding-bottom: 40px; }
+    .legal-body { padding: 56px 0; }
+  }
+</style>

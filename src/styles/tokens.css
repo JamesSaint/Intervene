@@ -1,0 +1,60 @@
+/* ============================================================
+   intervene · design tokens
+   Strict monochrome. No accent colours. Brand-aligned.
+   ============================================================ */
+
+:root {
+  /* Type */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Surfaces */
+  --ink:        #111111;
+  --ink-soft:   #1a1a1a;
+  --paper:      #ffffff;
+  --paper-soft: #fafafa;
+  --paper-mid:  #f4f4f4;
+
+  /* Lines */
+  --hair:        #e6e6e6;
+  --hair-soft:   #efefef;
+  --hair-strong: #d4d4d4;
+
+  /* Muted type */
+  --muted:      #6b6b6b;
+  --muted-soft: #8a8a8a;
+
+  /* Signal (sparingly: warn, hold, pass for sample-report only) */
+  --warn: #c8322a;
+  --hold: #b07a14;
+  --pass: #2a6f4f;
+
+  /* Spatial */
+  --gutter:       64px;
+  --gutter-tight: 32px;
+  --max:          1280px;
+  --max-narrow:   880px;
+  --max-reading:  680px;
+  --max-report:   980px;
+  --header-h:     72px;
+
+  /* Motion */
+  --ease:        cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-hover:   180ms;
+  --dur-reveal:  400ms;
+  --dur-menu:    320ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-hover: 120ms;
+    --dur-reveal: 120ms;
+    --dur-menu: 120ms;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 120ms !important;
+    scroll-behavior: auto !important;
+  }
+}

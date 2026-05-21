@@ -1,0 +1,133 @@
+---
+const stages = ['Signal', 'Escalation', 'Decision', 'Intervention'];
+---
+
+<figure class="chain-flow reveal" aria-label="The intervention capability chain: Signal, Escalation, Decision, Intervention.">
+  <div class="rail" aria-hidden="true"></div>
+  <ol role="list">
+    {stages.map((s) => (
+      <li>
+        <span class="node" aria-hidden="true"></span>
+        <span class="label">{s}</span>
+      </li>
+    ))}
+  </ol>
+  <figcaption>Each stage is necessary. None is sufficient. Capability equals the weakest stage.</figcaption>
+</figure>
+
+<style>
+  .chain-flow {
+    margin: 0;
+    padding: 64px 0 0;
+    /* override .reveal defaults from global.css: this figure manages
+       its own choreography via the .in class below. */
+    opacity: 1;
+    transform: none;
+  }
+
+  .chain-flow > .rail {
+    position: relative;
+    height: 1px;
+    background: var(--ink);
+    margin-bottom: -7px;
+    z-index: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 900ms cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .chain-flow.in > .rail { transform: scaleX(1); }
+
+  .chain-flow ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    position: relative;
+    z-index: 1;
+  }
+  .chain-flow li {
+    display: grid;
+    justify-items: center;
+    gap: 20px;
+  }
+
+  .node {
+    display: block;
+    width: 13px;
+    height: 13px;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    border-radius: 50%;
+    transform: scale(0);
+    transition:
+      transform 360ms cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .label {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 360ms cubic-bezier(0.4, 0, 0.2, 1),
+      transform 360ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .chain-flow.in li:nth-child(1) .node { transition-delay: 180ms; transform: scale(1); }
+  .chain-flow.in li:nth-child(2) .node { transition-delay: 380ms; transform: scale(1); }
+  .chain-flow.in li:nth-child(3) .node { transition-delay: 580ms; transform: scale(1); }
+  .chain-flow.in li:nth-child(4) .node { transition-delay: 780ms; transform: scale(1); }
+
+  .chain-flow.in li:nth-child(1) .label { transition-delay: 240ms; opacity: 1; transform: none; }
+  .chain-flow.in li:nth-child(2) .label { transition-delay: 440ms; opacity: 1; transform: none; }
+  .chain-flow.in li:nth-child(3) .label { transition-delay: 640ms; opacity: 1; transform: none; }
+  .chain-flow.in li:nth-child(4) .label { transition-delay: 840ms; opacity: 1; transform: none; }
+
+  figcaption {
+    margin-top: 48px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--muted);
+    text-align: center;
+    max-width: 60ch;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity 360ms cubic-bezier(0.4, 0, 0.2, 1),
+      transform 360ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: 980ms;
+  }
+  .chain-flow.in figcaption { opacity: 1; transform: none; }
+
+  @media (max-width: 720px) {
+    .chain-flow > .rail { display: none; }
+    .chain-flow ol {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .chain-flow li {
+      grid-template-columns: 14px 1fr;
+      justify-items: start;
+      align-items: center;
+      gap: 16px;
+    }
+    figcaption { text-align: left; margin-left: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chain-flow > .rail,
+    .chain-flow .node,
+    .chain-flow .label,
+    .chain-flow figcaption {
+      transform: none !important;
+      opacity: 1 !important;
+      transition: none !important;
+    }
+    .chain-flow > .rail { transform: scaleX(1) !important; }
+    .chain-flow .node { transform: scale(1) !important; }
+  }
+</style>
