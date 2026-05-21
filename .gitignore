@@ -1,19 +1,25 @@
-# Internal strategy and corporate documents — never publish.
+# Internal strategy and corporate documents. Never publish.
 # This repo is public and auto-deploys to GitHub Pages on push to main.
 internal/
 
 # Local tooling
 .claude/
-Intervene.code-workspace
 .DS_Store
+*.code-workspace
 
-# Cloned reference repo (anthropics/skills)
+# Cloned reference repos
 skills/
 
-# Astro
+# Build output
 node_modules/
 dist/
 .astro/
+
+# Local environment
 .env
 .env.production
 .env.local
+
+# Local artefacts
+*.tar
+*.tar.gz
