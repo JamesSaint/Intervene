@@ -1,140 +1,257 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const ladder = [
-  { tier: 'Tier 0', name: 'Exposure Scan',           desc: 'Three-week diagnostic. Single material exposure. Identifies the chain break before commissioning a flagship engagement.', price: '£25,000',     terms: '+VAT · 3 wk' },
-  { tier: 'Tier 1', name: 'Flagship Assessment',     desc: 'PRA SS1/23 §6 Intervention Capability Assessment. Attested verdict and regulatory mapping.',                              price: '£120,000',    terms: '+VAT · 8 to 10 wk' },
-  { tier: 'Tier 2', name: 'Pilot Licence',           desc: 'First-year engine licence for a single regulated entity. Includes one assisted assessment and rater training.',          price: '£45,000 / yr',  terms: '+VAT · per entity' },
-  { tier: 'Tier 3', name: 'Professional Licence',    desc: 'Annual engine licence with up to four concurrent assessments, rater certification, quarterly methodology updates.',      price: '£120,000 / yr', terms: '+VAT · 4 concurrent' },
-  { tier: 'Tier 4', name: 'Enterprise Licence',      desc: 'Unlimited internal assessments across the group. Direct engine integration, signing infrastructure, custom calibration.', price: '£275,000 / yr', terms: '+VAT · group-wide' },
-  { tier: 'Held',   name: 'Board Advisory Retainer', desc: 'Standing independent judgement for boards facing successive irreversible decisions. Strict concurrency cap. By application.', price: 'On application', terms: '+VAT · capped' },
-  { tier: 'Held',   name: 'Integrity Oversight',     desc: 'Continuous attested view across multiple consequential systems. By application after a Tier 1 baseline.',                  price: 'On application', terms: '+VAT · post Tier 1' },
+const reportLayers = [
+  {
+    name: 'Executive',
+    audience: 'CRO, board, audit committee',
+    body: 'Headline verdict, viability status, critical failure summary, regulatory exposure, priority actions. One-page decision frame.',
+  },
+  {
+    name: 'Operational',
+    audience: 'Head of Operational Resilience, Head of Model Risk',
+    body: 'Plus temporal gating across eight gates with reasons, causal chain with timing, scenario impact, SEDI chain, dimension scores.',
+  },
+  {
+    name: 'Specialist',
+    audience: 'AI Governance lead, regulator liaison',
+    body: 'Plus irreversibility profile, failure profiles, single points of failure, framework pressure, regulatory mapping, JSON export, attestation envelope.',
+  },
 ];
 
-const flagshipArtefacts = [
-  { name: 'Failure Exposure Report',     desc: 'The verdict document. Findings, evidence grade, chain ceiling exposure, board action items.' },
-  { name: 'Control Reality Index',       desc: 'Per-control RAG against eight dimensions, terminal classification, contradiction analysis.' },
-  { name: 'Regulatory Mapping Register', desc: 'Findings tied to PRA SS1/23, FCA SMCR, EU AI Act, DORA articles. Auditor-ready.' },
-  { name: 'Board Presentation',          desc: 'Direct presentation to the decision owner. Single session. No intermediation.' },
-  { name: 'Attestation Envelope',        desc: 'Ed25519 signed envelope. Engine version, input hash, output hash, key ID. Independently verifiable.' },
+const tiers = [
+  {
+    name: 'Pilot',
+    framing: 'First engagement. One system.',
+    formats: [
+      { label: 'Short pilot · 4 weeks · 1 system',         price: '£95,000' },
+      { label: '90-day structured pilot · 1 system',       price: '£120,000' },
+      { label: '90-day structured pilot · 2 systems',      price: '£175,000' },
+      { label: '90-day structured pilot · 3 systems',      price: '£225,000' },
+    ],
+    includes: 'Failure Exposure Report at all three audience layers, regulator bundle, attestation envelope, Labs Intervention Simulator access for 5 named operators, 90-minute board readout, signed close-out memo.',
+  },
+  {
+    name: 'Annual subscription',
+    framing: 'Post-pilot conversion. Standing engagement.',
+    formats: [
+      { label: 'Annual subscription',     price: '£180,000 / yr' },
+      { label: 'Equivalent quarterly',    price: '£45,000 / qtr' },
+    ],
+    includes: 'Five named operator seats, two assessed systems per year, engine-hash pinning, quarterly re-run rights on each system, annual board-readout session.',
+  },
+  {
+    name: 'Enterprise master',
+    framing: 'Multi-system, multi-entity. Custom-scoped.',
+    formats: [
+      { label: 'Annual, custom-scoped',   price: '£350,000+ / yr' },
+    ],
+    includes: 'Up to 15 named operator seats, up to 5 assessed systems per year, 40 regulator-liaison hours, quarterly portfolio review with group CRO, two annual board-readout sessions, multi-entity invoicing, designated AGDA operator.',
+    triggers: 'Triggers: 9+ assessed systems per year, 20+ seats, or 2+ legal entities under a single group.',
+  },
 ];
 
-const shapes = [
-  { title: 'Exposure assessment.',   pitch: 'One system, one scenario. A clear view of where intervention capability breaks down, anchored against the PRA evidence bar.',                       price: 'From £120,000 · 8 to 10 weeks' },
-  { title: 'Board-level advisory.',  pitch: 'Independent judgement on irreversible decisions where internal certainty is structurally suspect. Off record unless agreed otherwise.',           price: 'By application' },
-  { title: 'Integrity oversight.',   pitch: 'Standing visibility across consequential systems. Quarterly attested re-scoring with drift register and escalation memos.',                       price: 'By application · post Tier 1' },
-  { title: 'Engine licensing.',      pitch: 'AGDA, rater protocol, calibration discipline, signing infrastructure. Operated in-house under licence with quarterly updates.',                  price: '£45k to £275k / year' },
+const addons = [
+  { label: 'Additional assessed system, post-pilot',                  price: '£55,000' },
+  { label: 'Additional re-run, beyond quarterly included in Annual',   price: '£20,000' },
+  { label: 'Additional named Labs operator',                          price: '£3,000 / term' },
+  { label: 'Board-readout session, remote',                           price: '£12,000' },
+  { label: 'Board-readout session, on-site',                          price: '£18,000' },
+  { label: 'Regulator bundle, post-engine-version change',            price: '£6,000' },
 ];
 
-const commitments = [
-  { h: 'Written scope before any work.', p: 'No verbal scoping. MSA, fees, deliverables, and exclusions signed before evidence is requested.' },
-  { h: 'Independence by design.',        p: 'No vendor affiliation, no referral fees, no co-marketing. We do not implement what we recommend.' },
-  { h: 'Limited concurrency.',           p: 'Small team by intent. We turn down engagements that exceed reviewable capacity.' },
-  { h: 'Insured. Indemnified.',          p: 'PI £5M E&O cover. Liability capped at fees paid. Five-year confidentiality binds both parties.' },
+const services = [
+  { label: 'Operator certification, internal governance team (up to 2 raters)', price: '£55,000' },
+  { label: 'Operator certification, advisory firm (firm-level)',                price: '£85,000' },
+  { label: 'Advisory firm annual renewal',                                       price: '£25,000 / yr' },
+  { label: 'Regulator-liaison block (20 hours, per quarter)',                   price: '£18,000' },
+];
+
+const notProduct = [
+  { h: 'Not a maturity framework.',  p: 'We do not score governance artefact completeness. We score timing and evidence grade against a harm window.' },
+  { h: 'Not a compliance checklist.', p: 'Regulatory exposure is a mechanical output of the assessment. We do not score adherence to clauses.' },
+  { h: 'Not a risk score.',          p: 'AGDA produces a binary verdict: can you intervene in time? It feeds a risk register. It does not substitute for one.' },
+  { h: 'Not a monitoring tool.',     p: 'AGDA examines governance once per assessment. Runtime monitoring is a different product category.' },
+];
+
+const benchmarks = [
+  { h: 'A senior model risk hire.',              p: 'Fully loaded cost £200,000 to £260,000. Output is not deterministic, not signed, not independently verifiable.' },
+  { h: 'A Big Four governance review.',          p: '£200,000 to £500,000 per system, one-time. The output is a consulting report, not a signed artefact.' },
+  { h: 'A regulatory advisory retainer.',        p: '£300,000 to £800,000 per year. Our regulatory exposure output is more specific and independently verifiable.' },
 ];
 ---
 
 <BaseLayout
   title="Services · Intervene"
-  description="Five tiers from a three-week Exposure Scan to an enterprise engine licence. Every engagement produces a deterministic, cryptographically attested verdict."
+  description="A deterministic answer to one question: if one of your AI systems goes wrong right now, can you stop it before harm becomes irreversible? Signed. Verifiable. Pinned to a locked engine version."
   current="services"
   noindex={true}
 >
+  <!-- HERO -->
   <section class="hero">
     <div class="wrap">
-      <h1 class="h1 reveal">Five tiers. <em>One question.</em></h1>
+      <h1 class="h1 reveal">
+        One question. <em>One signed answer.</em>
+      </h1>
       <p class="lede muted reveal">
-        From a three-week scan to an enterprise engine licence. Every
-        engagement ships a deterministic, signed verdict on a specific
-        intervention capability.
+        If one of your AI systems goes wrong right now, can you stop it before
+        harm becomes irreversible? AGDA gives you a deterministic, signed
+        answer, bound to a locked engine version, that an audit committee can
+        defend and a regulator can verify without contacting us.
       </p>
     </div>
   </section>
 
-  <!-- LADDER -->
+  <!-- WHAT YOU GET -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Published anchors. <em>No bespoke negotiation by tier.</em></h2>
+      <h2 class="h2">What every engagement produces.</h2>
       <p class="lede muted">
-        Design-partner discounts available on Tier 2 licences for the first
-        five reference customers in 2026.
+        A single structured output: the AGDA Reports Failure Exposure Report.
+        Three audience layers, all bound to the same engine hash and
+        attestation envelope.
       </p>
 
-      <ol class="ladder reveal" role="list">
-        {ladder.map((row, i) => (
-          <li class="ladder-row" style={`--i: ${i}`}>
-            <span class="tier mono">{row.tier}</span>
-            <span class="name">{row.name}</span>
-            <span class="desc">{row.desc}</span>
-            <span class="price">
-              <span class="amount">{row.price}</span>
-              <span class="mono terms">{row.terms}</span>
-            </span>
+      <ul class="layers reveal" role="list">
+        {reportLayers.map((l) => (
+          <li>
+            <h3 class="h3">{l.name}.</h3>
+            <span class="mono layer-aud">{l.audience}</span>
+            <p class="body muted">{l.body}</p>
+          </li>
+        ))}
+      </ul>
+
+      <div class="labs">
+        <h3 class="h3">Labs Intervention Simulator.</h3>
+        <p class="body muted">
+          A what-if console for the resilience function. Test intervention
+          timing against hypothetical scenarios without re-running the full
+          assessment. Included with every tier.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- THREE TIERS -->
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Three tiers. <em>Priced per assessment.</em></h2>
+      <p class="lede muted">
+        The commercial unit is the assessment, not the seat. Customers expand
+        by assessing more systems, not by adding users.
+      </p>
+
+      <ol class="tiers" role="list">
+        {tiers.map((t) => (
+          <li class="tier reveal">
+            <div class="tier-head">
+              <h3 class="h3">{t.name}.</h3>
+              <span class="mono tier-framing">{t.framing}</span>
+            </div>
+
+            <ul class="formats" role="list">
+              {t.formats.map((f) => (
+                <li>
+                  <span class="format-label">{f.label}</span>
+                  <span class="format-price">{f.price}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p class="body muted tier-includes">
+              <strong>Includes.</strong> {t.includes}
+            </p>
+            {t.triggers && (
+              <p class="mono tier-triggers">{t.triggers}</p>
+            )}
           </li>
         ))}
       </ol>
     </div>
   </section>
 
-  <!-- FLAGSHIP -->
+  <!-- ADD-ONS -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">The flagship engagement.</h2>
+      <h2 class="h2">Add-ons.</h2>
       <p class="lede muted">
-        A deterministic, signed assessment of whether a material model can be
-        halted, reversed, or over-ridden inside the PRA evidence bar. One
-        model. One scenario. Eight to ten weeks.
+        Any tier. Priced per unit. No volume discount on the first deal in a
+        sector.
       </p>
 
-      <ul class="artefacts reveal" role="list">
-        {flagshipArtefacts.map((a) => (
+      <ul class="rate-card" role="list">
+        {addons.map((a) => (
           <li>
-            <h3 class="h3">{a.name}</h3>
-            <p class="body muted">{a.desc}</p>
+            <span class="rate-label">{a.label}</span>
+            <span class="rate-price mono">{a.price}</span>
+          </li>
+        ))}
+      </ul>
+
+      <h3 class="h3 services-head">Professional services.</h3>
+      <ul class="rate-card" role="list">
+        {services.map((a) => (
+          <li>
+            <span class="rate-label">{a.label}</span>
+            <span class="rate-price mono">{a.price}</span>
+          </li>
+        ))}
+      </ul>
+
+      <p class="body muted footnote">
+        All prices in GBP, exclude VAT. EUR and USD on application.
+        Sector premium of 30 to 50 percent applies to clinical AI, medical
+        devices, critical infrastructure, and defence.
+      </p>
+    </div>
+  </section>
+
+  <!-- WHAT AGDA IS NOT -->
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">What AGDA <em>is not.</em></h2>
+      <p class="lede muted">
+        The four objections that come up in every procurement conversation.
+        Narrower is the point.
+      </p>
+
+      <ul class="not-list" role="list">
+        {notProduct.map((n) => (
+          <li>
+            <h3 class="h3">{n.h}</h3>
+            <p class="body muted">{n.p}</p>
           </li>
         ))}
       </ul>
     </div>
   </section>
 
-  <!-- ENGAGEMENT SHAPES -->
+  <!-- BENCHMARKS -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Four engagement shapes.</h2>
+      <h2 class="h2">The right budget line.</h2>
       <p class="lede muted">
-        Each one self-contained. Every engagement publishes a written scope
-        before work begins. Findings, not delivery.
+        AGDA is priced against model risk, operational resilience, and AI
+        governance programme budgets. Not software procurement. The relevant
+        comparisons:
       </p>
 
-      <ul class="shapes" role="list">
-        {shapes.map((s) => (
-          <li class="reveal">
-            <h3 class="h3">{s.title}</h3>
-            <p class="body muted">{s.pitch}</p>
-            <span class="mono shape-price">{s.price}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-  <!-- COMMERCIAL FRAME -->
-  <section class="block">
-    <div class="wrap">
-      <h2 class="h2">Written. Bounded. Insurable.</h2>
-      <p class="lede muted">
-        Commercial frame is identical across tiers. Master Services Agreement
-        governs every engagement.
-      </p>
-
-      <ul class="commitments" role="list">
-        {commitments.map((c) => (
+      <ul class="benchmarks" role="list">
+        {benchmarks.map((b) => (
           <li>
-            <h3 class="h3">{c.h}</h3>
-            <p class="body muted">{c.p}</p>
+            <h3 class="h3">{b.h}</h3>
+            <p class="body muted">{b.p}</p>
           </li>
         ))}
       </ul>
+
+      <p class="body footnote">
+        AGDA at £95,000 for a pilot or £180,000 per year for an annual
+        subscription sits inside any of those budget lines and produces
+        something they cannot: a signed verdict the regulator can verify
+        without us.
+      </p>
     </div>
   </section>
 
@@ -143,13 +260,14 @@ const commitments = [
     <div class="wrap">
       <div class="close-grid">
         <h2 class="h2 reveal">
-          Tell us the system, the decision, or the exposure. <em>No deck.</em>
+          Nominate a system. <em>One pilot. Four weeks.</em>
         </h2>
         <div class="close-cta reveal">
           <p class="body muted">
-            A senior advisor responds within one to two working days.
+            The pilot is sized so a CRO can approve without procurement
+            committee escalation. Brief, confidential, no obligation.
           </p>
-          <a href="/Intervene/contact/" class="btn">Request a conversation</a>
+          <a href="/Intervene/contact/" class="btn">Request a discussion</a>
         </div>
       </div>
     </div>
@@ -163,121 +281,151 @@ const commitments = [
     border-bottom: 1px solid var(--hair);
   }
   .hero .h1 { max-width: 14ch; }
-  .hero .lede { margin-top: 32px; max-width: 48ch; }
+  .hero .lede { margin-top: 32px; max-width: 62ch; }
 
   .block .h2 { max-width: 22ch; }
-  .block .lede { margin-top: 16px; max-width: 56ch; }
+  .block .lede { margin-top: 16px; max-width: 60ch; }
 
-  /* Ladder */
-  .ladder {
+  /* ----- Report layers ----- */
+  .layers {
     list-style: none;
     margin: 80px 0 0;
     padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 48px;
     border-top: 1px solid var(--ink);
   }
-  .ladder-row {
-    display: grid;
-    grid-template-columns: 90px 1.2fr 2fr 200px;
-    gap: 32px;
-    align-items: baseline;
+  .layers > li {
     padding: 32px 0;
     border-bottom: 1px solid var(--hair);
-    opacity: 0;
-    transform: translateY(12px);
-    transition:
-      opacity 480ms cubic-bezier(0.4, 0, 0.2, 1),
-      transform 480ms cubic-bezier(0.4, 0, 0.2, 1);
-    transition-delay: calc(var(--i) * 80ms);
+    display: grid;
+    gap: 10px;
+    align-content: start;
   }
-  .ladder.in .ladder-row { opacity: 1; transform: none; }
-  .ladder .tier {
+  .layer-aud {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 11px;
+  }
+  .layers p { max-width: 36ch; margin: 4px 0 0; }
+
+  .labs {
+    margin-top: 56px;
+    padding: 32px;
+    background: var(--paper-soft);
+    border-left: 2px solid var(--ink);
+    max-width: 72ch;
+  }
+  .labs .h3 { margin: 0 0 12px; }
+  .labs p { margin: 0; max-width: 60ch; }
+
+  /* ----- Tiers ----- */
+  .tiers {
+    list-style: none;
+    margin: 80px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 56px;
+  }
+  .tier {
+    padding-top: 40px;
+    border-top: 1px solid var(--ink);
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .tier-head { display: grid; gap: 8px; align-content: start; }
+  .tier-head .h3 { margin: 0; font-size: 28px; }
+  .tier-framing {
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     font-size: 11px;
   }
-  .ladder .name {
-    font-family: var(--font-sans);
-    font-weight: 500;
-    font-size: 18px;
-    color: var(--ink);
-  }
-  .ladder .desc {
-    color: var(--muted);
-    font-size: 15px;
-    line-height: 1.55;
-  }
-  .ladder .price {
-    text-align: right;
+
+  .formats {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: grid;
-    gap: 4px;
-    justify-items: end;
+    gap: 0;
   }
-  .ladder .amount {
+  .formats > li {
+    display: grid;
+    grid-template-columns: 1fr 180px;
+    gap: 24px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--hair);
+    align-items: baseline;
+  }
+  .format-label {
     font-family: var(--font-sans);
-    font-weight: 500;
-    font-size: 18px;
+    font-size: 15px;
     color: var(--ink);
   }
-  .ladder .terms {
+  .format-price {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--ink);
+    text-align: right;
+  }
+  .tier-includes {
+    grid-column: 1 / -1;
+    margin: 24px 0 0;
+    max-width: 80ch;
+  }
+  .tier-includes strong { color: var(--ink); font-weight: 500; }
+  .tier-triggers {
+    grid-column: 1 / -1;
+    margin: 12px 0 0;
     color: var(--muted);
     font-size: 11px;
     letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 
-  /* Artefacts */
-  .artefacts {
+  /* ----- Rate card ----- */
+  .rate-card {
     list-style: none;
-    margin: 80px 0 0;
+    margin: 56px 0 0;
     padding: 0;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    column-gap: 32px;
     border-top: 1px solid var(--ink);
   }
-  .artefacts > li {
-    padding: 32px 0;
+  .rate-card > li {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 24px;
+    padding: 20px 0;
     border-bottom: 1px solid var(--hair);
-    display: grid;
-    gap: 12px;
-    align-content: start;
-    opacity: 0;
-    transform: translateY(12px);
-    transition:
-      opacity 480ms cubic-bezier(0.4, 0, 0.2, 1),
-      transform 480ms cubic-bezier(0.4, 0, 0.2, 1);
+    align-items: baseline;
   }
-  .artefacts .h3 { font-size: 18px; }
-  .artefacts p { max-width: 28ch; margin: 0; font-size: 14px; }
-  .artefacts.in > li { opacity: 1; transform: none; }
-  .artefacts.in > li:nth-child(1) { transition-delay: 0ms; }
-  .artefacts.in > li:nth-child(2) { transition-delay: 80ms; }
-  .artefacts.in > li:nth-child(3) { transition-delay: 160ms; }
-  .artefacts.in > li:nth-child(4) { transition-delay: 240ms; }
-  .artefacts.in > li:nth-child(5) { transition-delay: 320ms; }
-
-  /* Shapes */
-  .shapes {
-    list-style: none;
-    margin: 80px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 64px 80px;
+  .rate-label {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    color: var(--ink);
   }
-  .shapes > li { display: grid; gap: 16px; }
-  .shapes p { max-width: 44ch; margin: 0; }
-  .shape-price {
+  .rate-price {
+    color: var(--ink);
+    text-align: right;
+    font-size: 13px;
+  }
+  .services-head {
+    margin: 64px 0 0;
+    font-size: 22px;
+  }
+  .footnote {
+    margin: 32px 0 0;
+    max-width: 76ch;
     color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-size: 11px;
-    padding-top: 12px;
-    border-top: 1px solid var(--hair);
+    font-size: 14px;
   }
 
-  /* Commitments */
-  .commitments {
+  /* ----- Not list ----- */
+  .not-list {
     list-style: none;
     margin: 80px 0 0;
     padding: 0;
@@ -285,39 +433,49 @@ const commitments = [
     grid-template-columns: 1fr 1fr;
     gap: 56px 80px;
   }
-  .commitments > li { display: grid; gap: 12px; }
-  .commitments p { max-width: 44ch; margin: 0; }
+  .not-list > li { display: grid; gap: 12px; }
+  .not-list p { max-width: 44ch; margin: 0; }
 
-  /* Close */
+  /* ----- Benchmarks ----- */
+  .benchmarks {
+    list-style: none;
+    margin: 64px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 48px;
+  }
+  .benchmarks > li { display: grid; gap: 12px; }
+  .benchmarks p { max-width: 36ch; margin: 0; }
+
+  /* ----- Close ----- */
   .close-grid {
     display: grid;
     grid-template-columns: 1.4fr 1fr;
     gap: 96px;
     align-items: start;
   }
-  .close-grid .h2 { max-width: 22ch; margin: 0; }
+  .close-grid .h2 { max-width: 18ch; margin: 0; }
   .close-cta {
     display: grid;
     gap: 24px;
     align-content: start;
     padding-top: 12px;
   }
-  .close-cta .body { margin: 0; max-width: 38ch; }
+  .close-cta .body { margin: 0; max-width: 42ch; }
   .close-cta .btn { justify-self: start; }
 
+  /* ----- Responsive ----- */
   @media (max-width: 880px) {
     .hero { padding-top: 96px; padding-bottom: 96px; }
-    .ladder-row {
-      grid-template-columns: 1fr;
-      gap: 8px;
-      padding: 24px 0;
-    }
-    .ladder .price { text-align: left; justify-items: start; }
-    .artefacts { grid-template-columns: 1fr 1fr; column-gap: 24px; }
-    .shapes, .commitments { grid-template-columns: 1fr; gap: 48px; }
+    .layers { grid-template-columns: 1fr; }
+    .tier { grid-template-columns: 1fr; gap: 24px; }
+    .formats > li { grid-template-columns: 1fr; gap: 4px; }
+    .format-price { text-align: left; font-size: 16px; }
+    .rate-card > li { grid-template-columns: 1fr; gap: 4px; padding: 16px 0; }
+    .rate-price { text-align: left; }
+    .not-list { grid-template-columns: 1fr; gap: 48px; }
+    .benchmarks { grid-template-columns: 1fr; gap: 40px; }
     .close-grid { grid-template-columns: 1fr; gap: 48px; }
-  }
-  @media (max-width: 560px) {
-    .artefacts { grid-template-columns: 1fr; }
   }
 </style>
