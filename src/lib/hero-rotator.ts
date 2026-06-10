@@ -5,7 +5,7 @@
  */
 export function initHeroRotator(
   root: Document | ParentNode = document,
-  intervalMs = 7_000
+  intervalMs = 5_000
 ): () => void {
   const el = root.querySelector<HTMLElement>('[data-hero-rotator]');
   if (!el) return () => {};

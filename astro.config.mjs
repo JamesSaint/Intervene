@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://jamessaint.github.io',
@@ -11,4 +12,9 @@ export default defineConfig({
   devToolbar: {
     enabled: false,
   },
+  integrations: [
+    sitemap({
+      filter: (page) => !page.includes('/style-guide/'),
+    }),
+  ],
 });

@@ -33,7 +33,6 @@ const notServed = [
   title="About · Intervene"
   description="One principal. Specific experience. Independent advisory for boards facing irreversible exposure on consequential AI and operational systems."
   current="about"
-  noindex={true}
 >
   <section class="hero">
     <div class="wrap">
@@ -50,7 +49,14 @@ const notServed = [
     <div class="wrap">
       <div class="founder">
         <figure class="portrait reveal">
-          <img src="/Intervene/assets/images/james-saint.jpg" alt="James Saint, Founder and Principal Advisor, Intervene" loading="lazy" />
+          <img
+            src="/Intervene/assets/images/james-saint.jpg"
+            alt="James Saint, Founder and Principal Advisor, Intervene"
+            width="640"
+            height="800"
+            loading="lazy"
+            decoding="async"
+          />
           <figcaption>James Saint · London · 2026</figcaption>
         </figure>
 
@@ -175,8 +181,9 @@ const notServed = [
     <div class="wrap">
       <h2 class="h2">What we <em>are not.</em></h2>
       <p class="lede muted">
-        Good practices occupy the adjacent ground. Knowing the difference
-        avoids procurement confusion later.
+        About the practice, not the product. (For product-category boundaries,
+        see <a href="/Intervene/services/#what-agda-is-not" class="link">What AGDA is not</a> on Services.) Good practices occupy the adjacent
+        ground. Knowing the difference avoids procurement confusion later.
       </p>
 
       <ul class="not-list" role="list">

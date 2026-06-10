@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /intervene-brand-sheet.html
-Disallow: /intervene-logo.html
+Disallow: /Intervene/style-guide/
 
-Sitemap: https://intervene.group/sitemap.xml
+Sitemap: https://jamessaint.github.io/Intervene/sitemap-index.xml
