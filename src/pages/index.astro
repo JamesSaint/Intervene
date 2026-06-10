@@ -1,7 +1,27 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ChainFlow from '../components/ChainFlow.astro';
-import ScopeBar from '../components/ScopeBar.astro';
+
+const tiers = [
+  {
+    name: 'Pilot',
+    framing: 'First engagement. One system.',
+    blurb: 'Four-week or 90-day. Signed Failure Exposure Report at three audience layers, regulator bundle, attestation envelope.',
+    price: 'From £95,000',
+  },
+  {
+    name: 'Annual',
+    framing: 'Post-pilot. Standing.',
+    blurb: 'Five operator seats, two assessed systems per year, quarterly re-run rights, engine-hash pinning, annual board readout.',
+    price: '£180,000 / yr',
+  },
+  {
+    name: 'Enterprise',
+    framing: 'Multi-system, multi-entity. Custom-scoped.',
+    blurb: 'Up to 15 seats, 5 systems per year, regulator-liaison hours, quarterly portfolio review with group CRO, designated operator.',
+    price: 'From £350,000 / yr',
+  },
+];
 ---
 
 <BaseLayout
@@ -15,22 +35,22 @@ import ScopeBar from '../components/ScopeBar.astro';
       <div class="hero-rotator" data-hero-rotator aria-live="polite">
         <article class="slide is-active" data-slide aria-hidden="false">
           <h1 class="h1">
-            Move first. Or be moved <em>by what you missed.</em>
+            If your AI system goes wrong right now. <em>Can you stop it?</em>
           </h1>
           <p class="lede slide-lede">
-            Independent advisory. We test whether your governance translates
-            to operational control, before a live failure answers the
-            question for you.
+            AGDA gives you a deterministic, signed answer. Bound to a locked
+            engine version. An audit committee can defend it. A regulator can
+            verify it without contacting us.
           </p>
         </article>
         <article class="slide" data-slide aria-hidden="true">
           <h1 class="h1">
-            Intervention, on evidence. <em>Not intention.</em>
+            Evidence over intention. <em>Every verdict signed.</em>
           </h1>
           <p class="lede slide-lede">
-            AGDA scores intervention capability against evidence. Every
-            verdict is cryptographically signed. The regulator can verify
-            without us.
+            Most AI governance tests whether controls exist. AGDA tests whether
+            they work in time. Same inputs, same output, every time, bound to a
+            locked engine hash.
           </p>
         </article>
         <article class="slide" data-slide aria-hidden="true">
@@ -136,29 +156,24 @@ import ScopeBar from '../components/ScopeBar.astro';
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Three services. <em>One question.</em></h2>
+      <h2 class="h2">Three tiers. <em>Priced per assessment.</em></h2>
       <p class="lede muted">
-        Can the people responsible for your most consequential systems
-        actually stop them when they need to?
+        The commercial unit is the assessment, not the seat. Customers expand
+        by assessing more systems, not by adding users.
       </p>
 
-      <ul class="services" role="list">
-        <li class="reveal">
-          <ScopeBar pattern="focused" duration="Point-in-time · 2–3 weeks" />
-          <h3 class="h3">Exposure assessment.</h3>
-          <p class="body muted">One system, one scenario. A clear view of where intervention breaks down.</p>
-        </li>
-        <li class="reveal">
-          <ScopeBar pattern="recurring" duration="Episodic · per decision" />
-          <h3 class="h3">Board-level advisory.</h3>
-          <p class="body muted">Independent judgement where internal certainty may be misleading.</p>
-        </li>
-        <li class="reveal">
-          <ScopeBar pattern="continuous" duration="Continuous · retainer" />
-          <h3 class="h3">Integrity oversight.</h3>
-          <p class="body muted">Continued visibility across consequential systems as exposure evolves.</p>
-        </li>
+      <ul class="tiers-preview reveal" role="list">
+        {tiers.map((t) => (
+          <li>
+            <h3 class="h3">{t.name}.</h3>
+            <span class="mono tier-framing">{t.framing}</span>
+            <p class="body muted">{t.blurb}</p>
+            <span class="mono tier-price">{t.price}</span>
+          </li>
+        ))}
       </ul>
+
+      <a href="/Intervene/services/" class="services-link">See all tiers, add-ons, and rate card <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
@@ -306,26 +321,62 @@ import ScopeBar from '../components/ScopeBar.astro';
     }
   }
 
-  .services {
+  /* Three-tier preview */
+  .tiers-preview {
     list-style: none;
     margin: 80px 0 0;
     padding: 0;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 64px;
+    column-gap: 48px;
+    border-top: 1px solid var(--ink);
+    /* override .reveal so children stagger individually */
+    opacity: 1;
+    transform: none;
   }
-  .services > li {
+  .tiers-preview > li {
+    padding: 32px 0 32px;
+    border-bottom: 1px solid var(--hair);
     display: grid;
-    gap: 20px;
+    gap: 12px;
     align-content: start;
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 480ms cubic-bezier(0.4, 0, 0.2, 1),
+      transform 480ms cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .services .h3 { margin-top: 8px; }
-  .services p { max-width: 32ch; margin: 0; }
+  .tiers-preview.in > li { opacity: 1; transform: none; }
+  .tiers-preview.in > li:nth-child(1) { transition-delay: 0ms; }
+  .tiers-preview.in > li:nth-child(2) { transition-delay: 140ms; }
+  .tiers-preview.in > li:nth-child(3) { transition-delay: 280ms; }
 
-  /* Stagger reveal across the three cards. */
-  .services > li:nth-child(1) { transition-delay: 0ms; }
-  .services > li:nth-child(2) { transition-delay: 140ms; }
-  .services > li:nth-child(3) { transition-delay: 280ms; }
+  .tiers-preview .h3 { margin: 0; font-size: 28px; }
+  .tier-framing {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+  }
+  .tiers-preview p { max-width: 32ch; margin: 4px 0 0; }
+  .tier-price {
+    margin-top: 8px;
+    color: var(--ink);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  .services-link {
+    display: inline-block;
+    margin-top: 48px;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    color: var(--ink);
+    border-bottom: 1px solid var(--hair-strong);
+    padding-bottom: 2px;
+    transition: border-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .services-link:hover { border-color: var(--ink); }
 
   .close-grid {
     display: grid;
@@ -350,7 +401,7 @@ import ScopeBar from '../components/ScopeBar.astro';
     .hero { padding-top: 96px; padding-bottom: 96px; }
     .slide-lede { margin-top: 40px; }
     .hero-cta { margin-top: 56px; }
-    .services { grid-template-columns: 1fr; gap: 48px; }
+    .tiers-preview { grid-template-columns: 1fr; column-gap: 0; }
     .close-grid { grid-template-columns: 1fr; gap: 48px; }
     .window-head {
       grid-template-columns: 1fr;
