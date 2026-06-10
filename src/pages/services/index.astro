@@ -24,10 +24,10 @@ const tiers = [
     name: 'Pilot',
     framing: 'First engagement. One system.',
     formats: [
-      { label: 'Short pilot · 4 weeks · 1 system',         price: '£95,000' },
-      { label: '90-day structured pilot · 1 system',       price: '£120,000' },
-      { label: '90-day structured pilot · 2 systems',      price: '£175,000' },
-      { label: '90-day structured pilot · 3 systems',      price: '£225,000' },
+      { label: 'Short pilot · 4 weeks · 1 system',         gbp: '£95,000',   eur: '€110,000', usd: '$125,000' },
+      { label: '90-day structured pilot · 1 system',       gbp: '£120,000',  eur: '€140,000', usd: '$155,000' },
+      { label: '90-day structured pilot · 2 systems',      gbp: '£175,000',  eur: '€205,000', usd: '$225,000' },
+      { label: '90-day structured pilot · 3 systems',      gbp: '£225,000',  eur: '€265,000', usd: '$290,000' },
     ],
     includes: 'Failure Exposure Report at all three audience layers, regulator bundle, attestation envelope, Labs Intervention Simulator access for 5 named operators, 90-minute board readout, signed close-out memo.',
   },
@@ -35,8 +35,8 @@ const tiers = [
     name: 'Annual subscription',
     framing: 'Post-pilot conversion. Standing engagement.',
     formats: [
-      { label: 'Annual subscription',     price: '£180,000 / yr' },
-      { label: 'Equivalent quarterly',    price: '£45,000 / qtr' },
+      { label: 'Annual subscription',     gbp: '£180,000 / yr', eur: '€210,000 / yr', usd: '$235,000 / yr' },
+      { label: 'Equivalent quarterly',    gbp: '£45,000 / qtr', eur: '€52,500 / qtr', usd: '$58,750 / qtr' },
     ],
     includes: 'Five named operator seats, two assessed systems per year, engine-hash pinning, quarterly re-run rights on each system, annual board-readout session.',
   },
@@ -44,7 +44,7 @@ const tiers = [
     name: 'Enterprise master',
     framing: 'Multi-system, multi-entity. Custom-scoped.',
     formats: [
-      { label: 'Annual, custom-scoped',   price: '£350,000+ / yr' },
+      { label: 'Annual, custom-scoped',   gbp: '£350,000+ / yr', eur: '€410,000+ / yr', usd: '$450,000+ / yr' },
     ],
     includes: 'Up to 15 named operator seats, up to 5 assessed systems per year, 40 regulator-liaison hours, quarterly portfolio review with group CRO, two annual board-readout sessions, multi-entity invoicing, designated AGDA operator.',
     triggers: 'Triggers: 9+ assessed systems per year, 20+ seats, or 2+ legal entities under a single group.',
@@ -52,19 +52,19 @@ const tiers = [
 ];
 
 const addons = [
-  { label: 'Additional assessed system, post-pilot',                  price: '£55,000' },
-  { label: 'Additional re-run, beyond quarterly included in Annual',   price: '£20,000' },
-  { label: 'Additional named Labs operator',                          price: '£3,000 / term' },
-  { label: 'Board-readout session, remote',                           price: '£12,000' },
-  { label: 'Board-readout session, on-site',                          price: '£18,000' },
-  { label: 'Regulator bundle, post-engine-version change',            price: '£6,000' },
+  { label: 'Additional assessed system, post-pilot',                  gbp: '£55,000',       eur: '€65,000',     usd: '$72,000' },
+  { label: 'Additional re-run, beyond quarterly included in Annual',   gbp: '£20,000',       eur: '€23,000',     usd: '$25,000' },
+  { label: 'Additional named Labs operator',                          gbp: '£3,000 / term', eur: '€3,500 / term', usd: '$4,000 / term' },
+  { label: 'Board-readout session, remote',                           gbp: '£12,000',       eur: '€14,000',     usd: '$15,500' },
+  { label: 'Board-readout session, on-site',                          gbp: '£18,000',       eur: '€21,000',     usd: '$23,000' },
+  { label: 'Regulator bundle, post-engine-version change',            gbp: '£6,000',        eur: '€7,000',      usd: '$7,500' },
 ];
 
 const services = [
-  { label: 'Operator certification, internal governance team (up to 2 raters)', price: '£55,000' },
-  { label: 'Operator certification, advisory firm (firm-level)',                price: '£85,000' },
-  { label: 'Advisory firm annual renewal',                                       price: '£25,000 / yr' },
-  { label: 'Regulator-liaison block (20 hours, per quarter)',                   price: '£18,000' },
+  { label: 'Operator certification, internal governance team (up to 2 raters)', gbp: '£55,000',     eur: '€64,000',     usd: '$70,000' },
+  { label: 'Operator certification, advisory firm (firm-level)',                gbp: '£85,000',     eur: '€99,000',     usd: '$108,000' },
+  { label: 'Advisory firm annual renewal',                                       gbp: '£25,000 / yr', eur: '€29,000 / yr', usd: '$32,000 / yr' },
+  { label: 'Regulator-liaison block (20 hours, per quarter)',                   gbp: '£18,000',     eur: '€21,000',     usd: '$23,000' },
 ];
 
 const notProduct = [
@@ -85,7 +85,6 @@ const benchmarks = [
   title="Services · Intervene"
   description="A deterministic answer to one question: if one of your AI systems goes wrong right now, can you stop it before harm becomes irreversible? Signed. Verifiable. Pinned to a locked engine version."
   current="services"
-  noindex={true}
 >
   <!-- HERO -->
   <section class="hero">
@@ -154,7 +153,10 @@ const benchmarks = [
               {t.formats.map((f) => (
                 <li>
                   <span class="format-label">{f.label}</span>
-                  <span class="format-price">{f.price}</span>
+                  <span class="format-price">
+                    <span class="price-gbp">{f.gbp}</span>
+                    <span class="price-alt mono">{f.eur} · {f.usd}</span>
+                  </span>
                 </li>
               ))}
             </ul>
@@ -184,7 +186,10 @@ const benchmarks = [
         {addons.map((a) => (
           <li>
             <span class="rate-label">{a.label}</span>
-            <span class="rate-price mono">{a.price}</span>
+            <span class="rate-price">
+              <span class="price-gbp">{a.gbp}</span>
+              <span class="price-alt mono">{a.eur} · {a.usd}</span>
+            </span>
           </li>
         ))}
       </ul>
@@ -194,21 +199,24 @@ const benchmarks = [
         {services.map((a) => (
           <li>
             <span class="rate-label">{a.label}</span>
-            <span class="rate-price mono">{a.price}</span>
+            <span class="rate-price">
+              <span class="price-gbp">{a.gbp}</span>
+              <span class="price-alt mono">{a.eur} · {a.usd}</span>
+            </span>
           </li>
         ))}
       </ul>
 
       <p class="body muted footnote">
-        All prices in GBP, exclude VAT. EUR and USD on application.
-        Sector premium of 30 to 50 percent applies to clinical AI, medical
-        devices, critical infrastructure, and defence.
+        Prices shown in GBP, EUR, and USD. All exclude VAT. Sector premium of
+        30 to 50 percent applies to clinical AI, medical devices, critical
+        infrastructure, and defence. Other currencies on application.
       </p>
     </div>
   </section>
 
   <!-- WHAT AGDA IS NOT -->
-  <section class="block">
+  <section class="block" id="what-agda-is-not">
     <div class="wrap">
       <h2 class="h2">What AGDA <em>is not.</em></h2>
       <p class="lede muted">
@@ -367,11 +375,22 @@ const benchmarks = [
     color: var(--ink);
   }
   .format-price {
+    text-align: right;
+    display: grid;
+    gap: 4px;
+    justify-items: end;
+  }
+  .price-gbp {
     font-family: var(--font-sans);
     font-size: 18px;
     font-weight: 500;
     color: var(--ink);
-    text-align: right;
+    line-height: 1.1;
+  }
+  .price-alt {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.04em;
   }
   .tier-includes {
     grid-column: 1 / -1;
@@ -409,10 +428,12 @@ const benchmarks = [
     color: var(--ink);
   }
   .rate-price {
-    color: var(--ink);
     text-align: right;
-    font-size: 13px;
+    display: grid;
+    gap: 4px;
+    justify-items: end;
   }
+  .rate-price .price-gbp { font-size: 15px; }
   .services-head {
     margin: 64px 0 0;
     font-size: 22px;
@@ -471,9 +492,9 @@ const benchmarks = [
     .layers { grid-template-columns: 1fr; }
     .tier { grid-template-columns: 1fr; gap: 24px; }
     .formats > li { grid-template-columns: 1fr; gap: 4px; }
-    .format-price { text-align: left; font-size: 16px; }
+    .format-price { text-align: left; justify-items: start; }
     .rate-card > li { grid-template-columns: 1fr; gap: 4px; padding: 16px 0; }
-    .rate-price { text-align: left; }
+    .rate-price { text-align: left; justify-items: start; }
     .not-list { grid-template-columns: 1fr; gap: 48px; }
     .benchmarks { grid-template-columns: 1fr; gap: 40px; }
     .close-grid { grid-template-columns: 1fr; gap: 48px; }
