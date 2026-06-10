@@ -54,8 +54,28 @@ const docs = [
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Four stages. The chain is the control.</h2>
+      <h2 class="h2">The SEDI chain. <em>The chain is the control.</em></h2>
+      <p class="lede muted">
+        Signal, Escalation, Decision, Intervention. Four sequential stages
+        running against a reversibility window. The engine measures whether the
+        cumulative chain completes before harm becomes irreversible.
+      </p>
       <ChainFlow />
+
+      <ul class="verdicts" role="list">
+        <li>
+          <span class="mono verdict-name">Before impact</span>
+          <p class="body">The chain completes in time under the observed conditions.</p>
+        </li>
+        <li>
+          <span class="mono verdict-name">At risk</span>
+          <p class="body">The chain completes, but within a margin that operational noise can erode.</p>
+        </li>
+        <li>
+          <span class="mono verdict-name warn">After impact</span>
+          <p class="body">The chain does not complete in time. Harm is irreversible before intervention can land.</p>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -115,10 +135,12 @@ const docs = [
 
   <section class="block">
     <div class="wrap-narrow">
-      <h2 class="h2">Every verdict is signed.</h2>
+      <h2 class="h2">A regulator can verify. <em>Without contacting us.</em></h2>
       <p class="lede muted">
-        Ed25519 envelope. Same inputs, same outputs, bound to a specific engine
-        version. Verifiable by an audit committee using a committed public key.
+        Every Failure Exposure Report ships with a signed JSON regulator
+        bundle. Ed25519 signature against a locked engine hash. The verify
+        command runs anywhere. The customer does not depend on us to read what
+        we produced for them.
       </p>
       <pre class="envelope" aria-label="Attestation envelope example"><code>{`engineVersion   1.2.0
 engineHash      sha256:b2c8a1d…e7f2916
@@ -127,6 +149,33 @@ outputHash      sha256:91f4c02…a6d0d4e
 keyId           2026-04-22-1e7c3c2c
 scoredAt        2026-05-14T09:47:12.334Z
 signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
+      <a href="/Intervene/verify/" class="services-link">How the verify path works <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Labs Intervention Simulator.</h2>
+      <p class="lede muted">
+        A what-if console for the resilience function. Test intervention
+        timing against hypothetical scenarios without re-running the full
+        assessment. Five named operators per engagement.
+      </p>
+
+      <ul class="labs-grid" role="list">
+        <li>
+          <h3 class="h3">Counterfactual chains.</h3>
+          <p class="body muted">Move a control upstream, change a quorum rule, add an on-call halt authority. The console recomputes the chain against the same harm window.</p>
+        </li>
+        <li>
+          <h3 class="h3">Sensitivity testing.</h3>
+          <p class="body muted">Vary the reversibility window or the trigger scenario. See which stages bind and which slack out.</p>
+        </li>
+        <li>
+          <h3 class="h3">Board readout prep.</h3>
+          <p class="body muted">Walk an audit committee through three remediation options with the verdict on each, before committing to a single path.</p>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -188,6 +237,54 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
 
   .block .h2 { max-width: 22ch; }
   .block .lede { margin-top: 16px; max-width: 56ch; }
+
+  /* SEDI verdict states */
+  .verdicts {
+    list-style: none;
+    margin: 64px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--hair);
+  }
+  .verdicts > li { display: grid; gap: 8px; align-content: start; }
+  .verdict-name {
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+  }
+  .verdict-name.warn { color: var(--warn); }
+  .verdicts p { max-width: 36ch; margin: 0; }
+
+  /* Labs grid */
+  .labs-grid {
+    list-style: none;
+    margin: 64px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 56px;
+    border-top: 1px solid var(--ink);
+    padding-top: 32px;
+  }
+  .labs-grid > li { display: grid; gap: 12px; align-content: start; }
+  .labs-grid p { max-width: 36ch; margin: 0; }
+
+  /* Inline arrow link */
+  .services-link {
+    display: inline-block;
+    margin-top: 32px;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    color: var(--ink);
+    border-bottom: 1px solid var(--hair-strong);
+    padding-bottom: 2px;
+    transition: border-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .services-link:hover { border-color: var(--ink); }
 
   .dim-grid {
     list-style: none;
@@ -288,6 +385,8 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
     .stances { grid-template-columns: 1fr; gap: 48px; }
     .engagement { grid-template-columns: 1fr; gap: 48px; }
     .docs { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .verdicts { grid-template-columns: 1fr; gap: 32px; }
+    .labs-grid { grid-template-columns: 1fr; gap: 40px; }
   }
   @media (max-width: 560px) {
     .dim-grid {
