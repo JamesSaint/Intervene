@@ -22,9 +22,25 @@ const {
   ogImage = '/assets/og/og-home.png',
 } = Astro.props;
 
-const site = Astro.site?.toString().replace(/\/$/, '') ?? 'https://intervene.group';
+const site = Astro.site?.toString().replace(/\/$/, '') ?? 'https://jamessaint.github.io';
+const base = import.meta.env.BASE_URL;
 const canonical = `${site}${canonicalPath}`;
-const ogImageAbs = ogImage.startsWith('http') ? ogImage : `${site}${ogImage}`;
+const ogImageAbs = ogImage.startsWith('http') ? ogImage : `${site}${base}${ogImage.replace(/^\//, '')}`;
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Intervene Group Ltd',
+  url: `${site}${base}`,
+  logo: `${site}${base}assets/images/favicons/android-chrome-512x512.png`,
+  founder: {
+    '@type': 'Person',
+    name: 'James Saint',
+    jobTitle: 'Founder and Principal Advisor',
+  },
+  description: 'Independent advisory practice. AGDA produces a deterministic, signed answer to one question: if your AI system goes wrong right now, can you stop it before harm becomes irreversible?',
+  areaServed: ['United Kingdom', 'European Union'],
+};
 ---
 
 <!DOCTYPE html>
@@ -60,6 +76,8 @@ const ogImageAbs = ogImage.startsWith('http') ? ogImage : `${site}${ogImage}`;
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageAbs} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
 
     <slot name="head" />
   </head>

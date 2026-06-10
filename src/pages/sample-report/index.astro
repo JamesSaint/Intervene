@@ -81,7 +81,6 @@ const evidence = [
   title="Sample Report · Failure Exposure"
   description="A redacted sample Failure Exposure Report. Retail credit, escalation break, PRA SS1/23 §6 exposure."
   current="sample-report"
-  noindex={true}
 >
   <!-- COVER -->
   <section class="cover">
@@ -443,7 +442,8 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
       <div class="viability">
         <div class="viability-left">
           <span class="mono viability-label">Verdict · CRED-MOD-04</span>
-          <span class="viability-big">RED</span>
+          <span class="viability-big">After impact.</span>
+          <p class="mono viability-sub">SEDI chain does not complete inside the reversibility window.</p>
           <p class="body">
             Detection capability is sound. Authority capability is not. Until
             the halt-authority structure is restructured to permit
@@ -938,11 +938,19 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
     display: block;
     font-family: var(--font-sans);
     font-weight: 500;
-    font-size: clamp(56px, 8vw, 96px);
-    letter-spacing: -0.04em;
+    font-size: clamp(48px, 6vw, 72px);
+    letter-spacing: -0.035em;
     color: var(--warn);
-    line-height: 0.95;
-    margin-bottom: 20px;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .viability-sub {
+    display: block;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+    margin: 0 0 24px;
   }
   .viability .body { max-width: 56ch; }
 

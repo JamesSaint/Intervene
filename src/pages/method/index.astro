@@ -22,12 +22,6 @@ const stances = [
   { h: 'Confidence must not exceed evidence.',               p: 'High confidence against low-grade evidence demotes the dimension. Overconfidence is a governance failure.' },
 ];
 
-const engagement = [
-  { h: 'Exposure.',         p: 'We map the system, the decision context, the risk scenario, and the assumed intervention path. Written scope before scoring.' },
-  { h: 'Reality Testing.',  p: 'We score every dimension against evidence grade. Chain ceiling and contradictions surface here.' },
-  { h: 'Decision Support.', p: 'Attested Failure Exposure Report. Delivered direct to the Board. Remediation prioritised. Not implemented by us.' },
-];
-
 const docs = [
   { h: 'AGDA Thesis',              p: 'The intellectual position. Eight falsifiable claims.' },
   { h: 'Failure Mode Catalogue',   p: 'Forty canonical AI governance failure modes. Each citeable.' },
@@ -40,7 +34,6 @@ const docs = [
   title="Method · AGDA"
   description="AGDA scores intervention capability against evidence. Published methodology. Cryptographically attested output."
   current="method"
-  noindex={true}
 >
   <section class="hero">
     <div class="wrap">
@@ -181,24 +174,11 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Three stages of engagement.</h2>
-      <ul class="engagement" role="list">
-        {engagement.map((s) => (
-          <li>
-            <h3 class="h3">{s.h}</h3>
-            <p class="body muted">{s.p}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-  <section class="block">
-    <div class="wrap">
       <h2 class="h2">Published methodology.</h2>
       <p class="lede muted">
         Public. Citeable. Falsifiable. The calibration is held private under
-        standard trade-secret discipline.
+        standard trade-secret discipline. Four canonical documents anchor the
+        practice.
       </p>
       <ul class="docs" role="list">
         {docs.map((d) => (

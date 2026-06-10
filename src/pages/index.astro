@@ -28,7 +28,6 @@ const tiers = [
   title="Intervene · Independent Advisory"
   description="Independent advisory for boards. We test whether your organisation can detect, escalate, decide, and intervene before failure becomes irreversible."
   current="home"
-  noindex={true}
 >
   <section class="hero">
     <div class="wrap">
@@ -86,11 +85,14 @@ const tiers = [
   <section class="block">
     <div class="wrap">
       <div class="window-head">
+        <span class="window-kicker mono">The SEDI chain meets the authority chain</span>
         <h2 class="h2">By the time the board is told, <em>the window has closed.</em></h2>
         <p class="lede muted">
           The crisis begins the moment a system fails. Authority to stop it
           travels upward through people who cannot act. By the time it
           reaches the board, the moment for low-cost intervention has passed.
+          The SEDI chain fails when authority moves slower than the harm
+          window.
         </p>
       </div>
 
@@ -247,8 +249,19 @@ const tiers = [
     align-items: start;
     margin-bottom: 80px;
   }
-  .window-head .h2 { max-width: 18ch; margin: 0; }
+  .window-head .h2 { max-width: 18ch; margin: 8px 0 0; }
   .window-head .lede { max-width: 48ch; margin: 0; padding-top: 8px; }
+  .window-kicker {
+    grid-column: 1 / -1;
+    display: block;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--hair);
+    margin-bottom: 32px;
+  }
 
   .window-grid {
     list-style: none;
