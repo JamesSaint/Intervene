@@ -1,0 +1,300 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const bundleFields = [
+  { k: 'engineVersion',  v: 'The AGDA engine semver. Pinned at the assessment.' },
+  { k: 'engineHash',     v: 'SHA-256 of the engine binary. Locked at signature.' },
+  { k: 'inputHash',      v: 'SHA-256 of the canonical input record. Includes the fact model.' },
+  { k: 'outputHash',     v: 'SHA-256 of the canonical output. The Failure Exposure Report.' },
+  { k: 'keyId',          v: 'Date-stamped Ed25519 key identifier. Committed to the public key chain.' },
+  { k: 'scoredAt',       v: 'ISO-8601 UTC timestamp. The moment of attestation.' },
+  { k: 'signature',      v: 'Ed25519 signature over the canonical bundle.' },
+];
+
+const audiences = [
+  { h: 'Audit committee.', p: 'Confirm that the verdict the chair is being asked to certify is bound to a specific engine version and a specific set of inputs. No vendor trust required.' },
+  { h: 'Internal audit.',  p: 'Run the verifier on a known-good build of agda-verify in your own environment. Compare hashes against the bundle. Pass or fail is mechanical.' },
+  { h: 'Regulator.',       p: 'Take the bundle from the supervised entity. Verify in the regulator estate. Independent of any conversation with us or with the entity.' },
+];
+---
+
+<BaseLayout
+  title="Verify · Intervene"
+  description="Every Failure Exposure Report ships with a signed regulator bundle. Verify the verdict in your own environment using the public key chain. No vendor trust required."
+  current="verify"
+  noindex={true}
+>
+  <section class="hero">
+    <div class="wrap">
+      <h1 class="h1 reveal">
+        Verify without us. <em>Or do not engage.</em>
+      </h1>
+      <p class="lede muted reveal">
+        Every Failure Exposure Report ships with a signed JSON regulator
+        bundle. The verify command runs anywhere. You do not depend on us to
+        read what we produced for you.
+      </p>
+    </div>
+  </section>
+
+  <!-- THE BUNDLE -->
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">What's in the bundle.</h2>
+      <p class="lede muted">
+        A single canonical JSON document. Ed25519 signature over the whole.
+        Seven fields. Each one binds the verdict to a specific cryptographic
+        state.
+      </p>
+
+      <pre class="envelope" aria-label="Regulator bundle example"><code>{`{
+  "engineVersion":  "1.2.0",
+  "engineHash":     "sha256:b2c8a1d...e7f2916",
+  "inputHash":      "sha256:47a2e19...cd8b103",
+  "outputHash":     "sha256:91f4c02...a6d0d4e",
+  "keyId":          "2026-04-22-1e7c3c2c",
+  "scoredAt":       "2026-05-14T09:47:12.334Z",
+  "signature":      "ed25519:M4Gb2ZqAfD...pLQX7w"
+}`}</code></pre>
+
+      <dl class="fields">
+        {bundleFields.map((f) => (
+          <div>
+            <dt class="mono">{f.k}</dt>
+            <dd>{f.v}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- HOW TO VERIFY -->
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">How to verify.</h2>
+      <p class="lede muted">
+        A single command. A pinned key ID. A standalone verifier the
+        supervised entity does not control.
+      </p>
+
+      <pre class="cmd" aria-label="Verify command"><code>$ agda-verify --key-id 2026-04-22-1e7c3c2c --bundle ./bundle.json
+verifying engineHash ........... ok
+verifying inputHash ............ ok
+verifying outputHash ........... ok
+verifying signature ............ ok
+verdict: AFTER_IMPACT
+scored:  2026-05-14T09:47:12.334Z
+engine:  agda v1.2.0 (b2c8a1d...e7f2916)
+key:     2026-04-22-1e7c3c2c</code></pre>
+
+      <p class="body muted note">
+        The verifier is a single static binary. Source is published. Build
+        from source if your environment requires it. The verifier never
+        contacts our infrastructure.
+      </p>
+    </div>
+  </section>
+
+  <!-- PUBLIC KEY CHAIN -->
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">The public key chain.</h2>
+      <p class="lede muted">
+        Every signing key is rotated on a published schedule. The public
+        component of each key is committed to a public repository before it
+        is used to sign anything. Signing history is append-only.
+      </p>
+
+      <dl class="fields">
+        <div>
+          <dt class="mono">Key registry</dt>
+          <dd>github.com/intervene-group/agda-keys</dd>
+        </div>
+        <div>
+          <dt class="mono">Signing log</dt>
+          <dd>engine-registry.jsonl. Hash-chained. Every signature recorded.</dd>
+        </div>
+        <div>
+          <dt class="mono">Rotation cadence</dt>
+          <dd>Quarterly. Emergency rotation on key compromise, with public attestation.</dd>
+        </div>
+        <div>
+          <dt class="mono">Revocation</dt>
+          <dd>Signed revocation entries in the registry. Verifier honours revocations automatically.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- WHO VERIFIES -->
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Three audiences. <em>One verify path.</em></h2>
+      <p class="lede muted">
+        The same bundle. The same command. The same answer in three places
+        that would otherwise have to trust each other.
+      </p>
+
+      <ul class="audiences" role="list">
+        {audiences.map((a) => (
+          <li>
+            <h3 class="h3">{a.h}</h3>
+            <p class="body muted">{a.p}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- POSITION -->
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">Why this is the load-bearing claim.</h2>
+      <p class="body">
+        Big-4 advisories produce PDFs. GRC platforms produce dashboards.
+        Neither is reproducible. Neither is independently verifiable. The same
+        inputs do not always produce the same output, and the recipient must
+        trust the producer to read what the producer produced.
+      </p>
+      <p class="body muted">
+        AGDA's verify path is the property that makes the verdict defensible
+        in an examination, not just credible in a boardroom. If you cannot
+        verify in your own environment, the artefact has not done its job.
+      </p>
+      <p class="body aside">
+        Opinion is not reproducible. A signed computation is.
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="block tight">
+    <div class="wrap">
+      <div class="close-grid">
+        <h2 class="h2">Want to see a real bundle?</h2>
+        <div class="close-cta">
+          <p class="body muted">
+            The sample report includes a redacted attestation envelope. The
+            pilot ships a full bundle bound to your own assessed system.
+          </p>
+          <div class="cta-row">
+            <a href="/Intervene/sample-report/" class="btn-ghost">View sample</a>
+            <a href="/Intervene/contact/" class="btn">Request a discussion</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 144px;
+    padding-bottom: 144px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .hero .h1 { max-width: 16ch; }
+  .hero .lede { margin-top: 32px; max-width: 56ch; }
+
+  .block .h2 { max-width: 22ch; }
+  .block .lede { margin-top: 16px; max-width: 56ch; }
+
+  .envelope,
+  .cmd {
+    margin: 48px 0 0;
+    padding: 32px;
+    background: var(--paper-soft);
+    border: 1px solid var(--hair);
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--ink);
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .cmd {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  .fields {
+    margin: 48px 0 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--ink);
+  }
+  .fields > div {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--hair);
+    align-items: baseline;
+  }
+  .fields dt {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+  .fields dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.55;
+  }
+
+  .note {
+    margin-top: 32px;
+    max-width: 76ch;
+  }
+
+  .audiences {
+    list-style: none;
+    margin: 80px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 56px;
+    border-top: 1px solid var(--ink);
+    padding-top: 32px;
+  }
+  .audiences > li { display: grid; gap: 12px; align-content: start; }
+  .audiences p { max-width: 36ch; margin: 0; }
+
+  .aside {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--hair);
+    font-style: italic;
+    max-width: 56ch;
+  }
+
+  .close-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 96px;
+    align-items: start;
+  }
+  .close-grid .h2 { max-width: 18ch; margin: 0; }
+  .close-cta {
+    display: grid;
+    gap: 24px;
+    align-content: start;
+    padding-top: 12px;
+  }
+  .close-cta .body { margin: 0; max-width: 42ch; }
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  @media (max-width: 880px) {
+    .hero { padding-top: 96px; padding-bottom: 96px; }
+    .audiences { grid-template-columns: 1fr; gap: 40px; }
+    .fields > div { grid-template-columns: 1fr; gap: 4px; }
+    .close-grid { grid-template-columns: 1fr; gap: 48px; }
+    .envelope, .cmd { padding: 20px; font-size: 11.5px; }
+  }
+</style>
