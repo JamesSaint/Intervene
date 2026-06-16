@@ -37,7 +37,7 @@ const tiers = [
             If your AI system goes wrong right now. <em>Can you stop it?</em>
           </h1>
           <p class="lede slide-lede">
-            AGDA gives you a deterministic, signed answer. Bound to a locked
+            AGDA™ gives you a deterministic, signed answer. Bound to a locked
             engine version. An audit committee can defend it. A regulator can
             verify it without contacting us.
           </p>
@@ -156,6 +156,68 @@ const tiers = [
     </div>
   </section>
 
+  <section class="block" id="who-we-work-with">
+    <div class="wrap">
+      <h2 class="h2">Who we <em>work with.</em></h2>
+      <p class="lede muted">
+        Intervene works with organisations where AI, operational systems or
+        model risk failures could create regulatory, financial, safety or
+        reputational consequences.
+      </p>
+      <span class="group-label mono">Typical engagement contexts</span>
+      <ul class="audience" role="list">
+        <li>AI governance programmes</li>
+        <li>Model risk functions</li>
+        <li>Operational resilience programmes</li>
+        <li>Internal audit reviews</li>
+        <li>Board and risk committee assurance</li>
+        <li>High-consequence decision systems</li>
+        <li>Regulated financial services</li>
+        <li>Public sector and critical services</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" id="pilot">
+    <div class="wrap">
+      <div class="pilot-head">
+        <span class="window-kicker mono">Current status</span>
+        <h2 class="h2">
+          AGDA™ is being introduced through <em>selected paid pilot
+          engagements.</em>
+        </h2>
+        <p class="lede muted">
+          A pilot is not a trial login or a casual review of the software. It
+          is a structured intervention-readiness assessment delivered with
+          executive-level outputs.
+        </p>
+      </div>
+
+      <div class="pilot-body reveal">
+        <div class="pilot-receive">
+          <span class="group-label mono">Pilot participants receive</span>
+          <ul class="receive-list" role="list">
+            <li>Full AGDA™ assessment</li>
+            <li>Deterministic intervention-readiness verdict</li>
+            <li>Board-ready report</li>
+            <li>Executive review workshop</li>
+            <li>Methodology feedback session</li>
+            <li>Clear view of where the intervention chain holds and where it breaks</li>
+          </ul>
+        </div>
+
+        <div class="pilot-purpose">
+          <p class="body">
+            The purpose of the pilot is to put a defensible answer in writing
+            before a critical event, regulatory review or board-level
+            challenge forces the question.
+          </p>
+          <a href="/Intervene/contact/" class="btn">Discuss a paid pilot</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="block">
     <div class="wrap">
       <h2 class="h2">Three tiers. <em>Priced per assessment.</em></h2>
@@ -176,6 +238,54 @@ const tiers = [
       </ul>
 
       <a href="/Intervene/services/" class="services-link">See all tiers, add-ons, and rate card <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="block" id="founder">
+    <div class="wrap-narrow">
+      <span class="window-kicker mono">About the founder</span>
+      <h2 class="h2">James Saint.</h2>
+      <p class="body">
+        Intervene was founded by James Saint, a technology founder and former
+        co-founder of the Institute of Financial Innovation in Transactions and
+        Security.
+      </p>
+      <p class="body muted">
+        After three decades working across technology, systems architecture,
+        payments, digital products and operational risk, James developed AGDA™
+        to answer a question traditional governance frameworks leave
+        unresolved:
+      </p>
+      <p class="founder-q">
+        Can an organisation actually intervene before harm becomes irreversible?
+      </p>
+      <p class="body muted">
+        James works at the point where governance, technology, operational risk
+        and intervention capability meet.
+      </p>
+    </div>
+  </section>
+
+  <section class="block" id="company">
+    <div class="wrap-narrow">
+      <span class="window-kicker mono">Intervene Limited</span>
+      <h2 class="h2">Owner and developer of <em>AGDA™.</em></h2>
+      <p class="body">
+        Intervene Limited is the owner and developer of AGDA™, a deterministic
+        intervention-readiness assessment methodology and platform.
+      </p>
+      <p class="body muted">
+        AGDA™ evaluates whether an organisation can detect, escalate, decide and
+        intervene before critical failures become irreversible.
+      </p>
+      <p class="body muted">
+        The methodology, software, reporting structure and signed verdict are
+        designed to support board, audit, risk and regulatory conversations
+        where evidence matters.
+      </p>
+      <dl class="company-meta">
+        <div><dt>Registered</dt><dd>England and Wales</dd></div>
+      </dl>
     </div>
   </section>
 
@@ -391,6 +501,109 @@ const tiers = [
   }
   .services-link:hover { border-color: var(--ink); }
 
+  /* Shared section label */
+  .group-label {
+    display: block;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--hair);
+  }
+
+  /* Who we work with */
+  #who-we-work-with .group-label { margin-top: 48px; }
+  .audience {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 64px;
+    border-top: 1px solid var(--ink);
+  }
+  .audience > li {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--hair);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color: var(--ink);
+  }
+
+  /* Pilot engagements */
+  .pilot-head .h2 { max-width: 22ch; margin: 8px 0 0; }
+  .pilot-head .lede { max-width: 52ch; margin-top: 16px; }
+  .pilot-body {
+    margin-top: 64px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .receive-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--hair);
+  }
+  .receive-list > li {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--hair);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color: var(--ink);
+    max-width: 36ch;
+  }
+  .pilot-purpose {
+    display: grid;
+    gap: 32px;
+    align-content: start;
+  }
+  .pilot-purpose .body { margin: 0; max-width: 40ch; }
+  .pilot-purpose .btn { justify-self: start; }
+
+  /* Founder note + company */
+  #founder .h2, #company .h2 { max-width: 24ch; margin: 12px 0 24px; }
+  #founder .body, #company .body { max-width: 62ch; margin: 0 0 16px; }
+  .founder-q {
+    font-family: var(--font-sans);
+    font-size: 22px;
+    font-style: italic;
+    color: var(--ink);
+    max-width: 42ch;
+    margin: 24px 0;
+    padding-left: 20px;
+    border-left: 2px solid var(--ink);
+  }
+  .company-meta {
+    margin: 32px 0 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--hair);
+    display: grid;
+    gap: 16px;
+  }
+  .company-meta > div {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 24px;
+    align-items: baseline;
+  }
+  .company-meta dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .company-meta dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--ink);
+  }
+
   .close-grid {
     display: grid;
     grid-template-columns: 1.4fr 1fr;
@@ -415,6 +628,9 @@ const tiers = [
     .slide-lede { margin-top: 40px; }
     .hero-cta { margin-top: 56px; }
     .tiers-preview { grid-template-columns: 1fr; column-gap: 0; }
+    .audience { grid-template-columns: 1fr; column-gap: 0; }
+    .pilot-body { grid-template-columns: 1fr; gap: 48px; }
+    .company-meta > div { grid-template-columns: 1fr; gap: 4px; }
     .close-grid { grid-template-columns: 1fr; gap: 48px; }
     .window-head {
       grid-template-columns: 1fr;

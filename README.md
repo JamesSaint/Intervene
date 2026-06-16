@@ -7,7 +7,7 @@
 
 ## Overview
 
-Intervene Group Ltd is an independent advisory practice for high-stakes decisions on consequential AI and operational systems. The practice answers a question most governance frameworks leave untested: **can your organisation detect, escalate, decide, and intervene before failure becomes irreversible?**
+Intervene Limited is an independent advisory practice for high-stakes decisions on consequential AI and operational systems. The practice answers a question most governance frameworks leave untested: **can your organisation detect, escalate, decide, and intervene before failure becomes irreversible?**
 
 The site is the public face of the practice. Methodology, services, sample report, and contact path. Built as a static-output Astro site to match the editorial restraint of the Intervene brand: monochrome, typographic, instrument-grade.
 
@@ -129,4 +129,4 @@ The contact form at `/contact/` posts JSON to `https://formspree.io/f/xvzwdyob`.
 
 ## License
 
-All content is proprietary to **Intervene Group Ltd**. AGDA™ is a trademark of Intervene Group Ltd. Viewing is permitted. Reuse, reproduction, or redistribution is not permitted without explicit written consent.
+All content is proprietary to **Intervene Limited**. AGDA™ is a trademark of Intervene Limited. Viewing is permitted. Reuse, reproduction, or redistribution is not permitted without explicit written consent.
