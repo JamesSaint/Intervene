@@ -22,9 +22,10 @@
   --hair-soft:   #efefef;
   --hair-strong: #d4d4d4;
 
-  /* Muted type */
-  --muted:      #6b6b6b;
-  --muted-soft: #8a8a8a;
+  /* Muted type. Kept deliberately dark for contrast and weight:
+     secondary text reads as authored, not washed out. */
+  --muted:      #4a4a4a;
+  --muted-soft: #707070;
 
   /* Accent: restrained bronze. The only chroma in the brand chrome.
      Two deliberate placements maximum per view. */

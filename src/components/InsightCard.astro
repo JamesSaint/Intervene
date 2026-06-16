@@ -1,7 +1,7 @@
 ---
 /**
- * Insight card. Board-grade title, one line of dek, no marketing copy.
- * Hairline card, bronze rule on hover.
+ * Insight row. Publication style: full-width, strong ink rules, large
+ * title, mono meta. Board-grade title, one line of dek, no marketing.
  */
 interface Props {
   title: string;
@@ -12,23 +12,67 @@ interface Props {
 const { title, dek, href, kicker = 'Note' } = Astro.props;
 ---
 
-<a class="card insight-card" href={href}>
-  <span class="label">{kicker}</span>
-  <h3 class="h3 card-title">{title}</h3>
-  <p class="body-sm muted">{dek}</p>
-  <span class="insight-more">Read<span aria-hidden="true"> →</span></span>
+<a class="insight-row" href={href}>
+  <span class="insight-meta mono">{kicker}</span>
+  <span class="insight-main">
+    <h3 class="insight-title">{title}</h3>
+    <p class="insight-dek">{dek}</p>
+  </span>
+  <span class="insight-cue" aria-hidden="true">→</span>
 </a>
 
 <style>
-  .insight-card { min-height: 240px; }
-  .insight-card .card-title { margin: 0; max-width: 24ch; }
-  .insight-card p { margin: 0; max-width: 38ch; }
-  .insight-more {
-    margin-top: auto;
-    padding-top: 16px;
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 500;
+  .insight-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 40px;
+    gap: 40px;
+    align-items: start;
+    padding: 40px 0;
+    border-top: 1px solid var(--ink);
     color: var(--ink);
+  }
+  .insight-meta {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+    padding-top: 8px;
+  }
+  .insight-main { display: grid; gap: 14px; }
+  .insight-title {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(24px, 2.8vw, 38px);
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin: 0;
+    max-width: 26ch;
+    transition: opacity var(--dur-hover) var(--ease);
+  }
+  .insight-dek {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0;
+    max-width: 52ch;
+  }
+  .insight-cue {
+    font-size: 22px;
+    line-height: 1;
+    padding-top: 10px;
+    justify-self: end;
+    transition: transform var(--dur-hover) var(--ease);
+  }
+  .insight-row:hover .insight-title { opacity: 0.6; }
+  .insight-row:hover .insight-cue { transform: translateX(6px); }
+
+  @media (max-width: 720px) {
+    .insight-row {
+      grid-template-columns: 1fr 32px;
+      gap: 16px 24px;
+      padding: 32px 0;
+    }
+    .insight-meta { grid-column: 1 / -1; padding-top: 0; }
   }
 </style>
