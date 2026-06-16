@@ -4,8 +4,8 @@ import VerdictBlock from '../components/VerdictBlock.astro';
 ---
 
 <BaseLayout
-  title="Intervention Readiness · Can you stop it in time?"
-  description="Intervention Readiness asks whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ measures it and signs the answer."
+  title="Intervention Readiness · Can You Stop It In Time?"
+  description="Intervention Readiness is the ability to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ measures it with a signed verdict."
   current="home"
 >
   <!-- 1 · DOORWAY. Loud. -->
@@ -20,7 +20,8 @@ import VerdictBlock from '../components/VerdictBlock.astro';
       </p>
       <p class="hero-note"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures Intervention Readiness.</p>
       <div class="hero-cta">
-        <a href="/Intervene/contact/" class="btn">Find out where you stand</a>
+        <a href="/Intervene/sample-report/" class="btn">View sample verdict</a>
+        <a href="/Intervene/methodology/" class="btn-ghost">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> works</a>
       </div>
       <ul class="hero-chain" role="list" aria-label="Intervention readiness chain">
         <li>Detect</li>
@@ -36,11 +37,11 @@ import VerdictBlock from '../components/VerdictBlock.astro';
     <div class="wrap-narrow">
       <h2 class="h2">The honest answer is usually <em>“I think so.”</em></h2>
       <p class="body">
-        You have a framework. An accountable owner, documented controls, an
-        escalation policy. All of it real, and all of it necessary. None of it
-        proves the one thing that decides the outcome: at 3am, can the person
-        who can halt the system be reached, authorised, and certain enough to
-        act while acting still costs less than waiting?
+        You have policies. Controls. Governance structures. Committees.
+        Escalation processes. Documentation. All of it real, and all of it
+        necessary. None of it proves the one thing that decides the outcome: at
+        3am, can the person who can halt the system be reached, authorised, and
+        certain enough to act while acting still costs less than waiting?
       </p>
       <p class="body muted">Most organisations know what controls they have. Few know whether those controls can intervene in time.</p>
     </div>
@@ -100,7 +101,7 @@ import VerdictBlock from '../components/VerdictBlock.astro';
         <span>Governance</span>
         <span>Controls</span>
         <span>Accountability</span>
-        <strong>You have not yet measured whether intervention remains possible when it matters.</strong>
+        <strong>Most organisations cannot evidence whether intervention remains possible when it matters.</strong>
       </p>
       <div class="gap-status">
         <span class="status-rule" aria-hidden="true"></span>
@@ -118,10 +119,9 @@ import VerdictBlock from '../components/VerdictBlock.astro';
           <span class="label section-kicker">The instrument</span>
           <h2 class="h2"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is a deterministic assessment of Intervention Readiness.</h2>
           <p class="body muted">
-            It measures whether governance can actually intervene when
-            required. The output is not a maturity score or a compliance
-            claim. It is a signed verdict on whether intervention completes
-            inside the harm window.
+            It reduces reliance on assertion. The output is not a maturity
+            score or a compliance claim. It is a signed verdict on whether
+            intervention completes inside the harm window.
           </p>
         </div>
         <div class="verdict-stage reveal">
@@ -136,7 +136,10 @@ import VerdictBlock from '../components/VerdictBlock.astro';
     <div class="wrap close-wrap">
       <h2 class="close-q">Can you stop it <em>in time?</em></h2>
       <p class="close-line">Stronger Intervention Readiness supports better oversight, better decisions, and more confident deployment.</p>
-      <a href="/Intervene/agda/" class="btn">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures it</a>
+      <div class="close-actions">
+        <a href="/Intervene/sample-report/" class="btn">View sample verdict</a>
+        <a href="/Intervene/contact/" class="btn-ghost">Book a conversation</a>
+      </div>
     </div>
   </section>
 </BaseLayout>
@@ -292,7 +295,7 @@ import VerdictBlock from '../components/VerdictBlock.astro';
   }
   .gap-refrain em { color: var(--ink); font-style: italic; }
 
-  /* 5 · The verdict. It stays on the same left rail; the certificate
+  /* 5 · The verdict. It stays on the same left rail; the verdict object
      becomes the object on the right, not a centred interruption. */
   .verdict { padding-top: clamp(112px, 16vh, 184px); padding-bottom: clamp(112px, 16vh, 184px); }
   .verdict-flow {
@@ -316,6 +319,7 @@ import VerdictBlock from '../components/VerdictBlock.astro';
     line-height: 1.0; margin: 0; max-width: 18ch; color: var(--ink);
   }
   .close-line { font-family: var(--font-sans); font-size: 16px; line-height: 1.65; color: var(--muted); margin: 0; max-width: 56ch; }
+  .close-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
 
   @media (max-width: 880px) {
     .window-grid { grid-template-columns: 1fr 1fr; column-gap: 24px; }

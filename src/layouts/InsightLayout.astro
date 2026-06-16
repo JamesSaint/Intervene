@@ -35,10 +35,13 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
 
     <div class="wrap-reading insight-close">
       <p class="body muted">
-        If this describes a system you are accountable for, the conversation is
-        brief, confidential, and carries no obligation.
+        If this describes a system you are accountable for, start with the
+        evidence format. Then decide whether to open a conversation.
       </p>
-      <a href="/Intervene/contact/" class="btn">Request a confidential discussion</a>
+      <div class="cta-row">
+        <a href="/Intervene/sample-report/" class="btn">View sample verdict</a>
+        <a href="/Intervene/contact/" class="btn-ghost">Book a conversation</a>
+      </div>
     </div>
   </article>
 </BaseLayout>
@@ -127,6 +130,7 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
     gap: 24px;
     justify-items: start;
   }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
   .insight-close .body { max-width: 48ch; margin: 0; }
 
   @media (max-width: 720px) {

@@ -81,7 +81,7 @@ const evidence = [
 
 <BaseLayout
   title="Sample Verdict · Intervention Readiness"
-  description="A redacted AGDA™ Intervention Readiness verdict showing proof, evidence, timing, regulatory mapping and independent verifiability."
+  description="A redacted AGDA™ Intervention Readiness verdict showing how detect, escalate, decide and intervene are assessed against evidence, timing and verifiability."
   current="sample-report"
 >
   <!-- COVER -->
@@ -154,11 +154,12 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
   <!-- 2. CONTROL REALITY INDEX -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Intervention readiness evidence.</h2>
+      <h2 class="h2">Intervention Readiness evidence.</h2>
       <p class="lede muted">
         Six controls assessed against the eight <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> dimensions.
         Classification reflects what the control can do under stress, not what
-        the policy promises.
+        the policy promises. Governance is visible; intervention capability is
+        measured.
       </p>
 
       <table class="tbl">
@@ -258,7 +259,7 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
       <p class="lede muted">
         The system is well-instrumented at the technical layer. The authority
         structure surrounding it cannot exercise control inside the window.
-        This is an intervention-readiness defect, not a model defect.
+        This is an Intervention Readiness defect, not a model defect.
       </p>
 
       <div class="callout">
@@ -286,8 +287,9 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
     <div class="wrap">
       <h2 class="h2">Regulatory mapping.</h2>
       <p class="lede muted">
-        Where each finding sits against article-level obligations.
-        Auditor-ready. Cite as written.
+        Where each finding sits against article-level obligations. Regulatory
+        emphasis on effective human oversight reinforces the importance of
+        Intervention Readiness; it does not make the verdict a certification.
       </p>
 
       <table class="tbl">
@@ -440,7 +442,7 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
     <div class="wrap">
       <h2 class="h2">The single-line verdict <em>for the audit committee.</em></h2>
       <p class="lede muted">
-        The verdict the chair is being asked to certify. Not a recommendation.
+        The verdict the chair is being asked to rely on. Not a recommendation.
         A measurement.
       </p>
 
@@ -489,7 +491,10 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
             receive. Same engine, same calibration, same attestation, applied
             to one of your material systems.
           </p>
-          <a href="/Intervene/contact/" class="btn">Request a confidential discussion</a>
+          <div class="cta-row">
+            <a href="/Intervene/methodology/" class="btn-ghost">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> works</a>
+            <a href="/Intervene/contact/" class="btn">Book a conversation</a>
+          </div>
         </div>
       </div>
     </div>
@@ -1008,6 +1013,7 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
     padding-top: 12px;
   }
   .close-cta .body { margin: 0; max-width: 42ch; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
   .close-cta .btn { justify-self: start; }
 
   /* ----- RESPONSIVE ----- */
