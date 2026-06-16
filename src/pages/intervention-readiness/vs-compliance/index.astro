@@ -1,0 +1,36 @@
+---
+import ComparisonLayout from '../../../layouts/ComparisonLayout.astro';
+
+const faqs = [
+  {
+    question: 'How is Intervention Readiness different from compliance?',
+    answer: 'Compliance asks whether obligations are met at a point in time. Intervention Readiness asks whether intervention capability remains possible in time. Regulatory expectations can make the question important, but they are not the category.',
+  },
+  {
+    question: 'Does AGDA™ confirm compliance?',
+    answer: 'No. AGDA™ measures and evidences Intervention Readiness. It does not certify compliance, confirm regulatory approval, or attest that obligations are met.',
+  },
+  {
+    question: 'Can a compliant organisation still fail to intervene?',
+    answer: 'Yes. Compliance evidence can be complete while the intervention chain still runs slower than the harm window. Meeting an obligation is not the same as being able to act before harm becomes irreversible.',
+  },
+];
+---
+
+<ComparisonLayout
+  title="Intervention Readiness vs Compliance · Intervene"
+  description="Compliance asks whether obligations are met. Intervention Readiness asks whether intervention remains possible in time. AGDA™ measures the capability, not clause adherence."
+  other="Compliance"
+  verdict="Compliance confirms obligations are met at a point in time. Intervention Readiness measures whether intervention remains possible inside the window where it still changes the outcome."
+  whatOther="Compliance establishes whether an organisation meets its obligations: regulatory requirements, contractual terms, internal policy. It is assessed against a defined set of criteria at a point in time and produces evidence that the criteria were satisfied."
+  rows={[
+    { aspect: 'Primary object', other: 'Obligations and criteria', ir: 'Capability to intervene in time' },
+    { aspect: 'Core question', other: 'Are the obligations met?', ir: 'Can intervention occur before the window closes?' },
+    { aspect: 'Time frame', other: 'A point in time', ir: 'The interval before harm becomes irreversible' },
+    { aspect: 'Failure it exposes', other: 'An unmet obligation', ir: 'A response that arrives too late to matter' },
+    { aspect: 'Evidence produced', other: 'Attestation against criteria', ir: 'A signed, deterministic verdict' },
+  ]}
+  relate="Regulatory exposure is an output of an Intervention Readiness assessment, not its purpose. Where regulation expects effective human oversight or timely intervention, Intervention Readiness is the capability that expectation assumes. The category is intervention capability, not clause adherence. A clause can be satisfied on paper while the capability behind it does not exist."
+  agda="AGDA™ measures whether detect, escalate, decide and intervene complete inside the reversibility window and returns a signed verdict. That verdict is evidence of capability. It is not a certification, a statement of compliance, or a claim of regulatory approval, and it should not be presented as one."
+  faqs={faqs}
+/>

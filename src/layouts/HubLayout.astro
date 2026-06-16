@@ -1,0 +1,154 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { markAgda } from '../lib/marks';
+import { terms } from '../lib/terms';
+
+interface Faq {
+  question: string;
+  answer: string;
+}
+interface Related {
+  label: string;
+  href: string;
+  ghost?: boolean;
+}
+interface Props {
+  termSlug: string;     // pulls the canonical definition from lib/terms.ts
+  title: string;        // ends "· Intervene"
+  description: string;
+  label: string;        // hero kicker
+  h1: string;
+  lede: string;
+  agda: string;         // how AGDA measures or evidences this component
+  related: Related[];
+  faqs: Faq[];
+}
+
+const { termSlug, title, description, label, h1, lede, agda, related, faqs } =
+  Astro.props as Props;
+
+const term = terms.find((t) => t.slug === termSlug)!;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  current="intervention-readiness"
+  faqs={faqs}
+  breadcrumbs={[
+    { name: 'Intervention Readiness', item: '/' },
+    { name: 'What is Intervention Readiness?', item: '/intervention-readiness/' },
+    { name: term.name, item: Astro.url.pathname },
+  ]}
+>
+  <section class="hero">
+    <div class="wrap">
+      <span class="label">{label}</span>
+      <h1 class="h1 reveal" set:html={markAgda(h1)} />
+      <p class="lede muted reveal" set:html={markAgda(lede)} />
+    </div>
+  </section>
+
+  <section class="block definition">
+    <div class="wrap">
+      <aside class="definition-box" aria-label={`${term.name} definition`}>
+        <span class="mono box-label">Defined term</span>
+        <p>{term.definition}</p>
+      </aside>
+    </div>
+  </section>
+
+  <slot />
+
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> evidences it.</h2>
+      <p class="body muted" set:html={markAgda(agda)} />
+      <div class="cta">
+        {related.map((r) => (
+          <a href={r.href} class={r.ghost ? 'btn-ghost' : 'btn'} set:html={markAgda(r.label)} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="block tight">
+    <div class="wrap">
+      <h2 class="h2">Frequently asked questions.</h2>
+      <dl class="faq-list">
+        {faqs.map((faq) => (
+          <div>
+            <dt set:html={markAgda(faq.question)} />
+            <dd set:html={markAgda(faq.answer)} />
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 144px;
+    padding-bottom: 96px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .hero .label { margin-bottom: 24px; }
+  .hero .h1 { max-width: 22ch; }
+  .hero .lede { margin-top: 32px; max-width: 58ch; }
+
+  .definition { padding-bottom: 0; }
+  .definition-box {
+    padding: 28px 0 28px 28px;
+    border-left: 2px solid var(--accent);
+    max-width: 60ch;
+  }
+  .box-label {
+    display: block;
+    margin-bottom: 16px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .definition-box p {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: clamp(22px, 2.6vw, 32px);
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  .wrap-narrow .body { max-width: 62ch; }
+  .cta { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .faq-list {
+    margin: 56px 0 0;
+    border-top: 1px solid var(--hair-strong);
+  }
+  .faq-list > div {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 48px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .faq-list dt {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+  .faq-list dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.62;
+    color: var(--muted);
+  }
+
+  @media (max-width: 880px) {
+    .hero { padding-top: 96px; padding-bottom: 64px; }
+    .faq-list > div { grid-template-columns: 1fr; gap: 16px; }
+  }
+</style>

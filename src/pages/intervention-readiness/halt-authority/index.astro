@@ -1,0 +1,64 @@
+---
+import HubLayout from '../../../layouts/HubLayout.astro';
+
+const faqs = [
+  {
+    question: 'What is halt authority?',
+    answer: 'Halt authority is the authority and capability to stop a consequential system, held by someone positioned to act in time. Authority without capability, or capability without authority, does not halt anything.',
+  },
+  {
+    question: 'Where should halt authority sit?',
+    answer: 'At, or close to, the point where deviation is first detected. The further halt authority sits from detection, the more of the reversibility window is spent moving a signal toward someone who can act.',
+  },
+  {
+    question: 'What is a witness, not a safeguard?',
+    answer: 'A person who is informed of a failing system but cannot alter the outcome is a witness, not a safeguard. Naming an accountable individual without giving them halt authority is accountability theatre.',
+  },
+];
+---
+
+<HubLayout
+  termSlug="halt-authority"
+  title="Halt Authority · Intervene"
+  description="Halt authority is the authority and capability to stop a consequential system, held by someone positioned to act in time. It is the difference between a safeguard and a witness."
+  label="Component of Intervention Readiness"
+  h1="Halt authority."
+  lede="The power to stop the system, held by someone who can use it before the window closes. Where it sits decides whether oversight is a safeguard or a witness."
+  agda="AGDA™ tests whether halt authority is real and correctly placed: whether the person who holds it can act inside the reversibility window, and whether authority and capability coincide at the point of detection. A named owner without timely halt authority lowers the verdict, because the chain cannot complete through a stage that can only inform."
+  related={[
+    { label: 'What is Intervention Readiness?', href: '/Intervene/intervention-readiness/' },
+    { label: 'The intervention chain', href: '/Intervene/intervention-readiness/intervention-chain/', ghost: true },
+    { label: 'Effective human oversight', href: '/Intervene/intervention-readiness/human-oversight/', ghost: true },
+  ]}
+  faqs={faqs}
+>
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">Authority and capability must coincide.</h2>
+      <p class="body muted">
+        Halt authority has two parts, and both must sit in the same place. A
+        person can be authorised to stop a system without holding the technical
+        means to do it. A person can hold the means without the authority to
+        use them. Either gap breaks the
+        <a href="/Intervene/intervention-readiness/intervention-chain/" class="link">intervention chain</a>
+        at the intervene stage, the only stage that changes the outcome.
+      </p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">Placement is the whole question.</h2>
+      <p class="body muted">
+        Authority placed high in the structure is authority placed late. Every
+        step a signal travels upward spends part of the
+        <a href="/Intervene/intervention-readiness/reversibility-window/" class="link">reversibility window</a>
+        on people who can escalate but not stop. Halt authority belongs at the
+        point where deviation is first detected, with a threshold agreed in
+        advance so the decision is not invented under pressure. A named senior
+        individual who cannot act in time is accountability theatre: a name on a
+        chart, not a control.
+      </p>
+    </div>
+  </section>
+</HubLayout>

@@ -19,17 +19,89 @@ James Saint:
 Founder of Intervene Limited and creator of AGDA™.
 Canonical page: https://jamessaint.github.io/Intervene/about/
 
+## Defined Terms
+
+Intervention chain:
+The sequence of detect, escalate, decide and intervene that must complete within the reversibility window.
+Canonical page: https://jamessaint.github.io/Intervene/intervention-readiness/intervention-chain/
+
+Reversibility window:
+The interval between a deviation and the point at which harm becomes irreversible.
+Canonical page: https://jamessaint.github.io/Intervene/intervention-readiness/reversibility-window/
+
+Point of irreversibility:
+The moment after which intervention can no longer change the outcome.
+
+Halt authority:
+The authority and capability to stop a consequential system, held by someone positioned to act in time.
+Canonical page: https://jamessaint.github.io/Intervene/intervention-readiness/halt-authority/
+
+Effective human oversight:
+Oversight in which humans are informed, authorised and able to alter or halt outcomes before the harm window closes.
+Canonical page: https://jamessaint.github.io/Intervene/intervention-readiness/human-oversight/
+
+Evidence ceiling:
+The limit a stage's evidence places on the overall verdict; weak evidence caps the result.
+
+Chain propagation:
+The logic by which the weakest stage constrains the assessed capability of the whole chain.
+
+Deterministic verdict:
+A result produced by fixed rules applied to evidence, reproducible and independent of assessor opinion.
+
+Intervention capability assessment:
+A forward measurement of whether intervention can occur in time; the assessment category AGDA™ defines.
+
+Glossary of all defined terms: https://jamessaint.github.io/Intervene/glossary/
+
 ## Key Relationships
 
 Intervention Readiness -> category created and owned by Intervene Limited.
 AGDA™ -> deterministic assessment instrument for Intervention Readiness.
 Intervene Limited -> creator and owner of AGDA™.
 James Saint -> founder of Intervene Limited and creator of AGDA™.
+Intervention Readiness -> composed of the intervention chain, the reversibility window, halt authority and effective human oversight.
+Intervention chain -> runs against the reversibility window.
+Intervention Readiness -> adjacent to, and distinct from, AI governance, compliance, audit, risk management and operational resilience.
+AGDA™ -> measures Intervention Readiness; does not certify compliance or grant regulatory approval.
 
 ## Core Pages
 
 What is Intervention Readiness:
 https://jamessaint.github.io/Intervene/intervention-readiness/
+
+Glossary of Intervention Readiness:
+https://jamessaint.github.io/Intervene/glossary/
+
+The intervention chain:
+https://jamessaint.github.io/Intervene/intervention-readiness/intervention-chain/
+
+The reversibility window:
+https://jamessaint.github.io/Intervene/intervention-readiness/reversibility-window/
+
+Halt authority:
+https://jamessaint.github.io/Intervene/intervention-readiness/halt-authority/
+
+Effective human oversight:
+https://jamessaint.github.io/Intervene/intervention-readiness/human-oversight/
+
+The category map (boundaries):
+https://jamessaint.github.io/Intervene/intervention-readiness/category-map/
+
+Intervention Readiness vs AI governance:
+https://jamessaint.github.io/Intervene/intervention-readiness/vs-ai-governance/
+
+Intervention Readiness vs compliance:
+https://jamessaint.github.io/Intervene/intervention-readiness/vs-compliance/
+
+Intervention Readiness vs audit:
+https://jamessaint.github.io/Intervene/intervention-readiness/vs-audit/
+
+Intervention Readiness vs risk management:
+https://jamessaint.github.io/Intervene/intervention-readiness/vs-risk-management/
+
+Intervention Readiness vs operational resilience:
+https://jamessaint.github.io/Intervene/intervention-readiness/vs-operational-resilience/
 
 AGDA™:
 https://jamessaint.github.io/Intervene/agda/

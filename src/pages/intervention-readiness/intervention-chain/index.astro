@@ -1,0 +1,93 @@
+---
+import HubLayout from '../../../layouts/HubLayout.astro';
+
+const faqs = [
+  {
+    question: 'What is the intervention chain?',
+    answer: 'The intervention chain is the sequence of detect, escalate, decide and intervene that must complete within the reversibility window. It is the mechanism Intervention Readiness measures.',
+  },
+  {
+    question: 'Why does the weakest stage matter most?',
+    answer: 'Because the chain is only as fast as its slowest stage. Detection can be instant and authority can be clear, but if the decision waits for a meeting, the whole chain misses the window. This is chain propagation: the weakest stage caps the verdict.',
+  },
+  {
+    question: 'Does the chain run against a clock?',
+    answer: 'Yes. The chain runs against the reversibility window, the interval before harm becomes irreversible. The question is whether detect, escalate, decide and intervene complete before that window closes.',
+  },
+];
+---
+
+<HubLayout
+  termSlug="intervention-chain"
+  title="The Intervention Chain · Intervene"
+  description="The intervention chain is the sequence of detect, escalate, decide and intervene that must complete within the reversibility window. It is the mechanism Intervention Readiness measures."
+  label="Component of Intervention Readiness"
+  h1="The intervention chain."
+  lede="Detect, escalate, decide, intervene. Four stages, one clock. The chain is the mechanism the category turns on, and the place it usually fails."
+  agda="AGDA™ assesses evidence at each stage of the chain, applies an evidence ceiling so a weakly evidenced stage cannot inflate the result, and propagates the weakest stage through to the verdict. The output is a deterministic statement of whether the chain completes before harm becomes irreversible, with the limiting stage named."
+  related={[
+    { label: 'What is Intervention Readiness?', href: '/Intervene/intervention-readiness/' },
+    { label: 'The reversibility window', href: '/Intervene/intervention-readiness/reversibility-window/', ghost: true },
+    { label: 'Halt authority', href: '/Intervene/intervention-readiness/halt-authority/', ghost: true },
+  ]}
+  faqs={faqs}
+>
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">The four stages.</h2>
+      <ol class="steps" role="list">
+        <li>
+          <span class="mono">01 Detect</span>
+          <p class="body muted">A deviation is identified, not merely produced. Detection is the gap between when a system starts to fail and when a signal reaches anyone who can act.</p>
+        </li>
+        <li>
+          <span class="mono">02 Escalate</span>
+          <p class="body muted">The signal travels to authority. Each step is usually staffed by someone who can pass the signal on but cannot stop the system. Escalation informs; it does not act.</p>
+        </li>
+        <li>
+          <span class="mono">03 Decide</span>
+          <p class="body muted">A stop decision is made. If the threshold was agreed in advance, the decision is fast. If it is invented under pressure, the window keeps closing while it is debated.</p>
+        </li>
+        <li>
+          <span class="mono">04 Intervene</span>
+          <p class="body muted">The system is altered or halted. This is the only stage that changes the outcome, and it requires authority and capability to coincide at the same point.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">Where the chain breaks.</h2>
+      <p class="body muted">
+        Each stage adds latency, and the chain is only as fast as its slowest
+        stage. A failure at any one of the four caps the whole: instant
+        detection cannot recover a decision that waits for a committee, and a
+        clear decision cannot recover an intervention nobody is authorised to
+        perform. This is why measuring controls in isolation is misleading. The
+        chain must be measured end to end, against the
+        <a href="/Intervene/intervention-readiness/reversibility-window/" class="link">reversibility window</a>,
+        with <a href="/Intervene/intervention-readiness/halt-authority/" class="link">halt authority</a>
+        placed where the deviation is first detected.
+      </p>
+    </div>
+  </section>
+</HubLayout>
+
+<style>
+  .steps {
+    list-style: none;
+    margin: 56px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    border-top: 1px solid var(--hair-strong);
+  }
+  .steps > li { padding-top: 28px; display: grid; gap: 12px; align-content: start; }
+  .steps .mono { color: var(--accent); font-size: 11px; letter-spacing: 0.06em; }
+  .steps p { margin: 0; }
+
+  @media (max-width: 880px) { .steps { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
+</style>
