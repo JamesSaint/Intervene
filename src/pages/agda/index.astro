@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import VerdictSeal from '../../components/VerdictSeal.astro';
+import VerdictArtifact from '../../components/VerdictArtifact.astro';
 
 const deliver = [
   { h: 'Failure Exposure Report', p: 'Written at three audience layers: board, risk function, and engineering. The same evidence, read by each level it has to convince.' },
@@ -23,12 +23,12 @@ const isnot = [
 >
   <section class="hero">
     <div class="wrap">
-      <span class="label">Intervention readiness</span>
-      <h1 class="h1 reveal">The category, and <em>the instrument.</em></h1>
+      <span class="label">The measurement gap</span>
+      <h1 class="h1 reveal">The question, made <em>measurable.</em></h1>
       <p class="lede muted reveal">
-        Governance describes the authority you hold on paper. Intervention
-        readiness measures whether that authority acts before harm becomes
-        irreversible. AGDA™ is the deterministic assessment that answers it.
+        You measure capital, model performance, control coverage. You have
+        never measured whether you can still intervene when it matters. AGDA™
+        does, and returns a signed verdict.
       </p>
       <div class="hero-cta reveal">
         <a href="/Intervene/contact/" class="btn">Request a confidential discussion</a>
@@ -56,17 +56,17 @@ const isnot = [
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Capability against evidence. <em>Every verdict signed.</em></h2>
+      <h2 class="h2">One question. <em>One signed verdict.</em></h2>
       <p class="lede muted">
         AGDA scores the SEDI chain, Signal to Escalation to Decision to
-        Intervention, against a reversibility window. The output is a single
-        determination, bound to a locked engine version and cryptographically
-        signed.
+        Intervention, against a reversibility window, and returns one of three
+        states. Deterministic, and signed so a regulator can confirm it
+        independently.
       </p>
-      <div class="seal-row">
-        <VerdictSeal verdict="Signed verdict" meta="Ed25519 · locked engine hash" />
-        <a href="/Intervene/methodology/" class="link">How the engine scores it</a>
+      <div class="verdict-stage">
+        <VerdictArtifact />
       </div>
+      <a href="/Intervene/methodology/" class="link verdict-more">How the engine scores it</a>
     </div>
   </section>
 
@@ -129,13 +129,8 @@ const isnot = [
   .block .lede { margin-top: 16px; max-width: 56ch; }
   .wrap-narrow .body { max-width: 62ch; margin: 0 0 16px; }
 
-  .seal-row {
-    margin-top: 48px;
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    flex-wrap: wrap;
-  }
+  .verdict-stage { margin-top: 48px; display: flex; justify-content: center; }
+  .verdict-more { display: inline-block; margin-top: 32px; font-size: 15px; }
 
   .deliver {
     list-style: none;

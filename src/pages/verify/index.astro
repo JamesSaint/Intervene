@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProofMarks from '../../components/ProofMarks.astro';
 
 const bundleFields = [
   { k: 'engineVersion',  v: 'The AGDA engine semver. Pinned at the assessment.' },
@@ -33,6 +34,7 @@ const audiences = [
         bundle. The verify command runs anywhere. You do not depend on us to
         read what we produced for you.
       </p>
+      <div class="hero-proof reveal"><ProofMarks /></div>
     </div>
   </section>
 
@@ -194,6 +196,7 @@ key:     2026-04-22-1e7c3c2c</code></pre>
   }
   .hero .h1 { max-width: 16ch; }
   .hero .lede { margin-top: 32px; max-width: 56ch; }
+  .hero-proof { margin-top: 36px; }
 
   .block .h2 { max-width: 22ch; }
   .block .lede { margin-top: 16px; max-width: 56ch; }

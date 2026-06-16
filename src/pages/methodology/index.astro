@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ChainFlow from '../../components/ChainFlow.astro';
 import EvidenceCap from '../../components/EvidenceCap.astro';
 import ChainCeiling from '../../components/ChainCeiling.astro';
+import ProofMarks from '../../components/ProofMarks.astro';
 
 const dimensions = [
   { name: 'Signal',          q: 'Can the system surface the conditions that need attention, in time?' },
@@ -39,9 +40,10 @@ const docs = [
     <div class="wrap">
       <h1 class="h1 reveal">A deterministic engine, <em>not a methodology deck.</em></h1>
       <p class="lede muted reveal">
-        Capability against evidence, not intention. Same inputs, same outputs.
-        Signed.
+        The engine behind the verdict. Capability against evidence, not
+        intention. Same inputs, same outputs. Signed.
       </p>
+      <div class="hero-proof reveal"><ProofMarks /></div>
     </div>
   </section>
 
@@ -214,6 +216,7 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
   }
   .hero .h1 { max-width: 18ch; }
   .hero .lede { margin-top: 32px; max-width: 48ch; }
+  .hero-proof { margin-top: 36px; }
 
   .block .h2 { max-width: 22ch; }
   .block .lede { margin-top: 16px; max-width: 56ch; }
