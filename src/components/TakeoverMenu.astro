@@ -1,14 +1,23 @@
 ---
 const base = import.meta.env.BASE_URL;
 const items = [
-  { label: 'Home',          href: `${base}` },
-  { label: 'Method',        href: `${base}method/` },
-  { label: 'Verify',        href: `${base}verify/` },
-  { label: 'Services',      href: `${base}services/` },
-  { label: 'Sample report', href: `${base}sample-report/` },
-  { label: 'About',         href: `${base}about/` },
-  { label: 'Contact',       href: `${base}contact/` },
+  { label: 'Home',        href: `${base}` },
+  { label: 'AGDA',        href: `${base}agda/` },
+  { label: 'Methodology', href: `${base}methodology/` },
+  { label: 'Sectors',     href: `${base}sectors/` },
+  { label: 'Insights',    href: `${base}insights/` },
+  { label: 'About',       href: `${base}about/` },
+  { label: 'Contact',     href: `${base}contact/` },
 ];
+
+const norm = (p: string) => (p.endsWith('/') ? p : `${p}/`);
+const here = norm(Astro.url.pathname);
+const home = norm(base);
+const isCurrent = (href: string) => {
+  const h = norm(href);
+  if (h === home) return here === home;
+  return here === h || here.startsWith(h);
+};
 ---
 
 <div
@@ -26,7 +35,7 @@ const items = [
     <ul role="list">
       {items.map((item, i) => (
         <li style={`--i: ${i}`}>
-          <a href={item.href}>{item.label}</a>
+          <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
         </li>
       ))}
     </ul>
@@ -205,6 +214,22 @@ const items = [
   .takeover-body a:focus-visible {
     color: var(--muted);
     outline: none;
+  }
+  /* Active route: one bronze rule. The only accent in the overlay. */
+  .takeover-body a[aria-current='page']::before {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 2px;
+    margin-right: 18px;
+    vertical-align: middle;
+    background: var(--accent);
+  }
+  @media (max-width: 720px) {
+    .takeover-body a[aria-current='page']::before {
+      width: 20px;
+      margin-right: 12px;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

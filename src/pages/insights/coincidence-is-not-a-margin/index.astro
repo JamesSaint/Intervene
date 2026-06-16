@@ -1,0 +1,65 @@
+---
+import InsightLayout from '../../../layouts/InsightLayout.astro';
+---
+
+<InsightLayout
+  title="Coincidence is not a margin"
+  description="An absence of incidents is evidence of untested exposure, not effective control. AGDA refuses to read a quiet record as a strong one."
+  dek="An absence of incidents is evidence of untested exposure, not effective control. Quiet is not the same as safe."
+  date="2026-05-14"
+>
+  <p>
+    The most reassuring sentence in a risk review is also the most misleading:
+    <em>we have never had an incident</em>. It is offered as evidence the
+    controls work. It is nothing of the kind. It is evidence that the conditions
+    which would test the controls have not yet arrived together.
+  </p>
+
+  <blockquote>
+    Absence of incidents is evidence of untested exposure, not effective control.
+  </blockquote>
+
+  <p>
+    A system can run clean for years because the load never peaked, the
+    dependency never failed, and the rare input never appeared, not because the
+    chain that would catch those things has ever been exercised. The quiet
+    record measures luck and traffic, not capability. When the conditions do
+    align, the organisation discovers which of the two it was relying on.
+  </p>
+
+  <h2>Why the engine discounts the quiet record</h2>
+
+  <p>
+    AGDA scores demonstrated capability under stress, not the absence of past
+    failure. A control that has never been triggered is graded on what can be
+    shown about how it behaves when it is, through drill, through production
+    evidence, through stress. A clean history with no such evidence does not
+    raise the score, because it cannot distinguish a strong chain from an
+    untested one.
+  </p>
+
+  <p class="muted">
+    This frustrates the instinct to be rewarded for years without an event. The
+    frustration is the point. The years without an event are exactly the period
+    in which untested exposure accumulates unseen, and the only way to know
+    which you hold is to test it before the event does.
+  </p>
+
+  <h2>The question that replaces the comfort</h2>
+
+  <p>
+    Instead of <em>have we had an incident</em>, the useful question is sharper
+    and less comfortable:
+  </p>
+
+  <ul>
+    <li>When did this control last act, in production or in drill, against the conditions it exists to catch?</li>
+    <li>If the answer is never, on what evidence do we believe it would?</li>
+    <li>What would the failure look like, and would we see it in time to intervene?</li>
+  </ul>
+
+  <p>
+    A margin you can name and have tested is a margin. A quiet record is a
+    coincidence you have not yet had cause to examine.
+  </p>
+</InsightLayout>

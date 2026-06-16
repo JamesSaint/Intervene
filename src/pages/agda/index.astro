@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import VerdictSeal from '../../components/VerdictSeal.astro';
+
+const deliver = [
+  { h: 'Failure Exposure Report', p: 'Written at three audience layers: board, risk function, and engineering. The same evidence, read by each level it has to convince.' },
+  { h: 'Intervention-readiness verdict', p: 'Before impact, at risk, or after impact. One determination, bound to the conditions observed and the reversibility window assessed.' },
+  { h: 'Regulator bundle', p: 'Signed JSON. Ed25519 against a locked engine hash. A regulator can verify it without contacting us.' },
+  { h: 'Attestation envelope', p: 'Engine version, input hash, output hash, key id, timestamp, signature. The audit trail that makes the verdict defensible later.' },
+];
+
+const isnot = [
+  { h: 'Not a maturity model', p: 'No five-point scale that always lands at three. The verdict is binary on the only question that matters: does the chain complete in time.' },
+  { h: 'Not a controls checklist', p: 'Existence of a control is not evidence it works under pressure. AGDA scores demonstrated capability, not documented intent.' },
+  { h: 'Not our opinion', p: 'The engine is deterministic. Same inputs, same outputs. The verdict does not move because the assessor changed.' },
+];
+---
+
+<BaseLayout
+  title="AGDA · Intervention readiness, measured"
+  description="AGDA is a deterministic intervention-readiness assessment. It scores whether your organisation can detect, escalate, decide and intervene before harm becomes irreversible, and signs the verdict."
+  current="agda"
+>
+  <section class="hero">
+    <div class="wrap">
+      <span class="label">Intervention readiness</span>
+      <h1 class="h1 reveal">The category, and <em>the instrument.</em></h1>
+      <p class="lede muted reveal">
+        Governance describes the authority you hold on paper. Intervention
+        readiness measures whether that authority acts before harm becomes
+        irreversible. AGDA™ is the deterministic assessment that answers it.
+      </p>
+      <div class="hero-cta reveal">
+        <a href="/Intervene/contact/" class="btn">Request a confidential discussion</a>
+        <a href="/Intervene/methodology/" class="btn-ghost">See the engine</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">A category, <em>not a feature.</em></h2>
+      <p class="body">
+        Audit tells you whether a control existed. Model risk tells you whether
+        a model behaves. Neither tells you whether, on the day a consequential
+        system fails, the authority to stop it reaches the person who can act
+        while stopping it still costs less than letting it run.
+      </p>
+      <p class="body muted">
+        That is intervention readiness. It is the gap between the org chart and
+        the moment. Most frameworks describe the chart. AGDA measures the
+        moment.
+      </p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Capability against evidence. <em>Every verdict signed.</em></h2>
+      <p class="lede muted">
+        AGDA scores the SEDI chain, Signal to Escalation to Decision to
+        Intervention, against a reversibility window. The output is a single
+        determination, bound to a locked engine version and cryptographically
+        signed.
+      </p>
+      <div class="seal-row">
+        <VerdictSeal verdict="Signed verdict" meta="Ed25519 · locked engine hash" />
+        <a href="/Intervene/methodology/" class="link">How the engine scores it</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">What an assessment <em>delivers.</em></h2>
+      <ul class="deliver" role="list">
+        {deliver.map((d) => (
+          <li>
+            <h3 class="h3">{d.h}</h3>
+            <p class="body muted">{d.p}</p>
+          </li>
+        ))}
+      </ul>
+      <a href="/Intervene/sample-report/" class="services-link">See a redacted sample report <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">What AGDA <em>is not.</em></h2>
+      <div class="card-grid isnot-grid">
+        {isnot.map((d) => (
+          <div class="card">
+            <h3 class="h3 card-title">{d.h}</h3>
+            <p class="body-sm muted">{d.p}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="block tight">
+    <div class="wrap-narrow cta-band">
+      <h2 class="h2">Priced per assessment.</h2>
+      <p class="body muted">
+        The commercial unit is the assessment, not the seat. Pilot, annual, and
+        enterprise scopes, with a published rate card.
+      </p>
+      <div class="cta">
+        <a href="/Intervene/services/" class="btn">Services and pricing</a>
+        <a href="/Intervene/contact/" class="btn-ghost">Request a confidential discussion</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 144px;
+    padding-bottom: 144px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .hero .label { margin-bottom: 24px; }
+  .hero .h1 { max-width: 16ch; }
+  .hero .lede { margin-top: 32px; max-width: 54ch; }
+  .hero-cta { margin-top: 48px; display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .block .h2 { max-width: 22ch; }
+  .block .lede { margin-top: 16px; max-width: 56ch; }
+  .wrap-narrow .body { max-width: 62ch; margin: 0 0 16px; }
+
+  .seal-row {
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .deliver {
+    list-style: none;
+    margin: 64px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px 64px;
+    border-top: 1px solid var(--ink);
+    padding-top: 40px;
+  }
+  .deliver > li { display: grid; gap: 12px; align-content: start; }
+  .deliver p { max-width: 44ch; margin: 0; }
+
+  .isnot-grid { margin-top: 56px; }
+  .isnot-grid .card-title { margin: 0; }
+  .isnot-grid p { margin: 0; }
+
+  .services-link {
+    display: inline-block;
+    margin-top: 48px;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    color: var(--ink);
+    border-bottom: 1px solid var(--hair-strong);
+    padding-bottom: 2px;
+    transition: border-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .services-link:hover { border-color: var(--accent); }
+
+  .cta-band .body { margin: 16px 0 32px; max-width: 56ch; }
+  .cta-band .cta { display: flex; flex-wrap: wrap; gap: 16px; }
+
+  @media (max-width: 880px) {
+    .hero { padding-top: 88px; padding-bottom: 88px; }
+    .deliver { grid-template-columns: 1fr; gap: 40px; }
+  }
+</style>
