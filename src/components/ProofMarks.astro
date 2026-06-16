@@ -1,9 +1,9 @@
 ---
 /**
- * The recurring AGDA identity. Three proof marks that travel with every
+ * The recurring AGDA™ identity. Three proof marks that travel with every
  * verdict: deterministic, signed, independently verifiable. Mono,
  * monochrome. Used across the homepage artifact and the inner pages so
- * AGDA reads as one system object, not an acronym.
+ * AGDA™ reads as one system object, not an acronym.
  */
 interface Props {
   align?: 'start' | 'center';
@@ -12,7 +12,7 @@ const { align = 'start' } = Astro.props;
 const marks = ['Deterministic', 'Signed', 'Independently verifiable'];
 ---
 
-<ul class={`proof-marks ${align}`} role="list" aria-label="AGDA verdict properties">
+<ul class={`proof-marks ${align}`} role="list" aria-label="AGDA™ verdict properties">
   {marks.map((m) => (
     <li class="mono"><span class="tick" aria-hidden="true"></span>{m}</li>
   ))}

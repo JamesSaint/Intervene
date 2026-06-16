@@ -30,6 +30,31 @@
 
 .rule { height: 1px; background: var(--hair); border: 0; margin: 0; }
 
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+.section-kicker::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.agda-mark {
+  white-space: nowrap;
+}
+.agda-tm {
+  color: var(--accent);
+  font-size: 0.62em;
+  letter-spacing: 0;
+  line-height: 0;
+  margin-left: 0.04em;
+  vertical-align: super;
+}
+
 /* Reveal */
 .reveal {
   opacity: 0;
@@ -75,6 +100,7 @@
 
 /* Buttons. Sharp, compact, HIA-style. */
 .btn {
+  position: relative;
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 700;
@@ -90,11 +116,13 @@
   border: 1px solid var(--accent);
   transition:
     opacity var(--dur-hover) var(--ease),
-    border-color var(--dur-hover) var(--ease);
+    border-color var(--dur-hover) var(--ease),
+    transform var(--dur-hover) var(--ease);
 }
-.btn:hover { opacity: 0.88; }
+.btn:hover { opacity: 0.9; transform: translateY(-1px); }
 
 .btn-ghost {
+  position: relative;
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 700;
@@ -110,9 +138,10 @@
   border: 1px solid var(--hair-strong);
   transition:
     border-color var(--dur-hover) var(--ease),
-    color var(--dur-hover) var(--ease);
+    color var(--dur-hover) var(--ease),
+    transform var(--dur-hover) var(--ease);
 }
-.btn-ghost:hover { border-color: var(--accent); color: var(--ink); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--ink); transform: translateY(-1px); }
 
 /* Section block. Separation is space, not rules. Slow rhythm, room to
    breathe. No dividers between sections: the air does the work. */
@@ -137,7 +166,10 @@
   background: var(--paper-soft);
   border: 1px solid var(--hair);
   color: inherit;
-  transition: border-color var(--dur-hover) var(--ease);
+  transition:
+    background var(--dur-hover) var(--ease),
+    border-color var(--dur-hover) var(--ease),
+    transform var(--dur-hover) var(--ease);
 }
 .card::before {
   content: '';
@@ -152,7 +184,11 @@
   transition: transform var(--dur-hover) var(--ease);
 }
 .card:hover,
-.card:focus-within { border-color: var(--hair-strong); }
+.card:focus-within {
+  background: var(--paper-raise);
+  border-color: var(--hair-strong);
+  transform: translateY(-2px);
+}
 .card:hover::before,
 .card:focus-within::before { transform: scaleX(1); }
 .card .card-title {

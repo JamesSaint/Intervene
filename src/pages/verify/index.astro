@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProofMarks from '../../components/ProofMarks.astro';
+import { markAgda } from '../../lib/marks';
 
 const bundleFields = [
-  { k: 'engineVersion',  v: 'The AGDA engine semver. Pinned at the assessment.' },
+  { k: 'engineVersion',  v: 'The AGDA™ engine semver. Pinned at the assessment.' },
   { k: 'engineHash',     v: 'SHA-256 of the engine binary. Locked at signature.' },
   { k: 'inputHash',      v: 'SHA-256 of the canonical input record. Includes the fact model.' },
   { k: 'outputHash',     v: 'SHA-256 of the canonical output. The Failure Exposure Report.' },
@@ -62,7 +63,7 @@ const audiences = [
         {bundleFields.map((f) => (
           <div>
             <dt class="mono">{f.k}</dt>
-            <dd>{f.v}</dd>
+            <dd set:html={markAgda(f.v)}></dd>
           </div>
         ))}
       </dl>
@@ -158,7 +159,7 @@ key:     2026-04-22-1e7c3c2c</code></pre>
         trust the producer to read what the producer produced.
       </p>
       <p class="body muted">
-        AGDA's verify path is the property that makes the verdict defensible
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span>'s verify path is the property that makes the verdict defensible
         in an examination, not just credible in a boardroom. If you cannot
         verify in your own environment, the artefact has not done its job.
       </p>

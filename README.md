@@ -25,7 +25,7 @@ The site is the public face of the practice. Methodology, services, sample repor
 
 ```
 /                       Home. Hero rotator, chain diagram, window timeline, services, CTA
-/method/                AGDA methodology. Chain, eight dimensions, evidence cap, ceiling, attestation
+/method/                AGDA™ methodology. Chain, eight dimensions, evidence cap, ceiling, attestation
 /services/              Five tiers, four engagement shapes, commercial frame
 /sample-report/         Redacted Failure Exposure Report, 13 sections, cover with attestation envelope
 /about/                 Founder, why this exists, four commitments, sectors, what we are not

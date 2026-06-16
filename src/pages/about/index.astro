@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { markAgda } from '../../lib/marks';
 
 const commitments = [
   { h: 'Independent judgement.',         p: 'No vendor affiliation, no referral fees, no co-marketing. We do not implement what we recommend.' },
@@ -88,7 +89,7 @@ const notServed = [
             opportunity to prevent harm had already passed.
           </p>
 
-          <p class="body">That observation became the foundation of AGDA™.</p>
+          <p class="body">That observation became the foundation of <span class="agda-mark">AGDA<span class="agda-tm">™</span></span>.</p>
 
           <p class="body">
             My background spans more than three decades across technology,
@@ -116,11 +117,11 @@ const notServed = [
             irreversible.
           </p>
 
-          <p class="body">AGDA™ was developed to answer that question directly.</p>
+          <p class="body"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> was developed to answer that question directly.</p>
 
           <p class="body">
             Rather than assessing whether governance controls exist on paper,
-            AGDA™ evaluates whether intervention is actually possible within the
+            <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> evaluates whether intervention is actually possible within the
             time available. The methodology produces a deterministic,
             independently verifiable verdict supported by cryptographic
             attestation and board-ready reporting.
@@ -212,7 +213,7 @@ const notServed = [
       <h2 class="h2">What we <em>are not.</em></h2>
       <p class="lede muted">
         About the practice, not the product. (For product-category boundaries,
-        see <a href="/Intervene/services/#what-agda-is-not" class="link">What AGDA is not</a> on Services.) Good practices occupy the adjacent
+        see <a href="/Intervene/services/#what-agda-is-not" class="link">What <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is not</a> on Services.) Good practices occupy the adjacent
         ground. Knowing the difference avoids procurement confusion later.
       </p>
 
@@ -220,7 +221,7 @@ const notServed = [
         {notServed.map((n) => (
           <li>
             <h3 class="h3">{n.h}</h3>
-            <p class="body muted">{n.p}</p>
+            <p class="body muted" set:html={markAgda(n.p)} />
           </li>
         ))}
       </ul>
