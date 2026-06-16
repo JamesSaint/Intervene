@@ -1,0 +1,49 @@
+---
+/**
+ * The recurring AGDA identity. Three proof marks that travel with every
+ * verdict: deterministic, signed, independently verifiable. Mono,
+ * monochrome. Used across the homepage artifact and the inner pages so
+ * AGDA reads as one system object, not an acronym.
+ */
+interface Props {
+  align?: 'start' | 'center';
+}
+const { align = 'start' } = Astro.props;
+const marks = ['Deterministic', 'Signed', 'Independently verifiable'];
+---
+
+<ul class={`proof-marks ${align}`} role="list" aria-label="AGDA verdict properties">
+  {marks.map((m) => (
+    <li class="mono"><span class="tick" aria-hidden="true"></span>{m}</li>
+  ))}
+</ul>
+
+<style>
+  .proof-marks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 28px;
+  }
+  .proof-marks.center { justify-content: center; }
+  .proof-marks > li {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .tick {
+    width: 5px;
+    height: 5px;
+    background: var(--ink);
+    flex: none;
+  }
+  @media (max-width: 560px) {
+    .proof-marks { gap: 10px 20px; }
+  }
+</style>
