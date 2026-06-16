@@ -17,7 +17,13 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
 });
 ---
 
-<BaseLayout title={`${title} · Insights`} description={description} current="insights">
+<BaseLayout
+  title={`${title} · Insights`}
+  description={description}
+  current="insights"
+  pageType="Article"
+  datePublished={date}
+>
   <article class="insight">
     <header class="insight-header">
       <div class="wrap-reading">

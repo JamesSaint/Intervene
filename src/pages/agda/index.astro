@@ -15,12 +15,32 @@ const isnot = [
   { h: 'Not a controls checklist', p: 'Existence of a control is not evidence it works under pressure. AGDA™ measures demonstrated capability, not documented intent.' },
   { h: 'Not our opinion', p: 'The engine is deterministic. Same inputs, same outputs. The verdict does not move because the assessor changed.' },
 ];
+
+const faqs = [
+  {
+    question: 'What does AGDA™ measure?',
+    answer: 'AGDA™ measures Intervention Readiness: whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible.',
+  },
+  {
+    question: 'Is AGDA™ an AI governance framework?',
+    answer: 'No. AGDA™ is not an AI governance framework. It measures whether governance can actually intervene when required.',
+  },
+  {
+    question: 'How does AGDA™ produce a verdict?',
+    answer: 'AGDA™ evaluates evidence across Detect, Escalate, Decide and Intervene, applies deterministic rules, and returns a signed verdict.',
+  },
+  {
+    question: 'How is AGDA™ related to Intervention Readiness?',
+    answer: 'Intervention Readiness is the category. AGDA™ is the deterministic assessment instrument that measures it.',
+  },
+];
 ---
 
 <BaseLayout
   title="AGDA™ · A deterministic assessment of Intervention Readiness"
   description="AGDA™ measures whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible. The output is deterministic, signed and independently verifiable."
   current="agda"
+  faqs={faqs}
 >
   <section class="hero">
     <div class="wrap">
@@ -48,8 +68,8 @@ const isnot = [
         can still intervene inside the time available.
       </p>
       <p class="body muted">
-        That is Intervention Readiness: the measured capability to detect,
-        escalate, decide and intervene before harm becomes irreversible.
+        That is <a href="/Intervene/intervention-readiness/" class="link">Intervention Readiness</a>: the measured capability to
+        detect, escalate, decide and intervene before harm becomes irreversible.
       </p>
     </div>
   </section>
@@ -96,6 +116,20 @@ const isnot = [
           </div>
         ))}
       </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Frequently asked questions.</h2>
+      <dl class="faq-list">
+        {faqs.map((faq) => (
+          <div>
+            <dt set:html={markAgda(faq.question)} />
+            <dd set:html={markAgda(faq.answer)} />
+          </div>
+        ))}
+      </dl>
     </div>
   </section>
 
@@ -149,6 +183,31 @@ const isnot = [
   .isnot-grid .card-title { margin: 0; }
   .isnot-grid p { margin: 0; }
 
+  .faq-list {
+    margin: 56px 0 0;
+    border-top: 1px solid var(--hair-strong);
+  }
+  .faq-list > div {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 48px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .faq-list dt {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+  .faq-list dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.62;
+    color: var(--muted);
+  }
+
   .services-link {
     display: inline-block;
     margin-top: 48px;
@@ -167,5 +226,6 @@ const isnot = [
   @media (max-width: 880px) {
     .hero { padding-top: 88px; padding-bottom: 88px; }
     .deliver { grid-template-columns: 1fr; gap: 40px; }
+    .faq-list > div { grid-template-columns: 1fr; gap: 16px; }
   }
 </style>
