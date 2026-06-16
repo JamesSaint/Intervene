@@ -11,6 +11,12 @@ interface Props {
   noindex?: boolean;
   canonicalPath?: string;
   ogImage?: string;
+  pageType?: 'WebPage' | 'AboutPage' | 'Article' | 'ContactPage' | 'CollectionPage';
+  breadcrumbs?: Array<{ name: string; item?: string }>;
+  faqs?: Array<{ question: string; answer: string }>;
+  schema?: Record<string, unknown> | Array<Record<string, unknown>>;
+  datePublished?: string;
+  dateModified?: string;
 }
 
 const {
@@ -20,26 +26,231 @@ const {
   noindex = false,
   canonicalPath = Astro.url.pathname,
   ogImage = '/assets/og/og-home.png',
+  pageType = 'WebPage',
+  breadcrumbs,
+  faqs = [],
+  schema = [],
+  datePublished,
+  dateModified,
 } = Astro.props;
 
 const site = Astro.site?.toString().replace(/\/$/, '') ?? 'https://jamessaint.github.io';
 const base = import.meta.env.BASE_URL;
-const canonical = `${site}${canonicalPath}`;
-const ogImageAbs = ogImage.startsWith('http') ? ogImage : `${site}${base}${ogImage.replace(/^\//, '')}`;
+const siteRoot = new URL(`${site}/`);
+const baseUrl = new URL(base, siteRoot).toString().replace(/\/?$/, '/');
+const basePath = new URL(baseUrl).pathname.replace(/\/$/, '');
+const normalisePath = (path: string) => {
+  let p = path.startsWith('/') ? path : `/${path}`;
+  if (basePath && basePath !== '/' && p !== basePath && !p.startsWith(`${basePath}/`)) {
+    p = p === '/' ? `${basePath}/` : `${basePath}${p}`;
+  }
+  return p.endsWith('/') || p.includes('.') ? p : `${p}/`;
+};
+const normalisedCanonicalPath = normalisePath(canonicalPath);
+const canonical = new URL(normalisedCanonicalPath, siteRoot).toString();
+const ogImageAbs = ogImage.startsWith('http') ? ogImage : new URL(ogImage.replace(/^\//, ''), baseUrl).toString();
+const pageId = `${canonical}#webpage`;
+const orgId = `${baseUrl}#organization`;
+const personId = `${baseUrl}about/#james-saint`;
+const websiteId = `${baseUrl}#website`;
+const termSetId = `${baseUrl}#defined-term-set`;
+const interventionReadinessId = `${baseUrl}intervention-readiness/#defined-term`;
+const agdaId = `${baseUrl}agda/#defined-term`;
+const routePath = normalisedCanonicalPath.replace(basePath, '') || '/';
+const titleMain = title.split('·')[0].trim();
+const ogType = pageType === 'Article' ? 'article' : 'website';
+
+const routeNames: Record<string, string> = {
+  'intervention-readiness': 'Intervention Readiness',
+  about: 'Why Intervention Readiness Matters',
+  agda: 'AGDA™',
+  methodology: 'How AGDA™ Works',
+  'sample-report': 'Sample Verdict',
+  services: 'Levels of Assurance',
+  sectors: 'Where Intervention Readiness Matters',
+  insights: 'Evidence Notes',
+  verify: 'Verify AGDA™ Verdict',
+  contact: 'Book a Conversation',
+  legal: 'Legal',
+  terms: 'Terms',
+  privacy: 'Privacy',
+  gdpr: 'UK GDPR',
+};
+
+const titleCase = (value: string) =>
+  value.replace(/-/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+
+const generatedBreadcrumbs = (() => {
+  const clean = routePath.replace(/^\/|\/$/g, '');
+  const crumbs = [{ name: 'Intervention Readiness', item: '/' }];
+  if (!clean) return crumbs;
+  const segments = clean.split('/');
+  let path = '';
+  segments.forEach((segment, index) => {
+    path += `/${segment}`;
+    const name = index === segments.length - 1 ? titleMain : routeNames[segment] ?? titleCase(segment);
+    crumbs.push({ name, item: `${path}/` });
+  });
+  return crumbs;
+})();
+
+const breadcrumbItems = breadcrumbs ?? generatedBreadcrumbs;
+const breadcrumbSchema = {
+  '@type': 'BreadcrumbList',
+  '@id': `${canonical}#breadcrumb`,
+  itemListElement: breadcrumbItems.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.name,
+    item: new URL(normalisePath(item.item ?? normalisedCanonicalPath), siteRoot).toString(),
+  })),
+};
+
+const interventionReadinessTerm = {
+  '@type': 'DefinedTerm',
+  '@id': interventionReadinessId,
+  name: 'Intervention Readiness',
+  termCode: 'intervention-readiness',
+  url: `${baseUrl}intervention-readiness/`,
+  description: 'The ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.',
+  inDefinedTermSet: { '@id': termSetId },
+  subjectOf: { '@id': `${baseUrl}intervention-readiness/#webpage` },
+};
+
+const agdaTerm = {
+  '@type': 'DefinedTerm',
+  '@id': agdaId,
+  name: 'AGDA™',
+  alternateName: 'AGDA',
+  url: `${baseUrl}agda/`,
+  description: 'A deterministic assessment of Intervention Readiness that evaluates whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible.',
+  inDefinedTermSet: { '@id': termSetId },
+  subjectOf: { '@id': `${baseUrl}agda/#webpage` },
+  creator: { '@id': orgId },
+  about: { '@id': interventionReadinessId },
+};
+
+const personSchema = {
+  '@type': 'Person',
+  '@id': personId,
+  name: 'James Saint',
+  url: `${baseUrl}about/`,
+  jobTitle: 'Founder and Principal Advisor',
+  worksFor: { '@id': orgId },
+  affiliation: { '@id': orgId },
+  knowsAbout: [
+    { '@id': interventionReadinessId },
+    { '@id': agdaId },
+    'human intervention capability',
+    'effective human oversight',
+    'operational intervention capability',
+  ],
+};
 
 const orgSchema = {
-  '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': orgId,
   name: 'Intervene Limited',
-  url: `${site}${base}`,
-  logo: `${site}${base}assets/images/favicons/android-chrome-512x512.png`,
-  founder: {
-    '@type': 'Person',
-    name: 'James Saint',
-    jobTitle: 'Founder and Principal Advisor',
-  },
+  legalName: 'Intervene Limited',
+  url: baseUrl,
+  logo: `${baseUrl}assets/images/favicons/android-chrome-512x512.png`,
+  founder: { '@id': personId },
   description: 'Most organisations know what controls they have. Few know whether they can detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ measures Intervention Readiness.',
   areaServed: ['United Kingdom', 'European Union'],
+  knowsAbout: [
+    { '@id': interventionReadinessId },
+    { '@id': agdaId },
+    'human intervention capability',
+    'effective human oversight',
+    'detect escalate decide intervene',
+    'reversibility window',
+    'Intervention Readiness assessment',
+  ],
+  makesOffer: {
+    '@type': 'Offer',
+    itemOffered: { '@id': agdaId },
+    category: 'Intervention Readiness assessment',
+  },
+};
+
+const websiteSchema = {
+  '@type': 'WebSite',
+  '@id': websiteId,
+  name: 'Intervene',
+  url: baseUrl,
+  publisher: { '@id': orgId },
+  inLanguage: 'en-GB',
+  about: [{ '@id': interventionReadinessId }, { '@id': agdaId }],
+};
+
+const termSetSchema = {
+  '@type': 'DefinedTermSet',
+  '@id': termSetId,
+  name: 'Intervene Intervention Readiness terminology',
+  url: baseUrl,
+  hasDefinedTerm: [{ '@id': interventionReadinessId }, { '@id': agdaId }],
+};
+
+const defaultMainEntity =
+  routePath.startsWith('/intervention-readiness/')
+    ? { '@id': interventionReadinessId }
+    : routePath.startsWith('/agda/')
+      ? { '@id': agdaId }
+      : undefined;
+
+const pageSchema: Record<string, unknown> = {
+  '@type': pageType,
+  '@id': pageId,
+  url: canonical,
+  name: titleMain,
+  headline: titleMain,
+  description,
+  isPartOf: { '@id': websiteId },
+  publisher: { '@id': orgId },
+  inLanguage: 'en-GB',
+  breadcrumb: { '@id': `${canonical}#breadcrumb` },
+  about: [{ '@id': interventionReadinessId }],
+  mentions: [{ '@id': agdaId }, { '@id': orgId }, { '@id': personId }],
+};
+
+if (defaultMainEntity) pageSchema.mainEntity = defaultMainEntity;
+if (pageType === 'Article') {
+  pageSchema.author = { '@id': personId };
+  if (datePublished) pageSchema.datePublished = datePublished;
+  if (dateModified ?? datePublished) pageSchema.dateModified = dateModified ?? datePublished;
+}
+
+const faqSchema = faqs.length
+  ? {
+      '@type': 'FAQPage',
+      '@id': `${canonical}#faq`,
+      isPartOf: { '@id': pageId },
+      mainEntity: faqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.answer,
+        },
+      })),
+    }
+  : null;
+
+const extraSchema = Array.isArray(schema) ? schema : [schema];
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    orgSchema,
+    personSchema,
+    websiteSchema,
+    termSetSchema,
+    interventionReadinessTerm,
+    agdaTerm,
+    pageSchema,
+    breadcrumbSchema,
+    ...(faqSchema ? [faqSchema] : []),
+    ...extraSchema,
+  ],
 };
 ---
 
@@ -61,11 +272,12 @@ const orgSchema = {
     <link rel="icon" type="image/png" sizes="32x32" href="/Intervene/assets/images/favicons/favicon-32x32.png" />
     <link rel="apple-touch-icon" href="/Intervene/assets/images/favicons/apple-touch-icon-180x180.png" />
     <link rel="manifest" href="/Intervene/assets/images/favicons/site.webmanifest" />
+    <link rel="alternate" type="text/plain" href="/Intervene/llms.txt" title="Intervene LLM reference" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="Intervene" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -76,8 +288,10 @@ const orgSchema = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageAbs} />
+    {pageType === 'Article' && datePublished && <meta property="article:published_time" content={datePublished} />}
+    {pageType === 'Article' && (dateModified ?? datePublished) && <meta property="article:modified_time" content={dateModified ?? datePublished} />}
 
-    <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
     <slot name="head" />
   </head>

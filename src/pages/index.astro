@@ -11,7 +11,7 @@ import VerdictBlock from '../components/VerdictBlock.astro';
   <!-- 1 · DOORWAY. Loud. -->
   <section class="hero">
     <div class="wrap">
-      <span class="label hero-label">Intervention Readiness</span>
+      <a class="label hero-label hero-link" href="/Intervene/intervention-readiness/">Intervention Readiness</a>
       <h1 class="display-xl">Can you stop it <em>in time?</em></h1>
       <p class="hero-sub">
         AI systems are becoming more capable. Organisations are becoming more
@@ -96,6 +96,7 @@ import VerdictBlock from '../components/VerdictBlock.astro';
         findings. These matter. But the board-level question is simpler:
         when a consequential system turns, can the organisation detect,
         escalate, decide and intervene before harm becomes irreversible?
+        That capability is <a href="/Intervene/intervention-readiness/" class="link">Intervention Readiness</a>.
       </p>
       <p class="gap-realisation">
         <span>Governance</span>
@@ -175,6 +176,8 @@ import VerdictBlock from '../components/VerdictBlock.astro';
     background: var(--paper-deep);
   }
   .hero-label { margin-bottom: 32px; }
+  .hero-link { display: inline-block; border-bottom: 1px solid transparent; }
+  .hero-link:hover { border-color: var(--accent); color: var(--ink); }
   .hero .display-xl { max-width: 820px; color: var(--ink); }
   .hero-sub {
     margin: 28px 0 0;

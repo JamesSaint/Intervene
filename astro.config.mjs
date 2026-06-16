@@ -14,9 +14,11 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      // Exclude internal style guide and the /method/ redirect stub.
+      // Exclude noindex/internal pages and the /method/ redirect stub.
       filter: (page) =>
-        !page.includes('/style-guide/') && !page.includes('/method/'),
+        !page.includes('/style-guide/') &&
+        !page.includes('/method/') &&
+        !page.includes('/legal/'),
     }),
   ],
 });
