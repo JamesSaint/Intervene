@@ -8,14 +8,14 @@ const sectors = [
     name: 'UK regulated finance',
     pressure: 'PRA · FCA · SS1/23 · SMCR',
     pressureText: 'SS1/23 sets the expectation that model risk is managed and owned. SMCR names a senior individual accountable for it.',
-    failure: 'The named SMF holds accountability for a model they cannot halt inside the harm window. The chart says control; the live event says otherwise. AGDA™ scores the distance between the two.',
+    failure: 'The named SMF holds accountability for a model they cannot halt inside the harm window. The chart says control; the live event says otherwise. AGDA™ measures whether intervention remains possible.',
   },
   {
     id: 'eu-ai',
     name: 'EU high-risk AI',
     pressure: 'EU AI Act · Article 14',
     pressureText: 'The AI Act requires human oversight of high-risk systems, capable of intervention and of overriding or halting the system.',
-    failure: 'Oversight that is informed after the decision has landed is documentation, not control. AGDA™ tests whether the oversight can alter the outcome before the consequence compounds.',
+    failure: 'Oversight that is informed after the decision has landed is documentation, not control. AGDA™ measures whether oversight can alter the outcome before the consequence compounds.',
   },
   {
     id: 'cni',
@@ -35,17 +35,18 @@ const sectors = [
 ---
 
 <BaseLayout
-  title="Sectors · Intervene"
-  description="Intervention readiness in UK regulated finance, EU high-risk AI, critical national infrastructure and public services. The regulatory pressure, and the failure mode each sector recognises in itself."
+  title="Why Intervention Readiness Matters · Intervene"
+  description="Intervention Readiness matters where automated systems create consequences faster than authority can move: regulated finance, high-risk AI, critical infrastructure and public services."
   current="sectors"
 >
   <section class="hero">
     <div class="wrap">
-      <h1 class="h1 reveal">Where the chain breaks is <em>specific to you.</em></h1>
+      <h1 class="h1 reveal">Why Intervention Readiness <em>matters now.</em></h1>
       <p class="lede muted reveal">
-        The question is the same in every sector. The regulatory pressure, and
-        the way the chain fails, is not. Four contexts where intervention
-        readiness is the exposure that frameworks miss.
+        Systems are becoming more capable. Organisations are becoming more
+        dependent on automation. Regulators increasingly require effective
+        human oversight. The question is the same in every sector: can you stop
+        it in time?
       </p>
     </div>
   </section>
@@ -71,13 +72,13 @@ const sectors = [
     <div class="wrap-narrow cta-band">
       <h2 class="h2">Is your situation <em>in scope?</em></h2>
       <p class="body muted">
-        If your most consequential systems carry regulatory, financial, safety
-        or reputational exposure, the question applies. The conversation is
+        If your most consequential systems carry regulatory, financial,
+        operational or reputational exposure, the question applies. The conversation is
         brief, confidential, and carries no obligation.
       </p>
       <div class="cta">
         <a href="/Intervene/contact/" class="btn">Request a confidential discussion</a>
-        <a href="/Intervene/agda/" class="btn-ghost">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> works</a>
+        <a href="/Intervene/agda/" class="btn-ghost">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures it</a>
       </div>
     </div>
   </section>

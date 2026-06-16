@@ -10,8 +10,8 @@ const commitments = [
 ];
 
 const sectorsPrimary = [
-  { h: 'UK-regulated financial services.', p: 'Banks, asset managers, insurers under PRA / FCA jurisdiction with material AI deployment.' },
-  { h: 'EU high-risk AI operators.',       p: 'Annex III high-risk systems under the EU AI Act. Conformity assessment, post-market monitoring.' },
+  { h: 'UK-regulated financial services.', p: 'Banks, asset managers, insurers under PRA / FCA jurisdiction with material automated decision systems.' },
+  { h: 'EU high-risk AI operators.',       p: 'Annex III high-risk systems under the EU AI Act, where human oversight must be capable of intervention.' },
   { h: 'Critical national infrastructure.', p: 'Energy, water, telecoms, transport. Operators where intervention failure compounds across dependency chains.' },
 ];
 
@@ -21,26 +21,27 @@ const sectorsInvite = [
 ];
 
 const notServed = [
-  { h: 'Not a compliance dashboard.',     p: 'Vanta, Drata, OneTrust handle compliance evidence. We measure whether capability holds under stress.' },
+  { h: 'Not a compliance dashboard.',     p: 'Compliance tools handle evidence management. We measure whether intervention capability holds under stress.' },
   { h: 'Not a Big-4 advisory.',           p: 'No leveraged teams, no slide decks, no implementation arm. Senior delivery throughout. A signed verdict.' },
-  { h: 'Not a policy-writing practice.',  p: 'We do not draft your AI policy. We measure whether the controls behind it produce what the policy claims.' },
+  { h: 'Not a policy-writing practice.',  p: 'We do not draft your automation policy. We measure whether the controls behind it produce what the policy claims.' },
   { h: 'Not a model-testing lab.',        p: 'Red-team labs test models. We test whether the chain around the model can act on what the lab finds.' },
   { h: 'Not an implementation partner.',  p: 'No standing-up of controls, no platform integration, no runbook ops. Remediation belongs to you or someone else.' },
-  { h: 'Not an AI safety think-tank.',    p: 'Operational, not philosophical. A verdict on a specific system, not a paper on AI risk in general.' },
+  { h: 'Not a safety research practice.', p: 'Operational, not philosophical. A verdict on a specific system, not a paper on risk in general.' },
 ];
 ---
 
 <BaseLayout
   title="About James Saint | Founder of Intervene and Creator of AGDA™"
-  description="James Saint founded Intervene and developed AGDA™ to help organisations assess whether they can detect, escalate, decide and intervene before harm becomes irreversible."
+  description="James Saint founded Intervene and developed AGDA™ to measure Intervention Readiness: whether organisations can detect, escalate, decide and intervene before harm becomes irreversible."
   current="about"
 >
   <section class="hero">
     <div class="wrap">
       <h1 class="h1 reveal">About <em>James Saint.</em></h1>
       <p class="lede muted reveal">
-        I founded Intervene because of one question no governance framework
-        measures: when it matters, can you still stop it in time?
+        I founded Intervene because human oversight is only meaningful when
+        humans can still intervene. The question is simple: can you stop it in
+        time?
       </p>
     </div>
   </section>
@@ -62,7 +63,7 @@ const notServed = [
           <p class="collab">
             Intervene's methodology is developed in academic collaboration with
             Prof. Nicholas Ryman-Tubb, University of Surrey, calibrated against a
-            hold-out corpus of regulated AI failure modes.
+            hold-out corpus of regulated automation and intervention failure modes.
           </p>
         </figure>
 
@@ -76,9 +77,10 @@ const notServed = [
 
           <p class="body">
             For years I watched organisations invest heavily in governance,
-            controls, reporting and assurance. Yet when major failures occurred,
-            the same pattern often emerged. The controls existed. The reporting
-            existed. The governance structure existed.
+            controls, reporting and assurance. As AI systems became more
+            capable and organisations became more dependent on automation, the
+            same pattern kept becoming more consequential. The controls existed.
+            The reporting existed. The governance structure existed.
           </p>
 
           <p class="body">The intervention did not.</p>
@@ -107,24 +109,28 @@ const notServed = [
           </p>
 
           <p class="body">
-            The emergence of AI brought that challenge into sharper focus.
+            The emergence of AI brought that challenge into sharper focus:
+            systems can act faster, affect more people, and create consequences
+            that become harder to reverse.
           </p>
 
           <p class="body">
             Many organisations can describe their governance structures. Far
             fewer can demonstrate that they are capable of detecting,
             escalating, deciding and intervening before consequences become
-            irreversible.
+            irreversible. Regulators increasingly require effective human
+            oversight. Boards increasingly need confidence that intervention
+            remains possible.
           </p>
 
           <p class="body"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> was developed to answer that question directly.</p>
 
           <p class="body">
             Rather than assessing whether governance controls exist on paper,
-            <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> evaluates whether intervention is actually possible within the
-            time available. The methodology produces a deterministic,
-            independently verifiable verdict supported by cryptographic
-            attestation and board-ready reporting.
+            <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures Intervention Readiness: whether intervention is
+            actually possible within the time available. The methodology
+            produces a deterministic, independently verifiable verdict
+            supported by cryptographic attestation and board-ready reporting.
           </p>
 
           <p class="body">

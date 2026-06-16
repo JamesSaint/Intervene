@@ -1,8 +1,8 @@
 ---
-const stages = ['Signal', 'Escalation', 'Decision', 'Intervention'];
+const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
 ---
 
-<figure class="chain-flow reveal" aria-label="The intervention capability chain: Signal, Escalation, Decision, Intervention.">
+<figure class="chain-flow reveal" aria-label="The intervention capability chain: Detect, Escalate, Decide, Intervene.">
   <div class="rail" aria-hidden="true"></div>
   <ol role="list">
     {stages.map((s) => (
@@ -12,7 +12,7 @@ const stages = ['Signal', 'Escalation', 'Decision', 'Intervention'];
       </li>
     ))}
   </ol>
-  <figcaption>Each stage is necessary. None is sufficient. Capability equals the weakest stage.</figcaption>
+  <figcaption>Each stage is necessary. None is sufficient. Intervention Readiness equals the weakest stage.</figcaption>
 </figure>
 
 <style>
