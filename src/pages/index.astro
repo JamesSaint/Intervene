@@ -1,99 +1,53 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ChainFlow from '../components/ChainFlow.astro';
 import VerdictSeal from '../components/VerdictSeal.astro';
-import SectorCard from '../components/SectorCard.astro';
-import InsightCard from '../components/InsightCard.astro';
-
-const sectors = [
-  {
-    name: 'UK regulated finance',
-    pressure: 'PRA · FCA · SS1/23 · SMF',
-    consequence: 'A named accountable executive without the authority to halt the model in time. Accountability on paper, exposure in production.',
-    href: '/Intervene/sectors/#uk-finance',
-  },
-  {
-    name: 'EU high-risk AI',
-    pressure: 'EU AI Act · human oversight',
-    consequence: 'Article 14 oversight that cannot alter the outcome before it lands is documentation, not control.',
-    href: '/Intervene/sectors/#eu-ai',
-  },
-  {
-    name: 'Critical national infrastructure',
-    pressure: 'NIS · operational resilience',
-    consequence: 'Automated systems acting faster than the escalation chain that is meant to govern them.',
-    href: '/Intervene/sectors/#cni',
-  },
-  {
-    name: 'Public services',
-    pressure: 'Accountability · public law',
-    consequence: 'Decisions at population scale, with a redress path slower than the harm it is meant to contain.',
-    href: '/Intervene/sectors/#public',
-  },
-];
-
-const insights = [
-  {
-    kicker: 'Note',
-    title: 'Accountability theatre: the named SMF without halt authority',
-    dek: 'A designated executive who cannot stop the system is a name on a chart, not a control. AGDA penalises the pairing.',
-    href: '/Intervene/insights/accountability-theatre/',
-  },
-  {
-    kicker: 'Note',
-    title: 'Coincidence is not a margin',
-    dek: 'An absence of incidents is evidence of untested exposure, not effective control. Quiet is not the same as safe.',
-    href: '/Intervene/insights/coincidence-is-not-a-margin/',
-  },
-  {
-    kicker: 'Note',
-    title: 'The 36-hour window, and why the board hears last',
-    dek: 'Authority travels upward through people who cannot act. By the time it reaches the board, the cheap intervention has passed.',
-    href: '/Intervene/insights/the-thirty-six-hour-window/',
-  },
-];
 ---
 
 <BaseLayout
-  title="Intervene · The independent authority on intervention readiness"
-  description="If your most consequential system fails right now, can you stop it in time? Intervene assesses whether your organisation can intervene before harm becomes irreversible, and signs the answer."
+  title="Can you stop it in time? · Intervene"
+  description="Most organisations have governance, controls and accountability. Almost none have measured whether intervention is still possible when it matters. AGDA measures it, and signs the answer."
   current="home"
 >
-  <!-- 1 · Hero: the question, dominant -->
+  <!-- 1 · The question. The doorway. -->
   <section class="hero">
     <div class="wrap">
       <h1 class="display-xl">Can you stop it <em>in time?</em></h1>
-      <p class="hero-position">Intervene is the independent authority on intervention readiness.</p>
-      <div class="hero-cta">
-        <a href="/Intervene/contact/" class="btn">Request a confidential discussion</a>
-        <a href="/Intervene/agda/" class="btn-ghost">How AGDA works</a>
-      </div>
-      <p class="hero-support body muted">
-        We assess whether your organisation can intervene before harm becomes
-        irreversible, and we sign the answer.
+      <p class="hero-sub">
+        Your most consequential system is running right now. If it turns, the
+        clock starts.
       </p>
+      <p class="hero-note">It is a fair question. Almost no one has measured the answer.</p>
+      <div class="hero-cta">
+        <a href="/Intervene/contact/" class="btn">Find out where you stand</a>
+      </div>
     </div>
   </section>
 
-  <!-- 2 · The reframe: one line -->
-  <section class="block reframe">
-    <div class="wrap">
-      <span class="label">Intervention readiness</span>
-      <h2 class="h2">
-        Your framework says you are in control. <em>A live failure is the only
-        other way to find out.</em>
-      </h2>
-      <a href="/Intervene/agda/" class="link reframe-link">What intervention readiness means</a>
+  <!-- 2 · The honest answer -->
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">The honest answer is usually <em>“I think so.”</em></h2>
+      <p class="lede">
+        You have a framework. An accountable owner, documented controls, an
+        escalation policy. All of it real, and all of it necessary.
+      </p>
+      <p class="body">
+        None of it measures the one thing that decides the outcome: at 3am, is
+        the person who can halt the system reachable, authorised, and certain
+        enough to act while acting still costs less than waiting?
+      </p>
+      <p class="body muted">Most leaders sense this. Almost none have measured it.</p>
     </div>
   </section>
 
-  <!-- 3 · The window: consequence -->
+  <!-- 3 · Recognition. You have watched a version of this. -->
   <section class="block">
     <div class="wrap">
       <div class="window-head">
-        <h2 class="h2">By the time the board is told, <em>the window has closed.</em></h2>
+        <h2 class="h2">You have probably watched <em>a version of this.</em></h2>
         <p class="lede muted">
-          A board that cannot intervene is not a safeguard. It is a witness.
+          Not because anyone was careless. Because authority moves through
+          people, and people move slower than the harm.
         </p>
       </div>
 
@@ -103,12 +57,11 @@ const insights = [
             <span class="time-chip">T+0</span>
             <span class="stage-label">System event</span>
           </div>
-          <h3 class="h3">Detection latent.</h3>
+          <h3 class="h3">No signal yet.</h3>
           <p class="body muted">
-            An AI-driven decision produces outputs outside expected parameters.
-            The system runs on. No one with authority to act has been told.
+            The system starts producing decisions outside its limits. Nothing
+            has reached anyone with the authority to act.
           </p>
-          <span class="status mono">Intervention possible</span>
         </li>
 
         <li class="stage">
@@ -116,13 +69,11 @@ const insights = [
             <span class="time-chip">T+6h</span>
             <span class="stage-label">Operations</span>
           </div>
-          <h3 class="h3">Authority absent.</h3>
+          <h3 class="h3">Noticed, not stoppable.</h3>
           <p class="body muted">
-            Deviation noticed, damage accumulating. The first person in the
-            chain lacks the authority to halt the system. The route up is
-            unclear.
+            Someone sees the deviation. They cannot halt the system, and the
+            route to who can is unclear.
           </p>
-          <span class="status mono">Intervention possible</span>
         </li>
 
         <li class="stage">
@@ -130,12 +81,11 @@ const insights = [
             <span class="time-chip">T+18h</span>
             <span class="stage-label">Management</span>
           </div>
-          <h3 class="h3">Window closing.</h3>
+          <h3 class="h3">Still compounding.</h3>
           <p class="body muted">
-            Still running, cost compounding by the hour. Received at management
-            level. Authority to act still uncertain.
+            It reaches management. Authority to halt is still being
+            established. The cost grows by the hour.
           </p>
-          <span class="status mono">Window closing</span>
         </li>
 
         <li class="stage critical">
@@ -143,100 +93,86 @@ const insights = [
             <span class="time-chip warn">T+36h</span>
             <span class="stage-label">Board</span>
           </div>
-          <h3 class="h3">Witness, not safeguard.</h3>
+          <h3 class="h3">The window has closed.</h3>
           <p class="body muted">
-            Uncontainable. Regulatory exposure, reputational damage. The board
-            is informed. The window has already closed.
+            The board is informed. The moment for low-cost intervention has
+            already passed.
           </p>
-          <span class="status mono warn">Window closed</span>
         </li>
       </ol>
+
+      <p class="window-foot">The chain was never tested before it had to hold.</p>
     </div>
   </section>
 
-  <!-- 4 · AGDA: the signed verdict -->
-  <section class="block">
-    <div class="wrap">
-      <h2 class="h2">Capability against evidence. <em>Every verdict signed.</em></h2>
-      <p class="lede muted">
-        Same inputs, same outputs, bound to a locked engine hash. A regulator
-        can verify the verdict without contacting us.
-      </p>
-
-      <ChainFlow />
-
-      <div class="agda-foot">
-        <VerdictSeal verdict="Signed verdict" meta="Ed25519 · locked engine hash" />
-        <div class="agda-links">
-          <a href="/Intervene/agda/" class="link">What AGDA delivers</a>
-          <a href="/Intervene/sample-report/" class="link">See a sample report</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 5 · Sectors -->
-  <section class="block">
-    <div class="wrap">
-      <h2 class="h2">Built for your <em>regulatory reality.</em></h2>
-      <div class="card-grid sectors-grid reveal" role="list">
-        {sectors.map((s) => (
-          <SectorCard name={s.name} pressure={s.pressure} consequence={s.consequence} href={s.href} />
-        ))}
-      </div>
-      <a href="/Intervene/sectors/" class="link sectors-link">All sectors</a>
-    </div>
-  </section>
-
-  <!-- 6 · Authority and independence -->
-  <section class="block" id="founder">
+  <!-- 4 · The measurement gap. The conversion event. -->
+  <section class="gap">
     <div class="wrap-narrow">
-      <span class="label founder-label">The practice</span>
-      <h2 class="h2">James Saint.</h2>
-      <p class="body">
-        Three decades across technology, systems architecture, payments and
-        operational risk. James founded AGDA™ to answer the question
-        traditional governance frameworks leave open.
+      <span class="label gap-label">The measurement gap</span>
+      <h2 class="h2 gap-h">You have measured almost <em>everything except this.</em></h2>
+      <p class="gap-body">
+        Capital. Model performance. Control coverage. Incident counts. Audit
+        findings. The one factor that decides whether harm becomes
+        irreversible, whether intervention is still possible when it matters, is
+        the one nobody puts a number to.
       </p>
-      <p class="founder-q">
-        Can an organisation actually intervene before harm becomes irreversible?
+      <p class="gap-realisation">
+        <span>You have governance.</span>
+        <span>You have controls.</span>
+        <span>You have accountability.</span>
+        <strong>You have never measured whether intervention remains possible when it matters.</strong>
       </p>
-      <ul class="commitments" role="list">
-        <li>Independent. No platform to sell you into, no managed-service lock-in.</li>
-        <li>Evidence over intention. The verdict follows what is demonstrated, not what is claimed.</li>
-        <li>Signed and verifiable. You do not have to take our word for the answer.</li>
-        <li>Honest about fit. If AGDA is not the right instrument for you, we say so.</li>
-      </ul>
-      <a href="/Intervene/about/" class="link">About the practice</a>
     </div>
   </section>
 
-  <!-- 7 · Insights -->
+  <!-- 5 · It can be measured. -->
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">It can be measured. <em>To a verdict.</em></h2>
+      <p class="body">
+        AGDA measures exactly that, and returns a clear answer, not a maturity
+        score. Deterministic: the same inputs give the same verdict every time.
+        Signed, so a regulator can confirm it independently.
+      </p>
+      <div class="seal-row">
+        <VerdictSeal verdict="Signed verdict" meta="Ed25519 · locked engine hash" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · Three answers. -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">A published <em>point of view.</em></h2>
-      <div class="insights-list reveal" role="list">
-        {insights.map((a) => (
-          <InsightCard title={a.title} dek={a.dek} href={a.href} kicker={a.kicker} />
-        ))}
-      </div>
-      <a href="/Intervene/insights/" class="link insights-link">All insights</a>
+      <h2 class="h2">Three answers. <em>Most organisations have never seen theirs.</em></h2>
+      <ul class="verdicts" role="list">
+        <li>
+          <span class="mono verdict-name">Before impact</span>
+          <p class="body">Intervention completes in time under the conditions observed. You have room to move.</p>
+        </li>
+        <li>
+          <span class="mono verdict-name">At risk</span>
+          <p class="body">Intervention completes, but inside a margin that ordinary pressure can erode.</p>
+        </li>
+        <li>
+          <span class="mono verdict-name warn">After impact</span>
+          <p class="body">Intervention lands too late. By the time you can act, the harm is already irreversible.</p>
+        </li>
+      </ul>
+      <p class="body muted verdicts-foot">
+        Whichever is true for you is already true, measured or not. The value is
+        in seeing it while you still have room to move.
+      </p>
     </div>
   </section>
 
-  <!-- 8 · Close -->
+  <!-- 7 · Action. -->
   <section class="block close">
     <div class="wrap">
       <div class="close-grid">
-        <h2 class="h2 reveal">
-          Could your organisation stop its most consequential system <em>right now?</em>
-        </h2>
+        <h2 class="h2 reveal">See where you stand, <em>while the options are still open.</em></h2>
         <div class="close-cta reveal">
-          <p class="body muted">
-            If you are not certain, that is worth a conversation. Brief,
-            confidential, no obligation.
-          </p>
-          <a href="/Intervene/contact/" class="btn">Request a confidential discussion</a>
+          <p class="body muted">One conversation to scope it. Confidential.</p>
+          <a href="/Intervene/contact/" class="btn">Get your verdict</a>
         </div>
       </div>
     </div>
@@ -244,68 +180,53 @@ const insights = [
 </BaseLayout>
 
 <style>
-  /* 1 · Hero. Black masthead: maximum contrast, set against the white
-     header above and the white reframe section below. */
-  .hero {
+  /* Two black pillars: the question (doorway) and the gap (category). */
+  .hero,
+  .gap {
     background: var(--ink);
     color: var(--paper);
+  }
+  .hero ::selection,
+  .gap ::selection { background: var(--paper); color: var(--ink); }
+
+  /* 1 · Hero */
+  .hero {
     padding-top: clamp(96px, 14vh, 184px);
     padding-bottom: clamp(80px, 11vh, 152px);
-    border-bottom: 0;
   }
   .hero .display-xl { max-width: 14ch; color: var(--paper); }
-  .hero-position {
+  .hero-sub {
     margin: clamp(32px, 5vh, 56px) 0 0;
     font-family: var(--font-sans);
     font-size: clamp(18px, 1.6vw, 24px);
     font-weight: 500;
     letter-spacing: -0.01em;
     color: var(--paper);
-    max-width: 32ch;
+    max-width: 34ch;
   }
-  .hero-cta {
-    margin-top: 40px;
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .hero-support {
-    margin-top: 40px;
-    max-width: 46ch;
+  .hero-note {
+    margin: 20px 0 0;
+    font-family: var(--font-sans);
+    font-size: 16px;
     color: rgba(255, 255, 255, 0.66);
+    max-width: 44ch;
   }
-
-  /* Buttons inverted for the black hero. */
+  .hero-cta { margin-top: 48px; display: flex; gap: 16px; flex-wrap: wrap; }
   .hero .btn {
     background: var(--paper);
     color: var(--ink);
     border-color: var(--paper);
   }
   .hero .btn:hover { background: var(--paper-mid); border-color: var(--paper-mid); }
-  .hero .btn-ghost {
-    background: transparent;
-    color: var(--paper);
-    border-color: rgba(255, 255, 255, 0.4);
-  }
-  .hero .btn-ghost:hover { border-color: var(--paper); }
-  .hero ::selection { background: var(--paper); color: var(--ink); }
 
-  .block .h2 { max-width: 22ch; }
-  .block > .wrap > .lede { margin-top: 16px; max-width: 50ch; }
-
-  /* 2 · Reframe */
-  .reframe .label {
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--hair);
-    margin-bottom: 32px;
-  }
-  .reframe .h2 { max-width: 24ch; font-size: clamp(34px, 4.4vw, 60px); }
-  .reframe-link { display: inline-block; margin-top: 40px; font-size: 15px; }
+  .block .h2 { max-width: 24ch; }
+  .wrap-narrow .lede { margin-top: 24px; max-width: 54ch; }
+  .wrap-narrow .body { margin: 20px 0 0; max-width: 60ch; }
 
   /* 3 · Window timeline */
-  .window-head { margin-bottom: 80px; }
+  .window-head { margin-bottom: 72px; }
   .window-head .h2 { max-width: 20ch; }
-  .window-head .lede { margin-top: 20px; max-width: 44ch; }
+  .window-head .lede { margin-top: 20px; max-width: 50ch; }
 
   .window-grid {
     list-style: none;
@@ -319,7 +240,7 @@ const insights = [
   .window-grid > .stage {
     padding: 32px 0;
     display: grid;
-    gap: 16px;
+    gap: 14px;
     align-content: start;
     opacity: 0;
     transform: translateY(12px);
@@ -355,75 +276,86 @@ const insights = [
   }
   .window-grid .h3 { font-size: 22px; margin: 4px 0 0; }
   .window-grid p { max-width: 32ch; margin: 0; }
-  .status {
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--hair);
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-size: 11px;
+  .window-foot {
+    margin: 48px 0 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--ink);
+    font-family: var(--font-sans);
+    font-size: clamp(18px, 1.8vw, 24px);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    max-width: 40ch;
   }
-  .status.warn { color: var(--warn); }
 
   @media (prefers-reduced-motion: reduce) {
     .window-grid > .stage { opacity: 1; transform: none; transition: none; }
   }
 
-  /* 4 · AGDA signed verdict */
-  .agda-foot {
-    margin-top: 64px;
-    padding-top: 32px;
-    border-top: 1px solid var(--hair);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-  }
-  .agda-links { display: flex; gap: 32px; flex-wrap: wrap; }
-
-  /* 5 · Sectors */
-  .sectors-grid { margin-top: 56px; grid-template-columns: repeat(2, 1fr); }
-  .sectors-link, .insights-link { display: inline-block; margin-top: 40px; font-size: 15px; }
-
-  /* 6 · Founder */
-  #founder .label.founder-label {
+  /* 4 · The measurement gap */
+  .gap { padding: clamp(96px, 13vh, 160px) 0; }
+  .gap-label {
+    color: rgba(255, 255, 255, 0.6);
     padding-bottom: 16px;
-    border-bottom: 1px solid var(--hair);
-    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    margin-bottom: 32px;
   }
-  #founder .h2 { max-width: 24ch; margin: 0 0 24px; }
-  #founder .body { max-width: 60ch; margin: 0 0 16px; }
-  .founder-q {
+  .gap-h { color: var(--paper); max-width: 18ch; }
+  .gap-body {
+    margin: 28px 0 0;
     font-family: var(--font-sans);
-    font-size: 22px;
-    font-style: italic;
-    color: var(--ink);
-    max-width: 42ch;
-    margin: 24px 0;
-    padding-left: 20px;
-    border-left: 2px solid var(--ink);
-  }
-  .commitments {
-    list-style: none;
-    margin: 32px 0;
-    padding: 0;
-    border-top: 1px solid var(--hair);
-  }
-  .commitments > li {
-    padding: 16px 0;
-    border-bottom: 1px solid var(--hair);
-    font-family: var(--font-sans);
-    font-size: 16px;
-    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.78);
     max-width: 56ch;
   }
+  .gap-realisation {
+    margin: 56px 0 0;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    display: grid;
+    gap: 10px;
+    font-family: var(--font-sans);
+    font-size: clamp(20px, 2.4vw, 30px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    max-width: 26ch;
+  }
+  .gap-realisation > span { color: rgba(255, 255, 255, 0.5); }
+  .gap-realisation > strong {
+    color: var(--paper);
+    font-weight: 600;
+    max-width: 30ch;
+    margin-top: 6px;
+  }
 
-  /* 7 · Insights */
-  .insights-list { margin-top: 56px; }
+  /* 5 · It can be measured */
+  .seal-row { margin-top: 40px; }
 
-  /* 8 · Close */
+  /* 6 · Three answers */
+  .verdicts {
+    list-style: none;
+    margin: 56px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px 48px;
+    padding-top: 28px;
+    border-top: 1px solid var(--ink);
+  }
+  .verdicts > li { display: grid; gap: 10px; align-content: start; }
+  .verdict-name {
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+  }
+  .verdict-name.warn { color: var(--warn); }
+  .verdicts p { max-width: 34ch; margin: 0; }
+  .verdicts-foot { margin-top: 48px; max-width: 56ch; }
+
+  /* 7 · Close */
   .close-grid {
     display: grid;
     grid-template-columns: 1.4fr 1fr;
@@ -436,10 +368,9 @@ const insights = [
   .close-cta .btn { justify-self: start; }
 
   @media (max-width: 880px) {
-    .sectors-grid { grid-template-columns: 1fr; }
-    .close-grid { grid-template-columns: 1fr; gap: 48px; }
     .window-grid { grid-template-columns: 1fr 1fr; column-gap: 24px; }
-    .agda-foot { flex-direction: column; align-items: flex-start; }
+    .verdicts { grid-template-columns: 1fr; gap: 28px; }
+    .close-grid { grid-template-columns: 1fr; gap: 48px; }
   }
   @media (max-width: 560px) {
     .window-grid { grid-template-columns: 1fr; }
