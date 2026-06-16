@@ -52,8 +52,8 @@
   position: absolute;
   left: -9999px;
   top: 0;
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--accent);
+  color: var(--black);
   padding: 10px 16px;
   z-index: 1000;
   font-family: var(--font-sans);
@@ -67,47 +67,59 @@
   color: var(--ink);
   border-bottom: 1px solid var(--hair-strong);
   padding-bottom: 1px;
-  transition: border-color var(--dur-hover) var(--ease);
+  transition:
+    border-color var(--dur-hover) var(--ease),
+    color var(--dur-hover) var(--ease);
 }
-.link:hover { border-color: var(--accent); }
+.link:hover { border-color: var(--accent); color: var(--accent); }
 
-/* Buttons. Plain. */
+/* Buttons. Sharp, compact, HIA-style. */
 .btn {
   font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 500;
-  padding: 13px 22px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 13px 24px;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: var(--ink);
-  color: var(--paper);
-  border: 1px solid var(--ink);
-  transition: background var(--dur-hover) var(--ease);
+  min-height: 44px;
+  background: var(--accent);
+  color: var(--black);
+  border: 1px solid var(--accent);
+  transition:
+    opacity var(--dur-hover) var(--ease),
+    border-color var(--dur-hover) var(--ease);
 }
-.btn:hover { background: var(--ink-soft); }
+.btn:hover { opacity: 0.88; }
 
 .btn-ghost {
   font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 500;
-  padding: 13px 22px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 13px 24px;
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  min-height: 44px;
   background: transparent;
-  color: var(--ink);
+  color: var(--muted-soft);
   border: 1px solid var(--hair-strong);
-  transition: border-color var(--dur-hover) var(--ease);
+  transition:
+    border-color var(--dur-hover) var(--ease),
+    color var(--dur-hover) var(--ease);
 }
-.btn-ghost:hover { border-color: var(--ink); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--ink); }
 
 /* Section block. Separation is space, not rules. Slow rhythm, room to
    breathe. No dividers between sections: the air does the work. */
 .block {
-  padding: clamp(88px, 16vh, 200px) 0;
+  padding: clamp(72px, 11vh, 136px) 0;
 }
-.block.tight { padding: clamp(64px, 9vh, 112px) 0; }
+.block.tight { padding: clamp(56px, 8vh, 96px) 0; }
 
 /* Card. A unit of reading, not a tile. Hairline border, no shadow,
    one bronze rule on hover. Used for sectors and insights. */
@@ -122,7 +134,7 @@
   gap: 12px;
   align-content: start;
   padding: 36px;
-  background: var(--paper);
+  background: var(--paper-soft);
   border: 1px solid var(--hair);
   color: inherit;
   transition: border-color var(--dur-hover) var(--ease);
@@ -134,13 +146,13 @@
   left: -1px;
   right: -1px;
   height: 2px;
-  background: var(--ink);
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform var(--dur-hover) var(--ease);
 }
 .card:hover,
-.card:focus-within { border-color: var(--ink); }
+.card:focus-within { border-color: var(--hair-strong); }
 .card:hover::before,
 .card:focus-within::before { transform: scaleX(1); }
 .card .card-title {
@@ -155,5 +167,5 @@
    top and bottom. Each row supplies its own top rule. */
 .insights-list {
   display: grid;
-  border-bottom: 1px solid var(--ink);
+  border-bottom: 1px solid var(--hair-strong);
 }

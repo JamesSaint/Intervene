@@ -40,7 +40,7 @@ const { pattern, duration } = Astro.props;
      the bar appears as a single thick dot at left. */
   .scope-focused .fill {
     width: 25%;
-    background: var(--ink);
+    background: var(--accent);
   }
 
   /* Recurring: dashes spanning the full bar. */
@@ -48,8 +48,8 @@ const { pattern, duration } = Astro.props;
     width: 100%;
     background-image: linear-gradient(
       to right,
-      var(--ink) 0,
-      var(--ink) 12px,
+      var(--accent) 0,
+      var(--accent) 12px,
       transparent 12px,
       transparent 24px
     );
@@ -59,7 +59,7 @@ const { pattern, duration } = Astro.props;
   /* Continuous: solid line. */
   .scope-continuous .fill {
     width: 100%;
-    background: var(--ink);
+    background: var(--accent);
   }
 
   /* Activation: the parent card has .reveal which the IntersectionObserver

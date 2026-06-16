@@ -25,9 +25,12 @@ import MenuIcon from './MenuIcon.astro';
     position: sticky;
     top: 0;
     z-index: 1100;
-    background: var(--paper);
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--hair);
-    transition: border-color 200ms ease;
+    transition:
+      background 200ms ease,
+      border-color 200ms ease;
   }
   .site-header[data-takeover-open] {
     border-bottom-color: var(--hair);
@@ -50,7 +53,7 @@ import MenuIcon from './MenuIcon.astro';
     color: var(--ink);
   }
   .menu-trigger:focus-visible {
-    outline: 2px solid var(--ink);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 </style>
