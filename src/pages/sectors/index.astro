@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const sectors = [
+  {
+    id: 'uk-finance',
+    name: 'UK regulated finance',
+    pressure: 'PRA · FCA · SS1/23 · SMCR',
+    pressureText: 'SS1/23 sets the expectation that model risk is managed and owned. SMCR names a senior individual accountable for it.',
+    failure: 'The named SMF holds accountability for a model they cannot halt inside the harm window. The chart says control; the live event says otherwise. AGDA scores the distance between the two.',
+  },
+  {
+    id: 'eu-ai',
+    name: 'EU high-risk AI',
+    pressure: 'EU AI Act · Article 14',
+    pressureText: 'The AI Act requires human oversight of high-risk systems, capable of intervention and of overriding or halting the system.',
+    failure: 'Oversight that is informed after the decision has landed is documentation, not control. AGDA tests whether the oversight can alter the outcome before the consequence compounds.',
+  },
+  {
+    id: 'cni',
+    name: 'Critical national infrastructure',
+    pressure: 'NIS Regulations · operational resilience',
+    pressureText: 'Resilience regimes require that essential services withstand and recover from disruption inside defined tolerances.',
+    failure: 'Automated systems act faster than the escalation chain meant to govern them. When the chain runs slower than the harm, the tolerance is breached before anyone is authorised to act.',
+  },
+  {
+    id: 'public',
+    name: 'Public services',
+    pressure: 'Public law · accountability',
+    pressureText: 'Automated decisions at population scale carry duties of fairness, transparency and an effective route to redress.',
+    failure: 'A redress path slower than the harm it is meant to contain is redress in name only. AGDA measures whether intervention and correction land before the decision becomes irreversible for the person affected.',
+  },
+];
+---
+
+<BaseLayout
+  title="Sectors · Intervene"
+  description="Intervention readiness in UK regulated finance, EU high-risk AI, critical national infrastructure and public services. The regulatory pressure, and the failure mode each sector recognises in itself."
+  current="sectors"
+>
+  <section class="hero">
+    <div class="wrap">
+      <h1 class="h1 reveal">Where the chain breaks is <em>specific to you.</em></h1>
+      <p class="lede muted reveal">
+        The question is the same in every sector. The regulatory pressure, and
+        the way the chain fails, is not. Four contexts where intervention
+        readiness is the exposure that frameworks miss.
+      </p>
+    </div>
+  </section>
+
+  {sectors.map((s) => (
+    <section class="block sector" id={s.id}>
+      <div class="wrap">
+        <div class="sector-grid">
+          <div class="sector-lead">
+            <span class="label">{s.pressure}</span>
+            <h2 class="h2">{s.name}</h2>
+          </div>
+          <div class="sector-body">
+            <p class="body">{s.pressureText}</p>
+            <p class="body muted">{s.failure}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="block tight">
+    <div class="wrap-narrow cta-band">
+      <h2 class="h2">Is your situation <em>in scope?</em></h2>
+      <p class="body muted">
+        If your most consequential systems carry regulatory, financial, safety
+        or reputational exposure, the question applies. The conversation is
+        brief, confidential, and carries no obligation.
+      </p>
+      <div class="cta">
+        <a href="/Intervene/contact/" class="btn">Request a confidential discussion</a>
+        <a href="/Intervene/agda/" class="btn-ghost">How AGDA works</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 144px;
+    padding-bottom: 144px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .hero .h1 { max-width: 18ch; }
+  .hero .lede { margin-top: 32px; max-width: 54ch; }
+
+  .sector { scroll-margin-top: var(--header-h); }
+  .sector-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 64px;
+    align-items: start;
+  }
+  .sector-lead .label {
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--hair);
+    margin-bottom: 20px;
+  }
+  .sector-lead .h2 { max-width: 14ch; }
+  .sector-body { display: grid; gap: 16px; padding-top: 8px; }
+  .sector-body .body { max-width: 56ch; margin: 0; }
+
+  .cta-band .h2 { max-width: 18ch; }
+  .cta-band .body { margin: 16px 0 32px; max-width: 56ch; }
+  .cta-band .cta { display: flex; flex-wrap: wrap; gap: 16px; }
+
+  @media (max-width: 880px) {
+    .hero { padding-top: 88px; padding-bottom: 88px; }
+    .sector-grid { grid-template-columns: 1fr; gap: 24px; }
+  }
+</style>

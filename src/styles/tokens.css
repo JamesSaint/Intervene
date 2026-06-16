@@ -1,6 +1,8 @@
 /* ============================================================
    intervene · design tokens
-   Strict monochrome. No accent colours. Brand-aligned.
+   Monochrome foundation. One restrained bronze, used at under
+   ~1% of any view (active-nav rule, verdict seal, link-hover,
+   focus ring). Never a fill, never body text. Brand-aligned.
    ============================================================ */
 
 :root {
@@ -23,6 +25,14 @@
   /* Muted type */
   --muted:      #6b6b6b;
   --muted-soft: #8a8a8a;
+
+  /* Accent: restrained bronze. The only chroma in the brand chrome.
+     Two deliberate placements maximum per view. */
+  --accent:      #8a6d3b;
+  --accent-soft: #a98a55;
+  /* Back-compat alias: focus ring referenced --bronze before the
+     accent was named. Keep both pointed at the same value. */
+  --bronze:      var(--accent);
 
   /* Signal (sparingly: warn, hold, pass for sample-report only) */
   --warn: #c8322a;

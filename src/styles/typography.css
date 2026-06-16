@@ -3,6 +3,17 @@
    Inter for everything. JetBrains Mono only where it earns.
    ============================================================ */
 
+/* Reserved for the homepage hero question alone. Dominates the
+   first viewport; nothing competes with it above the fold. */
+.display-xl {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(64px, 12vw, 168px);
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  margin: 0;
+}
+
 .h1 {
   font-family: var(--font-sans);
   font-weight: 500;
@@ -64,3 +75,15 @@ em, .em {
 }
 
 .muted { color: var(--muted); }
+
+/* Shared mono section label. Used sparingly above headings.
+   No numbering scaffolds, no "kicker" decoration. */
+.label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
