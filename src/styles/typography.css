@@ -43,7 +43,7 @@
 
 .lede {
   font-family: var(--font-sans);
-  font-size: clamp(17px, 1.3vw, 20px);
+  font-size: clamp(18px, 1.4vw, 22px);
   line-height: 1.55;
   font-weight: 400;
   color: var(--ink);
@@ -51,8 +51,8 @@
 
 .body {
   font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.65;
   font-weight: 400;
 }
 

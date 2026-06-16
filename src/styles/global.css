@@ -102,17 +102,12 @@
 }
 .btn-ghost:hover { border-color: var(--ink); }
 
-/* Section block */
+/* Section block. Separation is space, not rules. Slow rhythm, room to
+   breathe. No dividers between sections: the air does the work. */
 .block {
-  padding: 120px 0;
-  border-bottom: 1px solid var(--hair);
+  padding: clamp(88px, 16vh, 200px) 0;
 }
-.block.tight { padding: 64px 0; }
-.block:last-of-type { border-bottom: 0; }
-
-@media (max-width: 720px) {
-  .block { padding: 80px 0; }
-}
+.block.tight { padding: clamp(64px, 9vh, 112px) 0; }
 
 /* Card. A unit of reading, not a tile. Hairline border, no shadow,
    one bronze rule on hover. Used for sectors and insights. */
