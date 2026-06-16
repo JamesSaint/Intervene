@@ -14,7 +14,7 @@ html {
 
 body {
   background: var(--paper);
-  color: var(--ink);
+  color: var(--muted);
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.55;
@@ -45,8 +45,8 @@ input, textarea, select {
 }
 
 ::selection {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--accent-faint);
+  color: var(--ink);
 }
 
 /* Focus discipline */

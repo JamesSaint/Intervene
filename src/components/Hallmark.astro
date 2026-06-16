@@ -1,10 +1,8 @@
 ---
-import Aperture from './Aperture.astro';
 /**
  * The Hallmark. The persistent brand mark, struck like a row of assay
- * punches: the Aperture, the maker (AGDA), the assay serial, and a struck
- * seal. The single most reused mark on the site. Travels in the footer of
- * every page and beside any reference to a verdict.
+ * punches: the maker (AGDA), the assay serial, and a struck seal. Travels
+ * in the footer of every page and beside any reference to a verdict.
  */
 interface Props {
   serial?: string;
@@ -12,8 +10,7 @@ interface Props {
 const { serial = 'Assay · 2026' } = Astro.props;
 ---
 
-<span class="hallmark" role="img" aria-label="AGDA hallmark: struck, signed mark of an intervention readiness assay.">
-  <span class="hm-cell hm-glyph"><Aperture state="narrowing" size={26} /></span>
+<span class="hallmark" role="img" aria-label="AGDA hallmark: struck and signed mark of an intervention readiness assay.">
   <span class="hm-cell hm-word mono">AGDA</span>
   <span class="hm-cell hm-serial mono">{serial}</span>
   <span class="hm-cell hm-seal"><span class="seal" aria-hidden="true"></span></span>
@@ -33,8 +30,6 @@ const { serial = 'Assay · 2026' } = Astro.props;
     border-right: 1px solid var(--hair-strong);
   }
   .hm-cell:last-child { border-right: 0; }
-  .hm-glyph { padding: 6px 10px; }
-  .hm-glyph :global(svg) { display: block; }
   .hm-word { font-size: 11px; letter-spacing: 0.14em; color: var(--ink); }
   .hm-serial { font-size: 11px; letter-spacing: 0.06em; color: var(--muted); text-transform: uppercase; }
   .seal {

@@ -1,12 +1,9 @@
 ---
-import Aperture from './Aperture.astro';
 import ProofMarks from './ProofMarks.astro';
 /**
  * The Verdict Block. The hero object. A struck, notarised certificate of
- * assay, not a card. The three Aperture states sit side by side so the
- * category is pictured in one frame: open, narrowing, closed. The only
- * colour on the page lives in the three verdict dots. The seal is the one
- * deliberate bronze mark.
+ * assay, not a card. The verdict states are carried by numbered evidence
+ * rows and restrained signal dots, without decorative geometry.
  */
 const states = [
   { state: 'open',      name: 'Before impact', line: 'Intervention completes in time. The window stays open.' },
@@ -31,9 +28,9 @@ const states = [
     </header>
 
     <ol class="vb-states" role="list">
-      {states.map((s) => (
+      {states.map((s, i) => (
         <li class="vb-state" data-state={s.state}>
-          <span class="vb-mark"><Aperture state={s.state} size={104} /></span>
+          <span class="vb-index mono">{String(i + 1).padStart(2, '0')}</span>
           <span class="vb-read">
             <span class="vb-name mono"><span class="vb-dot" aria-hidden="true"></span>{s.name}</span>
             <span class="vb-line">{s.line}</span>
@@ -63,8 +60,8 @@ const states = [
   .verdict-block { margin: 0; max-width: 760px; }
   .vb-frame {
     position: relative;
-    border: 1px solid var(--ink);
-    background: var(--paper);
+    border: 1px solid var(--hair-strong);
+    background: var(--paper-soft);
     padding: 0;
   }
   /* Registration corners: reads as an official certificate. */
@@ -72,7 +69,7 @@ const states = [
     position: absolute;
     width: 10px;
     height: 10px;
-    border: 1px solid var(--ink);
+    border: 1px solid var(--accent);
   }
   .vb-corner.tl { top: 7px; left: 7px; border-right: 0; border-bottom: 0; }
   .vb-corner.tr { top: 7px; right: 7px; border-left: 0; border-bottom: 0; }
@@ -85,7 +82,7 @@ const states = [
     justify-content: space-between;
     gap: 16px;
     padding: 18px 28px;
-    border-bottom: 1px solid var(--ink);
+    border-bottom: 1px solid var(--hair-strong);
   }
   .vb-title { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); }
   .vb-serial { font-size: 11px; letter-spacing: 0.08em; color: var(--muted); }
@@ -93,14 +90,18 @@ const states = [
   .vb-states { list-style: none; margin: 0; padding: 0; }
   .vb-state {
     display: grid;
-    grid-template-columns: 132px 1fr;
+    grid-template-columns: 64px 1fr;
     gap: 28px;
-    align-items: center;
+    align-items: start;
     padding: 24px 28px;
     border-bottom: 1px solid var(--hair);
   }
-  .vb-mark { color: var(--ink); }
-  .vb-mark :global(svg) { display: block; }
+  .vb-index {
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    padding-top: 3px;
+  }
   .vb-read { display: grid; gap: 8px; }
   .vb-name {
     display: inline-flex;
@@ -118,7 +119,7 @@ const states = [
   .vb-state[data-state='closed']    .vb-name { color: var(--warn); }
   .vb-line { font-family: var(--font-sans); font-size: 15px; line-height: 1.5; color: var(--muted); }
 
-  .vb-foot { padding: 24px 28px 26px; background: var(--paper-soft); display: grid; gap: 20px; }
+  .vb-foot { padding: 24px 28px 26px; background: var(--paper-mid); display: grid; gap: 20px; }
   .vb-record { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 9px 32px; }
   .vb-record > div { display: grid; grid-template-columns: 92px 1fr; gap: 12px; align-items: baseline; }
   .vb-record dt { font-size: 11px; letter-spacing: 0.04em; color: var(--muted-soft); }
@@ -134,7 +135,7 @@ const states = [
 
   @media (max-width: 640px) {
     .vb-head { padding: 16px 20px; }
-    .vb-state { grid-template-columns: 1fr; gap: 16px; padding: 22px 20px; }
+    .vb-state { grid-template-columns: 44px 1fr; gap: 14px; padding: 22px 20px; }
     .vb-foot { padding: 22px 20px 24px; }
     .vb-record { grid-template-columns: 1fr; }
   }
