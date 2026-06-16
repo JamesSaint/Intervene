@@ -155,3 +155,10 @@
 @media (max-width: 880px) {
   .card-grid { grid-template-columns: 1fr; }
 }
+
+/* Publication-style insight index. Stacked rows, strong ink rules
+   top and bottom. Each row supplies its own top rule. */
+.insights-list {
+  display: grid;
+  border-bottom: 1px solid var(--ink);
+}
