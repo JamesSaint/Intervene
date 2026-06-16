@@ -1,4 +1,6 @@
 ---
+import { markAgda } from '../lib/marks';
+
 /**
  * Insight row. Publication style: full-width, strong ink rules, large
  * title, mono meta. Board-grade title, one line of dek, no marketing.
@@ -15,8 +17,8 @@ const { title, dek, href, kicker = 'Note' } = Astro.props;
 <a class="insight-row" href={href}>
   <span class="insight-meta mono">{kicker}</span>
   <span class="insight-main">
-    <h3 class="insight-title">{title}</h3>
-    <p class="insight-dek">{dek}</p>
+    <h3 class="insight-title" set:html={markAgda(title)}></h3>
+    <p class="insight-dek" set:html={markAgda(dek)}></p>
   </span>
   <span class="insight-cue" aria-hidden="true">→</span>
 </a>

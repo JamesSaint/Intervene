@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { markAgda } from '../../lib/marks';
 
 const reportLayers = [
   {
@@ -46,7 +47,7 @@ const tiers = [
     formats: [
       { label: 'Annual, custom-scoped',   gbp: '£350,000+ / yr', eur: '€410,000+ / yr', usd: '$450,000+ / yr' },
     ],
-    includes: 'Up to 15 named operator seats, up to 5 assessed systems per year, 40 regulator-liaison hours, quarterly portfolio review with group CRO, two annual board-readout sessions, multi-entity invoicing, designated AGDA operator.',
+    includes: 'Up to 15 named operator seats, up to 5 assessed systems per year, 40 regulator-liaison hours, quarterly portfolio review with group CRO, two annual board-readout sessions, multi-entity invoicing, designated AGDA™ operator.',
     triggers: 'Triggers: 9+ assessed systems per year, 20+ seats, or 2+ legal entities under a single group.',
   },
 ];
@@ -70,8 +71,8 @@ const services = [
 const notProduct = [
   { h: 'Not a maturity framework.',  p: 'We do not score governance artefact completeness. We score timing and evidence grade against a harm window.' },
   { h: 'Not a compliance checklist.', p: 'Regulatory exposure is a mechanical output of the assessment. We do not score adherence to clauses.' },
-  { h: 'Not a risk score.',          p: 'AGDA produces a binary verdict: can you intervene in time? It feeds a risk register. It does not substitute for one.' },
-  { h: 'Not a monitoring tool.',     p: 'AGDA examines governance once per assessment. Runtime monitoring is a different product category.' },
+  { h: 'Not a risk score.',          p: 'AGDA™ produces a binary verdict: can you intervene in time? It feeds a risk register. It does not substitute for one.' },
+  { h: 'Not a monitoring tool.',     p: 'AGDA™ examines governance once per assessment. Runtime monitoring is a different product category.' },
 ];
 
 const benchmarks = [
@@ -94,7 +95,7 @@ const benchmarks = [
       </h1>
       <p class="lede muted reveal">
         If one of your AI systems goes wrong right now, can you stop it before
-        harm becomes irreversible? AGDA gives you a deterministic, signed
+        harm becomes irreversible? <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> gives you a deterministic, signed
         answer, bound to a locked engine version, that an audit committee can
         defend and a regulator can verify without contacting us.
       </p>
@@ -106,7 +107,7 @@ const benchmarks = [
     <div class="wrap">
       <h2 class="h2">What every engagement produces.</h2>
       <p class="lede muted">
-        A single structured output: the AGDA Reports Failure Exposure Report.
+        A single structured output: the <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Reports Failure Exposure Report.
         Three audience layers, all bound to the same engine hash and
         attestation envelope.
       </p>
@@ -162,7 +163,7 @@ const benchmarks = [
             </ul>
 
             <p class="body muted tier-includes">
-              <strong>Includes.</strong> {t.includes}
+              <strong>Includes.</strong> <span set:html={markAgda(t.includes)} />
             </p>
             {t.triggers && (
               <p class="mono tier-triggers">{t.triggers}</p>
@@ -215,10 +216,10 @@ const benchmarks = [
     </div>
   </section>
 
-  <!-- WHAT AGDA IS NOT -->
+  <!-- WHAT AGDA™ IS NOT -->
   <section class="block" id="what-agda-is-not">
     <div class="wrap">
-      <h2 class="h2">What AGDA <em>is not.</em></h2>
+      <h2 class="h2">What <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> <em>is not.</em></h2>
       <p class="lede muted">
         The four objections that come up in every procurement conversation.
         Narrower is the point.
@@ -228,7 +229,7 @@ const benchmarks = [
         {notProduct.map((n) => (
           <li>
             <h3 class="h3">{n.h}</h3>
-            <p class="body muted">{n.p}</p>
+            <p class="body muted" set:html={markAgda(n.p)} />
           </li>
         ))}
       </ul>
@@ -240,7 +241,7 @@ const benchmarks = [
     <div class="wrap">
       <h2 class="h2">The right budget line.</h2>
       <p class="lede muted">
-        AGDA is priced against model risk, operational resilience, and AI
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is priced against model risk, operational resilience, and AI
         governance programme budgets. Not software procurement. The relevant
         comparisons:
       </p>
@@ -255,7 +256,7 @@ const benchmarks = [
       </ul>
 
       <p class="body footnote">
-        AGDA at £95,000 for a pilot or £180,000 per year for an annual
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> at £95,000 for a pilot or £180,000 per year for an annual
         subscription sits inside any of those budget lines and produces
         something they cannot: a signed verdict the regulator can verify
         without us.

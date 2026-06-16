@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { markAgda } from '../../lib/marks';
 
 const sectors = [
   {
@@ -7,14 +8,14 @@ const sectors = [
     name: 'UK regulated finance',
     pressure: 'PRA · FCA · SS1/23 · SMCR',
     pressureText: 'SS1/23 sets the expectation that model risk is managed and owned. SMCR names a senior individual accountable for it.',
-    failure: 'The named SMF holds accountability for a model they cannot halt inside the harm window. The chart says control; the live event says otherwise. AGDA scores the distance between the two.',
+    failure: 'The named SMF holds accountability for a model they cannot halt inside the harm window. The chart says control; the live event says otherwise. AGDA™ scores the distance between the two.',
   },
   {
     id: 'eu-ai',
     name: 'EU high-risk AI',
     pressure: 'EU AI Act · Article 14',
     pressureText: 'The AI Act requires human oversight of high-risk systems, capable of intervention and of overriding or halting the system.',
-    failure: 'Oversight that is informed after the decision has landed is documentation, not control. AGDA tests whether the oversight can alter the outcome before the consequence compounds.',
+    failure: 'Oversight that is informed after the decision has landed is documentation, not control. AGDA™ tests whether the oversight can alter the outcome before the consequence compounds.',
   },
   {
     id: 'cni',
@@ -28,7 +29,7 @@ const sectors = [
     name: 'Public services',
     pressure: 'Public law · accountability',
     pressureText: 'Automated decisions at population scale carry duties of fairness, transparency and an effective route to redress.',
-    failure: 'A redress path slower than the harm it is meant to contain is redress in name only. AGDA measures whether intervention and correction land before the decision becomes irreversible for the person affected.',
+    failure: 'A redress path slower than the harm it is meant to contain is redress in name only. AGDA™ measures whether intervention and correction land before the decision becomes irreversible for the person affected.',
   },
 ];
 ---
@@ -59,7 +60,7 @@ const sectors = [
           </div>
           <div class="sector-body">
             <p class="body">{s.pressureText}</p>
-            <p class="body muted">{s.failure}</p>
+            <p class="body muted" set:html={markAgda(s.failure)}></p>
           </div>
         </div>
       </div>
@@ -76,7 +77,7 @@ const sectors = [
       </p>
       <div class="cta">
         <a href="/Intervene/contact/" class="btn">Request a confidential discussion</a>
-        <a href="/Intervene/agda/" class="btn-ghost">How AGDA works</a>
+        <a href="/Intervene/agda/" class="btn-ghost">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> works</a>
       </div>
     </div>
   </section>

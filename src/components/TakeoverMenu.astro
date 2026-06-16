@@ -1,8 +1,10 @@
 ---
+import { markAgda } from '../lib/marks';
+
 const base = import.meta.env.BASE_URL;
 const items = [
   { label: 'Home',        href: `${base}` },
-  { label: 'AGDA',        href: `${base}agda/` },
+  { label: 'AGDA™',       href: `${base}agda/` },
   { label: 'Methodology', href: `${base}methodology/` },
   { label: 'Sectors',     href: `${base}sectors/` },
   { label: 'Insights',    href: `${base}insights/` },
@@ -35,7 +37,7 @@ const isCurrent = (href: string) => {
     <ul role="list">
       {items.map((item, i) => (
         <li style={`--i: ${i}`}>
-          <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
+          <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined} set:html={markAgda(item.label)}></a>
         </li>
       ))}
     </ul>

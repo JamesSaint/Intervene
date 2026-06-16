@@ -13,8 +13,10 @@
   /* Surfaces */
   --black:      #000000;
   --paper:      #0a0a0a;
+  --paper-deep: #070707;
   --paper-soft: #141414;
   --paper-mid:  #1c1c1c;
+  --paper-raise:#181818;
   --ink:        #f0f0f0;
   --ink-soft:   #ffffff;
   --inverse-ink:#0a0a0a;
@@ -23,6 +25,7 @@
   --hair:        rgba(201, 182, 148, 0.14);
   --hair-soft:   rgba(201, 182, 148, 0.08);
   --hair-strong: rgba(201, 182, 148, 0.30);
+  --hair-fine:   rgba(240, 240, 240, 0.07);
 
   /* Warm text hierarchy on dark surfaces. */
   --muted:      #c8c6c4;

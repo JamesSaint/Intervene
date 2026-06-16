@@ -14,7 +14,7 @@ const states = [
 
 <figure
   class="verdict-block"
-  aria-label="AGDA intervention readiness verdict. A struck, signed certificate. Every assay returns exactly one of three states: before impact, at risk, or after impact."
+  aria-label="AGDA™ intervention readiness verdict. A struck, signed certificate. Every assay returns exactly one of three states: before impact, at risk, or after impact."
 >
   <div class="vb-frame">
     <span class="vb-corner tl" aria-hidden="true"></span>
@@ -64,6 +64,15 @@ const states = [
     background: var(--paper-soft);
     padding: 0;
   }
+  .vb-frame::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 28px;
+    width: 112px;
+    height: 1px;
+    background: var(--accent);
+  }
   /* Registration corners: reads as an official certificate. */
   .vb-corner {
     position: absolute;
@@ -95,7 +104,9 @@ const states = [
     align-items: start;
     padding: 24px 28px;
     border-bottom: 1px solid var(--hair);
+    transition: background var(--dur-hover) var(--ease);
   }
+  .vb-state:hover { background: var(--accent-faint); }
   .vb-index {
     color: var(--accent);
     font-size: 12px;
@@ -112,7 +123,7 @@ const states = [
     text-transform: uppercase;
     color: var(--ink);
   }
-  .vb-dot { width: 12px; height: 12px; border-radius: 50%; flex: none; }
+  .vb-dot { width: 10px; height: 10px; flex: none; }
   .vb-state[data-state='open']      .vb-dot { background: var(--pass); }
   .vb-state[data-state='narrowing'] .vb-dot { background: var(--hold); }
   .vb-state[data-state='closed']    .vb-dot { background: var(--warn); }
@@ -126,9 +137,9 @@ const states = [
   .vb-record dd { margin: 0; font-size: 11.5px; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .vb-strike { display: flex; align-items: center; gap: 12px; padding-top: 18px; border-top: 1px solid var(--hair); }
   .vb-seal {
-    width: 18px; height: 18px; border: 1.5px solid var(--accent); border-radius: 50%; position: relative; flex: none;
+    width: 18px; height: 18px; border: 1px solid var(--accent); position: relative; flex: none;
   }
-  .vb-seal::after { content: ''; position: absolute; inset: 4px; border-radius: 50%; background: var(--accent); }
+  .vb-seal::after { content: ''; position: absolute; inset: 4px; background: var(--accent); }
   .vb-struck { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
 
   .vb-caption { margin: 20px 0 0; font-family: var(--font-sans); font-size: 13px; color: var(--muted); }
