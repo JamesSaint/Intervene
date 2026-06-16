@@ -29,10 +29,10 @@ const controls = [
 ];
 
 const stages = [
-  { stage: 'Signal',       value: '~12 min',  detail: 'to detect drift above threshold',         status: 'pass', verdict: 'PASS · margin 5h 48m' },
-  { stage: 'Escalation',   value: '≥ 7 days', detail: 'to next MRC. No out-of-cycle.',           status: 'fail', verdict: 'FAIL · above window ×28' },
-  { stage: 'Decision',     value: 'N/A',      detail: 'gated upstream. Quorum unavailable.',     status: 'fail', verdict: 'FAIL · capped' },
-  { stage: 'Intervention', value: 'N/A',      detail: 'no halt authority outside MRC quorum.',   status: 'fail', verdict: 'FAIL · capped' },
+  { stage: 'Detect',       value: '~12 min',  detail: 'to detect drift above threshold',         status: 'pass', verdict: 'PASS · margin 5h 48m' },
+  { stage: 'Escalate',     value: '≥ 7 days', detail: 'to next MRC. No out-of-cycle.',           status: 'fail', verdict: 'FAIL · above window ×28' },
+  { stage: 'Decide',       value: 'N/A',      detail: 'gated upstream. Quorum unavailable.',     status: 'fail', verdict: 'FAIL · capped' },
+  { stage: 'Intervene',    value: 'N/A',      detail: 'no halt authority outside MRC quorum.',   status: 'fail', verdict: 'FAIL · capped' },
 ];
 
 const gates = [
@@ -80,24 +80,25 @@ const evidence = [
 ---
 
 <BaseLayout
-  title="Sample Report · Failure Exposure"
-  description="A redacted sample Failure Exposure Report. Retail credit, escalation break, PRA SS1/23 §6 exposure."
+  title="Sample Verdict · Intervention Readiness"
+  description="A redacted AGDA™ Intervention Readiness verdict showing proof, evidence, timing, regulatory mapping and independent verifiability."
   current="sample-report"
 >
   <!-- COVER -->
   <section class="cover">
     <div class="wrap">
-      <span class="cover-kicker mono">Failure Exposure Report · Redacted</span>
+      <span class="cover-kicker mono">Intervention Readiness Verdict · Redacted</span>
 
       <div class="cover-grid">
         <div class="cover-left">
           <h1 class="h1 reveal">
-            Retail credit. <em>Escalation break.</em>
+            Retail credit. <em>Cannot stop in time.</em>
           </h1>
           <p class="lede muted reveal">
-            Single material model. One trigger scenario. The chain breaks at
-            escalation. Detection works. Authority does not. PRA SS1/23 §6
-            intervention capability is structurally below the evidence bar.
+            A redacted example of the <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> output: one material model, one
+            trigger scenario, one signed verdict. Detection works. Authority
+            does not. The organisation cannot intervene before the harm window
+            closes.
           </p>
 
           <dl class="cover-meta">
@@ -132,7 +133,7 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
   <!-- 1. SYSTEM OVERVIEW -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Material model. <em>Live decision authority.</em></h2>
+      <h2 class="h2">The assessed system. <em>The intervention question.</em></h2>
       <p class="lede muted">
         A retail credit decisioning model approving up to 18,000 unsecured
         applications per day. Identified as material under the bank's internal
@@ -153,10 +154,10 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
   <!-- 2. CONTROL REALITY INDEX -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Control Reality Index.</h2>
+      <h2 class="h2">Intervention readiness evidence.</h2>
       <p class="lede muted">
-        Six controls assessed against the eight <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> dimensions. Terminal
-        classification reflects what the control can do under stress, not what
+        Six controls assessed against the eight <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> dimensions.
+        Classification reflects what the control can do under stress, not what
         the policy promises.
       </p>
 
@@ -253,11 +254,11 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
   <!-- 6. BOARD CONCLUSION -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">What the Board <em>needs to act on.</em></h2>
+      <h2 class="h2">What the board <em>needs to act on.</em></h2>
       <p class="lede muted">
         The system is well-instrumented at the technical layer. The authority
         structure surrounding it cannot exercise control inside the window.
-        This is a governance defect, not a model defect.
+        This is an intervention-readiness defect, not a model defect.
       </p>
 
       <div class="callout">
@@ -437,7 +438,7 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
   <!-- 13. SYSTEM VIABILITY -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">The single-line answer <em>for the audit committee.</em></h2>
+      <h2 class="h2">The single-line verdict <em>for the audit committee.</em></h2>
       <p class="lede muted">
         The verdict the chair is being asked to certify. Not a recommendation.
         A measurement.
@@ -447,7 +448,7 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
         <div class="viability-left">
           <span class="mono viability-label">Verdict · CRED-MOD-04</span>
           <span class="viability-big">After impact.</span>
-          <p class="mono viability-sub">SEDI chain does not complete inside the reversibility window.</p>
+          <p class="mono viability-sub">Detect, escalate, decide, intervene does not complete inside the reversibility window.</p>
           <p class="body">
             Detection capability is sound. Authority capability is not. Until
             the halt-authority structure is restructured to permit
@@ -463,8 +464,8 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
           </div>
           <span class="cap-score">1.25 / 5</span>
           <p class="body muted">
-            Driven by chain-ceiling propagation. Signal scores 4.0 but
-            escalation caps at 1.25, capping all downstream stages. Average is
+            Driven by chain-ceiling propagation. Detect measures 4.0 but
+            Escalate caps at 1.25, capping all downstream stages. Average is
             misleading. The chain is the control.
           </p>
         </div>
@@ -481,7 +482,7 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
   <section class="block tight">
     <div class="wrap">
       <div class="close-grid">
-        <h2 class="h2">Run this <em>against your own model.</em></h2>
+        <h2 class="h2">Run this <em>against your own system.</em></h2>
         <div class="close-cta">
           <p class="body muted">
             The format on this page is the format your audit committee would
