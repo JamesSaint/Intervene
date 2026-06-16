@@ -1,0 +1,51 @@
+---
+/**
+ * The Aperture. The master geometry of AGDA: two struck edges facing each
+ * other across a deadline, with a measured margin between them. Three
+ * states only. Monochrome (inherits currentColor); signal colour lives on
+ * the verdict dot, never on the mark itself.
+ *
+ *   open       wide margin   window open      before impact
+ *   narrowing  thin margin   window closing   at risk
+ *   closed     no margin     window shut      after impact
+ *
+ * hollow renders the mark unstruck: an empty assay, nothing yet measured.
+ */
+interface Props {
+  state?: 'open' | 'narrowing' | 'closed';
+  hollow?: boolean;
+  size?: number;
+}
+const { state = 'open', hollow = false, size = 160 } = Astro.props;
+const gap = state === 'open' ? 30 : state === 'narrowing' ? 12 : 2;
+const cx = 80;
+const lx = cx - gap;
+const rx = cx + gap;
+const h = Math.round((size * 72) / 160);
+const labels: Record<string, string> = {
+  open: 'window open, margin intact',
+  narrowing: 'window closing, margin thin',
+  closed: 'window closed, no margin',
+};
+---
+
+<svg
+  class="aperture"
+  data-state={state}
+  data-hollow={hollow ? '' : null}
+  viewBox="0 0 160 72"
+  width={size}
+  height={h}
+  role="img"
+  aria-label={`Aperture: ${labels[state]}`}
+  fill={hollow ? 'none' : 'currentColor'}
+  stroke="currentColor"
+>
+  <line x1="80" y1="4" x2="80" y2="68" stroke-width="1" stroke-dasharray="2 4" opacity="0.55" />
+  <polygon points={`16,12 16,60 ${lx},36`} stroke-width={hollow ? 2 : 0} stroke-linejoin="round" />
+  <polygon points={`144,12 144,60 ${rx},36`} stroke-width={hollow ? 2 : 0} stroke-linejoin="round" />
+</svg>
+
+<style>
+  .aperture { display: block; }
+</style>
