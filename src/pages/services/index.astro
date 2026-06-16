@@ -20,35 +20,68 @@ const reportLayers = [
   },
 ];
 
+const buyerQuestions = [
+  {
+    audience: 'Executive leadership',
+    question: 'Can we proceed with confidence?',
+    answer: 'Evidence for deployment, approval and risk-acceptance decisions where assertion is not enough.',
+  },
+  {
+    audience: 'Risk leadership',
+    question: 'Can intervention still occur before harm becomes irreversible?',
+    answer: 'A measured view of detection, escalation, decision and intervention capability against a reversibility window.',
+  },
+  {
+    audience: 'Board & audit committee',
+    question: 'What evidence supports this decision?',
+    answer: 'A signed, independently verifiable AGDA™ verdict that can be relied on after the decision is made.',
+  },
+];
+
 const tiers = [
   {
     name: 'Pilot',
-    framing: 'First engagement. One system.',
+    framing: 'Initial evidence for one consequential system.',
+    question: 'Can this system be stopped before harm becomes irreversible?',
+    for: 'Executive, risk or board teams facing a material deployment, approval, remediation or oversight decision.',
+    evidence: 'Signed AGDA™ verdict, Failure Exposure Report, regulator bundle, attestation envelope, board evidence readout and intervention scenario support.',
+    decision: 'Deployment confidence, risk acceptance, remediation priority, board oversight and regulatory preparation.',
+    why: 'Creates a defensible evidence standard before the organisation relies on assertion or expands assessment across more systems.',
     formats: [
-      { label: 'Short pilot · 4 weeks · 1 system',         gbp: '£95,000',   eur: '€110,000', usd: '$125,000' },
-      { label: '90-day structured pilot · 1 system',       gbp: '£120,000',  eur: '€140,000', usd: '$155,000' },
-      { label: '90-day structured pilot · 2 systems',      gbp: '£175,000',  eur: '€205,000', usd: '$225,000' },
-      { label: '90-day structured pilot · 3 systems',      gbp: '£225,000',  eur: '€265,000', usd: '$290,000' },
+      { label: 'Short pilot · 1 system',                   gbp: '£95,000',   eur: '€110,000', usd: '$125,000' },
+      { label: 'Structured pilot · 1 system',              gbp: '£120,000',  eur: '€140,000', usd: '$155,000' },
+      { label: 'Structured pilot · 2 systems',             gbp: '£175,000',  eur: '€205,000', usd: '$225,000' },
+      { label: 'Structured pilot · 3 systems',             gbp: '£225,000',  eur: '€265,000', usd: '$290,000' },
     ],
-    includes: 'Failure Exposure Report at all three audience layers, regulator bundle, attestation envelope, Labs Intervention Simulator access for 5 named operators, 90-minute board readout, signed close-out memo.',
+    includes: 'Failure Exposure Report at all three audience layers, regulator bundle, attestation envelope, Labs Intervention Simulator access, board evidence readout, signed close-out memo.',
   },
   {
     name: 'Annual subscription',
-    framing: 'Post-pilot conversion. Standing engagement.',
+    framing: 'Standing evidence for recurring assurance decisions.',
+    question: 'Does Intervention Readiness remain evidenced as systems, dependence and operating conditions change?',
+    for: 'Organisations that have completed a pilot and need recurring evidence for material systems.',
+    evidence: 'Two assessed systems per year, quarterly re-run rights, engine-hash pinning, updated verdicts and annual board evidence readout.',
+    decision: 'Continued deployment, control investment, oversight renewal, risk committee decisions and regulator-facing assurance.',
+    why: 'Keeps the answer current as automation becomes more embedded and the cost of delayed intervention increases.',
     formats: [
       { label: 'Annual subscription',     gbp: '£180,000 / yr', eur: '€210,000 / yr', usd: '$235,000 / yr' },
       { label: 'Equivalent quarterly',    gbp: '£45,000 / qtr', eur: '€52,500 / qtr', usd: '$58,750 / qtr' },
     ],
-    includes: 'Five named operator seats, two assessed systems per year, engine-hash pinning, quarterly re-run rights on each system, annual board-readout session.',
+    includes: 'Standing Labs access, two assessed systems per year, engine-hash pinning, quarterly re-run rights on each system, annual board evidence readout.',
   },
   {
     name: 'Enterprise master',
-    framing: 'Multi-system, multi-entity. Custom-scoped.',
+    framing: 'Group-level evidence across systems and entities.',
+    question: 'Can a complex organisation evidence intervention capability across the systems that matter most?',
+    for: 'Multi-entity groups, regulated portfolios and organisations facing material automation exposure across several operating units.',
+    evidence: 'Portfolio-level Intervention Readiness verdicts, regulator-ready bundles, group CRO review, multi-entity reporting and designated AGDA™ operation.',
+    decision: 'Group assurance, regulatory engagement, critical deployment governance, resilience investment and board-level risk appetite.',
+    why: 'Aligns evidence across entities so the board is not comparing local assertions against group-level exposure.',
     formats: [
-      { label: 'Annual, custom-scoped',   gbp: '£350,000+ / yr', eur: '€410,000+ / yr', usd: '$450,000+ / yr' },
+      { label: 'Enterprise assurance · custom-scoped',   gbp: '£350,000+ / yr', eur: '€410,000+ / yr', usd: '$450,000+ / yr' },
     ],
-    includes: 'Up to 15 named operator seats, up to 5 assessed systems per year, 40 regulator-liaison hours, quarterly portfolio review with group CRO, two annual board-readout sessions, multi-entity invoicing, designated AGDA™ operator.',
-    triggers: 'Triggers: 9+ assessed systems per year, 20+ seats, or 2+ legal entities under a single group.',
+    includes: 'Up to 5 assessed systems per year, regulator-liaison support, quarterly portfolio review with group CRO, board evidence readouts, multi-entity invoicing, designated AGDA™ operator.',
+    triggers: 'Custom scope applies when assurance spans multiple legal entities, material system portfolios or sustained regulator engagement.',
   },
 ];
 
@@ -56,16 +89,16 @@ const addons = [
   { label: 'Additional assessed system, post-pilot',                  gbp: '£55,000',       eur: '€65,000',     usd: '$72,000' },
   { label: 'Additional re-run, beyond quarterly included in Annual',   gbp: '£20,000',       eur: '€23,000',     usd: '$25,000' },
   { label: 'Additional named Labs operator',                          gbp: '£3,000 / term', eur: '€3,500 / term', usd: '$4,000 / term' },
-  { label: 'Board-readout session, remote',                           gbp: '£12,000',       eur: '€14,000',     usd: '$15,500' },
-  { label: 'Board-readout session, on-site',                          gbp: '£18,000',       eur: '€21,000',     usd: '$23,000' },
+  { label: 'Board evidence readout, remote',                           gbp: '£12,000',       eur: '€14,000',     usd: '$15,500' },
+  { label: 'Board evidence readout, on-site',                          gbp: '£18,000',       eur: '€21,000',     usd: '$23,000' },
   { label: 'Regulator bundle, post-engine-version change',            gbp: '£6,000',        eur: '€7,000',      usd: '$7,500' },
 ];
 
 const services = [
-  { label: 'Operator certification, internal assurance team (up to 2 raters)',  gbp: '£55,000',     eur: '€64,000',     usd: '$70,000' },
-  { label: 'Operator certification, advisory firm (firm-level)',                gbp: '£85,000',     eur: '€99,000',     usd: '$108,000' },
-  { label: 'Advisory firm annual renewal',                                       gbp: '£25,000 / yr', eur: '€29,000 / yr', usd: '$32,000 / yr' },
-  { label: 'Regulator-liaison block (20 hours, per quarter)',                   gbp: '£18,000',     eur: '€21,000',     usd: '$23,000' },
+  { label: 'Operator enablement, internal assurance team (up to 2 raters)',      gbp: '£55,000',     eur: '€64,000',     usd: '$70,000' },
+  { label: 'Operator enablement, external assurance firm',                       gbp: '£85,000',     eur: '€99,000',     usd: '$108,000' },
+  { label: 'External assurance firm annual renewal',                             gbp: '£25,000 / yr', eur: '€29,000 / yr', usd: '$32,000 / yr' },
+  { label: 'Regulator-liaison support block',                                    gbp: '£18,000',     eur: '€21,000',     usd: '$23,000' },
 ];
 
 const notProduct = [
@@ -76,30 +109,56 @@ const notProduct = [
 ];
 
 const benchmarks = [
-  { h: 'A senior model risk hire.',              p: 'Fully loaded cost £200,000 to £260,000. Output is not deterministic, not signed, not independently verifiable.' },
-  { h: 'A Big Four governance review.',          p: '£200,000 to £500,000 per system, one-time. The output is a consulting report, not a signed artefact.' },
-  { h: 'A regulatory advisory retainer.',        p: '£300,000 to £800,000 per year. Our regulatory exposure output is more specific and independently verifiable.' },
+  { h: 'Board assurance.',                       p: 'Where the question is whether oversight can actually intervene, not whether oversight has been described.' },
+  { h: 'Model risk and operational resilience.', p: 'Where the system is material, automated, and capable of creating harm faster than authority can move.' },
+  { h: 'Regulatory engagement preparation.',     p: 'Where the organisation needs verifiable evidence of Intervention Readiness, not certification or regulatory approval.' },
 ];
 ---
 
 <BaseLayout
-  title="Services · Intervention Readiness Assessment Outcomes"
-  description="AGDA™ assessment outcomes for boards and executive teams: a deterministic verdict, evidence, regulatory mapping and decision support on whether intervention remains possible."
+  title="Engage · Evidence of Intervention Readiness"
+  description="AGDA™ Intervention Readiness assessments provide signed evidence for consequential decisions: deployment, oversight, risk acceptance, resilience and regulatory scrutiny."
   current="services"
 >
   <!-- HERO -->
   <section class="hero">
     <div class="wrap">
       <h1 class="h1 reveal">
-        Assessment outcomes for <em>executive decisions.</em>
+        Evidence for decisions that cannot rely on assertion.
       </h1>
       <p class="lede muted reveal">
-        If one of your AI systems goes wrong right now, can you stop it before
-        harm becomes irreversible? <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> gives boards and executive
-        teams a deterministic answer, bound to a locked engine version, that an
-        audit committee can defend and a regulator can verify without
-        contacting us.
+        Organisations routinely invest millions in systems whose failure could
+        create significant operational, regulatory or reputational
+        consequences. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> exists to answer whether intervention remains
+        possible before those consequences become irreversible.
       </p>
+      <div class="hero-cta reveal">
+        <a href="/Intervene/sample-report/" class="btn">View sample verdict</a>
+        <a href="/Intervene/methodology/" class="btn-ghost">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> works</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMERCIAL THESIS -->
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">You are not buying activity. <em>You are buying evidence.</em></h2>
+      <p class="lede muted">
+        The value of an Intervention Readiness assessment is determined by the
+        significance of the decision it supports: deployment, high-risk system
+        approval, regulatory scrutiny, board assurance, operational resilience
+        or executive confidence.
+      </p>
+
+      <ul class="buyer-grid reveal" role="list">
+        {buyerQuestions.map((b) => (
+          <li>
+            <span class="mono buyer-audience">{b.audience}</span>
+            <h3 class="h3">{b.question}</h3>
+            <p class="body muted" set:html={markAgda(b.answer)} />
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
@@ -137,38 +196,68 @@ const benchmarks = [
   <!-- THREE TIERS -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Three engagement shapes. <em>Priced per assessment.</em></h2>
+      <h2 class="h2">Three levels of assurance. <em>Priced by decision significance.</em></h2>
       <p class="lede muted">
-        The commercial unit is the assessment, not the seat. Customers expand
-        by assessing more systems, not by adding users.
+        The commercial unit is evidence of Intervention Readiness. Price comes
+        after the question answered, the evidence produced, and the decision
+        being supported.
       </p>
 
       <ol class="tiers" role="list">
         {tiers.map((t) => (
           <li class="tier reveal">
             <div class="tier-head">
+              <span class="mono tier-label">Assurance level</span>
               <h3 class="h3">{t.name}.</h3>
               <span class="mono tier-framing">{t.framing}</span>
             </div>
 
-            <ul class="formats" role="list">
-              {t.formats.map((f) => (
-                <li>
-                  <span class="format-label">{f.label}</span>
-                  <span class="format-price">
-                    <span class="price-gbp">{f.gbp}</span>
-                    <span class="price-alt mono">{f.eur} · {f.usd}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
+            <div class="tier-body">
+              <dl class="tier-fields">
+                <div>
+                  <dt>Question answered</dt>
+                  <dd>{t.question}</dd>
+                </div>
+                <div>
+                  <dt>Who it is for</dt>
+                  <dd>{t.for}</dd>
+                </div>
+                <div>
+                  <dt>Evidence produced</dt>
+                  <dd set:html={markAgda(t.evidence)} />
+                </div>
+                <div>
+                  <dt>Decision supported</dt>
+                  <dd>{t.decision}</dd>
+                </div>
+                <div>
+                  <dt>Why it matters</dt>
+                  <dd>{t.why}</dd>
+                </div>
+              </dl>
 
-            <p class="body muted tier-includes">
-              <strong>Includes.</strong> <span set:html={markAgda(t.includes)} />
-            </p>
-            {t.triggers && (
-              <p class="mono tier-triggers">{t.triggers}</p>
-            )}
+              <div class="tier-price-block">
+                <span class="mono price-heading">Price</span>
+                <ul class="formats" role="list">
+                  {t.formats.map((f) => (
+                    <li>
+                      <span class="format-label">{f.label}</span>
+                      <span class="format-price">
+                        <span class="price-gbp">{f.gbp}</span>
+                        <span class="price-alt mono">{f.eur} · {f.usd}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <p class="body muted tier-includes">
+                <strong>Assessment scope.</strong> <span set:html={markAgda(t.includes)} />
+              </p>
+              {t.triggers && (
+                <p class="mono tier-triggers">{t.triggers}</p>
+              )}
+            </div>
           </li>
         ))}
       </ol>
@@ -180,8 +269,9 @@ const benchmarks = [
     <div class="wrap">
       <h2 class="h2">Add-ons.</h2>
       <p class="lede muted">
-        Any tier. Priced per unit. No volume discount on the first deal in a
-        sector.
+        Additional evidence, re-runs and support when the decision requires
+        more coverage. Priced per unit. No volume discount on the first deal in
+        a sector.
       </p>
 
       <ul class="rate-card" role="list">
@@ -196,7 +286,7 @@ const benchmarks = [
         ))}
       </ul>
 
-      <h3 class="h3 services-head">Professional services.</h3>
+      <h3 class="h3 services-head">Assessment support.</h3>
       <ul class="rate-card" role="list">
         {services.map((a) => (
           <li>
@@ -240,11 +330,10 @@ const benchmarks = [
   <!-- BENCHMARKS -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">The right budget line.</h2>
+      <h2 class="h2">Where the assessment belongs.</h2>
       <p class="lede muted">
         <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is priced against board assurance, model risk and
-        operational resilience budgets. Not software procurement. The relevant
-        comparisons:
+        operational resilience budgets. Not software procurement.
       </p>
 
       <ul class="benchmarks" role="list">
@@ -258,9 +347,8 @@ const benchmarks = [
 
       <p class="body footnote">
         <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> at £95,000 for a pilot or £180,000 per year for an annual
-        subscription sits inside any of those budget lines and produces
-        something they cannot: a signed verdict the regulator can verify
-        without us.
+        subscription turns that budget into a signed verdict on one question:
+        can the organisation intervene before harm becomes irreversible?
       </p>
     </div>
   </section>
@@ -275,9 +363,13 @@ const benchmarks = [
         <div class="close-cta reveal">
           <p class="body muted">
             The pilot is sized around one consequential system and one
-            intervention-readiness question. Brief, confidential, no obligation.
+            Intervention Readiness question. Review the sample verdict first if
+            you want to see the evidence standard.
           </p>
-          <a href="/Intervene/contact/" class="btn">Request a confidential discussion</a>
+          <div class="cta-row">
+            <a href="/Intervene/sample-report/" class="btn">View sample verdict</a>
+            <a href="/Intervene/contact/" class="btn-ghost">Book a conversation</a>
+          </div>
         </div>
       </div>
     </div>
@@ -292,9 +384,35 @@ const benchmarks = [
   }
   .hero .h1 { max-width: 22ch; }
   .hero .lede { margin-top: 32px; max-width: 62ch; }
+  .hero-cta { margin-top: 48px; display: flex; gap: 16px; flex-wrap: wrap; }
 
   .block .h2 { max-width: 28ch; }
   .block .lede { margin-top: 16px; max-width: 60ch; }
+
+  /* ----- Buyer questions ----- */
+  .buyer-grid {
+    list-style: none;
+    margin: 72px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    border-top: 1px solid var(--hair-strong);
+  }
+  .buyer-grid > li {
+    padding-top: 32px;
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+  .buyer-audience {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+  }
+  .buyer-grid .h3 { margin: 0; }
+  .buyer-grid p { margin: 0; max-width: 34ch; }
 
   /* ----- Report layers ----- */
   .layers {
@@ -349,7 +467,58 @@ const benchmarks = [
   }
   .tier-head { display: grid; gap: 8px; align-content: start; }
   .tier-head .h3 { margin: 0; font-size: 28px; }
+  .tier-label,
   .tier-framing {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+  }
+  .tier-body {
+    display: grid;
+    gap: 28px;
+    min-width: 0;
+  }
+  .tier-fields {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 40px;
+    border-top: 1px solid var(--hair);
+  }
+  .tier-fields > div {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .tier-fields > div:last-child {
+    grid-column: 1 / -1;
+  }
+  .tier-fields dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.3;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .tier-fields dd {
+    margin: 8px 0 0;
+    max-width: 48ch;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.58;
+    color: var(--ink);
+  }
+  .tier-fields > div:last-child dd {
+    max-width: 68ch;
+    color: var(--muted);
+  }
+  .tier-price-block {
+    display: grid;
+    gap: 12px;
+  }
+  .price-heading {
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -362,6 +531,7 @@ const benchmarks = [
     padding: 0;
     display: grid;
     gap: 0;
+    border-top: 1px solid var(--hair-strong);
   }
   .formats > li {
     display: grid;
@@ -395,14 +565,12 @@ const benchmarks = [
     letter-spacing: 0.04em;
   }
   .tier-includes {
-    grid-column: 1 / -1;
-    margin: 24px 0 0;
+    margin: 0;
     max-width: 80ch;
   }
   .tier-includes strong { color: var(--ink); font-weight: 500; }
   .tier-triggers {
-    grid-column: 1 / -1;
-    margin: 12px 0 0;
+    margin: 0;
     color: var(--muted);
     font-size: 11px;
     letter-spacing: 0.04em;
@@ -486,13 +654,17 @@ const benchmarks = [
     padding-top: 12px;
   }
   .close-cta .body { margin: 0; max-width: 42ch; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
   .close-cta .btn { justify-self: start; }
 
   /* ----- Responsive ----- */
   @media (max-width: 880px) {
     .hero { padding-top: 96px; padding-bottom: 96px; }
+    .buyer-grid { grid-template-columns: 1fr; gap: 40px; }
     .layers { grid-template-columns: 1fr; }
     .tier { grid-template-columns: 1fr; gap: 24px; }
+    .tier-fields { grid-template-columns: 1fr; }
+    .tier-fields > div:last-child { grid-column: auto; }
     .formats > li { grid-template-columns: 1fr; gap: 4px; }
     .format-price { text-align: left; justify-items: start; }
     .rate-card > li { grid-template-columns: 1fr; gap: 4px; padding: 16px 0; }

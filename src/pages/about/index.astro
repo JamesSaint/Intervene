@@ -22,7 +22,7 @@ const sectorsInvite = [
 
 const notServed = [
   { h: 'Not a compliance dashboard.',     p: 'Compliance tools handle evidence management. We measure whether intervention capability holds under stress.' },
-  { h: 'Not a Big-4 advisory.',           p: 'No leveraged teams, no slide decks, no implementation arm. Senior delivery throughout. A signed verdict.' },
+  { h: 'Not a Big-4 advisory.',           p: 'No leveraged teams, no slide decks, no implementation arm. The output is a signed verdict.' },
   { h: 'Not a policy-writing practice.',  p: 'We do not draft your automation policy. We measure whether the controls behind it produce what the policy claims.' },
   { h: 'Not a model-testing lab.',        p: 'Red-team labs test models. We test whether the chain around the model can act on what the lab finds.' },
   { h: 'Not an implementation partner.',  p: 'No standing-up of controls, no platform integration, no runbook ops. Remediation belongs to you or someone else.' },
@@ -31,17 +31,18 @@ const notServed = [
 ---
 
 <BaseLayout
-  title="About James Saint | Founder of Intervene and Creator of AGDA™"
-  description="James Saint founded Intervene and developed AGDA™ to measure Intervention Readiness: whether organisations can detect, escalate, decide and intervene before harm becomes irreversible."
+  title="Why Intervention Readiness Matters · Intervene"
+  description="Why Intervention Readiness exists: systems are becoming more capable, organisations rely more on automation, and human oversight only matters if intervention remains possible."
   current="about"
 >
   <section class="hero">
     <div class="wrap">
-      <h1 class="h1 reveal">About <em>James Saint.</em></h1>
+      <span class="label">Why it matters</span>
+      <h1 class="h1 reveal">Capability moved faster than intervention.</h1>
       <p class="lede muted reveal">
-        I founded Intervene because human oversight is only meaningful when
-        humans can still intervene. The question is simple: can you stop it in
-        time?
+        AI systems are becoming more capable. Organisations are becoming more
+        dependent on automation. Human oversight only matters if intervention
+        remains possible.
       </p>
     </div>
   </section>
@@ -71,8 +72,8 @@ const notServed = [
           <p class="mono role">Founder · Principal Advisor</p>
 
           <p class="body q">
-            When a critical system begins to fail, can an organisation actually
-            intervene before harm becomes irreversible?
+            Most organisations can evidence governance. Far fewer can evidence
+            intervention capability.
           </p>
 
           <p class="body">
@@ -91,7 +92,7 @@ const notServed = [
             opportunity to prevent harm had already passed.
           </p>
 
-          <p class="body">That observation became the foundation of <span class="agda-mark">AGDA<span class="agda-tm">™</span></span>.</p>
+          <p class="body">That gap became the foundation of <span class="agda-mark">AGDA<span class="agda-tm">™</span></span>.</p>
 
           <p class="body">
             My background spans more than three decades across technology,
@@ -151,7 +152,7 @@ const notServed = [
   <!-- COMMITMENTS -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Four commitments. <em>Each one structural.</em></h2>
+      <h2 class="h2">The operating commitments behind the instrument.</h2>
       <p class="lede muted">
         Operating constraints, codified into how we accept work, how we
         calibrate, what we will and will not deliver.
@@ -171,7 +172,7 @@ const notServed = [
   <!-- SECTORS -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Specific sectors. <em>By design.</em></h2>
+      <h2 class="h2">Where the category is most urgent.</h2>
       <p class="lede muted">
         Three primary sectors. Two by invitation. Some we deliberately do
         not serve.
@@ -238,12 +239,16 @@ const notServed = [
   <section class="block tight">
     <div class="wrap">
       <div class="close-grid">
-        <h2 class="h2 reveal">If this is relevant to what you are facing, <em>let us talk.</em></h2>
+        <h2 class="h2 reveal">The question returns to the same place.</h2>
         <div class="close-cta reveal">
           <p class="body muted">
-            A senior advisor responds within one to two working days.
+            Can you stop it in time? See the evidence format before opening a
+            commercial conversation.
           </p>
-          <a href="/Intervene/contact/" class="btn">Request a confidential discussion</a>
+          <div class="cta-row">
+            <a href="/Intervene/sample-report/" class="btn">View sample verdict</a>
+            <a href="/Intervene/contact/" class="btn-ghost">Book a conversation</a>
+          </div>
         </div>
       </div>
     </div>
@@ -256,7 +261,8 @@ const notServed = [
     padding-bottom: 144px;
     border-bottom: 1px solid var(--hair);
   }
-  .hero .h1 { max-width: 18ch; }
+  .hero .label { margin-bottom: 24px; }
+  .hero .h1 { max-width: 24ch; }
   .hero .lede { margin-top: 32px; max-width: 52ch; }
 
   .block .h2 { max-width: 24ch; }
@@ -418,6 +424,7 @@ const notServed = [
     padding-top: 12px;
   }
   .close-cta .body { margin: 0; max-width: 38ch; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
   .close-cta .btn { justify-self: start; }
 
   @media (max-width: 880px) {
