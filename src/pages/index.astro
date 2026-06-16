@@ -215,7 +215,7 @@ const insights = [
   <section class="block">
     <div class="wrap">
       <h2 class="h2">A published <em>point of view.</em></h2>
-      <div class="card-grid insights-grid reveal" role="list">
+      <div class="insights-list reveal" role="list">
         {insights.map((a) => (
           <InsightCard title={a.title} dek={a.dek} href={a.href} kicker={a.kicker} />
         ))}
@@ -244,20 +244,23 @@ const insights = [
 </BaseLayout>
 
 <style>
-  /* 1 · Hero */
+  /* 1 · Hero. Black masthead: maximum contrast, set against the white
+     header above and the white reframe section below. */
   .hero {
-    padding-top: clamp(80px, 12vh, 160px);
-    padding-bottom: clamp(64px, 9vh, 128px);
-    border-bottom: 1px solid var(--hair);
+    background: var(--ink);
+    color: var(--paper);
+    padding-top: clamp(96px, 14vh, 184px);
+    padding-bottom: clamp(80px, 11vh, 152px);
+    border-bottom: 0;
   }
-  .hero .display-xl { max-width: 14ch; }
+  .hero .display-xl { max-width: 14ch; color: var(--paper); }
   .hero-position {
     margin: clamp(32px, 5vh, 56px) 0 0;
     font-family: var(--font-sans);
     font-size: clamp(18px, 1.6vw, 24px);
     font-weight: 500;
     letter-spacing: -0.01em;
-    color: var(--ink);
+    color: var(--paper);
     max-width: 32ch;
   }
   .hero-cta {
@@ -269,7 +272,23 @@ const insights = [
   .hero-support {
     margin-top: 40px;
     max-width: 46ch;
+    color: rgba(255, 255, 255, 0.66);
   }
+
+  /* Buttons inverted for the black hero. */
+  .hero .btn {
+    background: var(--paper);
+    color: var(--ink);
+    border-color: var(--paper);
+  }
+  .hero .btn:hover { background: var(--paper-mid); border-color: var(--paper-mid); }
+  .hero .btn-ghost {
+    background: transparent;
+    color: var(--paper);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+  .hero .btn-ghost:hover { border-color: var(--paper); }
+  .hero ::selection { background: var(--paper); color: var(--ink); }
 
   .block .h2 { max-width: 22ch; }
   .block > .wrap > .lede { margin-top: 16px; max-width: 50ch; }
@@ -402,7 +421,7 @@ const insights = [
   }
 
   /* 7 · Insights */
-  .insights-grid { margin-top: 56px; }
+  .insights-list { margin-top: 56px; }
 
   /* 8 · Close */
   .close-grid {
