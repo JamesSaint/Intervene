@@ -1,0 +1,65 @@
+---
+import HubLayout from '../../../layouts/HubLayout.astro';
+
+const faqs = [
+  {
+    question: 'What is effective human oversight?',
+    answer: 'Effective human oversight is oversight in which humans are informed, authorised and able to alter or halt outcomes before the harm window closes. Oversight that cannot change the outcome is observation, not oversight.',
+  },
+  {
+    question: 'Is a human in the loop enough?',
+    answer: 'No. A human in the loop is evidence of presence, not of capability. Oversight is effective only if that human is informed in time, authorised to act, and able to alter or halt the system before harm becomes irreversible.',
+  },
+  {
+    question: 'How does this relate to regulatory expectations?',
+    answer: 'Regulators increasingly require effective human oversight of automated and AI systems, including measures that let humans intervene or interrupt. Intervention Readiness is the capability that requirement assumes. AGDA™ measures it; it does not certify compliance.',
+  },
+];
+---
+
+<HubLayout
+  termSlug="effective-human-oversight"
+  title="Effective Human Oversight · Intervene"
+  description="Effective human oversight is oversight in which humans are informed, authorised and able to alter or halt outcomes before the harm window closes. Intervention Readiness is the capability it assumes."
+  label="Component of Intervention Readiness"
+  h1="Effective human oversight."
+  lede="Oversight matters only if it can change the outcome. The test is not whether a human is present, but whether that human is informed, authorised and able to act in time."
+  agda="AGDA™ measures whether human oversight can detect, escalate, decide and intervene before harm becomes irreversible. It produces evidence of human intervention capability: a deterministic verdict on whether the people responsible for a system can actually alter or halt it inside the reversibility window."
+  related={[
+    { label: 'What is Intervention Readiness?', href: '/Intervene/intervention-readiness/' },
+    { label: 'Halt authority', href: '/Intervene/intervention-readiness/halt-authority/', ghost: true },
+    { label: 'Intervention Readiness vs AI governance', href: '/Intervene/intervention-readiness/vs-ai-governance/', ghost: true },
+  ]}
+  faqs={faqs}
+>
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">Informed, authorised, timely.</h2>
+      <p class="body muted">
+        Effective oversight requires three conditions at once. The human must
+        be informed: the signal reaches them while action is still possible.
+        Authorised: they hold the
+        <a href="/Intervene/intervention-readiness/halt-authority/" class="link">halt authority</a>
+        to act, not merely to advise. Timely: the act lands before the
+        reversibility window closes. Remove any one and oversight collapses into
+        observation. The person sees the failure and records it, but the outcome
+        is already fixed.
+      </p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">Presence is not capability.</h2>
+      <p class="body muted">
+        A human in the loop is often presented as the safeguard. It is not, by
+        itself, evidence of anything. The
+        <a href="/Intervene/intervention-readiness/intervention-chain/" class="link">intervention chain</a>
+        still has to complete: the human must detect the deviation, escalate or
+        decide, and intervene in time. Effective human oversight is the name for
+        the case where all of that holds. Intervention Readiness is how it is
+        measured.
+      </p>
+    </div>
+  </section>
+</HubLayout>

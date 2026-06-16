@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { markAgda } from '../../lib/marks';
+import { terms } from '../../lib/terms';
+
+// Render the single source-of-truth vocabulary. Hub terms link to their
+// dedicated page; the rest are canonically defined here at their anchor.
+const hubLink = (path: string) => `/Intervene/${path}`;
+
+const faqs = [
+  {
+    question: 'What is Intervention Readiness?',
+    answer: 'Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.',
+  },
+  {
+    question: 'What does AGDA™ measure?',
+    answer: 'AGDA™ measures Intervention Readiness. It evaluates whether an organisation can detect, escalate, decide and intervene within the available reversibility window.',
+  },
+];
+---
+
+<BaseLayout
+  title="Glossary · Intervene"
+  description="The defined terms of Intervention Readiness: the intervention chain, the reversibility window, halt authority, effective human oversight, and the terms AGDA™ uses to measure them."
+  current="intervention-readiness"
+  faqs={faqs}
+>
+  <section class="hero">
+    <div class="wrap">
+      <span class="label">Reference</span>
+      <h1 class="h1 reveal">Glossary of Intervention Readiness.</h1>
+      <p class="lede muted reveal">
+        The vocabulary of the category, defined once. Each term is used the
+        same way across the site, the schema and the verdict.
+      </p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <dl class="glossary">
+        {terms.map((t) => (
+          <div id={t.slug}>
+            <dt set:html={markAgda(t.name)} />
+            <dd>
+              <p class="body" set:html={markAgda(t.definition)} />
+              {t.hub && (
+                <a href={hubLink(t.path)} class="link">Read the full page</a>
+              )}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="block tight">
+    <div class="wrap-narrow">
+      <h2 class="h2">The category, the instrument, the owner.</h2>
+      <p class="body muted">
+        Intervention Readiness is the category. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is the deterministic
+        instrument that measures it, created and owned by Intervene Limited.
+      </p>
+      <div class="cta">
+        <a href="/Intervene/intervention-readiness/" class="btn">What is Intervention Readiness?</a>
+        <a href="/Intervene/agda/" class="btn-ghost"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 144px;
+    padding-bottom: 96px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .hero .label { margin-bottom: 24px; }
+  .hero .h1 { max-width: 20ch; }
+  .hero .lede { margin-top: 32px; max-width: 56ch; }
+
+  .glossary {
+    margin: 0;
+    border-top: 1px solid var(--hair-strong);
+  }
+  .glossary > div {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 48px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--hair);
+    scroll-margin-top: 96px;
+  }
+  .glossary dt {
+    font-family: var(--font-sans);
+    font-size: clamp(20px, 2.2vw, 26px);
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .glossary dd { margin: 0; display: grid; gap: 12px; }
+  .glossary .body { max-width: 56ch; }
+
+  .cta { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+
+  @media (max-width: 880px) {
+    .hero { padding-top: 96px; padding-bottom: 64px; }
+    .glossary > div { grid-template-columns: 1fr; gap: 16px; }
+  }
+</style>

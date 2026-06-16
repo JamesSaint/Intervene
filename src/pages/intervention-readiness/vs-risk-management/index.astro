@@ -1,0 +1,36 @@
+---
+import ComparisonLayout from '../../../layouts/ComparisonLayout.astro';
+
+const faqs = [
+  {
+    question: 'How is Intervention Readiness different from risk management?',
+    answer: 'Risk management estimates the likelihood and impact of events. Intervention Readiness measures whether the response chain can complete before harm becomes irreversible. One estimates exposure; the other measures response capability against the clock.',
+  },
+  {
+    question: 'Is Intervention Readiness a risk appetite question?',
+    answer: 'No. Risk appetite sets how much exposure an organisation will accept. Intervention Readiness measures whether, once an event begins, intervention can occur in time. Appetite does not change the speed of the chain.',
+  },
+  {
+    question: 'Who owns Intervention Readiness in a risk function?',
+    answer: 'The risk function is a natural owner because it already governs response and escalation. Intervention Readiness adds the missing axis: response speed measured against the harm window, evidenced by a deterministic verdict.',
+  },
+];
+---
+
+<ComparisonLayout
+  title="Intervention Readiness vs Risk Management · Intervene"
+  description="Risk management estimates likelihood and impact. Intervention Readiness measures whether the response beats the harm window. AGDA™ evidences the response side with a signed verdict."
+  other="Risk Management"
+  verdict="Risk management estimates how likely an event is and how much it would cost. Intervention Readiness measures whether, once it begins, the response completes before harm becomes irreversible."
+  whatOther="Risk management identifies, estimates and prioritises exposure: the likelihood of events and the scale of their impact, set against an appetite for how much exposure is acceptable. It is the discipline of knowing what could go wrong and how much it would matter."
+  rows={[
+    { aspect: 'Primary object', other: 'Likelihood and impact of events', ir: 'Speed and completeness of the response' },
+    { aspect: 'Core question', other: 'How likely, and how costly?', ir: 'Can the response beat the harm window?' },
+    { aspect: 'Measured against', other: 'Risk appetite and tolerance', ir: 'The reversibility window' },
+    { aspect: 'Failure it exposes', other: 'Mispriced or unseen exposure', ir: 'A response chain slower than the harm' },
+    { aspect: 'Evidence produced', other: 'Registers, ratings and models', ir: 'A signed, deterministic verdict' },
+  ]}
+  relate="Intervention Readiness is the response axis risk management tends to assume. A risk register can rate an event and name a mitigating control without establishing that the control fires inside the window. Estimating exposure and measuring response capability are different tasks. Intervention Readiness measures the second, and it is the one that decides whether a known risk is survivable when it materialises."
+  agda="AGDA™ measures whether detect, escalate, decide and intervene complete before the point of irreversibility, applying evidence ceilings and chain propagation so the weakest stage is visible. The verdict gives the risk function a defensible, reproducible statement of response capability to set beside its estimates of likelihood and impact."
+  faqs={faqs}
+/>

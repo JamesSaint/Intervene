@@ -1,0 +1,36 @@
+---
+import ComparisonLayout from '../../../layouts/ComparisonLayout.astro';
+
+const faqs = [
+  {
+    question: 'How is Intervention Readiness different from operational resilience?',
+    answer: 'Operational resilience asks whether important services can stay within impact tolerance. Intervention Readiness focuses on the intervention chain that prevents automated harm from crossing the point of irreversibility.',
+  },
+  {
+    question: 'Can a resilient service still lack Intervention Readiness?',
+    answer: 'Yes. A service can be designed to absorb disruption and recover within tolerance while still lacking a response chain fast enough to halt a consequential system before harm becomes irreversible.',
+  },
+  {
+    question: 'Does Intervention Readiness replace operational resilience?',
+    answer: 'No. They are complementary. Resilience governs whether services stay within tolerance. Intervention Readiness governs whether intervention completes in time. Both matter; they answer different questions.',
+  },
+];
+---
+
+<ComparisonLayout
+  title="Intervention Readiness vs Operational Resilience · Intervene"
+  description="Operational resilience keeps important services within impact tolerance. Intervention Readiness governs the chain that prevents irreversible automated harm. AGDA™ measures the chain."
+  other="Operational Resilience"
+  verdict="Operational resilience keeps important services within impact tolerance. Intervention Readiness measures whether the intervention chain completes before automated harm becomes irreversible."
+  whatOther="Operational resilience is the ability of important business services to remain within an impact tolerance through disruption, and to recover when breached. It concerns continuity of service: staying inside acceptable limits and restoring them when crossed."
+  rows={[
+    { aspect: 'Primary object', other: 'Continuity of important services', ir: 'Completion of the intervention chain' },
+    { aspect: 'Core question', other: 'Can the service stay within tolerance?', ir: 'Can intervention occur before irreversibility?' },
+    { aspect: 'Measured against', other: 'Impact tolerance', ir: 'The reversibility window' },
+    { aspect: 'Failure it exposes', other: 'A service outside tolerance', ir: 'A chain that completes after impact' },
+    { aspect: 'Evidence produced', other: 'Tolerance mapping and scenario testing', ir: 'A signed, deterministic verdict' },
+  ]}
+  relate="Intervention Readiness and operational resilience overlap on timing but differ on object. Resilience assumes a service can be brought back inside tolerance; Intervention Readiness asks whether the act of intervening happens before the point of irreversibility, after which recovery is not the question because the harm is fixed. Resilience governs the service. Intervention Readiness governs the intervention that protects it."
+  agda="AGDA™ assesses detect, escalate, decide and intervene against the reversibility window, returning a signed verdict on whether the chain completes in time. Where a resilience programme maps tolerances and tests scenarios, AGDA™ supplies the missing measurement: whether the organisation can halt a consequential system before the harm window closes."
+  faqs={faqs}
+/>

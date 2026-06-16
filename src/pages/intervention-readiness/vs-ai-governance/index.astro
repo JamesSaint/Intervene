@@ -1,0 +1,36 @@
+---
+import ComparisonLayout from '../../../layouts/ComparisonLayout.astro';
+
+const faqs = [
+  {
+    question: 'Is Intervention Readiness the same as AI governance?',
+    answer: 'No. AI governance describes the structures, policies and committees that assign responsibility for AI systems. Intervention Readiness measures whether those structures can detect, escalate, decide and intervene before harm becomes irreversible.',
+  },
+  {
+    question: 'Can an organisation have strong AI governance and weak Intervention Readiness?',
+    answer: 'Yes, and it is common. Mature governance can document ownership and controls while the intervention chain still runs slower than the harm window. Governance does not test time; Intervention Readiness does.',
+  },
+  {
+    question: 'Does AGDA™ replace AI governance?',
+    answer: 'No. AGDA™ measures a capability that governance assumes but does not evidence. It complements governance by returning a deterministic verdict on whether intervention can occur in time.',
+  },
+];
+---
+
+<ComparisonLayout
+  title="Intervention Readiness vs AI Governance · Intervene"
+  description="AI governance describes the structures that assign responsibility for AI systems. Intervention Readiness measures whether those structures can detect, escalate, decide and intervene before harm becomes irreversible."
+  other="AI Governance"
+  verdict="AI governance describes who is responsible and which controls exist. Intervention Readiness measures whether that structure can act inside the window where action still changes the outcome."
+  whatOther="AI governance sets out the policies, committees, model inventories, approval gates and accountability structures for an organisation's AI systems. It establishes who owns what and which controls are required. It is the map of responsibility."
+  rows={[
+    { aspect: 'Primary object', other: 'Structures, policies and accountability', ir: 'Capability to intervene in time' },
+    { aspect: 'Core question', other: 'Who is responsible, and which controls exist?', ir: 'Can the chain complete before harm becomes irreversible?' },
+    { aspect: 'Tested against', other: 'A framework or policy set', ir: 'The reversibility window' },
+    { aspect: 'Failure it exposes', other: 'Missing ownership or undocumented controls', ir: 'Authority that arrives after the point of irreversibility' },
+    { aspect: 'Evidence produced', other: 'Policy and committee records', ir: 'A signed, deterministic verdict' },
+  ]}
+  relate="Intervention Readiness sits inside the space AI governance leaves unmeasured. Governance can name an accountable owner and list a halt control; it does not establish that the owner holds halt authority where the signal first lands, or that the control fires before the window closes. The two are complementary. Governance assigns the duty. Intervention Readiness measures whether the duty can be discharged in time."
+  agda="AGDA™ assesses evidence across detect, escalate, decide and intervene, applies evidence ceilings and chain propagation, and returns a deterministic verdict on whether intervention completes inside the reversibility window. It does not grade the governance framework. It measures whether the capability the framework assumes actually exists."
+  faqs={faqs}
+/>
