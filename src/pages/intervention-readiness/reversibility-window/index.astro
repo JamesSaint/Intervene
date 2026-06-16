@@ -1,0 +1,65 @@
+---
+import HubLayout from '../../../layouts/HubLayout.astro';
+
+const faqs = [
+  {
+    question: 'What is the reversibility window?',
+    answer: 'The reversibility window is the interval between a deviation and the point at which harm becomes irreversible. The intervention chain must complete inside it.',
+  },
+  {
+    question: 'What is the point of irreversibility?',
+    answer: 'The point of irreversibility is the moment after which intervention can no longer change the outcome. Before it, intervention works. After it, the harm is fixed and only recovery remains.',
+  },
+  {
+    question: 'Why is the window getting shorter?',
+    answer: 'Automation compresses it. As systems act faster and at larger scale, the harm window shrinks while the speed of human authority stays roughly constant. The gap is where Intervention Readiness is lost.',
+  },
+];
+---
+
+<HubLayout
+  termSlug="reversibility-window"
+  title="The Reversibility Window · Intervene"
+  description="The reversibility window is the interval between a deviation and the point at which harm becomes irreversible. The intervention chain must complete inside it."
+  label="Component of Intervention Readiness"
+  h1="The reversibility window."
+  lede="Every intervention runs against a clock. The window is the time between the first deviation and the point after which acting no longer changes the outcome."
+  agda="AGDA™ assesses the intervention chain against the reversibility window for the system under review. The verdict turns on a single comparison: does detect, escalate, decide and intervene complete before the window closes. Where the chain is slower than the window, the verdict is after impact, regardless of how complete the controls look on paper."
+  related={[
+    { label: 'What is Intervention Readiness?', href: '/Intervene/intervention-readiness/' },
+    { label: 'The intervention chain', href: '/Intervene/intervention-readiness/intervention-chain/', ghost: true },
+    { label: 'View sample verdict', href: '/Intervene/sample-report/', ghost: true },
+  ]}
+  faqs={faqs}
+>
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">Two clocks, and the gap between them.</h2>
+      <p class="body muted">
+        Two intervals run at once. The harm window is the time the system takes
+        to push harm past the point of irreversibility. The response window is
+        the time the
+        <a href="/Intervene/intervention-readiness/intervention-chain/" class="link">intervention chain</a>
+        takes to detect, escalate, decide and intervene. The verdict lives in
+        the gap. When the response window is shorter than the harm window,
+        intervention is possible. When it is longer, the organisation is a
+        witness to an outcome it cannot change.
+      </p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap-narrow" id="point-of-irreversibility">
+      <h2 class="h2">The point of irreversibility.</h2>
+      <p class="body muted">
+        The point of irreversibility is the moment after which intervention can
+        no longer change the outcome. It is the line the whole category is
+        organised around. Before it, the cheap intervention is available. After
+        it, the harm is fixed and the only remaining question is recovery,
+        which is a different discipline answering a different question. The cost
+        of intervention is low early and rises sharply as the window closes,
+        which is why the margin has to be built before the event that needs it.
+      </p>
+    </div>
+  </section>
+</HubLayout>

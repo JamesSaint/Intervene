@@ -1,0 +1,237 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { markAgda } from '../lib/marks';
+import { terms } from '../lib/terms';
+
+interface Row {
+  aspect: string;
+  other: string;
+  ir: string;
+}
+interface Faq {
+  question: string;
+  answer: string;
+}
+interface Props {
+  title: string;        // passed to BaseLayout, ends "· Intervene"
+  description: string;
+  other: string;        // adjacent discipline, e.g. "AI Governance"
+  verdict: string;      // one-line extractable distinction
+  whatOther: string;    // what the adjacent discipline does
+  rows: Row[];
+  relate: string;       // how it relates to Intervention Readiness
+  agda: string;         // how AGDA measures or evidences it
+  faqs: Faq[];
+}
+
+const { title, description, other, verdict, whatOther, rows, relate, agda, faqs } =
+  Astro.props as Props;
+
+const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.definition;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  current="intervention-readiness"
+  faqs={faqs}
+  breadcrumbs={[
+    { name: 'Intervention Readiness', item: '/' },
+    { name: 'What is Intervention Readiness?', item: '/intervention-readiness/' },
+    { name: `vs ${other}`, item: Astro.url.pathname },
+  ]}
+>
+  <section class="hero">
+    <div class="wrap">
+      <span class="label">Comparison</span>
+      <h1 class="h1 reveal" set:html={markAgda(`Intervention Readiness vs ${other}`)} />
+      <p class="lede muted reveal" set:html={markAgda(verdict)} />
+    </div>
+  </section>
+
+  <section class="block definition">
+    <div class="wrap">
+      <div class="definition-grid">
+        <div>
+          <h2 class="h2" set:html={markAgda(`What ${other} does.`)} />
+          <p class="body muted" set:html={markAgda(whatOther)} />
+        </div>
+        <aside class="definition-box" aria-label="Intervention Readiness definition">
+          <span class="mono box-label">The category</span>
+          <p>{irDefinition}</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">What each measures.</h2>
+      <table class="compare">
+        <thead>
+          <tr>
+            <th scope="col">Question</th>
+            <th scope="col" set:html={markAgda(other)} />
+            <th scope="col">Intervention Readiness</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr>
+              <th scope="row" set:html={markAgda(r.aspect)} />
+              <td set:html={markAgda(r.other)} />
+              <td set:html={markAgda(r.ir)} />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2" set:html={markAgda(`How they relate.`)} />
+      <p class="body muted" set:html={markAgda(relate)} />
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> evidences it.</h2>
+      <p class="body muted" set:html={markAgda(agda)} />
+      <div class="cta">
+        <a href="/Intervene/intervention-readiness/" class="btn">What is Intervention Readiness?</a>
+        <a href="/Intervene/sample-report/" class="btn-ghost">View sample verdict</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block tight">
+    <div class="wrap">
+      <h2 class="h2">Frequently asked questions.</h2>
+      <dl class="faq-list">
+        {faqs.map((faq) => (
+          <div>
+            <dt set:html={markAgda(faq.question)} />
+            <dd set:html={markAgda(faq.answer)} />
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 144px;
+    padding-bottom: 96px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .hero .label { margin-bottom: 24px; }
+  .hero .h1 { max-width: 20ch; }
+  .hero .lede { margin-top: 32px; max-width: 58ch; }
+
+  .definition-grid {
+    display: grid;
+    grid-template-columns: 1.35fr 0.85fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .definition-grid .body { max-width: 58ch; }
+  .definition-box {
+    padding: 28px 0 28px 28px;
+    border-left: 2px solid var(--accent);
+  }
+  .box-label {
+    display: block;
+    margin-bottom: 16px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .definition-box p {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: clamp(20px, 2.4vw, 28px);
+    line-height: 1.28;
+    color: var(--ink);
+  }
+
+  .block .h2 { max-width: 28ch; }
+  .wrap-narrow .body { max-width: 62ch; }
+  .cta { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .compare {
+    margin-top: 48px;
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+  }
+  .compare th,
+  .compare td {
+    text-align: left;
+    vertical-align: top;
+    padding: 20px 24px 20px 0;
+    border-top: 1px solid var(--hair);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .compare thead th {
+    border-top: 1px solid var(--hair-strong);
+    border-bottom: 1px solid var(--hair-strong);
+    color: var(--ink);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .compare tbody th {
+    color: var(--ink);
+    font-weight: 600;
+    width: 24%;
+  }
+  .compare td { color: var(--muted); }
+  .compare td:last-child { color: var(--ink); }
+
+  .faq-list {
+    margin: 56px 0 0;
+    border-top: 1px solid var(--hair-strong);
+  }
+  .faq-list > div {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 48px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .faq-list dt {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+  .faq-list dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.62;
+    color: var(--muted);
+  }
+
+  @media (max-width: 880px) {
+    .hero { padding-top: 96px; padding-bottom: 64px; }
+    .definition-grid,
+    .faq-list > div { grid-template-columns: 1fr; gap: 24px; }
+    .compare,
+    .compare thead,
+    .compare tbody,
+    .compare tr,
+    .compare th,
+    .compare td { display: block; width: 100%; }
+    .compare thead { display: none; }
+    .compare tbody tr { padding: 16px 0; border-top: 1px solid var(--hair); }
+    .compare th,
+    .compare td { padding: 6px 0; border: 0; }
+    .compare tbody th { width: 100%; }
+  }
+</style>

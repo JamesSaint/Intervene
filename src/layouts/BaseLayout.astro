@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import TakeoverMenu from '../components/TakeoverMenu.astro';
 import Footer from '../components/Footer.astro';
+import { terms, termId, termUrl } from '../lib/terms';
 import '../styles/global.css';
 
 interface Props {
@@ -115,6 +116,7 @@ const interventionReadinessTerm = {
   description: 'The ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.',
   inDefinedTermSet: { '@id': termSetId },
   subjectOf: { '@id': `${baseUrl}intervention-readiness/#webpage` },
+  hasPart: terms.filter((t) => t.hub).map((t) => ({ '@id': termId(baseUrl, t) })),
 };
 
 const agdaTerm = {
@@ -129,6 +131,22 @@ const agdaTerm = {
   creator: { '@id': orgId },
   about: { '@id': interventionReadinessId },
 };
+
+// DefinedTerm nodes for the expanded vocabulary (everything except the two
+// core terms, which have bespoke nodes above). Single source: lib/terms.ts.
+const generatedTerms = terms
+  .filter((t) => !t.core)
+  .map((t) => ({
+    '@type': 'DefinedTerm',
+    '@id': termId(baseUrl, t),
+    name: t.name,
+    termCode: t.slug,
+    url: termUrl(baseUrl, t),
+    description: t.definition,
+    inDefinedTermSet: { '@id': termSetId },
+    subjectOf: { '@id': t.hub ? `${baseUrl}${t.path}#webpage` : `${baseUrl}glossary/#webpage` },
+    about: { '@id': interventionReadinessId },
+  }));
 
 const personSchema = {
   '@type': 'Person',
@@ -188,11 +206,17 @@ const termSetSchema = {
   '@id': termSetId,
   name: 'Intervene Intervention Readiness terminology',
   url: baseUrl,
-  hasDefinedTerm: [{ '@id': interventionReadinessId }, { '@id': agdaId }],
+  hasDefinedTerm: [
+    { '@id': interventionReadinessId },
+    { '@id': agdaId },
+    ...generatedTerms.map((t) => ({ '@id': t['@id'] })),
+  ],
 };
 
-const defaultMainEntity =
-  routePath.startsWith('/intervention-readiness/')
+const hubTerm = terms.find((t) => t.hub && routePath === `/${t.path}`);
+const defaultMainEntity = hubTerm
+  ? { '@id': termId(baseUrl, hubTerm) }
+  : routePath.startsWith('/intervention-readiness/')
     ? { '@id': interventionReadinessId }
     : routePath.startsWith('/agda/')
       ? { '@id': agdaId }
@@ -209,7 +233,9 @@ const pageSchema: Record<string, unknown> = {
   publisher: { '@id': orgId },
   inLanguage: 'en-GB',
   breadcrumb: { '@id': `${canonical}#breadcrumb` },
-  about: [{ '@id': interventionReadinessId }],
+  about: hubTerm
+    ? [{ '@id': interventionReadinessId }, { '@id': termId(baseUrl, hubTerm) }]
+    : [{ '@id': interventionReadinessId }],
   mentions: [{ '@id': agdaId }, { '@id': orgId }, { '@id': personId }],
 };
 
@@ -246,6 +272,7 @@ const structuredData = {
     termSetSchema,
     interventionReadinessTerm,
     agdaTerm,
+    ...generatedTerms,
     pageSchema,
     breadcrumbSchema,
     ...(faqSchema ? [faqSchema] : []),

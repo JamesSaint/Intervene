@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { markAgda } from '../../../lib/marks';
+
+const rows = [
+  { d: 'AI governance', does: 'Assigns responsibility and sets controls for AI systems', misses: 'Whether those controls can act in time', href: '/Intervene/intervention-readiness/vs-ai-governance/' },
+  { d: 'Compliance', does: 'Confirms obligations are met at a point in time', misses: 'Whether capability survives under pressure', href: '/Intervene/intervention-readiness/vs-compliance/' },
+  { d: 'Audit', does: 'Attests retrospectively that controls operated', misses: 'Whether intervention is possible going forward', href: '/Intervene/intervention-readiness/vs-audit/' },
+  { d: 'Risk management', does: 'Estimates likelihood and impact of events', misses: 'Whether the response beats the harm window', href: '/Intervene/intervention-readiness/vs-risk-management/' },
+  { d: 'Operational resilience', does: 'Keeps important services within tolerance', misses: 'The chain that prevents irreversible automated harm', href: '/Intervene/intervention-readiness/vs-operational-resilience/' },
+];
+
+const faqs = [
+  {
+    question: 'What is the category boundary of Intervention Readiness?',
+    answer: 'Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. It is adjacent to governance, compliance, audit, risk management and operational resilience, and distinct from all of them: they describe structure, obligation, attestation, exposure and continuity, while Intervention Readiness measures whether intervention can occur in time.',
+  },
+  {
+    question: 'Why is Intervention Readiness not just AI governance?',
+    answer: 'Governance describes who is responsible and which controls exist. Intervention Readiness measures whether those controls can act before the reversibility window closes. Structure is not capability.',
+  },
+];
+---
+
+<BaseLayout
+  title="The Category Map · Intervene"
+  description="Intervention Readiness placed against every adjacent discipline: AI governance, compliance, audit, risk management and operational resilience, with the boundary of each named."
+  current="intervention-readiness"
+  faqs={faqs}
+>
+  <section class="hero">
+    <div class="wrap">
+      <span class="label">Category boundaries</span>
+      <h1 class="h1 reveal">The category map.</h1>
+      <p class="lede muted reveal">
+        Intervention Readiness is adjacent to five established disciplines and
+        is none of them. Each describes something real. None measures whether
+        intervention can occur before harm becomes irreversible.
+      </p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <table class="map">
+        <thead>
+          <tr>
+            <th scope="col">Discipline</th>
+            <th scope="col">What it does</th>
+            <th scope="col">What it does not measure</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr>
+              <th scope="row"><a href={r.href} class="link">{r.d}</a></th>
+              <td>{r.does}</td>
+              <td>{r.misses}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="body muted note">
+        Owning the boundaries is what makes the category distinct. Intervention
+        Readiness does not replace any of these disciplines. It measures the
+        intervention capability each of them assumes.
+      </p>
+    </div>
+  </section>
+
+  <section class="block tight">
+    <div class="wrap-narrow">
+      <h2 class="h2">The category, measured.</h2>
+      <p class="body muted">
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is the deterministic instrument that measures Intervention
+        Readiness. It assesses detect, escalate, decide and intervene against
+        the reversibility window and returns a signed verdict.
+      </p>
+      <div class="cta">
+        <a href="/Intervene/intervention-readiness/" class="btn">What is Intervention Readiness?</a>
+        <a href="/Intervene/glossary/" class="btn-ghost">Glossary</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 144px;
+    padding-bottom: 96px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .hero .label { margin-bottom: 24px; }
+  .hero .h1 { max-width: 18ch; }
+  .hero .lede { margin-top: 32px; max-width: 60ch; }
+
+  .map {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+  }
+  .map th,
+  .map td {
+    text-align: left;
+    vertical-align: top;
+    padding: 20px 24px 20px 0;
+    border-top: 1px solid var(--hair);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .map thead th {
+    border-top: 1px solid var(--hair-strong);
+    border-bottom: 1px solid var(--hair-strong);
+    color: var(--ink);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .map tbody th { color: var(--ink); font-weight: 600; width: 24%; }
+  .map td { color: var(--muted); }
+  .map td:last-child { color: var(--ink); }
+  .note { margin-top: 40px; max-width: 62ch; }
+  .cta { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+
+  @media (max-width: 880px) {
+    .hero { padding-top: 96px; padding-bottom: 64px; }
+    .map, .map thead, .map tbody, .map tr, .map th, .map td { display: block; width: 100%; }
+    .map thead { display: none; }
+    .map tbody tr { padding: 16px 0; border-top: 1px solid var(--hair); }
+    .map th, .map td { padding: 6px 0; border: 0; }
+    .map tbody th { width: 100%; }
+  }
+</style>

@@ -1,0 +1,36 @@
+---
+import ComparisonLayout from '../../../layouts/ComparisonLayout.astro';
+
+const faqs = [
+  {
+    question: 'How is Intervention Readiness different from audit?',
+    answer: 'Audit attests retrospectively that controls operated against defined criteria. Intervention Readiness is a forward statement of whether intervention can occur before harm becomes irreversible.',
+  },
+  {
+    question: 'Is an AGDA™ verdict an audit opinion?',
+    answer: 'No. An audit opinion is a judgement formed by an assessor. An AGDA™ verdict is produced by fixed rules applied to evidence, so it is reproducible and independent of assessor opinion. It is a deterministic verdict, not an opinion.',
+  },
+  {
+    question: 'Does passing an audit mean intervention is possible?',
+    answer: 'Not necessarily. An audit can confirm controls operated in the period under review and say nothing about whether the next harm window can be met. Past attestation is not forward capability.',
+  },
+];
+---
+
+<ComparisonLayout
+  title="Intervention Readiness vs Audit · Intervene"
+  description="Audit attests to the past. Intervention Readiness states whether intervention can occur going forward. AGDA™ returns a deterministic, signed verdict rather than an opinion."
+  other="Audit"
+  verdict="Audit attests retrospectively that controls operated. Intervention Readiness states, going forward, whether intervention can occur before harm becomes irreversible."
+  whatOther="Audit examines whether controls operated as intended over a period, against defined criteria, and forms an opinion an organisation can rely on. It is retrospective by design and produces an attestation about what already happened."
+  rows={[
+    { aspect: 'Direction', other: 'Retrospective', ir: 'Forward' },
+    { aspect: 'Core question', other: 'Did the controls operate as intended?', ir: 'Can intervention occur in time?' },
+    { aspect: 'Output type', other: 'An opinion formed by an assessor', ir: 'A deterministic verdict from fixed rules' },
+    { aspect: 'Reproducibility', other: 'Depends on assessor judgement', ir: 'Reproducible and independent of opinion' },
+    { aspect: 'What it cannot tell you', other: 'Whether the next window can be met', ir: 'It answers exactly that' },
+  ]}
+  relate="Intervention Readiness is a distinct assurance type, not a variant of audit. An audit can confirm a halt control existed and was tested and still leave the central question open: when deviation begins, does the chain complete before the point of irreversibility. Audit looks back at controls. Intervention Readiness looks forward at capability. They answer different questions for different decisions."
+  agda="AGDA™ assesses evidence across detect, escalate, decide and intervene, applies evidence ceilings and chain propagation, and returns a signed verdict that any party can verify independently. Because the rules are fixed, the same evidence yields the same verdict regardless of who runs it. That is the difference between a deterministic verdict and an audit opinion."
+  faqs={faqs}
+/>

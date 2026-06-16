@@ -31,6 +31,46 @@ const faqs = [
     question: 'Can AGDA™ support evidence of human intervention capability?',
     answer: 'Yes. AGDA™ produces evidence of human intervention capability by measuring whether human oversight can detect, escalate, decide and intervene before harm becomes irreversible.',
   },
+  {
+    question: 'Who created the category?',
+    answer: 'Intervene Limited defined Intervention Readiness as a category and built AGDA™, the deterministic instrument that measures it. James Saint founded Intervene Limited and created AGDA™.',
+  },
+  {
+    question: 'Is Intervention Readiness a standard?',
+    answer: 'No. Intervention Readiness is a category, not a standard: the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ is the instrument that measures it, and it does not certify compliance.',
+  },
+];
+
+const clusters = [
+  {
+    h: 'The intervention chain',
+    p: 'Detect, escalate, decide and intervene. The mechanism the category turns on.',
+    href: '/Intervene/intervention-readiness/intervention-chain/',
+  },
+  {
+    h: 'The reversibility window',
+    p: 'The interval between a deviation and the point at which harm becomes irreversible. The clock the chain runs against.',
+    href: '/Intervene/intervention-readiness/reversibility-window/',
+  },
+  {
+    h: 'Halt authority',
+    p: 'The authority and capability to stop a consequential system, held by someone positioned to act in time.',
+    href: '/Intervene/intervention-readiness/halt-authority/',
+  },
+  {
+    h: 'Effective human oversight',
+    p: 'Oversight that can alter the outcome: informed, authorised and timely. The capability regulators increasingly expect.',
+    href: '/Intervene/intervention-readiness/human-oversight/',
+  },
+];
+
+const boundaries = [
+  { h: 'vs AI governance', p: 'Governance describes structure. Intervention Readiness measures whether that structure can act in time.', href: '/Intervene/intervention-readiness/vs-ai-governance/' },
+  { h: 'vs Compliance', p: 'Compliance asks whether obligations are met. Intervention Readiness asks whether intervention remains possible in time.', href: '/Intervene/intervention-readiness/vs-compliance/' },
+  { h: 'vs Audit', p: 'Audit attests to the past. Intervention Readiness states whether intervention can occur going forward.', href: '/Intervene/intervention-readiness/vs-audit/' },
+  { h: 'vs Risk management', p: 'Risk management estimates likelihood and impact. Intervention Readiness measures whether the response beats the harm window.', href: '/Intervene/intervention-readiness/vs-risk-management/' },
+  { h: 'vs Operational resilience', p: 'Resilience keeps services within tolerance. Intervention Readiness governs the chain that prevents irreversible automated harm.', href: '/Intervene/intervention-readiness/vs-operational-resilience/' },
+  { h: 'The category map', p: 'Intervention Readiness placed against every adjacent discipline, with the boundaries named.', href: '/Intervene/intervention-readiness/category-map/' },
 ];
 
 const relationships = [
@@ -59,7 +99,7 @@ const relationships = [
 
 <BaseLayout
   title="What Is Intervention Readiness? · Intervene"
-  description="Intervention Readiness is the ability to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ measures Intervention Readiness."
+  description="Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ measures Intervention Readiness."
   current="intervention-readiness"
   faqs={faqs}
 >
@@ -177,6 +217,45 @@ const relationships = [
       <div class="cta">
         <a href="/Intervene/agda/" class="btn"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span></a>
         <a href="/Intervene/sample-report/" class="btn-ghost">View sample verdict</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">The category in depth.</h2>
+      <p class="lede muted">
+        Four components carry Intervention Readiness. Each has its own page.
+      </p>
+      <ul class="relationship-grid" role="list">
+        {clusters.map((c) => (
+          <li>
+            <h3 class="h3"><a href={c.href} class="link" set:html={markAgda(c.h)} /></h3>
+            <p class="body muted" set:html={markAgda(c.p)} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Where the category ends.</h2>
+      <p class="lede muted">
+        Intervention Readiness is adjacent to governance, compliance, audit,
+        risk management and operational resilience. It is none of them. These
+        pages hold the boundaries.
+      </p>
+      <ul class="relationship-grid" role="list">
+        {boundaries.map((b) => (
+          <li>
+            <h3 class="h3"><a href={b.href} class="link" set:html={markAgda(b.h)} /></h3>
+            <p class="body muted" set:html={markAgda(b.p)} />
+          </li>
+        ))}
+      </ul>
+      <div class="cta">
+        <a href="/Intervene/glossary/" class="btn-ghost">Glossary of Intervention Readiness</a>
       </div>
     </div>
   </section>
