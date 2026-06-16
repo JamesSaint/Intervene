@@ -47,7 +47,7 @@ const year = new Date().getFullYear();
 <style>
   .site-footer {
     border-top: 1px solid var(--hair);
-    padding: 80px 0 48px;
+    padding: 72px 0 44px;
     background: var(--paper-soft);
   }
   .foot-inner {
@@ -60,8 +60,8 @@ const year = new Date().getFullYear();
   .brand {
     font-family: var(--font-sans);
     font-size: 22px;
-    font-weight: 500;
-    letter-spacing: -0.04em;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     color: var(--ink);
   }
   .brand-line {
@@ -81,13 +81,16 @@ const year = new Date().getFullYear();
   }
   .primary-nav a {
     font-family: var(--font-sans);
-    font-size: 15px;
-    color: var(--ink);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted-soft);
     padding-bottom: 1px;
     border-bottom: 1px solid transparent;
     transition: border-color var(--dur-hover) var(--ease);
   }
-  .primary-nav a:hover { border-color: var(--accent); }
+  .primary-nav a:hover { border-color: var(--accent); color: var(--ink); }
   .meta {
     font-family: var(--font-sans);
     font-size: 13px;
@@ -98,7 +101,7 @@ const year = new Date().getFullYear();
     text-align: right;
     line-height: 1.5;
   }
-  .meta-name { color: var(--ink); font-weight: 500; }
+  .meta-name { color: var(--ink); font-weight: 700; }
   .meta-copy { margin-top: 12px; }
 
   .foot-sub {
