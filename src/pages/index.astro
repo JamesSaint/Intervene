@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import VerdictArtifact from '../components/VerdictArtifact.astro';
+import Aperture from '../components/Aperture.astro';
+import VerdictBlock from '../components/VerdictBlock.astro';
 ---
 
 <BaseLayout
@@ -11,6 +12,7 @@ import VerdictArtifact from '../components/VerdictArtifact.astro';
   <!-- 1 · DOORWAY. Loud. -->
   <section class="hero">
     <div class="wrap">
+      <div class="hero-mark"><Aperture state="open" size={128} /></div>
       <h1 class="display-xl">Can you stop it <em>in time?</em></h1>
       <p class="hero-sub">
         Your most consequential system is running right now. If it turns, the
@@ -93,6 +95,10 @@ import VerdictArtifact from '../components/VerdictArtifact.astro';
         <span>You have accountability.</span>
         <strong>You have never measured whether intervention remains possible when it matters.</strong>
       </p>
+      <div class="gap-gauge">
+        <Aperture state="open" hollow={true} size={150} />
+        <span class="gauge-label mono">Unmeasured</span>
+      </div>
       <p class="gap-refrain">Which means you cannot yet answer the question. <em>Can you stop it in time?</em></p>
     </div>
   </section>
@@ -110,7 +116,7 @@ import VerdictArtifact from '../components/VerdictArtifact.astro';
         </p>
       </div>
       <div class="verdict-stage reveal">
-        <VerdictArtifact />
+        <VerdictBlock />
       </div>
     </div>
   </section>
@@ -142,6 +148,7 @@ import VerdictArtifact from '../components/VerdictArtifact.astro';
     padding-top: clamp(96px, 14vh, 184px);
     padding-bottom: clamp(80px, 11vh, 152px);
   }
+  .hero-mark { margin-bottom: 40px; color: var(--paper); }
   .hero .display-xl { max-width: 14ch; color: var(--paper); }
   .hero-sub {
     margin: clamp(32px, 5vh, 56px) 0 0;
@@ -223,6 +230,8 @@ import VerdictArtifact from '../components/VerdictArtifact.astro';
   }
   .gap-realisation > span { color: rgba(255,255,255,0.5); }
   .gap-realisation > strong { color: var(--paper); font-weight: 600; max-width: 30ch; margin-top: 6px; }
+  .gap-gauge { margin: 48px 0 0; display: flex; align-items: center; gap: 22px; color: var(--paper); }
+  .gauge-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
   .gap-refrain {
     margin: 40px 0 0; font-family: var(--font-sans); font-size: 16px;
     color: rgba(255,255,255,0.66); max-width: 48ch;

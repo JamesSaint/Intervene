@@ -1,4 +1,5 @@
 ---
+import Hallmark from './Hallmark.astro';
 const year = new Date().getFullYear();
 ---
 
@@ -7,6 +8,7 @@ const year = new Date().getFullYear();
     <div class="brand-col">
       <span class="brand">intervene</span>
       <span class="brand-line">Measuring whether you can still intervene when it matters.</span>
+      <div class="brand-hallmark"><Hallmark /></div>
     </div>
 
     <nav class="primary-nav" aria-label="Footer">
@@ -69,6 +71,7 @@ const year = new Date().getFullYear();
     max-width: 30ch;
     line-height: 1.5;
   }
+  .brand-hallmark { margin-top: 8px; }
   .primary-nav ul {
     list-style: none;
     margin: 0;
