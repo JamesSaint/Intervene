@@ -11,11 +11,11 @@ const reportLayers = [
   {
     name: 'Operational',
     audience: 'Head of Operational Resilience, Head of Model Risk',
-    body: 'Plus temporal gating across eight gates with reasons, causal chain with timing, scenario impact, SEDI chain, dimension scores.',
+    body: 'Plus temporal gating across eight gates with reasons, causal chain with timing, scenario impact, intervention chain, dimension findings.',
   },
   {
     name: 'Specialist',
-    audience: 'AI Governance lead, regulator liaison',
+    audience: 'Intervention readiness owner, regulator liaison',
     body: 'Plus irreversibility profile, failure profiles, single points of failure, framework pressure, regulatory mapping, JSON export, attestation envelope.',
   },
 ];
@@ -62,17 +62,17 @@ const addons = [
 ];
 
 const services = [
-  { label: 'Operator certification, internal governance team (up to 2 raters)', gbp: '£55,000',     eur: '€64,000',     usd: '$70,000' },
+  { label: 'Operator certification, internal assurance team (up to 2 raters)',  gbp: '£55,000',     eur: '€64,000',     usd: '$70,000' },
   { label: 'Operator certification, advisory firm (firm-level)',                gbp: '£85,000',     eur: '€99,000',     usd: '$108,000' },
   { label: 'Advisory firm annual renewal',                                       gbp: '£25,000 / yr', eur: '€29,000 / yr', usd: '$32,000 / yr' },
   { label: 'Regulator-liaison block (20 hours, per quarter)',                   gbp: '£18,000',     eur: '€21,000',     usd: '$23,000' },
 ];
 
 const notProduct = [
-  { h: 'Not a maturity framework.',  p: 'We do not score governance artefact completeness. We score timing and evidence grade against a harm window.' },
-  { h: 'Not a compliance checklist.', p: 'Regulatory exposure is a mechanical output of the assessment. We do not score adherence to clauses.' },
-  { h: 'Not a risk score.',          p: 'AGDA™ produces a binary verdict: can you intervene in time? It feeds a risk register. It does not substitute for one.' },
-  { h: 'Not a monitoring tool.',     p: 'AGDA™ examines governance once per assessment. Runtime monitoring is a different product category.' },
+  { h: 'Not a governance framework.', p: 'We do not score governance artefact completeness. We measure whether governance can actually intervene when required.' },
+  { h: 'Not a compliance solution.',  p: 'Regulatory exposure is an output of the assessment. The category is Intervention Readiness, not clause adherence.' },
+  { h: 'Not a risk score.',           p: 'AGDA™ produces a verdict on one question: can you stop it in time? It can inform a risk register. It does not substitute for one.' },
+  { h: 'Not a monitoring tool.',      p: 'AGDA™ assesses intervention capability at a point in time. Runtime monitoring is a different product category.' },
 ];
 
 const benchmarks = [
@@ -83,21 +83,22 @@ const benchmarks = [
 ---
 
 <BaseLayout
-  title="Services · Intervene"
-  description="A deterministic answer to one question: if one of your AI systems goes wrong right now, can you stop it before harm becomes irreversible? Signed. Verifiable. Pinned to a locked engine version."
+  title="Services · Intervention Readiness Assessment Outcomes"
+  description="AGDA™ assessment outcomes for boards and executive teams: a deterministic verdict, evidence, regulatory mapping and decision support on whether intervention remains possible."
   current="services"
 >
   <!-- HERO -->
   <section class="hero">
     <div class="wrap">
       <h1 class="h1 reveal">
-        One question. <em>One signed answer.</em>
+        Assessment outcomes for <em>executive decisions.</em>
       </h1>
       <p class="lede muted reveal">
         If one of your AI systems goes wrong right now, can you stop it before
-        harm becomes irreversible? <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> gives you a deterministic, signed
-        answer, bound to a locked engine version, that an audit committee can
-        defend and a regulator can verify without contacting us.
+        harm becomes irreversible? <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> gives boards and executive
+        teams a deterministic answer, bound to a locked engine version, that an
+        audit committee can defend and a regulator can verify without
+        contacting us.
       </p>
     </div>
   </section>
@@ -105,11 +106,11 @@ const benchmarks = [
   <!-- WHAT YOU GET -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">What every engagement produces.</h2>
+      <h2 class="h2">What every assessment produces.</h2>
       <p class="lede muted">
-        A single structured output: the <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Reports Failure Exposure Report.
-        Three audience layers, all bound to the same engine hash and
-        attestation envelope.
+        A single structured output: an Intervention Readiness Verdict and
+        Failure Exposure Report. Three audience layers, all bound to the same
+        engine hash and attestation envelope.
       </p>
 
       <ul class="layers reveal" role="list">
@@ -123,10 +124,10 @@ const benchmarks = [
       </ul>
 
       <div class="labs">
-        <h3 class="h3">Labs Intervention Simulator.</h3>
+        <h3 class="h3">Intervention decision support.</h3>
         <p class="body muted">
-          A what-if console for the resilience function. Test intervention
-          timing against hypothetical scenarios without re-running the full
+          A what-if console for the resilience function. Test whether proposed
+          changes improve intervention timing without re-running the full
           assessment. Included with every tier.
         </p>
       </div>
@@ -136,7 +137,7 @@ const benchmarks = [
   <!-- THREE TIERS -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Three tiers. <em>Priced per assessment.</em></h2>
+      <h2 class="h2">Three engagement shapes. <em>Priced per assessment.</em></h2>
       <p class="lede muted">
         The commercial unit is the assessment, not the seat. Customers expand
         by assessing more systems, not by adding users.
@@ -221,8 +222,8 @@ const benchmarks = [
     <div class="wrap">
       <h2 class="h2">What <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> <em>is not.</em></h2>
       <p class="lede muted">
-        The four objections that come up in every procurement conversation.
-        Narrower is the point.
+        The category boundary matters. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures Intervention
+        Readiness. It does not sell governance theatre under another name.
       </p>
 
       <ul class="not-list" role="list">
@@ -241,8 +242,8 @@ const benchmarks = [
     <div class="wrap">
       <h2 class="h2">The right budget line.</h2>
       <p class="lede muted">
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is priced against model risk, operational resilience, and AI
-        governance programme budgets. Not software procurement. The relevant
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is priced against board assurance, model risk and
+        operational resilience budgets. Not software procurement. The relevant
         comparisons:
       </p>
 
@@ -269,12 +270,12 @@ const benchmarks = [
     <div class="wrap">
       <div class="close-grid">
         <h2 class="h2 reveal">
-          Nominate a system. <em>One pilot. Four weeks.</em>
+          Nominate a system. <em>Measure whether it can be stopped in time.</em>
         </h2>
         <div class="close-cta reveal">
           <p class="body muted">
-            The pilot is sized so a CRO can approve without procurement
-            committee escalation. Brief, confidential, no obligation.
+            The pilot is sized around one consequential system and one
+            intervention-readiness question. Brief, confidential, no obligation.
           </p>
           <a href="/Intervene/contact/" class="btn">Request a confidential discussion</a>
         </div>

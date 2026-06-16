@@ -4,20 +4,21 @@ import VerdictBlock from '../components/VerdictBlock.astro';
 ---
 
 <BaseLayout
-  title="Can you stop it in time? · Intervene"
-  description="Most organisations have governance, controls and accountability. Almost none have measured whether intervention is still possible when it matters. AGDA™ measures it, and signs the answer."
+  title="Intervention Readiness · Can you stop it in time?"
+  description="Intervention Readiness asks whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ measures it and signs the answer."
   current="home"
 >
   <!-- 1 · DOORWAY. Loud. -->
   <section class="hero">
     <div class="wrap">
-      <span class="label hero-label">Independent intervention readiness</span>
+      <span class="label hero-label">Intervention Readiness</span>
       <h1 class="display-xl">Can you stop it <em>in time?</em></h1>
       <p class="hero-sub">
-        Your most consequential system is running right now. If it turns, the
-        clock starts.
+        AI systems are becoming more capable. Organisations are becoming more
+        dependent on automation. Human oversight only matters if intervention
+        remains possible.
       </p>
-      <p class="hero-note">It is a fair question. Almost no one has measured the answer.</p>
+      <p class="hero-note"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures Intervention Readiness.</p>
       <div class="hero-cta">
         <a href="/Intervene/contact/" class="btn">Find out where you stand</a>
       </div>
@@ -37,11 +38,11 @@ import VerdictBlock from '../components/VerdictBlock.astro';
       <p class="body">
         You have a framework. An accountable owner, documented controls, an
         escalation policy. All of it real, and all of it necessary. None of it
-        measures the one thing that decides the outcome: at 3am, is the person
-        who can halt the system reachable, authorised, and certain enough to act
-        while acting still costs less than waiting?
+        proves the one thing that decides the outcome: at 3am, can the person
+        who can halt the system be reached, authorised, and certain enough to
+        act while acting still costs less than waiting?
       </p>
-      <p class="body muted">Most leaders sense this. Almost none have measured it.</p>
+      <p class="body muted">Most organisations know what controls they have. Few know whether those controls can intervene in time.</p>
     </div>
   </section>
 
@@ -50,9 +51,10 @@ import VerdictBlock from '../components/VerdictBlock.astro';
     <div class="wrap">
       <div class="window-head">
         <h2 class="h2">You have probably watched <em>a version of this.</em></h2>
-        <p class="lede muted">
-          Not because anyone was careless. Because authority moves through
-          people, and people move slower than the harm.
+      <p class="lede muted">
+          Not because anyone was careless. Because systems act quickly,
+          authority moves through people, and harm can become irreversible
+          before governance has turned into action.
         </p>
       </div>
 
@@ -86,19 +88,19 @@ import VerdictBlock from '../components/VerdictBlock.astro';
   <!-- 4 · THE GAP. Heavy. The turn. -->
   <section class="gap">
     <div class="wrap-narrow">
-      <span class="label section-kicker gap-label">The measurement gap</span>
-      <h2 class="h2 gap-h">You have measured almost <em>everything except this.</em></h2>
+      <span class="label section-kicker gap-label">The category</span>
+      <h2 class="h2 gap-h">Intervention Readiness is the missing measurement.</h2>
       <p class="gap-body">
         Capital. Model performance. Control coverage. Incident counts. Audit
-        findings. The one factor that decides whether harm becomes irreversible,
-        whether intervention is still possible when it matters, is the one
-        nobody puts a number to.
+        findings. These matter. But the board-level question is simpler:
+        when a consequential system turns, can the organisation detect,
+        escalate, decide and intervene before harm becomes irreversible?
       </p>
       <p class="gap-realisation">
         <span>Governance</span>
         <span>Controls</span>
         <span>Accountability</span>
-        <strong>You have never measured whether intervention remains possible when it matters.</strong>
+        <strong>You have not yet measured whether intervention remains possible when it matters.</strong>
       </p>
       <div class="gap-status">
         <span class="status-rule" aria-hidden="true"></span>
@@ -113,12 +115,13 @@ import VerdictBlock from '../components/VerdictBlock.astro';
     <div class="wrap">
       <div class="verdict-flow">
         <div class="verdict-lead">
-          <span class="label section-kicker">The verdict</span>
-          <h2 class="h2">There is a deterministic, signed <em>way to find out.</em></h2>
+          <span class="label section-kicker">The instrument</span>
+          <h2 class="h2"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is a deterministic assessment of Intervention Readiness.</h2>
           <p class="body muted">
-            <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> runs your system against that one question and returns a verdict,
-            not a maturity score. The same inputs produce the same result every
-            time. A regulator can confirm it independently.
+            It measures whether governance can actually intervene when
+            required. The output is not a maturity score or a compliance
+            claim. It is a signed verdict on whether intervention completes
+            inside the harm window.
           </p>
         </div>
         <div class="verdict-stage reveal">
@@ -132,8 +135,8 @@ import VerdictBlock from '../components/VerdictBlock.astro';
   <section class="block close">
     <div class="wrap close-wrap">
       <h2 class="close-q">Can you stop it <em>in time?</em></h2>
-      <p class="close-line">Now there is a way to know. One conversation to scope it. Confidential.</p>
-      <a href="/Intervene/contact/" class="btn">Get your verdict</a>
+      <p class="close-line">Stronger Intervention Readiness supports better oversight, better decisions, and more confident deployment.</p>
+      <a href="/Intervene/agda/" class="btn">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures it</a>
     </div>
   </section>
 </BaseLayout>
@@ -178,7 +181,7 @@ import VerdictBlock from '../components/VerdictBlock.astro';
     letter-spacing: 0;
     color: var(--muted);
     line-height: 1.62;
-    max-width: 31ch;
+    max-width: 48ch;
   }
   .hero-note {
     margin: 18px 0 0;
@@ -209,12 +212,12 @@ import VerdictBlock from '../components/VerdictBlock.astro';
   .block.quiet {
     border-bottom: 1px solid var(--hair);
   }
-  .block.quiet .h2 { max-width: 19ch; font-size: clamp(32px, 4.6vw, 58px); line-height: 1.08; }
+  .block.quiet .h2 { max-width: 24ch; font-size: clamp(32px, 4.6vw, 58px); line-height: 1.08; }
   .wrap-narrow .body { margin: 32px 0 0; max-width: 56ch; }
 
   .window-head { margin-bottom: 64px; }
-  .window-head .h2 { max-width: 19ch; }
-  .window-head .lede { margin-top: 20px; max-width: 46ch; }
+  .window-head .h2 { max-width: 24ch; }
+  .window-head .lede { margin-top: 20px; max-width: 54ch; }
   .window-grid {
     list-style: none; margin: 0; padding: 0;
     display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 32px;
@@ -265,10 +268,10 @@ import VerdictBlock from '../components/VerdictBlock.astro';
   .gap-label {
     color: var(--accent); letter-spacing: 0.22em; margin-bottom: 28px;
   }
-  .gap-h { color: var(--ink); max-width: 18ch; font-size: clamp(36px, 5.4vw, 70px); line-height: 1.08; }
+  .gap-h { color: var(--ink); max-width: 22ch; font-size: clamp(36px, 5.4vw, 70px); line-height: 1.08; }
   .gap-body {
     margin: 32px 0 0; font-family: var(--font-sans); font-size: 18px;
-    line-height: 1.66; color: var(--muted); max-width: 50ch;
+    line-height: 1.66; color: var(--muted); max-width: 58ch;
   }
   .gap-realisation {
     margin: 72px 0 0;
@@ -276,7 +279,7 @@ import VerdictBlock from '../components/VerdictBlock.astro';
     border-left: 1px solid var(--hair-strong);
     display: grid; gap: 10px;
     font-family: var(--font-sans); font-size: clamp(20px, 2.4vw, 30px);
-    font-weight: 500; letter-spacing: -0.02em; line-height: 1.25; max-width: 26ch;
+    font-weight: 500; letter-spacing: -0.02em; line-height: 1.25; max-width: 34ch;
   }
   .gap-realisation > span { color: var(--faint); }
   .gap-realisation > strong { color: var(--ink); font-weight: 700; max-width: 30ch; margin-top: 6px; }
@@ -298,10 +301,10 @@ import VerdictBlock from '../components/VerdictBlock.astro';
     gap: clamp(48px, 7vw, 96px);
     align-items: center;
   }
-  .verdict-lead { max-width: 43ch; margin: 0; text-align: left; }
+  .verdict-lead { max-width: 52ch; margin: 0; text-align: left; }
   .verdict-lead .label { margin: 0 0 24px; letter-spacing: 0.12em; }
-  .verdict-lead .h2 { max-width: 16ch; margin: 0; font-size: clamp(32px, 4vw, 54px); }
-  .verdict-lead .body { margin: 24px 0 0; max-width: 42ch; }
+  .verdict-lead .h2 { max-width: 24ch; margin: 0; font-size: clamp(32px, 4vw, 54px); }
+  .verdict-lead .body { margin: 24px 0 0; max-width: 48ch; }
   .verdict-stage { display: flex; justify-content: flex-start; min-width: 0; }
 
   /* 6 · Close. Sparse. */
@@ -310,9 +313,9 @@ import VerdictBlock from '../components/VerdictBlock.astro';
   .close-q {
     font-family: var(--font-sans); font-weight: 700;
     font-size: clamp(40px, 6vw, 88px); letter-spacing: -0.02em;
-    line-height: 1.0; margin: 0; max-width: 14ch; color: var(--ink);
+    line-height: 1.0; margin: 0; max-width: 18ch; color: var(--ink);
   }
-  .close-line { font-family: var(--font-sans); font-size: 16px; line-height: 1.65; color: var(--muted); margin: 0; max-width: 40ch; }
+  .close-line { font-family: var(--font-sans); font-size: 16px; line-height: 1.65; color: var(--muted); margin: 0; max-width: 56ch; }
 
   @media (max-width: 880px) {
     .window-grid { grid-template-columns: 1fr 1fr; column-gap: 24px; }

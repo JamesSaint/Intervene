@@ -7,7 +7,7 @@
 
 ## Overview
 
-Intervene Limited is an independent advisory practice for high-stakes decisions on consequential AI and operational systems. The practice answers a question most governance frameworks leave untested: **can your organisation detect, escalate, decide, and intervene before failure becomes irreversible?**
+Intervene Limited defines and measures **Intervention Readiness** for consequential AI and automated systems. The practice answers a question most governance frameworks leave untested: **can your organisation detect, escalate, decide, and intervene before harm becomes irreversible?**
 
 The site is the public face of the practice. Methodology, services, sample report, and contact path. Built as a static-output Astro site to match the editorial restraint of the Intervene brand: monochrome, typographic, instrument-grade.
 

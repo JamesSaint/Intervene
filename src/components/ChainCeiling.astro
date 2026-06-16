@@ -1,9 +1,9 @@
 ---
 const bars = [
-  { stage: 'Signal',       actual: 2.0, claimed: null },
-  { stage: 'Escalation',   actual: 3.0, claimed: 4.0 },
-  { stage: 'Decision',     actual: 3.5, claimed: 4.5 },
-  { stage: 'Intervention', actual: 4.0, claimed: 4.8 },
+  { stage: 'Detect',     actual: 2.0, claimed: null },
+  { stage: 'Escalate',   actual: 3.0, claimed: 4.0 },
+  { stage: 'Decide',     actual: 3.5, claimed: 4.5 },
+  { stage: 'Intervene',  actual: 4.0, claimed: 4.8 },
 ];
 const MAX = 5;
 const ticks = [5, 4, 3, 2, 1, 0];
@@ -44,8 +44,8 @@ const ticks = [5, 4, 3, 2, 1, 0];
   </div>
 
   <figcaption>
-    Detection scores 2.0 because signal is limited to nightly batch review.
-    The chain ceiling propagates forward. Intervention is capped at 4.0, not
+    Detect measures 2.0 because signal is limited to nightly batch review.
+    The chain ceiling propagates forward. Intervene is capped at 4.0, not
     the claimed 4.8.
   </figcaption>
 </figure>

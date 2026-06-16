@@ -7,10 +7,10 @@ import ProofMarks from '../../components/ProofMarks.astro';
 import { markAgda } from '../../lib/marks';
 
 const dimensions = [
-  { name: 'Signal',          q: 'Can the system surface the conditions that need attention, in time?' },
-  { name: 'Escalation',      q: 'Does the signal reach an authority before the window to act has closed?' },
-  { name: 'Decision',        q: 'Can the decision be made under pressure with incomplete information?' },
-  { name: 'Intervention',    q: 'Can the action take effect before the consequence compounds?' },
+  { name: 'Detect',          q: 'Can the system surface the conditions that need attention, in time?' },
+  { name: 'Escalate',        q: 'Does the signal reach an authority before the window to act has closed?' },
+  { name: 'Decide',          q: 'Can the decision be made under pressure with incomplete information?' },
+  { name: 'Intervene',       q: 'Can the action take effect before the consequence compounds?' },
   { name: 'Accountability',  q: 'Is responsibility real in practice, not only on paper?' },
   { name: 'Human oversight', q: 'Is oversight informed and capable of altering outcomes?' },
   { name: 'Auditability',    q: 'Is the decision trail complete, reliable, and defensible later?' },
@@ -19,30 +19,30 @@ const dimensions = [
 
 const stances = [
   { h: 'Coincidence is not a margin.',                       p: 'Absence of incidents is evidence of untested exposure, not effective controls.' },
-  { h: 'Accountability cannot mask weak oversight.',         p: 'Naming an SMF4 without halt authority is governance theatre. The engine penalises the pairing.' },
+  { h: 'Accountability cannot mask weak oversight.',         p: 'Naming an SMF4 without halt authority is governance theatre. The engine measures the pairing.' },
   { h: 'Paper evidence caps at amber.',                      p: 'Policy without drill maxes at red. Drill without production maxes at amber. Green needs stress.' },
-  { h: 'Confidence must not exceed evidence.',               p: 'High confidence against low-grade evidence demotes the dimension. Overconfidence is a governance failure.' },
+  { h: 'Confidence must not exceed evidence.',               p: 'High confidence against low-grade evidence demotes the dimension. Overconfidence is an assurance failure.' },
 ];
 
 const docs = [
   { h: 'AGDA™ Thesis',             p: 'The intellectual position. Eight falsifiable claims.' },
-  { h: 'Failure Mode Catalogue',   p: 'Forty canonical AI governance failure modes. Each citeable.' },
+  { h: 'Failure Mode Catalogue',   p: 'Forty canonical intervention failure modes. Each citeable.' },
   { h: 'Corpus Governance',        p: 'How calibration evidence is built, held, and retired.' },
   { h: 'Rater Protocol',           p: 'The protocol external raters follow against the corpus.' },
 ];
 ---
 
 <BaseLayout
-  title="Methodology · AGDA™"
-  description="AGDA™ scores intervention capability against evidence. The SEDI chain, eight dimensions, evidence caps, and a cryptographically signed verdict a regulator can verify."
+  title="How AGDA™ Measures Intervention Readiness"
+  description="AGDA™ measures Intervention Readiness against evidence: detect, escalate, decide, intervene, evidence ceilings, chain propagation, and a signed verdict a regulator can verify."
   current="methodology"
 >
   <section class="hero">
     <div class="wrap">
-      <h1 class="h1 reveal">A deterministic engine, <em>not a methodology deck.</em></h1>
+      <h1 class="h1 reveal">Measurement, <em>not assertion.</em></h1>
       <p class="lede muted reveal">
-        The engine behind the verdict. Capability against evidence, not
-        intention. Same inputs, same outputs. Signed.
+        The engine behind the verdict. Intervention capability against
+        evidence, not intention. Same inputs, same outputs. Signed.
       </p>
       <div class="hero-proof reveal"><ProofMarks /></div>
     </div>
@@ -50,10 +50,10 @@ const docs = [
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">The SEDI chain. <em>The chain is the control.</em></h2>
+      <h2 class="h2">The intervention chain. <em>The chain is the control.</em></h2>
       <p class="lede muted">
-        Signal, Escalation, Decision, Intervention. Four sequential stages
-        running against a reversibility window. The engine measures whether the
+        Detect, Escalate, Decide, Intervene. Four sequential stages running
+        against a reversibility window. The engine measures whether the
         cumulative chain completes before harm becomes irreversible.
       </p>
       <ChainFlow />
@@ -106,7 +106,7 @@ const docs = [
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">A downstream stage cannot score above upstream, plus one.</h2>
+      <h2 class="h2">A downstream stage cannot measure above upstream, plus one.</h2>
       <p class="lede muted">
         Operational topology, not heuristic. Claimed downstream strength on a
         weak upstream is structural fiction.
@@ -151,11 +151,12 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Labs Intervention Simulator.</h2>
+      <h2 class="h2">Intervention scenarios.</h2>
       <p class="lede muted">
-        A what-if console for the resilience function. Test intervention
-        timing against hypothetical scenarios without re-running the full
-        assessment. Five named operators per engagement.
+        A what-if console for the resilience function. Test whether proposed
+        changes improve intervention timing before committing to a remediation
+        path. Stronger intervention readiness supports deployment decisions
+        with greater confidence.
       </p>
 
       <ul class="labs-grid" role="list">
@@ -177,7 +178,7 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Published methodology.</h2>
+      <h2 class="h2">Published measurement basis.</h2>
       <p class="lede muted">
         Public. Citeable. Falsifiable. The calibration is held private under
         standard trade-secret discipline. Four canonical documents anchor the
@@ -196,13 +197,14 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
 
   <section class="block tight">
     <div class="wrap-narrow cta-band">
-      <h2 class="h2">A sample report is published.</h2>
+      <h2 class="h2">A sample verdict is published.</h2>
       <p class="body muted">
         Redacted from a banking case: material credit model, escalation break,
-        PRA SS1/23 §6 exposure.
+        PRA SS1/23 §6 exposure. It shows the verdict, evidence and
+        attestation format.
       </p>
       <div class="cta">
-        <a href="/Intervene/sample-report/" class="btn">Open the sample report</a>
+        <a href="/Intervene/sample-report/" class="btn">Open the sample verdict</a>
         <a href="/Intervene/contact/" class="btn-ghost">Request a confidential discussion</a>
       </div>
     </div>
@@ -222,7 +224,7 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
   .block .h2 { max-width: 22ch; }
   .block .lede { margin-top: 16px; max-width: 56ch; }
 
-  /* SEDI verdict states */
+  /* Intervention-chain verdict states */
   .verdicts {
     list-style: none;
     margin: 64px 0 0;

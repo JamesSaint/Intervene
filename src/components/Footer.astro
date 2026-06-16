@@ -7,18 +7,18 @@ const year = new Date().getFullYear();
   <div class="wrap foot-inner">
     <div class="brand-col">
       <span class="brand">intervene</span>
-      <span class="brand-line">Measuring whether you can still intervene when it matters.</span>
+      <span class="brand-line">Intervention Readiness, measured.</span>
       <div class="brand-hallmark"><Hallmark /></div>
     </div>
 
     <nav class="primary-nav" aria-label="Footer">
       <ul role="list">
+        <li><a href="/Intervene/">Intervention Readiness</a></li>
+        <li><a href="/Intervene/sectors/">Why it matters</a></li>
         <li><a href="/Intervene/agda/"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span></a></li>
-        <li><a href="/Intervene/methodology/">Methodology</a></li>
-        <li><a href="/Intervene/sectors/">Sectors</a></li>
-        <li><a href="/Intervene/insights/">Insights</a></li>
-        <li><a href="/Intervene/about/">About</a></li>
-        <li><a href="/Intervene/contact/">Contact</a></li>
+        <li><a href="/Intervene/methodology/">How it measures</a></li>
+        <li><a href="/Intervene/sample-report/">Sample verdict</a></li>
+        <li><a href="/Intervene/services/">Services</a></li>
       </ul>
     </nav>
 
@@ -33,9 +33,10 @@ const year = new Date().getFullYear();
   <div class="wrap foot-sub">
     <nav class="supporting-nav" aria-label="Supporting">
       <ul role="list">
-        <li><a href="/Intervene/services/">Services &amp; pricing</a></li>
-        <li><a href="/Intervene/sample-report/">Sample report</a></li>
+        <li><a href="/Intervene/insights/">Insights</a></li>
+        <li><a href="/Intervene/about/">About</a></li>
         <li><a href="/Intervene/verify/">Verify</a></li>
+        <li><a href="/Intervene/contact/">Contact</a></li>
         <li><a href="/Intervene/legal/terms/">Terms</a></li>
         <li><a href="/Intervene/legal/privacy/">Privacy</a></li>
         <li><a href="/Intervene/legal/gdpr/">UK GDPR</a></li>
@@ -68,7 +69,7 @@ const year = new Date().getFullYear();
     font-family: var(--font-sans);
     font-size: 14px;
     color: var(--muted);
-    max-width: 30ch;
+    max-width: 34ch;
     line-height: 1.5;
   }
   .brand-hallmark { margin-top: 8px; }
@@ -83,9 +84,10 @@ const year = new Date().getFullYear();
     font-family: var(--font-sans);
     font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted-soft);
+    white-space: nowrap;
     padding-bottom: 1px;
     border-bottom: 1px solid transparent;
     transition:
@@ -125,6 +127,7 @@ const year = new Date().getFullYear();
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--muted);
+    white-space: nowrap;
     border-bottom: 1px solid transparent;
     transition: color var(--dur-hover) var(--ease);
   }
