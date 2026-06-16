@@ -1,0 +1,318 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { markAgda } from '../../lib/marks';
+
+const faqs = [
+  {
+    question: 'What is Intervention Readiness?',
+    answer: 'Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.',
+  },
+  {
+    question: 'What does AGDA™ measure?',
+    answer: 'AGDA™ measures Intervention Readiness. It evaluates whether an organisation can detect, escalate, decide and intervene within the available reversibility window.',
+  },
+  {
+    question: 'How is Intervention Readiness different from governance?',
+    answer: 'Governance describes structures, responsibilities and controls. Intervention Readiness measures whether those structures can actually intervene before harm becomes irreversible.',
+  },
+  {
+    question: 'How is Intervention Readiness different from compliance?',
+    answer: 'Compliance asks whether obligations are met. Intervention Readiness asks whether intervention capability remains possible in time. Regulatory expectations can make the question important, but they are not the category.',
+  },
+  {
+    question: 'What is effective human oversight?',
+    answer: 'Effective human oversight means humans are informed, authorised and able to alter or halt system outcomes before the relevant harm window closes.',
+  },
+  {
+    question: 'How does AGDA™ produce a verdict?',
+    answer: 'AGDA™ assesses evidence across detect, escalate, decide and intervene stages, applies evidence ceilings and chain propagation, and returns a signed, deterministic verdict.',
+  },
+  {
+    question: 'Can AGDA™ support evidence of human intervention capability?',
+    answer: 'Yes. AGDA™ produces evidence of human intervention capability by measuring whether human oversight can detect, escalate, decide and intervene before harm becomes irreversible.',
+  },
+];
+
+const relationships = [
+  {
+    h: 'AI systems',
+    p: 'As AI systems become more capable and more embedded in operational decisions, consequences can compound faster than human authority moves. Intervention Readiness asks whether the organisation can still act inside that time window.',
+  },
+  {
+    h: 'Effective human oversight',
+    p: 'Human oversight is meaningful only if humans can alter the outcome. Intervention Readiness makes that capability explicit: informed, authorised and timely intervention.',
+  },
+  {
+    h: 'Operational resilience',
+    p: 'Operational resilience asks whether important services can remain within tolerance. Intervention Readiness focuses on the intervention chain that prevents automated harm from crossing the point of irreversibility.',
+  },
+  {
+    h: 'Governance',
+    p: 'Governance shows who is responsible and which controls exist. Intervention Readiness measures whether those controls can detect, escalate, decide and intervene under pressure.',
+  },
+  {
+    h: 'AGDA™',
+    p: 'AGDA™ is the deterministic assessment instrument that measures Intervention Readiness and returns a signed verdict.',
+  },
+];
+---
+
+<BaseLayout
+  title="What Is Intervention Readiness? · Intervene"
+  description="Intervention Readiness is the ability to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ measures Intervention Readiness."
+  current="intervention-readiness"
+  faqs={faqs}
+>
+  <section class="hero">
+    <div class="wrap">
+      <span class="label">Canonical definition</span>
+      <h1 class="h1 reveal">What is Intervention Readiness?</h1>
+      <p class="lede muted reveal">
+        Intervention Readiness is the ability of an organisation to
+        <strong>detect, escalate, decide and intervene</strong> before harm
+        becomes irreversible.
+      </p>
+    </div>
+  </section>
+
+  <section class="block definition">
+    <div class="wrap">
+      <div class="definition-grid">
+        <div>
+          <h2 class="h2">The category.</h2>
+          <p class="body">
+            Intervention Readiness describes a board-level capability: whether
+            an organisation can still intervene in time when a consequential
+            system begins to create harm.
+          </p>
+          <p class="body muted">
+            Most organisations can evidence policies, controls, committees and
+            escalation structures. Fewer can evidence that those structures can
+            alter or halt system outcomes before the reversibility window
+            closes.
+          </p>
+        </div>
+
+        <aside class="definition-box" aria-label="Intervention Readiness definition">
+          <span class="mono box-label">Defined term</span>
+          <p>
+            Intervention Readiness means the ability of an organisation to
+            detect, escalate, decide and intervene before harm becomes
+            irreversible.
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Why the category matters.</h2>
+      <p class="lede muted">
+        Systems are becoming more capable. Organisations are becoming more
+        dependent on automation. Regulators increasingly emphasise effective
+        human oversight. Boards need confidence that intervention remains
+        possible.
+      </p>
+
+      <ol class="chain" role="list">
+        <li>
+          <span class="mono">01</span>
+          <h3 class="h3">Systems become more powerful.</h3>
+          <p class="body muted">Automated systems can act quickly, at scale, and across complex dependencies.</p>
+        </li>
+        <li>
+          <span class="mono">02</span>
+          <h3 class="h3">Oversight becomes more important.</h3>
+          <p class="body muted">Human oversight matters more as consequences, complexity and speed increase.</p>
+        </li>
+        <li>
+          <span class="mono">03</span>
+          <h3 class="h3">Oversight must be able to intervene.</h3>
+          <p class="body muted">A human who cannot alter the outcome is a witness, not a safeguard.</p>
+        </li>
+        <li>
+          <span class="mono">04</span>
+          <h3 class="h3">Intervention capability must be evidenced.</h3>
+          <p class="body muted">The question is not only what controls exist. It is whether those controls can act in time.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Relationship to adjacent concepts.</h2>
+      <p class="lede muted">
+        Intervention Readiness is related to governance, compliance, effective
+        human oversight and operational resilience. It is not a replacement for
+        any of them. It measures the intervention capability those disciplines
+        often assume.
+      </p>
+
+      <ul class="relationship-grid" role="list">
+        {relationships.map((r) => (
+          <li>
+            <h3 class="h3" set:html={markAgda(r.h)} />
+            <p class="body muted" set:html={markAgda(r.p)} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> relates to Intervention Readiness.</h2>
+      <p class="body">
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is not the category. Intervention Readiness is the
+        category. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is the deterministic assessment instrument that
+        measures it.
+      </p>
+      <p class="body muted">
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> evaluates evidence across Detect, Escalate, Decide and
+        Intervene. It returns a signed verdict on whether the chain completes
+        before harm becomes irreversible.
+      </p>
+      <div class="cta">
+        <a href="/Intervene/agda/" class="btn"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span></a>
+        <a href="/Intervene/sample-report/" class="btn-ghost">View sample verdict</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block tight">
+    <div class="wrap">
+      <h2 class="h2">Frequently asked questions.</h2>
+      <dl class="faq-list">
+        {faqs.map((faq) => (
+          <div>
+            <dt set:html={markAgda(faq.question)} />
+            <dd set:html={markAgda(faq.answer)} />
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 144px;
+    padding-bottom: 144px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .hero .label { margin-bottom: 24px; }
+  .hero .h1 { max-width: 22ch; }
+  .hero .lede { margin-top: 32px; max-width: 58ch; }
+  .hero strong { color: var(--ink); font-weight: 600; }
+
+  .definition-grid {
+    display: grid;
+    grid-template-columns: 1.35fr 0.85fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .definition-grid .body { max-width: 60ch; }
+  .definition-box {
+    padding: 28px 0 28px 28px;
+    border-left: 2px solid var(--accent);
+  }
+  .box-label {
+    display: block;
+    margin-bottom: 16px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .definition-box p {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: clamp(22px, 2.6vw, 32px);
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  .block .h2 { max-width: 28ch; }
+  .block .lede { margin-top: 16px; max-width: 62ch; }
+  .wrap-narrow .body { max-width: 62ch; }
+  .cta { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .chain {
+    list-style: none;
+    margin: 72px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    border-top: 1px solid var(--hair-strong);
+  }
+  .chain > li {
+    padding-top: 28px;
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+  .chain .mono {
+    color: var(--accent);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+  .chain .h3,
+  .relationship-grid .h3 { margin: 0; }
+  .chain p,
+  .relationship-grid p { margin: 0; }
+
+  .relationship-grid {
+    list-style: none;
+    margin: 72px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px 80px;
+  }
+  .relationship-grid > li {
+    padding-top: 24px;
+    border-top: 1px solid var(--hair);
+    display: grid;
+    gap: 12px;
+  }
+
+  .faq-list {
+    margin: 56px 0 0;
+    border-top: 1px solid var(--hair-strong);
+  }
+  .faq-list > div {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 48px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .faq-list dt {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+  .faq-list dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.62;
+    color: var(--muted);
+  }
+
+  @media (max-width: 880px) {
+    .hero { padding-top: 96px; padding-bottom: 96px; }
+    .definition-grid,
+    .faq-list > div { grid-template-columns: 1fr; gap: 24px; }
+    .chain { grid-template-columns: 1fr 1fr; }
+    .relationship-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  @media (max-width: 560px) {
+    .chain { grid-template-columns: 1fr; }
+  }
+</style>

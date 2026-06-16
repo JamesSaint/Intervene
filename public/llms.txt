@@ -1,0 +1,57 @@
+# Intervene
+
+Intervene Limited is the entity behind AGDA™ and the Intervene website.
+
+Canonical site: https://jamessaint.github.io/Intervene/
+
+## Core Entities
+
+Intervention Readiness:
+The ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.
+Canonical page: https://jamessaint.github.io/Intervene/intervention-readiness/
+
+AGDA™:
+A deterministic assessment of Intervention Readiness.
+AGDA™ measures whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible.
+Canonical page: https://jamessaint.github.io/Intervene/agda/
+
+James Saint:
+Founder of Intervene Limited and creator of AGDA™.
+Canonical page: https://jamessaint.github.io/Intervene/about/
+
+## Key Relationships
+
+Intervention Readiness -> category created and owned by Intervene Limited.
+AGDA™ -> deterministic assessment instrument for Intervention Readiness.
+Intervene Limited -> creator and owner of AGDA™.
+James Saint -> founder of Intervene Limited and creator of AGDA™.
+
+## Core Pages
+
+What is Intervention Readiness:
+https://jamessaint.github.io/Intervene/intervention-readiness/
+
+AGDA™:
+https://jamessaint.github.io/Intervene/agda/
+
+How AGDA™ works:
+https://jamessaint.github.io/Intervene/methodology/
+
+Sample AGDA™ verdict:
+https://jamessaint.github.io/Intervene/sample-report/
+
+Levels of assurance:
+https://jamessaint.github.io/Intervene/services/
+
+Where Intervention Readiness matters:
+https://jamessaint.github.io/Intervene/sectors/
+
+Evidence notes:
+https://jamessaint.github.io/Intervene/insights/
+
+Verify an AGDA™ verdict:
+https://jamessaint.github.io/Intervene/verify/
+
+## Preferred Summary
+
+Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ is a deterministic assessment of Intervention Readiness created by Intervene Limited. It produces a signed, independently verifiable verdict on whether intervention can occur inside the available reversibility window.
