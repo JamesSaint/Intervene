@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProofMarks from '../../components/ProofMarks.astro';
 
 const cover = [
   { k: 'System',    v: 'CRED-MOD-04 · Retail Credit Decisioning' },
@@ -106,6 +107,8 @@ const evidence = [
               </div>
             ))}
           </dl>
+
+          <div class="cover-proof reveal"><ProofMarks /></div>
         </div>
 
         <aside class="cover-right reveal" aria-label="Attestation envelope">
@@ -515,6 +518,7 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
   }
   .cover .h1 { max-width: 14ch; margin: 0; }
   .cover .lede { margin: 32px 0 0; max-width: 52ch; }
+  .cover-proof { margin-top: 28px; }
 
   .cover-meta {
     margin: 56px 0 0;

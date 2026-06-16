@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import VerdictSeal from '../components/VerdictSeal.astro';
+import VerdictArtifact from '../components/VerdictArtifact.astro';
 ---
 
 <BaseLayout
@@ -8,7 +8,7 @@ import VerdictSeal from '../components/VerdictSeal.astro';
   description="Most organisations have governance, controls and accountability. Almost none have measured whether intervention is still possible when it matters. AGDA measures it, and signs the answer."
   current="home"
 >
-  <!-- 1 · The question. The doorway. -->
+  <!-- 1 · DOORWAY. Loud. -->
   <section class="hero">
     <div class="wrap">
       <h1 class="display-xl">Can you stop it <em>in time?</em></h1>
@@ -23,25 +23,23 @@ import VerdictSeal from '../components/VerdictSeal.astro';
     </div>
   </section>
 
-  <!-- 2 · The honest answer -->
-  <section class="block">
+  <!-- 2 · Recognition. Quiet. -->
+  <section class="block quiet">
     <div class="wrap-narrow">
       <h2 class="h2">The honest answer is usually <em>“I think so.”</em></h2>
-      <p class="lede">
-        You have a framework. An accountable owner, documented controls, an
-        escalation policy. All of it real, and all of it necessary.
-      </p>
       <p class="body">
-        None of it measures the one thing that decides the outcome: at 3am, is
-        the person who can halt the system reachable, authorised, and certain
-        enough to act while acting still costs less than waiting?
+        You have a framework. An accountable owner, documented controls, an
+        escalation policy. All of it real, and all of it necessary. None of it
+        measures the one thing that decides the outcome: at 3am, is the person
+        who can halt the system reachable, authorised, and certain enough to act
+        while acting still costs less than waiting?
       </p>
       <p class="body muted">Most leaders sense this. Almost none have measured it.</p>
     </div>
   </section>
 
-  <!-- 3 · Recognition. You have watched a version of this. -->
-  <section class="block">
+  <!-- 3 · Recognition scenario. Quiet, building. -->
+  <section class="block quiet">
     <div class="wrap">
       <div class="window-head">
         <h2 class="h2">You have probably watched <em>a version of this.</em></h2>
@@ -53,51 +51,24 @@ import VerdictSeal from '../components/VerdictSeal.astro';
 
       <ol class="window-grid reveal" role="list">
         <li class="stage">
-          <div class="chip-row">
-            <span class="time-chip">T+0</span>
-            <span class="stage-label">System event</span>
-          </div>
+          <div class="chip-row"><span class="time-chip">T+0</span><span class="stage-label">System event</span></div>
           <h3 class="h3">No signal yet.</h3>
-          <p class="body muted">
-            The system starts producing decisions outside its limits. Nothing
-            has reached anyone with the authority to act.
-          </p>
+          <p class="body muted">The system starts producing decisions outside its limits. Nothing has reached anyone with the authority to act.</p>
         </li>
-
         <li class="stage">
-          <div class="chip-row">
-            <span class="time-chip">T+6h</span>
-            <span class="stage-label">Operations</span>
-          </div>
+          <div class="chip-row"><span class="time-chip">T+6h</span><span class="stage-label">Operations</span></div>
           <h3 class="h3">Noticed, not stoppable.</h3>
-          <p class="body muted">
-            Someone sees the deviation. They cannot halt the system, and the
-            route to who can is unclear.
-          </p>
+          <p class="body muted">Someone sees the deviation. They cannot halt the system, and the route to who can is unclear.</p>
         </li>
-
         <li class="stage">
-          <div class="chip-row">
-            <span class="time-chip">T+18h</span>
-            <span class="stage-label">Management</span>
-          </div>
+          <div class="chip-row"><span class="time-chip">T+18h</span><span class="stage-label">Management</span></div>
           <h3 class="h3">Still compounding.</h3>
-          <p class="body muted">
-            It reaches management. Authority to halt is still being
-            established. The cost grows by the hour.
-          </p>
+          <p class="body muted">It reaches management. Authority to halt is still being established. The cost grows by the hour.</p>
         </li>
-
         <li class="stage critical">
-          <div class="chip-row">
-            <span class="time-chip warn">T+36h</span>
-            <span class="stage-label">Board</span>
-          </div>
+          <div class="chip-row"><span class="time-chip warn">T+36h</span><span class="stage-label">Board</span></div>
           <h3 class="h3">The window has closed.</h3>
-          <p class="body muted">
-            The board is informed. The moment for low-cost intervention has
-            already passed.
-          </p>
+          <p class="body muted">The board is informed. The moment for low-cost intervention has already passed.</p>
         </li>
       </ol>
 
@@ -105,16 +76,16 @@ import VerdictSeal from '../components/VerdictSeal.astro';
     </div>
   </section>
 
-  <!-- 4 · The measurement gap. The conversion event. -->
+  <!-- 4 · THE GAP. Heavy. The turn. -->
   <section class="gap">
     <div class="wrap-narrow">
       <span class="label gap-label">The measurement gap</span>
       <h2 class="h2 gap-h">You have measured almost <em>everything except this.</em></h2>
       <p class="gap-body">
         Capital. Model performance. Control coverage. Incident counts. Audit
-        findings. The one factor that decides whether harm becomes
-        irreversible, whether intervention is still possible when it matters, is
-        the one nobody puts a number to.
+        findings. The one factor that decides whether harm becomes irreversible,
+        whether intervention is still possible when it matters, is the one
+        nobody puts a number to.
       </p>
       <p class="gap-realisation">
         <span>You have governance.</span>
@@ -122,65 +93,42 @@ import VerdictSeal from '../components/VerdictSeal.astro';
         <span>You have accountability.</span>
         <strong>You have never measured whether intervention remains possible when it matters.</strong>
       </p>
+      <p class="gap-refrain">Which means you cannot yet answer the question. <em>Can you stop it in time?</em></p>
     </div>
   </section>
 
-  <!-- 5 · It can be measured. -->
-  <section class="block">
-    <div class="wrap-narrow">
-      <h2 class="h2">It can be measured. <em>To a verdict.</em></h2>
-      <p class="body">
-        AGDA measures exactly that, and returns a clear answer, not a maturity
-        score. Deterministic: the same inputs give the same verdict every time.
-        Signed, so a regulator can confirm it independently.
-      </p>
-      <div class="seal-row">
-        <VerdictSeal verdict="Signed verdict" meta="Ed25519 · locked engine hash" />
+  <!-- 5 · THE VERDICT. Climax. The only colour on the page. -->
+  <section class="block verdict">
+    <div class="wrap">
+      <div class="verdict-lead">
+        <span class="label">The verdict</span>
+        <h2 class="h2">There is a deterministic, signed <em>way to find out.</em></h2>
+        <p class="body muted">
+          AGDA runs your system against that one question and returns a verdict,
+          not a maturity score. The same inputs produce the same result every
+          time. A regulator can confirm it independently.
+        </p>
+      </div>
+      <div class="verdict-stage reveal">
+        <VerdictArtifact />
       </div>
     </div>
   </section>
 
-  <!-- 6 · Three answers. -->
-  <section class="block">
-    <div class="wrap">
-      <h2 class="h2">Three answers. <em>Most organisations have never seen theirs.</em></h2>
-      <ul class="verdicts" role="list">
-        <li>
-          <span class="mono verdict-name">Before impact</span>
-          <p class="body">Intervention completes in time under the conditions observed. You have room to move.</p>
-        </li>
-        <li>
-          <span class="mono verdict-name">At risk</span>
-          <p class="body">Intervention completes, but inside a margin that ordinary pressure can erode.</p>
-        </li>
-        <li>
-          <span class="mono verdict-name warn">After impact</span>
-          <p class="body">Intervention lands too late. By the time you can act, the harm is already irreversible.</p>
-        </li>
-      </ul>
-      <p class="body muted verdicts-foot">
-        Whichever is true for you is already true, measured or not. The value is
-        in seeing it while you still have room to move.
-      </p>
-    </div>
-  </section>
-
-  <!-- 7 · Action. -->
+  <!-- 6 · CLOSE. Sparse. The refrain returns. -->
   <section class="block close">
-    <div class="wrap">
-      <div class="close-grid">
-        <h2 class="h2 reveal">See where you stand, <em>while the options are still open.</em></h2>
-        <div class="close-cta reveal">
-          <p class="body muted">One conversation to scope it. Confidential.</p>
-          <a href="/Intervene/contact/" class="btn">Get your verdict</a>
-        </div>
-      </div>
+    <div class="wrap close-wrap">
+      <h2 class="close-q">Can you stop it <em>in time?</em></h2>
+      <p class="close-line">Now there is a way to know. One conversation to scope it. Confidential.</p>
+      <a href="/Intervene/contact/" class="btn">Get your verdict</a>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  /* Two black pillars: the question (doorway) and the gap (category). */
+  /* Two black pillars: the question (doorway) and the gap (the turn).
+     Colour appears once, in the verdict. Tempo: loud, quiet, quiet,
+     heavy, climax, sparse. */
   .hero,
   .gap {
     background: var(--ink);
@@ -206,171 +154,101 @@ import VerdictSeal from '../components/VerdictSeal.astro';
   }
   .hero-note {
     margin: 20px 0 0;
-    font-family: var(--font-sans);
     font-size: 16px;
     color: rgba(255, 255, 255, 0.66);
     max-width: 44ch;
   }
-  .hero-cta { margin-top: 48px; display: flex; gap: 16px; flex-wrap: wrap; }
-  .hero .btn {
-    background: var(--paper);
-    color: var(--ink);
-    border-color: var(--paper);
-  }
+  .hero-cta { margin-top: 48px; }
+  .hero .btn { background: var(--paper); color: var(--ink); border-color: var(--paper); }
   .hero .btn:hover { background: var(--paper-mid); border-color: var(--paper-mid); }
 
-  .block .h2 { max-width: 24ch; }
-  .wrap-narrow .lede { margin-top: 24px; max-width: 54ch; }
-  .wrap-narrow .body { margin: 20px 0 0; max-width: 60ch; }
+  /* Quiet recognition sections: narrower, lighter, restrained. */
+  .block.quiet .h2 { max-width: 22ch; font-size: clamp(28px, 3.2vw, 44px); }
+  .wrap-narrow .body { margin: 24px 0 0; max-width: 60ch; }
 
-  /* 3 · Window timeline */
-  .window-head { margin-bottom: 72px; }
+  .window-head { margin-bottom: 64px; }
   .window-head .h2 { max-width: 20ch; }
   .window-head .lede { margin-top: 20px; max-width: 50ch; }
-
   .window-grid {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    column-gap: 32px;
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 32px;
     border-top: 1px solid var(--ink);
   }
   .window-grid > .stage {
-    padding: 32px 0;
-    display: grid;
-    gap: 14px;
-    align-content: start;
-    opacity: 0;
-    transform: translateY(12px);
-    transition:
-      opacity 480ms cubic-bezier(0.4, 0, 0.2, 1),
-      transform 480ms cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 28px 0; display: grid; gap: 12px; align-content: start;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity 480ms cubic-bezier(0.4,0,0.2,1), transform 480ms cubic-bezier(0.4,0,0.2,1);
   }
   .window-grid.in > .stage { opacity: 1; transform: none; }
   .window-grid.in > .stage:nth-child(1) { transition-delay: 0ms; }
-  .window-grid.in > .stage:nth-child(2) { transition-delay: 140ms; }
-  .window-grid.in > .stage:nth-child(3) { transition-delay: 280ms; }
-  .window-grid.in > .stage:nth-child(4) { transition-delay: 420ms; }
-
+  .window-grid.in > .stage:nth-child(2) { transition-delay: 120ms; }
+  .window-grid.in > .stage:nth-child(3) { transition-delay: 240ms; }
+  .window-grid.in > .stage:nth-child(4) { transition-delay: 360ms; }
   .chip-row { display: flex; align-items: center; gap: 12px; }
   .time-chip {
-    display: inline-block;
-    background: var(--ink);
-    color: var(--paper);
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 5px 9px;
-    line-height: 1;
+    display: inline-block; background: var(--ink); color: var(--paper);
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 5px 9px; line-height: 1;
   }
   .time-chip.warn { background: var(--warn); }
-  .stage-label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-  .window-grid .h3 { font-size: 22px; margin: 4px 0 0; }
+  .stage-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; color: var(--muted); text-transform: uppercase; }
+  .window-grid .h3 { font-size: 21px; margin: 4px 0 0; }
   .window-grid p { max-width: 32ch; margin: 0; }
   .window-foot {
-    margin: 48px 0 0;
-    padding-top: 24px;
-    border-top: 1px solid var(--ink);
-    font-family: var(--font-sans);
-    font-size: clamp(18px, 1.8vw, 24px);
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-    max-width: 40ch;
+    margin: 44px 0 0; padding-top: 24px; border-top: 1px solid var(--ink);
+    font-family: var(--font-sans); font-size: clamp(18px, 1.8vw, 24px);
+    font-weight: 500; letter-spacing: -0.01em; color: var(--ink); max-width: 40ch;
   }
-
   @media (prefers-reduced-motion: reduce) {
     .window-grid > .stage { opacity: 1; transform: none; transition: none; }
   }
 
-  /* 4 · The measurement gap */
-  .gap { padding: clamp(96px, 13vh, 160px) 0; }
+  /* 4 · The gap. Heavy. */
+  .gap { padding: clamp(104px, 14vh, 176px) 0; }
   .gap-label {
-    color: rgba(255, 255, 255, 0.6);
-    padding-bottom: 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-    margin-bottom: 32px;
+    color: rgba(255,255,255,0.6); padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.18); margin-bottom: 32px;
   }
-  .gap-h { color: var(--paper); max-width: 18ch; }
+  .gap-h { color: var(--paper); max-width: 18ch; font-size: clamp(34px, 5vw, 64px); }
   .gap-body {
-    margin: 28px 0 0;
-    font-family: var(--font-sans);
-    font-size: 17px;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.78);
-    max-width: 56ch;
+    margin: 28px 0 0; font-family: var(--font-sans); font-size: 17px;
+    line-height: 1.6; color: rgba(255,255,255,0.78); max-width: 56ch;
   }
   .gap-realisation {
-    margin: 56px 0 0;
-    padding-top: 40px;
-    border-top: 1px solid rgba(255, 255, 255, 0.18);
-    display: grid;
-    gap: 10px;
-    font-family: var(--font-sans);
-    font-size: clamp(20px, 2.4vw, 30px);
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 1.25;
-    max-width: 26ch;
+    margin: 56px 0 0; padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    display: grid; gap: 10px;
+    font-family: var(--font-sans); font-size: clamp(20px, 2.4vw, 30px);
+    font-weight: 500; letter-spacing: -0.02em; line-height: 1.25; max-width: 26ch;
   }
-  .gap-realisation > span { color: rgba(255, 255, 255, 0.5); }
-  .gap-realisation > strong {
-    color: var(--paper);
-    font-weight: 600;
-    max-width: 30ch;
-    margin-top: 6px;
+  .gap-realisation > span { color: rgba(255,255,255,0.5); }
+  .gap-realisation > strong { color: var(--paper); font-weight: 600; max-width: 30ch; margin-top: 6px; }
+  .gap-refrain {
+    margin: 40px 0 0; font-family: var(--font-sans); font-size: 16px;
+    color: rgba(255,255,255,0.66); max-width: 48ch;
   }
+  .gap-refrain em { color: var(--paper); font-style: italic; }
 
-  /* 5 · It can be measured */
-  .seal-row { margin-top: 40px; }
+  /* 5 · The verdict. Climax. */
+  .verdict { padding-top: clamp(96px, 12vh, 144px); padding-bottom: clamp(96px, 12vh, 144px); }
+  .verdict-lead { max-width: 40ch; margin-bottom: 56px; }
+  .verdict-lead .label { padding-bottom: 14px; border-bottom: 1px solid var(--hair); margin-bottom: 24px; }
+  .verdict-lead .h2 { max-width: 22ch; }
+  .verdict-lead .body { margin-top: 20px; max-width: 52ch; }
+  .verdict-stage { display: flex; justify-content: center; }
 
-  /* 6 · Three answers */
-  .verdicts {
-    list-style: none;
-    margin: 56px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 32px 48px;
-    padding-top: 28px;
-    border-top: 1px solid var(--ink);
+  /* 6 · Close. Sparse. */
+  .close { padding-top: clamp(112px, 16vh, 200px); padding-bottom: clamp(112px, 16vh, 200px); }
+  .close-wrap { display: grid; gap: 28px; justify-items: start; }
+  .close-q {
+    font-family: var(--font-sans); font-weight: 500;
+    font-size: clamp(40px, 6vw, 96px); letter-spacing: -0.035em;
+    line-height: 1.0; margin: 0; max-width: 14ch; color: var(--ink);
   }
-  .verdicts > li { display: grid; gap: 10px; align-content: start; }
-  .verdict-name {
-    color: var(--ink);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 11px;
-  }
-  .verdict-name.warn { color: var(--warn); }
-  .verdicts p { max-width: 34ch; margin: 0; }
-  .verdicts-foot { margin-top: 48px; max-width: 56ch; }
-
-  /* 7 · Close */
-  .close-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 96px;
-    align-items: start;
-  }
-  .close .h2 { max-width: 18ch; margin: 0; }
-  .close-cta { display: grid; gap: 24px; align-content: start; padding-top: 12px; }
-  .close-cta .body { margin: 0; max-width: 38ch; }
-  .close-cta .btn { justify-self: start; }
+  .close-line { font-family: var(--font-sans); font-size: 16px; color: var(--muted); margin: 0; max-width: 44ch; }
 
   @media (max-width: 880px) {
     .window-grid { grid-template-columns: 1fr 1fr; column-gap: 24px; }
-    .verdicts { grid-template-columns: 1fr; gap: 28px; }
-    .close-grid { grid-template-columns: 1fr; gap: 48px; }
   }
   @media (max-width: 560px) {
     .window-grid { grid-template-columns: 1fr; }
