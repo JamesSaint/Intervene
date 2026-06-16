@@ -1,0 +1,25 @@
+---
+/**
+ * Sector card. Names the regulatory pressure and the failure mode the
+ * sector recognises in itself. Hairline card, bronze rule on hover.
+ */
+interface Props {
+  name: string;
+  pressure: string;
+  consequence: string;
+  href?: string;
+}
+const { name, pressure, consequence, href } = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag class="card sector-card" {...href ? { href } : {}}>
+  <span class="label">{pressure}</span>
+  <h3 class="h3 card-title">{name}</h3>
+  <p class="body-sm muted">{consequence}</p>
+</Tag>
+
+<style>
+  .sector-card .card-title { margin: 0; }
+  .sector-card p { margin: 0; max-width: 34ch; }
+</style>

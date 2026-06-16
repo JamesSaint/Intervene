@@ -1,0 +1,134 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  dek: string;
+  date: string;        // ISO, e.g. 2026-05-02
+  kicker?: string;
+}
+const { title, description, dek, date, kicker = 'Note' } = Astro.props;
+const dateLabel = new Date(date).toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<BaseLayout title={`${title} · Insights`} description={description} current="insights">
+  <article class="insight">
+    <header class="insight-header">
+      <div class="wrap-reading">
+        <a href="/Intervene/insights/" class="back-link">Insights</a>
+        <span class="label">{kicker}</span>
+        <h1 class="h1">{title}</h1>
+        <p class="lede dek">{dek}</p>
+        <time class="meta mono" datetime={date}>{dateLabel}</time>
+      </div>
+    </header>
+
+    <div class="wrap-reading prose">
+      <slot />
+    </div>
+
+    <div class="wrap-reading insight-close">
+      <p class="body muted">
+        If this describes a system you are accountable for, the conversation is
+        brief, confidential, and carries no obligation.
+      </p>
+      <a href="/Intervene/contact/" class="btn">Request a confidential discussion</a>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .insight-header {
+    padding-top: 120px;
+    padding-bottom: 56px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .back-link {
+    display: inline-block;
+    margin-bottom: 40px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid transparent;
+    transition: color var(--dur-hover) var(--ease);
+  }
+  .back-link:hover { color: var(--ink); }
+  .insight-header .label { margin-bottom: 20px; }
+  .insight-header .h1 { font-size: clamp(36px, 5vw, 64px); max-width: 22ch; }
+  .dek { margin-top: 28px; max-width: 48ch; color: var(--ink); }
+  .insight-header .meta {
+    display: block;
+    margin-top: 32px;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .prose {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+  .prose :global(h2) {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(24px, 2.4vw, 32px);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 48px 0 16px;
+  }
+  .prose :global(h2:first-child) { margin-top: 0; }
+  .prose :global(p) {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--ink);
+    margin: 0 0 20px;
+  }
+  .prose :global(p.muted) { color: var(--muted); }
+  .prose :global(blockquote) {
+    margin: 32px 0;
+    padding-left: 24px;
+    border-left: 2px solid var(--ink);
+    font-size: 22px;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--ink);
+    max-width: 40ch;
+  }
+  .prose :global(ul) {
+    margin: 0 0 24px;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--hair);
+  }
+  .prose :global(ul > li) {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--hair);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .prose :global(strong) { font-weight: 600; }
+
+  .insight-close {
+    padding-top: 48px;
+    padding-bottom: 16px;
+    border-top: 1px solid var(--hair);
+    display: grid;
+    gap: 24px;
+    justify-items: start;
+  }
+  .insight-close .body { max-width: 48ch; margin: 0; }
+
+  @media (max-width: 720px) {
+    .insight-header { padding-top: 80px; }
+  }
+</style>

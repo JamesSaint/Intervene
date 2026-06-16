@@ -1,0 +1,34 @@
+---
+/**
+ * Insight card. Board-grade title, one line of dek, no marketing copy.
+ * Hairline card, bronze rule on hover.
+ */
+interface Props {
+  title: string;
+  dek: string;
+  href: string;
+  kicker?: string;
+}
+const { title, dek, href, kicker = 'Note' } = Astro.props;
+---
+
+<a class="card insight-card" href={href}>
+  <span class="label">{kicker}</span>
+  <h3 class="h3 card-title">{title}</h3>
+  <p class="body-sm muted">{dek}</p>
+  <span class="insight-more">Read<span aria-hidden="true"> →</span></span>
+</a>
+
+<style>
+  .insight-card { min-height: 240px; }
+  .insight-card .card-title { margin: 0; max-width: 24ch; }
+  .insight-card p { margin: 0; max-width: 38ch; }
+  .insight-more {
+    margin-top: auto;
+    padding-top: 16px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+</style>

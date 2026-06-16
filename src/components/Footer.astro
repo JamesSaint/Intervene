@@ -4,14 +4,17 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer">
   <div class="wrap foot-inner">
-    <span class="brand">intervene</span>
+    <div class="brand-col">
+      <span class="brand">intervene</span>
+      <span class="brand-line">The independent authority on intervention readiness.</span>
+    </div>
 
-    <nav aria-label="Footer">
+    <nav class="primary-nav" aria-label="Footer">
       <ul role="list">
-        <li><a href="/Intervene/method/">Method</a></li>
-        <li><a href="/Intervene/verify/">Verify</a></li>
-        <li><a href="/Intervene/services/">Services</a></li>
-        <li><a href="/Intervene/sample-report/">Sample report</a></li>
+        <li><a href="/Intervene/agda/">AGDA</a></li>
+        <li><a href="/Intervene/methodology/">Methodology</a></li>
+        <li><a href="/Intervene/sectors/">Sectors</a></li>
+        <li><a href="/Intervene/insights/">Insights</a></li>
         <li><a href="/Intervene/about/">About</a></li>
         <li><a href="/Intervene/contact/">Contact</a></li>
       </ul>
@@ -24,20 +27,34 @@ const year = new Date().getFullYear();
       <span class="meta-copy">© {year} Intervene Limited</span>
     </div>
   </div>
+
+  <div class="wrap foot-sub">
+    <nav class="supporting-nav" aria-label="Supporting">
+      <ul role="list">
+        <li><a href="/Intervene/services/">Services &amp; pricing</a></li>
+        <li><a href="/Intervene/sample-report/">Sample report</a></li>
+        <li><a href="/Intervene/verify/">Verify</a></li>
+        <li><a href="/Intervene/legal/terms/">Terms</a></li>
+        <li><a href="/Intervene/legal/privacy/">Privacy</a></li>
+        <li><a href="/Intervene/legal/gdpr/">UK GDPR</a></li>
+      </ul>
+    </nav>
+  </div>
 </footer>
 
 <style>
   .site-footer {
     border-top: 1px solid var(--hair);
-    padding: 80px 0;
-    background: var(--paper);
+    padding: 80px 0 48px;
+    background: var(--paper-soft);
   }
   .foot-inner {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
+    grid-template-columns: 1.2fr auto 1fr;
+    align-items: start;
     gap: 48px;
   }
+  .brand-col { display: grid; gap: 12px; align-content: start; }
   .brand {
     font-family: var(--font-sans);
     font-size: 22px;
@@ -45,23 +62,29 @@ const year = new Date().getFullYear();
     letter-spacing: -0.04em;
     color: var(--ink);
   }
-  nav ul {
+  .brand-line {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 30ch;
+    line-height: 1.5;
+  }
+  .primary-nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    gap: 32px;
-    justify-content: center;
+    display: grid;
+    gap: 12px;
   }
-  nav a {
+  .primary-nav a {
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 15px;
     color: var(--ink);
     padding-bottom: 1px;
     border-bottom: 1px solid transparent;
     transition: border-color var(--dur-hover) var(--ease);
   }
-  nav a:hover { border-color: var(--ink); }
+  .primary-nav a:hover { border-color: var(--accent); }
   .meta {
     font-family: var(--font-sans);
     font-size: 13px;
@@ -74,13 +97,38 @@ const year = new Date().getFullYear();
   }
   .meta-name { color: var(--ink); font-weight: 500; }
   .meta-copy { margin-top: 12px; }
+
+  .foot-sub {
+    margin-top: 56px;
+    padding-top: 28px;
+    border-top: 1px solid var(--hair);
+  }
+  .supporting-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .supporting-nav a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid transparent;
+    transition: color var(--dur-hover) var(--ease);
+  }
+  .supporting-nav a:hover { color: var(--ink); }
+
   @media (max-width: 720px) {
     .foot-inner {
       grid-template-columns: 1fr;
       gap: 32px;
       text-align: left;
     }
-    nav ul { justify-content: flex-start; flex-wrap: wrap; gap: 20px; }
     .meta { justify-self: start; text-align: left; }
+    .supporting-nav ul { gap: 16px 20px; }
   }
 </style>
