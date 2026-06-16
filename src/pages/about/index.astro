@@ -30,21 +30,21 @@ const notServed = [
 ---
 
 <BaseLayout
-  title="About · Intervene"
-  description="One principal. Specific experience. Independent advisory for boards facing irreversible exposure on consequential AI and operational systems."
+  title="About James Saint | Founder of Intervene and Creator of AGDA™"
+  description="James Saint founded Intervene and developed AGDA™ to help organisations assess whether they can detect, escalate, decide and intervene before harm becomes irreversible."
   current="about"
 >
   <section class="hero">
     <div class="wrap">
-      <h1 class="h1 reveal">An independent practice. <em>One principal.</em></h1>
+      <h1 class="h1 reveal">About <em>James Saint.</em></h1>
       <p class="lede muted reveal">
-        Intervene exists because the gap between governance design and
-        operational reality is where boards lose the room to intervene.
+        I founded Intervene because I became increasingly uncomfortable with a
+        question that most governance frameworks never truly answer.
       </p>
     </div>
   </section>
 
-  <!-- FOUNDER -->
+  <!-- FOUNDER NARRATIVE -->
   <section class="block">
     <div class="wrap">
       <div class="founder">
@@ -58,63 +58,86 @@ const notServed = [
             decoding="async"
           />
           <figcaption>James Saint · London · 2026</figcaption>
+          <p class="collab">
+            Intervene's methodology is developed in academic collaboration with
+            Prof. Nicholas Ryman-Tubb, University of Surrey, calibrated against a
+            hold-out corpus of regulated AI failure modes.
+          </p>
         </figure>
 
         <div class="bio reveal">
-          <h2 class="h2">James Saint.</h2>
           <p class="mono role">Founder · Principal Advisor</p>
 
-          <p class="body">
-            A technology founder and former co-founder of the Institute of
-            Financial Innovation in Transactions and Security. Three decades
-            across technology, systems architecture, payments, digital products
-            and operational risk.
+          <p class="body q">
+            When a critical system begins to fail, can an organisation actually
+            intervene before harm becomes irreversible?
           </p>
 
           <p class="body">
-            James founded Intervene to address one question: can the people
-            accountable for a consequential system actually stop it when they
-            need to? The discipline is the discipline of where to put the
-            escalation.
+            For years I watched organisations invest heavily in governance,
+            controls, reporting and assurance. Yet when major failures occurred,
+            the same pattern often emerged. The controls existed. The reporting
+            existed. The governance structure existed.
           </p>
 
-          <p class="body muted">
-            Intervene's methodology is developed in academic collaboration
-            with Prof. Nicholas Ryman-Tubb, University of Surrey, calibrated
-            against a hold-out corpus of regulated AI failure modes.
+          <p class="body">The intervention did not.</p>
+
+          <p class="body">
+            Problems were detected too late. Escalations stalled. Decisions were
+            delayed. Ownership became unclear. By the time action was taken, the
+            opportunity to prevent harm had already passed.
           </p>
 
-          <dl class="specs">
-            <div><dt>Prior experience</dt><dd>AI deployment, fintech, infrastructure. UK and EU.</dd></div>
-            <div><dt>Academic collaboration</dt><dd>University of Surrey. AGDA calibration.</dd></div>
-            <div><dt>Regulatory fluency</dt><dd>PRA SS1/23 · FCA SMCR · EU AI Act · DORA · NIST AI RMF.</dd></div>
-            <div><dt>Based</dt><dd>London, United Kingdom. Global mandates.</dd></div>
-          </dl>
+          <p class="body">That observation became the foundation of AGDA™.</p>
+
+          <p class="body">
+            My background spans more than three decades across technology,
+            systems architecture, digital products, payments, operational
+            systems and organisational risk. I was also a co-founder of the
+            Institute of Financial Innovation in Transactions and Security
+            (IFTS), an industry initiative focused on improving trust, security
+            and resilience in financial systems.
+          </p>
+
+          <p class="body">
+            Throughout my career I have been drawn to the same challenge:
+            understanding how complex systems behave under pressure, and why
+            organisations often struggle to act when it matters most.
+          </p>
+
+          <p class="body">
+            The emergence of AI brought that challenge into sharper focus.
+          </p>
+
+          <p class="body">
+            Many organisations can describe their governance structures. Far
+            fewer can demonstrate that they are capable of detecting,
+            escalating, deciding and intervening before consequences become
+            irreversible.
+          </p>
+
+          <p class="body">AGDA™ was developed to answer that question directly.</p>
+
+          <p class="body">
+            Rather than assessing whether governance controls exist on paper,
+            AGDA™ evaluates whether intervention is actually possible within the
+            time available. The methodology produces a deterministic,
+            independently verifiable verdict supported by cryptographic
+            attestation and board-ready reporting.
+          </p>
+
+          <p class="body">
+            Today, through Intervene, I work with organisations that need a
+            clear answer to a difficult question:
+          </p>
+
+          <p class="body aside">Can you stop it in time?</p>
+
+          <p class="body">
+            Because when the answer matters most, assumptions are not enough.
+          </p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- WHY THIS EXISTS -->
-  <section class="block">
-    <div class="wrap-narrow">
-      <h2 class="h2">Governance design ends where <em>operational reality begins.</em></h2>
-      <p class="lede muted">
-        Big-4 advisories produce decks. GRC platforms produce dashboards.
-        Neither is reproducible. Neither answers the only question that
-        matters when a system is failing in real time.
-      </p>
-
-      <p class="body">
-        A published, falsifiable methodology paired with a deterministic
-        engine that signs every verdict is a better answer to a regulator
-        than a slide. It is also a better answer to an audit committee asked
-        to certify something it cannot verify on its own.
-      </p>
-
-      <p class="body muted aside">
-        Opinion is not reproducible. Signed computation is.
-      </p>
     </div>
   </section>
 
@@ -268,6 +291,16 @@ const notServed = [
     font-size: 11px;
   }
   .bio .body { margin: 8px 0 0; max-width: 56ch; }
+  .bio .q { font-style: italic; }
+
+  .collab {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--muted);
+    max-width: 40ch;
+  }
 
   .specs {
     margin: 32px 0 0;
