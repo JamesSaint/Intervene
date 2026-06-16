@@ -4,13 +4,12 @@ import { markAgda } from '../lib/marks';
 const base = import.meta.env.BASE_URL;
 const items = [
   { label: 'Intervention Readiness', href: `${base}` },
-  { label: 'Why it matters',         href: `${base}sectors/` },
+  { label: 'Why it matters',         href: `${base}about/` },
   { label: 'AGDA™',                  href: `${base}agda/` },
-  { label: 'How AGDA™ measures',     href: `${base}methodology/` },
-  { label: 'Sample verdict',         href: `${base}sample-report/` },
-  { label: 'Services',               href: `${base}services/` },
-  { label: 'About',                  href: `${base}about/` },
-  { label: 'Contact',                href: `${base}contact/` },
+  { label: 'How AGDA™ works',        href: `${base}methodology/` },
+  { label: 'View sample verdict',    href: `${base}sample-report/` },
+  { label: 'Engage',                 href: `${base}services/` },
+  { label: 'Book a conversation',    href: `${base}contact/` },
 ];
 
 const norm = (p: string) => (p.endsWith('/') ? p : `${p}/`);
