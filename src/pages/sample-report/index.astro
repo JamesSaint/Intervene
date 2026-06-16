@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProofMarks from '../../components/ProofMarks.astro';
+import { markAgda } from '../../lib/marks';
 
 const cover = [
   { k: 'System',    v: 'CRED-MOD-04 · Retail Credit Decisioning' },
   { k: 'Scenario',  v: 'Macro shock · model drift' },
-  { k: 'Engine',    v: 'AGDA v1.2.0' },
+  { k: 'Engine',    v: 'AGDA™ v1.2.0' },
   { k: 'Attested',  v: '2026-05-14 · Ed25519' },
 ];
 
@@ -103,7 +104,7 @@ const evidence = [
             {cover.map((c) => (
               <div>
                 <dt>{c.k}</dt>
-                <dd>{c.v}</dd>
+                <dd set:html={markAgda(c.v)}></dd>
               </div>
             ))}
           </dl>
@@ -154,7 +155,7 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
     <div class="wrap">
       <h2 class="h2">Control Reality Index.</h2>
       <p class="lede muted">
-        Six controls assessed against the eight AGDA dimensions. Terminal
+        Six controls assessed against the eight <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> dimensions. Terminal
         classification reflects what the control can do under stress, not what
         the policy promises.
       </p>

@@ -4,6 +4,7 @@ import ChainFlow from '../../components/ChainFlow.astro';
 import EvidenceCap from '../../components/EvidenceCap.astro';
 import ChainCeiling from '../../components/ChainCeiling.astro';
 import ProofMarks from '../../components/ProofMarks.astro';
+import { markAgda } from '../../lib/marks';
 
 const dimensions = [
   { name: 'Signal',          q: 'Can the system surface the conditions that need attention, in time?' },
@@ -24,7 +25,7 @@ const stances = [
 ];
 
 const docs = [
-  { h: 'AGDA Thesis',              p: 'The intellectual position. Eight falsifiable claims.' },
+  { h: 'AGDA™ Thesis',             p: 'The intellectual position. Eight falsifiable claims.' },
   { h: 'Failure Mode Catalogue',   p: 'Forty canonical AI governance failure modes. Each citeable.' },
   { h: 'Corpus Governance',        p: 'How calibration evidence is built, held, and retired.' },
   { h: 'Rater Protocol',           p: 'The protocol external raters follow against the corpus.' },
@@ -32,8 +33,8 @@ const docs = [
 ---
 
 <BaseLayout
-  title="Methodology · AGDA"
-  description="AGDA scores intervention capability against evidence. The SEDI chain, eight dimensions, evidence caps, and a cryptographically signed verdict a regulator can verify."
+  title="Methodology · AGDA™"
+  description="AGDA™ scores intervention capability against evidence. The SEDI chain, eight dimensions, evidence caps, and a cryptographically signed verdict a regulator can verify."
   current="methodology"
 >
   <section class="hero">
@@ -96,7 +97,7 @@ const docs = [
     <div class="wrap">
       <h2 class="h2">Paper evidence caps at amber.</h2>
       <p class="lede muted">
-        AGDA enforces an evidence ceiling before weighting. The
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> enforces an evidence ceiling before weighting. The
         lowest-evidence claim anchors the dimension.
       </p>
       <EvidenceCap />
@@ -185,7 +186,7 @@ signature       ed25519:M4Gb2ZqAfD…pLQX7w`}</code></pre>
       <ul class="docs" role="list">
         {docs.map((d) => (
           <li>
-            <h3 class="h3">{d.h}</h3>
+            <h3 class="h3" set:html={markAgda(d.h)} />
             <p class="body muted">{d.p}</p>
           </li>
         ))}

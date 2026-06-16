@@ -13,7 +13,7 @@ const year = new Date().getFullYear();
 
     <nav class="primary-nav" aria-label="Footer">
       <ul role="list">
-        <li><a href="/Intervene/agda/">AGDA</a></li>
+        <li><a href="/Intervene/agda/"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span></a></li>
         <li><a href="/Intervene/methodology/">Methodology</a></li>
         <li><a href="/Intervene/sectors/">Sectors</a></li>
         <li><a href="/Intervene/insights/">Insights</a></li>
@@ -24,7 +24,7 @@ const year = new Date().getFullYear();
 
     <div class="meta">
       <span class="meta-name">Intervene Limited</span>
-      <span>Owner and developer of AGDA™</span>
+      <span>Owner and developer of <span class="agda-mark">AGDA<span class="agda-tm">™</span></span></span>
       <span>Registered in England and Wales</span>
       <span class="meta-copy">© {year} Intervene Limited</span>
     </div>
@@ -48,7 +48,7 @@ const year = new Date().getFullYear();
   .site-footer {
     border-top: 1px solid var(--hair);
     padding: 72px 0 44px;
-    background: var(--paper-soft);
+    background: var(--paper-deep);
   }
   .foot-inner {
     display: grid;
@@ -88,7 +88,9 @@ const year = new Date().getFullYear();
     color: var(--muted-soft);
     padding-bottom: 1px;
     border-bottom: 1px solid transparent;
-    transition: border-color var(--dur-hover) var(--ease);
+    transition:
+      border-color var(--dur-hover) var(--ease),
+      color var(--dur-hover) var(--ease);
   }
   .primary-nav a:hover { border-color: var(--accent); color: var(--ink); }
   .meta {

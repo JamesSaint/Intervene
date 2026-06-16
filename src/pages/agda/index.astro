@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import VerdictBlock from '../../components/VerdictBlock.astro';
+import { markAgda } from '../../lib/marks';
 
 const deliver = [
   { h: 'Failure Exposure Report', p: 'Written at three audience layers: board, risk function, and engineering. The same evidence, read by each level it has to convince.' },
@@ -11,14 +12,14 @@ const deliver = [
 
 const isnot = [
   { h: 'Not a maturity model', p: 'No five-point scale that always lands at three. The verdict is binary on the only question that matters: does the chain complete in time.' },
-  { h: 'Not a controls checklist', p: 'Existence of a control is not evidence it works under pressure. AGDA scores demonstrated capability, not documented intent.' },
+  { h: 'Not a controls checklist', p: 'Existence of a control is not evidence it works under pressure. AGDA™ scores demonstrated capability, not documented intent.' },
   { h: 'Not our opinion', p: 'The engine is deterministic. Same inputs, same outputs. The verdict does not move because the assessor changed.' },
 ];
 ---
 
 <BaseLayout
-  title="AGDA · Intervention readiness, measured"
-  description="AGDA is a deterministic intervention-readiness assessment. It scores whether your organisation can detect, escalate, decide and intervene before harm becomes irreversible, and signs the verdict."
+  title="AGDA™ · Intervention readiness, measured"
+  description="AGDA™ is a deterministic intervention-readiness assessment. It scores whether your organisation can detect, escalate, decide and intervene before harm becomes irreversible, and signs the verdict."
   current="agda"
 >
   <section class="hero">
@@ -27,7 +28,7 @@ const isnot = [
       <h1 class="h1 reveal">The question, made <em>measurable.</em></h1>
       <p class="lede muted reveal">
         You measure capital, model performance, control coverage. You have
-        never measured whether you can still intervene when it matters. AGDA™
+        never measured whether you can still intervene when it matters. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span>
         does, and returns a signed verdict.
       </p>
       <div class="hero-cta reveal">
@@ -48,7 +49,7 @@ const isnot = [
       </p>
       <p class="body muted">
         That is intervention readiness. It is the gap between the org chart and
-        the moment. Most frameworks describe the chart. AGDA measures the
+        the moment. Most frameworks describe the chart. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures the
         moment.
       </p>
     </div>
@@ -58,7 +59,7 @@ const isnot = [
     <div class="wrap">
       <h2 class="h2">One question. <em>One signed verdict.</em></h2>
       <p class="lede muted">
-        AGDA scores the SEDI chain, Signal to Escalation to Decision to
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> scores the SEDI chain, Signal to Escalation to Decision to
         Intervention, against a reversibility window, and returns one of three
         states. Deterministic, and signed so a regulator can confirm it
         independently.
@@ -87,12 +88,12 @@ const isnot = [
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">What AGDA <em>is not.</em></h2>
+      <h2 class="h2">What <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> <em>is not.</em></h2>
       <div class="card-grid isnot-grid">
         {isnot.map((d) => (
           <div class="card">
             <h3 class="h3 card-title">{d.h}</h3>
-            <p class="body-sm muted">{d.p}</p>
+            <p class="body-sm muted" set:html={markAgda(d.p)} />
           </div>
         ))}
       </div>
@@ -129,7 +130,7 @@ const isnot = [
   .block .lede { margin-top: 16px; max-width: 56ch; }
   .wrap-narrow .body { max-width: 62ch; margin: 0 0 16px; }
 
-  .verdict-stage { margin-top: 48px; display: flex; justify-content: center; }
+  .verdict-stage { margin-top: 48px; display: flex; justify-content: flex-start; max-width: 760px; }
   .verdict-more { display: inline-block; margin-top: 32px; font-size: 15px; }
 
   .deliver {
