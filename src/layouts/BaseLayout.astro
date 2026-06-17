@@ -35,7 +35,7 @@ const {
   dateModified,
 } = Astro.props;
 
-const site = Astro.site?.toString().replace(/\/$/, '') ?? 'https://jamessaint.github.io';
+const site = Astro.site?.toString().replace(/\/$/, '') ?? 'https://intervene.uk';
 const base = import.meta.env.BASE_URL;
 const siteRoot = new URL(`${site}/`);
 const baseUrl = new URL(base, siteRoot).toString().replace(/\/?$/, '/');
@@ -295,11 +295,11 @@ const structuredData = {
     <meta name="theme-color" content="#0a0a0a" />
     <meta name="color-scheme" content="dark" />
 
-    <link rel="icon" href="/Intervene/assets/images/favicons/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/Intervene/assets/images/favicons/favicon-32x32.png" />
-    <link rel="apple-touch-icon" href="/Intervene/assets/images/favicons/apple-touch-icon-180x180.png" />
-    <link rel="manifest" href="/Intervene/assets/images/favicons/site.webmanifest" />
-    <link rel="alternate" type="text/plain" href="/Intervene/llms.txt" title="Intervene LLM reference" />
+    <link rel="icon" href="/assets/images/favicons/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicons/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/images/favicons/apple-touch-icon-180x180.png" />
+    <link rel="manifest" href="/assets/images/favicons/site.webmanifest" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Intervene LLM reference" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
