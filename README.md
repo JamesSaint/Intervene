@@ -1,131 +1,140 @@
 # Intervene
 
 ![Status](https://img.shields.io/badge/status-active-111111?style=flat-square)
-![Identity](https://img.shields.io/badge/identity-Intervene_v2_2026-111111?style=flat-square)
-![Stack](https://img.shields.io/badge/stack-Astro_+_Inter-111111?style=flat-square)
+![Identity](https://img.shields.io/badge/identity-Intervene_AGDA-111111?style=flat-square)
+![Stack](https://img.shields.io/badge/stack-Astro_4-111111?style=flat-square)
 ![Hosting](https://img.shields.io/badge/hosting-GitHub_Pages-111111?style=flat-square)
 
 ## Overview
 
-Intervene Limited defines and measures **Intervention Readiness** for consequential AI and automated systems. The practice answers a question most governance frameworks leave untested: **can your organisation detect, escalate, decide, and intervene before harm becomes irreversible?**
+Intervene Limited defines and measures **Intervention Readiness**: the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.
 
-The site is the public face of the practice. Methodology, services, sample report, and contact path. Built as a static-output Astro site to match the editorial restraint of the Intervene brand: monochrome, typographic, instrument-grade.
+The public site introduces the category, explains **AGDA™** as the deterministic assessment instrument, publishes the core vocabulary, and provides sample evidence for a signed, independently verifiable verdict.
+
+Canonical site: `https://jamessaint.github.io/Intervene/`
 
 ## Stack
 
 | Layer | Choice |
 | --- | --- |
 | Framework | [Astro](https://astro.build) 4.x, `output: 'static'`, `trailingSlash: 'always'` |
-| Type | Inter (sans, 400 / 500), JetBrains Mono (sparingly) |
-| Colour | Strict monochrome. Ink `#111`, paper `#fff`, hairline `#e6e6e6`, muted `#6b6b6b`. Signal red `#c8322a` reserved for the sample report |
-| Forms | [Formspree](https://formspree.io) for the contact form |
-| Hosting | GitHub Pages via GitHub Actions, served at `https://jamessaint.github.io/Intervene/` |
+| Runtime | Node.js 22 in GitHub Actions |
+| Type | Montserrat for interface and editorial copy, JetBrains Mono for proof marks and technical fragments |
+| Theme | Dark advisory surface, warm text hierarchy, muted gold accent, restrained verdict colours |
+| Forms | [Formspree](https://formspree.io) contact endpoint |
+| Hosting | GitHub Pages via GitHub Actions |
 
-## Site map
+## Public Information Architecture
 
+```text
+/                                   Home
+/intervention-readiness/             Category definition and core concept
+/intervention-readiness/intervention-chain/
+/intervention-readiness/reversibility-window/
+/intervention-readiness/halt-authority/
+/intervention-readiness/human-oversight/
+/intervention-readiness/category-map/
+/intervention-readiness/vs-ai-governance/
+/intervention-readiness/vs-compliance/
+/intervention-readiness/vs-audit/
+/intervention-readiness/vs-risk-management/
+/intervention-readiness/vs-operational-resilience/
+/agda/                              AGDA™ instrument page
+/methodology/                       How AGDA™ measures Intervention Readiness
+/sample-report/                     Redacted sample AGDA™ verdict
+/services/                          Levels of assurance and engagement shape
+/sectors/                           Where Intervention Readiness matters
+/insights/                          Evidence notes index
+/insights/accountability-theatre/
+/insights/coincidence-is-not-a-margin/
+/insights/the-thirty-six-hour-window/
+/glossary/                          Defined terms
+/verify/                            Verdict verification model
+/about/                             Founder and practice rationale
+/contact/                           Confidential discussion form
+/legal/terms/                       Terms and conditions
+/legal/privacy/                     Privacy policy
+/legal/gdpr/                        UK GDPR statement
+/style-guide/                       Internal style guide, noindex
 ```
-/                       Home. Hero rotator, chain diagram, window timeline, services, CTA
-/method/                AGDA™ methodology. Chain, eight dimensions, evidence cap, ceiling, attestation
-/services/              Five tiers, four engagement shapes, commercial frame
-/sample-report/         Redacted Failure Exposure Report, 13 sections, cover with attestation envelope
-/about/                 Founder, why this exists, four commitments, sectors, what we are not
-/contact/               Confidential discussion form. Posts to Formspree
-/legal/terms/           Terms and conditions
-/legal/privacy/         Privacy policy
-/legal/gdpr/            UK GDPR statement
-/style-guide/           Internal style guide. Noindex
-```
 
-All routes use trailing slashes. All pages currently carry `noindex, nofollow` while the redesign is in preview.
+`/method/` is retained as a noindex redirect stub to `/methodology/`.
 
-## Source layout
+## Search And Schema
 
-```
+- Routes default to `index, follow`; pages opt out with the `noindex` prop.
+- `public/robots.txt` allows the site and disallows `/Intervene/style-guide/`.
+- `@astrojs/sitemap` excludes the style guide, legal pages, and the legacy `/method/` redirect.
+- `BaseLayout.astro` emits JSON-LD for the organisation, founder, website, breadcrumb trail, AGDA™, Intervention Readiness, and the defined-term set.
+- `public/llms.txt` mirrors the canonical category definitions and page relationships for LLM and crawler consumption.
+
+## Source Layout
+
+```text
 .
-├── astro.config.mjs            site, base, trailingSlash, output
+├── astro.config.mjs               Site URL, base path, sitemap filters, static output
 ├── package.json
-├── tsconfig.json
-├── public/                     Static assets copied verbatim to the build root
-│   ├── assets/                 Favicons, OG image, founder portrait
+├── package-lock.json
+├── public/
+│   ├── assets/                    Favicons, Open Graph image, founder portrait
+│   ├── llms.txt                   LLM-readable canonical summary
 │   └── robots.txt
 ├── src/
-│   ├── pages/                  File-based routing
-│   │   ├── index.astro
-│   │   ├── method/index.astro
-│   │   ├── services/index.astro
-│   │   ├── sample-report/index.astro
-│   │   ├── about/index.astro
-│   │   ├── contact/index.astro
-│   │   ├── style-guide/index.astro
-│   │   └── legal/{terms,privacy,gdpr}.astro
-│   ├── layouts/
-│   │   ├── BaseLayout.astro    Wraps every page. Head, Header, TakeoverMenu, Footer
-│   │   └── LegalLayout.astro   Reading column for legal pages
-│   ├── components/
-│   │   ├── Header.astro        Sticky, logo + animated hamburger
-│   │   ├── TakeoverMenu.astro  Full-screen nav, focus trap, Esc, inert
-│   │   ├── MenuIcon.astro      Three-line icon that morphs to X
-│   │   ├── Footer.astro
-│   │   ├── Logo.astro          Two-panel mark + Inter wordmark
-│   │   ├── ChainFlow.astro     Animated four-stage chain rail
-│   │   ├── ChainCeiling.astro  Bar chart, ghost claim + capped actual
-│   │   ├── EvidenceCap.astro   Stepped bar diagram with axis ticks
-│   │   └── ScopeBar.astro      Three patterns: focused, recurring, continuous
-│   ├── lib/
-│   │   ├── reveal.ts           IntersectionObserver scroll-reveal
-│   │   ├── hero-rotator.ts     Crossfade hero, 7s interval, pauses on hidden tab
-│   │   └── contact.ts          Contact form submission to Formspree
-│   └── styles/
-│       ├── tokens.css          CSS custom properties
-│       ├── fonts.css           Inter + JetBrains Mono via Google Fonts
-│       ├── reset.css
-│       ├── typography.css      Type utilities (.h1, .h2, .lede, .body, .mono)
-│       └── global.css          Layout primitives, reveal, buttons
-├── .github/
-│   └── workflows/
-│       └── deploy.yml          npm ci, npm run build, deploy-pages
-└── internal/                   Gitignored. Private corporate documents
+│   ├── components/                Header, menu, logo, proof marks, diagrams, cards
+│   ├── layouts/                   Base, legal, hub, insight, comparison layouts
+│   ├── lib/                       Terms, AGDA mark rendering, reveal, contact form
+│   ├── pages/                     File-based routes listed above
+│   └── styles/                    Tokens, fonts, reset, typography, global rules
+├── .github/workflows/deploy.yml   Build and deploy to GitHub Pages
+├── internal/                      Private source material, not public site copy
+└── skills/                        Local project skills and supporting scripts
 ```
 
-## Brand discipline
+## Brand Discipline
 
-The Intervene identity is strict by design.
+The Intervene site is intentionally restrained.
 
-- **One italic accent per headline.** No more, no less.
-- **No kickers or numbering scaffolds.** No `§ 01`, no `D · 01`, no "Volume 01" meta rows.
-- **No decorative imagery.** The founder portrait is the only photograph.
-- **No mailto links.** All inbound routes through the contact form at `/contact/`.
-- **No em dashes in prose.** Periods, semicolons, commas, or full stops do the work.
+- Use one italic accent per major headline when the local page pattern calls for it.
+- Keep copy board-grade: calm, concrete, and specific.
+- Avoid decorative imagery. The founder portrait and Open Graph artwork are the only current bitmap brand assets.
+- Do not add mailto links. Inbound contact routes through `/contact/`.
+- Preserve the intervention vocabulary exactly where it is canonical: `src/lib/terms.ts`, `public/llms.txt`, glossary copy, metadata, and schema must not drift.
+- Avoid em dashes in prose. Use periods, semicolons, commas, or full stops.
 
-Voice is board-grade. Calm, authoritative, concrete. Specificity over abstraction. Consequence over reassurance.
-
-## Local development
+## Local Development
 
 ```bash
 git clone https://github.com/JamesSaint/Intervene.git
 cd Intervene
-npm install
+npm ci
 npm run dev
 ```
 
-Dev server runs at `http://localhost:4321/Intervene/` (the base path matches the deployed URL).
+The dev server runs at `http://localhost:4321/Intervene/` because the Astro base path matches the GitHub Pages deployment path.
 
 ```bash
-npm run build       # builds to ./dist
-npm run preview     # serves ./dist locally
+npm run build       # builds the static site to ./dist
+npm run preview     # serves the built site locally
 ```
 
 ## Deployment
 
-Push to `main`. GitHub Actions runs `.github/workflows/deploy.yml` which builds the static site and deploys to GitHub Pages. ~45 seconds from push to live.
+Push to `main`, or trigger the workflow manually. GitHub Actions runs `.github/workflows/deploy.yml`:
+
+1. Check out the repo.
+2. Install dependencies with `npm ci`.
+3. Build with `npm run build`.
+4. Upload `./dist`.
+5. Deploy to GitHub Pages.
 
 Repo settings required:
-- **Settings → Pages → Source:** GitHub Actions
-- **Settings → Pages → Custom domain:** none (served from `jamessaint.github.io/Intervene/`)
+
+- **Settings -> Pages -> Source:** GitHub Actions
+- **Settings -> Pages -> Custom domain:** none
 
 ## Forms
 
-The contact form at `/contact/` posts JSON to `https://formspree.io/f/xvzwdyob`. The endpoint is referenced in `src/pages/contact/index.astro` as `FORMSPREE_ENDPOINT`. To rotate, change the constant and push.
+The contact form at `/contact/` posts JSON to `https://formspree.io/f/xvzwdyob`. The endpoint is declared as `FORMSPREE_ENDPOINT` in `src/pages/contact/index.astro`.
 
 ## License
 
