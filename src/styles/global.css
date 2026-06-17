@@ -116,10 +116,9 @@
   border: 1px solid var(--accent);
   transition:
     opacity var(--dur-hover) var(--ease),
-    border-color var(--dur-hover) var(--ease),
-    transform var(--dur-hover) var(--ease);
+    border-color var(--dur-hover) var(--ease);
 }
-.btn:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn:hover { opacity: 0.9; }
 
 .btn-ghost {
   position: relative;
@@ -138,10 +137,9 @@
   border: 1px solid var(--hair-strong);
   transition:
     border-color var(--dur-hover) var(--ease),
-    color var(--dur-hover) var(--ease),
-    transform var(--dur-hover) var(--ease);
+    color var(--dur-hover) var(--ease);
 }
-.btn-ghost:hover { border-color: var(--accent); color: var(--ink); transform: translateY(-1px); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--ink); }
 
 /* Section block. Separation is space, not rules. Slow rhythm, room to
    breathe. No dividers between sections: the air does the work. */
@@ -168,8 +166,7 @@
   color: inherit;
   transition:
     background var(--dur-hover) var(--ease),
-    border-color var(--dur-hover) var(--ease),
-    transform var(--dur-hover) var(--ease);
+    border-color var(--dur-hover) var(--ease);
 }
 .card::before {
   content: '';
@@ -187,7 +184,6 @@
 .card:focus-within {
   background: var(--paper-raise);
   border-color: var(--hair-strong);
-  transform: translateY(-2px);
 }
 .card:hover::before,
 .card:focus-within::before { transform: scaleX(1); }
