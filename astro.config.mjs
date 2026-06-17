@@ -2,8 +2,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://jamessaint.github.io',
-  base: '/Intervene',
+  site: 'https://intervene.uk',
   trailingSlash: 'always',
   output: 'static',
   build: {

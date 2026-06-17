@@ -11,7 +11,7 @@ Intervene Limited defines and measures **Intervention Readiness**: the ability o
 
 The public site introduces the category, explains **AGDA™** as the deterministic assessment instrument, publishes the core vocabulary, and provides sample evidence for a signed, independently verifiable verdict.
 
-Canonical site: `https://jamessaint.github.io/Intervene/`
+Canonical site: `https://intervene.uk/`
 
 ## Stack
 
@@ -63,7 +63,7 @@ Canonical site: `https://jamessaint.github.io/Intervene/`
 ## Search And Schema
 
 - Routes default to `index, follow`; pages opt out with the `noindex` prop.
-- `public/robots.txt` allows the site and disallows `/Intervene/style-guide/`.
+- `public/robots.txt` allows the site and disallows `/style-guide/`.
 - `@astrojs/sitemap` excludes the style guide, legal pages, and the legacy `/method/` redirect.
 - `BaseLayout.astro` emits JSON-LD for the organisation, founder, website, breadcrumb trail, AGDA™, Intervention Readiness, and the defined-term set.
 - `public/llms.txt` mirrors the canonical category definitions and page relationships for LLM and crawler consumption.
@@ -72,11 +72,12 @@ Canonical site: `https://jamessaint.github.io/Intervene/`
 
 ```text
 .
-├── astro.config.mjs               Site URL, base path, sitemap filters, static output
+├── astro.config.mjs               Site URL, sitemap filters, static output
 ├── package.json
 ├── package-lock.json
 ├── public/
 │   ├── assets/                    Favicons, Open Graph image, founder portrait
+│   ├── CNAME                      GitHub Pages custom domain
 │   ├── llms.txt                   LLM-readable canonical summary
 │   └── robots.txt
 ├── src/
@@ -110,7 +111,7 @@ npm ci
 npm run dev
 ```
 
-The dev server runs at `http://localhost:4321/Intervene/` because the Astro base path matches the GitHub Pages deployment path.
+The dev server runs at `http://localhost:4321/`. Production is served from the custom domain root.
 
 ```bash
 npm run build       # builds the static site to ./dist
@@ -130,7 +131,7 @@ Push to `main`, or trigger the workflow manually. GitHub Actions runs `.github/w
 Repo settings required:
 
 - **Settings -> Pages -> Source:** GitHub Actions
-- **Settings -> Pages -> Custom domain:** none
+- **Settings -> Pages -> Custom domain:** `intervene.uk`
 
 ## Forms
 

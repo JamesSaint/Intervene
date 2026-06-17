@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /Intervene/style-guide/
+Disallow: /style-guide/
 
-Sitemap: https://jamessaint.github.io/Intervene/sitemap-index.xml
+Sitemap: https://intervene.uk/sitemap-index.xml
