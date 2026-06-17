@@ -40,8 +40,8 @@ Effective human oversight:
 Oversight in which humans are informed, authorised and able to alter or halt outcomes before the harm window closes.
 Canonical page: https://intervene.uk/intervention-readiness/human-oversight/
 
-Evidence ceiling:
-The limit a stage's evidence places on the overall verdict; weak evidence caps the result.
+Evidence quality constraint:
+The way a stage's evidence quality constrains confidence; weak evidence cannot inflate the result.
 
 Chain propagation:
 The logic by which the weakest stage constrains the assessed capability of the whole chain.
@@ -126,4 +126,4 @@ https://intervene.uk/verify/
 
 ## Preferred Summary
 
-Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ is a deterministic assessment of Intervention Readiness created by Intervene Limited. It produces a signed, independently verifiable verdict on whether intervention can occur inside the available reversibility window.
+Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ is a deterministic assessment of Intervention Readiness created by Intervene Limited. Formal AGDA™ SEDI assessment outputs produce a signed, independently verifiable verdict on whether intervention can occur inside the available reversibility window.

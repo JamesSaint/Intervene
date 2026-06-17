@@ -79,10 +79,10 @@ export const terms: Term[] = [
     hub: false,
   },
   {
-    slug: 'evidence-ceiling',
-    name: 'Evidence Ceiling',
+    slug: 'evidence-quality-constraint',
+    name: 'Evidence Quality Constraint',
     definition:
-      "The limit a stage's evidence places on the overall verdict; weak evidence caps the result.",
+      "The way a stage's evidence quality constrains confidence; weak evidence cannot inflate the result.",
     path: 'glossary/',
     hub: false,
   },
