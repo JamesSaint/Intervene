@@ -1,15 +1,15 @@
 ---
 const grades = [
-  { label: 'Assumed',       ceiling: 1 },
-  { label: 'Policy',        ceiling: 2 },
-  { label: 'Drill',         ceiling: 3 },
-  { label: 'Production',    ceiling: 4 },
-  { label: 'Stress-tested', ceiling: 5 },
+  { label: 'Assumed',       weight: 1 },
+  { label: 'Policy',        weight: 2 },
+  { label: 'Drill',         weight: 3 },
+  { label: 'Production',    weight: 4 },
+  { label: 'Stress-tested', weight: 5 },
 ];
 const MAX = 5;
 ---
 
-<figure class="ev-cap reveal" aria-label="Evidence-grade ceiling. Policy alone caps at 2 of 5.">
+<figure class="ev-cap reveal" aria-label="Evidence-confidence ladder. Policy evidence carries less confidence than operational or stress evidence.">
   <div class="chart">
     <div class="scale" aria-hidden="true">
       {[1, 2, 3, 4, 5].map((n) => (
@@ -25,17 +25,17 @@ const MAX = 5;
       </div>
 
       {grades.map((g, i) => (
-        <div class="row" style={`--w: ${(g.ceiling / MAX) * 100}%; --delay: ${i * 100}ms`}>
+        <div class="row" style={`--w: ${(g.weight / MAX) * 100}%; --delay: ${i * 100}ms`}>
           <span class="grade-label">{g.label}</span>
           <span class="track">
             <span class="bar"></span>
           </span>
-          <span class="cap-text">caps at {g.ceiling} / {MAX}</span>
+          <span class="cap-text">confidence {g.weight} / {MAX}</span>
         </div>
       ))}
     </div>
   </div>
-  <figcaption>Policy alone caps at 2 of 5. Green requires evidence the control has worked under real pressure.</figcaption>
+  <figcaption>Policy alone cannot carry a high-confidence intervention verdict. Green requires evidence the control has worked under real pressure.</figcaption>
 </figure>
 
 <style>

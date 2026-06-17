@@ -6,8 +6,8 @@ import { markAgda } from '../../lib/marks';
 const deliver = [
   { h: 'Failure Exposure Report', p: 'Written at three audience layers: board, risk function, and engineering. The same evidence, read by each level it has to convince.' },
   { h: 'Intervention-readiness verdict', p: 'Before impact, at risk, or after impact. One determination, bound to the conditions observed and the reversibility window assessed.' },
-  { h: 'Regulator bundle', p: 'Signed JSON. Ed25519 against a locked engine hash. A regulator can verify it without contacting us.' },
-  { h: 'Attestation envelope', p: 'Engine version, input hash, output hash, key id, timestamp, signature. The audit trail that makes the verdict defensible later.' },
+  { h: 'Regulator bundle', p: 'Signed JSON export with result, input, manifest, attestation and verification history. A regulator can verify it without contacting us.' },
+  { h: 'Attestation envelope', p: 'Engine, catalogue, methodology and rubric versions; input, output and manifest hashes; key id, timestamp and Ed25519 signature. The audit trail that makes the verdict defensible later.' },
 ];
 
 const isnot = [
@@ -27,7 +27,7 @@ const faqs = [
   },
   {
     question: 'How does AGDA™ produce a verdict?',
-    answer: 'AGDA™ evaluates evidence across Detect, Escalate, Decide and Intervene, applies deterministic rules, and returns a signed verdict.',
+    answer: 'AGDA™ evaluates evidence across Detect, Escalate, Decide and Intervene, applies deterministic rules, and returns a formal signed verdict.',
   },
   {
     question: 'How is AGDA™ related to Intervention Readiness?',
