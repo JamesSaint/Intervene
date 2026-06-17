@@ -16,6 +16,7 @@ interface Props {
   termSlug: string;     // pulls the canonical definition from lib/terms.ts
   title: string;        // ends "· Intervene"
   description: string;
+  ogImage?: string;     // per-page social card; falls back to BaseLayout default
   label: string;        // hero kicker
   h1: string;
   lede: string;
@@ -24,7 +25,7 @@ interface Props {
   faqs: Faq[];
 }
 
-const { termSlug, title, description, label, h1, lede, agda, related, faqs } =
+const { termSlug, title, description, ogImage, label, h1, lede, agda, related, faqs } =
   Astro.props as Props;
 
 const term = terms.find((t) => t.slug === termSlug)!;
@@ -33,6 +34,7 @@ const term = terms.find((t) => t.slug === termSlug)!;
 <BaseLayout
   title={title}
   description={description}
+  ogImage={ogImage}
   current="intervention-readiness"
   faqs={faqs}
   breadcrumbs={[
