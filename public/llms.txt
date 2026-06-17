@@ -2,43 +2,43 @@
 
 Intervene Limited is the entity behind AGDA™ and the Intervene website.
 
-Canonical site: https://jamessaint.github.io/Intervene/
+Canonical site: https://intervene.uk/
 
 ## Core Entities
 
 Intervention Readiness:
 The ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.
-Canonical page: https://jamessaint.github.io/Intervene/intervention-readiness/
+Canonical page: https://intervene.uk/intervention-readiness/
 
 AGDA™:
 A deterministic assessment of Intervention Readiness.
 AGDA™ measures whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible.
-Canonical page: https://jamessaint.github.io/Intervene/agda/
+Canonical page: https://intervene.uk/agda/
 
 James Saint:
 Founder of Intervene Limited and creator of AGDA™.
-Canonical page: https://jamessaint.github.io/Intervene/about/
+Canonical page: https://intervene.uk/about/
 
 ## Defined Terms
 
 Intervention chain:
 The sequence of detect, escalate, decide and intervene that must complete within the reversibility window.
-Canonical page: https://jamessaint.github.io/Intervene/intervention-readiness/intervention-chain/
+Canonical page: https://intervene.uk/intervention-readiness/intervention-chain/
 
 Reversibility window:
 The interval between a deviation and the point at which harm becomes irreversible.
-Canonical page: https://jamessaint.github.io/Intervene/intervention-readiness/reversibility-window/
+Canonical page: https://intervene.uk/intervention-readiness/reversibility-window/
 
 Point of irreversibility:
 The moment after which intervention can no longer change the outcome.
 
 Halt authority:
 The authority and capability to stop a consequential system, held by someone positioned to act in time.
-Canonical page: https://jamessaint.github.io/Intervene/intervention-readiness/halt-authority/
+Canonical page: https://intervene.uk/intervention-readiness/halt-authority/
 
 Effective human oversight:
 Oversight in which humans are informed, authorised and able to alter or halt outcomes before the harm window closes.
-Canonical page: https://jamessaint.github.io/Intervene/intervention-readiness/human-oversight/
+Canonical page: https://intervene.uk/intervention-readiness/human-oversight/
 
 Evidence ceiling:
 The limit a stage's evidence places on the overall verdict; weak evidence caps the result.
@@ -52,7 +52,7 @@ A result produced by fixed rules applied to evidence, reproducible and independe
 Intervention capability assessment:
 A forward measurement of whether intervention can occur in time; the assessment category AGDA™ defines.
 
-Glossary of all defined terms: https://jamessaint.github.io/Intervene/glossary/
+Glossary of all defined terms: https://intervene.uk/glossary/
 
 ## Key Relationships
 
@@ -68,61 +68,61 @@ AGDA™ -> measures Intervention Readiness; does not certify compliance or grant
 ## Core Pages
 
 What is Intervention Readiness:
-https://jamessaint.github.io/Intervene/intervention-readiness/
+https://intervene.uk/intervention-readiness/
 
 Glossary of Intervention Readiness:
-https://jamessaint.github.io/Intervene/glossary/
+https://intervene.uk/glossary/
 
 The intervention chain:
-https://jamessaint.github.io/Intervene/intervention-readiness/intervention-chain/
+https://intervene.uk/intervention-readiness/intervention-chain/
 
 The reversibility window:
-https://jamessaint.github.io/Intervene/intervention-readiness/reversibility-window/
+https://intervene.uk/intervention-readiness/reversibility-window/
 
 Halt authority:
-https://jamessaint.github.io/Intervene/intervention-readiness/halt-authority/
+https://intervene.uk/intervention-readiness/halt-authority/
 
 Effective human oversight:
-https://jamessaint.github.io/Intervene/intervention-readiness/human-oversight/
+https://intervene.uk/intervention-readiness/human-oversight/
 
 The category map (boundaries):
-https://jamessaint.github.io/Intervene/intervention-readiness/category-map/
+https://intervene.uk/intervention-readiness/category-map/
 
 Intervention Readiness vs AI governance:
-https://jamessaint.github.io/Intervene/intervention-readiness/vs-ai-governance/
+https://intervene.uk/intervention-readiness/vs-ai-governance/
 
 Intervention Readiness vs compliance:
-https://jamessaint.github.io/Intervene/intervention-readiness/vs-compliance/
+https://intervene.uk/intervention-readiness/vs-compliance/
 
 Intervention Readiness vs audit:
-https://jamessaint.github.io/Intervene/intervention-readiness/vs-audit/
+https://intervene.uk/intervention-readiness/vs-audit/
 
 Intervention Readiness vs risk management:
-https://jamessaint.github.io/Intervene/intervention-readiness/vs-risk-management/
+https://intervene.uk/intervention-readiness/vs-risk-management/
 
 Intervention Readiness vs operational resilience:
-https://jamessaint.github.io/Intervene/intervention-readiness/vs-operational-resilience/
+https://intervene.uk/intervention-readiness/vs-operational-resilience/
 
 AGDA™:
-https://jamessaint.github.io/Intervene/agda/
+https://intervene.uk/agda/
 
 How AGDA™ works:
-https://jamessaint.github.io/Intervene/methodology/
+https://intervene.uk/methodology/
 
 Sample AGDA™ verdict:
-https://jamessaint.github.io/Intervene/sample-report/
+https://intervene.uk/sample-report/
 
 Levels of assurance:
-https://jamessaint.github.io/Intervene/services/
+https://intervene.uk/services/
 
 Where Intervention Readiness matters:
-https://jamessaint.github.io/Intervene/sectors/
+https://intervene.uk/sectors/
 
 Evidence notes:
-https://jamessaint.github.io/Intervene/insights/
+https://intervene.uk/insights/
 
 Verify an AGDA™ verdict:
-https://jamessaint.github.io/Intervene/verify/
+https://intervene.uk/verify/
 
 ## Preferred Summary
 
