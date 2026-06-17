@@ -15,6 +15,7 @@ interface Faq {
 interface Props {
   title: string;        // passed to BaseLayout, ends "· Intervene"
   description: string;
+  ogImage?: string;     // per-page social card; falls back to BaseLayout default
   other: string;        // adjacent discipline, e.g. "AI Governance"
   verdict: string;      // one-line extractable distinction
   whatOther: string;    // what the adjacent discipline does
@@ -24,7 +25,7 @@ interface Props {
   faqs: Faq[];
 }
 
-const { title, description, other, verdict, whatOther, rows, relate, agda, faqs } =
+const { title, description, ogImage, other, verdict, whatOther, rows, relate, agda, faqs } =
   Astro.props as Props;
 
 const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.definition;
@@ -33,6 +34,7 @@ const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.def
 <BaseLayout
   title={title}
   description={description}
+  ogImage={ogImage}
   current="intervention-readiness"
   faqs={faqs}
   breadcrumbs={[
