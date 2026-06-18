@@ -5,8 +5,8 @@ import { markAgda } from '../../lib/marks';
 
 const deliver = [
   { h: 'Failure Exposure Report', p: 'Written at three audience layers: board, risk function, and engineering. The same evidence, read by each level it has to convince.' },
-  { h: 'Intervention-readiness verdict', p: 'Before impact, at risk, or after impact. One determination, bound to the conditions observed and the reversibility window assessed.' },
-  { h: 'Regulator bundle', p: 'Signed JSON export with result, input, manifest, attestation and verification history. A regulator can verify it without contacting us.' },
+  { h: 'Intervention-readiness verdict', p: 'Before impact, at risk, or after impact. One deterministic determination, bound to the conditions observed and the reversibility window assessed.' },
+  { h: 'Regulator bundle', p: 'For formal SEDI assessments, a signed JSON export with report, attestation, result, input, manifest, verification metadata and history. A regulator can verify it without contacting us.' },
   { h: 'Attestation envelope', p: 'Engine, catalogue, methodology and rubric versions; input, output and manifest hashes; key id, timestamp and Ed25519 signature. The audit trail that makes the verdict defensible later.' },
 ];
 
@@ -27,7 +27,7 @@ const faqs = [
   },
   {
     question: 'How does AGDA™ produce a verdict?',
-    answer: 'AGDA™ evaluates evidence across Detect, Escalate, Decide and Intervene, applies deterministic rules, and returns a formal signed verdict.',
+    answer: 'AGDA™ evaluates evidence across Detect, Escalate, Decide and Intervene, applies deterministic rules, and returns a formal verdict. Signed SEDI regulator bundles can be verified independently.',
   },
   {
     question: 'How is AGDA™ related to Intervention Readiness?',
@@ -38,7 +38,7 @@ const faqs = [
 
 <BaseLayout
   title="AGDA™: A Deterministic Assessment of Intervention Readiness · Intervene"
-  description="AGDA™ measures whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible. The output is deterministic, signed and independently verifiable."
+  description="AGDA™ measures whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible. Formal SEDI regulator bundles are signed and independently verifiable."
   current="agda"
   ogImage="/assets/og/og-agda.png"
   faqs={faqs}
@@ -50,7 +50,7 @@ const faqs = [
       <p class="lede muted reveal">
         A deterministic assessment of whether an organisation can detect,
         escalate, decide and intervene before harm becomes irreversible. Same
-        inputs, same result. Signed for independent verification.
+        inputs, same result. Signed SEDI bundles can be verified independently.
       </p>
       <div class="hero-cta reveal">
         <a href="/sample-report/" class="btn">View sample verdict</a>
@@ -77,12 +77,12 @@ const faqs = [
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">One question. <em>One signed verdict.</em></h2>
+      <h2 class="h2">One question. <em>One deterministic verdict.</em></h2>
       <p class="lede muted">
         <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures the intervention chain, Detect to Escalate to Decide to
         Intervene, against a reversibility window. It returns one of three
-        states, signed so a regulator, audit committee or internal assurance
-        team can confirm it independently.
+        states. Formal SEDI regulator bundles are signed so a regulator, audit
+        committee or internal assurance team can confirm the result independently.
       </p>
       <div class="verdict-stage">
         <VerdictBlock />

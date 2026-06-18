@@ -27,14 +27,14 @@ const stances = [
 const docs = [
   { h: 'AGDA™ Thesis',             p: 'The intellectual position. Eight falsifiable claims.' },
   { h: 'Failure Mode Catalogue',   p: 'Forty canonical intervention failure modes. Each citeable.' },
-  { h: 'Corpus Governance',        p: 'How calibration evidence is built, held, and retired.' },
-  { h: 'Rater Protocol',           p: 'The protocol external raters follow against the corpus.' },
+  { h: 'Corpus Governance',        p: 'The governance mechanism for calibration evidence. Populated-corpus and outcome-validation evidence is supplied separately.' },
+  { h: 'Rater Protocol',           p: 'The protocol external raters follow when governed corpus evidence is supplied.' },
 ];
 ---
 
 <BaseLayout
   title="How AGDA™ Measures Intervention Readiness · Intervene"
-  description="AGDA™ measures Intervention Readiness against evidence: detect, escalate, decide, intervene, evidence-quality constraints, chain propagation, and a signed verdict a regulator can verify."
+  description="AGDA™ measures Intervention Readiness against evidence: detect, escalate, decide, intervene, evidence-quality constraints, chain propagation, and a formal SEDI bundle a regulator can verify."
   current="methodology"
   ogImage="/assets/og/og-methodology.png"
 >
@@ -43,8 +43,8 @@ const docs = [
       <h1 class="h1 reveal">Measurement, <em>not assertion.</em></h1>
       <p class="lede muted reveal">
         The engine behind the verdict. Intervention capability against
-        evidence, not intention. Same inputs, same outputs. Signed and
-        independently verifiable.
+        evidence, not intention. Same inputs, same outputs. Formal SEDI
+        bundles are signed and independently verifiable.
       </p>
       <div class="hero-proof reveal"><ProofMarks /></div>
     </div>
@@ -136,11 +136,13 @@ const docs = [
     <div class="wrap-narrow">
       <h2 class="h2">A regulator can verify. <em>Without contacting us.</em></h2>
       <p class="lede muted">
-        Every formal AGDA™ SEDI assessment ships with a signed JSON regulator
-        bundle. The attestation envelope binds the result to engine,
-        methodology, rubric, input, output and manifest hashes. The verify
-        command runs locally under Node.js 18+. The customer does not depend on
-        us to read what we produced for them.
+        Formal AGDA™ SEDI assessments ship with a signed JSON regulator
+        bundle. Current bundles use bundleVersion 1.1 and include the report,
+        attestation, result, input, manifest, verification metadata and
+        history. The attestation envelope binds the result to engine,
+        methodology, rubric, input, output and manifest hashes. The
+        <span class="mono">agda-verify</span> command runs locally under Node.js
+        18+. The customer does not depend on us to read what we produced for them.
       </p>
       <pre class="envelope" aria-label="Attestation envelope example"><code>{`attestationVersion 1.2
 engineVersion      2.0.6
@@ -190,9 +192,9 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
     <div class="wrap">
       <h2 class="h2">Published measurement basis.</h2>
       <p class="lede muted">
-        Public. Citeable. Falsifiable. The calibration is held private under
-        standard trade-secret discipline. Four canonical documents anchor the
-        practice.
+        Public. Citeable. Falsifiable. Corpus governance exists as a mechanism;
+        current populated-corpus and outcome-validation evidence is supplied
+        separately during diligence. Four canonical documents anchor the practice.
       </p>
       <ul class="docs" role="list">
         {docs.map((d) => (
