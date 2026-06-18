@@ -6,7 +6,7 @@ import { markAgda } from '../../lib/marks';
 const bundleFields = [
   { k: 'attestationVersion', v: 'The attestation envelope schema version. Current production format: 1.2.' },
   { k: 'engineVersion',      v: 'The AGDA™ engine semver. Pinned at the assessment.' },
-  { k: 'engineHash',         v: 'SHA-256 over the canonical AGDA™ engine source-file set and their content hashes.' },
+  { k: 'engineHash',         v: 'Engine hash recorded in the resolved manifest and committed by the attestation envelope.' },
   { k: 'transformVersion',   v: 'Transform identity for the assessed output. N/A for the core SEDI engine.' },
   { k: 'catalogueVersion',   v: 'Failure-mode catalogue version used by the assessment.' },
   { k: 'methodologyVersion', v: 'Methodology version stamped on the result and bound into the attestation.' },
@@ -20,7 +20,7 @@ const bundleFields = [
 ];
 
 const audiences = [
-  { h: 'Audit committee.', p: 'Confirm that the verdict the chair is being asked to rely on is bound to a specific engine version and a specific set of inputs. No vendor trust required.' },
+  { h: 'Audit committee.', p: 'Confirm that the signed SEDI result the chair is being asked to rely on is bound to a specific engine version and a specific set of inputs. No vendor trust required.' },
   { h: 'Internal audit.',  p: 'Run the packaged agda-verify CLI in your own environment. Compare hashes, manifest and signature against the bundle. Pass or fail is mechanical.' },
   { h: 'Regulator.',       p: 'Take the bundle from the supervised entity. Verify in the regulator estate. Independent of any conversation with us or with the entity.' },
 ];
@@ -28,7 +28,7 @@ const audiences = [
 
 <BaseLayout
   title="Verify an AGDA™ Verdict · Intervene"
-  description="Formal AGDA™ Intervention Readiness verdicts ship with a signed regulator bundle. Verify the verdict locally using the packaged agda-verify CLI."
+  description="Formal AGDA™ SEDI Intervention Readiness assessments ship with a signed regulator bundle. Verify the bundle locally using the packaged agda-verify CLI."
   current="verify"
 >
   <section class="hero">
@@ -37,8 +37,8 @@ const audiences = [
         Verify the verdict <em>without us.</em>
       </h1>
       <p class="lede muted reveal">
-        Formal <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Intervention Readiness verdicts ship with a signed JSON
-        regulator bundle. The verify command runs locally under Node.js 18+.
+        Formal <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> SEDI Intervention Readiness assessments ship with a signed JSON
+        regulator bundle. The <span class="mono">agda-verify</span> command runs locally under Node.js 18+.
         You do not depend on us to read what we produced for you.
       </p>
       <div class="hero-proof reveal"><ProofMarks /></div>
@@ -50,10 +50,11 @@ const audiences = [
     <div class="wrap-narrow">
       <h2 class="h2">What's in the bundle.</h2>
       <p class="lede muted">
-        A regulator bundle contains the signed result, reconstructed input,
-        resolved manifest, verification result and attestation envelope. The
-        Ed25519 signature covers the canonical envelope. The envelope commits
-        to the input hash, output hash and manifest hash.
+        A current regulator bundle uses bundleVersion 1.1 and contains the
+        report, attestation envelope, signed result, input, manifest,
+        verification metadata and verification history. The Ed25519 signature
+        covers the canonical envelope. The envelope commits to the input hash,
+        output hash and manifest hash.
       </p>
 
       <pre class="envelope" aria-label="Regulator bundle example"><code>{`{
@@ -107,10 +108,12 @@ const audiences = [
 
       <p class="body muted note">
         The verifier ships as the <span class="mono">agda-verify</span> package command: a
-        self-contained Node.js CLI for Node 18+. It verifies the bundle and
-        registry locally, using compiled JavaScript, public keys and manifest
-        data from the customer distribution. It never contacts Intervene
-        infrastructure.
+        self-contained Node.js CLI for Node.js 18+. It checks signature
+        validity, manifest integrity, output integrity, input integrity when
+        input is present, and revocation status when registry entries are
+        available. It uses compiled JavaScript, public keys, manifest data and
+        registry data from the customer distribution, and never contacts
+        Intervene infrastructure.
       </p>
     </div>
   </section>
@@ -173,18 +176,18 @@ const audiences = [
       <h2 class="h2">Why this is the load-bearing claim.</h2>
       <p class="body">
         Big-4 advisories produce PDFs. GRC platforms produce dashboards.
-        Neither is reproducible. Neither is independently verifiable. The same
-        inputs do not always produce the same output, and the recipient must
-        trust the producer to read what the producer produced.
+        Neither is mechanically bound to a signed result. The same inputs do
+        not always produce the same output, and the recipient must trust the
+        producer to read what the producer produced.
       </p>
       <p class="body muted">
         <span class="agda-mark">AGDA<span class="agda-tm">™</span></span>'s verify path is the property that makes an Intervention Readiness verdict defensible
-        in an examination, not just credible in a boardroom. If you cannot
-        verify in your own environment, the artefact has not done its job.
+        in an examination, not just credible in a boardroom. If a signed SEDI
+        bundle cannot be verified in your own environment, it has not done its job.
       </p>
       <p class="body aside">
-        Opinion is not reproducible. The computation is reproducible; the
-        signed artefact is independently verifiable.
+        Opinion is not reproducible. The result is deterministic; the signed
+        SEDI regulator bundle is independently verifiable.
       </p>
     </div>
   </section>

@@ -19,7 +19,7 @@ const faqs = [
 
 <ComparisonLayout
   title="Intervention Readiness vs Risk Management · Intervene"
-  description="Risk management estimates likelihood and impact. Intervention Readiness measures whether the response beats the harm window. AGDA™ evidences the response side with a signed verdict."
+  description="Risk management estimates likelihood and impact. Intervention Readiness measures whether the response beats the harm window. AGDA™ evidences the response side with a deterministic verdict."
   other="Risk Management"
   ogImage="/assets/og/og-vs-risk-management.png"
   verdict="Risk management estimates how likely an event is and how much it would cost. Intervention Readiness measures whether, once it begins, the response completes before harm becomes irreversible."
@@ -29,7 +29,7 @@ const faqs = [
     { aspect: 'Core question', other: 'How likely, and how costly?', ir: 'Can the response beat the harm window?' },
     { aspect: 'Measured against', other: 'Risk appetite and tolerance', ir: 'The reversibility window' },
     { aspect: 'Failure it exposes', other: 'Mispriced or unseen exposure', ir: 'A response chain slower than the harm' },
-    { aspect: 'Evidence produced', other: 'Registers, ratings and models', ir: 'A signed, deterministic verdict' },
+    { aspect: 'Evidence produced', other: 'Registers, ratings and models', ir: 'A deterministic verdict; signed SEDI bundle where in scope' },
   ]}
   relate="Intervention Readiness is the response axis risk management tends to assume. A risk register can rate an event and name a mitigating control without establishing that the control fires inside the window. Estimating exposure and measuring response capability are different tasks. Intervention Readiness measures the second, and it is the one that decides whether a known risk is survivable when it materialises."
   agda="AGDA™ measures whether detect, escalate, decide and intervene complete before the point of irreversibility, applying evidence-quality constraints and chain propagation so the weakest stage is visible. The verdict gives the risk function a defensible, reproducible statement of response capability to set beside its estimates of likelihood and impact."

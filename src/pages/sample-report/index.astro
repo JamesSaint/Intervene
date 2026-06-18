@@ -81,7 +81,7 @@ const evidence = [
 
 <BaseLayout
   title="Sample AGDA™ Verdict · Intervene"
-  description="An illustrative historical AGDA™ Intervention Readiness verdict showing how detect, escalate, decide and intervene are assessed against evidence, timing and verifiability."
+  description="An illustrative historical AGDA™ Intervention Readiness verdict showing how detect, escalate, decide and intervene are assessed against evidence, timing and the current SEDI verification path."
   current="sample-report"
   ogImage="/assets/og/og-sample-report.png"
 >
@@ -97,7 +97,8 @@ const evidence = [
           </h1>
           <p class="lede muted reveal">
             An illustrative historical example of the <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> output pattern:
-            one material model, one trigger scenario, one signed verdict.
+            one material model, one trigger scenario, one deterministic verdict.
+            Current formal SEDI assessments ship with signed regulator bundles.
             Detection works. Authority does not. The organisation cannot
             intervene before the harm window closes.
           </p>
@@ -122,7 +123,7 @@ engineHash         redacted
 inputHash          redacted
 outputHash         redacted
 attestation        Ed25519 · redacted
-bundleContents     result · input · manifest · verification
+bundleContents     report · attestation · result · input · manifest · verification metadata · history
 productionPath     current format documented at /verify/`}</code></pre>
           <p class="env-verify mono">
             current verify path · agda-verify --bundle ./bundle.json
@@ -491,8 +492,8 @@ productionPath     current format documented at /verify/`}</code></pre>
           <p class="body muted">
             This page is a stable sample of the audit-committee readout. Your
             engagement receives the current AGDA™ report format, current
-            methodology and current attestation path, applied to one of your
-            material systems.
+            methodology and current signed SEDI regulator bundle path, applied
+            to one of your material systems.
           </p>
           <div class="cta-row">
             <a href="/methodology/" class="btn-ghost">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> works</a>

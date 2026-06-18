@@ -1,7 +1,7 @@
 ---
 import ProofMarks from './ProofMarks.astro';
 /**
- * The Verdict Block. The hero object. A struck, notarised verdict artefact of
+ * The Verdict Block. The hero object. A struck SEDI verdict artefact of
  * assay, not a card. The verdict states are carried by numbered evidence
  * rows and restrained signal dots, without decorative geometry.
  */
@@ -14,7 +14,7 @@ const states = [
 
 <figure
   class="verdict-block"
-  aria-label="AGDA™ Intervention Readiness verdict. A struck, signed artefact. Every assay returns exactly one of three states: before impact, at risk, or after impact."
+  aria-label="AGDA™ Intervention Readiness SEDI verdict. A struck, signed result. Formal SEDI assessments return exactly one of three states: before impact, at risk, or after impact."
 >
   <div class="vb-frame">
     <span class="vb-corner tl" aria-hidden="true"></span>
@@ -50,12 +50,12 @@ const states = [
       </dl>
       <div class="vb-strike">
         <span class="vb-seal" aria-hidden="true"></span>
-        <span class="vb-struck mono">Struck and signed · independently verifiable</span>
+        <span class="vb-struck mono">SEDI signed · bundle-verifiable</span>
       </div>
       <ProofMarks />
     </footer>
   </div>
-  <figcaption class="vb-caption">Every assay returns exactly one of these three, struck and signed.</figcaption>
+  <figcaption class="vb-caption">Formal SEDI assessments return exactly one of these three, struck and signed.</figcaption>
 </figure>
 
 <style>

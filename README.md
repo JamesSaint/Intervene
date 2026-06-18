@@ -9,7 +9,7 @@
 
 Intervene Limited defines and measures **Intervention Readiness**: the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.
 
-The public site introduces the category, explains **AGDA™** as the deterministic assessment instrument, publishes the core vocabulary, and provides sample evidence for a signed, independently verifiable verdict.
+The public site introduces the category, explains **AGDA™** as the deterministic assessment instrument, publishes the core vocabulary, and provides sample evidence for a formal SEDI verdict and signed regulator-bundle verification path.
 
 Canonical site: `https://intervene.uk/`
 

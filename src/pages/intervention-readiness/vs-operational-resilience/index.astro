@@ -29,9 +29,9 @@ const faqs = [
     { aspect: 'Core question', other: 'Can the service stay within tolerance?', ir: 'Can intervention occur before irreversibility?' },
     { aspect: 'Measured against', other: 'Impact tolerance', ir: 'The reversibility window' },
     { aspect: 'Failure it exposes', other: 'A service outside tolerance', ir: 'A chain that completes after impact' },
-    { aspect: 'Evidence produced', other: 'Tolerance mapping and scenario testing', ir: 'A signed, deterministic verdict' },
+    { aspect: 'Evidence produced', other: 'Tolerance mapping and scenario testing', ir: 'A deterministic verdict; signed SEDI bundle where in scope' },
   ]}
   relate="Intervention Readiness and operational resilience overlap on timing but differ on object. Resilience assumes a service can be brought back inside tolerance; Intervention Readiness asks whether the act of intervening happens before the point of irreversibility, after which recovery is not the question because the harm is fixed. Resilience governs the service. Intervention Readiness governs the intervention that protects it."
-  agda="AGDA™ assesses detect, escalate, decide and intervene against the reversibility window, returning a signed verdict on whether the chain completes in time. Where a resilience programme maps tolerances and tests scenarios, AGDA™ supplies the missing measurement: whether the organisation can halt a consequential system before the harm window closes."
+  agda="AGDA™ assesses detect, escalate, decide and intervene against the reversibility window, returning a deterministic verdict on whether the chain completes in time. Formal SEDI assessments include a signed regulator bundle. Where a resilience programme maps tolerances and tests scenarios, AGDA™ supplies the missing measurement: whether the organisation can halt a consequential system before the harm window closes."
   faqs={faqs}
 />
