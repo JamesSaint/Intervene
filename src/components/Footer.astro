@@ -1,5 +1,7 @@
 ---
 import Hallmark from './Hallmark.astro';
+import LinkedInButton from './LinkedInButton.astro';
+import { socialLinks } from '../lib/social';
 const year = new Date().getFullYear();
 ---
 
@@ -8,6 +10,9 @@ const year = new Date().getFullYear();
     <div class="brand-col">
       <span class="brand">intervene</span>
       <span class="brand-line">Intervention Readiness, measured.</span>
+      <div class="brand-social">
+        <LinkedInButton href={socialLinks.interveneLinkedIn} label="Intervene Limited on LinkedIn" />
+      </div>
       <div class="brand-hallmark"><Hallmark /></div>
     </div>
 
@@ -58,6 +63,10 @@ const year = new Date().getFullYear();
     gap: 48px;
   }
   .brand-col { display: grid; gap: 12px; align-content: start; }
+  .brand-social {
+    display: flex;
+    align-items: center;
+  }
   .brand {
     font-family: var(--font-sans);
     font-size: 22px;

@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import LinkedInButton from '../../components/LinkedInButton.astro';
 import { markAgda } from '../../lib/marks';
+import { socialLinks } from '../../lib/social';
 
 const commitments = [
   { h: 'Independent judgement.',         p: 'No vendor affiliation, no referral fees, no co-marketing. We do not implement what we recommend.' },
@@ -71,69 +73,46 @@ const notServed = [
         </figure>
 
         <div class="bio reveal">
-          <p class="mono role">Founder · Principal Advisor</p>
+          <div class="founder-meta">
+            <p class="mono role">Founder · Principal Advisor</p>
+            <LinkedInButton href={socialLinks.jamesSaintLinkedIn} label="James Saint on LinkedIn" />
+          </div>
 
           <p class="body q">
-            Most organisations can evidence governance. Far fewer can evidence
-            intervention capability.
+            Most organisations can evidence governance. Far fewer can prove
+            they can intervene in time.
           </p>
-
-          <p class="body">
-            For years I watched organisations invest heavily in governance,
-            controls, reporting and assurance. As AI systems became more
-            capable and organisations became more dependent on automation, the
-            same pattern kept becoming more consequential. The controls existed.
-            The reporting existed. The governance structure existed.
-          </p>
-
-          <p class="body">The intervention did not.</p>
-
-          <p class="body">
-            Problems were detected too late. Escalations stalled. Decisions were
-            delayed. Ownership became unclear. By the time action was taken, the
-            opportunity to prevent harm had already passed.
-          </p>
-
-          <p class="body">That gap became the foundation of <span class="agda-mark">AGDA<span class="agda-tm">™</span></span>.</p>
 
           <p class="body">
             My background spans more than three decades across technology,
             systems architecture, digital products, payments, operational
-            systems and organisational risk. I was also a co-founder of the
+            systems and organisational risk, including co-founding the
             Institute of Financial Innovation in Transactions and Security
-            (IFTS), an industry initiative focused on improving trust, security
-            and resilience in financial systems.
+            (IFTS).
           </p>
 
           <p class="body">
-            Throughout my career I have been drawn to the same challenge:
-            understanding how complex systems behave under pressure, and why
-            organisations often struggle to act when it matters most.
+            Across that work, the same pattern kept appearing: controls,
+            reporting and governance structures existed, but intervention did
+            not. Problems were detected too late, escalation stalled, decisions
+            drifted and ownership became unclear.
           </p>
 
           <p class="body">
-            The emergence of AI brought that challenge into sharper focus:
-            systems can act faster, affect more people, and create consequences
-            that become harder to reverse.
+            AI makes that gap more consequential. Systems can act faster,
+            affect more people and create outcomes that become harder to
+            reverse. Regulators increasingly require effective human oversight;
+            boards need confidence that action remains possible before the
+            window closes.
           </p>
 
           <p class="body">
-            Many organisations can describe their governance structures. Far
-            fewer can demonstrate that they are capable of detecting,
-            escalating, deciding and intervening before consequences become
-            irreversible. Regulators increasingly require effective human
-            oversight. Boards increasingly need confidence that intervention
-            remains possible.
-          </p>
-
-          <p class="body"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> was developed to answer that question directly.</p>
-
-          <p class="body">
-            Rather than assessing whether governance controls exist on paper,
-            <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures Intervention Readiness: whether intervention is
-            actually possible within the time available. The methodology
-            produces a deterministic, independently verifiable verdict
-            supported by cryptographic attestation and board-ready reporting.
+            That gap became the foundation of <span class="agda-mark">AGDA<span class="agda-tm">™</span></span>. Rather than assessing
+            whether controls exist on paper, <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures Intervention
+            Readiness: whether an organisation can detect, escalate, decide and
+            intervene within the time available. The result is a deterministic,
+            independently verifiable verdict supported by cryptographic
+            attestation and board-ready reporting.
           </p>
 
           <p class="body">
@@ -298,6 +277,11 @@ const notServed = [
   }
   .bio { display: grid; gap: 16px; align-content: start; }
   .bio .h2 { margin: 0; }
+  .founder-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
   .bio .role {
     color: var(--muted);
     margin: 0;
