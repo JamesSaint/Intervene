@@ -45,6 +45,23 @@
   color: var(--ink);
 }
 
+/* Avoid widows, lonely short words, and awkward one-word last lines.
+   Unsupported browsers ignore text-wrap and keep the normal flow. */
+:where(.display-xl, .h1, .h2, .h3, .close-q, .insight-title, main h1, main h2, main h3, main h4, main h5, main h6) {
+  text-wrap: balance;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: manual;
+}
+
+:where(.lede, .body, .body-sm, main p, main li) {
+  text-wrap: pretty;
+}
+
+.keep-together {
+  white-space: nowrap;
+}
+
 .lede {
   font-family: var(--font-sans);
   font-size: clamp(18px, 1.4vw, 22px);
