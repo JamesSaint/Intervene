@@ -3,6 +3,7 @@ import Header from '../components/Header.astro';
 import TakeoverMenu from '../components/TakeoverMenu.astro';
 import Footer from '../components/Footer.astro';
 import { terms, termId, termUrl } from '../lib/terms';
+import { socialLinks } from '../lib/social';
 import '../styles/global.css';
 
 interface Props {
@@ -153,6 +154,7 @@ const personSchema = {
   '@id': personId,
   name: 'James Saint',
   url: `${baseUrl}about/`,
+  sameAs: [socialLinks.jamesSaintLinkedIn],
   jobTitle: 'Founder and Principal Advisor',
   worksFor: { '@id': orgId },
   affiliation: { '@id': orgId },
@@ -171,6 +173,7 @@ const orgSchema = {
   name: 'Intervene Limited',
   legalName: 'Intervene Limited',
   url: baseUrl,
+  sameAs: [socialLinks.interveneLinkedIn],
   logo: `${baseUrl}assets/images/favicons/android-chrome-512x512.png`,
   founder: { '@id': personId },
   description: 'Most organisations know what controls they have. Few know whether they can detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ measures Intervention Readiness.',
