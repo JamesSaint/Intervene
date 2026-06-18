@@ -45,8 +45,8 @@ input, textarea, select {
 }
 
 ::selection {
-  background: var(--accent-faint);
-  color: var(--ink);
+  background: var(--accent);
+  color: var(--ink-soft);
 }
 
 /* Focus discipline */
