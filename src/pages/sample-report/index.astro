@@ -6,8 +6,8 @@ import { markAgda } from '../../lib/marks';
 const cover = [
   { k: 'System',    v: 'CRED-MOD-04 · Retail Credit Decisioning' },
   { k: 'Scenario',  v: 'Macro shock · model drift' },
-  { k: 'Engine',    v: 'AGDA™ v2.0.6' },
-  { k: 'Attested',  v: '2026-05-14 · Ed25519 · envelope v1.2' },
+  { k: 'Sample',    v: 'Illustrative historical report' },
+  { k: 'Attested',  v: 'Redacted historical summary' },
 ];
 
 const systemSpecs = [
@@ -81,14 +81,14 @@ const evidence = [
 
 <BaseLayout
   title="Sample AGDA™ Verdict · Intervene"
-  description="A redacted AGDA™ Intervention Readiness verdict showing how detect, escalate, decide and intervene are assessed against evidence, timing and verifiability."
+  description="An illustrative historical AGDA™ Intervention Readiness verdict showing how detect, escalate, decide and intervene are assessed against evidence, timing and verifiability."
   current="sample-report"
   ogImage="/assets/og/og-sample-report.png"
 >
   <!-- COVER -->
   <section class="cover">
     <div class="wrap">
-      <span class="cover-kicker mono">Intervention Readiness Verdict · Redacted</span>
+      <span class="cover-kicker mono">Intervention Readiness Verdict · Illustrative historical sample</span>
 
       <div class="cover-grid">
         <div class="cover-left">
@@ -96,10 +96,10 @@ const evidence = [
             Retail credit. <em>Cannot stop in time.</em>
           </h1>
           <p class="lede muted reveal">
-            A redacted example of the <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> output: one material model, one
-            trigger scenario, one signed verdict. Detection works. Authority
-            does not. The organisation cannot intervene before the harm window
-            closes.
+            An illustrative historical example of the <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> output pattern:
+            one material model, one trigger scenario, one signed verdict.
+            Detection works. Authority does not. The organisation cannot
+            intervene before the harm window closes.
           </p>
 
           <dl class="cover-meta">
@@ -114,23 +114,18 @@ const evidence = [
           <div class="cover-proof reveal"><ProofMarks /></div>
         </div>
 
-        <aside class="cover-right reveal" aria-label="Attestation envelope">
-          <span class="env-label mono">Attestation envelope · Ed25519</span>
-          <pre class="envelope"><code>{`attestationVersion 1.2
-engineVersion      2.0.6
-engineHash         17594a80…60355e50
-transformVersion   N/A
-catalogueVersion   1.0
-methodologyVersion 1.3.0
-rubricVersion      1.3.0
-keyId              2026-05-02-d7e5468e
-scoredAt           2026-05-14T09:47:12.334Z
-inputHash          47a2e19c…103e4f8d
-outputHash         91f4c02a…d4e7ad91
-manifestHash       36b45cbe…3edc1c12
-signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
+        <aside class="cover-right reveal" aria-label="Historical attestation summary">
+          <span class="env-label mono">Historical sample · attestation summary</span>
+          <pre class="envelope"><code>{`sampleStatus       illustrative historical
+engineVersion      redacted historical value
+engineHash         redacted
+inputHash          redacted
+outputHash         redacted
+attestation        Ed25519 · redacted
+bundleContents     result · input · manifest · verification
+productionPath     current format documented at /verify/`}</code></pre>
           <p class="env-verify mono">
-            verify · agda-verify --key-id 2026-05-02-d7e5468e --bundle ./bundle.json
+            current verify path · agda-verify --bundle ./bundle.json
           </p>
         </aside>
       </div>
@@ -494,9 +489,10 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
         <h2 class="h2">Run this <em>against your own system.</em></h2>
         <div class="close-cta">
           <p class="body muted">
-            The format on this page is the format your audit committee would
-            receive. The same AGDA™ engine, methodology and attestation path
-            are applied to one of your material systems.
+            This page is a stable sample of the audit-committee readout. Your
+            engagement receives the current AGDA™ report format, current
+            methodology and current attestation path, applied to one of your
+            material systems.
           </p>
           <div class="cta-row">
             <a href="/methodology/" class="btn-ghost">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> works</a>
