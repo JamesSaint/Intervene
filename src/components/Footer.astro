@@ -45,6 +45,7 @@ const year = new Date().getFullYear();
         <li><a href="/legal/terms/">Terms</a></li>
         <li><a href="/legal/privacy/">Privacy</a></li>
         <li><a href="/legal/gdpr/">UK GDPR</a></li>
+        <li><button type="button" data-consent-reopen>Cookies</button></li>
       </ul>
     </nav>
   </div>
@@ -130,7 +131,8 @@ const year = new Date().getFullYear();
     flex-wrap: wrap;
     gap: 24px;
   }
-  .supporting-nav a {
+  .supporting-nav a,
+  .supporting-nav button {
     font-family: var(--font-mono);
     font-size: 11px;
     letter-spacing: 0.04em;
@@ -140,7 +142,15 @@ const year = new Date().getFullYear();
     border-bottom: 1px solid transparent;
     transition: color var(--dur-hover) var(--ease);
   }
-  .supporting-nav a:hover { color: var(--ink); }
+  .supporting-nav button {
+    background: none;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    padding: 0;
+    cursor: pointer;
+  }
+  .supporting-nav a:hover,
+  .supporting-nav button:hover { color: var(--ink); }
 
   @media (max-width: 720px) {
     .foot-inner {

@@ -1,0 +1,156 @@
+---
+// Minimal, non-blocking cookie consent for Google Analytics (Consent Mode v2).
+// Consent defaults are set to `denied` in BaseLayout before gtag fires; this banner
+// only ever upgrades to `granted` on explicit Accept. Choice is stored in localStorage
+// (a preference, PECR-exempt), never a cookie. No modal, no content wall, no focus trap.
+---
+
+<div class="consent" role="region" aria-label="Cookie consent" hidden>
+  <div class="wrap consent-inner">
+    <p class="consent-copy">
+      We use Google Analytics to see how this site is used. It runs only if you accept.
+      Nothing is stored otherwise. <a href="/legal/privacy/">Privacy</a>.
+    </p>
+    <div class="consent-actions">
+      <button type="button" class="consent-btn" data-consent="denied">Decline</button>
+      <button type="button" class="consent-btn consent-accept" data-consent="granted">Accept</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const KEY = 'intv-consent';
+
+  class Consent {
+    constructor(el) {
+      this.el = el;
+      el.querySelectorAll('[data-consent]').forEach((b) => {
+        b.addEventListener('click', () => this.choose(b.getAttribute('data-consent')));
+      });
+      document.querySelectorAll('[data-consent-reopen]').forEach((t) => {
+        t.addEventListener('click', (e) => { e.preventDefault(); this.open(); });
+      });
+      // Show only when no prior choice exists.
+      let stored = null;
+      try { stored = localStorage.getItem(KEY); } catch (e) {}
+      if (stored !== 'granted' && stored !== 'denied') this.open();
+    }
+
+    open() {
+      this.el.hidden = false;
+      requestAnimationFrame(() => this.el.classList.add('open'));
+    }
+
+    close() {
+      this.el.classList.remove('open');
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) { this.el.hidden = true; return; }
+      this.el.addEventListener('transitionend', () => { this.el.hidden = true; }, { once: true });
+    }
+
+    choose(value) {
+      try { localStorage.setItem(KEY, value); } catch (e) {}
+      if (value === 'granted') {
+        window.gtag?.('consent', 'update', { analytics_storage: 'granted' });
+      } else {
+        window.gtag?.('consent', 'update', { analytics_storage: 'denied' });
+        // Expire any GA cookies already set in a prior session.
+        document.cookie.split(';').forEach((c) => {
+          const name = c.split('=')[0].trim();
+          if (name === '_ga' || name.indexOf('_ga_') === 0) {
+            document.cookie = name + '=; Max-Age=0; path=/; domain=.' + location.hostname;
+            document.cookie = name + '=; Max-Age=0; path=/';
+          }
+        });
+      }
+      this.close();
+    }
+  }
+
+  const el = document.querySelector('.consent');
+  if (el) new Consent(el);
+</script>
+
+<style>
+  .consent {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1200;
+    background: var(--paper-raise);
+    border-top: 1px solid var(--hair-strong);
+    transform: translateY(100%);
+    transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .consent.open { transform: translateY(0); }
+
+  .consent-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 16px 0;
+  }
+  .consent-copy {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0;
+    max-width: 72ch;
+  }
+  .consent-copy a {
+    color: var(--muted);
+    border-bottom: 1px solid var(--hair-strong);
+    transition: color var(--dur-hover) var(--ease);
+  }
+  .consent-copy a:hover { color: var(--ink); }
+
+  .consent-actions {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .consent-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--hair-strong);
+    padding: 9px 18px;
+    cursor: pointer;
+    transition:
+      color var(--dur-hover) var(--ease),
+      border-color var(--dur-hover) var(--ease),
+      background var(--dur-hover) var(--ease);
+  }
+  .consent-btn:hover { color: var(--ink); border-color: var(--muted); }
+  .consent-accept {
+    color: var(--inverse-ink);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .consent-accept:hover {
+    color: var(--inverse-ink);
+    background: var(--accent-soft);
+    border-color: var(--accent-soft);
+  }
+
+  @media (max-width: 720px) {
+    .consent-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 0;
+    }
+    .consent-actions { width: 100%; }
+    .consent-btn { flex: 1; text-align: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .consent { transition: none; }
+  }
+</style>

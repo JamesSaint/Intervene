@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import TakeoverMenu from '../components/TakeoverMenu.astro';
 import Footer from '../components/Footer.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
 import { terms, termId, termUrl } from '../lib/terms';
 import { socialLinks } from '../lib/social';
 import '../styles/global.css';
@@ -323,13 +324,29 @@ const structuredData = {
 
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
-    <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) with Consent Mode v2 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LY85TZDG0K"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
+      // Deny all storage until the visitor consents (UK PECR/GDPR)
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500
+      });
+
+      // Honour a stored choice before the first pageview fires
+      try {
+        if (localStorage.getItem('intv-consent') === 'granted') {
+          gtag('consent', 'update', { analytics_storage: 'granted' });
+        }
+      } catch (e) {}
+
+      gtag('js', new Date());
       gtag('config', 'G-LY85TZDG0K');
     </script>
 
@@ -344,6 +361,7 @@ const structuredData = {
     </main>
 
     <Footer />
+    <ConsentBanner />
 
     <script>
       import { initReveal } from '../lib/reveal.ts';
