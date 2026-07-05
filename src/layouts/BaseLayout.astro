@@ -323,6 +323,16 @@ const structuredData = {
 
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LY85TZDG0K"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-LY85TZDG0K');
+    </script>
+
     <slot name="head" />
   </head>
   <body data-current={current}>
