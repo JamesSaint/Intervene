@@ -113,6 +113,39 @@ const benchmarks = [
   { h: 'Model risk and operational resilience.', p: 'Where the system is material, automated, and capable of creating harm faster than authority can move.' },
   { h: 'Regulatory engagement preparation.',     p: 'Where the organisation needs verifiable evidence of Intervention Readiness, not certification or regulatory approval.' },
 ];
+
+const stages = [
+  {
+    n: '01',
+    name: 'Nominate',
+    body: 'You name one consequential system and the single intervention-readiness question it has to answer.',
+    provide: 'The system and the question.',
+  },
+  {
+    n: '02',
+    name: 'Scope',
+    body: 'Together you fix the success condition, the harm window, and the evidence the assessment will draw on.',
+    provide: 'Access to the right people.',
+  },
+  {
+    n: '03',
+    name: 'Evidence',
+    body: 'You supply the control, escalation and drill evidence. It is graded for quality, not taken on assertion.',
+    provide: 'Documents and subject-matter time.',
+  },
+  {
+    n: '04',
+    name: 'Assess',
+    body: 'A trained rater runs the SEDI assessment against the eight dimensions. No system access, no integration.',
+    provide: 'Clarification only.',
+  },
+  {
+    n: '05',
+    name: 'Deliver',
+    body: 'You receive the signed Intervention Readiness Verdict and Failure Exposure Report in three layers, executive, operational and specialist, with a board readout and a close-out memo recording agreed actions and ownership.',
+    provide: 'Board or executive time for the readout.',
+  },
+];
 ---
 
 <BaseLayout
@@ -192,6 +225,41 @@ const benchmarks = [
           assessment. Included with every tier.
         </p>
       </div>
+    </div>
+  </section>
+
+  <!-- HOW AN ENGAGEMENT RUNS -->
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">How an engagement runs.</h2>
+      <p class="lede muted">
+        Five phases from named system to signed verdict. Each phase states what
+        you provide, so the obligation is explicit before the work begins.
+      </p>
+
+      <ol class="stages" role="list">
+        {stages.map((s) => (
+          <li class="stage reveal">
+            <div class="stage-head">
+              <span class="mono stage-n">{s.n}</span>
+              <h3 class="h3">{s.name}.</h3>
+            </div>
+            <div class="stage-body">
+              <p class="body muted">{s.body}</p>
+              <dl class="stage-meta">
+                <div>
+                  <dt>You provide</dt>
+                  <dd>{s.provide}</dd>
+                </div>
+                <div>
+                  <dt>Duration</dt>
+                  <dd>Confirmed at scoping</dd>
+                </div>
+              </dl>
+            </div>
+          </li>
+        ))}
+      </ol>
     </div>
   </section>
 
@@ -660,6 +728,56 @@ const benchmarks = [
   .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
   .close-cta .btn { justify-self: start; }
 
+  /* ----- Engagement stages ----- */
+  .stages {
+    list-style: none;
+    margin: 72px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 40px;
+  }
+  .stage {
+    padding-top: 32px;
+    border-top: 1px solid var(--hair-strong);
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .stage-head { display: grid; gap: 8px; align-content: start; }
+  .stage-head .h3 { margin: 0; }
+  .stage-n {
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    font-size: 11px;
+  }
+  .stage-body { display: grid; gap: 20px; min-width: 0; }
+  .stage-body > p { margin: 0; max-width: 60ch; }
+  .stage-meta {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 40px;
+    border-top: 1px solid var(--hair);
+  }
+  .stage-meta > div { padding: 16px 0 0; }
+  .stage-meta dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .stage-meta dd {
+    margin: 8px 0 0;
+    max-width: 40ch;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.58;
+    color: var(--ink);
+  }
+
   /* ----- Responsive ----- */
   @media (max-width: 880px) {
     .hero { padding-top: 96px; padding-bottom: 96px; }
@@ -672,6 +790,9 @@ const benchmarks = [
     .format-price { text-align: left; justify-items: start; }
     .rate-card > li { grid-template-columns: 1fr; gap: 4px; padding: 16px 0; }
     .rate-price { text-align: left; justify-items: start; }
+    .stage { grid-template-columns: 1fr; gap: 20px; }
+    .stage-meta { grid-template-columns: 1fr; gap: 0; }
+    .stage-meta > div + div { padding-top: 8px; }
     .not-list { grid-template-columns: 1fr; gap: 48px; }
     .benchmarks { grid-template-columns: 1fr; gap: 40px; }
     .close-grid { grid-template-columns: 1fr; gap: 48px; }
