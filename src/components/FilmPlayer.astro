@@ -1,0 +1,268 @@
+---
+// Intervention Readiness film. Presented as content, not background.
+// Custom controls over a muted <video>; native `controls` is the no-JS
+// fallback and is stripped by the module script on init. IntersectionObserver
+// autoplays muted when the film is meaningfully in view and pauses (without
+// rewinding) when it leaves. Honours prefers-reduced-motion.
+const src = '/assets/video/intervention_readiness_film.mp4';
+---
+
+<figure class="film-player" data-film>
+  <div class="film-frame">
+    <video
+      class="film-video"
+      preload="metadata"
+      playsinline
+      muted
+      controls
+      aria-label="Intervention Readiness film"
+    >
+      <source src={`${src}#t=0.1`} type="video/mp4" />
+      <p class="film-fallback">
+        Your browser cannot play this film.
+        <a href={src} download>Download the film</a>.
+      </p>
+    </video>
+
+    <button type="button" class="film-cover" data-cover hidden aria-label="Play film">
+      <svg class="film-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M8 5v14l11-7z" fill="currentColor" />
+      </svg>
+      <span class="film-cover-label">Play film</span>
+    </button>
+
+    <div class="film-controls" data-controls hidden>
+      <button type="button" class="film-btn" data-toggle aria-label="Play film">
+        <svg class="film-icon" data-icon-play viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M8 5v14l11-7z" fill="currentColor" />
+        </svg>
+        <svg class="film-icon" data-icon-pause viewBox="0 0 24 24" aria-hidden="true" focusable="false" hidden>
+          <path d="M7 5h3v14H7zM14 5h3v14h-3z" fill="currentColor" />
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        class="film-btn film-sound"
+        data-sound
+        aria-pressed="false"
+        aria-label="Enable sound"
+      >
+        <svg class="film-icon" data-icon-muted viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4 9v6h4l5 5V4L8 9H4z" fill="currentColor" />
+          <path d="M16 8l5 8M21 8l-5 8" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" />
+        </svg>
+        <svg class="film-icon" data-icon-on viewBox="0 0 24 24" aria-hidden="true" focusable="false" hidden>
+          <path d="M4 9v6h4l5 5V4L8 9H4z" fill="currentColor" />
+          <path d="M16.5 8.5a5 5 0 0 1 0 7M18.8 6.2a8 8 0 0 1 0 11.6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" />
+        </svg>
+        <span class="film-sound-label" data-sound-label>Sound off</span>
+      </button>
+    </div>
+  </div>
+</figure>
+
+<style>
+  .film-player {
+    margin: 0;
+  }
+  .film-frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--black);
+    border: 1px solid var(--hair);
+  }
+  .film-video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    /* No object-fit: cover. The 16:9 frame matches the source, so the whole
+       film and any on-screen words stay visible at every width. */
+  }
+  .film-fallback {
+    padding: 24px;
+    color: var(--muted);
+    font-family: var(--font-sans);
+    font-size: 15px;
+  }
+  .film-fallback a { color: var(--ink); border-bottom: 1px solid var(--hair-strong); }
+  .film-fallback a:hover { border-color: var(--accent); }
+
+  /* Controls only exist once JS has taken over (root gets .film-js). */
+  .film-controls,
+  .film-cover { display: none; }
+  .film-js .film-controls { display: flex; }
+  .film-js .film-cover:not([hidden]) { display: inline-flex; }
+
+  .film-controls {
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+    align-items: center;
+    gap: 10px;
+    z-index: 2;
+  }
+  .film-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    min-width: 44px;
+    justify-content: center;
+    padding: 0 12px;
+    background: rgba(7, 7, 7, 0.72);
+    color: var(--ink);
+    border: 1px solid var(--hair-strong);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      border-color var(--dur-hover) var(--ease),
+      background var(--dur-hover) var(--ease);
+  }
+  .film-btn:hover { border-color: var(--accent); background: rgba(7, 7, 7, 0.88); }
+  .film-icon { width: 18px; height: 18px; display: block; }
+  .film-sound-label { line-height: 1; }
+
+  /* Reduced-motion / paused-first-frame cover. */
+  .film-cover {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: rgba(7, 7, 7, 0.42);
+    color: var(--ink);
+    border: 0;
+    cursor: pointer;
+    transition: background var(--dur-hover) var(--ease);
+  }
+  .film-cover:hover { background: rgba(7, 7, 7, 0.30); }
+  .film-cover .film-icon { width: 44px; height: 44px; }
+  .film-cover-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  @media (max-width: 560px) {
+    .film-controls { left: 12px; bottom: 12px; gap: 8px; }
+  }
+</style>
+
+<script>
+  // Progressive enhancement: if this never runs, native controls remain and the
+  // film stays playable. Guarded throughout so a missing node cannot throw.
+  function initFilm(root: HTMLElement) {
+    const video = root.querySelector<HTMLVideoElement>('.film-video');
+    const cover = root.querySelector<HTMLButtonElement>('[data-cover]');
+    const controls = root.querySelector<HTMLElement>('[data-controls]');
+    const toggle = root.querySelector<HTMLButtonElement>('[data-toggle]');
+    const sound = root.querySelector<HTMLButtonElement>('[data-sound]');
+    const iconPlay = root.querySelector<SVGElement>('[data-icon-play]');
+    const iconPause = root.querySelector<SVGElement>('[data-icon-pause]');
+    const iconMuted = root.querySelector<SVGElement>('[data-icon-muted]');
+    const iconOn = root.querySelector<SVGElement>('[data-icon-on]');
+    const soundLabel = root.querySelector<HTMLElement>('[data-sound-label]');
+    if (!video || !controls || !toggle || !sound) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let userPaused = false;
+
+    // Take over from the no-JS fallback.
+    root.classList.add('film-js');
+    video.removeAttribute('controls');
+    controls.hidden = false;
+
+    const show = (el: Element | null, on: boolean) => {
+      if (el) (el as HTMLElement).hidden = !on;
+    };
+
+    function syncToggle() {
+      const playing = !video.paused && !video.ended;
+      show(iconPlay, !playing);
+      show(iconPause, playing);
+      toggle.setAttribute('aria-label', playing ? 'Pause film' : 'Play film');
+    }
+
+    function syncSound() {
+      const on = !video.muted;
+      show(iconMuted, !on);
+      show(iconOn, on);
+      sound.setAttribute('aria-pressed', String(on));
+      sound.setAttribute('aria-label', on ? 'Mute sound' : 'Enable sound');
+      if (soundLabel) soundLabel.textContent = on ? 'Sound on' : 'Sound off';
+    }
+
+    function play() {
+      userPaused = false;
+      const p = video.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    }
+
+    function togglePlay() {
+      if (video.paused || video.ended) {
+        play();
+      } else {
+        userPaused = true;
+        video.pause();
+      }
+    }
+
+    // Native events keep custom controls truthful.
+    video.addEventListener('play', () => { show(cover, false); syncToggle(); });
+    video.addEventListener('pause', syncToggle);
+    video.addEventListener('ended', () => { show(cover, false); syncToggle(); });
+
+    toggle.addEventListener('click', togglePlay);
+    video.addEventListener('click', togglePlay);
+
+    sound.addEventListener('click', () => {
+      video.muted = !video.muted;
+      if (!video.muted && (video.paused || video.ended)) play();
+      syncSound();
+    });
+
+    if (cover) cover.addEventListener('click', play);
+
+    syncToggle();
+    syncSound();
+
+    if (reduce) {
+      // No autoplay. Offer the first frame plus an explicit control.
+      show(cover, true);
+      return;
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      show(cover, true);
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.intersectionRatio >= 0.5) {
+            if (!userPaused && !video.ended && video.paused) {
+              const p = video.play();
+              if (p && typeof p.catch === 'function') p.catch(() => {});
+            }
+          } else if (e.intersectionRatio < 0.25) {
+            // Pause without rewinding: re-entry resumes, never restarts.
+            if (!video.paused) video.pause();
+          }
+        }
+      },
+      { threshold: [0, 0.25, 0.5] }
+    );
+    io.observe(root);
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-film]').forEach(initFilm);
+</script>
