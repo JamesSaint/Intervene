@@ -1,9 +1,9 @@
 ---
 // Intervention Readiness film. Presented as content, not background.
-// Custom controls over a muted <video>; native `controls` is the no-JS
-// fallback and is stripped by the module script on init. IntersectionObserver
-// autoplays muted when the film is meaningfully in view and pauses (without
-// rewinding) when it leaves. Honours prefers-reduced-motion.
+// Custom controls over a muted, looping <video>; native `controls` is the
+// no-JS fallback and is stripped by the module script on init.
+// IntersectionObserver autoplays muted when the film is meaningfully in view
+// and pauses (without rewinding) when it leaves. Honours prefers-reduced-motion.
 const src = '/assets/video/intervention_readiness_film.mp4';
 ---
 
@@ -14,6 +14,7 @@ const src = '/assets/video/intervention_readiness_film.mp4';
       preload="metadata"
       playsinline
       muted
+      loop
       controls
       aria-label="Intervention Readiness film"
     >
