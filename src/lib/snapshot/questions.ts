@@ -1,8 +1,8 @@
 /**
  * Intervention Readiness Snapshot: question set.
  *
- * This file is the single source of truth for question ids, option
- * values and labels. `scripts/generate-question-manifest.mjs` derives
+ * Single source of truth for question ids, option values and labels.
+ * `scripts/generate-question-manifest.mjs` derives
  * `public/question-manifest.json` from it, and the Worker validates
  * incoming answers against that manifest.
  *
@@ -13,14 +13,31 @@
  *    private Worker repository. Anything here is public.
  *
  * 2. Option `value` identifiers are semantic and stable. Ordering is
- *    never derived from array position, so options may be reordered
- *    or relabelled without changing meaning. Changing a `value`, or
- *    adding or removing a question or option, requires a
- *    QUESTION_SET_VERSION bump and the release order in the plan:
- *    deploy the Worker with the new manifest first, then the site.
+ *    never derived from array position, so options may be reordered or
+ *    relabelled without changing meaning. Changing a `value`, or adding
+ *    or removing a question, requires a QUESTION_SET_VERSION bump and
+ *    the staged release order in the plan.
+ *
+ * qs-2.0 reduced the set from fifteen questions to nine. qs-3.0
+ * restored the decision-conflict question, bringing it to ten.
+ *
+ * Sector and organisation size were removed. Neither creates curiosity,
+ * builds trust or moves the visitor forward; they were a toll charged
+ * before any value was delivered. They are collected later, from people
+ * who have chosen to engage. Role was removed because the follow-up
+ * form already asks for it.
+ *
+ * What remains is the seven questions that produce the realisation the
+ * page exists for, plus two that establish the stakes and one that
+ * forces the reckoning.
+ *
+ * Decide carries three questions rather than two. Authority, then
+ * whether it has ever been used, then whose call it is when using it
+ * costs money. That third question is where halt authority stops being
+ * an abstraction, so it sits last in the sequence.
  */
 
-export const QUESTION_SET_VERSION = 'qs-1.0';
+export const QUESTION_SET_VERSION = 'qs-3.0';
 
 export type SnapshotArea =
   | 'context'
@@ -37,7 +54,7 @@ export interface SnapshotOption {
 
 export interface SnapshotQuestion {
   id: string;
-  screen: 1 | 2 | 3 | 4 | 5 | 6;
+  screen: 1 | 2 | 3 | 4 | 5;
   area: SnapshotArea;
   legend: string;
   helper?: string;
@@ -45,86 +62,30 @@ export interface SnapshotQuestion {
 }
 
 export interface SnapshotScreen {
-  index: 1 | 2 | 3 | 4 | 5 | 6;
-  title: string;
-  helper?: string;
+  index: 1 | 2 | 3 | 4 | 5;
+  label: string;
+  heading: string;
 }
 
+/**
+ * Screen headings are questions, not explanations. They orient without
+ * describing what the page is doing, and they double as the focus
+ * target on each transition.
+ */
 export const screens: SnapshotScreen[] = [
-  {
-    index: 1,
-    title: 'Operating context',
-    helper:
-      'Five quick questions to place your answers in context. None of this identifies you or your organisation.',
-  },
-  { index: 2, title: 'Detect', helper: 'Whether the organisation would know.' },
-  { index: 3, title: 'Escalate', helper: 'Whether the signal reaches someone who can act.' },
-  { index: 4, title: 'Decide', helper: 'Whether someone can authorise the action.' },
-  { index: 5, title: 'Intervene', helper: 'Whether the action would actually work.' },
-  {
-    index: 6,
-    title: 'Basis of confidence',
-    helper: 'One question. It changes how the rest should be read.',
-  },
+  { index: 1, label: 'The system', heading: 'Start with one system.' },
+  { index: 2, label: 'Detect · Escalate', heading: 'Would you know, and would it reach anyone?' },
+  { index: 3, label: 'Decide', heading: 'Could anyone authorise it?' },
+  { index: 4, label: 'Intervene', heading: 'Would the action work?' },
+  { index: 5, label: 'Confidence', heading: 'One last question.' },
 ];
 
 export const questions: SnapshotQuestion[] = [
   {
-    id: 'q01_sector',
+    id: 'q01_systems',
     screen: 1,
     area: 'context',
-    legend: 'In which sector does the organisation operate?',
-    options: [
-      { value: 'banking', label: 'Banking and capital markets' },
-      { value: 'insurance', label: 'Insurance' },
-      { value: 'other_finserv', label: 'Other financial services' },
-      { value: 'health', label: 'Healthcare and life sciences' },
-      { value: 'cni', label: 'Critical national infrastructure' },
-      { value: 'public', label: 'Public sector' },
-      { value: 'tech_telecoms', label: 'Technology and telecoms' },
-      { value: 'prof_services', label: 'Professional services' },
-      { value: 'retail', label: 'Retail and consumer' },
-      { value: 'industrials', label: 'Manufacturing and industrials' },
-      { value: 'other', label: 'Other' },
-    ],
-  },
-  {
-    id: 'q02_size',
-    screen: 1,
-    area: 'context',
-    legend: 'Roughly how many people does the organisation employ?',
-    options: [
-      { value: 'lt_250', label: 'Fewer than 250' },
-      { value: '250_999', label: '250 to 999' },
-      { value: '1k_4999', label: '1,000 to 4,999' },
-      { value: '5k_19999', label: '5,000 to 19,999' },
-      { value: '20k_plus', label: '20,000 or more' },
-    ],
-  },
-  {
-    id: 'q03_role',
-    screen: 1,
-    area: 'context',
-    legend: 'Which best describes your role?',
-    options: [
-      { value: 'board', label: 'Board or committee member' },
-      { value: 'exec', label: 'Executive leadership (CRO, CISO, CTO, CAIO, CDO)' },
-      {
-        value: 'function_head',
-        label: 'Function head (risk, resilience, model risk, AI governance, security)',
-      },
-      { value: 'internal_audit', label: 'Internal audit' },
-      { value: 'practitioner', label: 'Practitioner or specialist' },
-      { value: 'adviser', label: 'Adviser or assurance provider' },
-      { value: 'other', label: 'Other' },
-    ],
-  },
-  {
-    id: 'q04_systems',
-    screen: 1,
-    area: 'context',
-    legend:
-      'How many AI or automated decision systems are in production and materially affecting outcomes?',
+    legend: 'How many systems make decisions in production without a human approving each one?',
     options: [
       { value: 'none', label: 'None yet' },
       { value: '1_3', label: 'One to three' },
@@ -135,201 +96,122 @@ export const questions: SnapshotQuestion[] = [
     ],
   },
   {
-    id: 'q05_criticality',
+    id: 'q02_criticality',
     screen: 1,
     area: 'context',
-    legend:
-      'If the most consequential of those systems behaved unexpectedly for a full working day, what would the effect be?',
+    legend: 'If the most consequential one ran wrong for a day, what would that cost you?',
     options: [
-      { value: 'contained', label: 'Contained. Internal inconvenience, no external effect' },
-      {
-        value: 'noticeable',
-        label: 'Noticeable. Customers or operations affected, recoverable',
-      },
-      { value: 'serious', label: 'Serious. Material financial, safety or service harm' },
-      { value: 'severe', label: 'Severe. Harm that could not be undone' },
+      { value: 'contained', label: 'Awkward internally. Nobody outside notices' },
+      { value: 'noticeable', label: 'Customers feel it. Recoverable' },
+      { value: 'serious', label: 'Material financial, safety or service harm' },
+      { value: 'severe', label: 'Harm that could not be undone' },
       { value: 'not_known', label: 'Not known' },
     ],
   },
   {
-    id: 'q06_detect_signal',
+    id: 'q03_detect',
     screen: 2,
     area: 'detect',
-    legend: 'If that system began behaving abnormally right now, how would you find out?',
+    legend: 'If it started behaving badly right now, how would you find out?',
     options: [
-      {
-        value: 'automated_named_team',
-        label: 'Automated monitoring would alert a named team within minutes',
-      },
-      {
-        value: 'monitoring_passive',
-        label: 'Monitoring exists, but someone would need to be looking',
-      },
-      {
-        value: 'downstream_report',
-        label: 'A downstream process or report would surface it within a day or so',
-      },
-      { value: 'external_party', label: 'A customer, regulator or third party would tell us' },
+      { value: 'automated_named_team', label: 'Monitoring alerts a named team within minutes' },
+      { value: 'monitoring_passive', label: 'Monitoring exists, if someone is looking' },
+      { value: 'downstream_report', label: 'A downstream report, within a day or so' },
+      { value: 'external_party', label: 'A customer, a regulator, or the press' },
       { value: 'not_known', label: 'Not known' },
     ],
   },
   {
-    id: 'q07_detect_measured',
+    id: 'q04_escalate',
     screen: 2,
-    area: 'detect',
-    legend:
-      'Has the time between a system going wrong and someone noticing ever been measured?',
-    options: [
-      {
-        value: 'measured_recent',
-        label: 'Yes, measured and evidenced in the last twelve months',
-      },
-      { value: 'measured_historic', label: 'Measured at some point, not recently' },
-      { value: 'estimated', label: 'We have an estimate, not a measurement' },
-      { value: 'never', label: 'No' },
-      { value: 'not_known', label: 'Not known' },
-    ],
-  },
-  {
-    id: 'q08_escalate_outofhours',
-    screen: 3,
     area: 'escalate',
     legend: 'At 2am on a Sunday, who does that alert reach?',
     options: [
-      {
-        value: 'staffed_rota_path',
-        label: 'A staffed rota with a defined onward path to an authorised decision maker',
-      },
-      {
-        value: 'oncall_needs_senior',
-        label: 'An on-call engineer who would need to find someone more senior',
-      },
-      {
-        value: 'single_named_person',
-        label: 'A named individual, and the path depends on them being reachable',
-      },
-      { value: 'inbox_next_day', label: 'An inbox seen the next working day' },
+      { value: 'staffed_rota_path', label: 'A staffed rota, with a route to someone who can act' },
+      { value: 'oncall_needs_senior', label: 'An engineer who would have to find someone senior' },
+      { value: 'single_named_person', label: 'One person, if they answer' },
+      { value: 'inbox_next_day', label: 'An inbox. Monday' },
       { value: 'not_known', label: 'Not known' },
     ],
   },
   {
-    id: 'q09_escalate_dependency',
+    id: 'q05_authority',
     screen: 3,
-    area: 'escalate',
-    legend: 'Does the escalation path depend on any single person being available?',
+    area: 'decide',
+    legend: 'Who can stop it without asking anyone?',
     options: [
-      { value: 'tested_alternates', label: 'No, every step has a tested alternate' },
-      {
-        value: 'named_untested_alternates',
-        label: 'Alternates are named, but have not been exercised',
-      },
-      { value: 'single_point', label: 'Yes, at least one step has no alternate' },
+      { value: 'documented_standing', label: 'A named role, in writing, available at all times' },
+      { value: 'implied_authority', label: 'A named role, but it is understood rather than written' },
+      { value: 'requires_convening', label: 'A committee, an executive, or legal' },
+      { value: 'nobody', label: 'Nobody' },
       { value: 'not_known', label: 'Not known' },
     ],
   },
   {
-    id: 'q10_decide_authority',
-    screen: 4,
+    id: 'q06_exercised',
+    screen: 3,
     area: 'decide',
-    legend:
-      'Who can authorise stopping or restricting that system, without seeking further approval?',
+    legend: 'When did they last do it?',
     options: [
-      {
-        value: 'documented_standing',
-        label: 'A named role with written standing authority, available at all times',
-      },
-      {
-        value: 'implied_authority',
-        label: 'A named role, but the authority is implied rather than documented',
-      },
-      {
-        value: 'requires_convening',
-        label: 'It would require a committee, an executive convening, or legal sign-off',
-      },
-      { value: 'nobody', label: 'Nobody has that authority' },
+      { value: 'live_or_simulation_recent', label: 'Within the last year, live or in a full simulation' },
+      { value: 'historic_or_tabletop', label: 'At some point, or in a tabletop exercise' },
+      { value: 'never', label: 'Never' },
       { value: 'not_known', label: 'Not known' },
     ],
   },
   {
-    id: 'q11_decide_exercised',
-    screen: 4,
+    id: 'q07_conflict',
+    screen: 3,
     area: 'decide',
-    legend:
-      'Has anyone actually exercised that authority, in a live event or a realistic exercise?',
+    legend: 'If stopping it caused significant commercial or operational harm, whose decision is it?',
     options: [
-      {
-        value: 'live_or_simulation_recent',
-        label: 'Yes, in a live event or a full simulation within the last twelve months',
-      },
-      { value: 'historic_or_tabletop', label: 'Yes, at some point, or in a tabletop exercise' },
-      { value: 'documented_never_used', label: 'It has been documented but never exercised' },
-      { value: 'never', label: 'No' },
-      { value: 'not_known', label: 'Not known' },
-    ],
-  },
-  {
-    id: 'q12_decide_conflict',
-    screen: 4,
-    area: 'decide',
-    legend:
-      'If stopping the system caused significant commercial or operational harm, whose decision is it?',
-    options: [
-      { value: 'assigned_written', label: 'Clearly assigned in advance, in writing' },
+      { value: 'assigned_written', label: 'Assigned in advance, in writing' },
       { value: 'assigned_contested', label: 'Assigned in principle, contested in practice' },
       { value: 'resolved_in_moment', label: 'It would be resolved in the moment' },
       { value: 'not_known', label: 'Not known' },
     ],
   },
   {
-    id: 'q13_intervene_capability',
-    screen: 5,
+    id: 'q08_capability',
+    screen: 4,
     area: 'intervene',
-    legend: 'What can you actually do to that system, today, without a code release?',
+    legend: 'What can you actually do to it today, without a code release?',
     options: [
-      { value: 'full_range', label: 'Stop, isolate, restrict and reverse, all available' },
-      { value: 'stop_no_reverse', label: 'Stop and isolate, but not reverse the effects' },
-      { value: 'throttle_only', label: 'Restrict or throttle only' },
+      { value: 'full_range', label: 'Stop, isolate, restrict and reverse' },
+      { value: 'stop_no_reverse', label: 'Stop and isolate, but not undo the effects' },
+      { value: 'throttle_only', label: 'Throttle or restrict' },
       { value: 'requires_release_or_vendor', label: 'Nothing without a release or a vendor' },
       { value: 'not_known', label: 'Not known' },
     ],
   },
   {
-    id: 'q14_intervene_tested',
-    screen: 5,
+    id: 'q09_tested',
+    screen: 4,
     area: 'intervene',
-    legend:
-      'Has that intervention been technically tested in production or a production-equivalent environment?',
+    legend: 'When did you last do that on purpose, in production?',
     options: [
-      {
-        value: 'tested_recent_recorded',
-        label: 'Yes, within the last twelve months, with the result recorded',
-      },
-      { value: 'tested_historic', label: 'Yes, at some point' },
-      { value: 'lower_environment_only', label: 'Tested in a lower environment only' },
-      {
-        value: 'design_or_vendor_assurance',
-        label: 'No, we rely on design or vendor assurance',
-      },
+      { value: 'tested_recent_recorded', label: 'Within the last year, and we recorded the result' },
+      { value: 'tested_historic', label: 'At some point' },
+      { value: 'lower_environment_only', label: 'Only in a lower environment' },
+      { value: 'design_or_vendor_assurance', label: 'Never. We rely on design or vendor assurance' },
       { value: 'not_known', label: 'Not known' },
     ],
   },
   {
-    id: 'q15_confidence_basis',
-    screen: 6,
+    id: 'q10_confidence',
+    screen: 5,
     area: 'confidence',
-    legend: 'Taking your answers as a whole, what are they based on?',
-    helper:
-      'Be exact rather than optimistic. The basis of confidence determines how the rest of your answers should be interpreted.',
+    legend: 'Taking all of that together, what is it based on?',
     options: [
-      { value: 'tested', label: 'Tested. Exercised under realistic conditions, with evidence retained' },
-      { value: 'documented', label: 'Documented. Written down, not realistically tested' },
-      { value: 'assumed', label: 'Assumed. Based on policy, design intent or vendor assurance' },
-      { value: 'unknown', label: 'Unknown. Honestly, I am not certain' },
+      { value: 'tested', label: 'Tested under realistic conditions, with evidence kept' },
+      { value: 'documented', label: 'Written down, not realistically tested' },
+      { value: 'assumed', label: 'Policy, design intent or vendor assurance' },
+      { value: 'unknown', label: 'Honestly, I am not certain' },
     ],
   },
 ];
 
-/** Questions that offer a `not_known` option. Q1, Q2, Q3 and Q15 do not. */
+/** Questions that offer a `not_known` option. The confidence question does not. */
 export const questionsWithNotKnown = questions
   .filter((q) => q.options.some((o) => o.value === 'not_known'))
   .map((q) => q.id);
