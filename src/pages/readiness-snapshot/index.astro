@@ -1,0 +1,131 @@
+---
+/**
+ * Intervention Readiness Snapshot.
+ *
+ * PHASE 1: static prototype. `noindex`, unlinked from navigation, no
+ * network call, no data collection. The result is rendered server side
+ * and any of the sixteen combinations can be reached in the browser with
+ * `?preview=area-basis`. See the plan, section O.
+ *
+ * Before Phase 4: add `public/assets/og/og-readiness-snapshot.png` at
+ * 1200x630 and set `ogImage`. Until then the default card is used
+ * rather than pointing at a file that does not exist.
+ *
+ * Phase 4 removes `noindex`, removes the sitemap exclusion in
+ * astro.config.mjs, and adds the navigation and internal links.
+ */
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SnapshotIntro from '../../components/snapshot/SnapshotIntro.astro';
+import SnapshotForm from '../../components/snapshot/SnapshotForm.astro';
+import SnapshotResult from '../../components/snapshot/SnapshotResult.astro';
+import BenchmarkControl from '../../components/snapshot/BenchmarkControl.astro';
+import ConversionActions from '../../components/snapshot/ConversionActions.astro';
+import { resolvePrototypeResult } from '../../lib/snapshot/prototype-result';
+
+const PROTOTYPE = true;
+
+// Static build: `Astro.url.searchParams` is empty here, so this renders
+// the review default. `prototype-preview.ts` applies `?preview=` in the
+// browser. Both are deleted in Phase 2.
+const result = resolvePrototypeResult(null);
+
+const faqs = [
+  {
+    question: 'Is the Intervention Readiness Snapshot an AGDA™ assessment?',
+    answer:
+      'No. The Snapshot records what you report about your own organisation and shows you the pattern in your answers. It does not collect evidence, test any claim against evidence, or produce an assessment verdict. AGDA™ is the deterministic assessment instrument and is a separate, commissioned engagement.',
+  },
+  {
+    question: 'Do I have to give my contact details to see the result?',
+    answer:
+      'No. The full result appears on screen without a name, an email address or an organisation. Contact details are requested only if you choose to have the result emailed to you or to ask Intervene to make contact.',
+  },
+  {
+    question: 'How long does the Snapshot take?',
+    answer:
+      'About four minutes. Fifteen multiple choice questions across six screens. There is no time limit, and your answers are kept in the browser tab if you need to stop and come back.',
+  },
+  {
+    question: 'What happens to my answers?',
+    answer:
+      'They are used to generate your result and are held briefly so the result can be recovered if you refresh the page. No directly identifying information is requested to generate a result. If you separately choose to contribute to the Intervention Readiness Index, a de-identified pattern is recorded without your name, email address, organisation or role.',
+  },
+];
+
+const schema = {
+  '@type': 'WebApplication',
+  '@id': 'https://intervene.uk/readiness-snapshot/#webapplication',
+  name: 'Intervention Readiness Snapshot',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  isAccessibleForFree: true,
+  inLanguage: 'en-GB',
+  provider: { '@id': 'https://intervene.uk/#organization' },
+  about: { '@id': 'https://intervene.uk/intervention-readiness/#defined-term' },
+  description:
+    'A short, self-reported Snapshot of whether an organisation could detect, escalate, decide and intervene before a consequential system caused harm. Indicative only, and not an AGDA™ assessment.',
+};
+---
+
+<BaseLayout
+  title="Intervention Readiness Snapshot · Intervene"
+  description="A short, self-reported check on whether your organisation could detect, escalate, decide and intervene in time. Indicative only. Not an AGDA™ assessment."
+  current="readiness-snapshot"
+  noindex={true}
+  faqs={faqs}
+  schema={schema}
+>
+  <SnapshotIntro />
+  <SnapshotForm />
+  <SnapshotResult result={result} />
+  <BenchmarkControl prototype={PROTOTYPE} />
+  <ConversionActions prototype={PROTOTYPE} />
+
+  <script>
+    import { initSnapshot } from '../../lib/snapshot/client.ts';
+    // PHASE 1 ONLY: remove this import and call in Phase 2.
+    import { applyPrototypePreview } from '../../lib/snapshot/prototype-preview.ts';
+    applyPrototypePreview();
+    initSnapshot();
+  </script>
+</BaseLayout>
+
+<style is:global>
+  /* Printable result. Everything except the result block is dropped, so
+     what prints is the response pattern, the contrast block and the
+     disclaimer, on white. Deliberately not a report artefact: it must
+     not resemble an AGDA™ signed verdict or a regulator bundle. */
+  @media print {
+    .site-header,
+    .site-footer,
+    .takeover,
+    .consent-banner,
+    .hero,
+    .block.tight:not(.result),
+    [data-snapshot-flow],
+    [data-benchmark],
+    [data-conversion] {
+      display: none !important;
+    }
+
+    body {
+      background: #fff !important;
+      color: #111 !important;
+    }
+
+    [data-snapshot-result] {
+      display: block !important;
+    }
+
+    [data-snapshot-result] * {
+      color: #111 !important;
+      background: transparent !important;
+    }
+
+    [data-snapshot-result] .label,
+    [data-snapshot-result] .agda-tm {
+      color: #6b5c3e !important;
+    }
+  }
+</style>
