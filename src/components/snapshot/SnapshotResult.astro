@@ -16,6 +16,7 @@
  */
 
 import type { PrototypeResult } from '../../lib/snapshot/prototype-result';
+import { QUESTION_SET_VERSION } from '../../lib/snapshot/questions';
 
 interface Props {
   result: PrototypeResult;
@@ -56,24 +57,18 @@ const markAgda = (value: string) =>
       <p>{r.priorityHypothesis}</p>
     </div>
 
-    <dl class="result-grid">
-      <div>
-        <dt>Most confidently described</dt>
-        <dd data-result-strength>{r.mostConfidentText}</dd>
-      </div>
-      <div>
-        <dt>Basis of confidence</dt>
-        <dd data-result-confidence>{r.confidenceCommentary}</dd>
-      </div>
-    </dl>
+    <div class="callout">
+      <span class="callout-label mono">What it rests on</span>
+      <p class="callout-text confidence" data-result-confidence>{r.confidenceCommentary}</p>
+    </div>
 
     <div class="callout">
-      <span class="callout-label mono">One question for your board</span>
+      <span class="callout-label mono">Ask your board</span>
       <p class="callout-text" data-result-board>{r.boardQuestion}</p>
     </div>
 
     <div class="callout">
-      <span class="callout-label mono">One practical test</span>
+      <span class="callout-label mono">Then find out</span>
       <p class="callout-text" data-result-test>{r.practicalTest}</p>
     </div>
 
@@ -93,8 +88,11 @@ const markAgda = (value: string) =>
 
     <p class="disclaimer mono" data-result-disclaimer set:html={markAgda(r.disclaimer)} />
 
+    <!-- Provenance belongs on the printed artefact, not on screen.
+         On screen it is noise; in print it is what makes the page
+         citable. -->
     <p class="generated mono">
-      Generated {generated} · Question set 1.0 · {r.copyVersion}
+      {generated} · Snapshot Response Model v1.0 · {QUESTION_SET_VERSION} · {r.copyVersion}
     </p>
   </div>
 </section>
@@ -139,35 +137,12 @@ const markAgda = (value: string) =>
     color: var(--ink);
   }
 
-  .result-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    margin: 56px 0 0;
-    padding-top: 32px;
-    border-top: 1px solid var(--hair);
-  }
-  .result-grid dt {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
-  }
-  .result-grid dd {
-    margin: 0;
-    font-family: var(--font-sans);
-    font-size: 15px;
-    line-height: 1.65;
-    color: var(--muted);
-  }
-
   .callout {
     margin: 40px 0 0;
     padding-top: 28px;
     border-top: 1px solid var(--hair);
   }
+  .callout:first-of-type { margin-top: 56px; }
   .callout-label {
     display: block;
     color: var(--faint);
@@ -182,6 +157,10 @@ const markAgda = (value: string) =>
     line-height: 1.65;
     color: var(--ink);
     max-width: 58ch;
+  }
+  .callout-text.confidence {
+    font-size: 15px;
+    color: var(--muted);
   }
 
   .contrast {
@@ -229,7 +208,6 @@ const markAgda = (value: string) =>
   }
 
   @media (max-width: 720px) {
-    .result-grid { grid-template-columns: 1fr; gap: 32px; }
     .contrast { padding: 28px; }
     .hypothesis { padding-left: 20px; }
   }

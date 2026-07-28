@@ -2,13 +2,23 @@
 /**
  * The three conversion actions. Exactly three, no others.
  *
- * All three are always present. Only which one renders as the primary
- * button changes, and that ordering is applied at runtime by the client
- * from the result's `actions` array. The set is data-driven so a later
- * layer can add a fourth without restructuring this component.
+ * copy-2.0 rewrote the labels. The previous set was product-centric:
+ * "Email me my Snapshot", "Learn how AGDA™ validates these findings",
+ * "Contact Intervene". They described what Intervene would do, not what
+ * the visitor had just realised.
  *
- * `learn_agda` is navigational: it creates no record and requires no
- * contact details.
+ * At this point on the page the visitor has established that they
+ * cannot answer their own question. The primary action should be the
+ * answer to that feeling, not an offer of literature. So the strongest
+ * action is now "Find out whether it holds", and the supporting note
+ * carries the commercial fact rather than the button.
+ *
+ * "Send me the board version" was considered and rejected. It implies a
+ * second artefact that does not exist, which is an overpromise, and it
+ * frames the page as a lead magnet at exactly the moment it should feel
+ * like a finding. "Send me this" makes the same offer honestly.
+ *
+ * `learn_agda` remains navigational: no record, no contact details.
  */
 
 import FollowUpForm from './FollowUpForm.astro';
@@ -21,22 +31,22 @@ const { prototype = true } = Astro.props as Props;
 
 const actions = [
   {
-    id: 'email_snapshot_and_sample',
-    label: 'Email me my Snapshot, with the AGDA™ sample report',
-    note: 'One email: your result above, plus a link to the sample AGDA™ verdict and what separates the two.',
+    id: 'contact_intervene',
+    label: 'Find out whether it holds',
+    note: 'A conversation about testing one of these assumptions properly. A person replies within one to two working days.',
     needsDetails: true,
   },
   {
     id: 'learn_agda',
-    label: 'Learn how AGDA™ validates these findings',
+    label: 'How AGDA™ tests this',
     note: 'No details required.',
     needsDetails: false,
     href: '/agda/',
   },
   {
-    id: 'contact_intervene',
-    label: 'Contact Intervene',
-    note: 'A person replies within one to two working days. We do not auto-reply.',
+    id: 'email_snapshot_and_sample',
+    label: 'Send me this',
+    note: 'Your result, and a tested verdict for comparison.',
     needsDetails: true,
   },
 ];
@@ -47,7 +57,7 @@ const markAgda = (value: string) =>
 
 <section class="block tight conversion" data-conversion hidden aria-labelledby="conversion-heading">
   <div class="wrap-narrow">
-    <h2 class="h3" id="conversion-heading">Where this goes next.</h2>
+    <h2 class="h3" id="conversion-heading">How would you actually know?</h2>
 
     <ul class="action-list" data-action-list>
       {actions.map((action, index) => (
