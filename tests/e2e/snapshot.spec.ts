@@ -32,7 +32,8 @@ test.describe('Snapshot journey', () => {
 
     const result = page.locator('[data-snapshot-result]');
     await expect(result).toBeVisible();
-    await expect(page.locator('[data-result-headline]')).not.toBeEmpty();
+    await expect(page.locator('[data-result-headline]')).toContainText(/^\s*You (describe|expect|are not certain)\b/);
+    await expect(page.locator('[data-result-strength]')).toContainText('You were most confident about');
 
     // The whole point: a full result with nothing identifying requested.
     await expect(page.locator('[data-followup]')).toBeHidden();
@@ -123,10 +124,10 @@ test.describe('Snapshot journey', () => {
 
 test.describe('preview selector', () => {
   const cases = [
-    ['decide-documented', 'Someone can stop it, on paper.'],
+    ['decide-documented', 'You describe halt authority that has never been used.'],
     ['intervene-assumed', 'You expect you can act on the system.'],
     ['detect-unknown', 'You are not certain you would know.'],
-    ['escalate-tested', 'you have proved it'],
+    ['escalate-tested', 'You describe an escalation path you have exercised.'],
   ] as const;
 
   for (const [key, expected] of cases) {
@@ -170,8 +171,8 @@ test.describe('accessibility', () => {
   test('gives every question a fieldset and a legend', async ({ page }) => {
     await page.goto(ROUTE);
     const fieldsets = page.locator('[data-question]');
-    await expect(fieldsets).toHaveCount(9);
-    for (let i = 0; i < 9; i += 1) {
+    await expect(fieldsets).toHaveCount(10);
+    for (let i = 0; i < 10; i += 1) {
       await expect(fieldsets.nth(i).locator('legend')).not.toBeEmpty();
     }
   });

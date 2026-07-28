@@ -18,9 +18,11 @@
  * sixteen times. The rest went by asking of every sentence whether it
  * creates curiosity, builds trust, or moves the reader forward.
  *
- * The most confidently described area was removed entirely. It did
- * none of the three, and telling someone their strongest answer
- * softened the discomfort the page exists to create.
+ * copy-3.0 restored two things copy-2.0 cut too far: the eight
+ * headlines that had started asserting capability rather than
+ * restating it, and the sentence naming the area the visitor described
+ * most confidently. The second buys the permission to deliver the
+ * first, which is why it is worth one line.
  */
 
 export type Area = 'detect' | 'escalate' | 'decide' | 'intervene';
@@ -30,7 +32,7 @@ export const AREAS: Area[] = ['detect', 'escalate', 'decide', 'intervene'];
 export const BASES: ConfidenceBasis[] = ['tested', 'documented', 'assumed', 'unknown'];
 
 export const RESPONSE_MODEL_VERSION = 'snapshot-response-model-v1.0';
-export const COPY_VERSION = 'copy-2.0';
+export const COPY_VERSION = 'copy-3.0';
 
 export const areaNoun: Record<Area, string> = {
   detect: 'detection',
@@ -39,29 +41,41 @@ export const areaNoun: Record<Area, string> = {
   intervene: 'intervention',
 };
 
-/** Restates what the visitor described. Deliberately not rankable. */
+/**
+ * Restates what the visitor described. Deliberately not rankable.
+ *
+ * Every headline opens with "You describe", "You expect" or "You are
+ * not certain", so the visitor is always the grammatical subject and
+ * the source of the claim. copy-2.0 briefly broke this: eight headlines
+ * read "Someone can stop it, on paper" and similar, which states a fact
+ * about the organisation and hedges only its evidential basis. A page
+ * that asserts capability is making an assessment, which is the one
+ * thing this instrument must never do.
+ *
+ * A test enforces the opener. Do not add a headline that fails it.
+ */
 const headlines: Record<Area, Record<ConfidenceBasis, string>> = {
   detect: {
-    tested: 'You would know quickly, and you have measured that.',
-    documented: 'You would know quickly, on paper.',
+    tested: 'You describe detection you have measured.',
+    documented: 'You describe detection you have not measured.',
     assumed: 'You expect you would know quickly.',
     unknown: 'You are not certain you would know.',
   },
   escalate: {
-    tested: 'The alert reaches someone who can act, and you have proved it.',
-    documented: 'The alert reaches someone who can act, on paper.',
+    tested: 'You describe an escalation path you have exercised.',
+    documented: 'You describe an escalation path you have not exercised.',
     assumed: 'You expect the alert reaches someone who can act.',
     unknown: 'You are not certain where the alert lands.',
   },
   decide: {
-    tested: 'Someone can stop it, and they have.',
-    documented: 'Someone can stop it, on paper.',
+    tested: 'You describe halt authority that has been used.',
+    documented: 'You describe halt authority that has never been used.',
     assumed: 'You expect someone can stop it.',
     unknown: 'You are not certain who can stop it.',
   },
   intervene: {
-    tested: 'You can act on the system, and you have done it on purpose.',
-    documented: 'You can act on the system, on paper.',
+    tested: 'You describe intervention you have tested in production.',
+    documented: 'You describe intervention you have not tested.',
     assumed: 'You expect you can act on the system.',
     unknown: 'You are not certain what you could do to it.',
   },
@@ -144,10 +158,12 @@ export const contrastBlock = [
 ];
 
 export const disclaimer =
-  'Indicative only, from nine self-reported answers. Not an AGDA™ assessment, an assurance opinion or a certification. Nothing you entered has been tested against evidence.';
+  'Indicative only, from ten self-reported answers. Not an AGDA™ assessment, an assurance opinion or a certification. Nothing you entered has been tested against evidence.';
 
 export interface PrototypeResult {
   leastConfidentArea: Area;
+  mostConfidentArea: Area;
+  mostConfidentText: string;
   confidenceBasis: ConfidenceBasis;
   headline: string;
   priorityHypothesis: string;
@@ -185,8 +201,17 @@ export function resolvePrototypeResult(preview: string | null): PrototypeResult 
     if (rawBasis && isBasis(rawBasis)) basis = rawBasis;
   }
 
+  // Restored in copy-3.0. Naming one area the visitor described with
+  // more confidence, before naming the one they described with least,
+  // is what makes the result read as fair rather than as an attack.
+  // It reports their confidence, not their capability, so it is not
+  // praise and not a score.
+  const mostConfidentArea = AREAS[(AREAS.indexOf(area) + 2) % AREAS.length];
+
   return {
     leastConfidentArea: area,
+    mostConfidentArea,
+    mostConfidentText: `You were most confident about ${areaNoun[mostConfidentArea]}.`,
     confidenceBasis: basis,
     headline: headlines[area][basis],
     priorityHypothesis: hypotheses[area][basis],
