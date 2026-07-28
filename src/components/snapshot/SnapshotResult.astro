@@ -1,0 +1,243 @@
+---
+/**
+ * The indicative response pattern.
+ *
+ * In Phase 1 the content is rendered server side from
+ * `resolvePrototypeResult`, selected by an explicit `?preview=`
+ * parameter, and revealed by the client. In Phase 2 the Worker returns
+ * the same shape and the client populates these slots instead.
+ *
+ * This component contains no result logic of any kind. It renders what
+ * it is given.
+ *
+ * No figure of any kind appears here: no score, percentage, grade,
+ * rating, maturity level, overall band or per-area value. The only
+ * numerals permitted are the model version and the generation date.
+ */
+
+import type { PrototypeResult } from '../../lib/snapshot/prototype-result';
+
+interface Props {
+  result: PrototypeResult;
+}
+
+const { result: r } = Astro.props as Props;
+
+const generated = new Date().toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+const markAgda = (value: string) =>
+  value.replace(/AGDA(?:™)?/g, '<span class="agda-mark">AGDA<span class="agda-tm">™</span></span>');
+---
+
+<section
+  class="block result"
+  data-snapshot-result
+  data-least-confident-area={r.leastConfidentArea}
+  data-confidence-basis={r.confidenceBasis}
+  hidden
+  aria-labelledby="result-headline"
+>
+  <div class="wrap-narrow">
+    <span class="label">
+      Indicative response pattern · Snapshot Response Model v1.0
+    </span>
+
+    <h2 class="h2 result-headline" id="result-headline" tabindex="-1" data-result-headline>
+      {r.headline}
+    </h2>
+
+    <p class="uncertainty" data-result-uncertainty hidden></p>
+
+    <div class="hypothesis" data-result-hypothesis>
+      <p>{r.priorityHypothesis}</p>
+    </div>
+
+    <dl class="result-grid">
+      <div>
+        <dt>Most confidently described</dt>
+        <dd data-result-strength>{r.mostConfidentText}</dd>
+      </div>
+      <div>
+        <dt>Basis of confidence</dt>
+        <dd data-result-confidence>{r.confidenceCommentary}</dd>
+      </div>
+    </dl>
+
+    <div class="callout">
+      <span class="callout-label mono">One question for your board</span>
+      <p class="callout-text" data-result-board>{r.boardQuestion}</p>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label mono">One practical test</span>
+      <p class="callout-text" data-result-test>{r.practicalTest}</p>
+    </div>
+
+    <div class="contrast">
+      <h3 class="h3">What <em>AGDA<span class="agda-tm">™</span></em> does that this does not.</h3>
+      {r.contrastBlock.map((para) => (
+        <p set:html={markAgda(para)} />
+      ))}
+      <p class="contrast-links">
+        <a href="/agda/" class="link">Read about AGDA™</a>
+        <span aria-hidden="true">·</span>
+        <a href="/methodology/" class="link">How it works</a>
+        <span aria-hidden="true">·</span>
+        <a href="/sample-report/" class="link">See a sample verdict</a>
+      </p>
+    </div>
+
+    <p class="disclaimer mono" data-result-disclaimer set:html={markAgda(r.disclaimer)} />
+
+    <p class="generated mono">
+      Generated {generated} · Question set 1.0 · {r.copyVersion}
+    </p>
+  </div>
+</section>
+
+<style>
+  .result {
+    border-top: 1px solid var(--hair);
+  }
+
+  .result-headline {
+    margin: 28px 0 0;
+    max-width: 22ch;
+    /* The header is sticky. Without this, focusing the headline scrolls
+       it underneath the header and hides the label above it. */
+    scroll-margin-top: calc(var(--header-h) + 96px);
+  }
+  .result-headline:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 8px;
+  }
+
+  .uncertainty {
+    margin: 24px 0 0;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--accent);
+    max-width: 56ch;
+  }
+
+  .hypothesis {
+    margin: 48px 0 0;
+    padding: 4px 0 4px 28px;
+    border-left: 2px solid var(--accent);
+    max-width: 60ch;
+  }
+  .hypothesis p {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: clamp(18px, 1.6vw, 21px);
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin: 56px 0 0;
+    padding-top: 32px;
+    border-top: 1px solid var(--hair);
+  }
+  .result-grid dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .result-grid dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
+  .callout {
+    margin: 40px 0 0;
+    padding-top: 28px;
+    border-top: 1px solid var(--hair);
+  }
+  .callout-label {
+    display: block;
+    color: var(--faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 14px;
+  }
+  .callout-text {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+    max-width: 58ch;
+  }
+
+  .contrast {
+    margin: 64px 0 0;
+    padding: 40px;
+    border: 1px solid var(--hair-strong);
+    background: var(--paper-soft);
+  }
+  .contrast .h3 { max-width: 24ch; }
+  .contrast p {
+    margin: 20px 0 0;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 62ch;
+  }
+  .contrast p:last-of-type {
+    color: var(--ink);
+  }
+  .contrast-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 28px !important;
+    padding-top: 24px;
+    border-top: 1px solid var(--hair);
+    font-size: 14px !important;
+  }
+  .contrast-links span { color: var(--faint); }
+
+  .disclaimer {
+    margin: 40px 0 0;
+    color: var(--faint);
+    line-height: 1.7;
+    max-width: 72ch;
+  }
+
+  .generated {
+    margin: 24px 0 0;
+    color: var(--faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+
+  @media (max-width: 720px) {
+    .result-grid { grid-template-columns: 1fr; gap: 32px; }
+    .contrast { padding: 28px; }
+    .hypothesis { padding-left: 20px; }
+  }
+
+  /* Printable result. Everything but the result block is dropped by the
+     page-level print stylesheet; this handles the block itself. */
+  @media print {
+    .result { border-top: 0; padding: 0; }
+    .contrast { background: transparent; border-color: #999; }
+  }
+</style>
