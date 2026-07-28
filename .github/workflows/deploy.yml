@@ -30,6 +30,14 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Snapshot content checks
+        run: npm run content-check
+
+      - name: Unit tests
+        run: npm test
+
+      # `npm run build` runs `prebuild` first, which regenerates
+      # public/question-manifest.json from the question set.
       - name: Build
         run: npm run build
 
