@@ -114,9 +114,17 @@ npm run dev
 The dev server runs at `http://localhost:4321/`. Production is served from the custom domain root.
 
 ```bash
-npm run build       # builds the static site to ./dist
-npm run preview     # serves the built site locally
+npm run build          # builds the static site to ./dist
+npm run preview        # serves the built site locally
+npm test               # unit tests (vitest)
+npm run test:e2e       # browser tests (playwright)
+npm run content-check  # Snapshot copy and vocabulary checks
+npm run typecheck      # astro check. Advisory only, see below
 ```
+
+`npm run build` runs `prebuild` first, which regenerates `public/question-manifest.json` from the Snapshot question set. Commit the regenerated manifest when the question set changes.
+
+`npm run typecheck` reports 59 pre-existing errors in `TakeoverMenu.astro`, `FilmPlayer.astro`, `ConsentBanner.astro` and `BaseLayout.astro`. They predate the Snapshot work and are not fixed by it, so typecheck runs advisory in CI rather than blocking. Clear them before making it a gate.
 
 ## Deployment
 
@@ -124,9 +132,12 @@ Push to `main`, or trigger the workflow manually. GitHub Actions runs `.github/w
 
 1. Check out the repo.
 2. Install dependencies with `npm ci`.
-3. Build with `npm run build`.
-4. Upload `./dist`.
-5. Deploy to GitHub Pages.
+3. Run `npm run content-check` and `npm test`. Either failing blocks the deploy.
+4. Build with `npm run build`, which regenerates the question manifest first.
+5. Upload `./dist`.
+6. Deploy to GitHub Pages.
+
+`.github/workflows/content-checks.yml` runs the same checks on pull requests, plus a staleness check on the question manifest.
 
 Repo settings required:
 
@@ -136,6 +147,23 @@ Repo settings required:
 ## Forms
 
 The contact form at `/contact/` posts JSON to `https://formspree.io/f/xvzwdyob`. The endpoint is declared as `FORMSPREE_ENDPOINT` in `src/pages/contact/index.astro`.
+
+Field, choice, error and status styles live in `src/styles/forms.css` and are shared by the contact form and the Snapshot. Do not re-declare them in a page. `tests/e2e/contact-parity.spec.ts` guards the contact form against regressions from that extraction.
+
+## Intervention Readiness Snapshot
+
+`/readiness-snapshot/` is a self-reported triage instrument. It is **not** an AGDA™ assessment and no copy may imply that it is.
+
+**Current state: Phase 1 of 4.** The route is `noindex`, excluded from the sitemap, and unlinked from any navigation. There is no backend, no network call and no data collection of any kind. The result is rendered server side; reviewers reach any of the sixteen combinations with `?preview=<area>-<basis>`, for example `/readiness-snapshot/?preview=decide-documented`.
+
+Two rules govern the code:
+
+1. **No part of the Snapshot Response Model may enter this repository.** No ordinal values, thresholds, weights, bands or tie-breaking rules. Those live only in the private Worker repository. `tests/unit/prototype-result.test.ts` asserts this and the e2e suite asserts it against the built bundle.
+2. **No figure is shown to the visitor.** No score, percentage, grade, rating, maturity level or per-area value. Permitted numerals are the question counter, the model version and the generation date.
+
+Phase 1 files marked `PHASE 1 ONLY` are deleted in Phase 2: `src/lib/snapshot/prototype-result.ts` and `src/lib/snapshot/prototype-preview.ts`.
+
+Phases 2 to 4 add a Cloudflare Worker at `api.intervene.uk`, transactional email, the Index contribution path and the public launch. They need accounts and secrets that do not exist yet. The full plan governs sequencing and gates.
 
 ## License
 

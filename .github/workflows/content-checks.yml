@@ -1,0 +1,45 @@
+name: Content and unit checks
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Question manifest is current
+        run: |
+          npm run prebuild
+          if ! git diff --quiet public/question-manifest.json; then
+            echo "public/question-manifest.json is stale."
+            echo "Run 'npm run prebuild' and commit the result."
+            git diff public/question-manifest.json
+            exit 1
+          fi
+
+      - name: Snapshot content checks
+        run: npm run content-check
+
+      - name: Unit tests
+        run: npm test
+
+      # Scoped to the Snapshot only. The rest of the site carries 59
+      # pre-existing type errors in TakeoverMenu, FilmPlayer and
+      # ConsentBanner, so `astro check` cannot be blocking until those
+      # are cleared. Reported, not enforced.
+      - name: Typecheck (advisory)
+        continue-on-error: true
+        run: npm run typecheck
