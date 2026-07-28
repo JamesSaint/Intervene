@@ -1,48 +1,10 @@
 {
-  "question_set_version": "qs-1.0",
+  "question_set_version": "qs-3.0",
   "generated_at": "2026-07-28",
-  "question_count": 15,
+  "question_count": 10,
   "questions": [
     {
-      "id": "q01_sector",
-      "options": [
-        "banking",
-        "insurance",
-        "other_finserv",
-        "health",
-        "cni",
-        "public",
-        "tech_telecoms",
-        "prof_services",
-        "retail",
-        "industrials",
-        "other"
-      ]
-    },
-    {
-      "id": "q02_size",
-      "options": [
-        "lt_250",
-        "250_999",
-        "1k_4999",
-        "5k_19999",
-        "20k_plus"
-      ]
-    },
-    {
-      "id": "q03_role",
-      "options": [
-        "board",
-        "exec",
-        "function_head",
-        "internal_audit",
-        "practitioner",
-        "adviser",
-        "other"
-      ]
-    },
-    {
-      "id": "q04_systems",
+      "id": "q01_systems",
       "options": [
         "none",
         "1_3",
@@ -53,7 +15,7 @@
       ]
     },
     {
-      "id": "q05_criticality",
+      "id": "q02_criticality",
       "options": [
         "contained",
         "noticeable",
@@ -63,7 +25,7 @@
       ]
     },
     {
-      "id": "q06_detect_signal",
+      "id": "q03_detect",
       "options": [
         "automated_named_team",
         "monitoring_passive",
@@ -73,17 +35,7 @@
       ]
     },
     {
-      "id": "q07_detect_measured",
-      "options": [
-        "measured_recent",
-        "measured_historic",
-        "estimated",
-        "never",
-        "not_known"
-      ]
-    },
-    {
-      "id": "q08_escalate_outofhours",
+      "id": "q04_escalate",
       "options": [
         "staffed_rota_path",
         "oncall_needs_senior",
@@ -93,16 +45,7 @@
       ]
     },
     {
-      "id": "q09_escalate_dependency",
-      "options": [
-        "tested_alternates",
-        "named_untested_alternates",
-        "single_point",
-        "not_known"
-      ]
-    },
-    {
-      "id": "q10_decide_authority",
+      "id": "q05_authority",
       "options": [
         "documented_standing",
         "implied_authority",
@@ -112,17 +55,16 @@
       ]
     },
     {
-      "id": "q11_decide_exercised",
+      "id": "q06_exercised",
       "options": [
         "live_or_simulation_recent",
         "historic_or_tabletop",
-        "documented_never_used",
         "never",
         "not_known"
       ]
     },
     {
-      "id": "q12_decide_conflict",
+      "id": "q07_conflict",
       "options": [
         "assigned_written",
         "assigned_contested",
@@ -131,7 +73,7 @@
       ]
     },
     {
-      "id": "q13_intervene_capability",
+      "id": "q08_capability",
       "options": [
         "full_range",
         "stop_no_reverse",
@@ -141,7 +83,7 @@
       ]
     },
     {
-      "id": "q14_intervene_tested",
+      "id": "q09_tested",
       "options": [
         "tested_recent_recorded",
         "tested_historic",
@@ -151,7 +93,7 @@
       ]
     },
     {
-      "id": "q15_confidence_basis",
+      "id": "q10_confidence",
       "options": [
         "tested",
         "documented",

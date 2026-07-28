@@ -42,10 +42,25 @@ describe('prototype result', () => {
     expect(hypotheses.size, 'every hypothesis must be distinct').toBe(16);
   });
 
-  it('never names the least confident area as the most confident', () => {
+  it('names a most confident area, and never the least confident one', () => {
+    // Restored in copy-3.0. One line naming the area described with
+    // more confidence is what makes the result read as fair rather than
+    // as an attack, which buys the permission to deliver the gap.
     for (const key of allPreviewKeys) {
-      const result = resolvePrototypeResult(key);
-      expect(result.mostConfidentArea).not.toBe(result.leastConfidentArea);
+      const r = resolvePrototypeResult(key);
+      expect(r.mostConfidentArea).not.toBe(r.leastConfidentArea);
+      expect(r.mostConfidentText).toMatch(/^You were most confident about /);
+    }
+  });
+
+  it('keeps the strongest-area sentence free of praise or scoring', () => {
+    const banned = [/\bstrong\b/i, /\bgood\b/i, /\bwell\b/i, /\bbest\b/i,
+                    /\bmature\b/i, /\bexcellent\b/i, /\bimpressive\b/i];
+    for (const key of allPreviewKeys) {
+      const { mostConfidentText } = resolvePrototypeResult(key);
+      for (const p of banned) {
+        expect(p.test(mostConfidentText), `${p} matched: ${mostConfidentText}`).toBe(false);
+      }
     }
   });
 
@@ -61,7 +76,7 @@ describe('prototype result', () => {
     for (const key of allPreviewKeys) {
       const result = resolvePrototypeResult(key);
       expect(result.contrastBlock).toEqual(contrastBlock);
-      expect(result.contrastBlock).toHaveLength(3);
+      expect(result.contrastBlock).toHaveLength(2);
       expect(result.disclaimer).toBe(disclaimer);
     }
   });
@@ -80,6 +95,41 @@ describe('result discipline', () => {
       ...r.contrastBlock,
       r.disclaimer,
     ];
+  });
+
+  it('frames every headline as a restatement, never as an assertion', () => {
+    // THE RULE. The visitor is always the grammatical subject and the
+    // source of the claim. copy-2.0 broke this in eight of sixteen
+    // headlines with constructions like "Someone can stop it, on paper",
+    // which states a fact about the organisation and hedges only its
+    // evidential basis. A page that asserts capability is making an
+    // assessment, which is the one thing this instrument must not do.
+    const RESTATEMENT = /^You (describe|expect|are not certain)\b/;
+    for (const key of allPreviewKeys) {
+      const { headline } = resolvePrototypeResult(key);
+      expect(headline, `not a restatement: "${headline}"`).toMatch(RESTATEMENT);
+    }
+  });
+
+  it('never states organisational capability as established fact', () => {
+    const ASSERTIONS = [
+      /^Someone\b/, /^The alert\b/, /^Nobody\b/, /^Your organisation\b/,
+      /\byou have proved\b/i, /\bhas been proved\b/i, /\bis proven\b/i,
+    ];
+    for (const key of allPreviewKeys) {
+      const { headline } = resolvePrototypeResult(key);
+      for (const p of ASSERTIONS) {
+        expect(p.test(headline), `${p} matched: "${headline}"`).toBe(false);
+      }
+    }
+  });
+
+  it('keeps every headline short enough to land in two lines', () => {
+    for (const key of allPreviewKeys) {
+      const { headline } = resolvePrototypeResult(key);
+      const words = headline.split(/\s+/).length;
+      expect(words, `too long (${words} words): "${headline}"`).toBeLessThanOrEqual(12);
+    }
   });
 
   it('shows no readiness figure of any kind to the visitor', () => {
@@ -138,10 +188,20 @@ describe('result discipline', () => {
     }
   });
 
-  it('states plainly that this is not an AGDA assessment', () => {
-    expect(disclaimer).toMatch(/not an AGDA™ assessment/);
-    expect(disclaimer).toMatch(/no submitted claim has been tested against evidence/i);
-    expect(disclaimer).toMatch(/proprietary/i);
+  it('states plainly what the result is not', () => {
+    // The three denials that are load-bearing. "AGDA™ methodology is
+    // proprietary and is not reproduced here" was dropped in copy-2.0:
+    // the plan protects AGDA by architectural separation, not by
+    // disclaimer, and the sentence read as written for a review.
+    expect(disclaimer).toMatch(/not an AGDA™ assessment/i);
+    expect(disclaimer).toMatch(/assurance opinion/i);
+    expect(disclaimer).toMatch(/certification/i);
+    expect(disclaimer).toMatch(/nothing you entered has been tested against evidence/i);
+  });
+
+  it('keeps the disclaimer to three sentences', () => {
+    // It was five. Defensive qualification is not the same as accuracy.
+    expect(disclaimer.split('. ').length).toBeLessThanOrEqual(3);
   });
 });
 
