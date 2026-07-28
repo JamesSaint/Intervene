@@ -170,6 +170,18 @@ describe('action hierarchy', () => {
     expect(noteAt).toBeLessThan(buttonAt);
   });
 
+  it('names the object of every action, with no vague pronoun', () => {
+    // "Find out whether it holds" failed because "it" had at least three
+    // plausible referents. A reader who must resolve a pronoun before
+    // acting does not act. Labels must end on a noun, not a pointer.
+    const labels = [...component.matchAll(/label: '([^']+)'/g)].map((m) => m[1]);
+    expect(labels.length).toBeGreaterThanOrEqual(3);
+    for (const label of labels) {
+      expect(label, `vague pronoun in "${label}"`).not.toMatch(/\b(it|this|that|these|those)\s*$/i);
+      expect(label, `vague pronoun in "${label}"`).not.toMatch(/\bwhether it\b/i);
+    }
+  });
+
   it('still offers exactly three actions, and learn_agda stays navigational', () => {
     for (const id of ['contact_intervene', 'learn_agda', 'email_snapshot_and_sample']) {
       expect(component).toContain(id);
