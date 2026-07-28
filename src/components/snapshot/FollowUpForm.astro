@@ -1,0 +1,176 @@
+---
+/**
+ * Contact capture. The only point in the whole flow at which personal
+ * data is collected.
+ *
+ * Deliberately absent, and must stay absent:
+ *   - any free-text field. There is nowhere here for a visitor to
+ *     disclose a system name, an incident or anything confidential.
+ *   - a marketing checkbox. There is no newsletter in v1, so there is
+ *     no permission worth collecting.
+ *   - the benchmark consent, which is a separate path with its own
+ *     control and its own request.
+ *
+ * In Phase 1 there is no endpoint and no privacy notice section yet,
+ * so submission is disabled and the form says so. It renders in full
+ * because the phase gate is a design and copy review.
+ */
+
+interface Props {
+  prototype?: boolean;
+}
+
+const { prototype = true } = Astro.props as Props;
+---
+
+<div class="followup" data-followup hidden>
+  <div class="followup-inner">
+    <h3 class="h3" data-followup-heading tabindex="-1">Where should we send it?</h3>
+
+    {prototype && (
+      <p class="prototype-notice">
+        Shown for review. This form is not active in the preview, so the fields
+        are disabled and nothing is collected or transmitted.
+      </p>
+    )}
+
+    <form class="form" data-followup-form novalidate>
+      <div
+        class="error-summary"
+        data-followup-error-summary
+        tabindex="-1"
+        hidden
+      >
+        <h2>Check your details</h2>
+        <ul data-followup-error-list></ul>
+      </div>
+
+      <div class="field">
+        <label for="fu-name">Name</label>
+        <input
+          type="text"
+          id="fu-name"
+          name="name"
+          autocomplete="name"
+          maxlength="120"
+          aria-describedby="fu-name-error"
+          disabled={prototype}
+        />
+        <p class="field-error" id="fu-name-error"></p>
+      </div>
+
+      <div class="field">
+        <label for="fu-email">Work email</label>
+        <input
+          type="email"
+          id="fu-email"
+          name="business_email"
+          autocomplete="email"
+          maxlength="254"
+          aria-describedby="fu-email-error"
+          disabled={prototype}
+        />
+        <p class="field-error" id="fu-email-error"></p>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="fu-org">Organisation <span class="optional">optional</span></label>
+          <input
+            type="text"
+            id="fu-org"
+            name="organisation"
+            autocomplete="organization"
+            maxlength="160"
+            disabled={prototype}
+          />
+        </div>
+        <div class="field">
+          <label for="fu-role">Role <span class="optional">optional</span></label>
+          <input
+            type="text"
+            id="fu-role"
+            name="role_title"
+            autocomplete="organization-title"
+            maxlength="120"
+            disabled={prototype}
+          />
+        </div>
+      </div>
+
+      <p class="processing body-sm">
+        Intervene processes these details to send what you have asked for and to
+        respond if you have asked for contact. We do not add you to a mailing
+        list, because there is not one. Read the
+        <a href="/legal/privacy/" class="link">privacy notice</a>.
+      </p>
+
+      <div class="submit-row">
+        <p class="small muted">
+          {prototype
+            ? 'Not active in this preview. Nothing is collected or transmitted.'
+            : 'Held in strict confidence.'}
+        </p>
+        <div class="followup-buttons">
+          <button type="button" class="btn-ghost" data-followup-cancel>Cancel</button>
+          <button type="submit" class="btn" data-followup-submit disabled={prototype}>
+            Send
+          </button>
+        </div>
+      </div>
+
+      <div class="form-status" data-followup-status role="status" hidden></div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .followup {
+    margin-top: 48px;
+    padding-top: 40px;
+    border-top: 1px solid var(--hair-strong);
+  }
+  .followup-inner { max-width: 60ch; }
+  .followup .h3 { margin-bottom: 24px; }
+
+  .prototype-notice {
+    margin: 0 0 32px;
+    padding: 14px 18px;
+    border: 1px dashed var(--hair-strong);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--faint);
+    max-width: 52ch;
+  }
+  .followup .h3:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 6px;
+  }
+
+  .optional {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--faint);
+    text-transform: lowercase;
+  }
+
+  .processing {
+    margin: 8px 0 0;
+    color: var(--faint);
+    max-width: 56ch;
+  }
+
+  .followup-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 720px) {
+    .followup-buttons { width: 100%; }
+    .followup-buttons .btn,
+    .followup-buttons .btn-ghost { flex: 1; justify-content: center; }
+  }
+</style>

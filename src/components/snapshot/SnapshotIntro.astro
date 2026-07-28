@@ -1,0 +1,133 @@
+---
+/**
+ * Hero and scope panel for the Intervention Readiness Snapshot.
+ *
+ * The transmission statement and the inline processing notice both
+ * appear here, before the first question, because the first
+ * transmission of answers happens at the end of the flow and the
+ * notice must precede it.
+ */
+
+const scope = [
+  { k: 'Duration', v: 'About four minutes. Fifteen questions, all multiple choice. There is no time limit.' },
+  { k: 'What you receive', v: 'An indicative response pattern on screen: one hypothesis worth testing, one question for your board, and one practical test you could commission next week.' },
+  { k: 'What is assessed', v: 'Nothing. The Snapshot records what you report and shows you the pattern in it.' },
+  { k: 'What is not assessed', v: 'No claim you make here is tested against evidence. This is not an AGDA™ assessment, an assurance opinion or a certification.' },
+  { k: 'Contact details', v: 'Not required. You receive the full result without giving a name or an email address.' },
+  { k: 'Your answers', v: 'Held in this browser tab while you work. Submitted only when you select Generate my Snapshot.' },
+];
+---
+
+<section class="hero">
+  <div class="wrap">
+    <span class="label reveal">Intervention Readiness Snapshot</span>
+    <h1 class="h1 reveal">Can you stop it in time?</h1>
+    <p class="lede muted reveal">
+      You have governance. The Snapshot asks what you would actually be relying
+      on at 3am, and shows you what you have just described.
+    </p>
+    <div class="cta-row reveal">
+      <a class="btn" href="#snapshot" data-snapshot-begin>Begin the Snapshot</a>
+      <a class="btn-ghost" href="/sample-report/">See a sample verdict</a>
+    </div>
+  </div>
+</section>
+
+<section class="block tight">
+  <div class="wrap-narrow">
+    <h2 class="h2 reveal">What this is, and what it is not.</h2>
+
+    <dl class="scope-list reveal">
+      {scope.map((row) => (
+        <div>
+          <dt>{row.k}</dt>
+          <dd set:html={row.v.replace(/AGDA™/g, '<span class="agda-mark">AGDA<span class="agda-tm">™</span></span>')} />
+        </div>
+      ))}
+    </dl>
+
+    <p class="transmission reveal">
+      Your questionnaire answers are not submitted until you select
+      <strong>Generate my Snapshot</strong>.
+    </p>
+
+    <p class="processing-notice body-sm muted reveal">
+      No directly identifying information is requested to generate your result.
+      Your questionnaire answers are held briefly so we can produce your result
+      and recover it if you refresh the page. Limited technical data is processed
+      to deliver the service and to protect it from misuse. Read the
+      <a href="/legal/privacy/" class="link">privacy notice</a>.
+    </p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: 144px;
+    padding-bottom: 120px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .hero .label { margin-bottom: 28px; }
+  .hero .h1 { max-width: 14ch; }
+  .hero .lede { margin-top: 32px; max-width: 48ch; }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .scope-list {
+    margin: 48px 0 0;
+    padding-top: 28px;
+    border-top: 1px solid var(--hair);
+    display: grid;
+    gap: 24px;
+  }
+  .scope-list > div {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .scope-list dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    text-transform: uppercase;
+    line-height: 1.6;
+  }
+  .scope-list dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .transmission {
+    margin: 40px 0 0;
+    padding: 20px 0 20px 28px;
+    border-left: 2px solid var(--accent);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--ink);
+    max-width: 56ch;
+  }
+  .transmission strong { font-weight: 700; }
+
+  .processing-notice {
+    margin: 32px 0 0;
+    max-width: 64ch;
+    color: var(--faint);
+  }
+
+  @media (max-width: 880px) {
+    .hero { padding-top: 112px; padding-bottom: 88px; }
+    .scope-list > div { grid-template-columns: 1fr; gap: 8px; }
+  }
+</style>

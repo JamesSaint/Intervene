@@ -1,0 +1,117 @@
+---
+/**
+ * The three conversion actions. Exactly three, no others.
+ *
+ * All three are always present. Only which one renders as the primary
+ * button changes, and that ordering is applied at runtime by the client
+ * from the result's `actions` array. The set is data-driven so a later
+ * layer can add a fourth without restructuring this component.
+ *
+ * `learn_agda` is navigational: it creates no record and requires no
+ * contact details.
+ */
+
+import FollowUpForm from './FollowUpForm.astro';
+
+interface Props {
+  prototype?: boolean;
+}
+
+const { prototype = true } = Astro.props as Props;
+
+const actions = [
+  {
+    id: 'email_snapshot_and_sample',
+    label: 'Email me my Snapshot, with the AGDA™ sample report',
+    note: 'One email: your result above, plus a link to the sample AGDA™ verdict and what separates the two.',
+    needsDetails: true,
+  },
+  {
+    id: 'learn_agda',
+    label: 'Learn how AGDA™ validates these findings',
+    note: 'No details required.',
+    needsDetails: false,
+    href: '/agda/',
+  },
+  {
+    id: 'contact_intervene',
+    label: 'Contact Intervene',
+    note: 'A person replies within one to two working days. We do not auto-reply.',
+    needsDetails: true,
+  },
+];
+
+const markAgda = (value: string) =>
+  value.replace(/AGDA(?:™)?/g, '<span class="agda-mark">AGDA<span class="agda-tm">™</span></span>');
+---
+
+<section class="block tight conversion" data-conversion hidden aria-labelledby="conversion-heading">
+  <div class="wrap-narrow">
+    <h2 class="h3" id="conversion-heading">Where this goes next.</h2>
+
+    <ul class="action-list" data-action-list>
+      {actions.map((action, index) => (
+        <li class="action" data-action-id={action.id}>
+          {action.href ? (
+            <a
+              class={index === 0 ? 'btn' : 'btn-ghost'}
+              href={action.href}
+              data-action-link={action.id}
+              set:html={markAgda(action.label)}
+            />
+          ) : (
+            <button
+              type="button"
+              class={index === 0 ? 'btn' : 'btn-ghost'}
+              data-action-open={action.id}
+              set:html={markAgda(action.label)}
+            />
+          )}
+          <p class="action-note body-sm" set:html={markAgda(action.note)} />
+        </li>
+      ))}
+    </ul>
+
+    <FollowUpForm prototype={prototype} />
+  </div>
+</section>
+
+<style>
+  .conversion { border-top: 1px solid var(--hair); }
+
+  .action-list {
+    list-style: none;
+    margin: 40px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 32px;
+  }
+
+  .action {
+    display: grid;
+    gap: 12px;
+    justify-items: start;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .action:last-child { border-bottom: 0; padding-bottom: 0; }
+
+  .action-note {
+    margin: 0;
+    color: var(--faint);
+    max-width: 52ch;
+  }
+
+  @media (max-width: 720px) {
+    .action .btn,
+    .action .btn-ghost {
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+
+  @media print {
+    .conversion { display: none; }
+  }
+</style>
