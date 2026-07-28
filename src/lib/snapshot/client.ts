@@ -122,7 +122,7 @@ export function initSnapshot(): void {
     progressLabel.textContent =
       first === last
         ? `Question ${first} of ${totalQuestions}`
-        : `Questions ${first} to ${last} of ${totalQuestions}`;
+        : `Questions ${first} and ${last} of ${totalQuestions}`;
   }
 
   /* ---------- validation ---------- */

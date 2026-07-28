@@ -42,11 +42,13 @@ describe('prototype result', () => {
     expect(hypotheses.size, 'every hypothesis must be distinct').toBe(16);
   });
 
-  it('never names the least confident area as the most confident', () => {
-    for (const key of allPreviewKeys) {
-      const result = resolvePrototypeResult(key);
-      expect(result.mostConfidentArea).not.toBe(result.leastConfidentArea);
-    }
+  it('no longer returns a most confident area', () => {
+    // copy-2.0 removed it. Naming someone's strongest answer softened
+    // the discomfort the page exists to create, and it created no
+    // curiosity, trust or forward motion.
+    const result = resolvePrototypeResult('decide-documented') as Record<string, unknown>;
+    expect(result.mostConfidentArea).toBeUndefined();
+    expect(result.mostConfidentText).toBeUndefined();
   });
 
   it('falls back to the review default for unknown or absent previews', () => {
@@ -61,7 +63,7 @@ describe('prototype result', () => {
     for (const key of allPreviewKeys) {
       const result = resolvePrototypeResult(key);
       expect(result.contrastBlock).toEqual(contrastBlock);
-      expect(result.contrastBlock).toHaveLength(3);
+      expect(result.contrastBlock).toHaveLength(2);
       expect(result.disclaimer).toBe(disclaimer);
     }
   });
@@ -72,7 +74,6 @@ describe('result discipline', () => {
     const r = resolvePrototypeResult(key);
     return [
       r.headline,
-      r.mostConfidentText,
       r.priorityHypothesis,
       r.confidenceCommentary,
       r.boardQuestion,
@@ -138,10 +139,20 @@ describe('result discipline', () => {
     }
   });
 
-  it('states plainly that this is not an AGDA assessment', () => {
-    expect(disclaimer).toMatch(/not an AGDA™ assessment/);
-    expect(disclaimer).toMatch(/no submitted claim has been tested against evidence/i);
-    expect(disclaimer).toMatch(/proprietary/i);
+  it('states plainly what the result is not', () => {
+    // The three denials that are load-bearing. "AGDA™ methodology is
+    // proprietary and is not reproduced here" was dropped in copy-2.0:
+    // the plan protects AGDA by architectural separation, not by
+    // disclaimer, and the sentence read as written for a review.
+    expect(disclaimer).toMatch(/not an AGDA™ assessment/i);
+    expect(disclaimer).toMatch(/assurance opinion/i);
+    expect(disclaimer).toMatch(/certification/i);
+    expect(disclaimer).toMatch(/nothing you entered has been tested against evidence/i);
+  });
+
+  it('keeps the disclaimer to three sentences', () => {
+    // It was five. Defensive qualification is not the same as accuracy.
+    expect(disclaimer.split('. ').length).toBeLessThanOrEqual(3);
   });
 });
 

@@ -13,9 +13,12 @@ import {
  */
 
 describe('question set', () => {
-  it('has fifteen questions across six screens', () => {
-    expect(totalQuestions).toBe(15);
-    expect(screens).toHaveLength(6);
+  it('has nine questions across five screens', () => {
+    // qs-2.0 cut the set from fifteen. Sector, size and role were
+    // removed: none created curiosity, built trust or moved the visitor
+    // forward, and they were charged as a toll before any value.
+    expect(totalQuestions).toBe(9);
+    expect(screens).toHaveLength(5);
   });
 
   it('declares a question set version', () => {
@@ -61,13 +64,13 @@ describe('question set', () => {
    * why the model takes a mean rather than a sum. If this shape changes,
    * the Worker's normalisation must change with it.
    */
-  it('has the documented area shape: detect 2, escalate 2, decide 3, intervene 2', () => {
+  it('has the documented area shape: detect 1, escalate 1, decide 2, intervene 2', () => {
     const count = (area: string) => questions.filter((q) => q.area === area).length;
-    expect(count('detect')).toBe(2);
-    expect(count('escalate')).toBe(2);
-    expect(count('decide')).toBe(3);
+    expect(count('detect')).toBe(1);
+    expect(count('escalate')).toBe(1);
+    expect(count('decide')).toBe(2);
     expect(count('intervene')).toBe(2);
-    expect(count('context')).toBe(5);
+    expect(count('context')).toBe(2);
     expect(count('confidence')).toBe(1);
   });
 
@@ -80,12 +83,28 @@ describe('question set', () => {
     }
   });
 
-  it('offers Not known on eleven questions, and not on Q1, Q2, Q3 or Q15', () => {
-    expect(questionsWithNotKnown).toHaveLength(11);
-    expect(questionsWithNotKnown).not.toContain('q01_sector');
-    expect(questionsWithNotKnown).not.toContain('q02_size');
-    expect(questionsWithNotKnown).not.toContain('q03_role');
-    expect(questionsWithNotKnown).not.toContain('q15_confidence_basis');
+  it('offers Not known on every question except the confidence question', () => {
+    expect(questionsWithNotKnown).toHaveLength(8);
+    expect(questionsWithNotKnown).not.toContain('q09_confidence');
+  });
+
+  it('keeps the questions that produce the realisation', () => {
+    // These six are the page. If any is removed, say why in the commit.
+    for (const id of [
+      'q03_detect', 'q04_escalate', 'q05_authority',
+      'q06_exercised', 'q07_capability', 'q08_tested',
+    ]) {
+      expect(questions.map((q) => q.id), `${id} was removed`).toContain(id);
+    }
+  });
+
+  it('asks nothing that only serves data collection', () => {
+    // Sector, size and role belong after the visitor has chosen to
+    // engage, not before they have been given anything.
+    const ids = questions.map((q) => q.id).join(' ');
+    expect(ids).not.toMatch(/sector/);
+    expect(ids).not.toMatch(/\bsize\b/);
+    expect(ids).not.toMatch(/\brole\b/);
   });
 
   it('contains no ordinal, weight, threshold or band data', () => {
