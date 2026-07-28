@@ -75,17 +75,15 @@ const markAgda = (value: string) =>
     </div>
 
     <div class="contrast">
+      <!-- No link row here. It used to close this block with three links,
+           two of which duplicated destinations already in the actions
+           below and in the hero. Sitting exactly where the argument
+           ends, it read as the action set, so visitors stopped there and
+           never reached the real one. -->
       <h3 class="h3">What <em>AGDA<span class="agda-tm">™</span></em> does that this does not.</h3>
       {r.contrastBlock.map((para) => (
         <p set:html={markAgda(para)} />
       ))}
-      <p class="contrast-links">
-        <a href="/agda/" class="link">Read about AGDA™</a>
-        <span aria-hidden="true">·</span>
-        <a href="/methodology/" class="link">How it works</a>
-        <span aria-hidden="true">·</span>
-        <a href="/sample-report/" class="link">See a sample verdict</a>
-      </p>
     </div>
 
     <p class="disclaimer mono" data-result-disclaimer set:html={markAgda(r.disclaimer)} />
@@ -102,6 +100,9 @@ const markAgda = (value: string) =>
 <style>
   .result {
     border-top: 1px solid var(--hair);
+    /* The actions follow directly. Anything more than this reads as a
+       section break and pushes the CTA out of reach. */
+    padding-bottom: 56px;
   }
 
   .result-headline {
@@ -192,16 +193,6 @@ const markAgda = (value: string) =>
   .contrast p:last-of-type {
     color: var(--ink);
   }
-  .contrast-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-    margin-top: 28px !important;
-    padding-top: 24px;
-    border-top: 1px solid var(--hair);
-    font-size: 14px !important;
-  }
-  .contrast-links span { color: var(--faint); }
 
   .disclaimer {
     margin: 40px 0 0;
