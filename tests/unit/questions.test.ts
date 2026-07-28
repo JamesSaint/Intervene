@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { readFileSync } from 'node:fs';
 import {
   questions,
   screens,
@@ -128,5 +129,24 @@ describe('question set', () => {
         expect(Object.keys(option).sort()).toEqual(['label', 'value']);
       }
     }
+  });
+});
+
+describe('result page ordering', () => {
+  it('places the actions before the Index contribution ask', () => {
+    // The contrast block is the commercial pivot. What follows it must
+    // be the visitor's route forward, not Intervene's request for data.
+    // The benchmark block is 463px on desktop and 602px on mobile; with
+    // it in between, the first action sat 2.9 screens below the fold.
+    const page = readFileSync('src/pages/readiness-snapshot/index.astro', 'utf8');
+    expect(page.indexOf('<ConversionActions')).toBeLessThan(page.indexOf('<BenchmarkControl'));
+  });
+
+  it('keeps a competing link row out of the contrast block', () => {
+    // It duplicated two destinations already present in the actions and
+    // the hero, and sat exactly where the argument ends, so it read as
+    // the action set and visitors stopped there.
+    const result = readFileSync('src/components/snapshot/SnapshotResult.astro', 'utf8');
+    expect(result).not.toContain('contrast-links');
   });
 });
