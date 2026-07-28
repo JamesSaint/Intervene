@@ -13,9 +13,17 @@
  * knows what happens before they click rather than after. The other two
  * sit beneath as a quiet row, clearly subordinate.
  *
- * Labels are unchanged. At this point the visitor has established they
- * cannot answer their own question, so the primary action is the answer
- * to that feeling rather than an offer of literature.
+ * Every label names its object. The previous set relied on vague
+ * pronouns: "Find out whether it holds" had at least three plausible
+ * referents (the system, the halt authority, the Snapshot result), and
+ * both secondary labels ended in "this". A reader who has to resolve a
+ * pronoun before acting does not act.
+ *
+ * The heading carries the whole "why is this different from the
+ * Snapshot" job in eight words, which frees the supporting copy to
+ * answer only what happens next. "How would you actually know?" was
+ * rhetorical: the page has just established that they do not know, so
+ * asking again was redundant.
  *
  * "Send me the board version" was considered and rejected. It implies a
  * second artefact that does not exist, which is an overpromise, and it
@@ -35,20 +43,20 @@ const { prototype = true } = Astro.props as Props;
 
 const primary = {
   id: 'contact_intervene',
-  label: 'Find out whether it holds',
-  note: 'A conversation about testing one of these assumptions properly. No obligation, and a person replies within one to two working days.',
+  label: 'Start with one system',
+  note: 'Start with the system you had in mind. In one conversation you will find out which of your answers could be evidenced today, and which could not. A person replies within two working days. No obligation to go further.',
 };
 
 const secondary = [
   {
     id: 'learn_agda',
-    label: 'How AGDA™ tests this',
+    label: 'How AGDA™ works',
     note: 'No details required.',
     href: '/agda/',
   },
   {
     id: 'email_snapshot_and_sample',
-    label: 'Send me this',
+    label: 'Email me my Snapshot',
     note: 'Your result, and a tested verdict for comparison.',
   },
 ];
@@ -59,7 +67,7 @@ const markAgda = (value: string) =>
 
 <section class="block tight conversion" data-conversion hidden aria-labelledby="conversion-heading">
   <div class="wrap-narrow">
-    <h2 class="h3" id="conversion-heading">How would you actually know?</h2>
+    <h2 class="h3" id="conversion-heading">From what you say to what you can show.</h2>
 
     <div class="primary-action" data-action-id={primary.id}>
       <p class="primary-note" set:html={markAgda(primary.note)} />
