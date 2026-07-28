@@ -6,12 +6,25 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "prebuild": "node scripts/generate-question-manifest.mjs",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "typecheck": "astro check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "content-check": "node scripts/content-check.mjs",
+    "check-version-supported": "node scripts/check-version-supported.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",
     "astro": "^4.16.18"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@playwright/test": "^1.62.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
   }
 }
