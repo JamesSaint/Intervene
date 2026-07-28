@@ -20,6 +20,11 @@ dist/
 .env.production
 .env.local
 
+# Test output
+test-results/
+playwright-report/
+.playwright/
+
 # Local artefacts
 *.tar
 *.tar.gz
