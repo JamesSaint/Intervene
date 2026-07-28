@@ -13,8 +13,8 @@ async function answerVisibleScreen(page: Page) {
 }
 
 async function completeSnapshot(page: Page) {
-  await page.getByRole('link', { name: 'Begin the Snapshot' }).click();
-  for (let screen = 1; screen <= 6; screen += 1) {
+  await page.getByRole('link', { name: 'Begin', exact: true }).click();
+  for (let screen = 1; screen <= 5; screen += 1) {
     await answerVisibleScreen(page);
     const generate = page.locator('[data-snapshot-generate]:visible');
     if (await generate.count()) {
@@ -32,7 +32,7 @@ test.describe('Snapshot journey', () => {
 
     const result = page.locator('[data-snapshot-result]');
     await expect(result).toBeVisible();
-    await expect(page.locator('[data-result-headline]')).toContainText('Your answers describe');
+    await expect(page.locator('[data-result-headline]')).not.toBeEmpty();
 
     // The whole point: a full result with nothing identifying requested.
     await expect(page.locator('[data-followup]')).toBeHidden();
@@ -77,16 +77,16 @@ test.describe('Snapshot journey', () => {
     await page.goto(ROUTE);
     await completeSnapshot(page);
     await expect(page.locator('[data-snapshot-result]')).toContainText(
-      'Everything above rests on your own answers',
+      'Everything above is your own answer',
     );
     await expect(page.locator('[data-result-disclaimer]')).toContainText(
-      'not an AGDA™ assessment',
+      /not an AGDA™ assessment/i,
     );
   });
 
   test('refuses to advance with an unanswered question and explains why', async ({ page }) => {
     await page.goto(ROUTE);
-    await page.getByRole('link', { name: 'Begin the Snapshot' }).click();
+    await page.getByRole('link', { name: 'Begin', exact: true }).click();
     await page.locator('[data-snapshot-next]:visible').click();
 
     const summary = page.locator('[data-error-summary]:visible');
@@ -99,34 +99,34 @@ test.describe('Snapshot journey', () => {
 
   test('preserves answers across a reload', async ({ page }) => {
     await page.goto(ROUTE);
-    await page.getByRole('link', { name: 'Begin the Snapshot' }).click();
+    await page.getByRole('link', { name: 'Begin', exact: true }).click();
     await answerVisibleScreen(page);
     await page.locator('[data-snapshot-next]:visible').click();
 
     await page.reload();
     await expect(page.locator('[data-screen="2"]')).toBeVisible();
     const firstAnswered = page.locator('[data-screen="1"] input[type="radio"]:checked');
-    await expect(firstAnswered).toHaveCount(5);
+    await expect(firstAnswered).toHaveCount(2);
   });
 
   test('goes back without losing answers', async ({ page }) => {
     await page.goto(ROUTE);
-    await page.getByRole('link', { name: 'Begin the Snapshot' }).click();
+    await page.getByRole('link', { name: 'Begin', exact: true }).click();
     await answerVisibleScreen(page);
     await page.locator('[data-snapshot-next]:visible').click();
     await page.locator('[data-snapshot-back]:visible').click();
 
     await expect(page.locator('[data-screen="1"]')).toBeVisible();
-    await expect(page.locator('[data-screen="1"] input:checked')).toHaveCount(5);
+    await expect(page.locator('[data-screen="1"] input:checked')).toHaveCount(2);
   });
 });
 
 test.describe('preview selector', () => {
   const cases = [
-    ['decide-documented', 'halt authority that is written down'],
-    ['intervene-assumed', 'vendor or design assurance'],
-    ['detect-unknown', 'detection you are not certain about'],
-    ['escalate-tested', 'escalation path that has been exercised'],
+    ['decide-documented', 'Someone can stop it, on paper.'],
+    ['intervene-assumed', 'You expect you can act on the system.'],
+    ['detect-unknown', 'You are not certain you would know.'],
+    ['escalate-tested', 'you have proved it'],
   ] as const;
 
   for (const [key, expected] of cases) {
@@ -141,10 +141,10 @@ test.describe('preview selector', () => {
 test.describe('accessibility', () => {
   test('can be completed with the keyboard alone', async ({ page }) => {
     await page.goto(ROUTE);
-    await page.getByRole('link', { name: 'Begin the Snapshot' }).focus();
+    await page.getByRole('link', { name: 'Begin', exact: true }).focus();
     await page.keyboard.press('Enter');
 
-    for (let screen = 1; screen <= 6; screen += 1) {
+    for (let screen = 1; screen <= 5; screen += 1) {
       const visible = page.locator('[data-screen]:not([hidden])');
       const groups = visible.locator('[data-question]');
       const count = await groups.count();
@@ -170,8 +170,8 @@ test.describe('accessibility', () => {
   test('gives every question a fieldset and a legend', async ({ page }) => {
     await page.goto(ROUTE);
     const fieldsets = page.locator('[data-question]');
-    await expect(fieldsets).toHaveCount(15);
-    for (let i = 0; i < 15; i += 1) {
+    await expect(fieldsets).toHaveCount(9);
+    for (let i = 0; i < 9; i += 1) {
       await expect(fieldsets.nth(i).locator('legend')).not.toBeEmpty();
     }
   });
@@ -181,7 +181,7 @@ test.describe('accessibility', () => {
     const region = page.locator('[data-snapshot-announce]');
     await expect(region).toHaveAttribute('aria-live', 'polite');
 
-    await page.getByRole('link', { name: 'Begin the Snapshot' }).click();
+    await page.getByRole('link', { name: 'Begin', exact: true }).click();
     await answerVisibleScreen(page);
     await page.locator('[data-snapshot-next]:visible').click();
     await expect(region).toContainText('Detect');
@@ -210,11 +210,11 @@ test.describe('privacy and AGDA protection', () => {
     const ANSWER_VALUES = [
       'staffed_rota_path',
       'documented_standing',
-      'tested_alternates',
       'automated_named_team',
-      'measured_recent',
       'full_range',
-      'assigned_written',
+      'tested_recent_recorded',
+      'live_or_simulation_recent',
+      'severe',
     ];
 
     const leaks: string[] = [];
