@@ -1,6 +1,6 @@
 ---
 /**
- * The six-screen question flow.
+ * The five-screen question flow.
  *
  * Every screen is rendered server side and all but the first carry
  * `hidden`. There is no client-side templating, so the whole
@@ -25,7 +25,7 @@ const screenData = screens.map((screen) => {
   const counter =
     firstIndex === lastIndex
       ? `Question ${firstIndex} of ${totalQuestions}`
-      : `Questions ${firstIndex} to ${lastIndex} of ${totalQuestions}`;
+      : `Questions ${firstIndex} and ${lastIndex} of ${totalQuestions}`;
   return { ...screen, items, counter, lastIndex };
 });
 ---
@@ -34,7 +34,7 @@ const screenData = screens.map((screen) => {
   <div class="wrap-reading">
     <div class="snapshot-flow" data-snapshot-flow hidden>
       <div class="progress" aria-hidden="true">
-        <span class="progress-label mono" data-progress-label>Questions 1 to 5 of 15</span>
+        <span class="progress-label mono" data-progress-label>Questions 1 and 2 of 10</span>
         <span class="progress-track"><span class="progress-fill" data-progress-fill></span></span>
       </div>
 
@@ -57,9 +57,9 @@ const screenData = screens.map((screen) => {
             <ul data-error-list></ul>
           </div>
 
-          <span class="label">{screen.title}</span>
+          <span class="label">{screen.label}</span>
           <h2 class="screen-heading h3" tabindex="-1" data-screen-heading>
-            {screen.helper}
+            {screen.heading}
           </h2>
 
           {screen.items.map((question) => (
@@ -95,15 +95,7 @@ const screenData = screens.map((screen) => {
             >Back</button>
 
             {screen.index === screens.length ? (
-              <div class="generate-group">
-                <p class="transmission-inline body-sm">
-                  Your questionnaire answers are not submitted until you select
-                  Generate my Snapshot.
-                </p>
-                <button type="button" class="btn" data-snapshot-generate>
-                  Generate my Snapshot
-                </button>
-              </div>
+              <button type="button" class="btn" data-snapshot-generate>Generate</button>
             ) : (
               <button type="button" class="btn" data-snapshot-next>Continue</button>
             )}
@@ -212,19 +204,6 @@ const screenData = screens.map((screen) => {
     margin-left: auto;
   }
 
-  .generate-group {
-    display: grid;
-    gap: 20px;
-    justify-items: end;
-    text-align: right;
-    max-width: 46ch;
-    margin-left: auto;
-  }
-  .transmission-inline {
-    margin: 0;
-    color: var(--faint);
-  }
-
   .noscript-note {
     padding: 40px 0;
     border-top: 1px solid var(--hair);
@@ -239,11 +218,6 @@ const screenData = screens.map((screen) => {
     .step-nav .btn,
     .step-nav .btn-ghost {
       justify-content: center;
-    }
-    .generate-group {
-      justify-items: stretch;
-      text-align: left;
-      max-width: none;
     }
   }
 </style>
