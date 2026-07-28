@@ -18,7 +18,8 @@
  *    or removing a question, requires a QUESTION_SET_VERSION bump and
  *    the staged release order in the plan.
  *
- * qs-2.0 reduced the set from fifteen questions to nine.
+ * qs-2.0 reduced the set from fifteen questions to nine. qs-3.0
+ * restored the decision-conflict question, bringing it to ten.
  *
  * Sector and organisation size were removed. Neither creates curiosity,
  * builds trust or moves the visitor forward; they were a toll charged
@@ -26,12 +27,17 @@
  * who have chosen to engage. Role was removed because the follow-up
  * form already asks for it.
  *
- * What remains is the six questions that produce the realisation the
+ * What remains is the seven questions that produce the realisation the
  * page exists for, plus two that establish the stakes and one that
  * forces the reckoning.
+ *
+ * Decide carries three questions rather than two. Authority, then
+ * whether it has ever been used, then whose call it is when using it
+ * costs money. That third question is where halt authority stops being
+ * an abstraction, so it sits last in the sequence.
  */
 
-export const QUESTION_SET_VERSION = 'qs-2.0';
+export const QUESTION_SET_VERSION = 'qs-3.0';
 
 export type SnapshotArea =
   | 'context'
@@ -154,7 +160,19 @@ export const questions: SnapshotQuestion[] = [
     ],
   },
   {
-    id: 'q07_capability',
+    id: 'q07_conflict',
+    screen: 3,
+    area: 'decide',
+    legend: 'If stopping it caused significant commercial or operational harm, whose decision is it?',
+    options: [
+      { value: 'assigned_written', label: 'Assigned in advance, in writing' },
+      { value: 'assigned_contested', label: 'Assigned in principle, contested in practice' },
+      { value: 'resolved_in_moment', label: 'It would be resolved in the moment' },
+      { value: 'not_known', label: 'Not known' },
+    ],
+  },
+  {
+    id: 'q08_capability',
     screen: 4,
     area: 'intervene',
     legend: 'What can you actually do to it today, without a code release?',
@@ -167,7 +185,7 @@ export const questions: SnapshotQuestion[] = [
     ],
   },
   {
-    id: 'q08_tested',
+    id: 'q09_tested',
     screen: 4,
     area: 'intervene',
     legend: 'When did you last do that on purpose, in production?',
@@ -180,7 +198,7 @@ export const questions: SnapshotQuestion[] = [
     ],
   },
   {
-    id: 'q09_confidence',
+    id: 'q10_confidence',
     screen: 5,
     area: 'confidence',
     legend: 'Taking all of that together, what is it based on?',
@@ -193,7 +211,7 @@ export const questions: SnapshotQuestion[] = [
   },
 ];
 
-/** Questions that offer a `not_known` option. Q9 does not. */
+/** Questions that offer a `not_known` option. The confidence question does not. */
 export const questionsWithNotKnown = questions
   .filter((q) => q.options.some((o) => o.value === 'not_known'))
   .map((q) => q.id);

@@ -1,7 +1,7 @@
 {
-  "question_set_version": "qs-2.0",
+  "question_set_version": "qs-3.0",
   "generated_at": "2026-07-28",
-  "question_count": 9,
+  "question_count": 10,
   "questions": [
     {
       "id": "q01_systems",
@@ -64,7 +64,16 @@
       ]
     },
     {
-      "id": "q07_capability",
+      "id": "q07_conflict",
+      "options": [
+        "assigned_written",
+        "assigned_contested",
+        "resolved_in_moment",
+        "not_known"
+      ]
+    },
+    {
+      "id": "q08_capability",
       "options": [
         "full_range",
         "stop_no_reverse",
@@ -74,7 +83,7 @@
       ]
     },
     {
-      "id": "q08_tested",
+      "id": "q09_tested",
       "options": [
         "tested_recent_recorded",
         "tested_historic",
@@ -84,7 +93,7 @@
       ]
     },
     {
-      "id": "q09_confidence",
+      "id": "q10_confidence",
       "options": [
         "tested",
         "documented",

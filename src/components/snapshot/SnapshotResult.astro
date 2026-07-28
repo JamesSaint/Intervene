@@ -53,6 +53,8 @@ const markAgda = (value: string) =>
 
     <p class="uncertainty" data-result-uncertainty hidden></p>
 
+    <p class="strength" data-result-strength>{r.mostConfidentText}</p>
+
     <div class="hypothesis" data-result-hypothesis>
       <p>{r.priorityHypothesis}</p>
     </div>
@@ -123,8 +125,17 @@ const markAgda = (value: string) =>
     max-width: 56ch;
   }
 
+  .strength {
+    margin: 32px 0 0;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 52ch;
+  }
+
   .hypothesis {
-    margin: 48px 0 0;
+    margin: 28px 0 0;
     padding: 4px 0 4px 28px;
     border-left: 2px solid var(--accent);
     max-width: 60ch;

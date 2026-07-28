@@ -31,6 +31,7 @@ export function applyPrototypePreview(): void {
   };
 
   setText('[data-result-headline]', result.headline);
+  setText('[data-result-strength]', result.mostConfidentText);
   setText('[data-result-confidence]', result.confidenceCommentary);
   setText('[data-result-board]', result.boardQuestion);
   setText('[data-result-test]', result.practicalTest);
