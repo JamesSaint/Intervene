@@ -150,3 +150,30 @@ describe('result page ordering', () => {
     expect(result).not.toContain('contrast-links');
   });
 });
+
+describe('action hierarchy', () => {
+  const component = readFileSync('src/components/snapshot/ConversionActions.astro', 'utf8');
+
+  it('promotes exactly one action and subordinates the other two', () => {
+    // Three actions at near-equal weight read as a menu, which hands the
+    // decision back to the visitor at the moment the page should be
+    // making one for them.
+    expect(component).toContain('primary-action');
+    expect((component.match(/class="btn primary-btn"/g) ?? []).length).toBe(1);
+    expect((component.match(/class="btn-ghost"/g) ?? []).length).toBe(2);
+  });
+
+  it('states what happens before the button, not after it', () => {
+    const noteAt = component.indexOf('class="primary-note"');
+    const buttonAt = component.indexOf('class="btn primary-btn"');
+    expect(noteAt).toBeGreaterThan(-1);
+    expect(noteAt).toBeLessThan(buttonAt);
+  });
+
+  it('still offers exactly three actions, and learn_agda stays navigational', () => {
+    for (const id of ['contact_intervene', 'learn_agda', 'email_snapshot_and_sample']) {
+      expect(component).toContain(id);
+    }
+    expect(component).toMatch(/data-action-link=\{action\.id\}/);
+  });
+});
