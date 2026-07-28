@@ -1,0 +1,249 @@
+---
+/**
+ * The six-screen question flow.
+ *
+ * Every screen is rendered server side and all but the first carry
+ * `hidden`. There is no client-side templating, so the whole
+ * questionnaire is present in the HTML and remains readable and
+ * indexable. The client only toggles visibility, tracks answers and
+ * manages focus.
+ *
+ * Accessibility contract:
+ *   - one fieldset and legend per question
+ *   - screen changes move focus to the screen heading and announce once
+ *   - errors render inline, are summarised above the screen, and the
+ *     summary receives focus
+ *   - no time limit anywhere
+ */
+
+import { questions, screens, totalQuestions } from '../../lib/snapshot/questions';
+
+const screenData = screens.map((screen) => {
+  const items = questions.filter((q) => q.screen === screen.index);
+  const firstIndex = questions.indexOf(items[0]) + 1;
+  const lastIndex = questions.indexOf(items[items.length - 1]) + 1;
+  const counter =
+    firstIndex === lastIndex
+      ? `Question ${firstIndex} of ${totalQuestions}`
+      : `Questions ${firstIndex} to ${lastIndex} of ${totalQuestions}`;
+  return { ...screen, items, counter, lastIndex };
+});
+---
+
+<section class="block" id="snapshot">
+  <div class="wrap-reading">
+    <div class="snapshot-flow" data-snapshot-flow hidden>
+      <div class="progress" aria-hidden="true">
+        <span class="progress-label mono" data-progress-label>Questions 1 to 5 of 15</span>
+        <span class="progress-track"><span class="progress-fill" data-progress-fill></span></span>
+      </div>
+
+      <div
+        class="sr-status"
+        role="status"
+        aria-live="polite"
+        data-snapshot-announce
+      ></div>
+
+      {screenData.map((screen) => (
+        <div class="screen" data-screen={screen.index} hidden={screen.index !== 1}>
+          <div
+            class="error-summary"
+            data-error-summary
+            tabindex="-1"
+            hidden
+          >
+            <h2>Check your answers</h2>
+            <ul data-error-list></ul>
+          </div>
+
+          <span class="label">{screen.title}</span>
+          <h2 class="screen-heading h3" tabindex="-1" data-screen-heading>
+            {screen.helper}
+          </h2>
+
+          {screen.items.map((question) => (
+            <fieldset class="fieldset question" data-question={question.id}>
+              <legend class="question-legend">{question.legend}</legend>
+              {question.helper && <p class="field-hint">{question.helper}</p>}
+
+              <p class="field-error" id={`${question.id}-error`} data-question-error></p>
+
+              <div class="choice-list">
+                {question.options.map((option) => (
+                  <label class="choice">
+                    <input
+                      type="radio"
+                      name={question.id}
+                      value={option.value}
+                      aria-describedby={`${question.id}-error`}
+                    />
+                    <span class="choice-marker" aria-hidden="true"></span>
+                    <span class="choice-label">{option.label}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          ))}
+
+          <div class="step-nav">
+            <button
+              type="button"
+              class="btn-ghost"
+              data-snapshot-back
+              hidden={screen.index === 1}
+            >Back</button>
+
+            {screen.index === screens.length ? (
+              <div class="generate-group">
+                <p class="transmission-inline body-sm">
+                  Your questionnaire answers are not submitted until you select
+                  Generate my Snapshot.
+                </p>
+                <button type="button" class="btn" data-snapshot-generate>
+                  Generate my Snapshot
+                </button>
+              </div>
+            ) : (
+              <button type="button" class="btn" data-snapshot-next>Continue</button>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <noscript>
+      <div class="noscript-note">
+        <h2 class="h3">The Snapshot needs JavaScript.</h2>
+        <p class="body muted">
+          The questions above are readable without it, but the Snapshot cannot
+          record your answers or produce a result. If you would rather not
+          enable JavaScript, <a href="/contact/" class="link">write to us</a> and
+          describe the system you need to remain stoppable.
+        </p>
+      </div>
+    </noscript>
+  </div>
+</section>
+
+<style>
+  .sr-status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .progress {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 56px;
+  }
+  .progress-label {
+    color: var(--faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .progress-track {
+    display: block;
+    height: 1px;
+    background: var(--hair);
+  }
+  .progress-fill {
+    display: block;
+    height: 1px;
+    width: 0%;
+    background: var(--accent);
+    transition: width var(--dur-reveal) var(--ease);
+  }
+
+  .screen-heading {
+    margin: 20px 0 48px;
+    max-width: 30ch;
+    color: var(--muted);
+    font-weight: 400;
+    /* Clears the sticky header and the progress rule above. */
+    scroll-margin-top: calc(var(--header-h) + 120px);
+  }
+  .screen-heading:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 6px;
+  }
+
+  .question + .question {
+    margin-top: 64px;
+  }
+
+  .question-legend {
+    font-family: var(--font-sans);
+    font-size: clamp(20px, 2vw, 24px);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    max-width: 34ch;
+  }
+
+  .question .field-hint {
+    margin-top: 12px;
+    max-width: 44ch;
+  }
+
+  .question .field-error {
+    margin-top: 12px;
+  }
+
+  .step-nav {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid var(--hair);
+  }
+  .step-nav:only-child,
+  .step-nav > :only-child {
+    margin-left: auto;
+  }
+
+  .generate-group {
+    display: grid;
+    gap: 20px;
+    justify-items: end;
+    text-align: right;
+    max-width: 46ch;
+    margin-left: auto;
+  }
+  .transmission-inline {
+    margin: 0;
+    color: var(--faint);
+  }
+
+  .noscript-note {
+    padding: 40px 0;
+    border-top: 1px solid var(--hair);
+  }
+  .noscript-note .body { margin-top: 16px; max-width: 56ch; }
+
+  @media (max-width: 720px) {
+    .step-nav {
+      flex-direction: column-reverse;
+      align-items: stretch;
+    }
+    .step-nav .btn,
+    .step-nav .btn-ghost {
+      justify-content: center;
+    }
+    .generate-group {
+      justify-items: stretch;
+      text-align: left;
+      max-width: none;
+    }
+  }
+</style>

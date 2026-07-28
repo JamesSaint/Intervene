@@ -14,10 +14,13 @@ export default defineConfig({
   integrations: [
     sitemap({
       // Exclude noindex/internal pages and the /method/ redirect stub.
+      // /readiness-snapshot/ is noindex until Phase 4 of the Snapshot
+      // rollout; remove that line when the route goes public.
       filter: (page) =>
         !page.includes('/style-guide/') &&
         !page.includes('/method/') &&
-        !page.includes('/legal/'),
+        !page.includes('/legal/') &&
+        !page.includes('/readiness-snapshot/'),
     }),
   ],
 });

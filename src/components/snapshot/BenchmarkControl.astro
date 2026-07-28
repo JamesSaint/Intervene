@@ -1,0 +1,101 @@
+---
+/**
+ * Standalone Index contribution control.
+ *
+ * This is a separate processing path from the follow-up form and must
+ * stay that way. It never receives or sends the result token, and it
+ * never sits inside the follow-up form. In Phase 3 it posts an opaque
+ * encrypted envelope and nothing else.
+ *
+ * In Phase 1 there is no endpoint, so the control renders for design
+ * review with submission disabled and says so plainly.
+ */
+
+interface Props {
+  prototype?: boolean;
+}
+
+const { prototype = true } = Astro.props as Props;
+---
+
+<section class="benchmark" data-benchmark hidden aria-labelledby="benchmark-heading">
+  <div class="wrap-narrow">
+    <div class="benchmark-inner">
+      <h3 class="h3" id="benchmark-heading">Contribute to the Intervention Readiness Index.</h3>
+
+      <p class="body-sm muted benchmark-intro">
+        Intervene is building the first dataset of how organisations actually
+        answer these questions. Contributing takes one click and asks for
+        nothing further.
+      </p>
+
+      <label class="consent">
+        <input type="checkbox" data-benchmark-consent disabled={prototype} />
+        <span class="choice-marker" aria-hidden="true"></span>
+        <span class="consent-text">
+          Include this response pattern in the Intervention Readiness Index.
+          This contribution is submitted separately from any contact details you
+          choose to provide. The Index record will not contain your name, email
+          address, organisation or role.
+        </span>
+      </label>
+
+      <div class="benchmark-actions">
+        <button type="button" class="btn-ghost" data-benchmark-submit disabled={prototype}>
+          Contribute this response pattern
+        </button>
+        <p class="body-sm benchmark-note">
+          {prototype
+            ? 'Not active in this preview. No data is collected or transmitted.'
+            : 'Read what the Index record contains in the privacy notice.'}
+          {!prototype && <a href="/legal/privacy/" class="link">Privacy notice</a>}
+        </p>
+      </div>
+
+      <p class="benchmark-confirmed" data-benchmark-confirmed tabindex="-1" hidden>
+        Recorded. Thank you. Nothing identifying was sent with it.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .benchmark {
+    padding: 48px 0;
+    border-top: 1px solid var(--hair);
+    border-bottom: 1px solid var(--hair);
+  }
+  .benchmark-inner { max-width: 62ch; }
+  .benchmark-intro { margin: 16px 0 28px; }
+
+  .benchmark-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    margin-top: 28px;
+  }
+  .benchmark-note {
+    margin: 0;
+    color: var(--faint);
+    max-width: 40ch;
+  }
+
+  .benchmark-confirmed {
+    margin: 24px 0 0;
+    padding: 16px 20px;
+    border: 1px solid var(--accent);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .benchmark-confirmed:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  @media print {
+    .benchmark { display: none; }
+  }
+</style>
