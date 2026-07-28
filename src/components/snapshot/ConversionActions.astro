@@ -2,16 +2,20 @@
 /**
  * The three conversion actions. Exactly three, no others.
  *
- * copy-2.0 rewrote the labels. The previous set was product-centric:
- * "Email me my Snapshot", "Learn how AGDA™ validates these findings",
- * "Contact Intervene". They described what Intervene would do, not what
- * the visitor had just realised.
+ * They used to render as three hairline rows of near-equal weight,
+ * which reads as a menu. A menu of three equivalent options hands the
+ * decision back to the visitor at the exact moment the page should be
+ * making one for them.
  *
- * At this point on the page the visitor has established that they
- * cannot answer their own question. The primary action should be the
- * answer to that feeling, not an offer of literature. So the strongest
- * action is now "Find out whether it holds", and the supporting note
- * carries the commercial fact rather than the button.
+ * Now: one primary action in a bordered block, using the same treatment
+ * as the contrast block above it so no new visual language is
+ * introduced, with its note promoted above the button so the visitor
+ * knows what happens before they click rather than after. The other two
+ * sit beneath as a quiet row, clearly subordinate.
+ *
+ * Labels are unchanged. At this point the visitor has established they
+ * cannot answer their own question, so the primary action is the answer
+ * to that feeling rather than an offer of literature.
  *
  * "Send me the board version" was considered and rejected. It implies a
  * second artefact that does not exist, which is an overpromise, and it
@@ -29,25 +33,23 @@ interface Props {
 
 const { prototype = true } = Astro.props as Props;
 
-const actions = [
-  {
-    id: 'contact_intervene',
-    label: 'Find out whether it holds',
-    note: 'A conversation about testing one of these assumptions properly. A person replies within one to two working days.',
-    needsDetails: true,
-  },
+const primary = {
+  id: 'contact_intervene',
+  label: 'Find out whether it holds',
+  note: 'A conversation about testing one of these assumptions properly. No obligation, and a person replies within one to two working days.',
+};
+
+const secondary = [
   {
     id: 'learn_agda',
     label: 'How AGDA™ tests this',
     note: 'No details required.',
-    needsDetails: false,
     href: '/agda/',
   },
   {
     id: 'email_snapshot_and_sample',
     label: 'Send me this',
     note: 'Your result, and a tested verdict for comparison.',
-    needsDetails: true,
   },
 ];
 
@@ -59,12 +61,22 @@ const markAgda = (value: string) =>
   <div class="wrap-narrow">
     <h2 class="h3" id="conversion-heading">How would you actually know?</h2>
 
-    <ul class="action-list" data-action-list>
-      {actions.map((action, index) => (
+    <div class="primary-action" data-action-id={primary.id}>
+      <p class="primary-note" set:html={markAgda(primary.note)} />
+      <button
+        type="button"
+        class="btn primary-btn"
+        data-action-open={primary.id}
+        set:html={markAgda(primary.label)}
+      />
+    </div>
+
+    <ul class="secondary-actions" data-action-list>
+      {secondary.map((action) => (
         <li class="action" data-action-id={action.id}>
           {action.href ? (
             <a
-              class={index === 0 ? 'btn' : 'btn-ghost'}
+              class="btn-ghost"
               href={action.href}
               data-action-link={action.id}
               set:html={markAgda(action.label)}
@@ -72,7 +84,7 @@ const markAgda = (value: string) =>
           ) : (
             <button
               type="button"
-              class={index === 0 ? 'btn' : 'btn-ghost'}
+              class="btn-ghost"
               data-action-open={action.id}
               set:html={markAgda(action.label)}
             />
@@ -92,11 +104,45 @@ const markAgda = (value: string) =>
     padding-top: 56px;
   }
 
-  .action-list {
+  .conversion .h3 { max-width: 20ch; }
+
+  /* Same treatment as the contrast block above, so the eye reads the
+     two as a pair: here is why it matters, here is what to do. */
+  .primary-action {
+    margin: 32px 0 0;
+    padding: 40px;
+    border: 1px solid var(--hair-strong);
+    background: var(--paper-soft);
+    display: grid;
+    gap: 24px;
+    justify-items: start;
+  }
+
+  .primary-note {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--ink);
+    max-width: 46ch;
+  }
+
+  /* Larger than the site default. This is the only action on the page
+     meant to stop a reader, so it carries more weight without becoming
+     a different component. */
+  .primary-btn {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    padding: 19px 40px;
+    min-height: 56px;
+  }
+
+  .secondary-actions {
     list-style: none;
-    margin: 40px 0 0;
+    margin: 36px 0 0;
     padding: 0;
     display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 32px;
   }
 
@@ -104,24 +150,20 @@ const markAgda = (value: string) =>
     display: grid;
     gap: 12px;
     justify-items: start;
-    padding-bottom: 32px;
-    border-bottom: 1px solid var(--hair);
+    align-content: start;
   }
-  .action:last-child { border-bottom: 0; padding-bottom: 0; }
 
   .action-note {
     margin: 0;
     color: var(--faint);
-    max-width: 52ch;
+    max-width: 34ch;
   }
 
   @media (max-width: 720px) {
-    .action .btn,
-    .action .btn-ghost {
-      width: 100%;
-      justify-content: center;
-      text-align: center;
-    }
+    .primary-action { padding: 28px; }
+    .primary-btn { width: 100%; justify-content: center; text-align: center; }
+    .secondary-actions { grid-template-columns: 1fr; gap: 28px; }
+    .action .btn-ghost { width: 100%; justify-content: center; text-align: center; }
   }
 
   @media print {
