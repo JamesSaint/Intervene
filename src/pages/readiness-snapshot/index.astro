@@ -23,7 +23,6 @@ import BenchmarkControl from '../../components/snapshot/BenchmarkControl.astro';
 import ConversionActions from '../../components/snapshot/ConversionActions.astro';
 import { resolvePrototypeResult } from '../../lib/snapshot/prototype-result';
 
-const PROTOTYPE = true;
 
 // Static build: `Astro.url.searchParams` is empty here, so this renders
 // the review default. `prototype-preview.ts` applies `?preview=` in the
@@ -83,8 +82,8 @@ const schema = {
       pivot, so what follows it must be the visitor's route forward, not
       Intervene's request for data. The benchmark block was 463px on
       desktop and 602px on mobile, sitting between the two. */}
-  <ConversionActions prototype={PROTOTYPE} />
-  <BenchmarkControl prototype={PROTOTYPE} />
+  <ConversionActions />
+  <BenchmarkControl />
 
   <script>
     import { initSnapshot } from '../../lib/snapshot/client.ts';
