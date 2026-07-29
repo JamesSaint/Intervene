@@ -35,12 +35,6 @@
 
 import FollowUpForm from './FollowUpForm.astro';
 
-interface Props {
-  prototype?: boolean;
-}
-
-const { prototype = true } = Astro.props as Props;
-
 const primary = {
   id: 'contact_intervene',
   label: 'Start with one system',
@@ -102,7 +96,7 @@ const markAgda = (value: string) =>
       ))}
     </ul>
 
-    <FollowUpForm prototype={prototype} />
+    <FollowUpForm />
   </div>
 </section>
 
@@ -112,7 +106,8 @@ const markAgda = (value: string) =>
     padding-top: 56px;
   }
 
-  .conversion .h3 { max-width: 20ch; }
+  /* Wide enough to hold the heading on one line at this size. */
+  .conversion .h3 { max-width: none; white-space: nowrap; }
 
   /* Same treatment as the contrast block above, so the eye reads the
      two as a pair: here is why it matters, here is what to do. */
@@ -122,8 +117,9 @@ const markAgda = (value: string) =>
     border: 1px solid var(--hair-strong);
     background: var(--paper-soft);
     display: grid;
-    gap: 24px;
-    justify-items: start;
+    gap: 28px;
+    justify-items: center;
+    text-align: center;
   }
 
   .primary-note {
@@ -132,7 +128,7 @@ const markAgda = (value: string) =>
     font-size: 17px;
     line-height: 1.6;
     color: var(--ink);
-    max-width: 46ch;
+    max-width: none;
   }
 
   /* Larger than the site default. This is the only action on the page
@@ -164,7 +160,12 @@ const markAgda = (value: string) =>
   .action-note {
     margin: 0;
     color: var(--faint);
-    max-width: 34ch;
+    max-width: 40ch;
+  }
+
+  @media (max-width: 880px) {
+    /* The heading cannot hold one line on a narrow viewport. */
+    .conversion .h3 { white-space: normal; }
   }
 
   @media (max-width: 720px) {

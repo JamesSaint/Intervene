@@ -186,7 +186,7 @@
 
 /* ---- Consent: a single checkbox with a paragraph of text ---- */
 
-.consent {
+.consent-check {
   display: grid;
   grid-template-columns: 18px 1fr;
   gap: 16px;
@@ -196,7 +196,7 @@
   cursor: pointer;
 }
 
-.consent input {
+.consent-check input {
   position: absolute;
   opacity: 0;
   width: 18px;
@@ -204,11 +204,11 @@
   margin: 0;
 }
 
-.consent .choice-marker {
+.consent-check .choice-marker {
   margin-top: 2px;
 }
 
-.consent-text {
+.consent-check-text {
   font-family: var(--font-sans);
   font-size: 14px;
   line-height: 1.6;
@@ -337,16 +337,16 @@
   opacity: 0.4;
 }
 
-.consent:has(input:disabled) {
+.consent-check:has(input:disabled) {
   cursor: not-allowed;
 }
 
-.consent input:disabled ~ .choice-marker {
+.consent-check input:disabled ~ .choice-marker {
   opacity: 0.4;
   border-style: dashed;
 }
 
-.consent input:disabled ~ .consent-text {
+.consent-check input:disabled ~ .consent-check-text {
   opacity: 0.4;
 }
 

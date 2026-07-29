@@ -2,20 +2,23 @@
 /**
  * Standalone Index contribution control.
  *
- * This is a separate processing path from the follow-up form and must
- * stay that way. It never receives or sends the result token, and it
- * never sits inside the follow-up form. In Phase 3 it posts an opaque
- * encrypted envelope and nothing else.
+ * A separate processing path from the follow-up form, and it must stay
+ * that way. It never sits inside the follow-up form and it sends no
+ * identity field of any kind: ten answer values and two version
+ * strings, nothing else.
  *
- * In Phase 1 there is no endpoint, so the control renders for design
- * review with submission disabled and says so plainly.
+ * It sends the answers raw rather than bucketed. Bucketing would mean
+ * shipping ordinal values to the browser, which is precisely what must
+ * not happen. Since the question set no longer asks for sector, size or
+ * role, the payload carries no organisational detail at all.
+ *
+ * WHAT THIS CANNOT CLAIM YET. Submissions relay through Formspree to a
+ * mailbox, so a contribution and a later follow-up arrive in the same
+ * inbox and the operator could correlate them by timestamp. The strong
+ * unlinkability the plan describes needs the Worker, a buffered write
+ * and a separate database. The consent copy says what this does, not
+ * what Phase 3 will do.
  */
-
-interface Props {
-  prototype?: boolean;
-}
-
-const { prototype = true } = Astro.props as Props;
 ---
 
 <section class="benchmark" data-benchmark hidden aria-labelledby="benchmark-heading">
@@ -29,31 +32,31 @@ const { prototype = true } = Astro.props as Props;
         nothing further.
       </p>
 
-      <label class="consent">
-        <input type="checkbox" data-benchmark-consent disabled={prototype} />
+      <label class="consent-check">
+        <input type="checkbox" data-benchmark-consent />
         <span class="choice-marker" aria-hidden="true"></span>
-        <span class="consent-text">
-          Include this response pattern in the Intervention Readiness Index.
-          This contribution is submitted separately from any contact details you
-          choose to provide. The Index record will not contain your name, email
-          address, organisation or role.
+        <span class="consent-check-text">
+          Include my ten answers in the Intervention Readiness Index. The
+          contribution is sent on its own and carries no name, email address,
+          organisation or role.
         </span>
       </label>
 
       <div class="benchmark-actions">
-        <button type="button" class="btn-ghost" data-benchmark-submit disabled={prototype}>
-          Contribute this response pattern
+        <button type="button" class="btn-ghost" data-benchmark-submit>
+          Contribute my answers
         </button>
         <p class="body-sm benchmark-note">
-          {prototype
-            ? 'Not active in this preview. No data is collected or transmitted.'
-            : 'Read what the Index record contains in the privacy notice.'}
-          {!prototype && <a href="/legal/privacy/" class="link">Privacy notice</a>}
+          What the Index holds is set out in the
+          <a href="/legal/privacy/" class="link">privacy notice</a>.
         </p>
       </div>
 
+      <p class="field-error benchmark-error" data-benchmark-error role="alert" hidden></p>
+
       <p class="benchmark-confirmed" data-benchmark-confirmed tabindex="-1" hidden>
-        Recorded. Thank you. Nothing identifying was sent with it.
+        Recorded, and thank you. Your answers were sent without a name, an email
+        address, an organisation or a role attached.
       </p>
     </div>
   </div>
