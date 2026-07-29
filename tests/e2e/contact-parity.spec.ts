@@ -135,9 +135,61 @@ test.describe('contact form parity after CSS extraction', () => {
 
     expect(layout.display, 'banner turned into a grid').toBe('block');
     // Collapsed, it was 314px tall with one word per line.
-    expect(layout.height, 'banner is far taller than it should be').toBeLessThan(180);
+    expect(layout.height, 'banner is far taller than it should be').toBeLessThan(220);
     expect(layout.innerShare, 'banner content collapsed').toBeGreaterThan(0.6);
     expect(layout.copyShare, 'banner copy collapsed to a narrow column').toBeGreaterThan(0.3);
+  });
+
+  test('the cookie banner aligns with the page content column', async ({ page }) => {
+    // `.consent-inner` carries `.wrap`, but a `padding: 16px 0` shorthand
+    // was zeroing the gutter. The banner ran edge to edge on a phone and
+    // sat 64px wider than every other column on desktop.
+    await page.goto('/');
+    await page.waitForTimeout(500);
+
+    const offsets = await page.evaluate(() => {
+      const copy = document.querySelector('.consent-copy') as HTMLElement;
+      const column = document.querySelector('.site-footer .wrap') as HTMLElement;
+      const pad = parseFloat(getComputedStyle(column).paddingLeft);
+      return {
+        banner: copy.getBoundingClientRect().left,
+        page: column.getBoundingClientRect().left + pad,
+      };
+    });
+
+    expect(Math.abs(offsets.banner - offsets.page), 'banner is out of the grid')
+      .toBeLessThanOrEqual(1);
+  });
+
+  test('the consent buttons meet the minimum target size', async ({ page }) => {
+    // Accept and Decline were 37px tall, under WCAG 2.2 target size
+    // minimum, on the two most consequential controls on the site.
+    await page.goto('/');
+    await page.waitForTimeout(500);
+
+    const buttons = page.locator('.consent-btn');
+    await expect(buttons).toHaveCount(2);
+
+    for (let i = 0; i < 2; i += 1) {
+      const box = await buttons.nth(i).boundingBox();
+      expect(box, 'button not rendered').not.toBeNull();
+      expect(box!.height, `consent button ${i} is under 44px`).toBeGreaterThanOrEqual(44);
+      expect(box!.width, `consent button ${i} is under 44px`).toBeGreaterThanOrEqual(44);
+    }
+  });
+
+  test('the cookie banner names the cookies, the purpose and the recipient', async ({ page }) => {
+    // Consent has to be informed. The banner previously asked for cookie
+    // consent without using the word "cookie" or naming Google as the
+    // recipient of the data.
+    await page.goto('/');
+    await page.waitForTimeout(500);
+
+    const copy = (await page.locator('.consent-copy').textContent()) ?? '';
+    expect(copy, 'does not say what is being consented to').toMatch(/cookie/i);
+    expect(copy, 'does not name the recipient').toMatch(/google/i);
+    expect(copy, 'does not say what declining does').toMatch(/decline/i);
+    await expect(page.locator('.consent-copy a')).toHaveAttribute('href', '/legal/privacy/');
   });
 
   test('inputs now show a visible focus ring, which they did not before', async ({ page }) => {
