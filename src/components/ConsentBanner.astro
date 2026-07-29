@@ -8,8 +8,9 @@
 <div class="consent" role="region" aria-label="Cookie consent" hidden>
   <div class="wrap consent-inner">
     <p class="consent-copy">
-      We use Google Analytics to see how this site is used. It runs only if you accept.
-      Nothing is stored otherwise. <a href="/legal/privacy/">Privacy</a>.
+      Google Analytics cookies tell us which pages get read. They are set only
+      if you accept, and the data goes to Google. Decline and nothing is stored.
+      <a href="/legal/privacy/">What we collect</a>.
     </p>
     <div class="consent-actions">
       <button type="button" class="consent-btn" data-consent="denied">Decline</button>
@@ -85,12 +86,17 @@
   }
   .consent.open { transform: translateY(0); }
 
+  /* The horizontal padding must be restated. This element carries
+     `.wrap`, but a `padding: 16px 0` shorthand here zeroes the gutter
+     `.wrap` provides, which left the banner running edge to edge on a
+     phone and sitting 64px wider than every other content column on
+     desktop. */
   .consent-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
-    padding: 16px 0;
+    gap: 32px;
+    padding: 16px var(--gutter);
   }
   .consent-copy {
     font-family: var(--font-sans);
@@ -98,7 +104,7 @@
     line-height: 1.5;
     color: var(--muted);
     margin: 0;
-    max-width: 72ch;
+    max-width: 78ch;
   }
   .consent-copy a {
     color: var(--muted);
@@ -112,6 +118,9 @@
     gap: 12px;
     flex-shrink: 0;
   }
+  /* 44px minimum. Accept and Decline were 37px tall, under the WCAG 2.2
+     target size minimum, and they are the two most consequential
+     controls on the site. */
   .consent-btn {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -120,7 +129,11 @@
     color: var(--muted);
     background: transparent;
     border: 1px solid var(--hair-strong);
-    padding: 9px 18px;
+    padding: 12px 22px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     transition:
       color var(--dur-hover) var(--ease),
@@ -144,7 +157,7 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 14px;
-      padding: 16px 0;
+      padding: 16px var(--gutter-tight);
     }
     .consent-actions { width: 100%; }
     .consent-btn { flex: 1; text-align: center; }

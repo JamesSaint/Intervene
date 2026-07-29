@@ -313,16 +313,59 @@ test.describe('privacy and AGDA protection', () => {
     }
   });
 
-  test('collects nothing in the prototype: follow-up and benchmark are inert', async ({ page }) => {
+  test('both forms are live, and neither sends anything until asked', async ({ page }) => {
+    const posts: string[] = [];
+    page.on('request', (r) => {
+      if (r.method() === 'POST' && r.url().includes('formspree')) posts.push(r.url());
+    });
+
     await page.goto(ROUTE);
     await completeSnapshot(page);
 
-    await expect(page.locator('[data-benchmark-submit]')).toBeDisabled();
-    await expect(page.locator('[data-benchmark-consent]')).toBeDisabled();
+    // Enabled, but nothing has been submitted by reaching the result.
+    await expect(page.locator('[data-benchmark-submit]')).toBeEnabled();
+    await expect(page.locator('[data-benchmark-consent]')).toBeEnabled();
+    expect(posts, 'a submission fired without being asked for').toHaveLength(0);
 
     await page.locator('[data-action-open="email_snapshot_and_sample"]').click();
     await expect(page.locator('[data-followup]')).toBeVisible();
-    await expect(page.locator('[data-followup-submit]')).toBeDisabled();
-    await expect(page.locator('input[name="business_email"]')).toBeDisabled();
+    await expect(page.locator('[data-followup-submit]')).toBeEnabled();
+    await expect(page.locator('input[name="business_email"]')).toBeEnabled();
+    expect(posts, 'opening the form submitted it').toHaveLength(0);
+  });
+
+  test('the Index contribution carries no identity field', async ({ page }) => {
+    await page.goto(ROUTE);
+    await completeSnapshot(page);
+
+    // Intercept rather than send, so the test never posts real data.
+    let body = '';
+    await page.route('**/formspree.io/**', async (route) => {
+      body = route.request().postData() ?? '';
+      await route.fulfill({ status: 200, body: '{"ok":true}' });
+    });
+
+    await page.locator('[data-benchmark-consent]').check();
+    await page.locator('[data-benchmark-submit]').click();
+    await expect(page.locator('[data-benchmark-confirmed]')).toBeVisible();
+
+    expect(body, 'contribution sent nothing').not.toBe('');
+    for (const field of ['name', 'email', 'organisation', 'role']) {
+      expect(body.toLowerCase(), `identity field "${field}" in the contribution`)
+        .not.toMatch(new RegExp(`name="${field}"`, 'i'));
+    }
+    expect(body, 'answers missing from the contribution').toMatch(/q01_systems/);
+  });
+
+  test('the follow-up form requires a name and a work email', async ({ page }) => {
+    await page.goto(ROUTE);
+    await completeSnapshot(page);
+    await page.locator('[data-action-open="contact_intervene"]').click();
+
+    await expect(page.locator('input[name="name"]')).toHaveAttribute('required', '');
+    await expect(page.locator('input[name="business_email"]')).toHaveAttribute('required', '');
+    await expect(page.locator('input[name="business_email"]')).toHaveAttribute('type', 'email');
+    // No free-text field anywhere: nothing to disclose confidentially into.
+    await expect(page.locator('[data-followup] textarea')).toHaveCount(0);
   });
 });
