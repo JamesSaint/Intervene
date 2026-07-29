@@ -39,6 +39,8 @@ const markAgda = (value: string) =>
   data-snapshot-result
   data-least-confident-area={r.leastConfidentArea}
   data-confidence-basis={r.confidenceBasis}
+  data-question-set-version={QUESTION_SET_VERSION}
+  data-copy-version={r.copyVersion}
   hidden
   aria-labelledby="result-headline"
 >
@@ -107,7 +109,7 @@ const markAgda = (value: string) =>
 
   .result-headline {
     margin: 28px 0 0;
-    max-width: 22ch;
+    max-width: 26ch;
     /* The header is sticky. Without this, focusing the headline scrolls
        it underneath the header and hides the label above it. */
     scroll-margin-top: calc(var(--header-h) + 96px);
@@ -132,14 +134,14 @@ const markAgda = (value: string) =>
     font-size: 16px;
     line-height: 1.6;
     color: var(--muted);
-    max-width: 52ch;
+    max-width: 70ch;
   }
 
   .hypothesis {
     margin: 28px 0 0;
     padding: 4px 0 4px 28px;
     border-left: 2px solid var(--accent);
-    max-width: 60ch;
+    max-width: 66ch;
   }
   .hypothesis p {
     margin: 0;
@@ -168,7 +170,7 @@ const markAgda = (value: string) =>
     font-size: 17px;
     line-height: 1.65;
     color: var(--ink);
-    max-width: 58ch;
+    max-width: 68ch;
   }
   .callout-text.confidence {
     font-size: 15px;
@@ -181,14 +183,14 @@ const markAgda = (value: string) =>
     border: 1px solid var(--hair-strong);
     background: var(--paper-soft);
   }
-  .contrast .h3 { max-width: 24ch; }
+  .contrast .h3 { max-width: 30ch; }
   .contrast p {
     margin: 20px 0 0;
     font-family: var(--font-sans);
     font-size: 16px;
     line-height: 1.7;
     color: var(--muted);
-    max-width: 62ch;
+    max-width: 70ch;
   }
   .contrast p:last-of-type {
     color: var(--ink);
