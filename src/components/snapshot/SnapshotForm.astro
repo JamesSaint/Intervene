@@ -119,6 +119,16 @@ const screenData = screens.map((screen) => {
 </section>
 
 <style>
+  /* The section keeps its .block padding even while the flow is hidden,
+     which leaves an empty 144px to 272px band sitting between the hero's
+     bottom rule and the result's top rule. Two hairlines with nothing
+     between them read as a mistake. Collapse the section whenever the
+     flow is not showing. */
+  .block:has([data-snapshot-flow][hidden]) {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
   .sr-status {
     position: absolute;
     width: 1px;

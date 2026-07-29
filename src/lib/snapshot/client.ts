@@ -19,6 +19,7 @@
  */
 
 import { track } from './analytics';
+import { submitFollowUp, submitIndexContribution } from './submit';
 
 const ANSWERS_KEY = 'intv-snapshot-answers';
 const SCREEN_KEY = 'intv-snapshot-screen';
@@ -306,14 +307,38 @@ export function initSnapshot(): void {
   const benchmarkSubmit = document.querySelector<HTMLButtonElement>('[data-benchmark-submit]');
   const benchmarkConsent = document.querySelector<HTMLInputElement>('[data-benchmark-consent]');
   const benchmarkConfirmed = document.querySelector<HTMLElement>('[data-benchmark-confirmed]');
+  const benchmarkError = document.querySelector<HTMLElement>('[data-benchmark-error]');
 
   if (benchmarkSubmit && benchmarkConsent && benchmarkConfirmed) {
-    benchmarkSubmit.addEventListener('click', () => {
-      if (!benchmarkConsent.checked) return;
-      // Phase 3 posts the opaque envelope here. It never carries the
-      // result token and never carries an identity field.
+    benchmarkSubmit.addEventListener('click', async () => {
+      if (!benchmarkConsent.checked || benchmarkSubmit.disabled) return;
+
+      const label = benchmarkSubmit.textContent ?? '';
+      benchmarkSubmit.disabled = true;
+      benchmarkSubmit.textContent = 'Sending…';
+
+      // Answers only. No identity of any kind is assembled here, and
+      // the submit helper drops anything that is not an answer key.
+      const { ok } = await submitIndexContribution({
+        answers: state.answers,
+        question_set_version: resultSection?.dataset.questionSetVersion ?? '',
+        copy_version: resultSection?.dataset.copyVersion ?? '',
+      }).catch(() => ({ ok: false }));
+
+      if (!ok) {
+        benchmarkSubmit.disabled = false;
+        benchmarkSubmit.textContent = label;
+        if (benchmarkError) {
+          benchmarkError.textContent =
+            'That did not send, and nothing was recorded. Try again, or leave it.';
+          benchmarkError.hidden = false;
+        }
+        return;
+      }
+
       benchmarkConsent.closest('label')?.setAttribute('hidden', '');
       benchmarkSubmit.hidden = true;
+      if (benchmarkError) benchmarkError.hidden = true;
       benchmarkConfirmed.hidden = false;
       benchmarkConfirmed.focus();
       track('benchmark_contributed');
@@ -350,6 +375,71 @@ export function initSnapshot(): void {
     followupCancel.addEventListener('click', () => {
       followup.hidden = true;
       state.lastOpener?.focus();
+    });
+  }
+
+  const followupForm = document.querySelector<HTMLFormElement>('[data-followup-form]');
+  const followupSubmit = document.querySelector<HTMLButtonElement>('[data-followup-submit]');
+  const followupStatus = document.querySelector<HTMLElement>('[data-followup-status]');
+
+  const setFollowupStatus = (text: string, kind: 'ok' | 'err' | 'pending') => {
+    if (!followupStatus) return;
+    followupStatus.textContent = text;
+    followupStatus.dataset.state = kind;
+    followupStatus.hidden = false;
+  };
+
+  if (followupForm) {
+    followupForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const honey = followupForm.querySelector<HTMLInputElement>('input[name="_gotcha"]');
+      if (honey && honey.value) return;
+      if (!followupForm.reportValidity()) return;
+
+      const data = new FormData(followupForm);
+      const action = state.lastOpener?.getAttribute('data-action-open') ?? 'contact_intervene';
+
+      if (followupSubmit) {
+        followupSubmit.disabled = true;
+        followupSubmit.dataset.label = followupSubmit.textContent ?? '';
+        followupSubmit.textContent = 'Sending…';
+      }
+      setFollowupStatus('Sending.', 'pending');
+
+      const { ok } = await submitFollowUp({
+        name: String(data.get('name') ?? ''),
+        business_email: String(data.get('business_email') ?? ''),
+        organisation: String(data.get('organisation') ?? ''),
+        role_title: String(data.get('role_title') ?? ''),
+        requested_action: action,
+        least_confident_area: resultSection?.dataset.leastConfidentArea ?? '',
+        confidence_basis: resultSection?.dataset.confidenceBasis ?? '',
+        headline: resultHeadline?.textContent?.trim() ?? '',
+        question_set_version: resultSection?.dataset.questionSetVersion ?? '',
+        copy_version: resultSection?.dataset.copyVersion ?? '',
+      }).catch(() => ({ ok: false }));
+
+      if (followupSubmit) {
+        followupSubmit.disabled = false;
+        followupSubmit.textContent = followupSubmit.dataset.label ?? 'Send';
+      }
+
+      if (!ok) {
+        setFollowupStatus(
+          'That did not send, and nothing was recorded. Try again, or use the contact form.',
+          'err',
+        );
+        return;
+      }
+
+      followupForm.reset();
+      setFollowupStatus(
+        'Received. A person replies within two working days. We do not auto-reply.',
+        'ok',
+      );
+      if (action === 'email_snapshot_and_sample') track('email_snapshot_requested');
+      if (action === 'contact_intervene') track('contact_intervene_requested');
     });
   }
 
