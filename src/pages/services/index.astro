@@ -252,10 +252,6 @@ const stages = [
                   <dt>You provide</dt>
                   <dd>{s.provide}</dd>
                 </div>
-                <div>
-                  <dt>Duration</dt>
-                  <dd>Confirmed at scoping</dd>
-                </div>
               </dl>
             </div>
           </li>
@@ -767,7 +763,10 @@ const stages = [
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* Was two columns. The second held "Duration: Confirmed at scoping" on
+       every phase, which said nothing, and said it next to a page that now
+       states four weeks for the short pilot. */
+    grid-template-columns: 1fr;
     gap: 0 40px;
     border-top: 1px solid var(--hair);
   }
