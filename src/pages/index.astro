@@ -117,6 +117,7 @@ import FilmPlayer from '../components/FilmPlayer.astro';
         <span class="gauge-label mono">Unmeasured</span>
       </div>
       <p class="gap-refrain">Which means you cannot yet answer the question. <em class="keep-together">Can you stop it in time?</em></p>
+      <p class="gap-answer">Ten questions in the <a href="/readiness-snapshot/" class="link">Intervention Readiness Snapshot</a> will tell you which of the four areas you are least able to evidence.</p>
     </div>
   </section>
 
@@ -312,6 +313,12 @@ import FilmPlayer from '../components/FilmPlayer.astro';
     color: var(--muted); max-width: 48ch;
   }
   .gap-refrain em { color: var(--ink); font-style: italic; }
+  /* Sits under the refrain rather than beside it. The refrain poses the
+     question; this answers it without taking the emphasis. */
+  .gap-answer {
+    margin: 20px 0 0; font-family: var(--font-sans); font-size: 15px;
+    line-height: 1.6; color: var(--faint); max-width: 48ch;
+  }
 
   /* 5 · The verdict. It stays on the same left rail; the verdict object
      becomes the object on the right, not a centred interruption. */
