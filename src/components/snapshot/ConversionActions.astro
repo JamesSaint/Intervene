@@ -19,11 +19,17 @@
  * both secondary labels ended in "this". A reader who has to resolve a
  * pronoun before acting does not act.
  *
- * The heading carries the whole "why is this different from the
- * Snapshot" job in eight words, which frees the supporting copy to
- * answer only what happens next. "How would you actually know?" was
- * rhetorical: the page has just established that they do not know, so
- * asking again was redundant.
+ * The heading names the transformation on offer, which frees the note
+ * to state commercial terms rather than describe a conversation. What
+ * the first call costs, who picks the system, and what the engagement
+ * is. Concrete terms answer "what happens next" faster than any
+ * description of the conversation did.
+ *
+ * This is the one place on the site using the word "free". The plan
+ * prohibited it, on the grounds that a free instrument sitting under a
+ * published six-figure price list reads as a downgrade. That was
+ * recorded as a default open to objection and has been overturned
+ * deliberately: here it qualifies the call, not the Snapshot.
  *
  * "Send me the board version" was considered and rejected. It implies a
  * second artefact that does not exist, which is an overpromise, and it
@@ -37,8 +43,8 @@ import FollowUpForm from './FollowUpForm.astro';
 
 const primary = {
   id: 'contact_intervene',
-  label: 'Start with one system',
-  note: 'Start with the system you had in mind. In one conversation you will find out which of your answers could be evidenced today, and which could not. A person replies within two working days. No obligation to go further.',
+  label: 'Start here',
+  note: 'A free twenty minute call. You choose the system. Four weeks, fixed price, intervention time measured.',
 };
 
 const secondary = [
@@ -61,7 +67,7 @@ const markAgda = (value: string) =>
 
 <section class="block tight conversion" data-conversion hidden aria-labelledby="conversion-heading">
   <div class="wrap-narrow">
-    <h2 class="h3" id="conversion-heading">From what you say to what you can show.</h2>
+    <h2 class="h3" id="conversion-heading">Turn your answers into evidence.</h2>
 
     <div class="primary-action" data-action-id={primary.id}>
       <p class="primary-note" set:html={markAgda(primary.note)} />
