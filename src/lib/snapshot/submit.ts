@@ -36,23 +36,58 @@
 /** The same endpoint as /contact/. Declared once, here. */
 export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xvzwdyob';
 
+/**
+ * A dedicated form for Index contributions, when one exists.
+ *
+ * The shared form above is configured to require an email address, so a
+ * contribution carrying no identity is rejected with
+ * `422 REQUIRED_FIELD_MISSING: email`. Until a second form exists, the
+ * contribution sends the routing marker below to satisfy that rule.
+ *
+ * Set this to the second form's endpoint and the marker disappears.
+ */
+export const INDEX_ENDPOINT: string | null = null;
+
+/**
+ * A fixed routing marker, not a person.
+ *
+ * It is byte-for-byte identical on every contribution, so it carries no
+ * information about who submitted one. It exists only because the
+ * shared Formspree form demands an email field. It is not the visitor's
+ * address, and the visitor is never asked for one on this path.
+ *
+ * This is a workaround, and the proper fix is a dedicated form. A
+ * dedicated form would also improve the privacy position: contributions
+ * would stop arriving in the same mailbox as enquiries, which is the
+ * correlation risk the privacy notice currently has to admit to.
+ */
+const INDEX_ROUTING_MARKER = 'index@intervene.uk';
+
 export interface SubmitResult {
   ok: boolean;
 }
 
-async function post(fields: Record<string, string>): Promise<SubmitResult> {
+async function post(
+  fields: Record<string, string>,
+  endpoint: string = FORMSPREE_ENDPOINT,
+): Promise<SubmitResult> {
   const body = new FormData();
   for (const [key, value] of Object.entries(fields)) {
     if (value !== '' && value != null) body.append(key, value);
   }
 
-  const res = await fetch(FORMSPREE_ENDPOINT, {
-    method: 'POST',
-    headers: { Accept: 'application/json' },
-    body,
-  });
-
-  return { ok: res.ok };
+  try {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      body,
+    });
+    return { ok: res.ok };
+  } catch {
+    // A blocked network, a proxy or an offline tab. The caller shows the
+    // failure rather than a false confirmation.
+    return { ok: false };
+  }
 }
 
 export interface FollowUpFields {
@@ -101,11 +136,18 @@ export function submitIndexContribution(
     if (/^q\d{2}_[a-z_]+$/.test(key)) answers[key] = value;
   }
 
-  return post({
-    _subject: 'Intervention Readiness Index contribution',
-    form: 'intervention-readiness-index',
-    ...answers,
-    question_set: fields.question_set_version,
-    copy_version: fields.copy_version,
-  });
+  return post(
+    {
+      _subject: 'Intervention Readiness Index contribution',
+      form: 'intervention-readiness-index',
+      // Only present while sharing the contact form, which requires an
+      // email field. Constant on every contribution, so it identifies
+      // nobody. Drops away once INDEX_ENDPOINT is set.
+      ...(INDEX_ENDPOINT ? {} : { email: INDEX_ROUTING_MARKER }),
+      ...answers,
+      question_set: fields.question_set_version,
+      copy_version: fields.copy_version,
+    },
+    INDEX_ENDPOINT ?? FORMSPREE_ENDPOINT,
+  );
 }

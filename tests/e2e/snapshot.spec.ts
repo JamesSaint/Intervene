@@ -350,11 +350,24 @@ test.describe('privacy and AGDA protection', () => {
     await expect(page.locator('[data-benchmark-confirmed]')).toBeVisible();
 
     expect(body, 'contribution sent nothing').not.toBe('');
-    for (const field of ['name', 'email', 'organisation', 'role']) {
-      expect(body.toLowerCase(), `identity field "${field}" in the contribution`)
-        .not.toMatch(new RegExp(`name="${field}"`, 'i'));
+
+    const fields = [...body.matchAll(/name="([^"]+)"/g)].map((m) => m[1]);
+    expect(fields, 'answers missing from the contribution').toContain('q01_systems');
+
+    // No visitor identity, ever.
+    for (const field of ['name', 'organisation', 'role', 'role_title', 'business_email']) {
+      expect(fields, `identity field "${field}" in the contribution`).not.toContain(field);
     }
-    expect(body, 'answers missing from the contribution').toMatch(/q01_systems/);
+
+    // The shared Formspree form rejects a submission with no email
+    // (422 REQUIRED_FIELD_MISSING). While the two paths share a form,
+    // the contribution sends a fixed routing marker instead. It must be
+    // the constant, never anything the visitor typed.
+    if (fields.includes('email')) {
+      const value = body.match(/name="email"\r?\n\r?\n([^\r\n]+)/)?.[1];
+      expect(value, 'the email field is not the fixed routing marker')
+        .toBe('index@intervene.uk');
+    }
   });
 
   test('the follow-up form requires a name and a work email', async ({ page }) => {
