@@ -282,14 +282,50 @@ test.describe('privacy and AGDA protection', () => {
     ).toHaveLength(0);
   });
 
-  test('is noindex and absent from the sitemap in Phase 1', async ({ page, request }) => {
+  test('is indexable and present in the sitemap', async ({ page, request }) => {
+    // The inverse of these two assertions held for Phase 1, when the page
+    // was deliberately hidden. Phase 4 made it public, so they now guard
+    // against it being hidden again by accident.
     await page.goto(ROUTE);
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
       'content',
-      'noindex, nofollow',
+      'index, follow',
     );
     const sitemap = await request.get('/sitemap-0.xml');
-    expect(await sitemap.text()).not.toContain('readiness-snapshot');
+    expect(await sitemap.text()).toContain('/readiness-snapshot/');
+  });
+
+  test('is reachable from the takeover menu and the footer', async ({ page }) => {
+    // Being live is worth nothing if nothing links to it. For three
+    // releases the only way in was being sent the URL.
+    await page.goto('/');
+    await expect(
+      page.locator('#takeover-menu a[href$="/readiness-snapshot/"]'),
+    ).toHaveCount(1);
+    await expect(
+      page.locator('.site-footer a[href="/readiness-snapshot/"]'),
+    ).toHaveCount(1);
+  });
+
+  test('is linked from the pages where a reader is deciding', async ({ page }) => {
+    // Nav alone would waste it. Most visitors never open the menu, and
+    // these four are the points where the reader is weighing whether any
+    // of this is worth engaging.
+    for (const route of [
+      '/',
+      '/services/',
+      '/sample-report/',
+      '/insights/accountability-theatre/',
+    ]) {
+      await page.goto(route);
+      const inBody = page.locator(
+        'main a[href="/readiness-snapshot/"], article a[href="/readiness-snapshot/"]',
+      );
+      expect(
+        await inBody.count(),
+        `${route} has no in-body link to the Snapshot`,
+      ).toBeGreaterThan(0);
+    }
   });
 
   test('ships no ordering values, thresholds or bands to the browser', async ({ page }) => {

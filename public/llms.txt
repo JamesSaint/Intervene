@@ -112,6 +112,9 @@ https://intervene.uk/methodology/
 Sample AGDA™ verdict:
 https://intervene.uk/sample-report/
 
+Intervention Readiness Snapshot (self-reported, not an assessment):
+https://intervene.uk/readiness-snapshot/
+
 Levels of assurance:
 https://intervene.uk/services/
 
