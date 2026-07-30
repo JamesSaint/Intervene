@@ -90,6 +90,59 @@ async function post(
   }
 }
 
+/**
+ * Formspree renders each field key as the label and each value verbatim,
+ * in insertion order. So the notification email is entirely determined
+ * by what is assembled here.
+ *
+ * The first version sent internal identifiers as labels and slugs as
+ * values: "result_area: decide", "requested_action: contact_intervene",
+ * "copy_version: copy-3.0". Correct, and unreadable. Someone triaging
+ * an enquiry between meetings should not be decoding identifiers.
+ *
+ * Keys are therefore written as English labels, values are mapped to
+ * English, and the order runs from what the person wants down to the
+ * detail behind it.
+ */
+
+const ACTION_LABEL: Record<string, string> = {
+  contact_intervene: 'A conversation about testing one of these assumptions',
+  email_snapshot_and_sample: 'Their Snapshot by email, with the sample verdict',
+};
+
+const AREA_LABEL: Record<string, string> = {
+  detect: 'Detect. Would they know',
+  escalate: 'Escalate. Would it reach anyone who can act',
+  decide: 'Decide. Could anyone authorise it',
+  intervene: 'Intervene. Would the action work',
+};
+
+const BASIS_LABEL: Record<string, string> = {
+  tested: 'Exercised under realistic conditions, with evidence kept',
+  documented: 'Written down, but not realistically tested',
+  assumed: 'Policy, design intent or vendor assurance',
+  unknown: 'They are not certain',
+};
+
+const SYSTEMS_LABEL: Record<string, string> = {
+  none: 'None yet',
+  '1_3': 'One to three',
+  '4_10': 'Four to ten',
+  '11_50': 'Eleven to fifty',
+  '50_plus': 'More than fifty',
+  not_known: 'Not known',
+};
+
+const CRITICALITY_LABEL: Record<string, string> = {
+  contained: 'Awkward internally. Nobody outside notices',
+  noticeable: 'Customers feel it, but recoverable',
+  serious: 'Material financial, safety or service harm',
+  severe: 'Harm that could not be undone',
+  not_known: 'Not known',
+};
+
+const label = (map: Record<string, string>, key: string) => map[key] ?? key;
+
 export interface FollowUpFields {
   name: string;
   business_email: string;
@@ -99,29 +152,60 @@ export interface FollowUpFields {
   least_confident_area: string;
   confidence_basis: string;
   headline: string;
+  systems?: string;
+  criticality?: string;
   question_set_version: string;
   copy_version: string;
 }
 
 export function submitFollowUp(fields: FollowUpFields): Promise<SubmitResult> {
+  const who = fields.organisation
+    ? `${fields.name}, ${fields.organisation}`
+    : fields.name;
+
+  const subject =
+    fields.requested_action === 'contact_intervene'
+      ? `Snapshot: conversation requested by ${who}`
+      : `Snapshot: result requested by ${who}`;
+
   return post({
-    _subject: `Snapshot: ${fields.requested_action}`,
-    form: 'readiness-snapshot-follow-up',
-    name: fields.name,
-    email: fields.business_email,
-    organisation: fields.organisation ?? '',
-    role: fields.role_title ?? '',
-    requested_action: fields.requested_action,
-    result_area: fields.least_confident_area,
-    result_basis: fields.confidence_basis,
-    result_headline: fields.headline,
-    question_set: fields.question_set_version,
-    copy_version: fields.copy_version,
+    _subject: subject,
+    // Sets the reply-to without appearing as a row in the email body.
+    _replyto: fields.business_email,
+
+    'They asked for': label(ACTION_LABEL, fields.requested_action),
+    Name: fields.name,
+    Email: fields.business_email,
+    Organisation: fields.organisation ?? 'Not given',
+    Role: fields.role_title ?? 'Not given',
+
+    'Systems in production': label(SYSTEMS_LABEL, fields.systems ?? ''),
+    'If the most consequential ran wrong for a day': label(
+      CRITICALITY_LABEL,
+      fields.criticality ?? '',
+    ),
+
+    'Least confident area': label(AREA_LABEL, fields.least_confident_area),
+    'Their answers rest on': label(BASIS_LABEL, fields.confidence_basis),
+    'Their result said': fields.headline,
+
+    Snapshot: `${fields.question_set_version} / ${fields.copy_version}`,
   });
 }
 
+export interface AnswerDetail {
+  /** Question id, for the machine-readable line. */
+  id: string;
+  /** The question as the visitor read it. Becomes the email label. */
+  legend: string;
+  /** The chosen option's semantic value. */
+  value: string;
+  /** The chosen option as the visitor read it. */
+  label: string;
+}
+
 export interface IndexContributionFields {
-  answers: Record<string, string>;
+  answers: AnswerDetail[];
   question_set_version: string;
   copy_version: string;
 }
@@ -130,23 +214,29 @@ export function submitIndexContribution(
   fields: IndexContributionFields,
 ): Promise<SubmitResult> {
   // Answers only. Assert the absence of identity rather than trusting
-  // the caller: anything not a known answer key is dropped.
-  const answers: Record<string, string> = {};
-  for (const [key, value] of Object.entries(fields.answers)) {
-    if (/^q\d{2}_[a-z_]+$/.test(key)) answers[key] = value;
+  // the caller: anything without a question id shape is dropped.
+  const answers = fields.answers.filter((a) => /^q\d{2}_[a-z_]+$/.test(a.id));
+
+  const readable: Record<string, string> = {};
+  for (const answer of answers) {
+    readable[answer.legend] = answer.label || answer.value;
   }
+
+  // One compact machine-readable line alongside the readable rows. These
+  // emails are the only store until the Worker exists, so the data has
+  // to survive in a form that can be tabulated later, not just read.
+  const raw = answers.map((a) => `${a.id}=${a.value}`).join('; ');
 
   return post(
     {
-      _subject: 'Intervention Readiness Index contribution',
-      form: 'intervention-readiness-index',
+      _subject: 'Index contribution',
       // Only present while sharing the contact form, which requires an
       // email field. Constant on every contribution, so it identifies
       // nobody. Drops away once INDEX_ENDPOINT is set.
       ...(INDEX_ENDPOINT ? {} : { email: INDEX_ROUTING_MARKER }),
-      ...answers,
-      question_set: fields.question_set_version,
-      copy_version: fields.copy_version,
+      ...readable,
+      Snapshot: `${fields.question_set_version} / ${fields.copy_version}`,
+      Data: raw,
     },
     INDEX_ENDPOINT ?? FORMSPREE_ENDPOINT,
   );
