@@ -352,10 +352,21 @@ test.describe('privacy and AGDA protection', () => {
     expect(body, 'contribution sent nothing').not.toBe('');
 
     const fields = [...body.matchAll(/name="([^"]+)"/g)].map((m) => m[1]);
-    expect(fields, 'answers missing from the contribution').toContain('q01_systems');
+
+    // Readable rows are keyed by the question as the visitor read it.
+    // The machine-readable line carries the ids, so the data survives in
+    // a form that can be tabulated once there is somewhere to put it.
+    expect(fields, 'machine-readable line missing').toContain('Data');
+    const data = body.match(/name="Data"\r?\n\r?\n([^\r\n]+)/)?.[1] ?? '';
+    for (const id of [
+      'q01_systems', 'q02_criticality', 'q03_detect', 'q04_escalate', 'q05_authority',
+      'q06_exercised', 'q07_conflict', 'q08_capability', 'q09_tested', 'q10_confidence',
+    ]) {
+      expect(data, `${id} missing from the contribution`).toContain(`${id}=`);
+    }
 
     // No visitor identity, ever.
-    for (const field of ['name', 'organisation', 'role', 'role_title', 'business_email']) {
+    for (const field of ['name', 'Name', 'organisation', 'Organisation', 'role', 'Role', 'role_title', 'business_email']) {
       expect(fields, `identity field "${field}" in the contribution`).not.toContain(field);
     }
 

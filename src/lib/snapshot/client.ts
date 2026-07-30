@@ -187,6 +187,27 @@ export function initSnapshot(): void {
     return false;
   }
 
+  /**
+   * The question and the chosen option, as the visitor read them.
+   *
+   * Taken from the DOM rather than by importing the question set, which
+   * would ship every question and option string to the browser a second
+   * time and roughly double the bundle. The text is already on the page.
+   */
+  function answerDetail() {
+    return allInputNames.map((name) => {
+      const fieldset = flow.querySelector<HTMLElement>(`[data-question="${CSS.escape(name)}"]`);
+      const checked = fieldset?.querySelector<HTMLInputElement>('input:checked');
+      return {
+        id: name,
+        legend: fieldset?.querySelector('legend')?.textContent?.trim() ?? name,
+        value: state.answers[name] ?? '',
+        label:
+          checked?.closest('label')?.querySelector('.choice-label')?.textContent?.trim() ?? '',
+      };
+    });
+  }
+
   /* ---------- focus ---------- */
 
   /**
@@ -320,7 +341,7 @@ export function initSnapshot(): void {
       // Answers only. No identity of any kind is assembled here, and
       // the submit helper drops anything that is not an answer key.
       const { ok } = await submitIndexContribution({
-        answers: state.answers,
+        answers: answerDetail(),
         question_set_version: resultSection?.dataset.questionSetVersion ?? '',
         copy_version: resultSection?.dataset.copyVersion ?? '',
       }).catch(() => ({ ok: false }));
@@ -416,6 +437,10 @@ export function initSnapshot(): void {
         least_confident_area: resultSection?.dataset.leastConfidentArea ?? '',
         confidence_basis: resultSection?.dataset.confidenceBasis ?? '',
         headline: resultHeadline?.textContent?.trim() ?? '',
+        // Two context answers, so an enquiry can be triaged without
+        // opening the site: how much is running, and what it costs.
+        systems: state.answers.q01_systems ?? '',
+        criticality: state.answers.q02_criticality ?? '',
         question_set_version: resultSection?.dataset.questionSetVersion ?? '',
         copy_version: resultSection?.dataset.copyVersion ?? '',
       }).catch(() => ({ ok: false }));
