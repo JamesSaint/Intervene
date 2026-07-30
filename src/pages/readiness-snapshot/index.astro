@@ -2,17 +2,17 @@
 /**
  * Intervention Readiness Snapshot.
  *
- * PHASE 1: static prototype. `noindex`, unlinked from navigation, no
- * network call, no data collection. The result is rendered server side
- * and any of the sixteen combinations can be reached in the browser with
- * `?preview=area-basis`. See the plan, section O.
+ * Public since Phase 4: indexable, in the sitemap, in the takeover menu
+ * and footer, and linked from the homepage, /services/, /sample-report/
+ * and every insight article.
  *
- * Before Phase 4: add `public/assets/og/og-readiness-snapshot.png` at
- * 1200x630 and set `ogImage`. Until then the default card is used
- * rather than pointing at a file that does not exist.
+ * The result is still rendered server side from a prototype default, and
+ * any of the sixteen combinations can be reached in the browser with
+ * `?preview=area-basis`. That goes when the Worker exists.
  *
- * Phase 4 removes `noindex`, removes the sitemap exclusion in
- * astro.config.mjs, and adds the navigation and internal links.
+ * Still outstanding: `public/assets/og/og-readiness-snapshot.png` at
+ * 1200x630, and `ogImage` set to it. Until then shares of a public page
+ * use the default card, which is wrong but not broken.
  */
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -43,7 +43,7 @@ const faqs = [
   {
     question: 'How long does the Snapshot take?',
     answer:
-      'About four minutes. Fifteen multiple choice questions across six screens. There is no time limit, and your answers are kept in the browser tab if you need to stop and come back.',
+      'About two minutes. Ten multiple choice questions across five screens. There is no time limit, and your answers are kept in the browser tab if you need to stop and come back.',
   },
   {
     question: 'What happens to my answers?',
@@ -71,7 +71,6 @@ const schema = {
   title="Intervention Readiness Snapshot · Intervene"
   description="A short, self-reported check on whether your organisation could detect, escalate, decide and intervene in time. Indicative only. Not an AGDA™ assessment."
   current="readiness-snapshot"
-  noindex={true}
   faqs={faqs}
   schema={schema}
 >
