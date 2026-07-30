@@ -272,6 +272,12 @@ const stages = [
         after the question answered, the evidence produced, and the decision
         being supported.
       </p>
+      <p class="body muted tiers-note">
+        Ahead of that, the
+        <a href="/readiness-snapshot/" class="link">Intervention Readiness Snapshot</a>
+        asks ten questions and names the area you are least able to evidence.
+        No details required to see the result.
+      </p>
 
       <ol class="tiers" role="list">
         {tiers.map((t) => (
@@ -459,6 +465,8 @@ const stages = [
 
   .block .h2 { max-width: 28ch; }
   .block .lede { margin-top: 16px; max-width: 60ch; }
+  /* The free step, placed before the price list rather than after it. */
+  .tiers-note { margin-top: 20px; max-width: 60ch; }
 
   /* ----- Buyer questions ----- */
   .buyer-grid {
