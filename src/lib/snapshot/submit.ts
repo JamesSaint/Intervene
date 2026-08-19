@@ -63,6 +63,25 @@ export const INDEX_ENDPOINT: string | null = null;
  */
 const INDEX_ROUTING_MARKER = 'index@intervene.uk';
 
+/**
+ * The same workaround for the completion record, and a separate address
+ * so the two paths can be filtered apart in the mailbox.
+ */
+const ATTRIBUTION_ROUTING_MARKER = 'attribution@intervene.uk';
+
+/**
+ * The one fixed string in a completion subject line.
+ *
+ * Every completion note begins with this and nothing else on the site
+ * emits it, so a single mailbox rule matching this literal catches every
+ * completion and nothing else. The code follows it, so a subject line
+ * still reads at a glance without opening the message.
+ *
+ * Do not vary it, translate it or move the code in front of it. It is
+ * the filter, and a filter that drifts silently stops counting.
+ */
+export const COMPLETION_SUBJECT_TAG = '[IR-COMPLETION]';
+
 export interface SubmitResult {
   ok: boolean;
 }
@@ -156,6 +175,8 @@ export interface FollowUpFields {
   criticality?: string;
   question_set_version: string;
   copy_version: string;
+  /** Attribution code, when the visit began on a participant's link. */
+  partner_code?: string;
 }
 
 export function submitFollowUp(fields: FollowUpFields): Promise<SubmitResult> {
@@ -189,6 +210,48 @@ export function submitFollowUp(fields: FollowUpFields): Promise<SubmitResult> {
     'Their answers rest on': label(BASIS_LABEL, fields.confidence_basis),
     'Their result said': fields.headline,
 
+    Snapshot: `${fields.question_set_version} / ${fields.copy_version}`,
+
+    // Present only where the visit began on a participant's link. This
+    // is the point at which attribution and identification meet, and it
+    // happens because the person chose to give their details.
+    ...(fields.partner_code ? { 'Arrived on link': fields.partner_code } : {}),
+  });
+}
+
+/**
+ * The completion record.
+ *
+ * Sent once, when a result is generated, and only where the visit began
+ * on a participant's link. It carries the code and the two version
+ * strings. It carries no answers, no result, no identity and no free
+ * text, because a completion is the only fact it exists to record.
+ *
+ * Without it there is no observable for H2 at all. The Snapshot renders
+ * its result in the browser and calls nothing, so a visitor can arrive,
+ * complete, read the result and leave with no trace anywhere. That is
+ * the right default for the instrument and the wrong one for measuring
+ * whether a forwarded link produced anything.
+ *
+ * Deliberately silent. The caller does not await it and never surfaces
+ * a failure. A visible error would tell the recipient that something
+ * was recorded on their behalf.
+ */
+export interface CompletionFields {
+  partner_code: string;
+  question_set_version: string;
+  copy_version: string;
+}
+
+export function submitCompletion(fields: CompletionFields): Promise<SubmitResult> {
+  if (!fields.partner_code) return Promise.resolve({ ok: false });
+
+  return post({
+    _subject: `${COMPLETION_SUBJECT_TAG} ${fields.partner_code}`,
+    // Constant on every completion, so it identifies nobody. Only
+    // present because the shared Formspree form requires an email field.
+    email: ATTRIBUTION_ROUTING_MARKER,
+    'Arrived on link': fields.partner_code,
     Snapshot: `${fields.question_set_version} / ${fields.copy_version}`,
   });
 }
