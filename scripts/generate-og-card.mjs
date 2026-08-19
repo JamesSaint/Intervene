@@ -21,6 +21,15 @@ import { dirname, resolve } from 'node:path';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 const CARDS = {
+  network: {
+    kicker: 'Intervention Readiness Network',
+    // Last line renders in accent, as on every other card.
+    lines: ['Who should be asked', 'whether they could stop it?'],
+    // No commercial word anywhere. The card travels without the page's
+    // sixth section attached, and a card reading like a referral offer
+    // would be the first thing anyone saw.
+    meta: ['One question', 'One link', 'No fee to take part'],
+  },
   'readiness-snapshot': {
     kicker: 'Readiness Snapshot',
     // Last line renders in accent, as on every other card.
