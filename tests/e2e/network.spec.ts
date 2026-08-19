@@ -32,7 +32,7 @@ test.describe('Network page', () => {
     const response = await page.goto(ROUTE);
     expect(response?.status()).toBe(200);
     await expect(page.locator('h1')).toHaveCount(1);
-    await expect(page.locator('h1')).toContainText('Intervention is what happens');
+    await expect(page.locator('h1')).toContainText('Intervention proves what can happen');
   });
 
   test('leads with the question, not with joining', async ({ page }) => {
