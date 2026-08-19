@@ -46,6 +46,66 @@ test.describe('Network page', () => {
     await expect(page.locator('.beat-word')).toHaveText(['Detect', 'Decide', 'Intervene']);
   });
 
+  test('names who it is for in a heading a scanner can find', async ({ page }) => {
+    await page.goto(ROUTE);
+    await expect(page.locator('#who h2')).toContainText('Who the Network is for');
+    // The five kinds of standing, substance unchanged.
+    await expect(page.locator('#who .rows > div')).toHaveCount(5);
+    await expect(page.locator('#who dt').nth(0)).toHaveText('Former regulators and supervisors');
+    await expect(page.locator('#who dt').nth(4)).toHaveText('Experienced chairs and non-executives');
+  });
+
+  test('answers what participation is worth, and what it is not', async ({ page }) => {
+    await page.goto(ROUTE);
+    const section = page.locator('#participation');
+    await expect(section).toBeVisible();
+    await expect(section.locator('h2')).toContainText('still being defined');
+
+    // Four things, all deliverable at current scale.
+    await expect(section.locator('.rows > div')).toHaveCount(4);
+    const rows = (await section.locator('.rows').innerText()).toLowerCase();
+    expect(rows).toContain('chatham house rule');
+    expect(rows).toContain('intervention readiness index');
+    expect(rows).toContain('judged on quality alone');
+
+    // The half that stops it becoming a benefits list.
+    const bounds = (await section.locator('.bounds').innerText()).toLowerCase();
+    expect(bounds).toContain('not accreditation');
+    expect(bounds).toContain('no authorisation of any kind');
+    expect(bounds).toContain('no access to the agda');
+    expect(bounds).toContain('no licence to use the method');
+    expect(bounds).toContain('nothing to progress through');
+    expect(bounds).toContain('creates no commercial relationship');
+    expect(bounds).toContain('no authority over an assessment');
+  });
+
+  test('promises nothing that would distribute the method', async ({ page }) => {
+    await page.goto(ROUTE);
+    const body = (await page.locator('main').innerText()).toLowerCase();
+    // Phrases that could only appear here as a promise. `training` and
+    // `licence` are excluded on purpose: the page uses both, negated, and
+    // a check that forbids the word would forbid saying no to the thing.
+    for (const forbidden of [
+      'accredited',
+      'authorised practitioner',
+      'authorised adviser',
+      'exclusive',
+      'territory',
+      'qualified leads',
+      'preferential',
+      'agda training',
+    ]) {
+      expect(body, `"${forbidden}" must not appear on /network/`).not.toContain(forbidden);
+    }
+
+    // Where they do appear, they appear as refusals.
+    expect(body).toContain('no training');
+    expect(body).toContain('no licence to use the method');
+
+    // No progression language of any kind.
+    expect(body).not.toMatch(/\bprogress(es|ion)\b/);
+  });
+
   test('routes interest to /contact/ and builds no form of its own', async ({ page }) => {
     await page.goto(ROUTE);
 
