@@ -80,6 +80,45 @@ const notAsked = [
   'Make a high-stakes commercial introduction.',
 ];
 
+/**
+ * What participation is actually worth, which the page previously left
+ * unanswered. The review was right that a page clear about what somebody
+ * does not do has to be equally clear about why they would bother.
+ *
+ * The value is proximity to a forming field, not commercial upside. Every
+ * row here is something Intervene can deliver at current scale, said in
+ * the smallest terms that are true: occasional, selected, when there is
+ * something worth saying. Nothing here is a programme, a schedule or an
+ * entitlement, and none of it may become one without this comment being
+ * deleted on purpose.
+ *
+ * Two claims were cut before publication. Findings no longer arrive
+ * "before they are published", because that is preferential access and
+ * commits us to a publication order nobody has designed. And the
+ * briefings row no longer ends "There is no newsletter", because a public
+ * prohibition on a mailing list is a promise about a decision that has
+ * not been taken. Neither cut weakens the row. Both remove a commitment
+ * that would have had to be kept.
+ */
+const participation = [
+  {
+    k: 'Occasional discussions',
+    v: 'Small groups, experienced people, one problem at a time. Chatham House Rule where it helps. No pitch, no training, nothing to sign, and sometimes a short anonymised note afterwards.',
+  },
+  {
+    k: 'Early sight of the evidence',
+    v: 'Selected findings from the Intervention Readiness Index as the evidence base develops.',
+  },
+  {
+    k: 'Somewhere for sector experience',
+    v: 'How intervention fails is particular to a sector. Submitting that experience, or challenging what we have concluded, runs through the same documented route open to any external practitioner and is judged on quality alone.',
+  },
+  {
+    k: 'Occasional briefings',
+    v: 'A short research note when there is something worth saying.',
+  },
+];
+
 const link = [
   {
     k: 'On arrival',
@@ -186,10 +225,11 @@ const schema = {
   <!-- 2. WHO IS POSITIONED TO ASK IT -->
   <section class="block" id="who">
     <div class="wrap">
-      <h2 class="h2">A question like this does not travel well <em>from a stranger.</em></h2>
+      <h2 class="h2">Who the Network <em>is for.</em></h2>
       <p class="lede muted who-lede">
-        What matters is not a contact list. It is enough judgement and standing
-        to recognise when an organisation should confront this question at all.
+        A question like this does not travel well from a stranger. What matters
+        is not a contact list. It is enough judgement and standing to recognise
+        when an organisation should confront this question at all.
       </p>
 
       <dl class="rows reveal">
@@ -250,7 +290,46 @@ const schema = {
     </div>
   </section>
 
-  <!-- 4. WHAT THE LINK DOES -->
+  <!-- 4. WHAT PARTICIPATION GIVES YOU -->
+  <section class="block" id="participation">
+    <div class="wrap">
+      <h2 class="h2">Early sight of a field <em>still being defined.</em></h2>
+      <p class="lede muted part-lede">
+        Intervention Readiness is new enough that the evidence base is still
+        forming. Participation puts you close to that work, and close to people
+        carrying the same question in other sectors. What is on offer is
+        intellectual access, not commercial access.
+      </p>
+
+      <dl class="rows reveal">
+        {participation.map((row) => (
+          <div>
+            <dt>{row.k}</dt>
+            <dd set:html={markAgda(row.v)} />
+          </div>
+        ))}
+      </dl>
+
+      <div class="bounds">
+        <p class="body muted">
+          <strong>What this is not.</strong> Participation is not accreditation
+          and carries no authorisation of any kind. It grants no access to the
+          AGDA<span class="agda-tm">™</span> criteria or rubric, no licence to
+          use the method, and no standing to assess anybody. There is nothing to
+          progress through and nothing to qualify for.
+        </p>
+        <p class="body muted">
+          Participation creates no commercial relationship. Intervene sometimes
+          works directly with advisers, researchers and specialists where there
+          is a specific reason to, and such an arrangement is separate work
+          rather than a step up from anything. It confers no authority over an
+          assessment and no influence on a verdict.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. WHAT THE LINK DOES -->
   <section class="block" id="link">
     <div class="wrap">
       <h2 class="h2">Your link says it came from you. <em>It says nothing about who you sent it to.</em></h2>
@@ -278,7 +357,7 @@ const schema = {
     </div>
   </section>
 
-  <!-- 5. INDEPENDENCE -->
+  <!-- 6. INDEPENDENCE -->
   <section class="block" id="independence">
     <div class="wrap">
       <h2 class="h2">Nobody with a commercial interest <em>goes near the verdict.</em></h2>
@@ -305,7 +384,7 @@ const schema = {
     </div>
   </section>
 
-  <!-- 6. RECOGNITION -->
+  <!-- 7. RECOGNITION -->
   <section class="block tight recognition">
     <div class="wrap">
       <p class="body muted recognition-copy">
@@ -319,7 +398,7 @@ const schema = {
     </div>
   </section>
 
-  <!-- 7. HOW THIS STARTS -->
+  <!-- 8. HOW THIS STARTS -->
   <section class="block" id="start">
     <div class="wrap">
       <div class="start-grid">
@@ -518,6 +597,21 @@ const schema = {
     background: var(--faint);
   }
   .not-asked-note { margin-top: 28px; max-width: 40ch; }
+
+  .part-lede { margin-top: 24px; max-width: 56ch; }
+
+  /* The boundary. Set apart from the rows above it because it is the
+     half of this section that stops it becoming a benefits list. */
+  .bounds {
+    margin: 48px 0 0;
+    padding-top: 28px;
+    border-top: 1px solid var(--hair);
+    display: grid;
+    gap: 20px;
+    max-width: 66ch;
+  }
+  .bounds .body { margin: 0; }
+  .bounds strong { color: var(--ink); }
 
   .link-note { margin-top: 40px; max-width: 62ch; }
 

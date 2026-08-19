@@ -195,6 +195,26 @@ test.describe('accessibility', () => {
   });
 });
 
+test.describe('after the result', () => {
+  test('connects the Snapshot to AGDA without overclaiming what it did', async ({ page }) => {
+    await page.goto(ROUTE);
+    await completeSnapshot(page);
+
+    const bridge = page.locator('[data-conversion] .bridge');
+    await expect(bridge).toBeVisible();
+    const text = (await bridge.innerText()).toLowerCase();
+
+    // States the limit before the option, which is what keeps this a
+    // finding rather than a conversion step.
+    expect(text).toContain('indicative and self-reported, not an assessment');
+    expect(text).toContain('warrant closer examination');
+    expect(text).toContain('test it independently');
+
+    // The conversation is still the existing action, not a new funnel.
+    await expect(page.locator('[data-action-open="contact_intervene"]')).toBeVisible();
+  });
+});
+
 test.describe('privacy and AGDA protection', () => {
   test('transmits no answer data while the visitor is answering', async ({ page }) => {
     // The site already loads Google Fonts and fires a consent-denied GA4
