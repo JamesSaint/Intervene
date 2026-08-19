@@ -19,7 +19,8 @@
  */
 
 import { track } from './analytics';
-import { submitFollowUp, submitIndexContribution } from './submit';
+import { submitFollowUp, submitIndexContribution, submitCompletion } from './submit';
+import { attributionCode, captureAttribution } from './attribution';
 
 const ANSWERS_KEY = 'intv-snapshot-answers';
 const SCREEN_KEY = 'intv-snapshot-screen';
@@ -33,6 +34,11 @@ interface State {
 }
 
 export function initSnapshot(): void {
+  // First, and outside every guard below. A visitor who arrives on a
+  // participant's link must have the code taken out of the address bar
+  // whether or not the questionnaire is on the page.
+  captureAttribution();
+
   const found = document.querySelector<HTMLElement>('[data-snapshot-flow]');
   if (!found) return;
   // Narrowed alias. Function declarations below are hoisted, so TypeScript
@@ -259,6 +265,19 @@ export function initSnapshot(): void {
     state.completed = true;
     track('snapshot_completed');
 
+    // The completion record, where the visit began on a participant's
+    // link. Deliberately not awaited and deliberately silent: it records
+    // that a completion happened on that code, and the visitor is shown
+    // nothing about it either way.
+    const code = attributionCode();
+    if (code) {
+      void submitCompletion({
+        partner_code: code,
+        question_set_version: resultSection?.dataset.questionSetVersion ?? '',
+        copy_version: resultSection?.dataset.copyVersion ?? '',
+      }).catch(() => undefined);
+    }
+
     flow.hidden = true;
     if (resultSection) resultSection.hidden = false;
     if (benchmark) benchmark.hidden = false;
@@ -443,6 +462,9 @@ export function initSnapshot(): void {
         criticality: state.answers.q02_criticality ?? '',
         question_set_version: resultSection?.dataset.questionSetVersion ?? '',
         copy_version: resultSection?.dataset.copyVersion ?? '',
+        // Joins this identification to the link the visit arrived on.
+        // Voluntary, because reaching this form is.
+        partner_code: attributionCode(),
       }).catch(() => ({ ok: false }));
 
       if (followupSubmit) {
