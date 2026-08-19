@@ -1,0 +1,633 @@
+---
+/**
+ * The Intervention Readiness Network.
+ *
+ * A mechanism, not a membership organisation. Somebody with relevant
+ * professional judgement puts one question in front of an organisation
+ * that should face it, and Intervene carries everything after that.
+ *
+ * WHAT THIS PAGE IS NOT ALLOWED TO BECOME. A referral programme. The
+ * commercial arrangement is one quiet paragraph, sixth of seven, and it
+ * is not a call to action. If the page ever reads as though payment is
+ * the reason to take part, it is wrong and the fix is to cut, not to
+ * balance.
+ *
+ * The vocabulary is load bearing. Participants, never partners,
+ * members, affiliates or introducers. There is no ladder, no status and
+ * nothing to join, so no word on this page may imply one.
+ *
+ * The independence section states only what is settled. The remediation
+ * question, whether somebody who took an introduction fee may later be
+ * paid for work arising from the findings, is open with legal advice and
+ * deliberately absent. Publishing an unsupported mechanism would be
+ * worse than publishing none.
+ *
+ * There is no form here. Interest routes through /contact/, which
+ * already has a handler, a privacy notice, a retention rule and a
+ * published response time. That removes a second inbox, a second
+ * retention policy and the Article 14 exposure of somebody naming a
+ * third party in free text. The copy tells people not to name
+ * individuals.
+ */
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { markAgda } from '../../lib/marks';
+
+const standing = [
+  {
+    k: 'Former regulators and supervisors',
+    v: 'Who know what a supervisor asks next, and what an unsatisfying answer sounds like.',
+  },
+  {
+    k: 'Former CROs and risk executives',
+    v: 'Who have carried the accountability themselves and know where the evidence usually runs out.',
+  },
+  {
+    k: 'Independent governance and risk advisers',
+    v: 'With live client relationships, at or one step from the accountable executive.',
+  },
+  {
+    k: 'Specialist consultants',
+    v: 'Where the intervention conditions are particular and the general framing does not reach them.',
+  },
+  {
+    k: 'Experienced chairs and non-executives',
+    v: 'Who have put the question to an executive and know how rarely it gets a straight answer.',
+  },
+];
+
+const asked = [
+  {
+    h: 'One person.',
+    p: 'Somebody you believe genuinely carries accountability for a consequential system already running.',
+  },
+  {
+    h: 'One link.',
+    p: 'The Intervention Readiness Snapshot, on a link that identifies you. Ten questions, about two minutes, result free with no details required.',
+  },
+  {
+    h: 'Your judgement that it is relevant.',
+    p: 'Nothing beyond that. If the question does not apply to anyone you know, it does not apply, and saying so is useful.',
+  },
+];
+
+const notAsked = [
+  'Sell AGDA™.',
+  'Explain Intervene.',
+  'Qualify the prospect.',
+  'Negotiate anything.',
+  'Defend the methodology.',
+  'Make a high-stakes commercial introduction.',
+];
+
+const link = [
+  {
+    k: 'On arrival',
+    v: 'The code is read and removed from the address bar. It is held in the page for that visit and written nowhere on the reader’s device.',
+  },
+  {
+    k: 'What it identifies',
+    v: 'Which participant the visit came through. It carries no recipient identity, and none can be derived from it.',
+  },
+  {
+    k: 'On completion',
+    v: 'We know a Snapshot was completed on your link. We do not know who completed it.',
+  },
+  {
+    k: 'If they identify themselves',
+    v: 'They may choose to give their details to receive the fuller result. That is a separate act, taken later and by them, and it is the only route by which we come to know who they are.',
+  },
+  {
+    k: 'What you are told',
+    v: 'Only that an organisation has been attributed to you, and only once that organisation has volunteered itself. You are never told who received your link.',
+  },
+];
+
+const firewall = [
+  'A commercial introduction never affects AGDA™ evidence, interpretation, scoring, findings or verdict.',
+  'No commercial payment varies according to the outcome of an AGDA™ assessment. Any fee arises on contract signature.',
+  'Commercial participation confers no methodological authority. Evidence, challenge and sector insight may be submitted through the same documented route open to any external practitioner, and are judged on quality alone.',
+];
+
+const exclusions = [
+  'Participation is not open to anybody holding a current supervisory or regulatory role.',
+  'Where somebody holds a current directorship, trusteeship or fiduciary role at an organisation, they may take part, and no payment arises in relation to that organisation.',
+  'No payment arises where it would be improper under an organisation’s own policies, or would breach law or regulation, including the Bribery Act 2010.',
+  'Where a commercial arrangement exists, the client is told before they sign, not when the verdict arrives.',
+];
+
+const useful = [
+  { k: 'Who you are', v: 'Your background and the standing you would be drawing on.' },
+  { k: 'Who you reach', v: 'The kinds of organisations and roles you work with. Categories, not names.' },
+  { k: 'Why it is relevant', v: 'Where Intervention Readiness bears on the work you already do.' },
+];
+
+const schema = {
+  '@type': 'WebPage',
+  '@id': 'https://intervene.uk/network/#webpage',
+  name: 'Intervention Readiness Network',
+  inLanguage: 'en-GB',
+  about: { '@id': 'https://intervene.uk/intervention-readiness/#defined-term' },
+  publisher: { '@id': 'https://intervene.uk/#organization' },
+  description:
+    'A mechanism through which people with relevant professional judgement can put the Intervention Readiness question in front of organisations that should confront it.',
+};
+---
+
+<BaseLayout
+  title="Intervention Readiness Network · Intervene"
+  description="A mechanism for putting one question in front of the organisations that should face it: could they stop a consequential system in time, and prove it. Participation carries no fee."
+  current="network"
+  ogImage="/assets/og/og-network.png"
+  schema={schema}
+>
+  <!-- 1. THE QUESTION -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="label reveal">Intervention Readiness Network</span>
+      <h1 class="h1 reveal">
+        Governance describes what should happen. <em>Intervention proves what can happen.</em>
+      </h1>
+      <p class="lede muted reveal">
+        An organisation can hold AI governance, risk controls, named human
+        oversight and a documented escalation path, and still be unable to show
+        that a consequential system could be stopped or constrained once it is
+        running.
+      </p>
+      <p class="body muted reveal hero-body">
+        The immediate problem is not the policy on paper. It is the evidence
+        that intervention can actually happen, and the gap often surfaces at the
+        worst possible moment. There is a ten-question diagnostic that puts it to
+        an organisation directly.
+      </p>
+
+      <div class="cta-row reveal">
+        <a class="btn" href="/readiness-snapshot/">Take the Snapshot</a>
+        <a class="btn-ghost" href="#ask">What we ask of you</a>
+      </div>
+
+      <ul class="beats reveal" role="list">
+        <li>
+          <span class="mono beat-word">Detect</span>
+          <span class="beat-body">that something has gone wrong.</span>
+        </li>
+        <li>
+          <span class="mono beat-word">Decide</span>
+          <span class="beat-body">that it has to be stopped.</span>
+        </li>
+        <li>
+          <span class="mono beat-word">Intervene</span>
+          <span class="beat-body">before the harm is irreversible.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. WHO IS POSITIONED TO ASK IT -->
+  <section class="block" id="who">
+    <div class="wrap">
+      <h2 class="h2">A question like this does not travel well <em>from a stranger.</em></h2>
+      <p class="lede muted who-lede">
+        What matters is not a contact list. It is enough judgement and standing
+        to recognise when an organisation should confront this question at all.
+      </p>
+
+      <dl class="rows reveal">
+        {standing.map((row) => (
+          <div>
+            <dt>{row.k}</dt>
+            <dd>{row.v}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <p class="body muted who-note">
+        Two boundaries, stated plainly rather than buried. Anybody holding a
+        current supervisory or regulatory role is outside this entirely. A
+        current fiduciary role at an organisation does not prevent you taking
+        part, and it does mean no payment arises in relation to that
+        organisation.
+      </p>
+    </div>
+  </section>
+
+  <!-- 3. THE ASK -->
+  <section class="block" id="ask">
+    <div class="wrap">
+      <h2 class="h2">We ask you to forward one link. <em>Not to make the case.</em></h2>
+      <p class="lede muted ask-lede">
+        The role is deliberately small, because a small role is one you can
+        fill without spending standing you took years to build.
+      </p>
+
+      <div class="ask-grid">
+        <div class="ask-col reveal">
+          <span class="mono col-label">What we ask</span>
+          <ul class="asked" role="list">
+            {asked.map((row) => (
+              <li>
+                <h3 class="h3">{row.h}</h3>
+                <p class="body muted" set:html={markAgda(row.p)} />
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="ask-col reveal">
+          <span class="mono col-label">What we do not ask</span>
+          <ul class="not-asked" role="list">
+            {notAsked.map((row) => (
+              <li set:html={markAgda(row)} />
+            ))}
+          </ul>
+          <p class="body muted not-asked-note">
+            Establishing the need, qualifying the opportunity and carrying the
+            commercial conversation is our work. If a recipient has questions,
+            they come to us.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. WHAT THE LINK DOES -->
+  <section class="block" id="link">
+    <div class="wrap">
+      <h2 class="h2">Your link says it came from you. <em>It says nothing about who you sent it to.</em></h2>
+      <p class="lede muted link-lede">
+        Attribution and identification are two separate events, and keeping
+        them separate is what makes the mechanism legible rather than covert.
+      </p>
+
+      <dl class="rows reveal">
+        {link.map((row) => (
+          <div>
+            <dt>{row.k}</dt>
+            <dd>{row.v}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <p class="body muted link-note">
+        What this does not claim: that a recipient can never become known to
+        us. They can, by their own choice, in their own time. What it claims is
+        narrower and checkable. We never learn who they are through your link.
+        How this is recorded is set out in the
+        <a href="/legal/privacy/" class="link">privacy notice</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- 5. INDEPENDENCE -->
+  <section class="block" id="independence">
+    <div class="wrap">
+      <h2 class="h2">Nobody with a commercial interest <em>goes near the verdict.</em></h2>
+      <p class="lede muted ind-lede" set:html={markAgda(
+        'AGDA™ is sold as an independent assessment. The Network is therefore designed so that commercial relationships cannot reach the assessment itself.',
+      )} />
+
+      <ul class="firewall reveal" role="list">
+        {firewall.map((line) => (
+          <li set:html={markAgda(line)} />
+        ))}
+      </ul>
+
+      <ul class="exclusions reveal" role="list">
+        {exclusions.map((line) => (
+          <li>{line}</li>
+        ))}
+      </ul>
+
+      <p class="body muted ind-close">
+        We would rather lose an introduction than answer a question about
+        whether a verdict was bought.
+      </p>
+    </div>
+  </section>
+
+  <!-- 6. RECOGNITION -->
+  <section class="block tight recognition">
+    <div class="wrap">
+      <p class="body muted recognition-copy">
+        Taking part carries no fee, and most people who do will never have a
+        commercial arrangement with us. Where it is appropriate and you are able
+        to accept one, Intervene may separately agree a disclosed commercial
+        introduction arrangement, on terms set out in that agreement rather than
+        here and subject to everything above. If that is of interest, say so
+        when you write. If it is not, nothing changes.
+      </p>
+    </div>
+  </section>
+
+  <!-- 7. HOW THIS STARTS -->
+  <section class="block" id="start">
+    <div class="wrap">
+      <div class="start-grid">
+        <div class="start-col reveal">
+          <h2 class="h2">There is no form. <em>There is a conversation.</em></h2>
+          <p class="body muted">
+            Write to us and we will reply. If it makes sense, we talk for twenty
+            minutes, and if it still makes sense after that you are issued a
+            link of your own. Nothing is signed and nothing is joined.
+          </p>
+          <div class="cta-row">
+            <a class="btn" href="/contact/">Talk to Intervene</a>
+          </div>
+          <p class="small muted start-note">
+            A person replies within one to two working days. We do not
+            auto-reply.
+          </p>
+        </div>
+
+        <aside class="start-aside reveal">
+          <span class="mono col-label">What is useful to include</span>
+          <dl class="rows tight-rows">
+            {useful.map((row) => (
+              <div>
+                <dt>{row.k}</dt>
+                <dd>{row.v}</dd>
+              </div>
+            ))}
+          </dl>
+          <p class="small muted aside-note">
+            Please do not name individual prospective clients or contacts in a
+            first message. Describe the kind of organisation, not the person.
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINE PRINT -->
+  <section class="fine">
+    <div class="wrap">
+      <p class="fine-copy">
+        Intervene Limited, registered in England and Wales, company number
+        17317647. This page is not an offer of payment and creates no
+        contractual engagement. Taking part confers no status and no commercial
+        entitlement. Any fee arises only under a separately signed agreement and
+        is unaffected by the outcome of any assessment.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 144px;
+    padding-bottom: 112px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .hero .label { margin-bottom: 28px; }
+  .hero .h1 { max-width: 24ch; }
+  .hero .lede { margin-top: 32px; max-width: 54ch; }
+  .hero-body { margin-top: 24px; max-width: 54ch; }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  /* The question made concrete. Three words carry the whole category, so
+     they sit on their own rule rather than inside the prose above. */
+  .beats {
+    list-style: none;
+    margin: 64px 0 0;
+    padding-top: 32px;
+    border-top: 1px solid var(--hair-strong);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  .beats li {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    padding: 0 32px;
+    border-left: 1px solid var(--hair);
+  }
+  .beats li:first-child { padding-left: 0; border-left: 0; }
+  .beat-word {
+    font-size: 11px;
+    letter-spacing: 0.19em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .beat-body {
+    font-family: var(--font-sans);
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .who-lede,
+  .ask-lede,
+  .link-lede,
+  .ind-lede { margin-top: 24px; max-width: 56ch; }
+
+  /* Label left, description right. Same shape as the /contact/ info
+     list, widened because these descriptions are sentences. */
+  .rows {
+    margin: 48px 0 0;
+    padding-top: 28px;
+    border-top: 1px solid var(--hair);
+    display: grid;
+    gap: 24px;
+  }
+  .rows > div {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--hair-soft);
+  }
+  .rows > div:last-child { padding-bottom: 0; border-bottom: 0; }
+  .rows dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    text-transform: uppercase;
+    line-height: 1.5;
+  }
+  .rows dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 15.5px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 62ch;
+  }
+
+  .who-note { margin-top: 40px; max-width: 62ch; }
+
+  .col-label {
+    display: block;
+    font-size: 10.5px;
+    letter-spacing: 0.19em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--hair-strong);
+  }
+
+  .ask-grid {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 72px;
+    align-items: start;
+  }
+
+  .asked {
+    list-style: none;
+    margin: 28px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 28px;
+  }
+  .asked .h3 { margin: 0 0 8px; }
+  .asked .body { margin: 0; max-width: 46ch; }
+
+  .not-asked {
+    list-style: none;
+    margin: 28px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+  .not-asked li {
+    font-family: var(--font-sans);
+    font-size: 15.5px;
+    line-height: 1.5;
+    color: var(--muted-soft);
+    padding-left: 22px;
+    position: relative;
+  }
+  /* A struck-through mark would be decoration. A rule reads as a list of
+     things that are simply not on the list. */
+  .not-asked li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 12px;
+    height: 1px;
+    background: var(--faint);
+  }
+  .not-asked-note { margin-top: 28px; max-width: 40ch; }
+
+  .link-note { margin-top: 40px; max-width: 62ch; }
+
+  /* The two settled statements, set apart with the bronze rule the site
+     uses where a claim has to be checkable rather than persuasive. */
+  .firewall {
+    list-style: none;
+    margin: 48px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 24px;
+  }
+  .firewall li {
+    border-left: 2px solid var(--accent);
+    padding: 4px 0 4px 28px;
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--ink);
+    max-width: 62ch;
+  }
+
+  .exclusions {
+    list-style: none;
+    margin: 48px 0 0;
+    padding-top: 28px;
+    border-top: 1px solid var(--hair);
+    display: grid;
+    gap: 16px;
+  }
+  .exclusions li {
+    font-family: var(--font-sans);
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 66ch;
+    padding-left: 22px;
+    position: relative;
+  }
+  .exclusions li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 12px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .ind-close { margin-top: 40px; max-width: 52ch; color: var(--ink); }
+
+  /* Quieter than everything above it. The restraint is the point. */
+  .recognition { border-top: 1px solid var(--hair); }
+  .recognition-copy {
+    max-width: 66ch;
+    color: var(--muted-soft);
+    font-size: 15.5px;
+  }
+
+  .start-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 96px;
+    align-items: start;
+  }
+  .start-col .h2 { max-width: 18ch; }
+  .start-col .body { margin: 24px 0 0; max-width: 46ch; }
+  .start-note { margin-top: 20px; }
+
+  .start-aside {
+    padding-top: 8px;
+  }
+  .tight-rows { margin-top: 24px; padding-top: 20px; }
+  .tight-rows > div { grid-template-columns: 140px 1fr; gap: 20px; }
+  .aside-note { margin-top: 28px; max-width: 40ch; }
+
+  .fine {
+    padding: 48px 0 88px;
+    border-top: 1px solid var(--hair-strong);
+  }
+  .fine-copy {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--faint);
+    max-width: 92ch;
+  }
+
+  @media (max-width: 980px) {
+    .ask-grid { grid-template-columns: 1fr; gap: 56px; }
+    .start-grid { grid-template-columns: 1fr; gap: 64px; }
+    .rows > div { grid-template-columns: 240px 1fr; gap: 24px; }
+  }
+
+  @media (max-width: 720px) {
+    .hero { padding-top: 112px; padding-bottom: 88px; }
+    .beats {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .beats li {
+      padding: 0 0 24px;
+      border-left: 0;
+      border-bottom: 1px solid var(--hair);
+    }
+    .beats li:last-child { padding-bottom: 0; border-bottom: 0; }
+    .rows > div { grid-template-columns: 1fr; gap: 8px; }
+    .tight-rows > div { grid-template-columns: 1fr; gap: 6px; }
+    .cta-row .btn,
+    .cta-row .btn-ghost { flex: 1; justify-content: center; }
+  }
+</style>
