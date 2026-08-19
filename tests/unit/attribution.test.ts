@@ -1,15 +1,18 @@
 /**
  * The attribution parameter.
  *
- * Three things are load bearing and all three are asserted here. A
- * malformed code is discarded rather than kept. The parameter is taken
- * out of the address bar either way, which is what keeps the code out
- * of the one place the recipient could read it. And nothing is written
- * to the visitor's device, so a reload loses the code.
+ * Four things are load bearing and all four are asserted here. A code
+ * is accepted only if it was actually issued, not merely if it has the
+ * right shape. Anything else is discarded rather than kept. The
+ * parameter is taken out of the address bar either way, which is what
+ * keeps the code out of the one place the recipient could read it. And
+ * nothing is written to the visitor's device, so a reload loses the
+ * code.
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {
+  ISSUED,
   attributionCode,
   captureAttribution,
   isValidCode,
@@ -46,13 +49,32 @@ afterEach(() => {
 });
 
 describe('isValidCode', () => {
-  it('accepts exactly eight lowercase alphanumerics', () => {
-    expect(isValidCode('ffsw9hg2')).toBe(true);
-    expect(isValidCode('12345678')).toBe(true);
+  it('accepts each of the six issued codes', () => {
+    for (const issued of ISSUED) expect(isValidCode(issued)).toBe(true);
   });
 
-  it('rejects anything else', () => {
-    for (const bad of ['', 'short', 'toolongcode', 'FFSW9HG2', 'ffsw-hg2', 'ffsw hg2', 'ffsw9hg2 ']) {
+  it('rejects a well-formed code that was never issued', () => {
+    // The defect this rule exists to fix. `test0000` is eight lowercase
+    // alphanumerics and produced a real completion record in production
+    // on 19 August 2026. Shape is necessary and not sufficient.
+    for (const wellFormed of ['test0000', '12345678', 'aaaaaaaa', 'zzzzzzzz']) {
+      expect(wellFormed).toMatch(/^[a-z0-9]{8}$/);
+      expect(isValidCode(wellFormed)).toBe(false);
+    }
+  });
+
+  it('rejects malformed values, including case variants of issued codes', () => {
+    for (const bad of [
+      '',
+      'short',
+      'toolongcode',
+      'FFSW9HG2',
+      'Ffsw9hg2',
+      'ffsw-hg2',
+      'ffsw hg2',
+      'ffsw9hg2 ',
+      ' ffsw9hg2',
+    ]) {
       expect(isValidCode(bad)).toBe(false);
     }
   });
@@ -63,6 +85,14 @@ describe('captureAttribution', () => {
     const href = visit('https://intervene.uk/readiness-snapshot/?p=ffsw9hg2');
     captureAttribution();
     expect(attributionCode()).toBe('ffsw9hg2');
+    expect(href()).toBe('https://intervene.uk/readiness-snapshot/');
+  });
+
+  it('discards a well-formed code that was never issued, and still cleans the URL', () => {
+    const href = visit('https://intervene.uk/readiness-snapshot/?p=test0000');
+    captureAttribution();
+    expect(attributionCode()).toBe('');
+    // Indistinguishable from a visit that carried no code at all.
     expect(href()).toBe('https://intervene.uk/readiness-snapshot/');
   });
 
