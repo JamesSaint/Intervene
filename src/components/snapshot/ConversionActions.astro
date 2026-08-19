@@ -37,6 +37,15 @@
  * like a finding. "Send me this" makes the same offer honestly.
  *
  * `learn_agda` remains navigational: no record, no contact details.
+ *
+ * One sentence sits between the heading and the primary action, added
+ * after review. A completed Snapshot is a signal of interest, and the
+ * section previously ran from heading to button, leaving the reader to
+ * infer the relationship between the two instruments. The sentence says
+ * it: the Snapshot is indicative and self-reported, and where the
+ * question is live, AGDA™ can test it independently. It states the limit
+ * before it states the option, which is the order that keeps it a
+ * finding rather than a conversion step.
  */
 
 import FollowUpForm from './FollowUpForm.astro';
@@ -68,6 +77,10 @@ const markAgda = (value: string) =>
 <section class="block tight conversion" data-conversion hidden aria-labelledby="conversion-heading">
   <div class="wrap-narrow">
     <h2 class="h3" id="conversion-heading">Turn your answers into evidence.</h2>
+
+    <p class="bridge" set:html={markAgda(
+      'Your Snapshot names where intervention capability may warrant closer examination. It is indicative and self-reported, not an assessment. Where this is a live governance question for your organisation, Intervene can test it independently through AGDA™.',
+    )} />
 
     <div class="primary-action" data-action-id={primary.id}>
       <p class="primary-note" set:html={markAgda(primary.note)} />
@@ -114,6 +127,20 @@ const markAgda = (value: string) =>
 
   /* Wide enough to hold the heading on one line at this size. */
   .conversion .h3 { max-width: none; white-space: nowrap; }
+
+  /* The one sentence connecting a completed Snapshot to the instrument
+     that could actually settle the question. A completed Snapshot is a
+     signal of interest, and this section used to run from the heading
+     straight to a button, leaving the reader to work out for themselves
+     what the relationship between the two instruments was. */
+  .bridge {
+    margin: 20px 0 0;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 68ch;
+  }
 
   /* Same treatment as the contrast block above, so the eye reads the
      two as a pair: here is why it matters, here is what to do. */
