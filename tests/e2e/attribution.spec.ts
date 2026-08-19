@@ -16,7 +16,12 @@
 import { test, expect, type Page, type Request } from '@playwright/test';
 
 const ROUTE = '/readiness-snapshot/';
+
+/** One of the six issued Phase 0 codes. */
 const CODE = 'ffsw9hg2';
+
+/** Eight lowercase alphanumerics, and never issued to anyone. */
+const UNISSUED = 'test0000';
 
 /** Captures Formspree posts and keeps them off the network. */
 async function interceptSubmissions(page: Page): Promise<Request[]> {
@@ -102,7 +107,7 @@ test.describe('Attribution', () => {
     expect(posts).toHaveLength(0);
   });
 
-  test('an unknown code is indistinguishable from no code', async ({ page }) => {
+  test('a malformed code is indistinguishable from no code', async ({ page }) => {
     const posts = await interceptSubmissions(page);
     await page.goto(`${ROUTE}?p=NOT-A-CODE`);
 
@@ -115,6 +120,41 @@ test.describe('Attribution', () => {
     await expect(page.locator('[data-result-headline]')).toBeVisible();
     // The decisive one. No code, so no record, so nothing to observe.
     expect(posts).toHaveLength(0);
+  });
+
+  test('a well-formed code that was never issued records nothing', async ({ page }) => {
+    // The defect. `test0000` has the right shape and produced a real
+    // completion record in production before the allowlist existed.
+    const posts = await interceptSubmissions(page);
+    await page.goto(`${ROUTE}?p=${UNISSUED}`);
+
+    await expect(page.locator('[data-snapshot-begin]')).toBeVisible();
+    expect(page.url()).not.toContain(UNISSUED);
+    expect(page.url()).not.toContain('p=');
+    expect(await page.content()).not.toContain(UNISSUED);
+
+    await completeSnapshot(page);
+    await expect(page.locator('[data-result-headline]')).toBeVisible();
+    expect(posts).toHaveLength(0);
+  });
+
+  test('a voluntary follow-up on an unissued code carries no attribution', async ({ page }) => {
+    const posts = await interceptSubmissions(page);
+    await page.goto(`${ROUTE}?p=${UNISSUED}`);
+    await completeSnapshot(page);
+    expect(posts).toHaveLength(0);
+
+    await page.locator('[data-action-open="contact_intervene"]').click();
+    await page.locator('#fu-name').fill('Test Person');
+    await page.locator('#fu-email').fill('test@example.com');
+    await page.locator('[data-followup-submit]').click();
+
+    // The follow-up is the only thing sent, and it is unattributed.
+    await expect.poll(() => posts.length).toBe(1);
+    const body = posts[0].postData() ?? '';
+    expect(body).toContain('test@example.com');
+    expect(body).not.toContain(UNISSUED);
+    expect(body).not.toContain('Arrived on link');
   });
 
   test('a visit with no code records nothing', async ({ page }) => {
