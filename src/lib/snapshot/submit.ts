@@ -69,6 +69,19 @@ const INDEX_ROUTING_MARKER = 'index@intervene.uk';
  */
 const ATTRIBUTION_ROUTING_MARKER = 'attribution@intervene.uk';
 
+/**
+ * The one fixed string in a completion subject line.
+ *
+ * Every completion note begins with this and nothing else on the site
+ * emits it, so a single mailbox rule matching this literal catches every
+ * completion and nothing else. The code follows it, so a subject line
+ * still reads at a glance without opening the message.
+ *
+ * Do not vary it, translate it or move the code in front of it. It is
+ * the filter, and a filter that drifts silently stops counting.
+ */
+export const COMPLETION_SUBJECT_TAG = '[IR-COMPLETION]';
+
 export interface SubmitResult {
   ok: boolean;
 }
@@ -234,7 +247,7 @@ export function submitCompletion(fields: CompletionFields): Promise<SubmitResult
   if (!fields.partner_code) return Promise.resolve({ ok: false });
 
   return post({
-    _subject: `Snapshot completed on ${fields.partner_code}`,
+    _subject: `${COMPLETION_SUBJECT_TAG} ${fields.partner_code}`,
     // Constant on every completion, so it identifies nobody. Only
     // present because the shared Formspree form requires an email field.
     email: ATTRIBUTION_ROUTING_MARKER,

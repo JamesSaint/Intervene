@@ -1,28 +1,29 @@
 /**
  * The attribution parameter.
  *
- * Two things are load bearing and both are asserted here: a malformed
- * code is discarded rather than stored, and the parameter is taken out
- * of the address bar either way. The second is what keeps the code out
- * of the one place the recipient could read it.
+ * Three things are load bearing and all three are asserted here. A
+ * malformed code is discarded rather than kept. The parameter is taken
+ * out of the address bar either way, which is what keeps the code out
+ * of the one place the recipient could read it. And nothing is written
+ * to the visitor's device, so a reload loses the code.
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { attributionCode, captureAttribution, isValidCode } from '../../src/lib/snapshot/attribution';
+import {
+  attributionCode,
+  captureAttribution,
+  isValidCode,
+  resetAttributionForTest,
+} from '../../src/lib/snapshot/attribution';
 
-const store = new Map<string, string>();
-
-/** A stand-in for the browser globals the module touches, and no others. */
+/**
+ * A stand-in for the browser globals the module touches, and no others.
+ * There is deliberately no storage stub: the module must not reach for
+ * one, and this test would still pass if it did, so the assertion that
+ * matters is `loses the code on a reload` below.
+ */
 function visit(href: string) {
   let current = href;
-  globalThis.sessionStorage = {
-    getItem: (k: string) => store.get(k) ?? null,
-    setItem: (k: string, v: string) => void store.set(k, v),
-    removeItem: (k: string) => void store.delete(k),
-    clear: () => store.clear(),
-    key: () => null,
-    length: 0,
-  } as unknown as Storage;
 
   globalThis.window = {
     get location() {
@@ -39,10 +40,9 @@ function visit(href: string) {
   return () => current;
 }
 
-beforeEach(() => store.clear());
+beforeEach(() => resetAttributionForTest());
 afterEach(() => {
   delete (globalThis as Record<string, unknown>).window;
-  delete (globalThis as Record<string, unknown>).sessionStorage;
 });
 
 describe('isValidCode', () => {
@@ -59,7 +59,7 @@ describe('isValidCode', () => {
 });
 
 describe('captureAttribution', () => {
-  it('stores a well-formed code and removes it from the address bar', () => {
+  it('keeps a well-formed code and removes it from the address bar', () => {
     const href = visit('https://intervene.uk/readiness-snapshot/?p=ffsw9hg2');
     captureAttribution();
     expect(attributionCode()).toBe('ffsw9hg2');
@@ -87,9 +87,17 @@ describe('captureAttribution', () => {
     expect(href()).toBe('https://intervene.uk/readiness-snapshot/?preview=decide-tested#snapshot');
   });
 
-  it('ignores a stored value that no longer matches the rule', () => {
-    visit('https://intervene.uk/readiness-snapshot/');
-    store.set('intv-snapshot-p', 'tampered-with');
+  it('loses the code on a reload, which is the accepted Phase 0 cost', () => {
+    visit('https://intervene.uk/readiness-snapshot/?p=ffsw9hg2');
+    captureAttribution();
+    expect(attributionCode()).toBe('ffsw9hg2');
+
+    // A reload gives the module a fresh page and an address bar the
+    // capture already cleaned, so there is nothing left to recover.
+    resetAttributionForTest();
+    const href = visit('https://intervene.uk/readiness-snapshot/');
+    captureAttribution();
     expect(attributionCode()).toBe('');
+    expect(href()).toBe('https://intervene.uk/readiness-snapshot/');
   });
 });

@@ -77,9 +77,29 @@ test.describe('Attribution', () => {
     await expect.poll(() => posts.length).toBe(1);
     const body = posts[0].postData() ?? '';
     expect(body).toContain(CODE);
+    // The one fixed string a mailbox rule can match. If this assertion
+    // is ever relaxed, the counting stops being reliable.
+    expect(body).toContain('[IR-COMPLETION]');
     // No answers, no result, no identity travel with a completion.
     expect(body).not.toMatch(/q\d{2}_/);
     expect(body).not.toContain('least_confident');
+  });
+
+  test('loses attribution on a reload, and records nothing rather than the wrong thing', async ({
+    page,
+  }) => {
+    const posts = await interceptSubmissions(page);
+    await page.goto(`${ROUTE}?p=${CODE}`);
+    await expect(page.locator('[data-snapshot-begin]')).toBeVisible();
+
+    // The code lives in the page, not on the device, and the capture has
+    // already cleaned the address bar. A reload therefore has nothing to
+    // recover from. Accepted for Phase 0: the error runs one way, so a
+    // reloaded visit under-counts rather than crediting the wrong link.
+    await page.reload();
+    await completeSnapshot(page);
+    await expect(page.locator('[data-result-headline]')).toBeVisible();
+    expect(posts).toHaveLength(0);
   });
 
   test('an unknown code is indistinguishable from no code', async ({ page }) => {
