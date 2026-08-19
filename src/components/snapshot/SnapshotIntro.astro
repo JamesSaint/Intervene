@@ -26,6 +26,12 @@
       Ten questions about one system that runs without you,
       and the last one is the one that matters.
     </p>
+    <p class="orientation reveal">
+      Intervene measures Intervention Readiness: whether an organisation could
+      stop a system it is running before harm becomes irreversible. This takes
+      about two minutes, and you can read the whole result without giving a
+      name, an email address or an organisation.
+    </p>
     <div class="cta-row reveal">
       <a class="btn" href="#snapshot" data-snapshot-begin>Begin</a>
       <a class="btn-ghost" href="/sample-report/">See a tested verdict</a>
@@ -47,6 +53,19 @@
   .hero .label { margin-bottom: 28px; }
   .hero .h1 { max-width: 16ch; }
   .hero .lede { margin-top: 32px; max-width: 56ch; }
+
+  /* For someone who arrived on a forwarded link and has not read a
+     single other page. The lede above assumes the site; this does not.
+     Quieter than the lede, louder than the framing note below the CTAs,
+     because it answers what this is and what it costs to find out. */
+  .orientation {
+    margin: 28px 0 0;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--muted-soft);
+    max-width: 60ch;
+  }
 
   .cta-row {
     display: flex;
