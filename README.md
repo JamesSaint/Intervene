@@ -124,6 +124,8 @@ npm run typecheck      # astro check. Advisory only, see below
 
 `npm run build` runs `prebuild` first, which regenerates `public/question-manifest.json` from the Snapshot question set. Commit the regenerated manifest when the question set changes.
 
+Generation is deterministic: the manifest is a pure function of `src/lib/snapshot/questions.ts`, carries no timestamp, and is byte-identical on any day, machine or time zone. CI regenerates it and fails on any diff, so nothing may be added to it that varies on its own. `tests/unit/question-manifest.test.ts` holds that invariant, and `git log public/question-manifest.json` is the provenance record.
+
 `npm run typecheck` reports 59 pre-existing errors in `TakeoverMenu.astro`, `FilmPlayer.astro`, `ConsentBanner.astro` and `BaseLayout.astro`. They predate the Snapshot work and are not fixed by it, so typecheck runs advisory in CI rather than blocking. Clear them before making it a gate.
 
 ## Deployment
