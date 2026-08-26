@@ -156,16 +156,16 @@ Field, choice, error and status styles live in `src/styles/forms.css` and are sh
 
 `/readiness-snapshot/` is a self-reported triage instrument. It is **not** an AGDA™ assessment and no copy may imply that it is.
 
-**Current state: Phase 1 of 4.** The route is `noindex`, excluded from the sitemap, and unlinked from any navigation. There is no backend, no network call and no data collection of any kind. The result is rendered server side; reviewers reach any of the sixteen combinations with `?preview=<area>-<basis>`, for example `/readiness-snapshot/?preview=decide-documented`.
+**Current state: public launch.** The route is indexable, present in the sitemap, in the takeover menu and footer, and linked from the homepage, `/services/`, `/sample-report/` and the insight pages. The Snapshot still renders its result from the static prototype path until the Worker is introduced; reviewers reach any of the sixteen combinations with `?preview=<area>-<basis>`, for example `/readiness-snapshot/?preview=decide-documented`.
 
 Two rules govern the code:
 
 1. **No part of the Snapshot Response Model may enter this repository.** No ordinal values, thresholds, weights, bands or tie-breaking rules. Those live only in the private Worker repository. `tests/unit/prototype-result.test.ts` asserts this and the e2e suite asserts it against the built bundle.
 2. **No figure is shown to the visitor.** No score, percentage, grade, rating, maturity level or per-area value. Permitted numerals are the question counter, the model version and the generation date.
 
-Phase 1 files marked `PHASE 1 ONLY` are deleted in Phase 2: `src/lib/snapshot/prototype-result.ts` and `src/lib/snapshot/prototype-preview.ts`.
+Prototype files marked `PHASE 1 ONLY` are deleted when the Worker-backed response path replaces the static result: `src/lib/snapshot/prototype-result.ts` and `src/lib/snapshot/prototype-preview.ts`.
 
-Phases 2 to 4 add a Cloudflare Worker at `api.intervene.uk`, transactional email, the Index contribution path and the public launch. They need accounts and secrets that do not exist yet. The full plan governs sequencing and gates.
+The remaining backend work adds a Cloudflare Worker at `api.intervene.uk` and replaces the static prototype result path. It needs accounts and secrets that do not exist yet. The full plan governs sequencing and gates.
 
 ## License
 
