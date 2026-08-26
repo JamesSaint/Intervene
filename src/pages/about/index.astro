@@ -5,7 +5,7 @@ import { markAgda } from '../../lib/marks';
 import { socialLinks } from '../../lib/social';
 
 const commitments = [
-  { h: 'Independent judgement.',         p: 'No vendor affiliation, no referral fees, no co-marketing. We do not implement what we recommend.' },
+  { h: 'Independent judgement.',         p: 'No vendor affiliation, no co-marketing and no commercial relationship may reach an AGDA™ assessment. We do not implement what we recommend.' },
   { h: 'Published methodology.',         p: 'Theses, catalogues, corpus governance and rater protocols are public and citeable. Populated-corpus and outcome-validation evidence is supplied separately.' },
   { h: 'Verifiable computation.',        p: 'Formal AGDA™ SEDI assessment verdicts carry Ed25519 attestation. Inputs and outputs are hashed. An audit committee can verify without contacting us.' },
   { h: 'Refusal of false control.',      p: 'If the evidence does not support green, the engine will not produce green. Findings the client did not want, in writing, before the regulator does.' },
@@ -161,7 +161,7 @@ const notServed = [
         {commitments.map((c) => (
           <li>
             <h3 class="h3">{c.h}</h3>
-            <p class="body muted">{c.p}</p>
+            <p class="body muted" set:html={markAgda(c.p)} />
           </li>
         ))}
       </ul>
