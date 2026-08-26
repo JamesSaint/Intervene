@@ -185,9 +185,21 @@ test.describe('Network page', () => {
     await page.goto('/');
     const footerLink = page.locator('.site-footer a[href="/network/"]');
     await expect(footerLink).toHaveCount(1);
-    await expect(footerLink).toHaveText('Network');
+    await expect(footerLink).toHaveText('Intervention Readiness Network');
     // Deliberately not promoted into primary navigation.
     await expect(page.locator('.takeover a[href="/network/"]')).toHaveCount(0);
+  });
+
+  test('is discoverable from practitioner-facing context', async ({ page }) => {
+    for (const route of ['/services/', '/insights/']) {
+      await page.goto(route);
+      const links = page.locator('main a[href="/network/"]');
+      await expect(
+        links,
+        `${route} should link to the Network from page context`,
+      ).toHaveCount(1);
+      await expect(links.first()).toHaveText('Intervention Readiness Network');
+    }
   });
 
   test('is indexable and present in the sitemap', async ({ page, request }) => {
