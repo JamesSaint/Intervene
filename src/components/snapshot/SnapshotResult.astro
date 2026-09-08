@@ -46,8 +46,14 @@ const markAgda = (value: string) =>
 >
   <div class="wrap-narrow">
     <span class="label">
-      Indicative response pattern · Snapshot Response Model v1.0
+      Demonstration result · Snapshot Response Model v1.0
     </span>
+
+    <p class="demo-banner">
+      <strong>Demonstration only.</strong> This is a worked example shown to
+      every visitor. It was not read from the answers you gave, it describes no
+      organisation, and nothing here is a finding about yours.
+    </p>
 
     <h2 class="h2 result-headline" id="result-headline" tabindex="-1" data-result-headline>
       {r.headline}
@@ -222,4 +228,18 @@ const markAgda = (value: string) =>
     .result { border-top: 0; padding: 0; }
     .contrast { background: transparent; border-color: #999; }
   }
+
+  .demo-banner {
+    margin: 16px 0 0;
+    padding: 14px 16px;
+    border: 1px solid var(--hair-strong);
+    background: var(--paper-soft);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--muted);
+    max-width: 60ch;
+  }
+
+  .demo-banner strong { color: var(--ink); font-weight: 700; }
 </style>

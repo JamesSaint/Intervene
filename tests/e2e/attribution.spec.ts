@@ -138,23 +138,16 @@ test.describe('Attribution', () => {
     expect(posts).toHaveLength(0);
   });
 
-  test('a voluntary follow-up on an unissued code carries no attribution', async ({ page }) => {
+  test('an unissued code sends nothing at all', async ({ page }) => {
+    // Was: the voluntary follow-up carries no attribution. The follow-up
+    // form is withdrawn with the conversion block, so an unissued code now
+    // has no submission path to ride on at all. Restore the original
+    // assertion when the form returns with the result logic.
     const posts = await interceptSubmissions(page);
     await page.goto(`${ROUTE}?p=${UNISSUED}`);
     await completeSnapshot(page);
+    await expect(page.locator('[data-followup]')).toHaveCount(0);
     expect(posts).toHaveLength(0);
-
-    await page.locator('[data-action-open="contact_intervene"]').click();
-    await page.locator('#fu-name').fill('Test Person');
-    await page.locator('#fu-email').fill('test@example.com');
-    await page.locator('[data-followup-submit]').click();
-
-    // The follow-up is the only thing sent, and it is unattributed.
-    await expect.poll(() => posts.length).toBe(1);
-    const body = posts[0].postData() ?? '';
-    expect(body).toContain('test@example.com');
-    expect(body).not.toContain(UNISSUED);
-    expect(body).not.toContain('Arrived on link');
   });
 
   test('a visit with no code records nothing', async ({ page }) => {
@@ -165,20 +158,19 @@ test.describe('Attribution', () => {
     expect(posts).toHaveLength(0);
   });
 
-  test('carries the code when someone chooses to identify themselves', async ({ page }) => {
+  test('an issued code still records the completion, and nothing more', async ({ page }) => {
+    // The silent completion record survives the withdrawal: it carries the
+    // code and no answers. What is gone is the voluntary follow-up that
+    // used to let someone attach their name to it. Restore that half of
+    // this test with the form.
     const posts = await interceptSubmissions(page);
     await page.goto(`${ROUTE}?p=${CODE}`);
     await completeSnapshot(page);
     await expect.poll(() => posts.length).toBe(1);
 
-    await page.locator('[data-action-open="contact_intervene"]').click();
-    await page.locator('#fu-name').fill('Test Person');
-    await page.locator('#fu-email').fill('test@example.com');
-    await page.locator('[data-followup-submit]').click();
-
-    await expect.poll(() => posts.length).toBe(2);
-    const body = posts[1].postData() ?? '';
-    expect(body).toContain('test@example.com');
+    const body = posts[0].postData() ?? '';
     expect(body).toContain(CODE);
+    await expect(page.locator('[data-followup]')).toHaveCount(0);
+    await expect.poll(() => posts.length).toBe(1);
   });
 });

@@ -6,8 +6,8 @@ import { socialLinks } from '../../lib/social';
 
 const commitments = [
   { h: 'Independent judgement.',         p: 'No vendor affiliation, no co-marketing and no commercial relationship may reach an AGDA™ assessment. We do not implement what we recommend.' },
-  { h: 'Published methodology.',         p: 'Theses, catalogues, corpus governance and rater protocols are public and citeable. Populated-corpus and outcome-validation evidence is supplied separately.' },
-  { h: 'Verifiable computation.',        p: 'Formal AGDA™ SEDI assessment verdicts carry Ed25519 attestation. Inputs and outputs are hashed. An audit committee can verify without contacting us.' },
+  { h: 'Documented methodology.',        p: 'Theses, catalogues, corpus governance and rater protocols are the documented basis of the method. They are not published here, and are provided under NDA during diligence alongside populated-corpus and outcome-validation evidence.' },
+  { h: 'Verifiable computation.',        p: 'AGDA™ SEDI assessment verdicts carry Ed25519 attestation. Inputs and outputs are hashed. An audit committee can verify without contacting us.' },
   { h: 'Refusal of false control.',      p: 'If the evidence does not support green, the engine will not produce green. Findings the client did not want, in writing, before the regulator does.' },
 ];
 
@@ -23,12 +23,12 @@ const sectorsInvite = [
 ];
 
 const notServed = [
-  { h: 'Not a compliance dashboard.',     p: 'Compliance tools handle evidence management. We measure whether intervention capability holds under stress.' },
-  { h: 'Not a Big-4 advisory.',           p: 'No leveraged teams, no slide decks, no implementation arm. Formal SEDI assessments include a signed regulator bundle.' },
-  { h: 'Not a policy-writing practice.',  p: 'We do not draft your automation policy. We measure whether the controls behind it produce what the policy claims.' },
-  { h: 'Not a model-testing lab.',        p: 'Red-team labs test models. We test whether the chain around the model can act on what the lab finds.' },
-  { h: 'Not an implementation partner.',  p: 'No standing-up of controls, no platform integration, no runbook ops. Remediation belongs to you or someone else.' },
-  { h: 'Not a safety research practice.', p: 'Operational, not philosophical. A verdict on a specific system, not a paper on risk in general.' },
+  { h: 'Not a compliance dashboard.',     p: 'Compliance tools manage evidence. We measure whether intervention holds under stress.' },
+  { h: 'Not a Big-4 advisory.',           p: 'No leveraged teams, no slide decks, no implementation arm.' },
+  { h: 'Not a policy-writing practice.',  p: 'We do not draft your automation policy. We test whether the controls behind it deliver what it claims.' },
+  { h: 'Not a model-testing lab.',        p: 'Red-team labs test models. We test whether the chain around the model can act on what they find.' },
+  { h: 'Not an implementation partner.',  p: 'No control build, no integration, no runbook ops. Remediation belongs to you or someone else.' },
+  { h: 'Not a safety research practice.', p: 'A verdict on a specific system, not a paper on risk in general.' },
 ];
 ---
 
@@ -66,12 +66,10 @@ const notServed = [
           />
           <figcaption>James Saint · London · 2026</figcaption>
           <p class="collab">
-            Intervene's methodology has been informed through collaboration and
-            professional challenge. Aacademic expertise has helped shape
-            the corpus governance principles underpinning AGDA, while Dr Michalska's
-            experience in risk governance, organisational resilience, and regulated
-            financial services has provided practical challenge and validation
-            throughout the methodology's development.
+            Intervene's methodology has been informed by discussion and
+            professional challenge from Professor Nicholas Ryman-Tubb and
+            Dr Joanna Michalska, drawing on their respective experience in
+            corpus governance and risk governance.
           </p>
         </figure>
 
@@ -87,52 +85,30 @@ const notServed = [
           </p>
 
           <p class="body">
-            My background spans more than three decades across technology,
-            systems architecture, digital products, payments, operational
-            systems and organisational risk, including co-founding Financial Innovation in Transactions and Security
-            (FITS).
+            Three decades across technology, systems architecture, digital
+            products, payments and organisational risk, including co-founding
+            Financial Innovation in Transactions and Security (FITS), kept
+            returning the same pattern. Controls, reporting and governance
+            structures existed. Effective intervention did not. Problems were
+            detected too late, escalation stalled, decisions drifted and
+            ownership became unclear.
           </p>
 
           <p class="body">
-            Across that work, the same pattern kept appearing: controls,
-            reporting and governance structures existed, but effective
-            intervention did not. Problems were detected too late, escalation
-            stalled, decisions drifted and ownership became unclear.
+            AI made that gap consequential. Systems act faster, affect more
+            people and produce outcomes that are harder to reverse, while
+            regulators press on effective human oversight and boards need
+            confidence that intervention is still possible before the window
+            closes. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> exists to answer that. Rather than assessing
+            whether controls exist on paper, it measures whether an organisation
+            can detect, escalate, decide and intervene within the time
+            available, and returns a deterministic verdict with a signed
+            regulator bundle behind it.
           </p>
 
           <p class="body">
-            Over time, these observations were refined through extensive
-            discussion, challenge and collaboration with trusted colleagues,
-            a long-standing mentor and personal friend whose work in risk,
-            governance and financial systems helped shape many of the questions
-            that ultimately became <span class="agda-mark">AGDA<span class="agda-tm">™</span></span>. Additional insight was provided
-            through collaboration with Dr Joanna Michalska, whose academic and
-            practitioner background in risk management contributed valuable
-            perspectives on governance, accountability and organisational
-            decision-making.
-          </p>
-
-          <p class="body">
-            The emergence of AI has made this gap significantly more
-            consequential. Systems can act faster, affect more people and create
-            outcomes that become increasingly difficult to reverse. Regulators
-            are placing greater emphasis on effective human oversight, while
-            boards need confidence that intervention remains possible before the
-            window closes.
-          </p>
-
-          <p class="body">
-            That challenge became the foundation of <span class="agda-mark">AGDA<span class="agda-tm">™</span></span>. Rather than
-            assessing whether controls exist on paper, <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures
-            Intervention Readiness: whether an organisation can detect, escalate,
-            decide and intervene within the time available. The result is a
-            deterministic, board-ready verdict supported by a signed regulator
-            bundle and cryptographic attestation.
-          </p>
-
-          <p class="body">
-            Today, through Intervene, I work with organisations that need a
-            clear answer to a difficult question:
+            For a buyer that means one thing: a defensible answer to a question
+            your governance papers cannot settle.
           </p>
 
           <p class="body aside keep-together">Can you stop it in time?</p>
@@ -215,9 +191,10 @@ const notServed = [
     <div class="wrap">
       <h2 class="h2">What we <em>are not.</em></h2>
       <p class="lede muted">
-        About the practice, not the product. (For product-category boundaries,
-        see <a href="/services/#what-agda-is-not" class="link">What <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is not</a> on Services.) Good practices occupy the adjacent
-        ground. Knowing the difference avoids procurement confusion later.
+        About the practice. For the product boundaries, see
+        <a href="/services/#what-agda-is-not" class="link">What <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is not</a>.
+        Good practices occupy the adjacent ground, and knowing the difference
+        avoids procurement confusion later.
       </p>
 
       <ul class="not-list" role="list">
@@ -238,12 +215,14 @@ const notServed = [
         <h2 class="h2 reveal">The question returns to the same place.</h2>
         <div class="close-cta reveal">
           <p class="body muted">
-            <span class="keep-together">Can you stop it in time?</span> See the evidence format before opening a
-            commercial conversation.
+            <span class="keep-together">Can you stop it in time?</span> Name the system you are
+            accountable for and we will tell you whether an assessment would
+            answer it. Twenty minutes, at no charge. The sample verdict is
+            there if you would rather see the evidence format first.
           </p>
           <div class="cta-row">
-            <a href="/sample-report/" class="btn">View sample verdict</a>
-            <a href="/contact/" class="btn-ghost">Book a conversation</a>
+            <a href="/contact/" class="btn">Discuss your system</a>
+            <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
           </div>
         </div>
       </div>
