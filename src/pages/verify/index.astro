@@ -28,7 +28,7 @@ const audiences = [
 
 <BaseLayout
   title="Verify an AGDA™ Verdict · Intervene"
-  description="Formal AGDA™ SEDI Intervention Readiness assessments ship with a signed regulator bundle. Verify the bundle locally using the packaged agda-verify CLI."
+  description="Every AGDA™ SEDI Intervention Readiness assessment ships with a signed regulator bundle. Verify the bundle locally using the packaged agda-verify CLI."
   current="verify"
 >
   <section class="hero">
@@ -57,6 +57,7 @@ const audiences = [
         output hash and manifest hash.
       </p>
 
+      <span class="env-example mono">Example envelope · illustrative values</span>
       <pre class="envelope" aria-label="Regulator bundle example"><code>{`{
   "attestationVersion": "1.2",
   "engineVersion":      "2.0.6",
@@ -93,6 +94,7 @@ const audiences = [
         entity does not control.
       </p>
 
+      <span class="env-example mono">Example run · illustrative output</span>
       <pre class="cmd" aria-label="Verify command"><code>$ agda-verify --key-id 2026-05-02-d7e5468e --bundle ./bundle.json
 [verify] result:
   attestation present: ✓ yes
@@ -105,6 +107,12 @@ const audiences = [
   revoked:             ✓ no
 
   ✓ ATTESTATION VALID</code></pre>
+
+      <p class="body muted note">
+        The transcript above shows what a successful check prints. The verifier
+        and the bundle are delivered with an engagement, not published here, so
+        there is nothing on this site to run it against.
+      </p>
 
       <p class="body muted note">
         The verifier ships as the <span class="mono">agda-verify</span> package command: a
@@ -199,13 +207,13 @@ const audiences = [
         <h2 class="h2">Want to see what a verdict looks like?</h2>
         <div class="close-cta">
           <p class="body muted">
-            The sample verdict includes a redacted historical attestation
-            summary. Current assessments ship a full bundle bound to your own
-            assessed system.
+            The sample verdict is a constructed example and carries no
+            signature. Only a real assessment ships a full bundle, bound to your
+            own assessed system and verifiable in your own environment.
           </p>
           <div class="cta-row">
-            <a href="/sample-report/" class="btn">View sample verdict</a>
-            <a href="/contact/" class="btn-ghost">Book a conversation</a>
+            <a href="/contact/" class="btn">Discuss your system</a>
+            <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
           </div>
         </div>
       </div>
@@ -323,5 +331,10 @@ const audiences = [
     .fields > div { grid-template-columns: 1fr; gap: 4px; }
     .close-grid { grid-template-columns: 1fr; gap: 48px; }
     .envelope, .cmd { padding: 20px; font-size: 11.5px; }
+  }
+
+  .env-example {
+    display: block; font-size: 10px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--faint); margin-bottom: 12px;
   }
 </style>

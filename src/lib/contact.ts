@@ -1,10 +1,27 @@
+import { track } from './snapshot/analytics';
+
 /**
  * Wire the contact form to Formspree (or any AJAX endpoint).
- * Posts JSON, surfaces success / error state, disables button while pending.
+ * Posts multipart FormData, surfaces success / error state, disables the
+ * button while pending.
+ *
+ * Two analytics events are emitted here, both through the existing
+ * consent-gated `track()`. `enquiry_started` fires once, on the first
+ * input, so an abandoned form is distinguishable from an unseen one.
+ * `enquiry_submitted` fires only after the endpoint returns ok, because a
+ * click is not an enquiry. Neither carries a field value: no name, no
+ * email address, no organisation, no message text.
  */
 export function initContactForm(root: Document | ParentNode = document): () => void {
   const form = root.querySelector<HTMLFormElement>('form[data-contact]');
   if (!form) return () => {};
+
+  let startedTracked = false;
+  const onFirstInput = () => {
+    if (startedTracked) return;
+    startedTracked = true;
+    track('enquiry_started');
+  };
 
   const statusEl = form.querySelector<HTMLElement>('.form-status');
   const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]');
@@ -39,6 +56,7 @@ export function initContactForm(root: Document | ParentNode = document): () => v
         body: data,
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      track('enquiry_submitted');
       form.reset();
       setStatus(
         'Received. A senior advisor will respond directly within one to two working days.',
@@ -58,5 +76,9 @@ export function initContactForm(root: Document | ParentNode = document): () => v
   };
 
   form.addEventListener('submit', onSubmit);
-  return () => form.removeEventListener('submit', onSubmit);
+  form.addEventListener('input', onFirstInput);
+  return () => {
+    form.removeEventListener('submit', onSubmit);
+    form.removeEventListener('input', onFirstInput);
+  };
 }
