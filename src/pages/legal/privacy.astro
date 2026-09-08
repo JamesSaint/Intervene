@@ -44,9 +44,11 @@ import LegalLayout from '../../layouts/LegalLayout.astro';
     Two things are stored in your own browser regardless of that choice,
     because the site cannot do what you have asked without them. Your accept
     or decline is stored so the notice does not ask again on every page, and
-    if you use the Snapshot your answers are held in the tab so the result
-    survives a refresh. Neither is used to track you, neither is sent
-    anywhere, and closing the tab discards the Snapshot answers.
+    if you use the Snapshot your answers are held in the tab so your
+    progress survives a refresh. Neither is used to track you. Your accept or
+    decline is never sent anywhere. Your Snapshot answers stay in the tab
+    unless you choose to submit them to the Intervention Readiness Index,
+    described in section 5, and closing the tab discards them.
   </p>
   <p>
     If you reached the Snapshot on a referral link, the code from that link is
@@ -66,12 +68,23 @@ import LegalLayout from '../../layouts/LegalLayout.astro';
 
   <h2>4. Third-party processors</h2>
   <p>
-    The contact form and the Snapshot follow-up form are transmitted via
-    Formspree (Formspree, Inc.), which acts solely as the transmission
-    mechanism. Formspree is established in the United States, so submitting
-    either form transfers what you entered to the United States. Formspree's
+    The contact form is transmitted via Formspree (Formspree, Inc.), which
+    relays submissions to us. Optional Intervention
+    Readiness Index contributions and referral completion notes, both
+    described in section 5, are relayed the same way. Formspree is
+    established in the United States, so submitting any of these transfers
+    what was entered to the United States. Formspree's
     processing is governed by its own data processing terms. No other
     third-party processor receives form submissions.
+  </p>
+  <p>
+    Each of these is sent from your own browser, so the request exposes your
+    IP address and may include information about your browser, and the
+    receiving service is able to observe the request time. That is how web
+    requests work generally and is not particular to us. These details are not
+    explicitly included in the application payload, and we do not use them to
+    identify you. What Formspree retains or forwards is governed by its own
+    terms, which we do not restate here.
   </p>
   <p>
     The site itself is static and is hosted on GitHub Pages (GitHub, Inc.).
@@ -94,64 +107,81 @@ import LegalLayout from '../../layouts/LegalLayout.astro';
   </p>
   <p>
     <strong>Completing the Snapshot.</strong> Your answers are held in your
-    own browser tab while you work and are used to display your result. No
-    name, email address, organisation, role, sector or company size is
-    requested, and there is no free-text field anywhere in the questionnaire.
-    Nothing is sent to us unless you choose one of the two actions below.
-    Closing the tab discards your answers.
+    own browser tab while you work, so your progress survives a refresh. They
+    do not produce the result you are shown. The Snapshot is withdrawn from
+    use, and the result displayed is a fixed worked example, the same for
+    every visitor, rather than a reading of what you entered. No name, email
+    address, organisation, role, sector or company size is requested, and
+    there is no free-text field anywhere in the questionnaire. Your answers
+    reach us only if you choose to contribute them to the Intervention
+    Readiness Index, described below. Where you arrived on a referral link, a
+    note that a Snapshot was completed is also sent, carrying the link code
+    and none of your answers, as described below. Closing the tab discards
+    your answers.
   </p>
   <p>
     <strong>If you ask us to contact you or to send you your Snapshot.</strong>
-    We collect your name and work email address, and your organisation and
-    role if you choose to give them. We also receive a short summary of your
-    own result, so that a reply can be about something specific. We use this
-    to send what you asked for and to reply. We do not add you to a mailing
-    list, because we do not operate one.
+    This route is not currently available. The form that offered it is no
+    longer part of the page, so no name, email address, organisation or role
+    can be collected through it. While the form was available it asked for a
+    name and work email address, an organisation and role if the visitor chose
+    to give them, and a short summary of that visitor's own result. If you
+    previously submitted details through this form, they were used only to
+    send what you asked for and to reply, they are retained under the rule
+    below, and the rights in section 6 apply to them. Nobody is added to a
+    mailing list, because we do not operate one. The <a href="/contact/">contact form</a> is
+    unaffected and remains the way to reach us.
   </p>
   <p>
     <strong>If you contribute to the Intervention Readiness Index.</strong>
     That is a separate, optional action with its own control. It sends your
-    ten answers and nothing else: no name, no email address, no organisation
-    and no role. We use these to understand how organisations answer these
+    ten answers, the question-set and copy versions, and a fixed routing
+    address that is identical on every contribution. It includes no name,
+    email address, organisation or role, and no free text. Read it with the
+    limits described under "What we cannot yet claim" below. We use these to understand how organisations answer these
     questions and, in time, to publish aggregate findings. We will not publish
     any figure drawn from a group small enough to identify a respondent.
   </p>
   <p id="referral-links">
     <strong>If you arrived on a referral link.</strong> Someone may have sent
-    you the Snapshot on a link carrying a short code. The code records which
-    link brought a visitor. It records nothing about the visitor. It contains
-    no name, email address or organisation, none can be derived from it, and
-    the person who sent it is not told who received it or whether any
-    particular person did. We remove the code from the address bar when you
-    land and hold it in the page while the page is open, writing nothing to
-    your device. We attach it to two things: a note that a Snapshot was
-    completed on that link, carrying no other information about you, and, if
-    you separately choose to use the follow-up form above, the details you
-    enter there. Attribution and identification are separate events. We come to
-    know who you are only if you decide to tell us.
+    you the Snapshot on a link carrying a short code that identifies the link,
+    not you. We remove the code from the address bar when you land and hold it
+    in the page while the page is open, writing nothing to your device. When a
+    Snapshot is completed on such a link, your browser sends us a note
+    containing four application payload fields: a subject line carrying a
+    fixed tag and the link code, a fixed routing address identical on every
+    note, the link code itself, and the question-set and copy versions in use.
+    It carries none of your answers, and no name, email address, organisation
+    or role. The code is also attached to any details entered through the
+    follow-up form described above, where that form was available and used.
+    The person who sent your link is not told who received it or whether any
+    particular person did. Attribution and identification are separate events.
+    The request metadata described in section 4 applies to this note as it
+    does to any other submission.
   </p>
   <p>
     <strong>What we cannot yet claim.</strong> Everything described above is
     relayed by Formspree to a single mailbox. An Index contribution therefore
     arrives alongside contact enquiries and alongside any note that a Snapshot
     was completed on a referral link, and although the contribution carries no
-    identifying field, we could in principle correlate two messages sent close
-    together in time. We are honest about this rather than describing the
-    contribution as anonymous. A future version will separate these paths
-    properly, and this notice will be updated when it does.
+    identifying field in its payload, we could in principle correlate two
+    messages sent close together in time. That possibility, together with the
+    request metadata described in section 4, is why we do not describe these
+    submissions as anonymous.
   </p>
   <p>
     <strong>Retention.</strong> Snapshot enquiries are handled as ordinary
     enquiries and deleted twelve months from the close of correspondence,
     unless an active engagement requires otherwise. Index contributions carry no identifier and are
     retained for trend analysis. A note that a Snapshot was completed on a
-    referral link carries a link code and nothing about the visitor, and is
+    referral link carries a link code and none of the visitor's answers, and is
     deleted twelve months after the arrangement with the person who sent that
     link ends.
   </p>
   <p>
-    <strong>Lawful basis.</strong> Where you ask us to contact you or to send
-    you your result, we rely on Article 6(1)(f), legitimate interests. The
+    <strong>Lawful basis.</strong> Where you asked us to contact you or to
+    send you your result while that route was available, we rely on Article
+    6(1)(f), legitimate interests. The
     interests are yours in receiving the thing you asked for, and ours in
     answering a professional enquiry and judging whether an engagement is
     appropriate. We do not rely on consent here, because we could not honour a
@@ -171,7 +201,7 @@ import LegalLayout from '../../layouts/LegalLayout.astro';
   <p>
     Contributing to the Intervention Readiness Index is different. That relies
     on your consent, given by ticking the box on that control, and you can
-    complete the Snapshot and read your result without doing either.
+    complete the Snapshot and see the worked example without contributing.
   </p>
 
   <h2>6. Your rights</h2>
