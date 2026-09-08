@@ -4,12 +4,17 @@ import { markAgda } from '../lib/marks';
 
 interface Props {
   title: string;
+  /* Metadata title only, when the headline is too long for the <title>
+     limit once the brand suffix is added. Omit it and the visible
+     headline is used, which is the original behaviour. Never include
+     the suffix here: it is appended once, below. */
+  seoTitle?: string;
   description: string;
   dek: string;
   date: string;        // ISO, e.g. 2026-05-02
   kicker?: string;
 }
-const { title, description, dek, date, kicker = 'Note' } = Astro.props;
+const { title, seoTitle, description, dek, date, kicker = 'Note' } = Astro.props;
 const dateLabel = new Date(date).toLocaleDateString('en-GB', {
   day: 'numeric',
   month: 'long',
@@ -18,7 +23,7 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
 ---
 
 <BaseLayout
-  title={`${title} · Intervene`}
+  title={`${seoTitle ?? title} · Intervene`}
   description={description}
   current="insights"
   pageType="Article"

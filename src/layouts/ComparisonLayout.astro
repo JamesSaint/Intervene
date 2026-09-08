@@ -13,7 +13,8 @@ interface Faq {
   answer: string;
 }
 interface Props {
-  title: string;        // passed to BaseLayout, ends "· Intervene"
+  title: string;        // passed to BaseLayout verbatim. Ends "· Intervene"
+                        // except where the comparison term needs the room.
   description: string;
   ogImage?: string;     // per-page social card; falls back to BaseLayout default
   other: string;        // adjacent discipline, e.g. "AI Governance"
