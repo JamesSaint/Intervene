@@ -4,12 +4,17 @@ import { markAgda } from '../lib/marks';
 
 interface Props {
   title: string;
+  /* Metadata title only, when the headline is too long for the <title>
+     limit once the brand suffix is added. Omit it and the visible
+     headline is used, which is the original behaviour. Never include
+     the suffix here: it is appended once, below. */
+  seoTitle?: string;
   description: string;
   dek: string;
   date: string;        // ISO, e.g. 2026-05-02
   kicker?: string;
 }
-const { title, description, dek, date, kicker = 'Note' } = Astro.props;
+const { title, seoTitle, description, dek, date, kicker = 'Note' } = Astro.props;
 const dateLabel = new Date(date).toLocaleDateString('en-GB', {
   day: 'numeric',
   month: 'long',
@@ -18,7 +23,7 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
 ---
 
 <BaseLayout
-  title={`${title} · Intervene`}
+  title={`${seoTitle ?? title} · Intervene`}
   description={description}
   current="insights"
   pageType="Article"
@@ -41,14 +46,13 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
 
     <div class="wrap-reading insight-close">
       <p class="body muted">
-        If this describes a system you are accountable for, ten questions in
-        the <a href="/readiness-snapshot/" class="link">Intervention Readiness Snapshot</a>
-        will name the area you are least able to evidence. Then look at the
-        evidence format, and decide whether to open a conversation.
+        If this describes a system you are accountable for, look at the
+        evidence format an assessment produces, and decide whether to open a
+        conversation.
       </p>
       <div class="cta-row">
-        <a href="/sample-report/" class="btn">View sample verdict</a>
-        <a href="/contact/" class="btn-ghost">Book a conversation</a>
+        <a href="/contact/" class="btn">Discuss your system</a>
+        <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
       </div>
     </div>
   </article>

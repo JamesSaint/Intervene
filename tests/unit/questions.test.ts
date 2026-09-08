@@ -132,60 +132,43 @@ describe('question set', () => {
   });
 });
 
-describe('result page ordering', () => {
-  it('places the actions before the Index contribution ask', () => {
-    // The contrast block is the commercial pivot. What follows it must
-    // be the visitor's route forward, not Intervene's request for data.
-    // The benchmark block is 463px on desktop and 602px on mobile; with
-    // it in between, the first action sat 2.9 screens below the fold.
-    const page = readFileSync('src/pages/readiness-snapshot/index.astro', 'utf8');
-    expect(page.indexOf('<ConversionActions')).toBeLessThan(page.indexOf('<BenchmarkControl'));
+describe('the Snapshot is withdrawn from the conversion path', () => {
+  // The result is a worked example: `resolvePrototypeResult` selects on a
+  // query parameter and never reads the visitor's answers. Converting an
+  // enquiry off it would be converting off a fabrication, so the actions
+  // block is withdrawn until the result logic exists. Restore these
+  // assertions, and the component, in the same change that lands it.
+  const page = readFileSync('src/pages/readiness-snapshot/index.astro', 'utf8');
+
+  it('renders no conversion actions block', () => {
+    expect(page).not.toContain('<ConversionActions');
+    expect(page).not.toContain("ConversionActions.astro'");
+  });
+
+  it('still offers the Index contribution, which collects real answers', () => {
+    // The answers a visitor gives are genuine even though the result is
+    // not, so the benchmark ask remains legitimate.
+    expect(page).toContain('<BenchmarkControl');
   });
 
   it('keeps a competing link row out of the contrast block', () => {
-    // It duplicated two destinations already present in the actions and
-    // the hero, and sat exactly where the argument ends, so it read as
-    // the action set and visitors stopped there.
     const result = readFileSync('src/components/snapshot/SnapshotResult.astro', 'utf8');
     expect(result).not.toContain('contrast-links');
   });
 });
 
-describe('action hierarchy', () => {
-  const component = readFileSync('src/components/snapshot/ConversionActions.astro', 'utf8');
-
-  it('promotes exactly one action and subordinates the other two', () => {
-    // Three actions at near-equal weight read as a menu, which hands the
-    // decision back to the visitor at the moment the page should be
-    // making one for them.
-    expect(component).toContain('primary-action');
-    expect((component.match(/class="btn primary-btn"/g) ?? []).length).toBe(1);
-    expect((component.match(/class="btn-ghost"/g) ?? []).length).toBe(2);
+describe('the demonstration is labelled before entry and on the result', () => {
+  it('warns before the visitor starts', () => {
+    const intro = readFileSync('src/components/snapshot/SnapshotIntro.astro', 'utf8');
+    expect(intro).toMatch(/Demonstration only/i);
+    expect(intro).toMatch(/not read from the answers you give/i);
+    // The notice has to precede the control that starts the questionnaire.
+    expect(intro.indexOf('demo-notice')).toBeLessThan(intro.indexOf('data-snapshot-begin'));
   });
 
-  it('states what happens before the button, not after it', () => {
-    const noteAt = component.indexOf('class="primary-note"');
-    const buttonAt = component.indexOf('class="btn primary-btn"');
-    expect(noteAt).toBeGreaterThan(-1);
-    expect(noteAt).toBeLessThan(buttonAt);
-  });
-
-  it('names the object of every action, with no vague pronoun', () => {
-    // "Find out whether it holds" failed because "it" had at least three
-    // plausible referents. A reader who must resolve a pronoun before
-    // acting does not act. Labels must end on a noun, not a pointer.
-    const labels = [...component.matchAll(/label: '([^']+)'/g)].map((m) => m[1]);
-    expect(labels.length).toBeGreaterThanOrEqual(3);
-    for (const label of labels) {
-      expect(label, `vague pronoun in "${label}"`).not.toMatch(/\b(it|this|that|these|those)\s*$/i);
-      expect(label, `vague pronoun in "${label}"`).not.toMatch(/\bwhether it\b/i);
-    }
-  });
-
-  it('still offers exactly three actions, and learn_agda stays navigational', () => {
-    for (const id of ['contact_intervene', 'learn_agda', 'email_snapshot_and_sample']) {
-      expect(component).toContain(id);
-    }
-    expect(component).toMatch(/data-action-link=\{action\.id\}/);
+  it('warns again on the result itself', () => {
+    const result = readFileSync('src/components/snapshot/SnapshotResult.astro', 'utf8');
+    expect(result).toMatch(/Demonstration only/i);
+    expect(result).toMatch(/was not read from the answers you gave/i);
   });
 });

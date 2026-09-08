@@ -11,7 +11,7 @@ const reportLayers = [
   {
     name: 'Operational',
     audience: 'Head of Operational Resilience, Head of Model Risk',
-    body: 'Plus temporal gating across eight gates with reasons, causal chain with timing, scenario impact, intervention chain, dimension findings.',
+    body: 'Plus temporal gating with reasons, causal chain with timing, scenario impact, intervention chain, dimension findings.',
   },
   {
     name: 'Specialist',
@@ -34,7 +34,7 @@ const buyerQuestions = [
   {
     audience: 'Board & audit committee',
     question: 'What evidence supports this decision?',
-    answer: 'A formal AGDA™ SEDI verdict and signed regulator bundle that can be verified after the decision is made.',
+    answer: 'An AGDA™ SEDI verdict and signed regulator bundle that can be verified after the decision is made.',
   },
 ];
 
@@ -43,8 +43,8 @@ const tiers = [
     name: 'Pilot',
     framing: 'Initial evidence for one consequential system.',
     question: 'Can this system be stopped before harm becomes irreversible?',
-    for: 'Executive, risk or board teams facing a material deployment, approval, remediation or oversight decision.',
-    evidence: 'Formal AGDA™ SEDI verdict, Failure Exposure Report, signed regulator bundle, attestation envelope, board evidence readout and intervention scenario support.',
+    for: 'A first assessment, on the system carrying the decision that cannot wait.',
+    evidence: 'A signed Intervention Readiness verdict on one system, with the limiting stage named.',
     decision: 'Deployment confidence, risk acceptance, remediation priority, board oversight and regulatory preparation.',
     why: 'Creates a defensible evidence standard before the organisation relies on assertion or expands assessment across more systems.',
     formats: [
@@ -53,7 +53,7 @@ const tiers = [
       { label: 'Structured pilot · 2 systems',             gbp: '£175,000',  eur: '€205,000', usd: '$225,000' },
       { label: 'Structured pilot · 3 systems',             gbp: '£225,000',  eur: '€265,000', usd: '$290,000' },
     ],
-    includes: 'Failure Exposure Report at all three audience layers, signed regulator bundle, attestation envelope, Labs Intervention Simulator access, board evidence readout and close-out memo.',
+    includes: 'Failure Exposure Report at all three audience layers, signed regulator bundle, attestation envelope, Intervention Simulator access, board evidence readout and close-out memo.',
   },
   {
     name: 'Annual subscription',
@@ -67,14 +67,14 @@ const tiers = [
       { label: 'Annual subscription',     gbp: '£180,000 / yr', eur: '€210,000 / yr', usd: '$235,000 / yr' },
       { label: 'Equivalent quarterly',    gbp: '£45,000 / qtr', eur: '€52,500 / qtr', usd: '$58,750 / qtr' },
     ],
-    includes: 'Standing Labs access, two assessed systems per year, engine-hash pinning, quarterly re-run rights on each system, annual board evidence readout.',
+    includes: 'Standing Intervention Simulator access, two assessed systems per year, engine-hash pinning, quarterly re-run rights on each system, annual board evidence readout.',
   },
   {
     name: 'Enterprise master',
     framing: 'Group-level evidence across systems and entities.',
     question: 'Can a complex organisation evidence intervention capability across the systems that matter most?',
     for: 'Multi-entity groups, regulated portfolios and organisations facing material automation exposure across several operating units.',
-    evidence: 'Portfolio-level Intervention Readiness verdicts, regulator-ready SEDI bundles where assessments are in scope, group CRO review, multi-entity reporting and designated AGDA™ operation.',
+    evidence: 'Portfolio-level Intervention Readiness verdicts, signed SEDI regulator bundles for every assessed system, group CRO review, multi-entity reporting and designated AGDA™ operation.',
     decision: 'Group assurance, regulatory engagement, critical deployment governance, resilience investment and board-level risk appetite.',
     why: 'Aligns evidence across entities so the board is not comparing local assertions against group-level exposure.',
     formats: [
@@ -88,9 +88,9 @@ const tiers = [
 const addons = [
   { label: 'Additional assessed system, post-pilot',                  gbp: '£55,000',       eur: '€65,000',     usd: '$72,000' },
   { label: 'Additional re-run, beyond quarterly included in Annual',   gbp: '£20,000',       eur: '€23,000',     usd: '$25,000' },
-  { label: 'Additional named Labs operator',                          gbp: '£3,000 / term', eur: '€3,500 / term', usd: '$4,000 / term' },
-  { label: 'Board evidence readout, remote',                           gbp: '£12,000',       eur: '€14,000',     usd: '$15,500' },
-  { label: 'Board evidence readout, on-site',                          gbp: '£18,000',       eur: '€21,000',     usd: '$23,000' },
+  { label: 'Additional named Intervention Simulator operator',                          gbp: '£3,000 / term', eur: '€3,500 / term', usd: '$4,000 / term' },
+  { label: 'Additional board evidence readout, remote',                           gbp: '£12,000',       eur: '€14,000',     usd: '$15,500' },
+  { label: 'Additional board evidence readout, on-site',                          gbp: '£18,000',       eur: '€21,000',     usd: '$23,000' },
   { label: 'Regulator bundle, post-engine-version change',            gbp: '£6,000',        eur: '€7,000',      usd: '$7,500' },
 ];
 
@@ -102,10 +102,10 @@ const services = [
 ];
 
 const notProduct = [
-  { h: 'Not a governance framework.', p: 'We do not score governance artefact completeness. We measure whether governance can actually intervene when required.' },
-  { h: 'Not a compliance solution.',  p: 'Regulatory exposure is an output of the assessment. The category is Intervention Readiness, not clause adherence.' },
-  { h: 'Not a risk score.',           p: 'AGDA™ produces a verdict on one question: <span class="keep-together">can you stop it in time?</span> It can inform a risk register. It does not substitute for one.' },
-  { h: 'Not a monitoring tool.',      p: 'AGDA™ assesses intervention capability at a point in time. Runtime monitoring is a different product category.' },
+  { h: 'Not a governance framework.', p: 'We measure whether governance can intervene, not whether its artefacts are complete.' },
+  { h: 'Not a compliance solution.',  p: 'Regulatory exposure is an output, not the category. The category is Intervention Readiness.' },
+  { h: 'Not a risk score.',           p: 'One verdict on one question: <span class="keep-together">can you stop it in time?</span> It informs a risk register; it does not replace one.' },
+  { h: 'Not a monitoring tool.',      p: 'A point-in-time verdict on intervention capability. Runtime monitoring is a different product.' },
 ];
 
 const benchmarks = [
@@ -118,39 +118,34 @@ const stages = [
   {
     n: '01',
     name: 'Nominate',
-    body: 'You name one consequential system and the single intervention-readiness question it has to answer.',
-    provide: 'The system and the question.',
+    body: 'You name one consequential system and the single intervention question it has to answer.',
   },
   {
     n: '02',
     name: 'Scope',
-    body: 'Together you fix the success condition, the harm window, and the evidence the assessment will draw on.',
-    provide: 'Access to the right people.',
+    body: 'Together you fix the success condition, the harm window and the evidence the assessment will draw on. You provide access to the people who know how the system is actually run, rather than how it is documented.',
   },
   {
     n: '03',
     name: 'Evidence',
-    body: 'You supply the control, escalation and drill evidence. It is graded for quality, not taken on assertion.',
-    provide: 'Documents and subject-matter time.',
+    body: 'You supply the control, escalation and drill evidence, with subject-matter time to explain it. It is graded for quality, not taken on assertion.',
   },
   {
     n: '04',
     name: 'Assess',
-    body: 'A trained rater runs the SEDI assessment against the eight dimensions. No system access, no integration.',
-    provide: 'Clarification only.',
+    body: 'A trained rater runs the SEDI assessment against the eight dimensions. No system access, no integration, and nothing asked of you beyond clarification.',
   },
   {
     n: '05',
     name: 'Deliver',
-    body: 'You receive the signed Intervention Readiness Verdict and Failure Exposure Report in three layers, executive, operational and specialist, with a board readout and a close-out memo recording agreed actions and ownership.',
-    provide: 'Board or executive time for the readout.',
+    body: 'The signed verdict is issued, presented at a board or executive readout, and closed out with a memo recording agreed actions and ownership. You provide the attendance.',
   },
 ];
 ---
 
 <BaseLayout
   title="Evidence of Intervention Readiness · Intervene"
-  description="AGDA™ SEDI Intervention Readiness assessments provide signed regulator-bundle evidence for consequential decisions: deployment, oversight, risk acceptance, resilience and regulatory scrutiny."
+  description="AGDA™ SEDI Intervention Readiness assessments provide signed regulator-bundle evidence for deployment, oversight, risk acceptance and regulatory scrutiny."
   current="services"
   ogImage="/assets/og/og-services.png"
 >
@@ -161,14 +156,68 @@ const stages = [
         Evidence for decisions that cannot rely on assertion.
       </h1>
       <p class="lede muted reveal">
-        Organisations routinely invest millions in systems whose failure could
-        create significant operational, regulatory or reputational
-        consequences. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> exists to answer whether intervention remains
-        possible before those consequences become irreversible.
+        A consequential system can act faster than the authority meant to
+        govern it. A control inventory alone does not establish whether
+        intervention can happen in time.
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> exists to answer whether intervention remains
+        possible before harm becomes irreversible.
       </p>
       <div class="hero-cta reveal">
-        <a href="/sample-report/" class="btn">View sample verdict</a>
-        <a href="/methodology/" class="btn-ghost">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> works</a>
+        <a href="/contact/" class="btn">Discuss your system</a>
+        <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- START HERE. The first engagement, stated in buying order:
+       suitability, scope, contribution, deliverables, timeframe, price.
+       Placed above the tier table because the pilot is the only thing a
+       first-time buyer can actually purchase. -->
+  <section class="block start-here">
+    <div class="wrap">
+      <span class="label section-kicker">Start here</span>
+      <h2 class="h2">The short pilot. <em>One system, four weeks.</em></h2>
+      <p class="lede muted start-lede">
+        Almost every engagement begins the same way. One consequential system,
+        one intervention question, one signed verdict. Everything below this
+        section exists for organisations that have already run one.
+      </p>
+
+      <dl class="start-list">
+        <div>
+          <dt>Who it is for</dt>
+          <dd>Executive, risk or board teams facing a material deployment, approval, remediation or oversight decision, where the organisation needs verifiable evidence of Intervention Readiness rather than certification or regulatory approval.</dd>
+        </div>
+        <div>
+          <dt>Scope</dt>
+          <dd>One consequential system and the single intervention question it has to answer. Scope is fixed with you before work begins.</dd>
+        </div>
+        <div>
+          <dt>What you provide</dt>
+          <dd>The system and the question. Access to the right people while scope is fixed. Control, escalation and drill evidence, with subject-matter time to explain it. Board or executive time for the readout. No system access and no integration.</dd>
+        </div>
+        <div>
+          <dt>What you receive</dt>
+          <dd>A signed Intervention Readiness Verdict. A Failure Exposure Report at executive, operational and specialist layers. A board evidence readout. A close-out memo recording agreed actions and ownership.</dd>
+        </div>
+        <div>
+          <dt>Timeframe</dt>
+          <dd>Four weeks from named system to signed verdict, at this format. The five phases of an engagement run inside that window.</dd>
+        </div>
+        <div>
+          <dt>Price</dt>
+          <dd>
+            <span class="start-price">£95,000</span>
+            <span class="start-price-alt mono">€110,000 · $125,000</span>
+            <span class="start-price-note">Excludes VAT. A sector premium of 30 to 50 percent applies to clinical AI, medical devices, critical infrastructure and defence.</span>
+          </dd>
+        </div>
+      </dl>
+
+      <div class="cta-row start-cta">
+        <a href="/contact/" class="btn">Discuss your system</a>
+        <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
       </div>
     </div>
   </section>
@@ -201,10 +250,8 @@ const stages = [
     <div class="wrap">
       <h2 class="h2">What every assessment produces.</h2>
       <p class="lede muted">
-        A single structured output: an Intervention Readiness Verdict and
-        Failure Exposure Report. Three audience layers, all derived from the
-        same result, engine hash and, for formal SEDI assessments, attestation
-        envelope.
+        One result, read three ways. All three layers derive from the same
+        verdict, engine hash and attestation envelope, so they cannot disagree.
       </p>
 
       <ul class="layers reveal" role="list">
@@ -218,11 +265,12 @@ const stages = [
       </ul>
 
       <div class="labs">
-        <h3 class="h3">Intervention decision support.</h3>
+        <h3 class="h3">Intervention Simulator.</h3>
         <p class="body muted">
           A what-if console for the resilience function. Test whether proposed
           changes improve intervention timing without re-running the full
-          assessment. Included with every tier.
+          assessment. Included with the Pilot, and with the Annual subscription
+          as standing access across the year.
         </p>
       </div>
     </div>
@@ -233,9 +281,8 @@ const stages = [
     <div class="wrap">
       <h2 class="h2">How an engagement runs.</h2>
       <p class="lede muted">
-        Five phases from named system to signed verdict. Each phase states what
-        you provide, so the obligation is explicit before the work begins. At
-        the short pilot format the five run inside four weeks.
+        Five phases from named system to signed verdict, with your obligation
+        named in the phase it falls in.
       </p>
 
       <ol class="stages" role="list">
@@ -247,12 +294,6 @@ const stages = [
             </div>
             <div class="stage-body">
               <p class="body muted">{s.body}</p>
-              <dl class="stage-meta">
-                <div>
-                  <dt>You provide</dt>
-                  <dd>{s.provide}</dd>
-                </div>
-              </dl>
             </div>
           </li>
         ))}
@@ -270,11 +311,8 @@ const stages = [
         being supported.
       </p>
       <p class="body muted tiers-note">
-        Ahead of that, the
-        <a href="/readiness-snapshot/" class="link">Intervention Readiness Snapshot</a>
-        asks ten questions and names the area you are least able to evidence.
-        No details required to see the result. The first engagement is the
-        short pilot: one system, four weeks, one fixed price.
+        The first engagement is the short pilot: one system, four weeks, at the
+        published price for its sector.
       </p>
       <p class="body muted tiers-note">
         If your work puts you close to boards, risk leaders or accountable
@@ -342,6 +380,12 @@ const stages = [
           </li>
         ))}
       </ol>
+
+      <p class="body muted footnote tiers-footnote">
+        Prices are shown in GBP, EUR and USD and exclude VAT. A sector premium
+        of 30 to 50 percent applies to clinical AI, medical devices, critical
+        infrastructure and defence. Other currencies on application.
+      </p>
     </div>
   </section>
 
@@ -351,8 +395,8 @@ const stages = [
       <h2 class="h2">Add-ons.</h2>
       <p class="lede muted">
         Additional evidence, re-runs and support when the decision requires
-        more coverage. Priced per unit. No volume discount on the first deal in
-        a sector.
+        more coverage beyond what the engagement already includes. Priced per
+        unit.
       </p>
 
       <ul class="rate-card" role="list">
@@ -381,9 +425,8 @@ const stages = [
       </ul>
 
       <p class="body muted footnote">
-        Prices shown in GBP, EUR, and USD. All exclude VAT. Sector premium of
-        30 to 50 percent applies to clinical AI, medical devices, critical
-        infrastructure, and defence. Other currencies on application.
+        Priced per unit, on the same VAT, sector premium and currency terms as
+        the assurance levels above.
       </p>
     </div>
   </section>
@@ -449,8 +492,8 @@ const stages = [
             you want to see the evidence standard.
           </p>
           <div class="cta-row">
-            <a href="/sample-report/" class="btn">View sample verdict</a>
-            <a href="/contact/" class="btn-ghost">Book a conversation</a>
+            <a href="/contact/" class="btn">Discuss your system</a>
+            <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
           </div>
         </div>
       </div>
@@ -766,33 +809,6 @@ const stages = [
   }
   .stage-body { display: grid; gap: 20px; min-width: 0; }
   .stage-body > p { margin: 0; max-width: 60ch; }
-  .stage-meta {
-    margin: 0;
-    padding: 0;
-    display: grid;
-    /* Was two columns. The second held "Duration: Confirmed at scoping" on
-       every phase, which said nothing, and said it next to a page that now
-       states four weeks for the short pilot. */
-    grid-template-columns: 1fr;
-    gap: 0 40px;
-    border-top: 1px solid var(--hair);
-  }
-  .stage-meta > div { padding: 16px 0 0; }
-  .stage-meta dt {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .stage-meta dd {
-    margin: 8px 0 0;
-    max-width: 40ch;
-    font-family: var(--font-sans);
-    font-size: 15px;
-    line-height: 1.58;
-    color: var(--ink);
-  }
 
   /* ----- Responsive ----- */
   @media (max-width: 880px) {
@@ -807,10 +823,53 @@ const stages = [
     .rate-card > li { grid-template-columns: 1fr; gap: 4px; padding: 16px 0; }
     .rate-price { text-align: left; justify-items: start; }
     .stage { grid-template-columns: 1fr; gap: 20px; }
-    .stage-meta { grid-template-columns: 1fr; gap: 0; }
-    .stage-meta > div + div { padding-top: 8px; }
     .not-list { grid-template-columns: 1fr; gap: 48px; }
     .benchmarks { grid-template-columns: 1fr; gap: 40px; }
     .close-grid { grid-template-columns: 1fr; gap: 48px; }
   }
+
+  /* START HERE. The pilot, above the tier table. Reads as a specification
+     sheet rather than a pitch: term on the left, answer on the right. */
+  .start-here { background: var(--paper-soft); border-bottom: 1px solid var(--hair); }
+  .start-here .h2 { max-width: 22ch; }
+  .start-lede { margin-top: 24px; max-width: 62ch; }
+  .start-list {
+    margin: 56px 0 0;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--hair-strong);
+  }
+  .start-list > div {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .start-list dt {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); padding-top: 4px;
+  }
+  .start-list dd {
+    margin: 0; font-family: var(--font-sans); font-size: 17px;
+    line-height: 1.65; color: var(--ink); max-width: 62ch;
+  }
+  .start-price {
+    display: block; font-family: var(--font-sans);
+    font-size: clamp(28px, 3.2vw, 40px); font-weight: 700;
+    letter-spacing: -0.02em; color: var(--ink); line-height: 1.1;
+  }
+  .start-price-alt { display: block; margin-top: 8px; color: var(--muted-soft); }
+  .start-price-note {
+    display: block; margin-top: 14px; font-size: 15px;
+    line-height: 1.55; color: var(--faint); max-width: 56ch;
+  }
+  .start-cta { margin-top: 48px; }
+
+  @media (max-width: 720px) {
+    .start-list > div { grid-template-columns: 1fr; gap: 10px; }
+    .start-list dt { padding-top: 0; }
+  }
+
+  .tiers-footnote { margin-top: 40px; max-width: 64ch; }
 </style>

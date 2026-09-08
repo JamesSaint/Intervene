@@ -32,9 +32,17 @@
       about two minutes, and you can read the whole result without giving a
       name, an email address or an organisation.
     </p>
+    <p class="demo-notice reveal">
+      <strong>Demonstration only. Withdrawn from use.</strong>
+      The result this returns is a worked example. It is the same for every
+      visitor and is not read from the answers you give, so it cannot tell you
+      anything about your own organisation. The questions are here because the
+      framing is worth seeing. The result is not a finding, and Intervene is
+      not offering it as one until the result logic is built.
+    </p>
     <div class="cta-row reveal">
       <a class="btn" href="#snapshot" data-snapshot-begin>Begin</a>
-      <a class="btn-ghost" href="/sample-report/">See a tested verdict</a>
+      <a class="btn-ghost" href="/sample-report/">See a sample verdict</a>
     </div>
     <p class="framing reveal">
       No sign-in and no contact details. Nothing here is assessed: it records
@@ -88,4 +96,16 @@
   @media (max-width: 880px) {
     .hero { padding-top: 112px; padding-bottom: 88px; }
   }
+
+  .demo-notice {
+    margin: 32px 0 0;
+    padding: 16px 0 0 18px;
+    border-left: 2px solid var(--accent);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.62;
+    color: var(--muted);
+    max-width: 56ch;
+  }
+  .demo-notice strong { color: var(--ink); font-weight: 700; }
 </style>
