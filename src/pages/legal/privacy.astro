@@ -45,8 +45,10 @@ import LegalLayout from '../../layouts/LegalLayout.astro';
     because the site cannot do what you have asked without them. Your accept
     or decline is stored so the notice does not ask again on every page, and
     if you use the Snapshot your answers are held in the tab so your
-    progress survives a refresh. Neither is used to track you, neither is sent
-    anywhere, and closing the tab discards the Snapshot answers.
+    progress survives a refresh. Neither is used to track you. Your accept or
+    decline is never sent anywhere. Your Snapshot answers stay in the tab
+    unless you choose to submit them to the Intervention Readiness Index,
+    described in section 5, and closing the tab discards them.
   </p>
   <p>
     If you reached the Snapshot on a referral link, the code from that link is
@@ -67,7 +69,7 @@ import LegalLayout from '../../layouts/LegalLayout.astro';
   <h2>4. Third-party processors</h2>
   <p>
     The contact form is transmitted via Formspree (Formspree, Inc.), which
-    acts solely as the transmission mechanism. Optional Intervention
+    relays submissions to us. Optional Intervention
     Readiness Index contributions and referral completion notes, both
     described in section 5, are relayed the same way. Formspree is
     established in the United States, so submitting any of these transfers
@@ -105,46 +107,57 @@ import LegalLayout from '../../layouts/LegalLayout.astro';
     reach us only if you choose to contribute them to the Intervention
     Readiness Index, described below. Where you arrived on a referral link, a
     note that a Snapshot was completed is also sent, carrying the link code
-    and nothing about you. Closing the tab discards your answers.
+    and none of your answers, as described below. Closing the tab discards
+    your answers.
   </p>
   <p>
     <strong>If you ask us to contact you or to send you your Snapshot.</strong>
     This route is not currently available. The form that offered it is no
     longer part of the page, so no name, email address, organisation or role
     can be collected through it. While the form was available it asked for a
-    name and work email address, an organisation and role if the visitor
-    chose to give them, and a short summary of that visitor's own result, and
-    those details would have been used only to send what was asked for and to
-    reply. We have not confirmed whether any details were in fact submitted
-    this way. Any that were are retained under the rule below, and the rights
-    in section 6 apply to them. Nobody is added to a mailing list, because we
-    do not operate one. The <a href="/contact/">contact form</a> is
+    name and work email address, an organisation and role if the visitor chose
+    to give them, and a short summary of that visitor's own result. If you
+    previously submitted details through this form, they were used only to
+    send what you asked for and to reply, they are retained under the rule
+    below, and the rights in section 6 apply to them. Nobody is added to a
+    mailing list, because we do not operate one. The <a href="/contact/">contact form</a> is
     unaffected and remains the way to reach us.
   </p>
   <p>
     <strong>If you contribute to the Intervention Readiness Index.</strong>
     That is a separate, optional action with its own control. It sends your
-    ten answers and nothing else: no name, no email address, no organisation
-    and no role. We use these to understand how organisations answer these
+    ten answers, the question-set and copy versions, and a fixed routing
+    address that is identical on every contribution. It includes no name,
+    email address, organisation or role, and no free text. Read it with the
+    limits described under "What we cannot yet claim" below. We use these to understand how organisations answer these
     questions and, in time, to publish aggregate findings. We will not publish
     any figure drawn from a group small enough to identify a respondent.
   </p>
   <p id="referral-links">
     <strong>If you arrived on a referral link.</strong> Someone may have sent
-    you the Snapshot on a link carrying a short code. The code records which
-    link brought a visitor. It records nothing about the visitor. It contains
-    no name, email address or organisation, none can be derived from it, and
-    the person who sent it is not told who received it or whether any
-    particular person did. We remove the code from the address bar when you
-    land and hold it in the page while the page is open, writing nothing to
-    your device. We attach it to two things: a note that a Snapshot was
-    completed on that link, carrying no other information about you, and,
-    where the follow-up form described above was available and used, the
-    details entered there. Attribution and identification are separate events. We come to
-    know who you are only if you decide to tell us.
+    you the Snapshot on a link carrying a short code that identifies the link,
+    not you. We remove the code from the address bar when you land and hold it
+    in the page while the page is open, writing nothing to your device. When a
+    Snapshot is completed on such a link, your browser sends us a note
+    containing four things and nothing further: a subject line carrying a
+    fixed tag and the link code, a fixed routing address identical on every
+    note, the link code itself, and the question-set and copy versions in use.
+    It carries none of your answers, and no name, email address, organisation
+    or role. The code is also attached to any details entered through the
+    follow-up form described above, where that form was available and used.
+    The person who sent your link is not told who received it or whether any
+    particular person did. Attribution and identification are separate events,
+    and we come to know who you are only if you decide to tell us. What the
+    note cannot avoid disclosing is set out immediately below.
   </p>
   <p>
-    <strong>What we cannot yet claim.</strong> Everything described above is
+    <strong>What we cannot yet claim.</strong> Index contributions and
+    completion notes are sent from your own browser to Formspree, so the
+    request itself discloses your IP address, your browser's user agent and
+    the time you completed, in the way any web request to any site does. The
+    application sends none of that, and we do not use it to identify you, but
+    it is disclosed in transit and so neither the contribution nor the note
+    can be described as anonymous. Everything described above is then
     relayed by Formspree to a single mailbox. An Index contribution therefore
     arrives alongside contact enquiries and alongside any note that a Snapshot
     was completed on a referral link, and although the contribution carries no
