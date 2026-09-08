@@ -196,22 +196,20 @@ test.describe('accessibility', () => {
 });
 
 test.describe('after the result', () => {
-  test('connects the Snapshot to AGDA without overclaiming what it did', async ({ page }) => {
+  test('offers no conversion path off a result nobody\'s answers produced', async ({ page }) => {
+    // The bridge and the three actions are withdrawn with the rest of the
+    // funnel. `resolvePrototypeResult` never reads the answers, so an
+    // enquiry captured here would be captured off a fabrication. Restore
+    // this test, and the block, with the result logic.
     await page.goto(ROUTE);
     await completeSnapshot(page);
 
-    const bridge = page.locator('[data-conversion] .bridge');
-    await expect(bridge).toBeVisible();
-    const text = (await bridge.innerText()).toLowerCase();
+    await expect(page.locator('[data-conversion]')).toHaveCount(0);
+    await expect(page.locator('[data-action-open]')).toHaveCount(0);
+    await expect(page.locator('[data-followup]')).toHaveCount(0);
 
-    // States the limit before the option, which is what keeps this a
-    // finding rather than a conversion step.
-    expect(text).toContain('indicative and self-reported, not an assessment');
-    expect(text).toContain('warrant closer examination');
-    expect(text).toContain('test it independently');
-
-    // The conversation is still the existing action, not a new funnel.
-    await expect(page.locator('[data-action-open="contact_intervene"]')).toBeVisible();
+    // The result still states plainly what it is.
+    await expect(page.locator('.demo-banner')).toContainText(/Demonstration only/i);
   });
 });
 
@@ -302,40 +300,45 @@ test.describe('privacy and AGDA protection', () => {
     ).toHaveLength(0);
   });
 
-  test('is indexable and present in the sitemap', async ({ page, request }) => {
-    // The inverse of these two assertions held for Phase 1, when the page
-    // was deliberately hidden. Phase 4 made it public, so they now guard
-    // against it being hidden again by accident.
-    await page.goto(ROUTE);
+  test('is withdrawn from search and the sitemap, but still resolves', async ({ page, request }) => {
+    // Phase 4 made it public. It is withdrawn again while the result is a
+    // worked example: noindex, out of the sitemap, still reachable by URL
+    // so an existing link does not 404. robots.txt deliberately still
+    // allows crawling, otherwise the noindex could never be read.
+    const res = await page.goto(ROUTE);
+    expect(res?.status()).toBe(200);
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
       'content',
-      'index, follow',
+      'noindex, nofollow',
     );
     const sitemap = await request.get('/sitemap-0.xml');
-    expect(await sitemap.text()).toContain('/readiness-snapshot/');
+    expect(await sitemap.text()).not.toContain('/readiness-snapshot/');
+
+    const robots = await request.get('/robots.txt');
+    expect(await robots.text()).not.toContain('Disallow: /readiness-snapshot/');
   });
 
-  test('is reachable from the takeover menu and the footer', async ({ page }) => {
-    // Being live is worth nothing if nothing links to it. For three
-    // releases the only way in was being sent the URL.
+  test('is withdrawn from navigation while the result is a worked example', async ({ page }) => {
+    // The result never reads the visitor's answers, so promoting the route
+    // would be promoting a fabrication. The page stays reachable by URL and
+    // keeps its notice. Restore these links, and the assertions below, in
+    // the same change that lands the result logic.
     await page.goto('/');
     await expect(
       page.locator('#takeover-menu a[href$="/readiness-snapshot/"]'),
-    ).toHaveCount(1);
+    ).toHaveCount(0);
     await expect(
       page.locator('.site-footer a[href="/readiness-snapshot/"]'),
-    ).toHaveCount(1);
+    ).toHaveCount(0);
   });
 
-  test('is linked from the pages where a reader is deciding', async ({ page }) => {
-    // Nav alone would waste it. Most visitors never open the menu, and
-    // these four are the points where the reader is weighing whether any
-    // of this is worth engaging.
+  test('is not promoted from the pages where a reader is deciding', async ({ page }) => {
     for (const route of [
       '/',
       '/services/',
       '/sample-report/',
       '/insights/accountability-theatre/',
+      '/network/',
     ]) {
       await page.goto(route);
       const inBody = page.locator(
@@ -343,9 +346,19 @@ test.describe('privacy and AGDA protection', () => {
       );
       expect(
         await inBody.count(),
-        `${route} has no in-body link to the Snapshot`,
-      ).toBeGreaterThan(0);
+        `${route} still promotes the withdrawn Snapshot`,
+      ).toBe(0);
     }
+  });
+
+  test('the route survives and states that it is a demonstration', async ({ page }) => {
+    await page.goto(ROUTE);
+    await expect(page.locator('.demo-notice')).toContainText(/Demonstration only/i);
+    await expect(page.locator('.demo-notice')).toContainText(
+      /not read from the answers you give/i,
+    );
+    // No conversion path off a result nobody's answers produced.
+    await expect(page.locator('[data-action-link]')).toHaveCount(0);
   });
 
   test('ships no ordering values, thresholds or bands to the browser', async ({ page }) => {
@@ -369,7 +382,7 @@ test.describe('privacy and AGDA protection', () => {
     }
   });
 
-  test('both forms are live, and neither sends anything until asked', async ({ page }) => {
+  test('the Index form is live, and sends nothing until asked', async ({ page }) => {
     const posts: string[] = [];
     page.on('request', (r) => {
       if (r.method() === 'POST' && r.url().includes('formspree')) posts.push(r.url());
@@ -383,11 +396,10 @@ test.describe('privacy and AGDA protection', () => {
     await expect(page.locator('[data-benchmark-consent]')).toBeEnabled();
     expect(posts, 'a submission fired without being asked for').toHaveLength(0);
 
-    await page.locator('[data-action-open="email_snapshot_and_sample"]').click();
-    await expect(page.locator('[data-followup]')).toBeVisible();
-    await expect(page.locator('[data-followup-submit]')).toBeEnabled();
-    await expect(page.locator('input[name="business_email"]')).toBeEnabled();
-    expect(posts, 'opening the form submitted it').toHaveLength(0);
+    // The follow-up capture form is withdrawn with the actions block, so
+    // the Index contribution is the only submission path that remains.
+    await expect(page.locator('[data-followup]')).toHaveCount(0);
+    expect(posts, 'a submission fired without being asked for').toHaveLength(0);
   });
 
   test('the Index contribution carries no identity field', async ({ page }) => {
@@ -437,15 +449,16 @@ test.describe('privacy and AGDA protection', () => {
     }
   });
 
-  test('the follow-up form requires a name and a work email', async ({ page }) => {
+  test('collects no contact details while the result is a worked example', async ({ page }) => {
+    // Was: the follow-up form requires a name and a work email. The form is
+    // withdrawn, so the assertion is now that no contact capture exists on
+    // this route at all. Restore the original with the result logic.
     await page.goto(ROUTE);
     await completeSnapshot(page);
-    await page.locator('[data-action-open="contact_intervene"]').click();
 
-    await expect(page.locator('input[name="name"]')).toHaveAttribute('required', '');
-    await expect(page.locator('input[name="business_email"]')).toHaveAttribute('required', '');
-    await expect(page.locator('input[name="business_email"]')).toHaveAttribute('type', 'email');
-    // No free-text field anywhere: nothing to disclose confidentially into.
-    await expect(page.locator('[data-followup] textarea')).toHaveCount(0);
+    await expect(page.locator('input[name="business_email"]')).toHaveCount(0);
+    await expect(page.locator('[data-followup]')).toHaveCount(0);
+    // The Index contribution stays, and still carries no identity field.
+    await expect(page.locator('[data-benchmark-submit]')).toBeVisible();
   });
 });

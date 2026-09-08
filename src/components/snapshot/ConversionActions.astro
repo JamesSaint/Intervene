@@ -1,5 +1,20 @@
 ---
 /**
+ * WITHDRAWN, NOT DELETED. Not rendered by any page.
+ *
+ * `resolvePrototypeResult` selects a result from a query parameter and
+ * never reads the visitor's answers, so every visitor sees the same one.
+ * Converting an enquiry off that, or capturing a name and a work email
+ * against it, is capture off a fabrication. The block and the follow-up
+ * form it renders are withdrawn until the result logic exists.
+ *
+ * To restore: render it again from src/pages/readiness-snapshot/index.astro
+ * above <BenchmarkControl />, and restore the assertions marked in
+ * tests/unit/questions.test.ts, tests/e2e/snapshot.spec.ts and
+ * tests/e2e/attribution.spec.ts. The copy below is unchanged and still
+ * carries its own rationale.
+ */
+/**
  * The three conversion actions. Exactly three, no others.
  *
  * They used to render as three hairline rows of near-equal weight,

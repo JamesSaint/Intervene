@@ -26,7 +26,7 @@ const stances = [
 
 const docs = [
   { h: 'AGDA™ Thesis',             p: 'The intellectual position. Eight falsifiable claims.' },
-  { h: 'Failure Mode Catalogue',   p: 'Forty canonical intervention failure modes. Each citeable.' },
+  { h: 'Failure Mode Catalogue',   p: 'Forty canonical intervention failure modes, referenced by identifier in a verdict.' },
   { h: 'Corpus Governance',        p: 'The governance mechanism for calibration evidence. Populated-corpus and outcome-validation evidence is supplied separately.' },
   { h: 'Rater Protocol',           p: 'The protocol external raters follow when governed corpus evidence is supplied.' },
 ];
@@ -34,7 +34,7 @@ const docs = [
 
 <BaseLayout
   title="How AGDA™ Measures Intervention Readiness · Intervene"
-  description="AGDA™ measures Intervention Readiness against evidence: detect, escalate, decide, intervene, evidence-quality constraints, chain propagation, and a formal SEDI bundle a regulator can verify."
+  description="AGDA™ measures Intervention Readiness against evidence: detect, escalate, decide, intervene, evidence-quality constraints and chain propagation."
   current="methodology"
   ogImage="/assets/og/og-methodology.png"
 >
@@ -43,7 +43,7 @@ const docs = [
       <h1 class="h1 reveal">Measurement, <em>not assertion.</em></h1>
       <p class="lede muted reveal">
         The engine behind the verdict. Intervention capability against
-        evidence, not intention. Same inputs, same outputs. Formal SEDI
+        evidence, not intention. Same inputs, same outputs. SEDI
         bundles are signed and independently verifiable.
       </p>
       <div class="hero-proof reveal"><ProofMarks /></div>
@@ -136,7 +136,7 @@ const docs = [
     <div class="wrap-narrow">
       <h2 class="h2">A regulator can verify. <em>Without contacting us.</em></h2>
       <p class="lede muted">
-        Formal AGDA™ SEDI assessments ship with a signed JSON regulator
+        Every AGDA™ SEDI assessment ships with a signed JSON regulator
         bundle. Current bundles use bundleVersion 1.1 and include the report,
         attestation, result, input, manifest, verification metadata and
         history. The attestation envelope binds the result to engine,
@@ -144,6 +144,7 @@ const docs = [
         <span class="mono">agda-verify</span> command runs locally under Node.js
         18+. The customer does not depend on us to read what we produced for them.
       </p>
+      <span class="env-example mono">Example envelope · illustrative values</span>
       <pre class="envelope" aria-label="Attestation envelope example"><code>{`attestationVersion 1.2
 engineVersion      2.0.6
 engineHash         17594a80…60355e50
@@ -157,18 +158,25 @@ inputHash          47a2e19c…103e4f8d
 outputHash         91f4c02a…d4e7ad91
 manifestHash       36b45cbe…3edc1c12
 signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
+      <p class="body muted env-note">
+        The values above are illustrative and show the shape of the envelope.
+        A real bundle is produced by an assessment and is bound to that
+        assessment's engine version, inputs and output. The published
+        <a href="/sample-report/" class="link">sample verdict</a> is a
+        constructed example and carries no signature.
+      </p>
       <a href="/verify/" class="services-link">How the verify path works <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Intervention scenarios.</h2>
+      <h2 class="h2">The Intervention Simulator.</h2>
       <p class="lede muted">
         A what-if console for the resilience function. Test whether proposed
         changes improve intervention timing before committing to a remediation
-        path. Stronger Intervention Readiness supports deployment decisions
-        with greater confidence.
+        path. It shows which stage limits timely intervention under each
+        option, before a path is chosen.
       </p>
 
       <ul class="labs-grid" role="list">
@@ -190,11 +198,12 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Published measurement basis.</h2>
+      <h2 class="h2">The documented measurement basis.</h2>
       <p class="lede muted">
-        Public. Citeable. Falsifiable. Corpus governance exists as a mechanism;
-        current populated-corpus and outcome-validation evidence is supplied
-        separately during diligence. Four canonical documents anchor the practice.
+        Four documents anchor the practice. None is published on this site;
+        each is provided under NDA during diligence, as is populated-corpus and
+        outcome-validation evidence. Corpus governance exists as a mechanism
+        rather than as a completed evidence base.
       </p>
       <ul class="docs" role="list">
         {docs.map((d) => (
@@ -211,14 +220,14 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
     <div class="wrap-narrow cta-band">
       <h2 class="h2">A sample verdict is published.</h2>
       <p class="body muted">
-        An illustrative historical banking sample: material credit model,
-        escalation break, PRA SS1/23 §6 exposure. It shows the verdict,
-        evidence and report structure. The current production attestation
-        format is documented on the verify page.
+        A constructed banking example: material credit model, escalation
+        break, PRA SS1/23 §6 exposure. It shows the verdict, evidence and
+        report structure, using no client data. The current production
+        attestation format is documented on the verify page.
       </p>
       <div class="cta">
-        <a href="/sample-report/" class="btn">View sample verdict</a>
-        <a href="/contact/" class="btn-ghost">Book a conversation</a>
+        <a href="/contact/" class="btn">Discuss your system</a>
+        <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
       </div>
     </div>
   </section>
@@ -381,4 +390,10 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
     .dim-grid { grid-template-columns: 1fr; column-gap: 0; }
     .docs { grid-template-columns: 1fr; gap: 32px; }
   }
+
+  .env-example {
+    display: block; font-size: 10px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--faint); margin-bottom: 12px;
+  }
+  .env-note { margin-top: 20px; max-width: 62ch; }
 </style>
