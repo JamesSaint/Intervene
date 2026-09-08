@@ -6,7 +6,7 @@ import { markAgda } from '../../lib/marks';
 const deliver = [
   { h: 'Failure Exposure Report', p: 'Written at three audience layers: board, risk function, and engineering. The same evidence, read by each level it has to convince.' },
   { h: 'Intervention-readiness verdict', p: 'Before impact, at risk, or after impact. One deterministic determination, bound to the conditions observed and the reversibility window assessed.' },
-  { h: 'Regulator bundle', p: 'For formal SEDI assessments, a signed JSON export with report, attestation, result, input, manifest, verification metadata and history. A regulator can verify it without contacting us.' },
+  { h: 'Regulator bundle', p: 'A signed JSON export with report, attestation, result, input, manifest, verification metadata and history. A regulator can verify it without contacting us.' },
   { h: 'Attestation envelope', p: 'Engine, catalogue, methodology and rubric versions; input, output and manifest hashes; key id, timestamp and Ed25519 signature. The audit trail that makes the verdict defensible later.' },
 ];
 
@@ -37,8 +37,8 @@ const faqs = [
 ---
 
 <BaseLayout
-  title="AGDA™: A Deterministic Assessment of Intervention Readiness · Intervene"
-  description="AGDA™ measures whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible. Formal SEDI regulator bundles are signed and independently verifiable."
+  title="AGDA™: Deterministic Intervention Readiness · Intervene"
+  description="AGDA™ measures whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible. SEDI bundles are signed."
   current="agda"
   ogImage="/assets/og/og-agda.png"
   faqs={faqs}
@@ -53,8 +53,8 @@ const faqs = [
         inputs, same result. Signed SEDI bundles can be verified independently.
       </p>
       <div class="hero-cta reveal">
-        <a href="/sample-report/" class="btn">View sample verdict</a>
-        <a href="/methodology/" class="btn-ghost">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> works</a>
+        <a href="/contact/" class="btn">Discuss your system</a>
+        <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
       </div>
     </div>
   </section>
@@ -81,7 +81,7 @@ const faqs = [
       <p class="lede muted">
         <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures the intervention chain, Detect to Escalate to Decide to
         Intervene, against a reversibility window. It returns one of three
-        states. Formal SEDI regulator bundles are signed so a regulator, audit
+        states. SEDI regulator bundles are signed so a regulator, audit
         committee or internal assurance team can confirm the result independently.
       </p>
       <div class="verdict-stage">
@@ -102,7 +102,7 @@ const faqs = [
           </li>
         ))}
       </ul>
-      <a href="/sample-report/" class="services-link">See a redacted sample report <span aria-hidden="true">→</span></a>
+      <a href="/sample-report/" class="services-link">See a constructed sample verdict <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
@@ -142,7 +142,7 @@ const faqs = [
         inspect the evidence format and the measurement basis.
       </p>
       <div class="cta">
-        <a href="/sample-report/" class="btn">View sample verdict</a>
+        <a href="/contact/" class="btn">Discuss your system</a>
         <a href="/services/" class="btn-ghost">Levels of assurance</a>
       </div>
     </div>

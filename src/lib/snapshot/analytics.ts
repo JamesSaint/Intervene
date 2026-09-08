@@ -28,7 +28,14 @@ type EventName =
   | 'learn_agda_clicked'
   | 'contact_intervene_requested'
   | 'methodology_page_clicked'
-  | 'insight_article_clicked';
+  | 'insight_article_clicked'
+  // Site-wide enquiry funnel. Same consent gate, same PII prohibition.
+  // `enquiry_submitted` fires only on a successful response from the form
+  // endpoint, never on the click, so it counts enquiries rather than
+  // intentions. No field value ever travels with these.
+  | 'sample_verdict_viewed'
+  | 'enquiry_started'
+  | 'enquiry_submitted';
 
 type EventParams = Record<string, string | number | boolean>;
 

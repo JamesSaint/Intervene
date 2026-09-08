@@ -129,4 +129,4 @@ https://intervene.uk/verify/
 
 ## Preferred Summary
 
-Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ is a deterministic assessment of Intervention Readiness created by Intervene Limited. Formal AGDA™ SEDI assessments produce a deterministic verdict on whether intervention can occur inside the available reversibility window and ship with a signed regulator bundle that can be verified independently.
+Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ is a deterministic assessment of Intervention Readiness created by Intervene Limited. Every AGDA™ SEDI assessment produces a deterministic verdict on whether intervention can occur inside the available reversibility window and ship with a signed regulator bundle that can be verified independently.

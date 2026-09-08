@@ -2,9 +2,10 @@
 /**
  * Intervention Readiness Snapshot.
  *
- * Public since Phase 4: indexable, in the sitemap, in the takeover menu
- * and footer, and linked from the homepage, /services/, /sample-report/
- * and every insight article.
+ * Withdrawn from use. The page is noindex, absent from the sitemap, and
+ * carries no inbound links: not from the takeover menu, the footer, the
+ * homepage, /services/, /sample-report/ or the insight articles. Restore
+ * those routes when the result logic lands.
  *
  * The result is still rendered server side from a prototype default, and
  * any of the sixteen combinations can be reached in the browser with
@@ -23,7 +24,6 @@ import SnapshotIntro from '../../components/snapshot/SnapshotIntro.astro';
 import SnapshotForm from '../../components/snapshot/SnapshotForm.astro';
 import SnapshotResult from '../../components/snapshot/SnapshotResult.astro';
 import BenchmarkControl from '../../components/snapshot/BenchmarkControl.astro';
-import ConversionActions from '../../components/snapshot/ConversionActions.astro';
 import { resolvePrototypeResult } from '../../lib/snapshot/prototype-result';
 
 
@@ -55,37 +55,26 @@ const faqs = [
   },
 ];
 
-const schema = {
-  '@type': 'WebApplication',
-  '@id': 'https://intervene.uk/readiness-snapshot/#webapplication',
-  name: 'Intervention Readiness Snapshot',
-  applicationCategory: 'BusinessApplication',
-  operatingSystem: 'Web',
-  isAccessibleForFree: true,
-  inLanguage: 'en-GB',
-  provider: { '@id': 'https://intervene.uk/#organization' },
-  about: { '@id': 'https://intervene.uk/intervention-readiness/#defined-term' },
-  description:
-    'A short, self-reported Snapshot of whether an organisation could detect, escalate, decide and intervene before a consequential system caused harm. Indicative only, and not an AGDA™ assessment.',
-};
+/* Structured data withdrawn with the instrument. A WebApplication node
+   advertises a working tool to machines, and this one returns the same
+   worked example to everyone. Restore alongside the result logic. */
 ---
 
 <BaseLayout
   title="Intervention Readiness Snapshot · Intervene"
-  description="A short, self-reported check on whether your organisation could detect, escalate, decide and intervene in time. Indicative only. Not an AGDA™ assessment."
+  description="How Intervention Readiness is framed across detect, escalate, decide and intervene. Withdrawn: the result is a worked example, not read from your answers."
   current="readiness-snapshot"
   ogImage="/assets/og/og-readiness-snapshot.png"
   faqs={faqs}
-  schema={schema}
+  noindex={true}
 >
   <SnapshotIntro />
   <SnapshotForm />
   <SnapshotResult result={result} />
-  {/* Actions before the Index ask. The contrast block is the commercial
-      pivot, so what follows it must be the visitor's route forward, not
-      Intervene's request for data. The benchmark block was 463px on
-      desktop and 602px on mobile, sitting between the two. */}
-  <ConversionActions />
+  {/* The conversion actions are withdrawn while the result is a worked
+      example rather than a reading of the visitor's answers. Converting an
+      enquiry off a result nobody's answers produced is the defect, not the
+      funnel's position on the page. Restore when the result logic lands. */}
   <BenchmarkControl />
 
   <script>

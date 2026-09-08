@@ -37,10 +37,11 @@ test.describe('Network page', () => {
 
   test('leads with the question, not with joining', async ({ page }) => {
     await page.goto(ROUTE);
-    // The first action on the page is the diagnostic, not an application.
+    // The diagnostic it used to lead with is withdrawn while its result is
+    // a worked example, so the first action is now what participation asks.
     const primary = page.locator('.hero a.btn').first();
-    await expect(primary).toHaveAttribute('href', '/readiness-snapshot/');
-    await expect(primary).toContainText('Take the Snapshot');
+    await expect(primary).toHaveAttribute('href', '#ask');
+    await expect(primary).toContainText('What we ask of you');
 
     // Detect, Decide, Intervene, once each.
     await expect(page.locator('.beat-word')).toHaveText(['Detect', 'Decide', 'Intervene']);
