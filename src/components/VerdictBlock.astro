@@ -14,7 +14,7 @@ const states = [
 
 <figure
   class="verdict-block"
-  aria-label="AGDA™ Intervention Readiness SEDI verdict. A struck, signed result. Formal SEDI assessments return exactly one of three states: before impact, at risk, or after impact."
+  aria-label="AGDA™ Intervention Readiness SEDI verdict. A specimen of the verdict format, not a signed result. Every assessment returns exactly one of three states: before impact, at risk, or after impact."
 >
   <div class="vb-frame">
     <span class="vb-corner tl" aria-hidden="true"></span>
@@ -24,7 +24,7 @@ const states = [
 
     <header class="vb-head">
       <span class="vb-title mono">Intervention Readiness · Verdict</span>
-      <span class="vb-serial mono">No. 0001 / 2026</span>
+      <span class="vb-serial mono">Specimen</span>
     </header>
 
     <ol class="vb-states" role="list">
@@ -40,6 +40,7 @@ const states = [
     </ol>
 
     <footer class="vb-foot">
+      <span class="vb-record-label mono">Example attestation record</span>
       <dl class="vb-record mono">
         <div><dt>engine</dt><dd>AGDA v2.0.6</dd></div>
         <div><dt>engineHash</dt><dd>17594a80…60355e50</dd></div>
@@ -55,7 +56,11 @@ const states = [
       <ProofMarks />
     </footer>
   </div>
-  <figcaption class="vb-caption">Formal SEDI assessments return exactly one of these three, struck and signed.</figcaption>
+  <figcaption class="vb-caption">
+    Every assessment returns exactly one of these three states. The
+    record shown is an example of the attestation format. The values are
+    illustrative and are not a signed result.
+  </figcaption>
 </figure>
 
 <style>
@@ -151,5 +156,14 @@ const states = [
     .vb-state { grid-template-columns: 44px 1fr; gap: 14px; padding: 22px 20px; }
     .vb-foot { padding: 22px 20px 24px; }
     .vb-record { grid-template-columns: 1fr; }
+  }
+
+  .vb-record-label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 10px;
   }
 </style>

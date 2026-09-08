@@ -41,7 +41,7 @@ Canonical site: `https://intervene.uk/`
 /intervention-readiness/vs-operational-resilience/
 /agda/                              AGDA™ instrument page
 /methodology/                       How AGDA™ measures Intervention Readiness
-/sample-report/                     Redacted sample AGDA™ verdict
+/sample-report/                     Constructed sample AGDA™ verdict
 /services/                          Levels of assurance and engagement shape
 /sectors/                           Where Intervention Readiness matters
 /insights/                          Evidence notes index

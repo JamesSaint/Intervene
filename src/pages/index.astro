@@ -2,6 +2,52 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import VerdictBlock from '../components/VerdictBlock.astro';
 import FilmPlayer from '../components/FilmPlayer.astro';
+
+/* Three situations in which the intervention question stops being
+   theoretical. Drawn from the Pilot tier's "who it is for" and
+   "decision supported" fields on /services/, so the homepage and the
+   commercial page describe the same buyer. */
+const situations = [
+  {
+    kicker: 'A consequential deployment',
+    h: 'You are about to depend on something you cannot easily reverse.',
+    p: 'Approval is close, the system will act without a human confirming each decision, and nobody has established how quickly it could be stopped.',
+  },
+  {
+    kicker: 'Board or regulator scrutiny',
+    h: 'Someone has asked for evidence, not assurance.',
+    p: 'An audit committee, a supervisor or a risk committee wants to see that oversight works. Policies and control coverage do not answer the question they asked.',
+  },
+  {
+    kicker: 'Untested arrangements',
+    h: 'The arrangements exist. Nobody has run them under pressure.',
+    p: 'Escalation routes, halt authority and named owners are documented. Whether they hold at 3am, during a change freeze, or when the primary contact is unavailable is a separate question.',
+  },
+];
+
+/* Plain-language descriptions of the four stages, condensed from
+   /intervention-readiness/intervention-chain/. Kept consistent with that
+   page rather than rewritten, so the chain reads the same everywhere. */
+const chain = [
+  { n: '01', name: 'Detect', p: 'Whether a deviation is identified, and how long it takes a signal to reach anyone who can act.' },
+  { n: '02', name: 'Escalate', p: 'Whether the signal reaches authority. Most escalation steps are staffed by people who can pass it on but cannot stop the system.' },
+  { n: '03', name: 'Decide', p: 'Whether a stop decision can be made. Agreed thresholds are fast. Thresholds invented under pressure are not.' },
+  { n: '04', name: 'Intervene', p: 'Whether the system can actually be altered or halted. This is the only stage that changes the outcome.' },
+];
+
+const provide = [
+  'One consequential system, and the intervention question it has to answer.',
+  'Access to the right people while scope is fixed.',
+  'Control, escalation and drill evidence, plus subject-matter time.',
+  'Board or executive time for the readout.',
+];
+
+const receive = [
+  'A signed Intervention Readiness Verdict.',
+  'A Failure Exposure Report at executive, operational and specialist layers.',
+  'A board readout.',
+  'A close-out memo recording agreed actions and ownership.',
+];
 ---
 
 <BaseLayout
@@ -9,20 +55,22 @@ import FilmPlayer from '../components/FilmPlayer.astro';
   description="Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ measures it with a deterministic verdict."
   current="home"
 >
-  <!-- 1 · DOORWAY. Loud. -->
+  <!-- 1 · DOORWAY. Loud. Relevance, offer and next step, in that order. -->
   <section class="hero">
     <div class="wrap">
       <a class="label hero-label hero-link" href="/intervention-readiness/">Intervention Readiness</a>
       <h1 class="display-xl">Can you stop it <em>in time?</em></h1>
       <p class="hero-sub">
-        AI systems are becoming more capable. Organisations are becoming more
-        dependent on automation. Human oversight only matters if intervention
-        remains possible.
+        Intervention Readiness is the ability of an organisation to detect,
+        escalate, decide and intervene before harm becomes irreversible.
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is the instrument that measures it.
       </p>
-      <p class="hero-note"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures Intervention Readiness.</p>
+      <p class="hero-note">
+        Short pilot: one system, four weeks, a signed verdict and a board readout.
+      </p>
       <div class="hero-cta">
-        <a href="/sample-report/" class="btn">View sample verdict</a>
-        <a href="/methodology/" class="btn-ghost">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> works</a>
+        <a href="/contact/" class="btn">Discuss your system</a>
+        <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
       </div>
       <ul class="hero-chain" role="list" aria-label="Intervention readiness chain">
         <li>Detect</li>
@@ -40,30 +88,34 @@ import FilmPlayer from '../components/FilmPlayer.astro';
     </div>
   </section>
 
-  <!-- 2 · Recognition. Quiet. -->
-  <section class="block quiet">
-    <div class="wrap-narrow">
-      <h2 class="h2">The honest answer is usually <em class="keep-together">“I think so.”</em></h2>
-      <p class="body">
-        You have policies. Controls. Governance structures. Committees.
-        Escalation processes. Documentation. All of it real, and all of it
-        necessary. None of it proves the one thing that decides the outcome: at
-        3am, can the person who can halt the system be reached, authorised, and
-        certain enough to act while acting still costs less than waiting?
-      </p>
-      <p class="body muted">Most organisations know what controls they have. Few know whether those controls can intervene in time.</p>
+  <!-- 2 · Relevance. Who is actually asking this question. -->
+  <section class="block situations">
+    <div class="wrap">
+      <span class="label section-kicker">Where the question arrives</span>
+      <h2 class="h2">Three situations that bring people here.</h2>
+      <ul class="card-grid situation-grid" role="list">
+        {situations.map((s) => (
+          <li class="card">
+            <span class="mono situation-kicker">{s.kicker}</span>
+            <h3 class="h3 card-title">{s.h}</h3>
+            <p class="body muted">{s.p}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
-  <!-- 3 · Recognition scenario. Quiet, building. -->
+  <!-- 3 · Recognition and consequence, merged into one beat. -->
   <section class="block quiet">
     <div class="wrap">
       <div class="window-head">
         <h2 class="h2">You have probably watched <em>a version of this.</em></h2>
         <p class="lede muted">
-          Not because anyone was careless. Because systems act quickly,
-          authority moves through people, and harm can become irreversible
-          before governance has turned into action.
+          You have policies, controls, governance structures and escalation
+          processes. All of it real, and all of it necessary. None of it proves
+          the one thing that decides the outcome: at 3am, can the person who can
+          halt the system be reached, authorised, and certain enough to act while
+          acting still costs less than waiting?
         </p>
       </div>
 
@@ -94,17 +146,17 @@ import FilmPlayer from '../components/FilmPlayer.astro';
     </div>
   </section>
 
-  <!-- 4 · THE GAP. Heavy. The turn. -->
+  <!-- 4 · THE GAP. The turn. -->
   <section class="gap">
     <div class="wrap-narrow">
       <span class="label section-kicker gap-label">The category</span>
       <h2 class="h2 gap-h">Intervention Readiness is the missing measurement.</h2>
       <p class="gap-body">
         Capital. Model performance. Control coverage. Incident counts. Audit
-        findings. These matter. But the board-level question is simpler:
-        when a consequential system turns, can the organisation detect,
-        escalate, decide and intervene before harm becomes irreversible?
-        That capability is <a href="/intervention-readiness/" class="link">Intervention Readiness</a>.
+        findings. These matter, and none of them answer the board-level
+        question: when a consequential system turns, can the organisation
+        intervene before harm becomes irreversible? That capability is
+        <a href="/intervention-readiness/" class="link">Intervention Readiness</a>.
       </p>
       <p class="gap-realisation">
         <span>Governance</span>
@@ -116,12 +168,10 @@ import FilmPlayer from '../components/FilmPlayer.astro';
         <span class="status-rule" aria-hidden="true"></span>
         <span class="gauge-label mono">Unmeasured</span>
       </div>
-      <p class="gap-refrain">Which means you cannot yet answer the question. <em class="keep-together">Can you stop it in time?</em></p>
-      <p class="gap-answer">Ten questions in the <a href="/readiness-snapshot/" class="link">Intervention Readiness Snapshot</a> will tell you which of the four areas you are least able to evidence.</p>
     </div>
   </section>
 
-  <!-- 5 · THE VERDICT. Climax. The only colour on the page. -->
+  <!-- 5 · THE INSTRUMENT. What is assessed, and what a finding looks like. -->
   <section class="block verdict">
     <div class="wrap">
       <div class="verdict-flow">
@@ -131,29 +181,115 @@ import FilmPlayer from '../components/FilmPlayer.astro';
           <p class="body muted">
             It reduces reliance on assertion. The output is not a maturity
             score or a compliance claim. It is a deterministic verdict on
-            whether intervention completes inside the harm window. Formal SEDI
-            assessments include a signed regulator bundle.
+            whether intervention completes inside the harm window, with the
+            limiting stage named.
           </p>
         </div>
         <div class="verdict-stage reveal">
           <VerdictBlock />
         </div>
       </div>
+
+      <h3 class="h3 chain-head">What is assessed.</h3>
+      <ol class="chain-list" role="list">
+        {chain.map((c) => (
+          <li>
+            <span class="mono chain-n">{c.n} {c.name}</span>
+            <p class="body muted">{c.p}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="body muted chain-foot">
+        Each stage is assessed against evidence and graded for quality, so weak
+        evidence cannot inflate the result. The weakest stage constrains the
+        chain, because the chain is only as fast as the step that holds it up.
+      </p>
+
+      <aside class="finding" aria-label="Illustrative finding">
+        <span class="label finding-label">Illustrative example</span>
+        <dl class="finding-list">
+          <div>
+            <dt>Finding</dt>
+            <dd>Detection runs in about twelve minutes. Reaching a person with authority to halt takes between four and ninety-six hours.</dd>
+          </div>
+          <div>
+            <dt>What it means</dt>
+            <dd>The reversibility window is about six hours, so the chain cannot complete inside it. Detection is not the constraint. Authority is.</dd>
+          </div>
+          <div>
+            <dt>Decision it supports</dt>
+            <dd>Whether halt authority moves to the operations rota before the next material deployment, or the deployment waits.</dd>
+          </div>
+        </dl>
+        <p class="finding-note">
+          A constructed example, written to show the shape of a finding. It is
+          not an assessment of any organisation and not evidence about one.
+          <a href="/sample-report/" class="link">See the full sample verdict</a>.
+        </p>
+      </aside>
     </div>
   </section>
 
-  <!-- 6 · CLOSE. Sparse. The refrain returns. -->
+  <!-- 6 · THE ENGAGEMENT. What it requires, what it returns, what it costs. -->
+  <section class="block engage">
+    <div class="wrap">
+      <span class="label section-kicker">The engagement</span>
+      <h2 class="h2">What a pilot asks of you, <em>and what it returns.</em></h2>
+
+      <div class="engage-grid">
+        <div class="engage-col">
+          <h3 class="h3">What you provide</h3>
+          <ul class="engage-list" role="list">
+            {provide.map((p) => <li>{p}</li>)}
+          </ul>
+          <p class="body muted engage-note">
+            No system access and no integration. The assessment runs against
+            evidence you already hold, not against your production environment.
+          </p>
+        </div>
+        <div class="engage-col">
+          <h3 class="h3">What you receive</h3>
+          <ul class="engage-list" role="list">
+            {receive.map((r) => <li>{r}</li>)}
+          </ul>
+          <p class="body muted engage-note">
+            Every assessment ships with a signed regulator bundle. The
+            signature lets an audit committee confirm the result came from a
+            named engine version and specific inputs, without contacting us. It
+            is not a certification and not regulatory approval.
+          </p>
+        </div>
+      </div>
+
+      <p class="engage-terms">
+        <strong>Short pilot.</strong> One system, four weeks, £95,000 excluding
+        VAT. A sector premium of 30 to 50 percent applies to clinical AI,
+        medical devices, critical infrastructure and defence.
+        <a href="/services/" class="link">All formats and prices</a>.
+      </p>
+
+      <p class="engage-next">
+        <strong>What happens next.</strong> Tell us the system and the decision
+        it supports. The first conversation is twenty minutes at no charge, and
+        you receive a direct response within one to two working days. We do not
+        pre-qualify by email questionnaire.
+      </p>
+    </div>
+  </section>
+
+  <!-- 7 · CLOSE. Sparse. The refrain returns. -->
   <section class="block close">
     <div class="wrap close-wrap">
       <h2 class="close-q">Can you stop it <em>in time?</em></h2>
       <p class="close-line">Stronger Intervention Readiness supports better oversight, better decisions, and more confident deployment.</p>
       <div class="close-actions">
-        <a href="/sample-report/" class="btn">View sample verdict</a>
-        <a href="/contact/" class="btn-ghost">Book a conversation</a>
+        <a href="/contact/" class="btn">Discuss your system</a>
+        <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
       </div>
     </div>
   </section>
 </BaseLayout>
+
 
 <style>
   /* Dark advisory rhythm: doorway, quiet recognition, surface turn,
@@ -308,11 +444,6 @@ import FilmPlayer from '../components/FilmPlayer.astro';
   .gap-status { margin: 48px 0 0; display: flex; align-items: center; gap: 18px; }
   .status-rule { display: block; width: 72px; height: 1px; background: var(--accent); }
   .gauge-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); }
-  .gap-refrain {
-    margin: 40px 0 0; font-family: var(--font-sans); font-size: 16px;
-    color: var(--muted); max-width: 48ch;
-  }
-  .gap-refrain em { color: var(--ink); font-style: italic; }
   /* Sits under the refrain rather than beside it. The refrain poses the
      question; this answers it without taking the emphasis. */
   .gap-answer {
@@ -360,8 +491,112 @@ import FilmPlayer from '../components/FilmPlayer.astro';
     .close > .wrap {
       max-width: var(--max);
     }
+    /* The consent banner is a fixed overlay on a first visit. A shorter
+       hero lifts the primary action clear of it, so "Discuss your system"
+       is fully visible and fully clickable before the banner is answered. */
+    .hero {
+      min-height: 0;
+      padding-top: 64px;
+      padding-bottom: 56px;
+    }
     .hero-chain { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
     .window-grid { grid-template-columns: 1fr; }
     .gap-realisation { padding-left: 18px; }
+  }
+
+  /* 2 · Situations. Relevance, using the shared card grid. */
+  .situations { border-bottom: 1px solid var(--hair); }
+  .situations .h2 { max-width: 20ch; margin: 0 0 56px; }
+  .situation-grid { list-style: none; margin: 0; padding: 0; }
+  .situation-kicker {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .situation-grid .h3 { font-size: 21px; margin: 0; }
+  .situation-grid p { margin: 0; }
+
+  /* 5 · What is assessed. Sits under the verdict object on the same rail. */
+  .chain-head {
+    margin: clamp(72px, 10vh, 120px) 0 0;
+    padding-top: 32px;
+    border-top: 1px solid var(--hair-strong);
+  }
+  .chain-list {
+    list-style: none; margin: 36px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+  }
+  .chain-list > li { display: grid; gap: 10px; align-content: start; }
+  .chain-n {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .chain-list p { margin: 0; max-width: 34ch; }
+  .chain-foot { margin: 36px 0 0; max-width: 62ch; }
+
+  /* Illustrative finding. Deliberately set apart from the verdict object
+     above it, so a constructed example is never mistaken for assessment
+     evidence. Bronze rail on the left, label above, caveat below. */
+  .finding {
+    margin: clamp(56px, 8vh, 88px) 0 0;
+    padding: 32px 0 0 28px;
+    border-left: 2px solid var(--accent);
+    border-top: 1px solid var(--hair);
+    max-width: 72ch;
+  }
+  .finding-label { display: block; margin: 0 0 24px; color: var(--accent); }
+  .finding-list { margin: 0; display: grid; gap: 20px; }
+  .finding-list > div { display: grid; gap: 6px; }
+  .finding-list dt {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--faint);
+  }
+  .finding-list dd {
+    margin: 0; font-family: var(--font-sans); font-size: 17px;
+    line-height: 1.6; color: var(--ink); max-width: 60ch;
+  }
+  .finding-note {
+    margin: 28px 0 0; font-size: 15px; line-height: 1.6;
+    color: var(--faint); max-width: 60ch;
+  }
+
+  /* 6 · The engagement. Obligation on the left, return on the right. */
+  .engage { border-top: 1px solid var(--hair); background: var(--paper-soft); }
+  .engage .h2 { max-width: 22ch; margin: 0 0 56px; }
+  .engage-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 88px);
+  }
+  .engage-col .h3 { margin: 0 0 24px; padding-bottom: 16px; border-bottom: 1px solid var(--hair-strong); }
+  .engage-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .engage-list > li {
+    position: relative; padding-left: 22px;
+    font-family: var(--font-sans); font-size: 17px; line-height: 1.6;
+    color: var(--ink); max-width: 46ch;
+  }
+  .engage-list > li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 10px; height: 1px; background: var(--accent);
+  }
+  .engage-note { margin: 28px 0 0; max-width: 48ch; }
+  .engage-terms,
+  .engage-next {
+    margin: 48px 0 0; padding-top: 28px;
+    border-top: 1px solid var(--hair-strong);
+    font-family: var(--font-sans); font-size: 17px; line-height: 1.65;
+    color: var(--muted); max-width: 68ch;
+  }
+  .engage-next { margin-top: 28px; padding-top: 0; border-top: 0; }
+  .engage-terms strong,
+  .engage-next strong { color: var(--ink); font-weight: 700; }
+
+  @media (max-width: 880px) {
+    .chain-list { grid-template-columns: 1fr 1fr; gap: 28px; }
+    .engage-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .chain-list { grid-template-columns: 1fr; }
+    .finding { padding-left: 18px; }
+    .situations .h2,
+    .engage .h2 { margin-bottom: 40px; }
   }
 </style>
