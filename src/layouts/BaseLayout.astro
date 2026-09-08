@@ -15,6 +15,10 @@ interface Props {
   canonicalPath?: string;
   ogImage?: string;
   pageType?: 'WebPage' | 'AboutPage' | 'Article' | 'ContactPage' | 'CollectionPage';
+  /* Schema headline, when the visible headline differs from the metadata
+     title. Omit it and the headline follows the title, which is the
+     original behaviour for every page. */
+  headline?: string;
   breadcrumbs?: Array<{ name: string; item?: string }>;
   faqs?: Array<{ question: string; answer: string }>;
   schema?: Record<string, unknown> | Array<Record<string, unknown>>;
@@ -30,6 +34,7 @@ const {
   canonicalPath = Astro.url.pathname,
   ogImage = '/assets/og/og-home.png',
   pageType = 'WebPage',
+  headline,
   breadcrumbs,
   faqs = [],
   schema = [],
@@ -233,7 +238,7 @@ const pageSchema: Record<string, unknown> = {
   '@id': pageId,
   url: canonical,
   name: titleMain,
-  headline: titleMain,
+  headline: headline ?? titleMain,
   description,
   isPartOf: { '@id': websiteId },
   publisher: { '@id': orgId },
