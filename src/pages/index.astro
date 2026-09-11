@@ -310,7 +310,6 @@ const receive = [
     padding-bottom: clamp(64px, 10vh, 120px);
     background: var(--paper-deep);
   }
-  .hero-label { margin-bottom: 32px; }
   .hero-link { display: inline-block; border-bottom: 1px solid transparent; }
   .hero-link:hover { border-color: var(--accent); color: var(--ink); }
   .hero .display-xl { max-width: 820px; color: var(--ink); }
@@ -407,9 +406,7 @@ const receive = [
 
   /* 4 · The gap. Heavy. */
   .gap { padding: clamp(96px, 14vh, 168px) 0; background: var(--paper-soft); }
-  .gap-label {
-    color: var(--accent); letter-spacing: 0.22em; margin-bottom: 28px;
-  }
+  .gap-label { color: var(--accent); letter-spacing: 0.22em; }
   .gap-h { color: var(--ink); max-width: 22ch; font-size: clamp(36px, 5.4vw, 70px); line-height: 1.08; }
   .gap-body {
     margin: 32px 0 0; font-family: var(--font-sans); font-size: 18px;
@@ -445,7 +442,7 @@ const receive = [
     align-items: center;
   }
   .verdict-lead { max-width: 52ch; margin: 0; text-align: left; }
-  .verdict-lead .label { margin: 0 0 24px; letter-spacing: 0.12em; }
+  .verdict-lead .label { letter-spacing: 0.12em; }
   .verdict-lead .h2 { max-width: 24ch; margin: 0; font-size: clamp(32px, 4vw, 54px); }
   .verdict-lead .body { margin: 24px 0 0; max-width: 48ch; }
   .verdict-stage { display: flex; justify-content: flex-start; min-width: 0; }
@@ -527,7 +524,7 @@ const receive = [
     border-top: 1px solid var(--hair);
     max-width: 72ch;
   }
-  .finding-label { display: block; margin: 0 0 24px; color: var(--accent); }
+  .finding-label { color: var(--accent); }
   .finding-list { margin: 0; display: grid; gap: 20px; }
   .finding-list > div { display: grid; gap: 6px; }
   .finding-list dt {

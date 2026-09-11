@@ -156,6 +156,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
+.card .label { margin-bottom: 0; }
 .card {
   position: relative;
   display: grid;
