@@ -48,10 +48,10 @@ const tiers = [
     decision: 'Deployment confidence, risk acceptance, remediation priority, board oversight and regulatory preparation.',
     why: 'Creates a defensible evidence standard before the organisation relies on assertion or expands assessment across more systems.',
     formats: [
-      { label: 'Short pilot · 1 system · four weeks',      gbp: '£95,000',   eur: '€110,000', usd: '$125,000' },
-      { label: 'Structured pilot · 1 system',              gbp: '£120,000',  eur: '€140,000', usd: '$155,000' },
-      { label: 'Structured pilot · 2 systems',             gbp: '£175,000',  eur: '€205,000', usd: '$225,000' },
-      { label: 'Structured pilot · 3 systems',             gbp: '£225,000',  eur: '€265,000', usd: '$290,000' },
+      'Short pilot · 1 system · four weeks',
+      'Structured pilot · 1 system',
+      'Structured pilot · 2 systems',
+      'Structured pilot · 3 systems',
     ],
     includes: 'Failure Exposure Report at all three audience layers, signed regulator bundle, attestation envelope, Intervention Simulator access, board evidence readout and close-out memo.',
   },
@@ -64,8 +64,8 @@ const tiers = [
     decision: 'Continued deployment, control investment, oversight renewal, risk committee decisions and regulator-facing assurance.',
     why: 'Keeps the answer current as automation becomes more embedded and the cost of delayed intervention increases.',
     formats: [
-      { label: 'Annual subscription',     gbp: '£180,000 / yr', eur: '€210,000 / yr', usd: '$235,000 / yr' },
-      { label: 'Equivalent quarterly',    gbp: '£45,000 / qtr', eur: '€52,500 / qtr', usd: '$58,750 / qtr' },
+      'Annual term',
+      'Equivalent quarterly term',
     ],
     includes: 'Standing Intervention Simulator access, two assessed systems per year, engine-hash pinning, quarterly re-run rights on each system, annual board evidence readout.',
   },
@@ -78,7 +78,7 @@ const tiers = [
     decision: 'Group assurance, regulatory engagement, critical deployment governance, resilience investment and board-level risk appetite.',
     why: 'Aligns evidence across entities so the board is not comparing local assertions against group-level exposure.',
     formats: [
-      { label: 'Enterprise assurance · custom-scoped',   gbp: '£350,000+ / yr', eur: '€410,000+ / yr', usd: '$450,000+ / yr' },
+      'Enterprise assurance · annual term · custom-scoped',
     ],
     includes: 'Up to 5 assessed systems per year, regulator-liaison support, quarterly portfolio review with group CRO, board evidence readouts, multi-entity invoicing, designated AGDA™ operator.',
     triggers: 'Custom scope applies when assurance spans multiple legal entities, material system portfolios or sustained regulator engagement.',
@@ -86,19 +86,19 @@ const tiers = [
 ];
 
 const addons = [
-  { label: 'Additional assessed system, post-pilot',                  gbp: '£55,000',       eur: '€65,000',     usd: '$72,000' },
-  { label: 'Additional re-run, beyond quarterly included in Annual',   gbp: '£20,000',       eur: '€23,000',     usd: '$25,000' },
-  { label: 'Additional named Intervention Simulator operator',                          gbp: '£3,000 / term', eur: '€3,500 / term', usd: '$4,000 / term' },
-  { label: 'Additional board evidence readout, remote',                           gbp: '£12,000',       eur: '€14,000',     usd: '$15,500' },
-  { label: 'Additional board evidence readout, on-site',                          gbp: '£18,000',       eur: '€21,000',     usd: '$23,000' },
-  { label: 'Regulator bundle, post-engine-version change',            gbp: '£6,000',        eur: '€7,000',      usd: '$7,500' },
+  'Additional assessed system, post-pilot',
+  'Additional re-run, beyond quarterly included in Annual',
+  'Additional named Intervention Simulator operator',
+  'Additional board evidence readout, remote',
+  'Additional board evidence readout, on-site',
+  'Regulator bundle, post-engine-version change',
 ];
 
 const services = [
-  { label: 'Operator enablement, internal assurance team (up to 2 raters)',      gbp: '£55,000',     eur: '€64,000',     usd: '$70,000' },
-  { label: 'Operator enablement, external assurance firm',                       gbp: '£85,000',     eur: '€99,000',     usd: '$108,000' },
-  { label: 'External assurance firm annual renewal',                             gbp: '£25,000 / yr', eur: '€29,000 / yr', usd: '$32,000 / yr' },
-  { label: 'Regulator-liaison support block',                                    gbp: '£18,000',     eur: '€21,000',     usd: '$23,000' },
+  'Operator enablement, internal assurance team (up to 2 raters)',
+  'Operator enablement, external assurance firm',
+  'External assurance firm annual renewal',
+  'Regulator-liaison support block',
 ];
 
 const notProduct = [
@@ -206,12 +206,8 @@ const stages = [
           <dd>Four weeks from named system to signed verdict, at this format. The five phases of an engagement run inside that window.</dd>
         </div>
         <div>
-          <dt>Price</dt>
-          <dd>
-            <span class="start-price">£95,000</span>
-            <span class="start-price-alt mono">€110,000 · $125,000</span>
-            <span class="start-price-note">Excludes VAT. A sector premium of 30 to 50 percent applies to clinical AI, medical devices, critical infrastructure and defence.</span>
-          </dd>
+          <dt>Commercial terms</dt>
+          <dd>Scope and price are fixed with you before work begins, and neither moves once the engagement starts. Clinical AI, medical devices, critical infrastructure and defence are scoped at a premium.</dd>
         </div>
       </dl>
 
@@ -304,15 +300,15 @@ const stages = [
   <!-- THREE TIERS -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Three levels of assurance. <em>Priced by decision significance.</em></h2>
+      <h2 class="h2">Three levels of assurance. <em>Scoped by decision significance.</em></h2>
       <p class="lede muted">
         The commercial unit is evidence of Intervention Readiness. Price comes
         after the question answered, the evidence produced, and the decision
         being supported.
       </p>
       <p class="body muted tiers-note">
-        The first engagement is the short pilot: one system, four weeks, at the
-        published price for its sector.
+        The first engagement is the short pilot: one system, four weeks, scoped
+        with you before work begins.
       </p>
       <p class="body muted tiers-note">
         If your work puts you close to boards, risk leaders or accountable
@@ -356,16 +352,10 @@ const stages = [
               </dl>
 
               <div class="tier-price-block">
-                <span class="mono price-heading">Price</span>
+                <span class="mono price-heading">Formats</span>
                 <ul class="formats" role="list">
                   {t.formats.map((f) => (
-                    <li>
-                      <span class="format-label">{f.label}</span>
-                      <span class="format-price">
-                        <span class="price-gbp">{f.gbp}</span>
-                        <span class="price-alt mono">{f.eur} · {f.usd}</span>
-                      </span>
-                    </li>
+                    <li><span class="format-label">{f}</span></li>
                   ))}
                 </ul>
               </div>
@@ -382,9 +372,9 @@ const stages = [
       </ol>
 
       <p class="body muted footnote tiers-footnote">
-        Prices are shown in GBP, EUR and USD and exclude VAT. A sector premium
-        of 30 to 50 percent applies to clinical AI, medical devices, critical
-        infrastructure and defence. Other currencies on application.
+        Every engagement is scoped with you before work begins. Clinical AI,
+        medical devices, critical infrastructure and defence are scoped at a
+        premium.
       </p>
     </div>
   </section>
@@ -395,38 +385,25 @@ const stages = [
       <h2 class="h2">Add-ons.</h2>
       <p class="lede muted">
         Additional evidence, re-runs and support when the decision requires
-        more coverage beyond what the engagement already includes. Priced per
-        unit.
+        more coverage beyond what the engagement already includes.
       </p>
 
       <ul class="rate-card" role="list">
         {addons.map((a) => (
-          <li>
-            <span class="rate-label">{a.label}</span>
-            <span class="rate-price">
-              <span class="price-gbp">{a.gbp}</span>
-              <span class="price-alt mono">{a.eur} · {a.usd}</span>
-            </span>
-          </li>
+          <li><span class="rate-label">{a}</span></li>
         ))}
       </ul>
 
       <h3 class="h3 services-head">Assessment support.</h3>
       <ul class="rate-card" role="list">
         {services.map((a) => (
-          <li>
-            <span class="rate-label">{a.label}</span>
-            <span class="rate-price">
-              <span class="price-gbp">{a.gbp}</span>
-              <span class="price-alt mono">{a.eur} · {a.usd}</span>
-            </span>
-          </li>
+          <li><span class="rate-label">{a}</span></li>
         ))}
       </ul>
 
       <p class="body muted footnote">
-        Priced per unit, on the same VAT, sector premium and currency terms as
-        the assurance levels above.
+        Scoped with you alongside the engagement they extend, on the same terms
+        as the assurance levels above.
       </p>
     </div>
   </section>
@@ -470,10 +447,9 @@ const stages = [
       </ul>
 
       <p class="body footnote">
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> at £95,000 for a pilot or £180,000 per year for an annual
-        subscription turns that budget into a formal verdict on one question:
-        can the organisation intervene before harm becomes irreversible? Formal
-        SEDI assessments add a signed regulator bundle.
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> turns that budget into a formal verdict on one
+        question: can the organisation intervene before harm becomes
+        irreversible? Formal SEDI assessments add a signed regulator bundle.
       </p>
     </div>
   </section>
@@ -661,35 +637,13 @@ const stages = [
     border-top: 1px solid var(--hair-strong);
   }
   .formats > li {
-    display: grid;
-    grid-template-columns: 1fr 180px;
-    gap: 24px;
     padding: 16px 0;
     border-bottom: 1px solid var(--hair);
-    align-items: baseline;
   }
   .format-label {
     font-family: var(--font-sans);
     font-size: 15px;
     color: var(--ink);
-  }
-  .format-price {
-    text-align: right;
-    display: grid;
-    gap: 4px;
-    justify-items: end;
-  }
-  .price-gbp {
-    font-family: var(--font-sans);
-    font-size: 18px;
-    font-weight: 500;
-    color: var(--ink);
-    line-height: 1.1;
-  }
-  .price-alt {
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 0.04em;
   }
   .tier-includes {
     margin: 0;
@@ -712,25 +666,14 @@ const stages = [
     border-top: 1px solid var(--hair-strong);
   }
   .rate-card > li {
-    display: grid;
-    grid-template-columns: 1fr 220px;
-    gap: 24px;
     padding: 20px 0;
     border-bottom: 1px solid var(--hair);
-    align-items: baseline;
   }
   .rate-label {
     font-family: var(--font-sans);
     font-size: 15px;
     color: var(--ink);
   }
-  .rate-price {
-    text-align: right;
-    display: grid;
-    gap: 4px;
-    justify-items: end;
-  }
-  .rate-price .price-gbp { font-size: 15px; }
   .services-head {
     margin: 64px 0 0;
     font-size: 22px;
@@ -818,10 +761,7 @@ const stages = [
     .tier { grid-template-columns: 1fr; gap: 24px; }
     .tier-fields { grid-template-columns: 1fr; }
     .tier-fields > div:last-child { grid-column: auto; }
-    .formats > li { grid-template-columns: 1fr; gap: 4px; }
-    .format-price { text-align: left; justify-items: start; }
-    .rate-card > li { grid-template-columns: 1fr; gap: 4px; padding: 16px 0; }
-    .rate-price { text-align: left; justify-items: start; }
+    .rate-card > li { padding: 16px 0; }
     .stage { grid-template-columns: 1fr; gap: 20px; }
     .not-list { grid-template-columns: 1fr; gap: 48px; }
     .benchmarks { grid-template-columns: 1fr; gap: 40px; }
@@ -853,16 +793,6 @@ const stages = [
   .start-list dd {
     margin: 0; font-family: var(--font-sans); font-size: 17px;
     line-height: 1.65; color: var(--ink); max-width: 62ch;
-  }
-  .start-price {
-    display: block; font-family: var(--font-sans);
-    font-size: clamp(28px, 3.2vw, 40px); font-weight: 700;
-    letter-spacing: -0.02em; color: var(--ink); line-height: 1.1;
-  }
-  .start-price-alt { display: block; margin-top: 8px; color: var(--muted-soft); }
-  .start-price-note {
-    display: block; margin-top: 14px; font-size: 15px;
-    line-height: 1.55; color: var(--faint); max-width: 56ch;
   }
   .start-cta { margin-top: 48px; }
 
