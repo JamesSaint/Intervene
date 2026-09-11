@@ -99,9 +99,12 @@ em, .em {
 .muted { color: var(--muted); }
 
 /* Shared mono section label. Used sparingly above headings.
-   No numbering scaffolds, no "kicker" decoration. */
+   No numbering scaffolds, no "kicker" decoration.
+   The 24px gap to the heading below is set here once. Do not
+   override it per page; compact contexts (cards) zero it. */
 .label {
   display: block;
+  margin: 0 0 24px;
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
