@@ -98,7 +98,7 @@ The Intervene site is intentionally restrained.
 - Use one italic accent per major headline when the local page pattern calls for it.
 - Keep copy board-grade: calm, concrete, and specific.
 - Avoid decorative imagery. The founder portrait and Open Graph artwork are the only current bitmap brand assets.
-- Do not add mailto links. Inbound contact routes through `/contact/`.
+- Inbound contact routes through `/contact/`. The only published address is `hello@intervene.uk`, defined once in `src/lib/social.ts` and shown on `/contact/` and in the footer. Do not add other addresses or mailto links.
 - Preserve the intervention vocabulary exactly where it is canonical: `src/lib/terms.ts`, `public/llms.txt`, glossary copy, metadata, and schema must not drift.
 - Avoid em dashes in prose. Use periods, semicolons, commas, or full stops.
 
