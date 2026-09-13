@@ -1,11 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { contactEmail } from '../../lib/social';
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xvzwdyob';
 
-const info = [
+const info: { k: string; v: string; href?: string }[] = [
   { k: 'Confidentiality', v: 'All correspondence is private and off record unless explicitly agreed otherwise. NDA available before substantive discussion.' },
   { k: 'Response window', v: 'You receive a direct response within one to two working days. We do not auto-reply.' },
+  { k: 'Email',           v: contactEmail, href: `mailto:${contactEmail}` },
   { k: 'No obligation',   v: 'An initial conversation is brief and creates no engagement. We will say if we are not the right fit.' },
   { k: 'Office',          v: 'London, United Kingdom. Global mandates.' },
 ];
@@ -50,7 +52,7 @@ const info = [
             {info.map((row) => (
               <div>
                 <dt>{row.k}</dt>
-                <dd>{row.v}</dd>
+                <dd>{row.href ? <a href={row.href} class="link">{row.v}</a> : row.v}</dd>
               </div>
             ))}
           </dl>
