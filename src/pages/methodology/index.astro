@@ -57,9 +57,10 @@ const docs = [
         into effect within the available time.
       </p>
       <p class="body muted">
-        The assessment records what is measured, what is declared and what is
-        assumed. It examines material dependencies and identifies the parts of
-        the chain that constrain intervention. Repeatable engine computation
+        The assessment examines material dependencies and identifies the
+        parts of the chain that constrain intervention. A policy fallback is
+        not a measurement, and a walkthrough or a record of a previous drill is
+        not a live operational test. Repeatable engine computation
         supports the assessment. Intervene remains responsible for evidence
         interpretation and the final conclusion. This page explains the basis
         and limits of the assessment; the underlying rubric and protected
@@ -179,8 +180,8 @@ manifestHash       36b45cbe…3edc1c12
 signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
       <p class="body muted env-note">
         The values above are illustrative and show the shape of the envelope.
-        A real bundle is produced by an assessment and is bound to that
-        assessment's engine version, inputs and output. The published
+        A real signed record is produced by an assessment and commits to
+        that assessment's engine version, input and output hashes. The published
         <a href="/sample-report/" class="link">sample verdict</a> is a
         constructed example and carries no signature.
       </p>
@@ -212,9 +213,10 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
     <div class="wrap-narrow cta-band">
       <h2 class="h2">A sample verdict is published.</h2>
       <p class="body muted">
-        A constructed retail-credit example: authority cannot be reached
-        inside the assumed window. It shows the shape of a finding, using no
-        client data. It is not issued and not signed.
+        A constructed retail-credit example: reaching an authority holder
+        may exceed the assumed six-hour window, and the required quorum takes
+        at least seven days. It shows the shape of a finding, using no client
+        data. It is not issued and not signed.
       </p>
       <div class="cta">
         <a href="/contact/" class="btn">Discuss your system</a>
