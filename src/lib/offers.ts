@@ -115,7 +115,7 @@ export const activities = [
   },
   {
     name: 'Issue the agreed outputs',
-    body: 'Review factual challenges and further evidence, finalise the assessment under Intervene authority and deliver the outputs listed in the engagement scope, with an executive readout.',
+    body: 'Review factual challenges and further evidence, finalise the assessment, for which Intervene retains responsibility, and deliver the outputs listed in the engagement scope, with an executive readout.',
   },
 ];
 
