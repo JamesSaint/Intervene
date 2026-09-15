@@ -3,6 +3,30 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProofMarks from '../../components/ProofMarks.astro';
 import { markAgda } from '../../lib/marks';
 
+/* What the Ed25519 signature commits to and what it does not. Checked
+   against the AGDA attestation specification v1.2 (docs/security/
+   ATTESTATION.md, §2 envelope fields, §4 registry, §6 platform display
+   metadata) at agda-v1.2 commit eb1209c. Re-check on any spec change. */
+const covered = [
+  'The canonical input record (inputHash), including the fact model.',
+  'The canonical result payload (outputHash), excluding the attestation field.',
+  'The resolved engine manifest (manifestHash): engine identity, public key, key id and source-file list.',
+  'The engine, catalogue, methodology and rubric versions, and the scoredAt timestamp.',
+];
+const notCovered = [
+  'The whole exported bundle. The signature is over the canonical attestation envelope, not over every file in an export.',
+  'The report header. The organisation name, sector, system name and the rendered audience layer are platform display fields read at render time; they can change after signing, and such changes are audit-logged on the platform rather than committed by the signature.',
+  'Any rendered report layer or narrative. A verifier establishing what was scored relies on the signed input and output hashes, not on the report as displayed.',
+];
+const notEstablished = [
+  'That the underlying evidence is true or complete.',
+  'That the assessment method is empirically valid. AGDA™ is not validated against real-world outcomes.',
+  'That a regulator accepts the conclusion, or that any obligation is met.',
+  'That intervention will work in a future event.',
+  'That no revocation exists beyond those present in the registry supplied with the verifier.',
+  'The confidentiality of the record. Signing provides integrity and authenticity, not encryption.',
+];
+
 const bundleFields = [
   { k: 'attestationVersion', v: 'The attestation envelope schema version. Current production format: 1.2.' },
   { k: 'engineVersion',      v: 'The AGDA™ engine semver. Pinned at the assessment.' },
@@ -20,26 +44,27 @@ const bundleFields = [
 ];
 
 const audiences = [
-  { h: 'Audit committee.', p: 'Confirm that the signed SEDI result the chair is being asked to rely on is bound to a specific engine version and a specific set of inputs. No vendor trust required.' },
-  { h: 'Internal audit.',  p: 'Run the packaged agda-verify CLI in your own environment. Compare hashes, manifest and signature against the bundle. Pass or fail is mechanical.' },
-  { h: 'Regulator.',       p: 'Take the bundle from the supervised entity. Verify in the regulator estate. Independent of any conversation with us or with the entity.' },
+  { h: 'Audit committee.', p: 'Confirm that the signed SEDI result the chair is being asked to rely on is bound to a specific engine version and a specific set of inputs, using the supplied key and registry material rather than a conversation with Intervene.' },
+  { h: 'Internal audit.',  p: 'Run the packaged agda-verify CLI in your own environment. Compare hashes, manifest and signature against the record. Pass or fail is mechanical.' },
+  { h: 'Regulator.',       p: 'Take the record from the supervised entity. Verify in the regulator estate. Independent of any conversation with us or with the entity.' },
 ];
 ---
 
 <BaseLayout
-  title="Verify an AGDA™ Verdict · Intervene"
-  description="Every AGDA™ SEDI Intervention Readiness assessment ships with a signed regulator bundle. Verify the bundle locally using the packaged agda-verify CLI."
+  title="Verify Signed AGDA™ SEDI Result Records · Intervene"
+  description="How to check signed AGDA™ SEDI result records, what the signature covers, and what verification does not establish."
   current="verify"
 >
   <section class="hero">
     <div class="wrap">
       <h1 class="h1 reveal">
-        Verify the verdict <em>without us.</em>
+        What the signature covers. <em>What it does not.</em>
       </h1>
       <p class="lede muted reveal">
-        Formal <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> SEDI Intervention Readiness assessments ship with a signed JSON
-        regulator bundle. The <span class="mono">agda-verify</span> command runs locally under Node.js 18+.
-        You do not depend on us to read what we produced for you.
+        Where signed SEDI result records are within the agreed scope and
+        supported by the delivery configuration, this page explains how to
+        check them. The <span class="mono">agda-verify</span> command runs
+        locally under Node.js 18+ and never contacts Intervene infrastructure.
       </p>
       <div class="hero-proof reveal"><ProofMarks /></div>
     </div>
@@ -48,17 +73,34 @@ const audiences = [
   <!-- THE BUNDLE -->
   <section class="block">
     <div class="wrap-narrow">
-      <h2 class="h2">What's in the bundle.</h2>
+      <h2 class="h2">Coverage.</h2>
       <p class="lede muted">
-        A current regulator bundle uses bundleVersion 1.1 and contains the
-        report, attestation envelope, signed result, input, manifest,
-        verification metadata and verification history. The Ed25519 signature
-        covers the canonical envelope. The envelope commits to the input hash,
-        output hash and manifest hash.
+        The Ed25519 signature is over the canonical attestation envelope. The
+        envelope commits to the following, and to nothing else.
+      </p>
+      <span class="mono col-label">Covered by the signature</span>
+      <ul class="limits" role="list">
+        {covered.map((x) => <li>{x}</li>)}
+      </ul>
+      <span class="mono col-label">Not covered by the signature</span>
+      <ul class="limits" role="list">
+        {notCovered.map((x) => <li>{x}</li>)}
+      </ul>
+      <p class="body muted note">
+        Read a report header alongside the signed input and output. The
+        header is not proof that the displayed name was cryptographically
+        committed.
+      </p>
+
+      <h2 class="h2 fields-head">The envelope.</h2>
+      <p class="lede muted">
+        An exported record contains the attestation envelope, the signed
+        result, the exact input that was hashed, the resolved manifest and
+        verification metadata. The fields below are the envelope.
       </p>
 
       <span class="env-example mono">Example envelope · illustrative values</span>
-      <pre class="envelope" aria-label="Regulator bundle example"><code>{`{
+      <pre class="envelope" tabindex="0" aria-label="Attestation envelope example"><code>{`{
   "attestationVersion": "1.2",
   "engineVersion":      "2.0.6",
   "engineHash":         "17594a80a72888a18e8b2c40b6e2fddaf56989f0bb417bc884111f8260355e50",
@@ -95,7 +137,7 @@ const audiences = [
       </p>
 
       <span class="env-example mono">Example run · illustrative output</span>
-      <pre class="cmd" aria-label="Verify command"><code>$ agda-verify --key-id 2026-05-02-d7e5468e --bundle ./bundle.json
+      <pre class="cmd" tabindex="0" aria-label="Verify command"><code>$ agda-verify --key-id 2026-05-02-d7e5468e --bundle ./bundle.json
 [verify] result:
   attestation present: ✓ yes
   manifest found:      ✓ yes
@@ -110,8 +152,8 @@ const audiences = [
 
       <p class="body muted note">
         The transcript above shows what a successful check prints. The verifier
-        and the bundle are delivered with an engagement, not published here, so
-        there is nothing on this site to run it against.
+        and the record are delivered with an engagement where contracted, not
+        published here, so there is nothing on this site to run it against.
       </p>
 
       <p class="body muted note">
@@ -129,12 +171,19 @@ const audiences = [
   <!-- PUBLIC KEY CHAIN -->
   <section class="block">
     <div class="wrap-narrow">
-      <h2 class="h2">Public keys and registry.</h2>
+      <h2 class="h2">Public keys, registry and trust.</h2>
       <p class="lede muted">
-        Public keys ship with the verifier package. Engine manifests and
-        signed revocations are recorded in the append-only registry used by
-        the verifier. Historical public keys remain available so historical
-        attestations can still be checked.
+        The verifier checks the Ed25519 signature against the public key
+        recorded in the engine manifest whose hash the envelope commits to,
+        and confirms that manifest is present in the append-only registry
+        supplied with the verifier. Revocations are honoured only when they
+        carry a valid registry signature. Historical public keys remain in
+        the registry so historical attestations can still be checked.
+      </p>
+      <p class="body muted note">
+        The check cannot establish that the registry copy you hold is the one
+        Intervene published. That rests on how you obtained the verifier
+        distribution and its registry.
       </p>
 
       <dl class="fields">
@@ -181,21 +230,23 @@ const audiences = [
   <!-- POSITION -->
   <section class="block">
     <div class="wrap-narrow">
-      <h2 class="h2">Why this is the load-bearing claim.</h2>
+      <h2 class="h2">What a successful check establishes. <em>And what it does not.</em></h2>
       <p class="body">
-        Big-4 advisories produce PDFs. GRC platforms produce dashboards.
-        Neither is mechanically bound to a signed result. The same inputs do
-        not always produce the same output, and the recipient must trust the
-        producer to read what the producer produced.
+        A successful check provides evidence that the covered records match
+        the signed commitments: the output came from a named engine version
+        and a specific input, and neither has changed since signing.
       </p>
-      <p class="body muted">
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span>'s verify path is the property that makes an Intervention Readiness verdict defensible
-        in an examination, not just credible in a boardroom. If a signed SEDI
-        bundle cannot be verified in your own environment, it has not done its job.
-      </p>
-      <p class="body aside">
-        Opinion is not reproducible. The result is deterministic; the signed
-        SEDI regulator bundle is independently verifiable.
+      <span class="mono col-label">Not established by verification</span>
+      <ul class="limits" role="list">
+        {notEstablished.map((x) => <li set:html={markAgda(x)} />)}
+      </ul>
+      <p class="body muted note">
+        A signature check and an engine replay are separate activities.
+        Signature verification does not rerun the assessment engine.
+        Repeatable computation is a separate property: with fixed inputs and
+        fixed engine and assessment versions, the engine produces the same
+        computed result. Scenario definition, evidence grading and
+        interpretation remain Intervene's judgement.
       </p>
     </div>
   </section>
@@ -204,12 +255,13 @@ const audiences = [
   <section class="block tight">
     <div class="wrap">
       <div class="close-grid">
-        <h2 class="h2">Want to see what a verdict looks like?</h2>
+        <h2 class="h2">Want to see what a finding looks like?</h2>
         <div class="close-cta">
           <p class="body muted">
-            The sample verdict is a constructed example and carries no
-            signature. Only a real assessment ships a full bundle, bound to your
-            own assessed system and verifiable in your own environment.
+            The sample verdict is a constructed example. It is not issued and
+            carries no signature. Signed SEDI result records are supplied only
+            with a full assessment, where the agreed scope includes them and
+            the delivery configuration supports them.
           </p>
           <div class="cta-row">
             <a href="/contact/" class="btn">Discuss your system</a>
@@ -283,6 +335,21 @@ const audiences = [
     margin-top: 32px;
     max-width: 76ch;
   }
+  .col-label {
+    display: block; margin-top: 40px; font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted); padding-bottom: 12px;
+    border-bottom: 1px solid var(--hair-strong);
+  }
+  .limits { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 12px; }
+  .limits > li {
+    position: relative; padding-left: 20px;
+    font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--ink); max-width: 66ch;
+  }
+  .limits > li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 8px; height: 1px; background: var(--accent);
+  }
+  .fields-head { margin-top: 72px; }
 
   .audiences {
     list-style: none;

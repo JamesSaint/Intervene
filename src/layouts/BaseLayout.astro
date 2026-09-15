@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import ConsentBanner from '../components/ConsentBanner.astro';
 import { terms, termId, termUrl } from '../lib/terms';
 import { socialLinks } from '../lib/social';
+import { offers } from '../lib/offers';
 import '../styles/global.css';
 
 interface Props {
@@ -74,7 +75,7 @@ const routeNames: Record<string, string> = {
   agda: 'AGDA™',
   methodology: 'How AGDA™ Works',
   'sample-report': 'Sample Verdict',
-  services: 'Levels of Assurance',
+  services: 'Assessment Options',
   sectors: 'Where Intervention Readiness Matters',
   insights: 'Evidence Notes',
   verify: 'Verify AGDA™ Verdict',
@@ -134,7 +135,7 @@ const agdaTerm = {
   name: 'AGDA™',
   alternateName: 'AGDA',
   url: `${baseUrl}agda/`,
-  description: 'A deterministic assessment of Intervention Readiness that evaluates whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible.',
+  description: terms.find((t) => t.slug === 'agda')!.definition,
   inDefinedTermSet: { '@id': termSetId },
   subjectOf: { '@id': `${baseUrl}agda/#webpage` },
   creator: { '@id': orgId },
@@ -184,7 +185,7 @@ const orgSchema = {
   sameAs: [socialLinks.interveneLinkedIn],
   logo: `${baseUrl}assets/images/favicons/android-chrome-512x512.png`,
   founder: { '@id': personId },
-  description: 'Most organisations know what controls they have. Few know whether they can detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ measures Intervention Readiness.',
+  description: 'Intervene Limited develops evidence-based methods for assessing whether organisations retain effective control over consequential AI-enabled systems. AGDA™ is its proprietary assessment of Intervention Readiness.',
   areaServed: ['United Kingdom', 'European Union'],
   knowsAbout: [
     { '@id': interventionReadinessId },
@@ -195,11 +196,16 @@ const orgSchema = {
     'reversibility window',
     'Intervention Readiness assessment',
   ],
-  makesOffer: {
+  // Two current engagements, names and descriptions only. Indicative price
+  // ranges are published in copy, not in structured data.
+  makesOffer: offers.map((o) => ({
     '@type': 'Offer',
+    name: o.name,
+    description: o.schemaDescription,
     itemOffered: { '@id': agdaId },
     category: 'Intervention Readiness assessment',
-  },
+    url: `${baseUrl}services/#${o.slug}`,
+  })),
 };
 
 const websiteSchema = {

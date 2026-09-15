@@ -9,6 +9,7 @@
  *
  * Usage:
  *   node scripts/generate-og-card.mjs <slug>
+ *   node scripts/generate-og-card.mjs all
  *
  * Cards are defined in CARDS below rather than passed as arguments, so
  * the copy on a published card is reviewable in the repository.
@@ -20,7 +21,115 @@ import { dirname, resolve } from 'node:path';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
+/* The four SEDI stages: descriptive, not a claim. The previous
+   "deterministic · signed · independently verifiable" row asserted that
+   every assessment is signed and that judgement plays no part, which the
+   14 September 2026 commercial strategy does not support. Signed SEDI
+   result records are supplied where the agreed scope includes them; the
+   card cannot carry that condition, so it carries no claim. */
+const SEDI = ['Detect', 'Escalate', 'Decide', 'Intervene'];
+
 const CARDS = {
+  home: {
+    kicker: 'Intervention Readiness',
+    lines: ['If an AI system fails,', 'can you stop it', 'before harm is irreversible?'],
+    meta: SEDI,
+  },
+  about: {
+    kicker: 'Why it matters',
+    lines: ['Oversight only matters', 'if intervention', 'remains possible.'],
+    meta: SEDI,
+  },
+  agda: {
+    kicker: 'The assessment',
+    lines: ['AGDA™ assesses', 'Intervention Readiness.'],
+    meta: SEDI,
+  },
+  'category-map': {
+    kicker: 'Category map',
+    lines: ['Every component of', 'Intervention Readiness.'],
+    meta: SEDI,
+  },
+  contact: {
+    kicker: 'Book a conversation',
+    lines: ['Can you stop it', 'in time?'],
+    meta: SEDI,
+  },
+  'halt-authority': {
+    kicker: 'Component',
+    lines: ['Authority to stop it,', 'held by someone', 'who can act in time.'],
+    meta: SEDI,
+  },
+  'human-oversight': {
+    kicker: 'Component',
+    lines: ['Informed, authorised,', 'and able to act', 'before the window closes.'],
+    meta: SEDI,
+  },
+  insights: {
+    kicker: 'Evidence notes',
+    lines: ['Where accountability', 'fails to evidence', 'intervention.'],
+    meta: SEDI,
+  },
+  'intervention-chain': {
+    kicker: 'Component',
+    lines: ['The chain is only', 'as strong as its', 'weakest stage.'],
+    meta: SEDI,
+  },
+  'intervention-readiness': {
+    kicker: 'The category',
+    lines: ['Detect, escalate,', 'decide, intervene.', 'Before harm is irreversible.'],
+    meta: SEDI,
+  },
+  methodology: {
+    kicker: 'How AGDA™ works',
+    lines: ['Follow the response', 'from signal to', 'effective intervention.'],
+    meta: SEDI,
+  },
+  'reversibility-window': {
+    kicker: 'Component',
+    lines: ['From deviation to', 'the point of', 'no return.'],
+    meta: SEDI,
+  },
+  'sample-report': {
+    kicker: 'Sample verdict',
+    lines: ['The shape of a finding.', 'Constructed. Not signed.'],
+    meta: SEDI,
+  },
+  sectors: {
+    kicker: 'Where it matters',
+    lines: ['When systems move faster', 'than authority can.'],
+    meta: SEDI,
+  },
+  services: {
+    kicker: 'Assessment options',
+    lines: ['Two ways to begin.', 'One named system.'],
+    meta: SEDI,
+  },
+  'vs-ai-governance': {
+    kicker: 'Comparison',
+    lines: ['Governance assigns', 'responsibility.', 'Readiness proves action.'],
+    meta: SEDI,
+  },
+  'vs-audit': {
+    kicker: 'Comparison',
+    lines: ['Audit looks back.', 'Readiness looks forward.'],
+    meta: SEDI,
+  },
+  'vs-compliance': {
+    kicker: 'Comparison',
+    lines: ['Compliance confirms', 'obligations.', 'Readiness proves capability.'],
+    meta: SEDI,
+  },
+  'vs-operational-resilience': {
+    kicker: 'Comparison',
+    lines: ['Resilience absorbs', 'the shock.', 'Readiness intervenes.'],
+    meta: SEDI,
+  },
+  'vs-risk-management': {
+    kicker: 'Comparison',
+    lines: ['Risk scores', 'likelihood.', 'Readiness completes in time.'],
+    meta: SEDI,
+  },
   network: {
     kicker: 'Intervention Readiness Network',
     // Last line renders in accent, as on every other card.
@@ -161,13 +270,15 @@ const html = (card) => `
 </div>
 `;
 
-const slug = process.argv[2];
-const card = CARDS[slug];
-if (!card) {
-  console.error(
-    `Unknown card "${slug}". Known: ${Object.keys(CARDS).join(', ')}`,
-  );
-  process.exit(1);
+const arg = process.argv[2];
+const slugs = arg === 'all' ? Object.keys(CARDS) : [arg];
+for (const slug of slugs) {
+  if (!CARDS[slug]) {
+    console.error(
+      `Unknown card "${slug}". Known: all, ${Object.keys(CARDS).join(', ')}`,
+    );
+    process.exit(1);
+  }
 }
 
 const browser = await chromium.launch();
@@ -175,14 +286,14 @@ const page = await browser.newPage({
   viewport: { width: 1200, height: 630 },
   deviceScaleFactor: 1,
 });
-await page.setContent(html(card));
-// The card is entirely type. A missing webfont would ship a card in
-// Helvetica, so wait for the fonts rather than for the network.
-await page.evaluate(() => document.fonts.ready);
-await page.waitForTimeout(400);
-
-const out = resolve(root, `public/assets/og/og-${slug}.png`);
-await page.screenshot({ path: out });
+for (const slug of slugs) {
+  await page.setContent(html(CARDS[slug]));
+  // The card is entirely type. A missing webfont would ship a card in
+  // Helvetica, so wait for the fonts rather than for the network.
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(400);
+  const out = resolve(root, `public/assets/og/og-${slug}.png`);
+  await page.screenshot({ path: out });
+  console.log(`og-${slug}.png written to public/assets/og/`);
+}
 await browser.close();
-
-console.log(`og-${slug}.png written to public/assets/og/`);

@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import VerdictBlock from '../components/VerdictBlock.astro';
+import { offers, PRICE_QUALIFIER } from '../lib/offers';
 
 /* Three situations in which the intervention question stops being
-   theoretical. Drawn from the Pilot tier's "who it is for" and
-   "decision supported" fields on /services/, so the homepage and the
-   commercial page describe the same buyer. */
+   theoretical. They describe the same buyer as the offer sheets on
+   /services/, which read from src/lib/offers.ts. */
 const situations = [
   {
     kicker: 'A consequential deployment',
@@ -34,24 +34,11 @@ const chain = [
   { n: '04', name: 'Intervene', p: 'Whether the system can actually be altered or halted. This is the only stage that changes the outcome.' },
 ];
 
-const provide = [
-  'One consequential system, and the intervention question it has to answer.',
-  'Access to the right people while scope is fixed.',
-  'Control, escalation and drill evidence, plus subject-matter time.',
-  'Board or executive time for the readout.',
-];
-
-const receive = [
-  'A signed Intervention Readiness Verdict.',
-  'A Failure Exposure Report at executive, operational and specialist layers.',
-  'A board readout.',
-  'A close-out memo recording agreed actions and ownership.',
-];
 ---
 
 <BaseLayout
   title="Intervention Readiness · Intervene"
-  description="Intervention Readiness: detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ measures it with a deterministic verdict."
+  description="AGDA™ assesses whether your organisation can detect, escalate, decide and intervene in a consequential AI-enabled system within the time available."
   current="home"
 >
   <!-- 1 · DOORWAY. Loud. Relevance, offer and next step, in that order. -->
@@ -62,10 +49,12 @@ const receive = [
       <p class="hero-sub">
         Intervention Readiness is the ability of an organisation to detect,
         escalate, decide and intervene before harm becomes irreversible.
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is the instrument that measures it.
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is Intervene's proprietary assessment of it.
       </p>
       <p class="hero-note">
-        Short pilot: one system, four weeks, a signed verdict and a board readout.
+        Two starting points: an Intervention Readiness Review, or a full
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment of one named system through a defined
+        pathway and a specified intervention scenario.
       </p>
       <div class="hero-cta">
         <a href="/contact/" class="btn">Discuss your system</a>
@@ -154,7 +143,7 @@ const receive = [
         <span>Governance</span>
         <span>Controls</span>
         <span>Accountability</span>
-        <strong>Most organisations cannot evidence whether intervention remains possible when it matters.</strong>
+        <strong>Documented responsibilities alone do not establish whether the people named can intervene in time.</strong>
       </p>
       <div class="gap-status">
         <span class="status-rule" aria-hidden="true"></span>
@@ -168,13 +157,13 @@ const receive = [
     <div class="wrap">
       <div class="verdict-flow">
         <div class="verdict-lead">
-          <span class="label section-kicker">The instrument</span>
-          <h2 class="h2"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is a deterministic assessment of Intervention Readiness.</h2>
+          <span class="label section-kicker">The assessment</span>
+          <h2 class="h2"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is Intervene's proprietary assessment of Intervention Readiness.</h2>
           <p class="body muted">
-            It reduces reliance on assertion. The output is not a maturity
-            score or a compliance claim. It is a deterministic verdict on
-            whether intervention completes inside the harm window, with the
-            limiting stage named.
+            A full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment examines whether the chain can complete in
+            time and names the stage that constrains it. The output is not a
+            maturity score or a compliance claim. Evidence can change the
+            conclusion. The conclusion is Intervene's.
           </p>
         </div>
         <div class="verdict-stage reveal">
@@ -182,7 +171,7 @@ const receive = [
         </div>
       </div>
 
-      <h3 class="h3 chain-head">What is assessed.</h3>
+      <h3 class="h3 chain-head">What a full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment examines.</h3>
       <ol class="chain-list" role="list">
         {chain.map((c) => (
           <li>
@@ -206,7 +195,7 @@ const receive = [
           </div>
           <div>
             <dt>What it means</dt>
-            <dd>The reversibility window is about six hours, so the chain cannot complete inside it. Detection is not the constraint. Authority is.</dd>
+            <dd>The assumed window is about six hours, so the chain cannot complete inside it. Detection is not the constraint. Authority is.</dd>
           </div>
           <div>
             <dt>Decision it supports</dt>
@@ -222,42 +211,45 @@ const receive = [
     </div>
   </section>
 
-  <!-- 6 · THE ENGAGEMENT. What it requires, what it returns, what it costs. -->
+  <!-- 6 · THE ENGAGEMENT. Two starting points, from src/lib/offers.ts. -->
   <section class="block engage">
     <div class="wrap">
-      <span class="label section-kicker">The engagement</span>
-      <h2 class="h2">What a pilot asks of you, <em>and what it returns.</em></h2>
+      <span class="label section-kicker">Two ways to begin</span>
+      <h2 class="h2">Choose the right <em>starting point.</em></h2>
 
-      <div class="engage-grid">
-        <div class="engage-col">
-          <h3 class="h3">What you provide</h3>
-          <ul class="engage-list" role="list">
-            {provide.map((p) => <li>{p}</li>)}
-          </ul>
-          <p class="body muted engage-note">
-            No system access and no integration. The assessment runs against
-            evidence you already hold, not against your production environment.
-          </p>
-        </div>
-        <div class="engage-col">
-          <h3 class="h3">What you receive</h3>
-          <ul class="engage-list" role="list">
-            {receive.map((r) => <li>{r}</li>)}
-          </ul>
-          <p class="body muted engage-note">
-            Every assessment ships with a signed regulator bundle. The
-            signature lets an audit committee confirm the result came from a
-            named engine version and specific inputs, without contacting us. It
-            is not a certification and not regulatory approval.
-          </p>
-        </div>
-      </div>
+      <ul class="offer-grid" role="list">
+        {offers.map((o) => (
+          <li class="offer" id={`offer-${o.slug}`}>
+            <span class="mono offer-kicker">{o.slug === 'review' ? 'Preliminary' : 'Full assessment'}</span>
+            <h3 class="h3 offer-name" set:html={o.name.replace('AGDA™', '<span class="agda-mark">AGDA<span class="agda-tm">™</span></span>')} />
+            <p class="body muted offer-short" set:html={o.short.replace('AGDA™', '<span class="agda-mark">AGDA<span class="agda-tm">™</span></span>')} />
+            <span class="mono offer-list-label">What you receive</span>
+            <ul class="engage-list" role="list">
+              {o.receive.map((r) => <li set:html={r.replace('AGDA™', '<span class="agda-mark">AGDA<span class="agda-tm">™</span></span>')} />)}
+            </ul>
+            <p class="body muted offer-exclusion" set:html={o.exclusionShort.replace(/AGDA™/g, '<span class="agda-mark">AGDA<span class="agda-tm">™</span></span>')} />
+            <p class="offer-price"><span class="mono offer-price-note">{o.priceNote}</span> {o.price}</p>
+            <p class="body muted offer-timing">{o.timing}</p>
+          </li>
+        ))}
+      </ul>
 
       <p class="engage-terms">
-        <strong>Short pilot.</strong> One system, four weeks. Scope and price
-        are fixed with you before work begins, and neither moves once the
-        engagement starts.
-        <a href="/services/" class="link">Formats and scope</a>.
+        {PRICE_QUALIFIER}
+        <a href="/services/" class="link">Assessment options in full</a>.
+      </p>
+
+      <h3 class="h3 basis-head">A conclusion with a visible basis.</h3>
+      <p class="engage-next">
+        The assessment identifies the limiting parts of the intervention chain
+        and explains the evidence and assumptions behind the result. Intervene
+        retains responsibility for the conclusion. Clients can correct facts,
+        challenge interpretation and provide further evidence. Signed SEDI
+        result records, where the agreed scope includes them and the delivery
+        configuration supports them, can be checked using the supplied
+        verification materials; those checks establish the integrity of the
+        covered records, not the truth of the evidence.
+        <a href="/verify/" class="link">What verification establishes</a>.
       </p>
 
       <p class="engage-next">
@@ -543,11 +535,24 @@ const receive = [
   /* 6 · The engagement. Obligation on the left, return on the right. */
   .engage { border-top: 1px solid var(--hair); background: var(--paper-soft); }
   .engage .h2 { max-width: 22ch; margin: 0 0 56px; }
-  .engage-grid {
+  .offer-grid {
+    list-style: none; margin: 0; padding: 0;
     display: grid; grid-template-columns: 1fr 1fr;
     gap: clamp(40px, 6vw, 88px);
   }
-  .engage-col .h3 { margin: 0 0 24px; padding-bottom: 16px; border-bottom: 1px solid var(--hair-strong); }
+  .offer { display: grid; gap: 16px; align-content: start; padding-top: 24px; border-top: 1px solid var(--hair-strong); }
+  .offer-kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  .offer-name { margin: 0; }
+  .offer-short { margin: 0; max-width: 46ch; }
+  .offer-list-label { margin-top: 8px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+  .offer-exclusion { margin: 4px 0 0; max-width: 48ch; font-size: 15px; }
+  .offer-price {
+    margin: 8px 0 0; font-family: var(--font-sans); font-size: 20px; font-weight: 700;
+    color: var(--ink); display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px;
+  }
+  .offer-price-note { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); font-weight: 400; }
+  .offer-timing { margin: 0; max-width: 48ch; font-size: 15px; }
+  .basis-head { margin: 56px 0 0; padding-top: 28px; border-top: 1px solid var(--hair-strong); }
   .engage-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
   .engage-list > li {
     position: relative; padding-left: 22px;
@@ -558,7 +563,6 @@ const receive = [
     content: ''; position: absolute; left: 0; top: 11px;
     width: 10px; height: 1px; background: var(--accent);
   }
-  .engage-note { margin: 28px 0 0; max-width: 48ch; }
   .engage-terms,
   .engage-next {
     margin: 48px 0 0; padding-top: 28px;
@@ -566,13 +570,13 @@ const receive = [
     font-family: var(--font-sans); font-size: 17px; line-height: 1.65;
     color: var(--muted); max-width: 68ch;
   }
-  .engage-next { margin-top: 28px; padding-top: 0; border-top: 0; }
+  .engage-next { margin-top: 20px; padding-top: 0; border-top: 0; }
   .engage-terms strong,
   .engage-next strong { color: var(--ink); font-weight: 700; }
 
   @media (max-width: 880px) {
     .chain-list { grid-template-columns: 1fr 1fr; gap: 28px; }
-    .engage-grid { grid-template-columns: 1fr; }
+    .offer-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {
     .chain-list { grid-template-columns: 1fr; }
