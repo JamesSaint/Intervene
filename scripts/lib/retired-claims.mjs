@@ -78,6 +78,16 @@ export const UNSUPPORTED_CLAIMS = [
   // adopted manual procedure yet supports the sentence. Restore when one
   // is confirmed (plan D8b / P2).
   { name: 'timing provenance (held)', re: /records (what|which timings) (is|are) measured/i },
+  // Operating model (reconciliation r2). Named delivery roles and the
+  // review-before-issue process are the target model, not evidenced
+  // capability; they are not described as operational in public copy.
+  { name: 'role structure presented as operational', re: /Intervene appoints an? (Assessment|Technical Assessment) Lead/i },
+  { name: 'review process presented as operational', re: /reviewed for compliance with the AGDA™ methodology before authorised issuance/i },
+  { name: 'approved assessor presented as operational', re: /performed by an approved assessor/i },
+  // Output access is undecided: distribution of records, verifier and
+  // trust material is set in the engagement terms, not promised here.
+  { name: 'distribution promised', re: /(ships?|shipped|delivered) with (the verifier|an engagement)/i },
+  { name: 'distribution promised', re: /take the (bundle|record) from the supervised entity/i },
 ];
 
 /**
@@ -98,6 +108,10 @@ export const PERMITTED_FIXTURES = [
   'match the signed commitments associated with the stated engine version',
   'It does not independently establish that the engine was executed or that its computation was correct.',
   'reaching an authority holder may exceed the assumed six-hour window, and the required quorum takes at least seven days',
+  'An assessment is not issued on the assessor\'s own approval.',
+  'A signed record is not by itself an issued assessment.',
+  'Which artefacts are supplied, to whom and under what arrangement is set in the engagement terms.',
+  'Intervene retains Assessment Authority',
 ];
 
 /** Sentences that must fail. */
@@ -115,6 +129,10 @@ export const PROHIBITED_FIXTURES = [
   'it confirms the output came from a named engine version and a specific set of inputs',
   'authority cannot be reached inside the assumed window',
   'The assessment records what is measured, what is declared and what is assumed.',
+  'Intervene appoints an Assessment Lead and a Technical Assessment Lead.',
+  'Assessment performed by an approved assessor and reviewed for compliance with the AGDA™ methodology before authorised issuance.',
+  'Public keys ship with the verifier package.',
+  'Take the record from the supervised entity.',
 ];
 
 /**
