@@ -45,9 +45,9 @@ const bundleFields = [
 ];
 
 const audiences = [
-  { h: 'Audit committee.', p: 'Confirm that the signed SEDI result the chair is being asked to rely on matches the signed commitments for the stated engine version, input and output, using the supplied key and registry material rather than a conversation with Intervene.' },
-  { h: 'Internal audit.',  p: 'Run the packaged agda-verify CLI in your own environment. Compare hashes, manifest and signature against the record. Pass or fail is mechanical.' },
-  { h: 'Regulator.',       p: 'Take the record from the supervised entity. Verify in the regulator estate. Independent of any conversation with us or with the entity.' },
+  { h: 'Audit committee.', p: 'Where the engagement terms provide for it: confirm that the signed SEDI result the chair is being asked to rely on matches the signed commitments for the stated engine version, input and output, using the key and registry material supplied under those terms rather than a conversation with Intervene.' },
+  { h: 'Internal audit.',  p: 'Where the engagement terms provide for it: run the agda-verify CLI in your own environment. Compare hashes, manifest and signature against the record. Pass or fail is mechanical.' },
+  { h: 'Regulator.',       p: 'Where the engagement terms provide for a record to be shared with a supervisor: the same check runs in the regulator estate, independent of any conversation with Intervene or with the entity.' },
 ];
 ---
 
@@ -63,9 +63,12 @@ const audiences = [
       </h1>
       <p class="lede muted reveal">
         Where signed SEDI result records are within the agreed scope and
-        supported by the delivery configuration, this page explains how to
-        check them. The <span class="mono">agda-verify</span> command runs
-        locally under Node.js 18+ and never contacts Intervene infrastructure.
+        supported by the delivery configuration, this page explains how a
+        check works. Which artefacts are supplied, to whom and under what
+        arrangement is set in the engagement terms. The
+        <span class="mono">agda-verify</span> command runs locally under
+        Node.js 18+ and never contacts Intervene infrastructure. A signed
+        record is not by itself an issued assessment.
       </p>
       <div class="hero-proof reveal"><ProofMarks /></div>
     </div>
@@ -95,9 +98,11 @@ const audiences = [
 
       <h2 class="h2 fields-head">The envelope.</h2>
       <p class="lede muted">
-        An exported record contains the attestation envelope, the signed
-        result, the exact input that was hashed, the resolved manifest and
-        verification metadata. The fields below are the envelope.
+        A signed record commits to the attestation envelope, the signed
+        result, the exact input that was hashed and the resolved manifest.
+        Which of these artefacts are supplied, to whom and under what
+        arrangement is set in the engagement terms. The fields below are the
+        envelope.
       </p>
 
       <span class="env-example mono">Example envelope · illustrative values</span>
@@ -152,9 +157,9 @@ const audiences = [
   ✓ ATTESTATION VALID</code></pre>
 
       <p class="body muted note">
-        The transcript above shows what a successful check prints. The verifier
-        and the record are delivered with an engagement where contracted, not
-        published here, so there is nothing on this site to run it against.
+        The transcript above shows what a successful check prints. Neither
+        the verifier nor any record is published here; what is supplied with
+        an engagement, and to whom, is set in its terms.
       </p>
 
       <p class="body muted note">
@@ -211,10 +216,11 @@ const audiences = [
   <!-- WHO VERIFIES -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Three audiences. <em>One verify path.</em></h2>
+      <h2 class="h2">Who can check a record, <em>where the terms provide for it.</em></h2>
       <p class="lede muted">
-        The same bundle. The same command. The same answer in three places
-        that would otherwise have to trust each other.
+        The same record and the same command give the same answer wherever
+        they are run. Whether a record, the verifier and its trust material
+        are supplied to a given recipient is set in the engagement terms.
       </p>
 
       <ul class="audiences" role="list">

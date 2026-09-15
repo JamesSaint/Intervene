@@ -95,6 +95,29 @@ test.describe('validation and signing claims', () => {
     expect(text).not.toMatch(/Big-4/);
   });
 
+  test('authority and issuance are stated as commitments, not as an operational role structure', async ({ page }) => {
+    for (const route of ['/', '/agda/', '/services/', '/verify/']) {
+      await page.goto(route);
+      const text = await page.locator('main').innerText();
+      expect(text, route).not.toMatch(/Assessment Lead|Technical Assessment Lead|approved assessor|Authorised Reviewer/);
+      expect(text, route).not.toMatch(/reviewed for compliance with the AGDA™ methodology/);
+    }
+    await page.goto('/services/');
+    const services = await page.locator('main').innerText();
+    expect(services).toMatch(/Intervene retains Assessment Authority/);
+    expect(services).toMatch(/not issued on the assessor's own approval/);
+    expect(services).toMatch(/A signed record is not by itself an issued assessment/);
+  });
+
+  test('distribution of records, verifier and trust material is set in the terms, not promised', async ({ page }) => {
+    for (const route of ['/verify/', '/services/', '/methodology/']) {
+      await page.goto(route);
+      const text = await page.locator('main').innerText();
+      expect(text, route).toMatch(/set in the engagement terms|set in its terms/);
+      expect(text, route).not.toMatch(/ships? with the verifier|Take the record from the supervised entity|delivered with an engagement/);
+    }
+  });
+
   test('signing is conditional on every page that mentions it', async ({ page }) => {
     for (const route of ['/', '/agda/', '/services/', '/methodology/', '/intervention-readiness/', '/sample-report/']) {
       await page.goto(route);
