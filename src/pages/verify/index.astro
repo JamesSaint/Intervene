@@ -19,6 +19,7 @@ const notCovered = [
   'Any rendered report layer or narrative. A verifier establishing what was scored relies on the signed input and output hashes, not on the report as displayed.',
 ];
 const notEstablished = [
+  'That the engine was executed, or that its computation was correct. The check compares hashes and a signature; it does not rerun the engine.',
   'That the underlying evidence is true or complete.',
   'That the assessment method is empirically valid. AGDA™ is not validated against real-world outcomes.',
   'That a regulator accepts the conclusion, or that any obligation is met.',
@@ -44,7 +45,7 @@ const bundleFields = [
 ];
 
 const audiences = [
-  { h: 'Audit committee.', p: 'Confirm that the signed SEDI result the chair is being asked to rely on is bound to a specific engine version and a specific set of inputs, using the supplied key and registry material rather than a conversation with Intervene.' },
+  { h: 'Audit committee.', p: 'Confirm that the signed SEDI result the chair is being asked to rely on matches the signed commitments for the stated engine version, input and output, using the supplied key and registry material rather than a conversation with Intervene.' },
   { h: 'Internal audit.',  p: 'Run the packaged agda-verify CLI in your own environment. Compare hashes, manifest and signature against the record. Pass or fail is mechanical.' },
   { h: 'Regulator.',       p: 'Take the record from the supervised entity. Verify in the regulator estate. Independent of any conversation with us or with the entity.' },
 ];
@@ -232,9 +233,12 @@ const audiences = [
     <div class="wrap-narrow">
       <h2 class="h2">What a successful check establishes. <em>And what it does not.</em></h2>
       <p class="body">
-        A successful check provides evidence that the covered records match
-        the signed commitments: the output came from a named engine version
-        and a specific input, and neither has changed since signing.
+        A successful check establishes that the input and output records
+        match the signed commitments associated with the stated engine
+        version, and that neither has changed since signing. It does not
+        independently establish that the engine was executed or that its
+        computation was correct; that would require an engine replay, which
+        is a separate activity.
       </p>
       <span class="mono col-label">Not established by verification</span>
       <ul class="limits" role="list">

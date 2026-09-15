@@ -124,11 +124,13 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
           </p>
           <p class="env-limits">
             On a real signed record, that command checks integrity and
-            authenticity: it confirms the output came from a named engine
-            version and a specific set of inputs, and that neither has changed
-            since signing. It does not establish that the evidence is true,
-            that the method is sound, that anyone independent has validated it,
-            or that a regulator has approved anything. Repeatable computation
+            authenticity: it establishes that the input and output records
+            match the signed commitments associated with the stated engine
+            version, and that neither has changed since signing. It does not
+            independently establish that the engine was executed or that its
+            computation was correct, that the evidence is true, that the
+            method is sound, that anyone independent has validated it, or that
+            a regulator has approved anything. Repeatable computation
             is a separate property: the same inputs return the same computed
             result under the same engine and assessment versions, which follows
             from the engine's rules rather than from the signature.
@@ -203,7 +205,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
 
       <dl class="verdict-row">
         <div><dt>Finding</dt><dd>Structural constraint</dd></div>
-        <div><dt>Route to authority</dt><dd>Cannot complete in window</dd></div>
+        <div><dt>Route to an authorised decision</dt><dd>Cannot complete in window</dd></div>
         <div><dt>Timing</dt><dd>Authority lag above window</dd></div>
         <div><dt>Classification</dt><dd><span class="pill pill-red">RED · constrained</span></dd></div>
       </dl>
@@ -388,9 +390,9 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     <div class="wrap-narrow">
       <h2 class="h2">Assessment authority <em>and limitations.</em></h2>
       <p class="body">
-        In an actual engagement, Intervene Limited issues the assessment
-        conclusion. The client may correct facts, challenge interpretation and
-        provide further evidence. The issued judgement remains Intervene's.
+        In an actual engagement, the assessment conclusion is Intervene
+        Limited's. The client may correct facts, challenge interpretation and
+        provide further evidence. The judgement remains Intervene's.
       </p>
       <p class="body muted">
         Four things are distinct: this illustrative sample; a formally issued

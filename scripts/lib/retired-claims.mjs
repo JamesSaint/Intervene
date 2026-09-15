@@ -66,6 +66,18 @@ export const UNSUPPORTED_CLAIMS = [
   { name: 'positive validation claim', re: /(?<!\bnot )(?<!\bun)(empirically|independently) validated/i },
   { name: 'positive validation claim', re: /calibrated against (outcomes|incidents)/i },
   { name: 'verify without us', re: /verify (it|the verdict) without (contacting )?us/i },
+  // Signature verification compares hashes and a signature. It does not
+  // establish that the engine ran; saying the output "came from" the
+  // engine claims a replay that the verifier does not perform.
+  { name: 'verification proves execution', re: /(output|result|verdict) (came|comes) from (a|the) (named|claimed|specific) engine/i },
+  { name: 'verification proves execution', re: /bound to a specific engine version/i },
+  // The sample's 4 to 96 hour contact interval does not by itself exceed
+  // the six-hour window; the quorum delay does.
+  { name: 'authority overstated', re: /authority cannot be reached/i },
+  // Held for this release: neither a released delivery capability nor an
+  // adopted manual procedure yet supports the sentence. Restore when one
+  // is confirmed (plan D8b / P2).
+  { name: 'timing provenance (held)', re: /records (what|which timings) (is|are) measured/i },
 ];
 
 /**
@@ -83,6 +95,9 @@ export const PERMITTED_FIXTURES = [
   'append-only registry',
   'agda-verify',
   'outcome-validation evidence is unavailable',
+  'match the signed commitments associated with the stated engine version',
+  'It does not independently establish that the engine was executed or that its computation was correct.',
+  'reaching an authority holder may exceed the assumed six-hour window, and the required quorum takes at least seven days',
 ];
 
 /** Sentences that must fail. */
@@ -97,6 +112,9 @@ export const PROHIBITED_FIXTURES = [
   'Verify the verdict without us.',
   'Included with the Annual subscription.',
   '~108k over six-hour window',
+  'it confirms the output came from a named engine version and a specific set of inputs',
+  'authority cannot be reached inside the assumed window',
+  'The assessment records what is measured, what is declared and what is assumed.',
 ];
 
 /**

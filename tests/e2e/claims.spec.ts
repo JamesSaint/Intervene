@@ -34,6 +34,14 @@ test.describe('sample verdict', () => {
     expect(decide).toContain('7 days');
   });
 
+  test('verification limits on the cover match the verify page', async ({ page }) => {
+    await page.goto('/sample-report/');
+    const text = await page.locator('.cover').innerText();
+    expect(text).toMatch(/match the signed commitments associated with the stated engine version/);
+    expect(text).toMatch(/does not independently establish that the engine was executed/);
+    expect(text).not.toMatch(/came from a named engine/);
+  });
+
   test('has no evidence-grade column', async ({ page }) => {
     await page.goto('/sample-report/');
     const headers = await page.locator('table th').allInnerTexts();
@@ -48,6 +56,12 @@ test.describe('validation and signing claims', () => {
     expect(text).toContain('no outcome-validation evidence');
     expect(text).toContain('not validated against real-world outcomes');
     expect(text).not.toContain('Simulator');
+    // Held for this release (plan D8b / P2): restore only with a released
+    // capability or an adopted manual procedure behind it.
+    expect(text).not.toMatch(/records what is measured/);
+    // The sample summary rests on the quorum delay, not on the contact interval.
+    expect(text).toMatch(/may exceed the assumed six-hour window, and the required quorum takes at least seven days/);
+    expect(text).not.toMatch(/cannot be reached inside/);
   });
 
   test('/about/ offers no validation evidence and no universal signing', async ({ page }) => {
@@ -74,6 +88,9 @@ test.describe('validation and signing claims', () => {
     expect(text).toMatch(/audience layer/);
     expect(text).toMatch(/Not established by verification/i);
     expect(text).toMatch(/does not rerun the assessment engine/);
+    expect(text).toMatch(/match the signed commitments associated with the stated engine version/);
+    expect(text).toMatch(/does not independently establish that the engine was executed/);
+    expect(text).not.toMatch(/came from a named engine/);
     expect(text).not.toMatch(/without us/);
     expect(text).not.toMatch(/Big-4/);
   });
