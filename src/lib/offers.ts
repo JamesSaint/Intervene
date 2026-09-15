@@ -81,7 +81,7 @@ export const offers: Offer[] = [
       'SEDI findings and an analysis of the intervention chain.',
       'An Intervention Readiness verdict, its confidence basis and material limitations.',
       'An executive interpretation, priority findings and practical remediation priorities.',
-      'Signed SEDI result records where the agreed scope includes them and the delivery configuration supports them.',
+      'Signed SEDI result records where the agreed scope includes them and the delivery configuration supports them. Which artefacts are supplied, to whom and under what arrangement is set in the engagement terms.',
     ],
     exclusion:
       'Additional systems, pathways or scenarios, enterprise-wide inventory, governance redesign, legal opinion, full regulatory compliance assessment, model validation, penetration or cybersecurity testing, software development, implementation and remediation delivery are separately scoped. It is not regulatory certification.',
