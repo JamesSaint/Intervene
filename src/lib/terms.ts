@@ -33,7 +33,7 @@ export const terms: Term[] = [
     slug: 'agda',
     name: 'AGDA™',
     definition:
-      'A deterministic assessment of Intervention Readiness that evaluates whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible.',
+      "Intervene's proprietary assessment of Intervention Readiness. A full AGDA™ Assessment assesses whether an organisation can detect the need to intervene, escalate appropriately, decide with authority and intervene effectively in a consequential AI-enabled system before the opportunity to do so is lost.",
     path: 'agda/',
     hub: false,
     core: true,
@@ -96,9 +96,9 @@ export const terms: Term[] = [
   },
   {
     slug: 'deterministic-verdict',
-    name: 'Deterministic Verdict',
+    name: 'Repeatable Computation',
     definition:
-      'A result produced by fixed rules applied to evidence, reproducible and independent of assessor opinion.',
+      "With fixed inputs and fixed engine and assessment versions, the AGDA™ engine produces the same computed result. Scenario definition, evidence grading and interpretation remain Intervene's judgement.",
     path: 'glossary/',
     hub: false,
   },
@@ -106,7 +106,7 @@ export const terms: Term[] = [
     slug: 'intervention-capability-assessment',
     name: 'Intervention Capability Assessment',
     definition:
-      'A forward measurement of whether intervention can occur in time; the assessment category AGDA™ defines.',
+      'A forward assessment of whether intervention can occur in time for a named system, pathway and scenario.',
     path: 'glossary/',
     hub: false,
   },

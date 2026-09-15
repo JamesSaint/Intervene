@@ -6,6 +6,7 @@ const cover = [
   { k: 'System',    v: 'CRED-MOD-04 · Retail Credit Decisioning' },
   { k: 'Scenario',  v: 'Macro shock · model drift' },
   { k: 'Sample',    v: 'Constructed example · not a client report' },
+  { k: 'Issued',    v: 'No. Not an issued assessment' },
   { k: 'Signed',    v: 'No. Illustrative metadata only' },
 ];
 
@@ -15,11 +16,11 @@ const systemSpecs = [
   { k: 'Decision authority',   v: 'Approve / decline / refer',         u: 'no human override on auto-decline' },
   { k: 'Volume',               v: '~18,000 / day',                     u: 'UK personal lending' },
   { k: 'Trigger scenario',     v: 'Macro shock + model drift',         u: 'simultaneous' },
-  { k: 'Reversibility window', v: '~6 hours',                          u: 'before regulatory disclosure threshold' },
+  { k: 'Intervention window',  v: '~6 hours',                          u: 'illustrative scenario assumption; operational basis not substantiated' },
 ];
 
 const controls = [
-  { code: 'C-01', name: 'Real-time decision logging',         assessment: 'Production-grade. Stress-validated against 2024 outage. Detection capability strong; surface latency under 90s.',                rag: 'green', terminal: 'GREEN' },
+  { code: 'C-01', name: 'Real-time decision logging',         assessment: 'Production-grade. Timing telemetry from a 2024 outage post-mortem. Detection capability strong; surface latency under 90s.',                rag: 'green', terminal: 'GREEN' },
   { code: 'C-02', name: 'Drift monitoring (PSI / KS)',        assessment: 'Operational in production. Threshold tuning not re-validated since model retrain in 2025-Q3. Confidence constrained under evidence review.',  rag: 'amber', terminal: 'AMBER' },
   { code: 'C-03', name: 'Escalation to MRC',                  assessment: 'Documented in policy. One tabletop in 2024-Q4. Has not run live. Authority pathway terminates at a forum that meets monthly.',     rag: 'red',   terminal: 'RED'   },
   { code: 'C-04', name: 'Halt authority',                     assessment: 'Three named approvers. None authorised to halt unilaterally. Quorum required. No on-call rota. Weekend gap.',                       rag: 'red',   terminal: 'RED'   },
@@ -28,10 +29,10 @@ const controls = [
 ];
 
 const stages = [
-  { stage: 'Detect',       value: '~12 min',  detail: 'to detect drift above threshold',         status: 'pass', verdict: 'PASS · margin 5h 48m' },
-  { stage: 'Escalate',     value: '≥ 7 days', detail: 'to next MRC. No out-of-cycle.',           status: 'fail', verdict: 'FAIL · above window ×28' },
-  { stage: 'Decide',       value: 'N/A',      detail: 'gated upstream. Quorum unavailable.',     status: 'fail', verdict: 'FAIL · capped' },
-  { stage: 'Intervene',    value: 'N/A',      detail: 'no halt authority outside MRC quorum.',   status: 'fail', verdict: 'FAIL · capped' },
+  { stage: 'Detect',       value: '~12 min',       detail: 'to detect drift above threshold. A further ~38 min for the signal to reach a first responder is recorded separately.', status: 'pass', verdict: 'PRESENT' },
+  { stage: 'Escalate',     value: '4 to 96 hours', detail: 'to reach an authority holder. Availability and routing can consume or exceed the window.', status: 'fail', verdict: 'CAN EXCEED WINDOW' },
+  { stage: 'Decide',       value: '≥ 7 days',      detail: 'to obtain the required quorum. No out-of-cycle route. This alone exceeds the assumed window.', status: 'fail', verdict: 'EXCEEDS WINDOW' },
+  { stage: 'Intervene',    value: '~6 min',        detail: 'to propagate a halt if instructed. No in-window reversal on the auto-decline path.', status: 'fail', verdict: 'NO TIMELY AUTHORITY' },
 ];
 
 const gates = [
@@ -43,38 +44,16 @@ const gates = [
   { id: 'G-06', desc: 'Halt instruction propagated to system',    measured: '~6 min (if instructed)', rag: 'green', verdict: 'PASS' },
 ];
 
-const regulatory = [
-  { framework: 'PRA SS1/23', obligation: '§6. Intervention capability proportionate to model materiality', rag: 'red',   status: 'EXPOSED' },
-  { framework: 'PRA SS1/23', obligation: '§4.3. Senior management accountability for model risk',          rag: 'amber', status: 'PARTIAL' },
-  { framework: 'FCA SMCR',   obligation: 'SMF4 / SMF24. Allocation of responsibility for halt authority',  rag: 'red',   status: 'EXPOSED' },
-  { framework: 'EU AI Act',  obligation: 'Art. 14. Human oversight (capability to interrupt)',              rag: 'red',   status: 'EXPOSED' },
-  { framework: 'EU AI Act',  obligation: 'Art. 9. Risk management (residual risk acceptance)',              rag: 'amber', status: 'PARTIAL' },
-  { framework: 'DORA',       obligation: 'Art. 6. ICT risk management framework',                           rag: 'green', status: 'ALIGNED' },
-];
 
-const pressure = [
-  { label: 'PRA SS1/23 §6',         pct: 92, score: 9.2, band: 'red',   text: 'CRITICAL' },
-  { label: 'EU AI Act Art. 14',     pct: 86, score: 8.6, band: 'red',   text: 'CRITICAL' },
-  { label: 'FCA SMCR SMF4 / 24',    pct: 78, score: 7.8, band: 'red',   text: 'HIGH' },
-  { label: 'PRA SS1/23 §4.3',       pct: 54, score: 5.4, band: 'amber', text: 'MODERATE' },
-  { label: 'EU AI Act Art. 9',      pct: 42, score: 4.2, band: 'amber', text: 'MODERATE' },
-  { label: 'DORA Art. 6',           pct: 18, score: 1.8, band: 'amber', text: 'LOW' },
-];
 
-const terminals = [
-  { code: 'T-04', rag: 'red',   nm: 'Authority lag above window.',         p: 'The pathway from detection to halt instruction passes through a forum whose convening cadence exceeds the reversibility window. Cannot be remediated by faster signal.' },
-  { code: 'T-07', rag: 'red',   nm: 'Quorum unavailable on call.',         p: 'Halt authority requires a quorum. No out-of-hours rota exists. No individual is authorised to act unilaterally. Structural, not procedural.' },
-  { code: 'T-09', rag: 'red',   nm: 'Reversibility designed-out.',         p: 'Auto-decline path lacks an in-window reversal mechanism. Intervention is bounded by next-day reprocessing, not real-time correction.' },
-  { code: 'T-02', rag: 'amber', nm: 'Threshold tuning not re-validated.',  p: 'Drift thresholds inherited from prior model version. Acceptable interim. Falls to red if next retrain ships without re-validation.' },
-];
 
 const evidence = [
-  { id: 'E-12', desc: '"On-call halt authority exists." Stated in interview, no document.', type: 'Verbal',      rag: 'red',   grade: 'G0 · Assumed' },
-  { id: 'E-08', desc: 'MRC charter naming halt authority.',                                  type: 'Document',    rag: 'red',   grade: 'G1 · Policy' },
-  { id: 'E-04', desc: 'Tabletop exercise minutes, 2024-Q4.',                                 type: 'Drill',       rag: 'amber', grade: 'G2 · Drill' },
-  { id: 'E-02', desc: 'Production drift monitoring runtime logs (12 months).',               type: 'Operational', rag: 'amber', grade: 'G3 · Production' },
-  { id: 'E-01', desc: '2024 outage post-mortem with timing telemetry.',                      type: 'Stress',      rag: 'green', grade: 'G4 · Stress-validated' },
-  { id: 'E-06', desc: 'Hashed audit log sample, regulator-format export.',                   type: 'Stress',      rag: 'green', grade: 'G4 · Stress-validated' },
+  { id: 'E-12', desc: '"On-call halt authority exists." Stated in interview, no document.', type: 'Verbal',      open: 'A claim requiring corroboration. It does not establish available authority.' },
+  { id: 'E-08', desc: 'MRC charter naming halt authority.',                                  type: 'Document',    open: 'Documented allocation of authority. It does not establish that the required quorum can be reached in time.' },
+  { id: 'E-04', desc: 'Tabletop exercise minutes, 2024-Q4.',                                 type: 'Exercise',    open: 'Evidence of the described exercise only. Not a live event.' },
+  { id: 'E-02', desc: 'Production drift monitoring runtime logs (12 months).',               type: 'Operational', open: 'A source for detection timing, subject to coverage, provenance and scenario relevance.' },
+  { id: 'E-01', desc: '2024 outage post-mortem with timing telemetry.',                      type: 'Incident',    open: 'A source for performance under those conditions. Transfer to the present scenario needs justification.' },
+  { id: 'E-06', desc: 'Hashed audit log sample, regulator-format export.',                   type: 'Record',      open: 'Evidence of recorded activity. It does not establish regulatory acceptance or the integrity of every operational record.' },
 ];
 ---
 
@@ -98,17 +77,19 @@ const evidence = [
             <strong class="finding-lead">Detection works. Authority does not.</strong>
             A drift signal is generated in about twelve minutes, but reaching a
             person who can halt the model takes between four and ninety-six
-            hours, against a reversibility window of about six. The chain cannot
-            complete in time, so the decision this verdict supports is whether
-            halt authority moves before the model carries more exposure, or the
-            model comes out of production until it does.
+            hours, and the required quorum takes at least seven days, against
+            an assumed window of about six hours. The chain cannot complete in
+            time, so the decision this finding supports is whether the affected
+            pathway can continue operating under its present authority
+            arrangements.
           </p>
           <p class="body muted reveal provenance-note">
             This is a constructed example, written to show the shape and
-            structure of an <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> verdict. It uses no client data and
-            describes no real organisation. The identifiers, timings and figures
-            below are illustrative. Nothing on this page is evidence about
-            anyone.
+            structure of a finding from a full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment. It uses
+            no client data and describes no real organisation. It has not been
+            run as an assessment, is not issued and is not signed. The
+            identifiers, timings and evidence descriptions are illustrative.
+            Nothing on this page is evidence about anyone.
           </p>
 
           <dl class="cover-meta">
@@ -121,35 +102,36 @@ const evidence = [
           </dl>
 
           <p class="cover-proof reveal cover-proof-note">
-            A real assessment returns a deterministic verdict and a signed,
-            independently verifiable SEDI bundle. This page carries neither.
+            A full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment issues a verdict with its evidence basis.
+            Signed SEDI result records are supplied where the agreed scope
+            includes them and the delivery configuration supports them. This
+            page carries neither.
             <a href="/verify/" class="link">How verification works</a>.
           </p>
         </div>
 
         <aside class="cover-right reveal" aria-label="Historical attestation summary">
           <span class="env-label mono">Illustrative · shape of an attestation envelope</span>
-          <pre class="envelope"><code>{`sampleStatus       constructed example, not signed
+          <pre class="envelope" tabindex="0" aria-label="Illustrative attestation record"><code>{`sampleStatus       constructed example, not signed
 engineVersion      not applicable
 engineHash         not applicable
 inputHash          not applicable
 outputHash         not applicable
 attestation        none. this page is not signed
-bundleContents     report · attestation · result · input · manifest · verification metadata · history
-productionPath     current format documented at /verify/`}</code></pre>
+signatureCovers    input, output and manifest commitments only. see /verify/`}</code></pre>
           <p class="env-verify mono">
             current verify path · agda-verify --bundle ./bundle.json
           </p>
           <p class="env-limits">
-            On a real bundle, that command checks integrity and authenticity: it
-            confirms the output came from a named engine version and a specific
-            set of inputs, and that neither has changed since signing. It does
-            not establish that the method is sound, that anyone independent has
-            validated it, or that a regulator has approved anything.
-            Repeatability is a separate property: the same inputs return the
-            same verdict under the same engine and catalogue versions, which
-            follows from the engine being deterministic rather than from the
-            signature.
+            On a real signed record, that command checks integrity and
+            authenticity: it confirms the output came from a named engine
+            version and a specific set of inputs, and that neither has changed
+            since signing. It does not establish that the evidence is true,
+            that the method is sound, that anyone independent has validated it,
+            or that a regulator has approved anything. Repeatable computation
+            is a separate property: the same inputs return the same computed
+            result under the same engine and assessment versions, which follows
+            from the engine's rules rather than from the signature.
           </p>
         </aside>
       </div>
@@ -182,19 +164,17 @@ productionPath     current format documented at /verify/`}</code></pre>
     <div class="wrap">
       <h2 class="h2">Intervention Readiness evidence.</h2>
       <p class="lede muted">
-        Six controls assessed against the eight <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> dimensions.
-        The eight dimensions are fixed: the four chain stages, plus the four
-        conditions that determine whether each stage holds. How many controls
-        and how many temporal gates appear depends on the system being
-        assessed, so those counts differ from one engagement to the next.
-        Classification reflects what the control can do under stress, not what
-        the policy promises. Governance is visible; intervention capability is
-        measured.
+        Six controls described in the example. How many controls and how
+        many timing gates appear depends on the system being assessed, so
+        those counts differ from one engagement to the next. Classification
+        reflects what the control can do under pressure, not what the policy
+        promises. This replacement specimen assigns no new numerical scores,
+        evidence grades or technical failure identifiers.
       </p>
 
       <table class="tbl">
         <thead>
-          <tr><th class="col-id">Code</th><th>Control</th><th>Assessment</th><th class="col-tag">Terminal</th></tr>
+          <tr><th class="col-id">Code</th><th>Control</th><th>Assessment</th><th class="col-tag">Classification</th></tr>
         </thead>
         <tbody>
           {controls.map((c) => (
@@ -213,27 +193,28 @@ productionPath     current format documented at /verify/`}</code></pre>
   <!-- 3. ESCALATION VIABILITY -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">The chain breaks <em>at escalation.</em></h2>
+      <h2 class="h2">The chain breaks <em>at authority.</em></h2>
       <p class="lede muted">
-        Detection works. The signal exists. Surface is fast. Audit trail is
-        sound. The break is between detection and authority. The path passes
-        through a forum that meets monthly.
+        Detection is present in the scenario. The break is between detection
+        and authority: reaching an authority holder can take longer than the
+        window, and the quorum that authority requires takes at least seven
+        days.
       </p>
 
       <dl class="verdict-row">
-        <div><dt>Assessment</dt><dd>Structural failure</dd></div>
-        <div><dt>Gate status</dt><dd>Not viable</dd></div>
+        <div><dt>Finding</dt><dd>Structural constraint</dd></div>
+        <div><dt>Route to authority</dt><dd>Cannot complete in window</dd></div>
         <div><dt>Timing</dt><dd>Authority lag above window</dd></div>
-        <div><dt>Terminal</dt><dd><span class="pill pill-red">RED · capped</span></dd></div>
+        <div><dt>Classification</dt><dd><span class="pill pill-red">RED · constrained</span></dd></div>
       </dl>
 
       <p class="body callout-note">
-        <strong>Failure mode FM-12. Authority Lag.</strong> The signal reaches
-        the Model Risk Committee. The Committee meets monthly. The
-        reversibility window for the trigger scenario is approximately six
-        hours. There is no out-of-cycle convening authority. There is no
-        on-call halt authority below MRC level. The pathway from detection to
-        halt cannot complete inside the window.
+        <strong>Authority lag.</strong> The signal reaches the Model Risk
+        Committee. The Committee meets monthly. The window assumed for the
+        trigger scenario is approximately six hours. There is no out-of-cycle
+        convening authority. There is no on-call halt authority below MRC
+        level. The pathway from detection to halt cannot complete inside the
+        window. Faster detection cannot by itself resolve that constraint.
       </p>
     </div>
   </section>
@@ -242,6 +223,12 @@ productionPath     current format documented at /verify/`}</code></pre>
   <section class="block">
     <div class="wrap">
       <h2 class="h2">Stage by stage. Against the clock.</h2>
+      <p class="lede muted">
+        These intervals are separate illustrative facts. They are not added
+        as if they were all measured, sequential durations; their start and
+        end points and any overlap have not been demonstrated. The quorum
+        delay alone is sufficient to support the timing conclusion.
+      </p>
       <ul class="stage-grid" role="list">
         {stages.map((s) => (
           <li>
@@ -260,8 +247,9 @@ productionPath     current format documented at /verify/`}</code></pre>
     <div class="wrap">
       <h2 class="h2">Gate register.</h2>
       <p class="lede muted">
-        Every temporal gate the chain must clear, with the measured value and
-        the verdict against the reversibility window.
+        Every timing gate the chain must clear, with the illustrative value
+        and its position against the assumed window. Values are described in
+        the source example, not measured in an engagement.
       </p>
 
       <table class="tbl">
@@ -285,123 +273,35 @@ productionPath     current format documented at /verify/`}</code></pre>
   <!-- 6. BOARD CONCLUSION -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">What the board <em>needs to act on.</em></h2>
+      <h2 class="h2">The decision <em>the finding supports.</em></h2>
       <p class="lede muted">
         The system is well-instrumented at the technical layer. The authority
-        structure surrounding it cannot exercise control inside the window.
-        This is an Intervention Readiness defect, not a model defect.
+        structure surrounding it cannot exercise control inside the assumed
+        window. This is an Intervention Readiness constraint, not a model
+        defect.
       </p>
 
       <div class="callout">
-        <span class="callout-label">Action required · 30 days</span>
-        <h3 class="h3">Can CRED-MOD-04 be halted within six hours of a material drift event today?</h3>
+        <span class="callout-label">Decision supported</span>
+        <h3 class="h3">Can the affected pathway continue operating under its present authority arrangements?</h3>
         <p class="body">
-          No. The fastest credible halt path under current arrangements is
-          approximately seven days. The Board should be aware that the
-          model's PRA SS1/23 §6 intervention capability rating cannot be
-          supported above amber until the authority structure is restructured
-          to permit out-of-cycle halt.
+          A proposed response is to establish an authorised route capable of
+          acting within the required window, including when the normal
+          decision-makers are unavailable, and to exercise that route before
+          relying on it. Possible remediation priorities:
         </p>
         <ol class="actions">
-          <li><strong>Establish a named on-call halt authority</strong> with unilateral power to suspend CRED-MOD-04 between MRC sittings, with audit trail. <span class="owner">Owner: CRO.</span></li>
-          <li><strong>Re-validate drift threshold tuning</strong> under stress conditions before the next regulatory submission. <span class="owner">Owner: Head of Model Risk.</span></li>
-          <li><strong>Add a reversibility mechanism on the auto-decline path</strong>. Same-day reprocessing rather than next-day. <span class="owner">Owner: COO.</span></li>
-          <li><strong>Re-scope the quorum requirement</strong> for material model halt. Consider standing delegated authority to a single senior named approver. <span class="owner">Owner: Board / Remuneration and Governance Committee.</span></li>
+          <li><strong>Define who may authorise an intervention</strong> and the circumstances in which that authority can be exercised.</li>
+          <li><strong>Establish an available decision route</strong>, including out-of-hours cover and any required delegation.</li>
+          <li><strong>Confirm how a halt, redirection or containment action takes effect</strong> and what happens to decisions already made.</li>
+          <li><strong>Exercise the complete response</strong>, record timing and evidence, then reassess the identified constraint.</li>
         </ol>
+        <p class="body muted callout-foot">
+          These are proposed priorities for the scenario. They do not claim
+          that remediation has been implemented or that it will produce a
+          favourable reassessment.
+        </p>
       </div>
-    </div>
-  </section>
-
-  <!-- 7. REGULATORY MAPPING -->
-  <section class="block">
-    <div class="wrap">
-      <h2 class="h2">Regulatory mapping.</h2>
-      <p class="lede muted">
-        Where each finding sits against article-level obligations. Regulatory
-        emphasis on effective human oversight reinforces the importance of
-        Intervention Readiness; it does not make the verdict a certification.
-      </p>
-
-      <table class="tbl">
-        <thead>
-          <tr><th class="col-id">Framework</th><th>Article / Obligation</th><th class="col-tag">Status</th></tr>
-        </thead>
-        <tbody>
-          {regulatory.map((r) => (
-            <tr>
-              <td class="mono">{r.framework}</td>
-              <td class="cell-body">{r.obligation}</td>
-              <td><span class={`pill pill-${r.rag}`}>{r.status}</span></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- 8. FRAMEWORK PRESSURE -->
-  <section class="block">
-    <div class="wrap">
-      <h2 class="h2">Framework pressure. Where the weight concentrates.</h2>
-
-      <ul class="pressure" role="list">
-        {pressure.map((p) => (
-          <li>
-            <span class="pres-label">{p.label}</span>
-            <span class="pres-track">
-              <span class={`pres-fill pres-${p.band}`} style={`width: ${p.pct}%`}></span>
-            </span>
-            <span class="pres-score mono">{p.score.toFixed(1)}</span>
-            <span class={`pres-band mono band-${p.band}`}>{p.text}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-  <!-- 9. IRREVERSIBILITY -->
-  <section class="block">
-    <div class="wrap">
-      <h2 class="h2">Irreversibility profile.</h2>
-      <p class="lede muted">
-        The cost of failing to intervene, and the cost of intervening
-        incorrectly. Both are bounded. Neither is small.
-      </p>
-
-      <ul class="bignum" role="list">
-        <li>
-          <span class="bignum-label">Time to reversal</span>
-          <span class="bignum-value">~6 hours</span>
-          <p class="body muted">Before disclosure threshold under PRA / FCA notification requirements is crossed. Beyond this, intervention shifts from operational halt to regulatory remediation.</p>
-        </li>
-        <li>
-          <span class="bignum-label">Cost of mis-intervention</span>
-          <span class="bignum-value">£2.4 to 4.1M</span>
-          <p class="body muted">Revenue impact of a 24-hour halt in error during peak season. Material but recoverable. Orders of magnitude below the cost of a non-halt during a true drift event.</p>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 10. CRR TERMINALS -->
-  <section class="block">
-    <div class="wrap">
-      <h2 class="h2">CRR terminals.</h2>
-      <p class="lede muted">
-        Three terminal classifications concentrated on authority. Each
-        explains why the rating cannot be raised by remediation that does not
-        address the underlying authority structure.
-      </p>
-
-      <ul class="terminals" role="list">
-        {terminals.map((t) => (
-          <li>
-            <span class={`mono terminal-code code-${t.rag}`}>{t.code} · {t.rag.toUpperCase()}</span>
-            <h3 class="h3">{t.nm}</h3>
-            <p class="body muted">{t.p}</p>
-          </li>
-        ))}
-      </ul>
     </div>
   </section>
 
@@ -410,13 +310,14 @@ productionPath     current format documented at /verify/`}</code></pre>
     <div class="wrap">
       <h2 class="h2">Evidence register.</h2>
       <p class="lede muted">
-        Lowest-grade evidence in a dimension caps the dimension. Listed in
-        evidence-grade order, lowest first.
+        What each described record supports, and what remains open. These are
+        descriptions within a fictional example, not records inspected in a
+        client engagement.
       </p>
 
       <table class="tbl">
         <thead>
-          <tr><th class="col-id">ID</th><th>Description</th><th class="col-num">Type</th><th class="col-grade">Grade</th></tr>
+          <tr><th class="col-id">ID</th><th>Record described</th><th class="col-num">Type</th><th>What it supports and what remains open</th></tr>
         </thead>
         <tbody>
           {evidence.map((e) => (
@@ -424,7 +325,7 @@ productionPath     current format documented at /verify/`}</code></pre>
               <td class="mono">{e.id}</td>
               <td class="cell-body">{e.desc}</td>
               <td class="mono">{e.type}</td>
-              <td><span class={`pill pill-${e.rag}`}>{e.grade}</span></td>
+              <td class="cell-body">{e.open}</td>
             </tr>
           ))}
         </tbody>
@@ -432,81 +333,71 @@ productionPath     current format documented at /verify/`}</code></pre>
     </div>
   </section>
 
-  <!-- 12. SCENARIO IMPACT -->
+  <!-- 12. EXPOSURE -->
   <section class="block">
-    <div class="wrap">
-      <h2 class="h2">Modelled exposure if the chain does not hold.</h2>
-      <p class="lede muted">
-        Quantified consequence of the trigger scenario reaching the disclosure
-        threshold without intervention. Drawn from the operator's own materiality
-        matrix.
+    <div class="wrap-narrow">
+      <h2 class="h2">Exposure and consequence.</h2>
+      <p class="body">
+        Exposure is not calculated in this example. The stated volume of
+        approximately 18,000 applications per day is throughput, not a count
+        of harmed people or wrong decisions. If applications arrived uniformly,
+        18,000 per day would correspond to 4,500 over six hours; uniform arrival
+        has not been established, and throughput would still not establish the
+        number of incorrect decisions, affected customers or financial losses.
       </p>
-
-      <div class="callout">
-        <span class="callout-label">Trigger scenario · macro shock + drift</span>
-        <h3 class="h3">If detection-to-halt does not complete inside six hours.</h3>
-
-        <ul class="impact" role="list">
-          <li>
-            <span class="impact-label">Decisions exposed</span>
-            <span class="impact-value">~108k</span>
-            <span class="impact-unit mono">over six-hour window</span>
-          </li>
-          <li>
-            <span class="impact-label">Notification trigger</span>
-            <span class="impact-value">PRA / FCA</span>
-            <span class="impact-unit mono">disclosure threshold crossed</span>
-          </li>
-          <li>
-            <span class="impact-label">Estimated remediation cost</span>
-            <span class="impact-value">£14 to 22M</span>
-            <span class="impact-unit mono">three-year horizon</span>
-          </li>
-        </ul>
-      </div>
     </div>
   </section>
 
-  <!-- 13. SYSTEM VIABILITY -->
+  <!-- 13. VERDICT STATE -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">The single-line verdict <em>for the audit committee.</em></h2>
+      <h2 class="h2">The illustrative <em>conclusion.</em></h2>
       <p class="lede muted">
-        The verdict the chair is being asked to rely on. Not a recommendation.
-        A measurement.
+        The state a full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment would report for this scenario.
+        Illustrative, not issued, not signed.
       </p>
 
       <div class="viability">
         <div class="viability-left">
-          <span class="mono viability-label">Verdict · CRED-MOD-04</span>
+          <span class="mono viability-label">Illustrative conclusion · CRED-MOD-04</span>
           <span class="viability-big">After impact.</span>
-          <p class="mono viability-sub">Detect, escalate, decide, intervene does not complete inside the reversibility window.</p>
+          <p class="mono viability-sub">Detect, escalate, decide, intervene does not complete inside the assumed window.</p>
           <p class="body">
-            Detection capability is sound. Authority capability is not. Until
-            the halt-authority structure is restructured to permit
-            out-of-cycle action, PRA SS1/23 §6 intervention capability cannot
-            be supported above amber. Submitting it as evidence of §6
-            compliance would misrepresent the actual capability.
+            The required route to an authorised intervention cannot complete
+            within the assumed six-hour window. Obtaining the required quorum
+            takes at least seven days. Faster detection cannot by itself
+            resolve that constraint.
           </p>
         </div>
         <div class="viability-right">
-          <span class="mono viability-label">Capability rating · 0 to 5</span>
-          <div class="cap-bar">
-            <span class="cap-fill" style="width: 25%"></span>
-          </div>
-          <span class="cap-score">1.25 / 5</span>
+          <span class="mono viability-label">Limits of this example</span>
           <p class="body muted">
-            Driven by chain-ceiling propagation. Detect measures 4.0 but
-            Escalate caps at 1.25, capping all downstream stages. Average is
-            misleading. The chain is the control.
+            One pathway and one scenario. No conclusion about an institution's
+            overall governance, other systems or legal conformity. The
+            six-hour window is a scenario assumption; no operational harm
+            threshold, regulatory breach, financial loss or empirical
+            validation of <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is established.
           </p>
         </div>
       </div>
+    </div>
+  </section>
 
-      <blockquote class="position">
-        A board that cannot intervene is not a safeguard. It is
-        <em>a witness.</em>
-      </blockquote>
+  <!-- 14. AUTHORITY -->
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">Assessment authority <em>and limitations.</em></h2>
+      <p class="body">
+        In an actual engagement, Intervene Limited issues the assessment
+        conclusion. The client may correct facts, challenge interpretation and
+        provide further evidence. The issued judgement remains Intervene's.
+      </p>
+      <p class="body muted">
+        Four things are distinct: this illustrative sample; a formally issued
+        assessment; the authorised human sign-off that issues it; and the
+        cryptographic attestation over specified records, where contracted.
+        This page is only the first.
+      </p>
     </div>
   </section>
 
@@ -517,10 +408,12 @@ productionPath     current format documented at /verify/`}</code></pre>
         <h2 class="h2">Run this <em>against your own system.</em></h2>
         <div class="close-cta">
           <p class="body muted">
-            This page shows the structure of the audit-committee readout. Your
-            engagement receives the current AGDA™ report format, current
-            methodology and the current signed SEDI regulator bundle path,
-            applied to one of your material systems and bound to your evidence.
+            This page shows the shape of a finding. A full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment
+            applies the current methodology to one of your named systems, a
+            defined pathway and a specified scenario, and issues its
+            conclusion under Intervene's authority. Signed SEDI result records
+            are supplied where the agreed scope includes them and the delivery
+            configuration supports them.
           </p>
           <div class="cta-row">
             <a href="/contact/" class="btn">Discuss your system</a>
@@ -690,7 +583,6 @@ productionPath     current format documented at /verify/`}</code></pre>
   .tbl .col-id   { width: 110px; }
   .tbl .col-tag  { width: 140px; }
   .tbl .col-num  { width: 140px; }
-  .tbl .col-grade { width: 180px; }
 
   /* ----- PILLS ----- */
   .pill {
@@ -832,139 +724,6 @@ productionPath     current format documented at /verify/`}</code></pre>
     text-transform: uppercase;
   }
 
-  /* ----- PRESSURE BARS ----- */
-  .pressure {
-    list-style: none;
-    margin: 56px 0 0;
-    padding: 18px 0 0;
-    border-top: 1px solid var(--hair-strong);
-    display: grid;
-    gap: 10px;
-  }
-  .pressure > li {
-    display: grid;
-    grid-template-columns: 220px 1fr 60px 110px;
-    gap: 16px;
-    align-items: center;
-  }
-  .pres-label {
-    font-family: var(--font-sans);
-    font-size: 14px;
-    color: var(--ink);
-  }
-  .pres-track {
-    position: relative;
-    display: block;
-    height: 20px;
-    background: var(--paper-soft);
-  }
-  .pres-fill {
-    position: absolute;
-    inset: 0 auto 0 0;
-    height: 100%;
-  }
-  .pres-red   { background: var(--warn); }
-  .pres-amber { background: var(--hold); }
-  .pres-score { text-align: right; }
-  .pres-band {
-    font-size: 10px;
-    color: var(--ink);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  .band-red { color: var(--warn); }
-
-  /* ----- BIGNUM ----- */
-  .bignum {
-    list-style: none;
-    margin: 56px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--hair);
-    border-top: 1px solid var(--hair-strong);
-    border-bottom: 1px solid var(--hair);
-  }
-  .bignum > li {
-    background: var(--paper-soft);
-    padding: 32px 32px 32px 0;
-    display: grid;
-    gap: 14px;
-    align-content: start;
-  }
-  .bignum > li + li { padding-left: 32px; }
-  .bignum-label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-  .bignum-value {
-    font-family: var(--font-sans);
-    font-weight: 500;
-    font-size: clamp(32px, 4vw, 48px);
-    letter-spacing: -0.025em;
-    color: var(--ink);
-    line-height: 1;
-  }
-  .bignum p { margin: 0; max-width: 36ch; }
-
-  /* ----- TERMINALS ----- */
-  .terminals {
-    list-style: none;
-    margin: 56px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 48px 56px;
-  }
-  .terminals > li { display: grid; gap: 12px; }
-  .terminals p { margin: 0; max-width: 44ch; }
-  .terminal-code { letter-spacing: 0.06em; }
-  .code-red   { color: var(--warn); }
-  .code-amber { color: var(--hold); }
-
-  /* ----- IMPACT (inside callout) ----- */
-  .impact {
-    list-style: none;
-    margin: 28px 0 0;
-    padding-top: 24px;
-    border-top: 1px solid rgba(200,50,42,0.25);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-  }
-  .impact > li {
-    padding: 0 24px 0 0;
-    border-right: 1px solid rgba(200,50,42,0.25);
-    display: grid;
-    gap: 8px;
-    align-content: start;
-  }
-  .impact > li + li { padding-left: 24px; }
-  .impact > li:last-child { border-right: 0; padding-right: 0; }
-  .impact-label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    color: var(--warn);
-    text-transform: uppercase;
-  }
-  .impact-value {
-    font-family: var(--font-sans);
-    font-weight: 500;
-    font-size: clamp(24px, 2.5vw, 32px);
-    letter-spacing: -0.025em;
-    color: var(--ink);
-  }
-  .impact-unit {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.04em;
-  }
-
   /* ----- VIABILITY ----- */
   .viability {
     margin: 56px 0 0;
@@ -1002,39 +761,9 @@ productionPath     current format documented at /verify/`}</code></pre>
     margin: 0 0 24px;
   }
   .viability .body { max-width: 56ch; }
-
-  .cap-bar {
-    position: relative;
-    height: 22px;
-    background: var(--paper-soft);
-    border: 1px solid var(--hair);
-  }
-  .cap-fill {
-    position: absolute;
-    inset: 0 auto 0 0;
-    background: var(--accent);
-  }
-  .cap-score {
-    display: block;
-    margin-top: 12px;
-    font-family: var(--font-sans);
-    font-weight: 500;
-    font-size: 22px;
-    color: var(--ink);
-  }
-  .viability-right .body { margin-top: 16px; }
-
-  .position {
-    margin: 48px 0 0;
-    padding: 32px 0 0;
-    border-top: 1px solid var(--hair);
-    font-family: var(--font-sans);
-    font-size: clamp(22px, 2.2vw, 32px);
-    line-height: 1.35;
-    letter-spacing: -0.015em;
-    font-weight: 400;
-    max-width: 36ch;
-  }
+  .viability-right .body { margin: 0; }
+  .callout-foot { margin-top: 20px; max-width: 64ch; font-size: 14px; }
+  .wrap-narrow .body { max-width: 62ch; margin: 16px 0 0; }
 
   /* ----- CLOSE ----- */
   .close-grid {
@@ -1063,16 +792,6 @@ productionPath     current format documented at /verify/`}</code></pre>
     .cover-right { padding: 24px; }
     .verdict-row { grid-template-columns: 1fr 1fr; }
     .stage-grid { grid-template-columns: 1fr 1fr; }
-    .bignum { grid-template-columns: 1fr; }
-    .bignum > li + li { padding-left: 0; }
-    .terminals { grid-template-columns: 1fr; gap: 40px; }
-    .pressure > li { grid-template-columns: 1fr; gap: 6px; }
-    .pres-track { height: 14px; }
-    .pres-score, .pres-band { text-align: left; }
-    .impact { grid-template-columns: 1fr; gap: 24px; }
-    .impact > li { border-right: 0; border-bottom: 1px solid rgba(200,50,42,0.25); padding: 0 0 16px; }
-    .impact > li + li { padding-left: 0; padding-top: 16px; }
-    .impact > li:last-child { border-bottom: 0; padding-bottom: 0; }
     .viability { grid-template-columns: 1fr; gap: 40px; }
     .close-grid { grid-template-columns: 1fr; gap: 32px; }
     .tbl thead { display: none; }
