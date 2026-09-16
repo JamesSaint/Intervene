@@ -1,0 +1,160 @@
+---
+/**
+ * "Where should we begin?" Two legitimate starting points, drawn in the
+ * methodology page's SEDI language: a rail, numbered nodes, bold labels.
+ * Neither route is a prerequisite for the other; choosing one confirms
+ * nothing about availability or acceptance. Content reads from
+ * src/lib/offers.ts so the diagram cannot drift from the offer sheets.
+ *
+ * `compact` drops the deliverable lists (used above the full sheets on
+ * /services/, where the sheets carry them).
+ */
+import { offers } from '../lib/offers';
+import { markAgda } from '../lib/marks';
+
+interface Props { compact?: boolean; headingLevel?: 'h2' | 'h3' }
+const { compact = false, headingLevel = 'h3' } = Astro.props;
+const [review, assessment] = offers;
+
+const routes = [
+  {
+    o: review,
+    n: 'A',
+    kicker: 'Preliminary',
+    when: 'You need to establish whether this one system carries a material intervention question, and the proposed scope or evidence position needs clarifying before a full assessment is scoped.',
+    output: 'An executive review of the question, the preliminary chain, the evidence position and a scoped recommendation.',
+    receive: ['Executive review: what to assess and why', 'Evidence and access position', 'Scoped recommendation'],
+    boundary: 'Preliminary chain mapping only. The Review does not include the AGDA™ verdict, the SEDI findings or signed SEDI result records.',
+    href: '/services/#review',
+  },
+  {
+    o: assessment,
+    n: 'B',
+    kicker: 'Full assessment',
+    when: 'The named system, pathway and scenario are defined and relevant evidence access is available.',
+    output: 'The full assessment package: an Intervention Readiness verdict with its basis and limitations, and what has to change before the organisation relies on the pathway.',
+    receive: ['Evidence register with provenance and gaps', 'SEDI findings and chain analysis', 'Verdict, confidence basis, limitations', 'Executive interpretation and remediation priorities'],
+    boundary: 'One system, one pathway, one scenario. Connected systems are scoped separately.',
+    href: '/services/#assessment',
+  },
+];
+const H = headingLevel;
+---
+
+<figure class="offer-choice" aria-labelledby="offer-choice-heading">
+  <figcaption class="oc-caption">
+    <span class="label section-kicker">Where should we begin?</span>
+    <H class="h2" id="offer-choice-heading">Two starting points. <em>Neither is a prerequisite for the other.</em></H>
+    <p class="body muted oc-lede">
+      Which route fits depends on how defined the system, pathway and scenario
+      already are, and what evidence you can put in front of an assessor.
+    </p>
+  </figcaption>
+
+  <div class="oc-root" aria-hidden="true">
+    <span class="oc-node"></span>
+    <span class="oc-stem"></span>
+  </div>
+
+  <ol class="oc-routes" role="list">
+    {routes.map(({ o, n, kicker, when, output, receive, boundary, href }) => (
+      <li class="oc-route">
+        <span class="oc-branch" aria-hidden="true"></span>
+        <div class="oc-head">
+          <span class="oc-node" aria-hidden="true"></span>
+          <span class="mono oc-n">Route {n} · {kicker}</span>
+          <span class="oc-name" set:html={markAgda(o.name)} />
+        </div>
+        <dl class="oc-fields">
+          <div>
+            <dt>Appropriate when</dt>
+            <dd>{when}</dd>
+          </div>
+          <div>
+            <dt>What you receive</dt>
+            <dd>
+              <span set:html={markAgda(output)} />
+              {!compact && (
+                <ul class="oc-list" role="list">
+                  {receive.map((r) => <li set:html={markAgda(r)} />)}
+                </ul>
+              )}
+            </dd>
+          </div>
+          <div>
+            <dt>Boundary</dt>
+            <dd set:html={markAgda(boundary)} />
+          </div>
+          <div>
+            <dt>{o.priceNote}</dt>
+            <dd class="oc-price">{o.price}</dd>
+          </div>
+        </dl>
+        <a href={href} class="link oc-link">
+          {n === 'A' ? 'Review in full' : 'Assessment in full'} <span aria-hidden="true">→</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+
+  <p class="body muted oc-foot">
+    Completing a Review does not commit you to a full Assessment and does not
+    predict its result. Choosing a route confirms nothing about availability
+    or acceptance; delivery arrangements and a start date are confirmed
+    before an engagement is accepted.
+  </p>
+</figure>
+
+<style>
+  .offer-choice { margin: 0; }
+  .oc-caption .h2 { max-width: 26ch; margin-top: 12px; }
+  .oc-lede { margin: 16px 0 0; max-width: 60ch; }
+
+  /* Root node and stem, then two branches: the rail language from the
+     methodology page, turned into a fork. */
+  .oc-root { position: relative; height: 56px; margin-top: 40px; display: grid; justify-items: center; }
+  .oc-root .oc-node { position: relative; z-index: 1; }
+  .oc-stem { position: absolute; top: 13px; bottom: 0; left: 50%; width: 1px; background: var(--hair-strong); }
+  .oc-node {
+    display: block; width: 13px; height: 13px; border-radius: 50%;
+    border: 1px solid var(--accent); background: var(--paper);
+  }
+  .oc-routes {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px);
+    position: relative;
+  }
+  /* Horizontal bar joining the two branch tops. */
+  .oc-routes::before {
+    content: ''; position: absolute; top: 0; left: 25%; right: 25%; height: 1px; background: var(--hair-strong);
+  }
+  .oc-route { position: relative; padding-top: 40px; display: grid; gap: 20px; align-content: start; min-width: 0; }
+  .oc-branch { position: absolute; top: 0; left: 50%; width: 1px; height: 40px; background: var(--hair-strong); }
+  .oc-head { display: grid; justify-items: center; gap: 12px; text-align: center; }
+  .oc-head .oc-node { margin-top: -7px; }
+  .oc-n { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  .oc-name { font-family: var(--font-sans); font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+
+  .oc-fields { margin: 8px 0 0; display: grid; gap: 0; border-top: 1px solid var(--hair-strong); }
+  .oc-fields > div { display: grid; gap: 6px; padding: 16px 0; border-bottom: 1px solid var(--hair); }
+  .oc-fields dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+  .oc-fields dd { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--ink); max-width: 46ch; }
+  .oc-fields dd.oc-price { font-size: 20px; font-weight: 700; }
+  .oc-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
+  .oc-list > li { position: relative; padding-left: 18px; color: var(--muted); font-size: 15px; }
+  .oc-list > li::before { content: ''; position: absolute; left: 0; top: 11px; width: 8px; height: 1px; background: var(--accent); }
+  .oc-link { display: inline-block; font-size: 15px; }
+  .oc-foot { margin: 40px 0 0; max-width: 66ch; }
+
+  @media (max-width: 720px) {
+    .oc-root { display: none; }
+    .oc-routes { grid-template-columns: 1fr; gap: 40px; }
+    .oc-routes::before { display: none; }
+    .oc-route { padding-top: 0; }
+    .oc-branch { display: none; }
+    .oc-head { justify-items: start; text-align: left; grid-template-columns: 13px 1fr; column-gap: 14px; align-items: center; }
+    .oc-head .oc-node { margin-top: 0; grid-row: 1 / span 2; }
+    .oc-head .oc-n { grid-column: 2; }
+    .oc-head .oc-name { grid-column: 2; }
+  }
+</style>

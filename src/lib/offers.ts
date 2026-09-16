@@ -71,7 +71,7 @@ export const offers: Offer[] = [
     exclusionShort: 'The Review does not include the AGDA™ verdict. It is not a discounted AGDA™ Assessment.',
     decision: 'Whether the selected system carries a material intervention question, and what you would need to assess, and to have access to, before relying on the answer.',
     retain: 'The executive review stands on its own: a stated intervention question for the system, the preliminary chain, the evidence you hold and the gaps, and a scoped recommendation. It supports prioritisation and budget decisions whether or not a full Assessment follows.',
-    suitable: 'Start here when the system is newly identified, the evidence position is unclear, or several systems compete for attention. Where the system, pathway and scenario are already defined and evidence access is available, discuss a full Assessment directly.',
+    suitable: 'Start here when the system is newly identified, the evidence position is unclear, or you need a documented basis for deciding whether this one system warrants a full Assessment. Where the system, pathway and scenario are already defined and evidence access is available, discuss a full Assessment directly.',
     timing: 'Scope, access and timing are agreed in the proposal.',
     price: '£20,000 to £35,000 + VAT',
     priceNote: 'Indicative fee',

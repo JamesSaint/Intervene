@@ -1,0 +1,116 @@
+---
+/**
+ * "What prevents intervention in this example?" The constructed
+ * retail-credit finding drawn as a SEDI stage diagram: four nodes on a
+ * rail, each stage's illustrative interval, and how it stands against
+ * the assumed six-hour window. Intervals are shown as labelled facts,
+ * not as proportional or consecutive blocks: their endpoints and any
+ * overlap have not been established, and no total is computed.
+ *
+ * Facts are the corrected sample's own (src/pages/sample-report). Nothing
+ * is added: no score, no exposure figure, no evidence grade.
+ */
+const WINDOW = 'about six hours';
+
+const stages = [
+  { n: '01', name: 'Detect',    value: '~12 min',        note: 'Drift identified above threshold.',                              rel: 'within',  relText: 'Within the window' },
+  { n: '02', name: 'Escalate',  value: '4 to 96 hours',  note: 'To reach a person with authority to halt.',                    rel: 'may',     relText: 'May consume or exceed the window' },
+  { n: '03', name: 'Decide',    value: '≥ 7 days',       note: 'To obtain the quorum that person needs. No out-of-cycle route.', rel: 'exceeds', relText: 'Exceeds the window on its own' },
+  { n: '04', name: 'Intervene', value: '~6 min',         note: 'To propagate a halt, if instructed. Decisions already made are reprocessed next day.', rel: 'after', relText: 'Cannot recover the delay above' },
+];
+---
+
+<figure class="finding-chain" aria-labelledby="finding-chain-heading" aria-describedby="finding-chain-note">
+  <figcaption class="fc-caption">
+    <h3 class="h3" id="finding-chain-heading">What prevents intervention in this example.</h3>
+    <p class="body muted fc-window">
+      <span class="mono fc-window-label">Assumed window</span>
+      <strong>{WINDOW}</strong>, held as a scenario assumption. Each stage below is
+      compared with that window on its own.
+    </p>
+  </figcaption>
+
+  <div class="fc-rail" aria-hidden="true"></div>
+  <ol class="fc-stages" role="list">
+    {stages.map((s) => (
+      <li class={`fc-stage fc-${s.rel}`}>
+        <span class="fc-node" aria-hidden="true"></span>
+        <span class="mono fc-n">{s.n} {s.name}</span>
+        <span class="fc-value">{s.value}</span>
+        <span class="fc-rel">
+          <span class="fc-mark" aria-hidden="true"></span>
+          {s.relText}
+        </span>
+        <span class="fc-note">{s.note}</span>
+      </li>
+    ))}
+  </ol>
+
+  <p class="fc-result">
+    <span class="mono fc-result-label">Limiting dependency</span>
+    Authority, not detection. The route to a person with authority may itself
+    exceed the window, and the quorum that person needs exceeds it on its own.
+    Faster detection cannot change that.
+  </p>
+
+  <p class="fc-footnote" id="finding-chain-note">
+    Constructed illustration, not a client result, an issued assessment or a
+    verified outcome. Intervals are separate illustrative facts, not to scale
+    and not added together; their start points, end points and any overlap
+    have not been established, and no total response time is computed.
+  </p>
+</figure>
+
+<style>
+  .finding-chain { margin: 48px 0 0; }
+  .fc-caption .h3 { margin: 0; max-width: 30ch; }
+  .fc-window { margin: 12px 0 0; max-width: 60ch; }
+  .fc-window-label {
+    display: inline-block; margin-right: 10px; font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  .fc-window strong { color: var(--ink); font-weight: 700; }
+
+  .fc-rail { height: 1px; background: var(--hair-strong); margin: 40px 0 -7px; }
+  .fc-stages {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 28px;
+    position: relative; z-index: 1;
+  }
+  .fc-stage { display: grid; gap: 8px; align-content: start; }
+  .fc-node {
+    display: block; width: 13px; height: 13px; border-radius: 50%;
+    border: 1px solid var(--accent); background: var(--paper-soft);
+  }
+  /* The limiting stage is the one filled node: shape carries the meaning,
+     the text beside it says it in words. */
+  .fc-exceeds .fc-node { background: var(--accent); }
+  .fc-n { margin-top: 12px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  .fc-value { font-family: var(--font-sans); font-size: clamp(22px, 2.2vw, 28px); font-weight: 700; color: var(--ink); letter-spacing: -0.01em; line-height: 1.1; }
+  .fc-rel { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .fc-mark { display: inline-block; width: 10px; height: 10px; border: 1px solid var(--muted); flex: none; }
+  .fc-within .fc-mark { border-radius: 50%; }
+  .fc-may .fc-mark { background: linear-gradient(135deg, transparent 50%, var(--muted) 50%); }
+  .fc-exceeds .fc-mark { background: var(--muted); }
+  .fc-after .fc-mark { border-style: dashed; }
+  .fc-exceeds .fc-rel { color: var(--ink); }
+  .fc-exceeds .fc-mark { background: var(--ink); border-color: var(--ink); }
+  .fc-note { font-family: var(--font-sans); font-size: 14px; line-height: 1.55; color: var(--muted); max-width: 30ch; }
+
+  .fc-result {
+    margin: 40px 0 0; padding: 20px 0 0 24px; border-left: 2px solid var(--accent);
+    font-family: var(--font-sans); font-size: 17px; line-height: 1.6; color: var(--ink); max-width: 60ch;
+  }
+  .fc-result-label { display: block; margin-bottom: 8px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+  .fc-footnote { margin: 24px 0 0; font-size: 14px; line-height: 1.6; color: var(--faint); max-width: 66ch; }
+
+  @media (max-width: 720px) {
+    .fc-rail { display: none; }
+    .fc-stages { grid-template-columns: 1fr; gap: 24px; }
+    .fc-stage { grid-template-columns: 13px 1fr; column-gap: 16px; align-items: start; }
+    .fc-node { grid-row: 1 / span 4; margin-top: 4px; }
+    .fc-n { margin-top: 0; }
+    .fc-note { max-width: none; }
+    .fc-result { padding-left: 16px; }
+  }
+</style>
