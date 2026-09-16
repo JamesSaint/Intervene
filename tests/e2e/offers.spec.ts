@@ -97,3 +97,71 @@ test.describe('navigation', () => {
     await expect(page.locator('#takeover-menu a[href="/services/"]')).toHaveAttribute('aria-current', 'page');
   });
 });
+
+test.describe('buyer journey pass', () => {
+  test('homepage carries no attestation specimen and one constructed finding', async ({ page }) => {
+    await page.goto('/');
+    const text = await page.locator('main').innerText();
+    expect(text).not.toMatch(/engineHash|manifestHash|keyId|scoredAt/);
+    expect(text).toMatch(/constructed illustration/i);
+    expect(text).toMatch(/4 to 96 hours|four and ninety-six hours/);
+    expect(text).toMatch(/≥ 7 days|at least seven days/);
+    expect(text).toMatch(/not an issued assessment or a verified outcome/);
+    // The fourth stage carries no assessed duration in the illustration.
+    const chain = await page.locator('.finding-chain').innerText();
+    expect(chain).toMatch(/Not assessed/);
+    expect(chain).not.toMatch(/Cannot recover/);
+    expect(chain).toMatch(/not to scale and not added together/);
+    // The fork never makes the Review compulsory or predictive.
+    const fork = await page.locator('.offer-choice').innerText();
+    expect(fork).toMatch(/Neither is a prerequisite/);
+    expect(fork).toMatch(/does not commit you to one or determine its verdict/);
+    expect(fork).not.toMatch(/confirms nothing|predicts nothing/);
+    const finding = await page.locator('.finding-block').innerText();
+    expect(finding).not.toMatch(/£|\/ 5|108k|EXPOSED/);
+  });
+
+  test('the Review states its own decision and what the client keeps', async ({ page }) => {
+    for (const route of ['/', '/services/']) {
+      await page.goto(route);
+      const text = await page.locator('main').innerText();
+      expect(text, route).toMatch(/material intervention question/);
+      expect(text, route).toMatch(/does not include the AGDA™ verdict/);
+    }
+    await page.goto('/services/');
+    // The compact fork above the sheets carries no prices or deliverables.
+    const compact = await page.locator('.choose .offer-choice').innerText();
+    expect(compact).not.toMatch(/£|What you receive|Boundary/);
+    expect(compact).toMatch(/Appropriate when/i);
+    const review = await page.locator('#review').innerText();
+    expect(review).toMatch(/What it decides/i);
+    expect(review).toMatch(/What you keep/i);
+    expect(review).toMatch(/Start here when/i);
+  });
+
+  test('the primary action clears the consent banner on first load', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForTimeout(500);
+    const clear = await page.evaluate(() => {
+      const cta = document.querySelector('.hero .btn')!.getBoundingClientRect();
+      const banner = document.querySelector('.consent')!.getBoundingClientRect();
+      return cta.bottom < banner.top;
+    });
+    expect(clear).toBe(true);
+  });
+
+  test('quick navigation shows on desktop only and is keyboard reachable', async ({ page, isMobile }) => {
+    await page.goto('/');
+    const nav = page.locator('.quick-nav');
+    if (isMobile) {
+      await expect(nav).toBeHidden();
+    } else {
+      await expect(nav).toBeVisible();
+      await expect(nav.locator('a')).toHaveCount(3);
+      await page.keyboard.press('Tab'); // skip link
+      await page.keyboard.press('Tab'); // logo
+      await page.keyboard.press('Tab');
+      await expect(nav.locator('a').first()).toBeFocused();
+    }
+  });
+});

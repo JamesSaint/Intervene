@@ -51,7 +51,15 @@ for (const route of CHANGED) {
     await expect(page.locator('h1')).toHaveCount(1);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
     expect(overflow, 'horizontal scroll').toBe(false);
-    const results = await new AxeBuilder({ page }).disableRules(['color-contrast']).analyze();
+    // Dismiss the consent overlay and settle the reveal transitions before
+    // axe measures contrast, otherwise it reads text through the banner or
+    // mid-fade. The banner's own contrast is checked on /contact/, where it
+    // does not overlap page copy at the tested viewports.
+    await page.locator('.consent [data-consent="denied"]').click({ timeout: 2000 }).catch(() => {});
+    await page.evaluate(() => document.querySelectorAll('.reveal, .dim-grid, .window-grid').forEach((e) => e.classList.add('in')));
+    // The longest staged reveal (EvidenceCap) settles at about 1.2s.
+    await page.waitForTimeout(1500);
+    const results = await new AxeBuilder({ page }).analyze();
     const serious = results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
     expect(serious.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([]);
   });
