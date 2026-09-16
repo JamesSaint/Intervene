@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { offers, PRICE_QUALIFIER, RECORDS_NOTE, SELF_APPROVAL } from '../../src/lib/offers';
+import { offers, PRICE_QUALIFIER, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../src/lib/offers';
 import { terms } from '../../src/lib/terms';
 
 /**
@@ -19,8 +19,15 @@ describe('llms.txt mirrors the offers', () => {
     });
   }
 
-  it('carries the price qualifier', () => {
+  it('carries the price qualifier and the availability wording', () => {
     expect(llms).toContain(PRICE_QUALIFIER);
+    expect(llms).toContain(AVAILABILITY);
+    expect(llms).not.toMatch(/available now|accepted now|immediately available/i);
+  });
+
+  it('qualifies the four-week figure as an estimated duration once an engagement begins', () => {
+    expect(offers[1].timing).toMatch(/^Once an engagement begins/);
+    expect(offers[1].timing).toMatch(/estimated/);
   });
 
   it('mirrors the records note and the issuance requirement', () => {
