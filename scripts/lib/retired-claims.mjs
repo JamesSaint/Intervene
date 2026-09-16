@@ -78,17 +78,91 @@ export const UNSUPPORTED_CLAIMS = [
   // adopted manual procedure yet supports the sentence. Restore when one
   // is confirmed (plan D8b / P2).
   { name: 'timing provenance (held)', re: /records (what|which timings) (is|are) measured/i },
-  // Operating model (reconciliation r2). Named delivery roles and the
-  // review-before-issue process are the target model, not evidenced
-  // capability; they are not described as operational in public copy.
-  { name: 'role structure presented as operational', re: /Intervene appoints an? (Assessment|Technical Assessment) Lead/i },
-  { name: 'review process presented as operational', re: /reviewed for compliance with the AGDA™ methodology before authorised issuance/i },
-  { name: 'approved assessor presented as operational', re: /performed by an approved assessor/i },
-  // Output access is undecided: distribution of records, verifier and
-  // trust material is set in the engagement terms, not promised here.
-  { name: 'distribution promised', re: /(ships?|shipped|delivered) with (the verifier|an engagement)/i },
+  // Held claims (reconciliation r2/r3). Each is accurate target-state
+  // language that would be permitted once the named condition is met.
+  // `held` records why it is held now, what would permit it and what to
+  // update then. These are not permanent prohibitions.
+  {
+    name: 'role structure presented as operational',
+    re: /Intervene appoints an? (Assessment|Technical Assessment) Lead/i,
+    held: {
+      why: 'Revised strategy §4 and §5 define roles as the target operating model; no appointment is recorded (§10 authorisation register does not yet exist).',
+      permitWhen: 'Recorded appointments exist under the §10 authorisation framework for the roles named.',
+      update: 'Remove this entry and its PROHIBITED fixture; add the appointed-role sentence to PERMITTED_FIXTURES.',
+    },
+  },
+  {
+    name: 'review process presented as operational',
+    re: /reviewed for compliance with the AGDA™ methodology before authorised issuance/i,
+    held: {
+      why: 'Revised strategy §11: use this as current-tense public copy only when the process and authorised roles are operational. No Authorised Reviewer is appointed; no controlled issuance process is released.',
+      permitWhen: 'At least one Authorised Reviewer is appointed under §10, the P3 review rule is adopted, and issuance runs through the controlled AGDA™ process (§5 rule 7, D6) or an explicitly approved transitional arrangement (§9).',
+      update: 'Remove this entry and the next; move the preferred description to PERMITTED_FIXTURES; update tests/e2e/claims.spec.ts "authority and issuance" test.',
+    },
+  },
+  {
+    name: 'approved assessor presented as operational',
+    re: /performed by an approved assessor/i,
+    held: {
+      why: 'As above (§11). No Approved Assessor appointment is recorded.',
+      permitWhen: 'As above.',
+      update: 'As above.',
+    },
+  },
+  {
+    name: 'founder-independent delivery presented as current',
+    re: /delivery does not depend on any named (external )?individual/i,
+    held: {
+      why: 'Revised strategy §1 and §12 make delivery without James or Jo a target with an operational acceptance test still to be met.',
+      permitWhen: 'The §12 acceptance test has been passed: an ordinary assessment sold, delivered, reviewed and issued with both unavailable, using authorised people and documented procedures.',
+      update: 'Remove this entry and its PROHIBITED fixture.',
+    },
+  },
+  {
+    name: 'self-approval prohibition presented as an operating process',
+    re: /assessment is not issued on the assessor'?s own approval/i,
+    held: {
+      why: 'The prohibition is a strategic issuance requirement (§5 rule 4). Stating it in the present tense as what happens implies an operating review process. The requirement form ("Issuance requires approval separate from the assessor\'s own judgement.") is permitted.',
+      permitWhen: 'As for "review process presented as operational".',
+      update: 'Remove this entry; keep SELF_APPROVAL in offers.ts or replace with the preferred §11 description.',
+    },
+  },
+  // Output access (OD-1). The strategy §8 does not approve routine
+  // disclosure of the bundle. Until an output-access policy is approved,
+  // no page promises that records, the verifier or trust material are
+  // supplied; engagement terms cannot substitute for the policy.
+  {
+    name: 'distribution promised',
+    re: /(ships?|shipped|delivered) with (the verifier|an engagement)/i,
+    held: {
+      why: 'Revised strategy §8: output disclosure is a separate, unapproved decision.',
+      permitWhen: 'An output-access policy is approved that permits the artefact and recipient class in question.',
+      update: 'Narrow or remove this entry to match the approved policy.',
+    },
+  },
   { name: 'distribution promised', re: /take the (bundle|record) from the supervised entity/i },
+  {
+    name: 'records promised as a deliverable',
+    re: /signed SEDI result records (form part of|are supplied|accompany|are included in) the (agreed )?(outputs|assessment|package)/i,
+    held: {
+      why: 'A conditional promise of distribution is still a promise; §8 approves no disclosure arrangement.',
+      permitWhen: 'An approved output-access policy exists and the engagement-terms template selects an arrangement it permits.',
+      update: 'Replace RECORDS_NOTE in offers.ts with the permitted deliverable wording; remove this entry.',
+    },
+  },
+  {
+    name: 'terms substituted for policy',
+    re: /(?<!arrangement and )(?<!arrangement, and )(is|are) set in the engagement terms/i,
+    held: {
+      why: 'Engagement terms select an arrangement within a policy; they do not substitute for the unresolved output-access policy.',
+      permitWhen: 'The output-access policy is approved; the sentence may then read "set in the engagement terms".',
+      update: 'Remove this entry.',
+    },
+  },
 ];
+
+/** Held claims with their restoration conditions, for the decision sheet. */
+export const HELD_CLAIMS = UNSUPPORTED_CLAIMS.filter((c) => c.held);
 
 /**
  * Sentences that must pass. The unit test asserts each of these produces
@@ -108,9 +182,10 @@ export const PERMITTED_FIXTURES = [
   'match the signed commitments associated with the stated engine version',
   'It does not independently establish that the engine was executed or that its computation was correct.',
   'reaching an authority holder may exceed the assumed six-hour window, and the required quorum takes at least seven days',
-  'An assessment is not issued on the assessor\'s own approval.',
+  "Issuance requires approval separate from the assessor's own judgement.",
   'A signed record is not by itself an issued assessment.',
-  'Which artefacts are supplied, to whom and under what arrangement is set in the engagement terms.',
+  'Signed SEDI result records are not a standard deliverable. They may be supplied only under an approved output-access arrangement, where the engagement terms provide for them and the delivery configuration supports them.',
+  'Which artefacts are supplied, to whom and under what arrangement requires an approved output-access arrangement and is set in the engagement terms.',
   'Intervene retains Assessment Authority',
 ];
 
@@ -133,6 +208,10 @@ export const PROHIBITED_FIXTURES = [
   'Assessment performed by an approved assessor and reviewed for compliance with the AGDA™ methodology before authorised issuance.',
   'Public keys ship with the verifier package.',
   'Take the record from the supervised entity.',
+  'Delivery does not depend on any named individual.',
+  'An assessment is not issued on the assessor\'s own approval.',
+  'Signed SEDI result records form part of the agreed outputs where the agreed scope includes them.',
+  'Which artefacts are supplied, to whom and under what arrangement is set in the engagement terms.',
 ];
 
 /**

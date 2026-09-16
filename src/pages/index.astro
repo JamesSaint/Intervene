@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import VerdictBlock from '../components/VerdictBlock.astro';
-import { offers, PRICE_QUALIFIER } from '../lib/offers';
+import { offers, PRICE_QUALIFIER, RECORDS_NOTE, SELF_APPROVAL } from '../lib/offers';
 
 /* Three situations in which the intervention question stops being
    theoretical. They describe the same buyer as the offer sheets on
@@ -244,13 +244,9 @@ const chain = [
         The assessment identifies the limiting parts of the intervention chain
         and explains the evidence and assumptions behind the result. Intervene
         retains responsibility for the conclusion. Clients can correct facts,
-        challenge interpretation and provide further evidence. An assessment
-        is not issued on the assessor's own approval. Signed SEDI result
-        records, where the agreed scope includes them and the delivery
-        configuration supports them, can be checked against the signed
-        commitments; those checks establish the integrity of the covered
-        records, not the truth of the evidence. Which artefacts are supplied,
-        and to whom, is set in the engagement terms.
+        challenge interpretation and provide further evidence. {SELF_APPROVAL}
+        {RECORDS_NOTE} Where they are supplied, a check establishes the
+        integrity of the covered records, not the truth of the evidence.
         <a href="/verify/" class="link">What verification establishes</a>.
       </p>
 

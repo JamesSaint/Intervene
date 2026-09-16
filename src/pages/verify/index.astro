@@ -62,10 +62,10 @@ const audiences = [
         What the signature covers. <em>What it does not.</em>
       </h1>
       <p class="lede muted reveal">
-        Where signed SEDI result records are within the agreed scope and
-        supported by the delivery configuration, this page explains how a
-        check works. Which artefacts are supplied, to whom and under what
-        arrangement is set in the engagement terms. The
+        This page explains how a check of a signed SEDI result record works.
+        Signed records are not a standard deliverable: which artefacts are
+        supplied, to whom and under what arrangement requires an approved
+        output-access arrangement and is set in the engagement terms. The
         <span class="mono">agda-verify</span> command runs locally under
         Node.js 18+ and never contacts Intervene infrastructure. A signed
         record is not by itself an issued assessment.
@@ -101,8 +101,8 @@ const audiences = [
         A signed record commits to the attestation envelope, the signed
         result, the exact input that was hashed and the resolved manifest.
         Which of these artefacts are supplied, to whom and under what
-        arrangement is set in the engagement terms. The fields below are the
-        envelope.
+        arrangement requires an approved output-access arrangement and is
+        set in the engagement terms. The fields below are the envelope.
       </p>
 
       <span class="env-example mono">Example envelope · illustrative values</span>
@@ -158,8 +158,9 @@ const audiences = [
 
       <p class="body muted note">
         The transcript above shows what a successful check prints. Neither
-        the verifier nor any record is published here; what is supplied with
-        an engagement, and to whom, is set in its terms.
+        the verifier nor any record is published here. What is supplied with
+        an engagement, and to whom, requires an approved output-access
+        arrangement and is set in the engagement terms.
       </p>
 
       <p class="body muted note">
@@ -220,7 +221,8 @@ const audiences = [
       <p class="lede muted">
         The same record and the same command give the same answer wherever
         they are run. Whether a record, the verifier and its trust material
-        are supplied to a given recipient is set in the engagement terms.
+        are supplied to a given recipient requires an approved output-access
+        arrangement and is set in the engagement terms.
       </p>
 
       <ul class="audiences" role="list">
