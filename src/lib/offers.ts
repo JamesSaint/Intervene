@@ -10,11 +10,11 @@
 // structured data, so the Offer nodes carry names and descriptions only.
 //
 // Deliverable wording. The evidence register is a strategy-confirmed
-// full-assessment output (§8) and stays in the package. The written
-// delivery procedures behind these deliverables (scope schedule, register
-// template, issue record, package checklist) are drafted in
-// internal/procedures/ and are pending confirmation; see the plan's
-// section 4B. Nothing here says a deliverable is platform-generated.
+// full-assessment output (§8) and stays in the package. Signed SEDI
+// result records are deliberately not in the list: see RECORDS_NOTE.
+// The written delivery procedures behind these deliverables are drafted
+// in internal/procedures/ and are pending confirmation. Nothing here says
+// a deliverable is platform-generated.
 
 export interface Offer {
   slug: 'review' | 'assessment';
@@ -81,7 +81,6 @@ export const offers: Offer[] = [
       'SEDI findings and an analysis of the intervention chain.',
       'An Intervention Readiness verdict, its confidence basis and material limitations.',
       'An executive interpretation, priority findings and practical remediation priorities.',
-      'Signed SEDI result records where the agreed scope includes them and the delivery configuration supports them. Which artefacts are supplied, to whom and under what arrangement is set in the engagement terms.',
     ],
     exclusion:
       'Additional systems, pathways or scenarios, enterprise-wide inventory, governance redesign, legal opinion, full regulatory compliance assessment, model validation, penetration or cybersecurity testing, software development, implementation and remediation delivery are separately scoped. It is not regulatory certification.',
@@ -93,6 +92,20 @@ export const offers: Offer[] = [
       'A formal assessment of Intervention Readiness for one named consequential AI-enabled system, examined through a defined decision or action pathway and a specified intervention scenario. Produces an Intervention Readiness verdict with its evidence basis.',
   },
 ];
+
+/* Verifiable records are not a standard deliverable. The output-access
+   policy (which artefacts may leave Intervene, in what form, to whom) is
+   not yet approved; until it is, the site states the condition and
+   promises no distribution. Rendered beneath the full-assessment
+   deliverables wherever they appear. */
+export const RECORDS_NOTE =
+  'Signed SEDI result records are not a standard deliverable. They may be supplied only under an approved output-access arrangement, where the engagement terms provide for them and the delivery configuration supports them.';
+
+/* Strategic issuance requirement (revised strategy §5, rule 4). Stated as
+   a requirement; the review process that enforces it is not described
+   as operational. */
+export const SELF_APPROVAL =
+  "Issuance requires approval separate from the assessor's own judgement.";
 
 export const review = offers[0];
 export const assessment = offers[1];

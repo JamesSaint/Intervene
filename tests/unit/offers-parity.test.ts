@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { offers, PRICE_QUALIFIER } from '../../src/lib/offers';
+import { offers, PRICE_QUALIFIER, RECORDS_NOTE, SELF_APPROVAL } from '../../src/lib/offers';
 import { terms } from '../../src/lib/terms';
 
 /**
@@ -21,6 +21,12 @@ describe('llms.txt mirrors the offers', () => {
 
   it('carries the price qualifier', () => {
     expect(llms).toContain(PRICE_QUALIFIER);
+  });
+
+  it('mirrors the records note and the issuance requirement', () => {
+    expect(llms).toContain('not a standard deliverable');
+    expect(llms).toContain('approved output-access arrangement');
+    expect(llms).toContain(SELF_APPROVAL);
   });
 
   it('states that the Review does not include the verdict', () => {
@@ -56,8 +62,13 @@ describe('offers are internally consistent', () => {
     expect(offers[1].receive.join(' ')).toMatch(/evidence register/);
   });
 
-  it('signed records are conditional, never standard', () => {
-    const signed = offers[1].receive.find((r) => /Signed SEDI/.test(r))!;
-    expect(signed).toMatch(/where the agreed scope includes them and the delivery configuration supports them/);
+  it('signed records are not listed as a deliverable; the note states the condition', () => {
+    expect(offers[1].receive.find((r) => /Signed SEDI/.test(r))).toBeUndefined();
+    expect(RECORDS_NOTE).toMatch(/not a standard deliverable/);
+    expect(RECORDS_NOTE).toMatch(/approved output-access arrangement/);
+  });
+
+  it('self-approval is stated as an issuance requirement, not an operational process', () => {
+    expect(SELF_APPROVAL).toBe("Issuance requires approval separate from the assessor's own judgement.");
   });
 });
