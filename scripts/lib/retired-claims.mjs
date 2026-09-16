@@ -150,6 +150,18 @@ export const UNSUPPORTED_CLAIMS = [
       update: 'Replace RECORDS_NOTE in offers.ts with the permitted deliverable wording; remove this entry.',
     },
   },
+  // Enquiry-led publication: no engagement is described as immediately
+  // available; delivery arrangements and a start date are confirmed before
+  // acceptance. Held until the relevant procedures are adopted and staffed.
+  {
+    name: 'immediate availability implied',
+    re: /\b(available now|accepted now|immediately available|start immediately|begin immediately)\b/i,
+    held: {
+      why: 'Neither engagement has confirmed preparation, review, release or staffing arrangements (P1 to P5 unadopted; no appointments).',
+      permitWhen: 'The relevant procedures are adopted and the roles they need are appointed for the engagement type in question.',
+      update: 'Remove this entry; add the availability sentence then in use to PERMITTED_FIXTURES.',
+    },
+  },
   {
     name: 'terms substituted for policy',
     re: /(?<!arrangement and )(?<!arrangement, and )(is|are) set in the engagement terms/i,
@@ -187,6 +199,8 @@ export const PERMITTED_FIXTURES = [
   'Signed SEDI result records are not a standard deliverable. They may be supplied only under an approved output-access arrangement, where the engagement terms provide for them and the delivery configuration supports them.',
   'Which artefacts are supplied, to whom and under what arrangement requires an approved output-access arrangement and is set in the engagement terms.',
   'Intervene retains Assessment Authority',
+  'Contact us to discuss scope and availability. We confirm delivery arrangements and a start date before accepting an engagement.',
+  'Once an engagement begins, a standard assessment is estimated to run over approximately four weeks',
 ];
 
 /** Sentences that must fail. */
@@ -212,6 +226,7 @@ export const PROHIBITED_FIXTURES = [
   'An assessment is not issued on the assessor\'s own approval.',
   'Signed SEDI result records form part of the agreed outputs where the agreed scope includes them.',
   'Which artefacts are supplied, to whom and under what arrangement is set in the engagement terms.',
+  'The Intervention Readiness Review is available now.',
 ];
 
 /**

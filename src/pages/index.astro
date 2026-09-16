@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import VerdictBlock from '../components/VerdictBlock.astro';
-import { offers, PRICE_QUALIFIER, RECORDS_NOTE, SELF_APPROVAL } from '../lib/offers';
+import { offers, PRICE_QUALIFIER, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../lib/offers';
 
 /* Three situations in which the intervention question stops being
    theoretical. They describe the same buyer as the offer sheets on
@@ -235,7 +235,7 @@ const chain = [
       </ul>
 
       <p class="engage-terms">
-        {PRICE_QUALIFIER}
+        {PRICE_QUALIFIER} {AVAILABILITY}
         <a href="/services/" class="link">Assessment options in full</a>.
       </p>
 
@@ -254,7 +254,8 @@ const chain = [
         <strong>What happens next.</strong> Tell us the system and the decision
         it supports. The first conversation is twenty minutes at no charge, and
         you receive a direct response within one to two working days. We do not
-        pre-qualify by email questionnaire.
+        pre-qualify by email questionnaire. Scope, delivery arrangements and a
+        start date are confirmed in the proposal.
       </p>
     </div>
   </section>

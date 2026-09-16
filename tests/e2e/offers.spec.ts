@@ -8,7 +8,7 @@
  */
 
 import { test, expect, type Page } from '@playwright/test';
-import { offers, PRICE_QUALIFIER } from '../../src/lib/offers';
+import { offers, PRICE_QUALIFIER, AVAILABILITY } from '../../src/lib/offers';
 
 const RETIRED = ['Short pilot', 'Annual subscription', 'Enterprise master', 'Intervention Simulator', 'regulator bundle', 'Every assessment ships'];
 
@@ -31,6 +31,8 @@ for (const route of ['/', '/services/']) {
         expect(text).toContain(o.price);
       }
       expect(text).toContain(PRICE_QUALIFIER);
+      expect(text).toContain(AVAILABILITY);
+      expect(text).not.toMatch(/available now|accepted now|immediately available/i);
     });
 
     test('the Review says it does not include the verdict', async ({ page }) => {
