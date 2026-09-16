@@ -8,7 +8,7 @@ const faqs = [
   },
   {
     question: 'Is an AGDA™ verdict an audit opinion?',
-    answer: 'No. An audit opinion is a judgement formed by an assessor. An AGDA™ verdict is produced by fixed rules applied to evidence, so it is reproducible and independent of assessor opinion. It is a deterministic verdict, not an opinion.',
+    answer: 'No. An audit opinion attests to the past. An AGDA™ verdict is a forward assessment conclusion for which Intervene retains responsibility: where the engine is used, its computation repeats under fixed inputs and versions, and the judgement behind scope, evidence grading and interpretation is documented rather than removed.',
   },
   {
     question: 'Does passing an audit mean intervention is possible?',
@@ -19,7 +19,7 @@ const faqs = [
 
 <ComparisonLayout
   title="Intervention Readiness vs Audit · Intervene"
-  description="Audit attests to the past. Intervention Readiness states whether intervention can occur. AGDA™ returns a deterministic verdict rather than an opinion."
+  description="Audit attests to the past. Intervention Readiness states whether intervention can occur. AGDA™ returns a forward assessment conclusion with its evidence basis."
   other="Audit"
   ogImage="/assets/og/og-vs-audit.png"
   verdict="Audit attests retrospectively that controls operated. Intervention Readiness states, going forward, whether intervention can occur before harm becomes irreversible."
@@ -27,11 +27,11 @@ const faqs = [
   rows={[
     { aspect: 'Direction', other: 'Retrospective', ir: 'Forward' },
     { aspect: 'Core question', other: 'Did the controls operate as intended?', ir: 'Can intervention occur in time?' },
-    { aspect: 'Output type', other: 'An opinion formed by an assessor', ir: 'A deterministic verdict from fixed rules' },
-    { aspect: 'Reproducibility', other: 'Depends on assessor judgement', ir: 'Reproducible and independent of opinion' },
+    { aspect: 'Output type', other: 'An opinion formed by the auditor', ir: 'An assessment conclusion for which Intervene retains responsibility, with repeatable computation where the engine is used' },
+    { aspect: 'Reproducibility', other: 'Depends on the auditor\'s judgement', ir: 'Computation repeats under fixed inputs and versions; judgement is documented, not removed' },
     { aspect: 'What it cannot tell you', other: 'Whether the next window can be met', ir: 'It answers exactly that' },
   ]}
   relate="Intervention Readiness is a distinct assurance type, not a variant of audit. An audit can confirm a halt control existed and was tested and still leave the central question open: when deviation begins, does the chain complete before the point of irreversibility. Audit looks back at controls. Intervention Readiness looks forward at capability. They answer different questions for different decisions."
-  agda="AGDA™ assesses evidence across detect, escalate, decide and intervene, applies evidence-quality constraints and chain propagation, and returns a deterministic verdict. SEDI regulator bundles are signed and can be verified independently. Because the rules are fixed, the same evidence yields the same verdict regardless of who runs it. That is the difference between a deterministic verdict and an audit opinion."
+  agda="A full AGDA™ Assessment assesses evidence across detect, escalate, decide and intervene, applies evidence-quality constraints and chain propagation, and returns an Intervention Readiness verdict with its evidence basis. Where the engine is used, the same recorded inputs under fixed versions produce the same computed result. Scenario definition, evidence grading and interpretation remain Intervene's judgement, and that judgement is documented so it can be examined. Signed SEDI result records may be supplied only under an approved output-access arrangement, where the engagement terms provide for them and the delivery configuration supports them."
   faqs={faqs}
 />

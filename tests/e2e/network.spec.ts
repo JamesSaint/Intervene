@@ -62,11 +62,14 @@ test.describe('Network page', () => {
     await expect(section).toBeVisible();
     await expect(section.locator('h2')).toContainText('still being defined');
 
-    // Four things, all deliverable at current scale.
-    await expect(section.locator('.rows > div')).toHaveCount(4);
+    // Three things, all deliverable at current scale. The "early sight of
+    // the evidence" row went with the Snapshot: the Intervention Readiness
+    // Index was that instrument's answer set, and there are no findings
+    // to give sight of. Promising them would be a benefit with no basis.
+    await expect(section.locator('.rows > div')).toHaveCount(3);
     const rows = (await section.locator('.rows').innerText()).toLowerCase();
     expect(rows).toContain('chatham house rule');
-    expect(rows).toContain('intervention readiness index');
+    expect(rows).not.toContain('intervention readiness index');
     expect(rows).toContain('judged on quality alone');
 
     // The half that stops it becoming a benefits list.
