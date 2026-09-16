@@ -39,14 +39,14 @@ export interface Offer {
 }
 
 export const PRICE_QUALIFIER =
-  'Initial pricing remains subject to market validation. The specific fee, deliverables and terms are agreed in the proposal.';
+  'Initial pricing remains subject to market validation.';
 
 /* What moves a quoted fee within its range. Shown once beneath the two
    sheets on /services/ and mirrored in llms.txt. Additional systems,
    pathways, scenarios and implementation work are separately scoped;
    that boundary lives in each offer's exclusion row, not here. */
 export const FEE_BASIS =
-  'The final fee reflects the agreed scope and assessment boundary, stakeholder involvement, the evidence position and the depth of investigation required. The proposal confirms the scope, outputs, fee and timetable.';
+  'The final fee reflects the agreed scope and assessment boundary, stakeholder involvement, the evidence position and the depth of investigation required. The proposal confirms the scope, outputs, fee, terms and timetable.';
 
 /* Enquiry-led publication. The site describes the intended offers and
    invites discussion; it does not imply that either engagement is
@@ -169,7 +169,7 @@ export const offerFaqs = [
   {
     question: 'Do we need a Review first?',
     answer:
-      'No. Where the system, the intervention question and the assessment scope are sufficiently clear, and relevant evidence access is available, we can discuss a full AGDA™ Assessment directly. The Review is a separate preliminary engagement for organisations that need to establish those foundations first.',
+      'No. If the system, intervention question and assessment scope are sufficiently clear, and relevant evidence access is available, we can discuss a full AGDA™ Assessment directly. The Review is a separate preliminary engagement for organisations that need to establish those foundations.',
   },
   {
     question: 'Can a client challenge the conclusion?',
