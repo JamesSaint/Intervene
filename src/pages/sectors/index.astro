@@ -8,14 +8,14 @@ const sectors = [
     name: 'UK regulated finance',
     pressure: 'PRA · FCA · SS1/23 · SMCR',
     pressureText: 'SS1/23 sets the expectation that model risk is managed and owned. SMCR names a senior individual accountable for it.',
-    failure: 'The named SMF holds accountability for a model they cannot halt inside the harm window. The chart says control; the live event says otherwise. AGDA™ measures whether intervention remains possible.',
+    failure: 'A named SMF can hold accountability for a model they cannot halt inside the harm window. The chart says control; the live event may say otherwise. AGDA™ assesses whether intervention remains possible.',
   },
   {
     id: 'eu-ai',
     name: 'EU high-risk AI',
     pressure: 'EU AI Act · Article 14',
     pressureText: 'The AI Act requires human oversight of high-risk systems, capable of intervention and of overriding or halting the system.',
-    failure: 'Oversight that is informed after the decision has landed is documentation, not control. AGDA™ measures whether oversight can alter the outcome before the consequence compounds.',
+    failure: 'Oversight that is informed after the decision has landed is documentation, not control. AGDA™ assesses whether oversight can alter the outcome before the consequence compounds.',
   },
   {
     id: 'cni',
@@ -29,7 +29,7 @@ const sectors = [
     name: 'Public services',
     pressure: 'Public law · accountability',
     pressureText: 'Automated decisions at population scale carry duties of fairness, transparency and an effective route to redress.',
-    failure: 'A redress path slower than the harm it is meant to contain is redress in name only. AGDA™ measures whether intervention and correction land before the decision becomes irreversible for the person affected.',
+    failure: 'A redress path slower than the harm it is meant to contain is redress in name only. AGDA™ assesses whether intervention and correction land before the decision becomes irreversible for the person affected.',
   },
 ];
 ---
@@ -76,8 +76,8 @@ const sectors = [
       <h2 class="h2">Is your situation <em>in scope?</em></h2>
       <p class="body muted">
         If your most consequential systems carry regulatory, financial,
-        operational or reputational exposure, the question applies. Evidence
-        comes before any conversation.
+        operational or reputational exposure, the question applies. Tell us
+        the system and the decision it supports.
       </p>
       <div class="cta">
         <a href="/contact/" class="btn">Discuss your system</a>
