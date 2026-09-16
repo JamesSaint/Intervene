@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { markAgda } from '../../lib/marks';
 import { offers, activities, offerFaqs, buyingGroup, PRICE_QUALIFIER, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
+import OfferChoice from '../../components/OfferChoice.astro';
 
 /* Everything commercial on this page reads from src/lib/offers.ts so the
    homepage, this page, the shared FAQ and the Offer schema nodes cannot
@@ -61,11 +62,18 @@ const useCases = [
     </div>
   </section>
 
+  <!-- WHERE TO BEGIN. Compact shared diagram; the sheets below carry the detail. -->
+  <section class="block choose">
+    <div class="wrap">
+      <OfferChoice compact headingLevel="h2" />
+    </div>
+  </section>
+
   <!-- THE TWO OFFERS. Spec sheets, from src/lib/offers.ts. -->
   <section class="block start-here">
     <div class="wrap">
       <span class="label section-kicker">Current engagements</span>
-      <h2 class="h2">Choose the right <em>starting point.</em></h2>
+      <h2 class="h2">The two engagements <em>in full.</em></h2>
 
       <div class="offers">
         {offers.map((o) => (
@@ -167,19 +175,24 @@ const useCases = [
         detailed timetable.
       </p>
 
-      <ol class="stages" role="list">
-        {activities.map((a, i) => (
-          <li class="stage reveal">
-            <div class="stage-head">
+      <figure class="activity-seq" aria-labelledby="activity-seq-heading">
+        <figcaption class="mono seq-caption" id="activity-seq-heading">Four activities, in order. No fixed duration is assigned to any one of them.</figcaption>
+        <div class="seq-rail" aria-hidden="true"></div>
+        <ol class="seq" role="list">
+          {activities.map((a, i) => (
+            <li class="seq-step">
+              <span class="seq-node" aria-hidden="true"></span>
               <span class="mono stage-n">{String(i + 1).padStart(2, '0')}</span>
-              <h3 class="h3">{a.name}.</h3>
-            </div>
-            <div class="stage-body">
+              <h3 class="h3 seq-name">{a.name}.</h3>
               <p class="body muted" set:html={markAgda(a.body)} />
-            </div>
-          </li>
-        ))}
-      </ol>
+            </li>
+          ))}
+        </ol>
+      </figure>
+      <p class="body muted footnote seq-foot">
+        Preparation, approval and issue are distinct. {SELF_APPROVAL} Signed
+        SEDI result records are not a standard deliverable.
+      </p>
     </div>
   </section>
 
@@ -461,7 +474,22 @@ const useCases = [
   .close-cta .body { margin: 0; max-width: 42ch; }
   .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
 
-  /* ----- Engagement stages ----- */
+  /* ----- Where to begin ----- */
+  .choose { border-bottom: 1px solid var(--hair); }
+
+  /* ----- Activity sequence: the SEDI rail, four steps ----- */
+  .activity-seq { margin: 64px 0 0; }
+  .seq-caption { display: block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: 40px; }
+  .seq-rail { height: 1px; background: var(--hair-strong); margin-bottom: -7px; }
+  .seq { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 32px; position: relative; z-index: 1; }
+  .seq-step { display: grid; gap: 10px; align-content: start; }
+  .seq-node { display: block; width: 13px; height: 13px; border-radius: 50%; border: 1px solid var(--accent); background: var(--paper); }
+  .seq-step .stage-n { margin-top: 10px; }
+  .seq-name { margin: 0; font-size: 22px; }
+  .seq-step p { margin: 0; max-width: 32ch; font-size: 15px; }
+  .seq-foot { margin-top: 40px; }
+
+  /* ----- Engagement stages (legacy list styles retained for other uses) ----- */
   .stages { list-style: none; margin: 72px 0 0; padding: 0; display: grid; gap: 40px; }
   .stage {
     padding-top: 32px;
@@ -485,6 +513,12 @@ const useCases = [
     .buyer-grid { grid-template-columns: 1fr; gap: 40px; }
     .control-grid { grid-template-columns: 1fr; gap: 40px; }
     .stage { grid-template-columns: 1fr; gap: 20px; }
+    .seq-rail { display: none; }
+    .seq { grid-template-columns: 1fr; gap: 28px; }
+    .seq-step { grid-template-columns: 13px 1fr; column-gap: 16px; }
+    .seq-node { grid-row: 1 / span 3; margin-top: 6px; }
+    .seq-step .stage-n { margin-top: 0; }
+    .seq-step p { max-width: none; }
     .faq-list > div { grid-template-columns: 1fr; gap: 16px; }
     .close-grid { grid-template-columns: 1fr; gap: 48px; }
   }
