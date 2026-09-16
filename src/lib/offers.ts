@@ -35,6 +35,13 @@ export interface Offer {
 export const PRICE_QUALIFIER =
   'Initial pricing remains subject to market validation. The specific fee, deliverables and terms are agreed in the proposal.';
 
+/* Enquiry-led publication. The site describes the intended offers and
+   invites discussion; it does not imply that either engagement is
+   immediately available. Shown once beside the offers on / and
+   /services/ and mirrored in llms.txt. */
+export const AVAILABILITY =
+  'Contact us to discuss scope and availability. We confirm delivery arrangements and a start date before accepting an engagement.';
+
 export const offers: Offer[] = [
   {
     slug: 'review',
@@ -85,7 +92,7 @@ export const offers: Offer[] = [
     exclusion:
       'Additional systems, pathways or scenarios, enterprise-wide inventory, governance redesign, legal opinion, full regulatory compliance assessment, model validation, penetration or cybersecurity testing, software development, implementation and remediation delivery are separately scoped. It is not regulatory certification.',
     exclusionShort: 'Connected systems, additional scenarios and implementation work are scoped separately. It is not regulatory certification.',
-    timing: 'A standard assessment may run over approximately four weeks, subject to scope, stakeholder access and evidence readiness. The proposal sets the detailed timetable.',
+    timing: 'Once an engagement begins, a standard assessment is estimated to run over approximately four weeks, subject to scope, stakeholder access and evidence readiness. The proposal sets the detailed timetable.',
     price: '£75,000 to £95,000 + VAT',
     priceNote: 'Indicative initial range',
     schemaDescription:
