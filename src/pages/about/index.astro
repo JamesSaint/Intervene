@@ -22,13 +22,15 @@ const sectorsInvite = [
   { h: 'Defence & intelligence.', p: 'Autonomous decision systems and human-on-the-loop frameworks. With appropriate clearances and engagement letters.' },
 ];
 
-const notServed = [
-  { h: 'Not a compliance dashboard.',     p: 'Compliance tools manage evidence. We measure whether intervention holds under stress.' },
-  { h: 'Not a Big-4 advisory.',           p: 'No leveraged teams, no slide decks, no implementation arm.' },
-  { h: 'Not a policy-writing practice.',  p: 'We do not draft your automation policy. We test whether the controls behind it deliver what it claims.' },
-  { h: 'Not a model-testing lab.',        p: 'Red-team labs test models. We test whether the chain around the model can act on what they find.' },
-  { h: 'Not an implementation partner.',  p: 'No control build, no integration, no runbook ops. Remediation belongs to you or someone else.' },
-  { h: 'Not a safety research practice.', p: 'A verdict on a specific system, not a paper on risk in general.' },
+/* Intervene's role, stated positively from the strategy: what the
+   practice does, and the two boundaries that matter to a buyer. The
+   former "not a Big-4 advisory" and "no leveraged teams, no slide decks"
+   comparisons were removed; they compared rather than described. */
+const role = [
+  { h: 'Assesses one system at a time.',        p: 'A named consequential AI-enabled system, a defined decision or action pathway and a specified intervention scenario. The conclusion applies to those conditions and says so.' },
+  { h: 'Works from evidence, not assertion.',   p: 'Records, interviews and walkthroughs across Detect, Escalate, Decide and Intervene. Documented arrangements are distinguished from exercised capability; a policy fallback is not a measurement.' },
+  { h: 'Owns the judgement.',                   p: 'Facts can be corrected and evidence can change the conclusion. The conclusion is not negotiated, and issuance requires approval separate from the assessor\'s own judgement.' },
+  { h: 'Stops at the finding.',                 p: 'Remediation, control build, integration and policy drafting are the client\'s or another provider\'s work. Keeping them separate is what lets the finding be trusted.' },
 ];
 ---
 
@@ -146,8 +148,8 @@ const notServed = [
     <div class="wrap">
       <h2 class="h2">The operating commitments behind the instrument.</h2>
       <p class="lede muted">
-        Operating constraints, codified into how we accept work, how we
-        calibrate, what we will and will not deliver.
+        Operating constraints, codified into how we accept work and what we
+        will and will not deliver.
       </p>
 
       <ul class="commitments" role="list">
@@ -207,19 +209,17 @@ const notServed = [
     </div>
   </section>
 
-  <!-- WHAT WE ARE NOT -->
+  <!-- WHAT INTERVENE DOES -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">What we <em>are not.</em></h2>
+      <h2 class="h2">What Intervene <em>does.</em></h2>
       <p class="lede muted">
-        About the practice. For the product boundaries, see
-        <a href="/services/#what-agda-is-not" class="link">What <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is not</a>.
-        Good practices occupy the adjacent ground, and knowing the difference
-        avoids procurement confusion later.
+        The practice in four statements. For the product's own boundaries, see
+        <a href="/agda/" class="link">what <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is not</a>.
       </p>
 
       <ul class="not-list" role="list">
-        {notServed.map((n) => (
+        {role.map((n) => (
           <li>
             <h3 class="h3">{n.h}</h3>
             <p class="body muted" set:html={markAgda(n.p)} />
