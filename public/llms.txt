@@ -63,7 +63,7 @@ Intervention Readiness -> composed of the intervention chain, the reversibility 
 Intervention chain -> runs against the reversibility window.
 Intervention Readiness -> adjacent to, and distinct from, AI governance, compliance, audit, risk management and operational resilience.
 AGDA™ -> assesses Intervention Readiness; does not certify compliance or grant regulatory approval; not validated against real-world outcomes.
-A Review is not required first: where the system, the intervention question and the assessment scope are sufficiently clear and relevant evidence access is available, a full AGDA™ Assessment can be discussed directly.
+A Review is not required first: if the system, intervention question and assessment scope are sufficiently clear and relevant evidence access is available, a full AGDA™ Assessment can be discussed directly.
 Intervention Readiness Review -> standalone executive review of one system: the intervention question, the preliminary chain, the evidence held and the gaps, and a scoped recommendation on whether a full assessment is warranted; supports prioritisation and budget decisions on its own; does not include the AGDA™ verdict, the SEDI findings or signed SEDI result records.
 AGDA™ Assessment -> full assessment of one named consequential AI-enabled system, a defined decision or action pathway and a specified intervention scenario; produces the Intervention Readiness verdict with its evidence basis.
 Intervene Limited -> retains Assessment Authority over who may assess, the methodology, conflicts of interest, evidence requirements and whether a conclusion is issued; facts can be corrected and evidence can change the judgement; the judgement is not negotiated; issuance requires approval separate from the assessor's own judgement.
@@ -135,7 +135,7 @@ Indicative fee £20,000 to £35,000 + VAT. A documented executive view of where 
 AGDA™ Assessment:
 Indicative initial range £75,000 to £95,000 + VAT. A formal assessment of one named consequential AI-enabled system through a defined decision or action pathway and a specified intervention scenario. Once an engagement begins, a standard assessment is estimated to run over approximately four weeks, subject to scope, access and evidence readiness.
 
-Initial pricing remains subject to market validation. The specific fee, deliverables and terms are agreed in the proposal. The final fee reflects the agreed scope and assessment boundary, stakeholder involvement, the evidence position and the depth of investigation required. The proposal confirms the scope, outputs, fee and timetable. Contact us to discuss scope and availability. We confirm delivery arrangements and a start date before accepting an engagement.
+Initial pricing remains subject to market validation. The final fee reflects the agreed scope and assessment boundary, stakeholder involvement, the evidence position and the depth of investigation required. The proposal confirms the scope, outputs, fee, terms and timetable. Contact us to discuss scope and availability. We confirm delivery arrangements and a start date before accepting an engagement.
 
 ## Preferred Summary
 
