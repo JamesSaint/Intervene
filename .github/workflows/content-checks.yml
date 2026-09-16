@@ -43,3 +43,8 @@ jobs:
       - name: Typecheck (advisory)
         continue-on-error: true
         run: npm run typecheck
+
+      # A merge to main publishes. Build on the PR so a broken page is
+      # caught before it can reach the deploy workflow.
+      - name: Build
+        run: npm run build

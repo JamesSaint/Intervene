@@ -2,55 +2,47 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import VerdictBlock from '../../components/VerdictBlock.astro';
 import { markAgda } from '../../lib/marks';
-
-const deliver = [
-  { h: 'Failure Exposure Report', p: 'Written at three audience layers: board, risk function, and engineering. The same evidence, read by each level it has to convince.' },
-  { h: 'Intervention-readiness verdict', p: 'Before impact, at risk, or after impact. One deterministic determination, bound to the conditions observed and the reversibility window assessed.' },
-  { h: 'Regulator bundle', p: 'A signed JSON export with report, attestation, result, input, manifest, verification metadata and history. A regulator can verify it without contacting us.' },
-  { h: 'Attestation envelope', p: 'Engine, catalogue, methodology and rubric versions; input, output and manifest hashes; key id, timestamp and Ed25519 signature. The audit trail that makes the verdict defensible later.' },
-];
+import { assessment, offerFaqs, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
 
 const isnot = [
-  { h: 'Not a maturity model', p: 'No five-point scale that always lands at three. The verdict answers the only question that matters: does the chain complete in time.' },
-  { h: 'Not a controls checklist', p: 'Existence of a control is not evidence it works under pressure. AGDA™ measures demonstrated capability, not documented intent.' },
-  { h: 'Not our opinion', p: 'The engine is deterministic. Same inputs, same outputs. The verdict does not move because the assessor changed.' },
+  { h: 'Not a maturity model', p: 'No five-point scale that always lands at three. A full AGDA™ Assessment answers one question: can the chain complete in time for this system, pathway and scenario.' },
+  { h: 'Not a controls checklist', p: 'Existence of a control is not evidence it works under pressure. AGDA™ distinguishes documented arrangements from exercised capability. A policy fallback is not a measurement.' },
+  { h: 'Not a negotiated result', p: 'The engine applies repeatable rules to recorded inputs under fixed versions. Defining the scenario, grading evidence and interpreting the result are Intervene\'s judgement. Facts can be corrected and evidence can change the conclusion; the conclusion is not negotiated.' },
 ];
 
 const faqs = [
   {
-    question: 'What does AGDA™ measure?',
-    answer: 'AGDA™ measures Intervention Readiness: whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible.',
+    question: 'What does AGDA™ assess?',
+    answer: 'AGDA™ assesses Intervention Readiness: whether an organisation can detect the need to intervene, escalate appropriately, decide with authority and intervene effectively in a consequential AI-enabled system before the opportunity to do so is lost.',
   },
   {
     question: 'Is AGDA™ an AI governance framework?',
-    answer: 'No. AGDA™ is not an AI governance framework. It measures whether governance can actually intervene when required.',
+    answer: 'No. AGDA™ is not an AI governance framework. It assesses whether governance can actually intervene when required.',
   },
-  {
-    question: 'How does AGDA™ produce a verdict?',
-    answer: 'AGDA™ evaluates evidence across Detect, Escalate, Decide and Intervene, applies deterministic rules, and returns a formal verdict. Signed SEDI regulator bundles can be verified independently.',
-  },
+  ...offerFaqs,
   {
     question: 'How is AGDA™ related to Intervention Readiness?',
-    answer: 'Intervention Readiness is the category. AGDA™ is the deterministic assessment instrument that measures it.',
+    answer: 'Intervention Readiness is the category. AGDA™ is Intervene Limited\'s proprietary assessment of it.',
   },
 ];
 ---
 
 <BaseLayout
-  title="AGDA™: Deterministic Intervention Readiness · Intervene"
-  description="AGDA™ measures whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible. SEDI bundles are signed."
+  title="AGDA™ Assessment · Intervene"
+  description="Intervene's proprietary assessment of Intervention Readiness: one named consequential AI-enabled system, one defined pathway and one intervention scenario."
   current="agda"
   ogImage="/assets/og/og-agda.png"
   faqs={faqs}
 >
   <section class="hero">
     <div class="wrap">
-      <span class="label">The instrument</span>
-      <h1 class="h1 reveal"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures Intervention Readiness.</h1>
+      <span class="label">The assessment</span>
+      <h1 class="h1 reveal"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> assesses Intervention Readiness.</h1>
       <p class="lede muted reveal">
-        A deterministic assessment of whether an organisation can detect,
-        escalate, decide and intervene before harm becomes irreversible. Same
-        inputs, same result. Signed SEDI bundles can be verified independently.
+        Intervene's proprietary assessment of whether an organisation can
+        detect the need to intervene, escalate appropriately, decide with
+        authority and intervene effectively in a consequential AI-enabled
+        system before the opportunity to do so is lost.
       </p>
       <div class="hero-cta reveal">
         <a href="/contact/" class="btn">Discuss your system</a>
@@ -61,7 +53,7 @@ const faqs = [
 
   <section class="block">
     <div class="wrap-narrow">
-      <h2 class="h2">An instrument, <em>not a governance framework.</em></h2>
+      <h2 class="h2">An assessment, <em>not a governance framework.</em></h2>
       <p class="body">
         Audit tells you whether a control existed. Model risk tells you whether
         a model behaves. Governance reviews tell you whether responsibilities
@@ -69,20 +61,58 @@ const faqs = [
         can still intervene inside the time available.
       </p>
       <p class="body muted">
-        That is <a href="/intervention-readiness/" class="link">Intervention Readiness</a>: the measured capability to
+        That is <a href="/intervention-readiness/" class="link">Intervention Readiness</a>: the ability to
         detect, escalate, decide and intervene before harm becomes irreversible.
       </p>
     </div>
   </section>
 
   <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">One system, a defined pathway <em>and a specified scenario.</em></h2>
+      <p class="body">
+        We agree the system boundary, the consequential decision or action,
+        the circumstances requiring intervention and the available time. The
+        conclusion applies to those assessed conditions. It does not extend
+        automatically to every pathway, future event or system in the
+        organisation.
+      </p>
+      <p class="body muted">
+        A finding about one pathway is not an assessment of the entire
+        organisation or of every use of the system. Connected systems are
+        scoped separately.
+      </p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">Evidence and <em>accountable judgement.</em></h2>
+      <p class="body">
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> examines relevant records, interviews and walkthroughs across
+        Detect, Escalate, Decide and Intervene. It distinguishes documented
+        arrangements from exercised capability. A policy fallback is not a
+        measurement, and a walkthrough or a record of a previous drill is not a
+        live operational test.
+      </p>
+      <p class="body muted">
+        The engine applies repeatable rules to recorded inputs under fixed
+        assessment versions. The assessment also requires judgement about
+        evidence, scope and interpretation. Intervene owns that judgement and
+        the conclusion. {SELF_APPROVAL} A signed engine record is not by
+        itself an issued assessment.
+      </p>
+    </div>
+  </section>
+
+  <section class="block">
     <div class="wrap">
-      <h2 class="h2">One question. <em>One deterministic verdict.</em></h2>
+      <h2 class="h2">One question. <em>Three verdict states.</em></h2>
       <p class="lede muted">
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures the intervention chain, Detect to Escalate to Decide to
-        Intervene, against a reversibility window. It returns one of three
-        states. SEDI regulator bundles are signed so a regulator, audit
-        committee or internal assurance team can confirm the result independently.
+        A full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment examines the intervention chain, Detect to
+        Escalate to Decide to Intervene, against the available time and
+        returns one of three states. The Intervention Readiness Review does
+        not produce a verdict.
       </p>
       <div class="verdict-stage">
         <VerdictBlock />
@@ -93,15 +123,24 @@ const faqs = [
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">What an assessment <em>delivers.</em></h2>
+      <h2 class="h2">What a full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment <em>delivers.</em></h2>
+      <p class="lede muted">
+        The engagement scope lists the outputs. The standard package
+        comprises:
+      </p>
       <ul class="deliver" role="list">
-        {deliver.map((d) => (
-          <li>
-            <h3 class="h3">{d.h}</h3>
-            <p class="body muted">{d.p}</p>
-          </li>
+        {assessment.receive.map((d) => (
+          <li set:html={markAgda(d)} />
         ))}
       </ul>
+      <p class="body muted deliver-note">{RECORDS_NOTE}</p>
+      <p class="body muted deliver-note">
+        The assessment is not regulatory certification, a model-validation
+        exercise or a guarantee of safety. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is not validated against
+        real-world outcomes. Repeatable computation and signature verification
+        are established technical properties with different purposes from
+        empirical validation.
+      </p>
       <a href="/sample-report/" class="services-link">See a constructed sample verdict <span aria-hidden="true">→</span></a>
     </div>
   </section>
@@ -136,14 +175,15 @@ const faqs = [
 
   <section class="block tight">
     <div class="wrap-narrow cta-band">
-      <h2 class="h2">From measurement to engagement.</h2>
+      <h2 class="h2">From assessment to engagement.</h2>
       <p class="body muted">
-        The commercial unit is the assessment, not the seat. Before that,
-        inspect the evidence format and the measurement basis.
+        Two starting points: an Intervention Readiness Review, or a full
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment. Before that, inspect the sample verdict and
+        how verification works.
       </p>
       <div class="cta">
         <a href="/contact/" class="btn">Discuss your system</a>
-        <a href="/services/" class="btn-ghost">Levels of assurance</a>
+        <a href="/services/" class="btn-ghost">Assessment options</a>
       </div>
     </div>
   </section>
@@ -172,12 +212,20 @@ const faqs = [
     padding: 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 48px 64px;
+    gap: 20px 64px;
     border-top: 1px solid var(--hair-strong);
     padding-top: 40px;
   }
-  .deliver > li { display: grid; gap: 12px; align-content: start; }
-  .deliver p { max-width: 44ch; margin: 0; }
+  .deliver > li {
+    position: relative; padding-left: 22px;
+    font-family: var(--font-sans); font-size: 17px; line-height: 1.6;
+    color: var(--ink); max-width: 46ch;
+  }
+  .deliver > li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 10px; height: 1px; background: var(--accent);
+  }
+  .deliver-note { margin: 40px 0 0; max-width: 62ch; }
 
   .isnot-grid { margin-top: 56px; }
   .isnot-grid .card-title { margin: 0; }

@@ -1,18 +1,19 @@
 ---
 /**
- * The recurring AGDA™ identity. Three proof marks for SEDI
- * assessment bundles: deterministic, SEDI signed, bundle-verifiable. Mono,
- * monochrome. Used across the homepage artifact and the inner pages so
- * AGDA™ reads as one system object, not an acronym.
+ * Mechanism descriptors for signed SEDI result records. Used on /verify/
+ * only, where the surrounding copy states the condition (signed records
+ * are supplied where the agreed scope includes them and the delivery
+ * configuration supports them). Not a universal claim about every
+ * assessment, so not shown on the homepage verdict object.
  */
 interface Props {
   align?: 'start' | 'center';
 }
 const { align = 'start' } = Astro.props;
-const marks = ['Deterministic', 'SEDI signed', 'Bundle-verifiable'];
+const marks = ['Ed25519 signature', 'Append-only registry', 'Offline verifier'];
 ---
 
-<ul class={`proof-marks ${align}`} role="list" aria-label="AGDA™ SEDI bundle properties">
+<ul class={`proof-marks ${align}`} role="list" aria-label="Signed SEDI result record mechanisms">
   {marks.map((m) => (
     <li class="mono"><span class="tick" aria-hidden="true"></span>{m}</li>
   ))}

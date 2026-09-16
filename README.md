@@ -9,7 +9,7 @@
 
 Intervene Limited defines and measures **Intervention Readiness**: the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.
 
-The public site introduces the category, explains **AGDA™** as the deterministic assessment instrument, publishes the core vocabulary, and provides sample evidence for a formal SEDI verdict and signed regulator-bundle verification path.
+The public site introduces the category, explains **AGDA™** as Intervene's proprietary assessment of it, sets out the two current engagements (Intervention Readiness Review; AGDA™ Assessment), publishes the core vocabulary, and shows a constructed sample finding and how signed SEDI result records are verified where contracted.
 
 Canonical site: `https://intervene.uk/`
 
@@ -42,7 +42,7 @@ Canonical site: `https://intervene.uk/`
 /agda/                              AGDA™ instrument page
 /methodology/                       How AGDA™ measures Intervention Readiness
 /sample-report/                     Constructed sample AGDA™ verdict
-/services/                          Levels of assurance and engagement shape
+/services/                          Assessment options: the two current engagements
 /sectors/                           Where Intervention Readiness matters
 /insights/                          Evidence notes index
 /insights/accountability-theatre/
@@ -100,6 +100,8 @@ The Intervene site is intentionally restrained.
 - Avoid decorative imagery. The founder portrait and Open Graph artwork are the only current bitmap brand assets.
 - Inbound contact routes through `/contact/`. The only published address is `hello@intervene.uk`, defined once in `src/lib/social.ts` and shown on `/contact/` and in the footer. Do not add other addresses or mailto links.
 - Preserve the intervention vocabulary exactly where it is canonical: `src/lib/terms.ts`, `public/llms.txt`, glossary copy, metadata, and schema must not drift.
+- The two current engagements, their indicative ranges, deliverables and the Review's exclusion live once in `src/lib/offers.ts`. `public/llms.txt` mirrors them by hand; `tests/unit/offers-parity.test.ts` fails on drift. `scripts/lib/retired-claims.mjs` keeps the withdrawn pilot, licence tiers and unsupported claims from returning; `npm run content-check` runs it.
+- Signed SEDI result records are never described as standard. The wording is "where the agreed scope includes them and the delivery configuration supports them". What the signature covers is stated on `/verify/` against the AGDA attestation specification.
 - Avoid em dashes in prose. Use periods, semicolons, commas, or full stops.
 
 ## Local Development

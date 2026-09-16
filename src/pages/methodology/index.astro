@@ -3,7 +3,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ChainFlow from '../../components/ChainFlow.astro';
 import EvidenceCap from '../../components/EvidenceCap.astro';
 import ChainCeiling from '../../components/ChainCeiling.astro';
-import ProofMarks from '../../components/ProofMarks.astro';
 import { markAgda } from '../../lib/marks';
 
 const dimensions = [
@@ -27,26 +26,46 @@ const stances = [
 const docs = [
   { h: 'AGDA™ Thesis',             p: 'The intellectual position. Eight falsifiable claims.' },
   { h: 'Failure Mode Catalogue',   p: 'Forty canonical intervention failure modes, referenced by identifier in a verdict.' },
-  { h: 'Corpus Governance',        p: 'The governance mechanism for calibration evidence. Populated-corpus and outcome-validation evidence is supplied separately.' },
+  { h: 'Corpus Governance',        p: 'The governance mechanism by which validation cases would be authored, challenged and locked. It exists as a mechanism; no populated corpus exists yet.' },
   { h: 'Rater Protocol',           p: 'The protocol external raters follow when governed corpus evidence is supplied.' },
 ];
 ---
 
 <BaseLayout
-  title="How AGDA™ Measures Intervention Readiness · Intervene"
-  description="AGDA™ measures Intervention Readiness against evidence: detect, escalate, decide, intervene, evidence-quality constraints and chain propagation."
+  title="How AGDA™ Works · Intervene"
+  description="How AGDA™ examines the SEDI intervention chain, supporting evidence, authority and timing to assess Intervention Readiness."
   current="methodology"
   ogImage="/assets/og/og-methodology.png"
 >
   <section class="hero">
     <div class="wrap">
-      <h1 class="h1 reveal">Measurement, <em>not assertion.</em></h1>
+      <h1 class="h1 reveal">Follow the response from signal <em>to effective intervention.</em></h1>
       <p class="lede muted reveal">
-        The engine behind the verdict. Intervention capability against
-        evidence, not intention. Same inputs, same outputs. SEDI
-        bundles are signed and independently verifiable.
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> examines four connected capabilities: Detect, Escalate, Decide
+        and Intervene. Together they form the SEDI intervention chain.
       </p>
-      <div class="hero-proof reveal"><ProofMarks /></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">Scope first, <em>then evidence.</em></h2>
+      <p class="body">
+        We first define the system, the consequential pathway and the
+        scenario. We then examine the evidence for recognising the need to
+        act, reaching decision authority, making the decision and putting it
+        into effect within the available time.
+      </p>
+      <p class="body muted">
+        The assessment examines material dependencies and identifies the
+        parts of the chain that constrain intervention. A policy fallback is
+        not a measurement, and a walkthrough or a record of a previous drill is
+        not a live operational test. Repeatable engine computation
+        supports the assessment. Intervene remains responsible for evidence
+        interpretation and the final conclusion. This page explains the basis
+        and limits of the assessment; the underlying rubric and protected
+        implementation remain Intervene IP.
+      </p>
     </div>
   </section>
 
@@ -55,8 +74,9 @@ const docs = [
       <h2 class="h2">The intervention chain. <em>The chain is the control.</em></h2>
       <p class="lede muted">
         Detect, Escalate, Decide, Intervene. Four sequential stages running
-        against a reversibility window. The engine measures whether the
-        cumulative chain completes before harm becomes irreversible.
+        against the available time. The engine computes whether the
+        cumulative chain completes before harm becomes irreversible. A full
+        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment returns one of three states.
       </p>
       <ChainFlow />
 
@@ -134,18 +154,18 @@ const docs = [
 
   <section class="block">
     <div class="wrap-narrow">
-      <h2 class="h2">A regulator can verify. <em>Without contacting us.</em></h2>
+      <h2 class="h2">Signed SEDI result records, <em>where contracted.</em></h2>
       <p class="lede muted">
-        Every AGDA™ SEDI assessment ships with a signed JSON regulator
-        bundle. Current bundles use bundleVersion 1.1 and include the report,
-        attestation, result, input, manifest, verification metadata and
-        history. The attestation envelope binds the result to engine,
-        methodology, rubric, input, output and manifest hashes. The
-        <span class="mono">agda-verify</span> command runs locally under Node.js
-        18+. The customer does not depend on us to read what we produced for them.
+        Signed SEDI result records are not a standard deliverable. Where one
+        is supplied under an approved output-access arrangement, it can be
+        checked against the signed commitments. The attestation envelope commits to the engine,
+        methodology and rubric versions and to the input, output and manifest
+        hashes. What the check does and does not establish, and what the
+        signature does not cover, is on the
+        <a href="/verify/" class="link">verify page</a>.
       </p>
       <span class="env-example mono">Example envelope · illustrative values</span>
-      <pre class="envelope" aria-label="Attestation envelope example"><code>{`attestationVersion 1.2
+      <pre class="envelope" tabindex="0" aria-label="Attestation envelope example"><code>{`attestationVersion 1.2
 engineVersion      2.0.6
 engineHash         17594a80…60355e50
 transformVersion   N/A
@@ -160,8 +180,8 @@ manifestHash       36b45cbe…3edc1c12
 signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
       <p class="body muted env-note">
         The values above are illustrative and show the shape of the envelope.
-        A real bundle is produced by an assessment and is bound to that
-        assessment's engine version, inputs and output. The published
+        A real signed record is produced by an assessment and commits to
+        that assessment's engine version, input and output hashes. The published
         <a href="/sample-report/" class="link">sample verdict</a> is a
         constructed example and carries no signature.
       </p>
@@ -171,39 +191,12 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">The Intervention Simulator.</h2>
-      <p class="lede muted">
-        A what-if console for the resilience function. Test whether proposed
-        changes improve intervention timing before committing to a remediation
-        path. It shows which stage limits timely intervention under each
-        option, before a path is chosen.
-      </p>
-
-      <ul class="labs-grid" role="list">
-        <li>
-          <h3 class="h3">Counterfactual chains.</h3>
-          <p class="body muted">Move a control upstream, change a quorum rule, add an on-call halt authority. The console recomputes the chain against the same harm window.</p>
-        </li>
-        <li>
-          <h3 class="h3">Sensitivity testing.</h3>
-          <p class="body muted">Vary the reversibility window or the trigger scenario. See which stages bind and which slack out.</p>
-        </li>
-        <li>
-          <h3 class="h3">Board readout prep.</h3>
-          <p class="body muted">Walk an audit committee through three remediation options with the verdict on each, before committing to a single path.</p>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="block">
-    <div class="wrap">
       <h2 class="h2">The documented measurement basis.</h2>
       <p class="lede muted">
         Four documents anchor the practice. None is published on this site;
-        each is provided under NDA during diligence, as is populated-corpus and
-        outcome-validation evidence. Corpus governance exists as a mechanism
-        rather than as a completed evidence base.
+        each is provided under NDA during diligence. There is no populated
+        corpus and no outcome-validation evidence. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is not
+        validated against real-world outcomes.
       </p>
       <ul class="docs" role="list">
         {docs.map((d) => (
@@ -220,10 +213,10 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
     <div class="wrap-narrow cta-band">
       <h2 class="h2">A sample verdict is published.</h2>
       <p class="body muted">
-        A constructed banking example: material credit model, escalation
-        break, PRA SS1/23 §6 exposure. It shows the verdict, evidence and
-        report structure, using no client data. The current production
-        attestation format is documented on the verify page.
+        A constructed retail-credit example: reaching an authority holder
+        may exceed the assumed six-hour window, and the required quorum takes
+        at least seven days. It shows the shape of a finding, using no client
+        data. It is not issued and not signed.
       </p>
       <div class="cta">
         <a href="/contact/" class="btn">Discuss your system</a>
@@ -241,10 +234,10 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
   }
   .hero .h1 { max-width: 22ch; }
   .hero .lede { margin-top: 32px; max-width: 56ch; }
-  .hero-proof { margin-top: 36px; }
 
   .block .h2 { max-width: 28ch; }
   .block .lede { margin-top: 16px; max-width: 56ch; }
+  .wrap-narrow .body { max-width: 62ch; margin: 16px 0 0; }
 
   /* Intervention-chain verdict states */
   .verdicts {
@@ -267,19 +260,6 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
   .verdict-name.warn { color: var(--warn); }
   .verdicts p { max-width: 36ch; margin: 0; }
 
-  /* Labs grid */
-  .labs-grid {
-    list-style: none;
-    margin: 64px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 56px;
-    border-top: 1px solid var(--hair-strong);
-    padding-top: 32px;
-  }
-  .labs-grid > li { display: grid; gap: 12px; align-content: start; }
-  .labs-grid p { max-width: 36ch; margin: 0; }
 
   /* Inline arrow link */
   .services-link {
@@ -384,7 +364,6 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
     .stances { grid-template-columns: 1fr; gap: 48px; }
     .docs { grid-template-columns: 1fr 1fr; gap: 32px; }
     .verdicts { grid-template-columns: 1fr; gap: 32px; }
-    .labs-grid { grid-template-columns: 1fr; gap: 40px; }
   }
   @media (max-width: 560px) {
     .dim-grid { grid-template-columns: 1fr; column-gap: 0; }

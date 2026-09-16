@@ -6,9 +6,9 @@ import { socialLinks } from '../../lib/social';
 
 const commitments = [
   { h: 'Independent judgement.',         p: 'No vendor affiliation, no co-marketing and no commercial relationship may reach an AGDA™ assessment. We do not implement what we recommend.' },
-  { h: 'Documented methodology.',        p: 'Theses, catalogues, corpus governance and rater protocols are the documented basis of the method. They are not published here, and are provided under NDA during diligence alongside populated-corpus and outcome-validation evidence.' },
-  { h: 'Verifiable computation.',        p: 'AGDA™ SEDI assessment verdicts carry Ed25519 attestation. Inputs and outputs are hashed. An audit committee can verify without contacting us.' },
-  { h: 'Refusal of false control.',      p: 'If the evidence does not support green, the engine will not produce green. Findings the client did not want, in writing, before the regulator does.' },
+  { h: 'Documented methodology.',        p: 'Theses, catalogues, corpus governance and rater protocols are the documented basis of the method. They are not published here, and are provided under NDA during diligence. AGDA™ is not validated against real-world outcomes.' },
+  { h: 'Verifiable records.',            p: 'Signed SEDI result records, where supplied, carry an Ed25519 attestation over specified records. Inputs and outputs are hashed. An audit committee can check them with the verifier and trust material supplied under the engagement terms.' },
+  { h: 'Refusal of false control.',      p: 'If the evidence does not support the conclusion, the assessment does not reach it. Findings the client did not want, in writing, before the regulator does.' },
 ];
 
 const sectorsPrimary = [
@@ -114,11 +114,11 @@ const notServed = [
           </p>
 
           <p class="body">
-            That is why we developed <span class="agda-mark">AGDA<span class="agda-tm">™</span></span>, our methodology for
-            assessing Intervention Readiness. It measures whether an
-            organisation can detect, escalate, decide and intervene within the
-            time available, returning a deterministic verdict supported by a
-            signed regulator bundle.
+            That is why we developed <span class="agda-mark">AGDA<span class="agda-tm">™</span></span>, our proprietary assessment
+            of Intervention Readiness. It assesses whether an organisation can
+            detect, escalate, decide and intervene within the time available,
+            and issues an Intervention Readiness verdict with its evidence
+            basis.
           </p>
 
           <p class="body">
@@ -166,8 +166,9 @@ const notServed = [
     <div class="wrap">
       <h2 class="h2">Where the category is most urgent.</h2>
       <p class="lede muted">
-        Three primary sectors. Two by invitation. Some we deliberately do
-        not serve.
+        Our initial commercial focus is large UK and European regulated
+        financial institutions. The sectors below are where the question is
+        most urgent; some we deliberately do not serve.
       </p>
 
       <div class="sector-group">
