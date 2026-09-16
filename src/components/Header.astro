@@ -1,12 +1,21 @@
 ---
 import Logo from './Logo.astro';
 import MenuIcon from './MenuIcon.astro';
+interface Props { current?: string }
+const { current } = Astro.props;
 ---
 
 <header class="site-header" data-site-header>
   <a href="#main" class="skip-link">Skip to content</a>
   <div class="wrap header-inner">
     <Logo size="md" href="/" />
+    <!-- Three buyer destinations, desktop only. The takeover menu remains
+         the full site structure and the only navigation on small screens. -->
+    <nav class="quick-nav" aria-label="Primary">
+      <a href="/services/" aria-current={current === 'services' ? 'page' : undefined}>Assessment options</a>
+      <a href="/sample-report/" aria-current={current === 'sample-report' ? 'page' : undefined}>Sample verdict</a>
+      <a href="/contact/" class="quick-cta" aria-current={current === 'contact' ? 'page' : undefined}>Discuss your system</a>
+    </nav>
     <button
       type="button"
       class="menu-trigger"
@@ -42,6 +51,29 @@ import MenuIcon from './MenuIcon.astro';
     min-height: var(--header-h);
     padding-top: 18px;
     padding-bottom: 18px;
+  }
+  .quick-nav {
+    display: none;
+    align-items: center;
+    gap: 28px;
+    margin-left: auto;
+    margin-right: 28px;
+  }
+  .quick-nav a {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    color: var(--muted);
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: color var(--dur-hover) var(--ease), border-color var(--dur-hover) var(--ease);
+  }
+  .quick-nav a:hover,
+  .quick-nav a[aria-current='page'] { color: var(--ink); border-bottom-color: var(--accent); }
+  .quick-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  .quick-nav .quick-cta { color: var(--ink); }
+  @media (min-width: 900px) {
+    .quick-nav { display: flex; }
   }
   .menu-trigger {
     display: inline-flex;

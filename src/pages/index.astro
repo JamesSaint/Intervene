@@ -1,11 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import VerdictBlock from '../components/VerdictBlock.astro';
 import { offers, PRICE_QUALIFIER, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../lib/offers';
+import { markAgda } from '../lib/marks';
+import FindingChain from '../components/FindingChain.astro';
+import OfferChoice from '../components/OfferChoice.astro';
 
-/* Three situations in which the intervention question stops being
-   theoretical. They describe the same buyer as the offer sheets on
-   /services/, which read from src/lib/offers.ts. */
+/* Section order, front to back: doorway, relevance (three situations),
+   what the assessment shows (one constructed finding, the four stages,
+   the three states), the two offers, how the conclusion is controlled,
+   next step, close. The failure timeline and the "gap" section were
+   removed: the situations establish relevance and the finding shows the
+   mechanism, so the timeline repeated both. The attestation specimen
+   moved to /verify/ and /agda/; signed records are not a standard
+   deliverable and did not belong above the fold. */
+
 const situations = [
   {
     kicker: 'A consequential deployment',
@@ -24,16 +32,21 @@ const situations = [
   },
 ];
 
-/* Plain-language descriptions of the four stages, condensed from
-   /intervention-readiness/intervention-chain/. Kept consistent with that
-   page rather than rewritten, so the chain reads the same everywhere. */
-const chain = [
-  { n: '01', name: 'Detect', p: 'Whether a deviation is identified, and how long it takes a signal to reach anyone who can act.' },
-  { n: '02', name: 'Escalate', p: 'Whether the signal reaches authority. Most escalation steps are staffed by people who can pass it on but cannot stop the system.' },
-  { n: '03', name: 'Decide', p: 'Whether a stop decision can be made. Agreed thresholds are fast. Thresholds invented under pressure are not.' },
-  { n: '04', name: 'Intervene', p: 'Whether the system can actually be altered or halted. This is the only stage that changes the outcome.' },
+const states = [
+  { name: 'Before impact', p: 'The chain completes in time under the assessed conditions.' },
+  { name: 'At risk', p: 'The chain completes, but within a margin that ordinary operational pressure can erode.' },
+  { name: 'After impact', p: 'The chain does not complete in time. Intervention lands after the consequence.' },
 ];
 
+/* The constructed retail-credit example, as corrected on /sample-report/.
+   Facts are the sample's own; nothing is added: no score, no money, no
+   evidence grade, no regulatory conclusion. */
+const finding = {
+  system: 'CRED-MOD-04, a retail credit decisioning model. Automated approve, decline or refer decisions; the question concerns the auto-decline pathway.',
+  scenario: 'A macro shock coincides with model drift and creates a need to stop or redirect the affected pathway.',
+  decision: 'Whether the auto-decline pathway can keep operating under its present authority arrangements, and what has to change before the organisation relies on it: who may authorise a halt, how that person is reached out of hours, and how the route is exercised before it is needed.',
+  limits: 'One pathway and one scenario. Nothing here is a conclusion about any institution, other systems or legal conformity.',
+};
 ---
 
 <BaseLayout
@@ -41,7 +54,7 @@ const chain = [
   description="AGDA™ assesses whether your organisation can detect, escalate, decide and intervene in a consequential AI-enabled system within the time available."
   current="home"
 >
-  <!-- 1 · DOORWAY. Loud. Relevance, offer and next step, in that order. -->
+  <!-- 1 · DOORWAY -->
   <section class="hero">
     <div class="wrap">
       <a class="label hero-label hero-link" href="/intervention-readiness/">Intervention Readiness</a>
@@ -51,15 +64,15 @@ const chain = [
         escalate, decide and intervene before harm becomes irreversible.
         <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is Intervene's proprietary assessment of it.
       </p>
+      <div class="hero-cta">
+        <a href="/contact/" class="btn">Discuss your system</a>
+        <a href="#offers" class="btn-ghost">Compare the two options</a>
+      </div>
       <p class="hero-note">
         Two starting points: an Intervention Readiness Review, or a full
         <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment of one named system through a defined
         pathway and a specified intervention scenario.
       </p>
-      <div class="hero-cta">
-        <a href="/contact/" class="btn">Discuss your system</a>
-        <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
-      </div>
       <ul class="hero-chain" role="list" aria-label="Intervention readiness chain">
         <li>Detect</li>
         <li>Escalate</li>
@@ -69,7 +82,7 @@ const chain = [
     </div>
   </section>
 
-  <!-- 2 · Relevance. Who is actually asking this question. -->
+  <!-- 2 · RELEVANCE -->
   <section class="block situations">
     <div class="wrap">
       <span class="label section-kicker">Where the question arrives</span>
@@ -83,188 +96,115 @@ const chain = [
           </li>
         ))}
       </ul>
-    </div>
-  </section>
-
-  <!-- 3 · Recognition and consequence, merged into one beat. -->
-  <section class="block quiet">
-    <div class="wrap">
-      <div class="window-head">
-        <h2 class="h2">You have probably watched <em>a version of this.</em></h2>
-        <p class="lede muted">
-          You have policies, controls, governance structures and escalation
-          processes. All of it real, and all of it necessary. None of it proves
-          the one thing that decides the outcome: at 3am, can the person who can
-          halt the system be reached, authorised, and certain enough to act while
-          acting still costs less than waiting?
-        </p>
-      </div>
-
-      <ol class="window-grid reveal" role="list">
-        <li class="stage">
-          <div class="chip-row"><span class="time-chip">T+0</span><span class="stage-label">System event</span></div>
-          <h3 class="h3">No signal yet.</h3>
-          <p class="body muted">The system starts producing decisions outside its limits. Nothing has reached anyone with the authority to act.</p>
-        </li>
-        <li class="stage">
-          <div class="chip-row"><span class="time-chip">T+6h</span><span class="stage-label">Operations</span></div>
-          <h3 class="h3">Noticed, not stoppable.</h3>
-          <p class="body muted">Someone sees the deviation. They cannot halt the system, and the route to who can is unclear.</p>
-        </li>
-        <li class="stage">
-          <div class="chip-row"><span class="time-chip">T+18h</span><span class="stage-label">Management</span></div>
-          <h3 class="h3">Still compounding.</h3>
-          <p class="body muted">It reaches management. Authority to halt is still being established. The cost grows by the hour.</p>
-        </li>
-        <li class="stage critical">
-          <div class="chip-row"><span class="time-chip warn">T+36h</span><span class="stage-label">Board</span></div>
-          <h3 class="h3">The window has closed.</h3>
-          <p class="body muted">The board is informed. The moment for low-cost intervention has already passed.</p>
-        </li>
-      </ol>
-
-      <p class="window-foot">The chain was never tested before it had to hold.</p>
-    </div>
-  </section>
-
-  <!-- 4 · THE GAP. The turn. -->
-  <section class="gap">
-    <div class="wrap-narrow">
-      <span class="label section-kicker gap-label">The category</span>
-      <h2 class="h2 gap-h">Intervention Readiness is the missing measurement.</h2>
-      <p class="gap-body">
-        Capital. Model performance. Control coverage. Incident counts. Audit
-        findings. These matter, and none of them answer the board-level
-        question: when a consequential system turns, can the organisation
-        intervene before harm becomes irreversible? That capability is
-        <a href="/intervention-readiness/" class="link">Intervention Readiness</a>.
+      <p class="body muted situations-foot">
+        Documented responsibilities alone do not establish whether the people
+        named can intervene in time. The assessment examines whether they can.
       </p>
-      <p class="gap-realisation">
-        <span>Governance</span>
-        <span>Controls</span>
-        <span>Accountability</span>
-        <strong>Documented responsibilities alone do not establish whether the people named can intervene in time.</strong>
-      </p>
-      <div class="gap-status">
-        <span class="status-rule" aria-hidden="true"></span>
-        <span class="gauge-label mono">Unmeasured</span>
-      </div>
     </div>
   </section>
 
-  <!-- 5 · THE INSTRUMENT. What is assessed, and what a finding looks like. -->
-  <section class="block verdict">
+  <!-- 3 · WHAT THE ASSESSMENT SHOWS -->
+  <section class="block finding-block">
     <div class="wrap">
-      <div class="verdict-flow">
-        <div class="verdict-lead">
-          <span class="label section-kicker">The assessment</span>
-          <h2 class="h2"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is Intervene's proprietary assessment of Intervention Readiness.</h2>
-          <p class="body muted">
-            A full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment examines whether the chain can complete in
-            time and names the stage that constrains it. The output is not a
-            maturity score or a compliance claim. Evidence can change the
-            conclusion. The conclusion is Intervene's.
-          </p>
-        </div>
-        <div class="verdict-stage reveal">
-          <VerdictBlock />
-        </div>
-      </div>
+      <span class="label section-kicker">What a finding looks like</span>
+      <h2 class="h2">Detection works. <em>Authority does not.</em></h2>
+      <p class="lede muted">
+        A constructed illustration of a full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment finding.
+        It describes no real organisation, uses no client data, and is not an
+        issued assessment or a verified outcome.
+      </p>
 
-      <h3 class="h3 chain-head">What a full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment examines.</h3>
-      <ol class="chain-list" role="list">
-        {chain.map((c) => (
-          <li>
-            <span class="mono chain-n">{c.n} {c.name}</span>
-            <p class="body muted">{c.p}</p>
-          </li>
-        ))}
-      </ol>
+      <dl class="finding-scope">
+        <div><dt>System</dt><dd>{finding.system}</dd></div>
+        <div><dt>Scenario</dt><dd>{finding.scenario}</dd></div>
+      </dl>
+
+      <FindingChain />
+
+      <dl class="finding-verdict">
+        <div>
+          <dt>Decision the finding supports</dt>
+          <dd>{finding.decision}</dd>
+        </div>
+        <div>
+          <dt>Assumptions and limits</dt>
+          <dd>{finding.limits}</dd>
+        </div>
+      </dl>
+      <p class="finding-note">
+        <a href="/sample-report/" class="link">Read the full constructed sample</a>.
+      </p>
+
+      <h3 class="h3 chain-head">What a full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment returns.</h3>
       <p class="body muted chain-foot">
-        Each stage is assessed against evidence and graded for quality, so weak
-        evidence cannot inflate the result. The weakest stage constrains the
-        chain, because the chain is only as fast as the step that holds it up.
+        Each stage is assessed against evidence. The weakest stage constrains
+        the chain, and the assessment names it. A full Assessment returns one of
+        three states; the Review does not produce a verdict.
       </p>
-
-      <aside class="finding" aria-label="Illustrative finding">
-        <span class="label finding-label">Illustrative example</span>
-        <dl class="finding-list">
-          <div>
-            <dt>Finding</dt>
-            <dd>Detection runs in about twelve minutes. Reaching a person with authority to halt takes between four and ninety-six hours, and the quorum that authority requires takes at least seven days.</dd>
-          </div>
-          <div>
-            <dt>What it means</dt>
-            <dd>The assumed window is about six hours, so the chain cannot complete inside it. Detection is not the constraint. Authority is.</dd>
-          </div>
-          <div>
-            <dt>Decision it supports</dt>
-            <dd>Whether halt authority moves to the operations rota before the next material deployment, or the deployment waits.</dd>
-          </div>
-        </dl>
-        <p class="finding-note">
-          A constructed example, written to show the shape of a finding. It is
-          not an assessment of any organisation and not evidence about one.
-          <a href="/sample-report/" class="link">See the full sample verdict</a>.
-        </p>
-      </aside>
-    </div>
-  </section>
-
-  <!-- 6 · THE ENGAGEMENT. Two starting points, from src/lib/offers.ts. -->
-  <section class="block engage">
-    <div class="wrap">
-      <span class="label section-kicker">Two ways to begin</span>
-      <h2 class="h2">Choose the right <em>starting point.</em></h2>
-
-      <ul class="offer-grid" role="list">
-        {offers.map((o) => (
-          <li class="offer" id={`offer-${o.slug}`}>
-            <span class="mono offer-kicker">{o.slug === 'review' ? 'Preliminary' : 'Full assessment'}</span>
-            <h3 class="h3 offer-name" set:html={o.name.replace('AGDA™', '<span class="agda-mark">AGDA<span class="agda-tm">™</span></span>')} />
-            <p class="body muted offer-short" set:html={o.short.replace('AGDA™', '<span class="agda-mark">AGDA<span class="agda-tm">™</span></span>')} />
-            <span class="mono offer-list-label">What you receive</span>
-            <ul class="engage-list" role="list">
-              {o.receive.map((r) => <li set:html={r.replace('AGDA™', '<span class="agda-mark">AGDA<span class="agda-tm">™</span></span>')} />)}
-            </ul>
-            <p class="body muted offer-exclusion" set:html={o.exclusionShort.replace(/AGDA™/g, '<span class="agda-mark">AGDA<span class="agda-tm">™</span></span>')} />
-            <p class="offer-price"><span class="mono offer-price-note">{o.priceNote}</span> {o.price}</p>
-            <p class="body muted offer-timing">{o.timing}</p>
+      <ul class="states" role="list">
+        {states.map((st) => (
+          <li>
+            <span class="mono state-name">{st.name}</span>
+            <p class="body muted">{st.p}</p>
           </li>
         ))}
       </ul>
+    </div>
+  </section>
 
+  <!-- 4 · THE TWO OFFERS. Shared diagram; the full sheets are on /services/. -->
+  <section class="block engage" id="offers">
+    <div class="wrap">
+      <OfferChoice headingLevel="h2" />
       <p class="engage-terms">
         {PRICE_QUALIFIER} {AVAILABILITY}
-        <a href="/services/" class="link">Assessment options in full</a>.
-      </p>
-
-      <h3 class="h3 basis-head">A conclusion with a visible basis.</h3>
-      <p class="engage-next">
-        The assessment identifies the limiting parts of the intervention chain
-        and explains the evidence and assumptions behind the result. Intervene
-        retains responsibility for the conclusion. Clients can correct facts,
-        challenge interpretation and provide further evidence. {SELF_APPROVAL}
-        {RECORDS_NOTE} Where they are supplied, a check establishes the
-        integrity of the covered records, not the truth of the evidence.
-        <a href="/verify/" class="link">What verification establishes</a>.
-      </p>
-
-      <p class="engage-next">
-        <strong>What happens next.</strong> Tell us the system and the decision
-        it supports. The first conversation is twenty minutes at no charge, and
-        you receive a direct response within one to two working days. We do not
-        pre-qualify by email questionnaire. Scope, delivery arrangements and a
-        start date are confirmed in the proposal.
+        <a href="/services/" class="link">Scope, exclusions and how an engagement runs</a>.
       </p>
     </div>
   </section>
 
-  <!-- 7 · CLOSE. Sparse. The refrain returns. -->
+  <!-- 5 · HOW THE CONCLUSION IS CONTROLLED, AND THE NEXT STEP -->
+  <section class="block basis">
+    <div class="wrap">
+      <div class="basis-grid">
+        <div>
+          <h2 class="h2">A conclusion with a visible basis.</h2>
+          <p class="body muted">
+            The assessment identifies the limiting parts of the intervention
+            chain and explains the evidence and assumptions behind the result.
+            Intervene retains responsibility for the conclusion. Clients can
+            correct facts, challenge interpretation and provide further
+            evidence. {SELF_APPROVAL}
+          </p>
+          <p class="body muted">
+            {RECORDS_NOTE} Where they are supplied, a check establishes the
+            integrity of the covered records, not the truth of the evidence.
+            <a href="/verify/" class="link">What verification establishes</a>.
+          </p>
+        </div>
+        <div>
+          <h2 class="h2">What happens next.</h2>
+          <p class="body muted">
+            Tell us the system and the decision it supports. The first
+            conversation is twenty minutes at no charge, and you receive a
+            direct response within one to two working days. We do not
+            pre-qualify by email questionnaire. Scope, delivery arrangements
+            and a start date are confirmed in the proposal.
+          </p>
+          <div class="hero-cta">
+            <a href="/contact/" class="btn">Discuss your system</a>
+            <a href="/services/" class="btn-ghost">Assessment options</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · CLOSE -->
   <section class="block close">
     <div class="wrap close-wrap">
       <h2 class="close-q">Can you stop it <em>in time?</em></h2>
-      <p class="close-line">The verdict names which stage limits timely intervention, so remediation can be prioritised.</p>
+      <p class="close-line">The assessment names the stage that limits timely intervention, so remediation can be prioritised.</p>
       <div class="close-actions">
         <a href="/contact/" class="btn">Discuss your system</a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
@@ -273,314 +213,120 @@ const chain = [
   </section>
 </BaseLayout>
 
-
 <style>
-  /* Dark advisory rhythm: doorway, quiet recognition, surface turn,
-     evidence object, sparse close. */
-  .hero,
-  .gap {
-    background: var(--paper);
+  .hero {
+    background: var(--paper-deep);
     color: var(--ink);
     border-bottom: 1px solid var(--hair);
+    /* Sized to its content, not the viewport, so the primary action and
+       the chain sit inside the first screen with the consent banner open. */
+    padding-top: clamp(48px, 8vh, 104px);
+    padding-bottom: clamp(40px, 7vh, 88px);
+  }
+  /* Short viewports (a 720px laptop, a small phone) with the consent
+     banner open: keep the primary action above the banner. */
+  @media (max-height: 760px) {
+    .hero { padding-top: 40px; }
+    .hero .display-xl { font-size: clamp(40px, 6.2vw, 68px); }
+    .hero-sub { margin-top: 20px; font-size: 18px; }
+    .hero-cta { margin-top: 28px; }
   }
   .hero .wrap,
-  .block.quiet > .wrap,
-  .block.quiet > .wrap-narrow,
-  .gap > .wrap-narrow,
-  .verdict > .wrap,
-  .close > .wrap {
-    max-width: 1120px;
-  }
-
-  /* 1 · Hero */
-  .hero {
-    min-height: calc(92vh - var(--header-h));
-    display: flex;
-    align-items: center;
-    padding-top: clamp(80px, 13vh, 152px);
-    padding-bottom: clamp(64px, 10vh, 120px);
-    background: var(--paper-deep);
-  }
+  .finding-block > .wrap,
+  .close > .wrap { max-width: 1120px; }
   .hero-link { display: inline-block; border-bottom: 1px solid transparent; }
   .hero-link:hover { border-color: var(--accent); color: var(--ink); }
   .hero .display-xl { max-width: 820px; color: var(--ink); }
-
   .hero-sub {
-    margin: 28px 0 0;
-    font-family: var(--font-sans);
-    font-size: clamp(18px, 1.8vw, 22px);
-    font-weight: 400;
-    letter-spacing: 0;
-    color: var(--muted);
-    line-height: 1.62;
-    max-width: 48ch;
+    margin: 28px 0 0; font-family: var(--font-sans);
+    font-size: clamp(18px, 1.8vw, 22px); font-weight: 400; letter-spacing: 0;
+    color: var(--muted); line-height: 1.62; max-width: 48ch;
   }
-  .hero-note {
-    margin: 18px 0 0;
-    font-size: 15px;
-    color: var(--faint);
-    max-width: 48ch;
-    line-height: 1.6;
-  }
-  .hero-cta { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .hero-note { margin: 24px 0 0; font-size: 15px; color: var(--muted); max-width: 52ch; line-height: 1.6; }
+  .hero-cta { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
   .hero-chain {
-    list-style: none;
-    margin: clamp(44px, 7vh, 72px) 0 0;
-    padding: 28px 0 0;
-    border-top: 1px solid var(--hair);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 18px 36px;
+    list-style: none; margin: clamp(36px, 6vh, 64px) 0 0; padding: 28px 0 0;
+    border-top: 1px solid var(--hair); display: flex; flex-wrap: wrap; gap: 18px 36px;
   }
   .hero-chain li {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--faint);
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--faint);
   }
 
-  /* Quiet recognition sections: large statements, generous air, no rules. */
-  .block.quiet {
-    border-bottom: 1px solid var(--hair);
-  }
-  .block.quiet .h2 { max-width: 24ch; font-size: clamp(32px, 4.6vw, 58px); line-height: 1.08; }
-  .wrap-narrow .body { margin: 32px 0 0; max-width: 56ch; }
-
-  .window-head { margin-bottom: 64px; }
-  .window-head .h2 { max-width: 24ch; }
-  .window-head .lede { margin-top: 20px; max-width: 54ch; }
-  .window-grid {
-    list-style: none; margin: 0; padding: 0;
-    display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 32px;
-    border-top: 1px solid var(--hair-strong);
-  }
-  .window-grid > .stage {
-    position: relative;
-    padding: 32px 0 28px; display: grid; gap: 12px; align-content: start;
-    opacity: 0; transform: translateY(12px);
-    transition: opacity 480ms cubic-bezier(0.4,0,0.2,1), transform 480ms cubic-bezier(0.4,0,0.2,1);
-  }
-  .window-grid > .stage::before {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: 0;
-    width: 32px;
-    height: 1px;
-    background: var(--hair-strong);
-  }
-  .window-grid > .stage.critical::before { background: var(--warn); }
-  .window-grid.in > .stage { opacity: 1; transform: none; }
-  .window-grid.in > .stage:nth-child(1) { transition-delay: 0ms; }
-  .window-grid.in > .stage:nth-child(2) { transition-delay: 120ms; }
-  .window-grid.in > .stage:nth-child(3) { transition-delay: 240ms; }
-  .window-grid.in > .stage:nth-child(4) { transition-delay: 360ms; }
-  .chip-row { display: flex; align-items: center; gap: 12px; }
-  .time-chip {
-    display: inline-block; background: var(--accent); color: var(--black);
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
-    text-transform: uppercase; padding: 5px 9px; line-height: 1;
-  }
-  .time-chip.warn { background: var(--warn); }
-  .stage-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; color: var(--muted); text-transform: uppercase; }
-  .window-grid .h3 { font-size: 21px; margin: 4px 0 0; }
-  .window-grid p { max-width: 30ch; margin: 0; line-height: 1.58; }
-  .window-foot {
-    margin: 44px 0 0; padding-top: 24px; border-top: 1px solid var(--hair-strong);
-    font-family: var(--font-sans); font-size: clamp(18px, 1.8vw, 24px);
-    font-weight: 500; letter-spacing: -0.01em; color: var(--ink); max-width: 40ch;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .window-grid > .stage { opacity: 1; transform: none; transition: none; }
-  }
-
-  /* 4 · The gap. Heavy. */
-  .gap { padding: clamp(96px, 14vh, 168px) 0; background: var(--paper-soft); }
-  .gap-label { color: var(--accent); letter-spacing: 0.22em; }
-  .gap-h { color: var(--ink); max-width: 22ch; font-size: clamp(36px, 5.4vw, 70px); line-height: 1.08; }
-  .gap-body {
-    margin: 32px 0 0; font-family: var(--font-sans); font-size: 18px;
-    line-height: 1.66; color: var(--muted); max-width: 58ch;
-  }
-  .gap-realisation {
-    margin: 72px 0 0;
-    padding: 0 0 0 24px;
-    border-left: 1px solid var(--hair-strong);
-    display: grid; gap: 10px;
-    font-family: var(--font-sans); font-size: clamp(20px, 2.4vw, 30px);
-    font-weight: 500; letter-spacing: -0.02em; line-height: 1.25; max-width: 34ch;
-  }
-  .gap-realisation > span { color: var(--faint); }
-  .gap-realisation > strong { color: var(--ink); font-weight: 700; max-width: 30ch; margin-top: 6px; }
-  .gap-status { margin: 48px 0 0; display: flex; align-items: center; gap: 18px; }
-  .status-rule { display: block; width: 72px; height: 1px; background: var(--accent); }
-  .gauge-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); }
-  /* Sits under the refrain rather than beside it. The refrain poses the
-     question; this answers it without taking the emphasis. */
-  .gap-answer {
-    margin: 20px 0 0; font-family: var(--font-sans); font-size: 15px;
-    line-height: 1.6; color: var(--faint); max-width: 48ch;
-  }
-
-  /* 5 · The verdict. It stays on the same left rail; the verdict object
-     becomes the object on the right, not a centred interruption. */
-  .verdict { padding-top: clamp(112px, 16vh, 184px); padding-bottom: clamp(112px, 16vh, 184px); }
-  .verdict-flow {
-    display: grid;
-    grid-template-columns: minmax(0, 0.86fr) minmax(520px, 1.14fr);
-    gap: clamp(48px, 7vw, 96px);
-    align-items: center;
-  }
-  .verdict-lead { max-width: 52ch; margin: 0; text-align: left; }
-  .verdict-lead .label { letter-spacing: 0.12em; }
-  .verdict-lead .h2 { max-width: 24ch; margin: 0; font-size: clamp(32px, 4vw, 54px); }
-  .verdict-lead .body { margin: 24px 0 0; max-width: 48ch; }
-  .verdict-stage { display: flex; justify-content: flex-start; min-width: 0; }
-
-  /* 6 · Close. Sparse. */
-  .close { padding-top: clamp(112px, 16vh, 200px); padding-bottom: clamp(112px, 16vh, 200px); }
-  .close-wrap { display: grid; gap: 28px; justify-items: start; }
-  .close-q {
-    font-family: var(--font-sans); font-weight: 700;
-    font-size: clamp(40px, 6vw, 88px); letter-spacing: -0.02em;
-    line-height: 1.0; margin: 0; max-width: 18ch; color: var(--ink);
-  }
-  .close-line { font-family: var(--font-sans); font-size: 16px; line-height: 1.65; color: var(--muted); margin: 0; max-width: 56ch; }
-  .close-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-
-  @media (max-width: 880px) {
-    .window-grid { grid-template-columns: 1fr 1fr; column-gap: 24px; }
-    .verdict-flow { grid-template-columns: 1fr; align-items: start; }
-    .verdict-stage { max-width: 760px; }
-  }
-  @media (max-width: 560px) {
-    .hero .wrap,
-    .block.quiet > .wrap,
-    .block.quiet > .wrap-narrow,
-    .gap > .wrap-narrow,
-    .verdict > .wrap,
-    .close > .wrap {
-      max-width: var(--max);
-    }
-    /* The consent banner is a fixed overlay on a first visit. A shorter
-       hero lifts the primary action clear of it, so "Discuss your system"
-       is fully visible and fully clickable before the banner is answered. */
-    .hero {
-      min-height: 0;
-      padding-top: 64px;
-      padding-bottom: 56px;
-    }
-    .hero-chain { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
-    .window-grid { grid-template-columns: 1fr; }
-    .gap-realisation { padding-left: 18px; }
-  }
-
-  /* 2 · Situations. Relevance, using the shared card grid. */
+  /* 2 · Situations */
   .situations { border-bottom: 1px solid var(--hair); }
   .situations .h2 { max-width: 20ch; margin: 0 0 56px; }
   .situation-grid { list-style: none; margin: 0; padding: 0; }
-  .situation-kicker {
-    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--accent);
-  }
+  .situation-kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
   .situation-grid .h3 { font-size: 21px; margin: 0; }
   .situation-grid p { margin: 0; }
+  .situations-foot { margin: 48px 0 0; max-width: 62ch; }
 
-  /* 5 · What is assessed. Sits under the verdict object on the same rail. */
-  .chain-head {
-    margin: clamp(72px, 10vh, 120px) 0 0;
-    padding-top: 32px;
-    border-top: 1px solid var(--hair-strong);
+  /* 3 · Finding */
+  .finding-block { background: var(--paper-soft); border-bottom: 1px solid var(--hair); }
+  .finding-block .h2 { max-width: 22ch; }
+  .finding-block .lede { margin-top: 16px; max-width: 60ch; }
+  .finding-scope {
+    margin: 48px 0 0; padding-top: 28px; border-top: 1px solid var(--hair-strong);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 22px clamp(32px, 5vw, 72px); align-content: start;
   }
-  .chain-list {
-    list-style: none; margin: 36px 0 0; padding: 0;
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
-  }
-  .chain-list > li { display: grid; gap: 10px; align-content: start; }
-  .chain-n {
-    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--accent);
-  }
-  .chain-list p { margin: 0; max-width: 34ch; }
-  .chain-foot { margin: 36px 0 0; max-width: 62ch; }
-
-  /* Illustrative finding. Deliberately set apart from the verdict object
-     above it, so a constructed example is never mistaken for assessment
-     evidence. Bronze rail on the left, label above, caveat below. */
-  .finding {
-    margin: clamp(56px, 8vh, 88px) 0 0;
-    padding: 32px 0 0 28px;
-    border-left: 2px solid var(--accent);
-    border-top: 1px solid var(--hair);
-    max-width: 72ch;
-  }
-  .finding-label { color: var(--accent); }
-  .finding-list { margin: 0; display: grid; gap: 20px; }
-  .finding-list > div { display: grid; gap: 6px; }
-  .finding-list dt {
+  .finding-scope div { display: grid; gap: 6px; }
+  .finding-scope dt,
+  .finding-verdict dt {
     font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em;
     text-transform: uppercase; color: var(--faint);
   }
-  .finding-list dd {
-    margin: 0; font-family: var(--font-sans); font-size: 17px;
-    line-height: 1.6; color: var(--ink); max-width: 60ch;
+  .finding-scope dd,
+  .finding-verdict dd { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--ink); max-width: 52ch; }
+  .finding-verdict {
+    margin: 40px 0 0; padding: 28px 0 0 28px; border-left: 2px solid var(--accent);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
   }
-  .finding-note {
-    margin: 28px 0 0; font-size: 15px; line-height: 1.6;
-    color: var(--faint); max-width: 60ch;
+  .finding-verdict div { display: grid; gap: 8px; align-content: start; }
+  .finding-note { margin: 24px 0 0; font-size: 15px; line-height: 1.6; color: var(--faint); max-width: 60ch; }
+
+  .chain-head { margin: clamp(64px, 9vh, 104px) 0 0; padding-top: 32px; border-top: 1px solid var(--hair-strong); }
+  .chain-foot { margin: 20px 0 0; max-width: 62ch; }
+  .states { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px 32px; }
+  .states > li { display: grid; gap: 8px; align-content: start; padding-top: 16px; border-top: 1px solid var(--hair); }
+  .state-name { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); }
+  .states p { margin: 0; max-width: 34ch; font-size: 15px; }
+
+  /* 4 · Offers */
+  .engage { border-bottom: 1px solid var(--hair); }
+  .engage-terms {
+    margin: 48px 0 0; padding-top: 28px; border-top: 1px solid var(--hair-strong);
+    font-family: var(--font-sans); font-size: 16px; line-height: 1.65; color: var(--muted); max-width: 68ch;
   }
 
-  /* 6 · The engagement. Obligation on the left, return on the right. */
-  .engage { border-top: 1px solid var(--hair); background: var(--paper-soft); }
-  .engage .h2 { max-width: 22ch; margin: 0 0 56px; }
-  .offer-grid {
-    list-style: none; margin: 0; padding: 0;
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: clamp(40px, 6vw, 88px);
-  }
-  .offer { display: grid; gap: 16px; align-content: start; padding-top: 24px; border-top: 1px solid var(--hair-strong); }
-  .offer-kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
-  .offer-name { margin: 0; }
-  .offer-short { margin: 0; max-width: 46ch; }
-  .offer-list-label { margin-top: 8px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
-  .offer-exclusion { margin: 4px 0 0; max-width: 48ch; font-size: 15px; }
-  .offer-price {
-    margin: 8px 0 0; font-family: var(--font-sans); font-size: 20px; font-weight: 700;
-    color: var(--ink); display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px;
-  }
-  .offer-price-note { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); font-weight: 400; }
-  .offer-timing { margin: 0; max-width: 48ch; font-size: 15px; }
-  .basis-head { margin: 56px 0 0; padding-top: 28px; border-top: 1px solid var(--hair-strong); }
-  .engage-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-  .engage-list > li {
-    position: relative; padding-left: 22px;
-    font-family: var(--font-sans); font-size: 17px; line-height: 1.6;
-    color: var(--ink); max-width: 46ch;
-  }
-  .engage-list > li::before {
-    content: ''; position: absolute; left: 0; top: 11px;
-    width: 10px; height: 1px; background: var(--accent);
-  }
-  .engage-terms,
-  .engage-next {
-    margin: 48px 0 0; padding-top: 28px;
-    border-top: 1px solid var(--hair-strong);
-    font-family: var(--font-sans); font-size: 17px; line-height: 1.65;
-    color: var(--muted); max-width: 68ch;
-  }
-  .engage-next { margin-top: 20px; padding-top: 0; border-top: 0; }
-  .engage-terms strong,
-  .engage-next strong { color: var(--ink); font-weight: 700; }
+  /* 5 · Basis and next step */
+  .basis { background: var(--paper-soft); border-bottom: 1px solid var(--hair); }
+  .basis-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(40px, 6vw, 96px); align-items: start; }
+  .basis .h2 { max-width: 20ch; font-size: clamp(26px, 3vw, 36px); }
+  .basis .body { margin: 20px 0 0; max-width: 52ch; }
+  .basis .hero-cta { margin-top: 28px; }
+
+  /* 6 · Close */
+  .close { padding-top: clamp(96px, 14vh, 176px); padding-bottom: clamp(96px, 14vh, 176px); }
+  .close-wrap { display: grid; gap: 28px; justify-items: start; }
+  .close-q { font-family: var(--font-sans); font-weight: 700; font-size: clamp(40px, 6vw, 88px); letter-spacing: -0.02em; line-height: 1.0; margin: 0; max-width: 18ch; color: var(--ink); }
+  .close-line { font-family: var(--font-sans); font-size: 16px; line-height: 1.65; color: var(--muted); margin: 0; max-width: 56ch; }
+  .close-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 
   @media (max-width: 880px) {
-    .chain-list { grid-template-columns: 1fr 1fr; gap: 28px; }
-    .offer-grid { grid-template-columns: 1fr; }
+    .finding-scope { grid-template-columns: 1fr; }
+    .finding-verdict { grid-template-columns: 1fr; }
+    .states { grid-template-columns: 1fr; }
+    .basis-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {
-    .chain-list { grid-template-columns: 1fr; }
-    .finding { padding-left: 18px; }
-    .situations .h2,
-    .engage .h2 { margin-bottom: 40px; }
+    .hero .wrap, .finding-block > .wrap, .close > .wrap { max-width: var(--max); }
+    .hero { padding-top: 40px; padding-bottom: 44px; }
+    .hero .display-xl { font-size: clamp(36px, 11vw, 48px); }
+    .hero-sub { margin-top: 16px; font-size: 17px; }
+    .hero-cta { margin-top: 24px; }
+    .hero-chain { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+    .finding-verdict { padding-left: 18px; }
+    .situations .h2, .engage .h2 { margin-bottom: 40px; }
   }
 </style>
