@@ -104,8 +104,8 @@ test.describe('buyer journey pass', () => {
     const text = await page.locator('main').innerText();
     expect(text).not.toMatch(/engineHash|manifestHash|keyId|scoredAt/);
     expect(text).toMatch(/constructed illustration/i);
-    expect(text).toMatch(/four and ninety-six hours/);
-    expect(text).toMatch(/at least seven days/);
+    expect(text).toMatch(/4 to 96 hours|four and ninety-six hours/);
+    expect(text).toMatch(/≥ 7 days|at least seven days/);
     expect(text).toMatch(/not an issued assessment or a verified outcome/);
     const finding = await page.locator('.finding-block').innerText();
     expect(finding).not.toMatch(/£|\/ 5|108k|EXPOSED/);

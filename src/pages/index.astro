@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { offers, PRICE_QUALIFIER, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../lib/offers';
 import { markAgda } from '../lib/marks';
+import FindingChain from '../components/FindingChain.astro';
+import OfferChoice from '../components/OfferChoice.astro';
 
 /* Section order, front to back: doorway, relevance (three situations),
    what the assessment shows (one constructed finding, the four stages,
@@ -30,15 +32,6 @@ const situations = [
   },
 ];
 
-/* Plain-language descriptions of the four stages, condensed from
-   /intervention-readiness/intervention-chain/. */
-const chain = [
-  { n: '01', name: 'Detect', p: 'Whether a deviation is identified, and how long it takes a signal to reach anyone who can act.' },
-  { n: '02', name: 'Escalate', p: 'Whether the signal reaches someone with authority, and how long that takes when the usual route is busy or absent.' },
-  { n: '03', name: 'Decide', p: 'Whether a stop decision can be made with the authority it needs. Agreed thresholds are fast. Thresholds invented under pressure are not.' },
-  { n: '04', name: 'Intervene', p: 'Whether the system can actually be altered or halted, and what happens to decisions already made.' },
-];
-
 const states = [
   { name: 'Before impact', p: 'The chain completes in time under the assessed conditions.' },
   { name: 'At risk', p: 'The chain completes, but within a margin that ordinary operational pressure can erode.' },
@@ -51,16 +44,8 @@ const states = [
 const finding = {
   system: 'CRED-MOD-04, a retail credit decisioning model. Automated approve, decline or refer decisions; the question concerns the auto-decline pathway.',
   scenario: 'A macro shock coincides with model drift and creates a need to stop or redirect the affected pathway.',
-  window: 'About six hours, held as a scenario assumption. Its operational basis is not established in the example.',
-  rows: [
-    { k: 'Detect', v: 'Drift is identified in about twelve minutes.' },
-    { k: 'Escalate', v: 'Reaching a person with authority takes between four and ninety-six hours. The route alone can exceed the window.' },
-    { k: 'Decide', v: 'That person cannot halt unilaterally. The quorum they need takes at least seven days, with no out-of-cycle route.' },
-    { k: 'Intervene', v: 'A halt would propagate in about six minutes if instructed. Decisions already made are reprocessed the next day.' },
-  ],
-  limit: 'The constraint is authority, not detection. The quorum delay on its own puts intervention after impact; faster detection cannot change that.',
   decision: 'Whether the auto-decline pathway can keep operating under its present authority arrangements, and what has to change before the organisation relies on it: who may authorise a halt, how that person is reached out of hours, and how the route is exercised before it is needed.',
-  limits: 'One pathway and one scenario. The intervals are separate illustrative facts and are not added together. Nothing here is a conclusion about any institution, other systems or legal conformity.',
+  limits: 'One pathway and one scenario. Nothing here is a conclusion about any institution, other systems or legal conformity.',
 };
 ---
 
@@ -129,27 +114,14 @@ const finding = {
         issued assessment or a verified outcome.
       </p>
 
-      <div class="finding-grid">
-        <dl class="finding-scope">
-          <div><dt>System</dt><dd>{finding.system}</dd></div>
-          <div><dt>Scenario</dt><dd>{finding.scenario}</dd></div>
-          <div><dt>Assumed window</dt><dd>{finding.window}</dd></div>
-        </dl>
-        <ol class="finding-chain" role="list">
-          {finding.rows.map((r, i) => (
-            <li>
-              <span class="mono finding-n">{String(i + 1).padStart(2, '0')} {r.k}</span>
-              <p>{r.v}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
+      <dl class="finding-scope">
+        <div><dt>System</dt><dd>{finding.system}</dd></div>
+        <div><dt>Scenario</dt><dd>{finding.scenario}</dd></div>
+      </dl>
+
+      <FindingChain />
 
       <dl class="finding-verdict">
-        <div class="finding-limit">
-          <dt>Limiting dependency</dt>
-          <dd>{finding.limit}</dd>
-        </div>
         <div>
           <dt>Decision the finding supports</dt>
           <dd>{finding.decision}</dd>
@@ -161,19 +133,9 @@ const finding = {
       </dl>
       <p class="finding-note">
         <a href="/sample-report/" class="link">Read the full constructed sample</a>.
-        The sample is not signed and carries no verdict state that could be
-        relied on.
       </p>
 
-      <h3 class="h3 chain-head">What a full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment examines.</h3>
-      <ol class="chain-list" role="list">
-        {chain.map((c) => (
-          <li>
-            <span class="mono chain-n">{c.n} {c.name}</span>
-            <p class="body muted">{c.p}</p>
-          </li>
-        ))}
-      </ol>
+      <h3 class="h3 chain-head">What a full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment returns.</h3>
       <p class="body muted chain-foot">
         Each stage is assessed against evidence. The weakest stage constrains
         the chain, and the assessment names it. A full Assessment returns one of
@@ -190,33 +152,10 @@ const finding = {
     </div>
   </section>
 
-  <!-- 4 · THE TWO OFFERS -->
+  <!-- 4 · THE TWO OFFERS. Shared diagram; the full sheets are on /services/. -->
   <section class="block engage" id="offers">
     <div class="wrap">
-      <span class="label section-kicker">Two ways to begin</span>
-      <h2 class="h2">Choose the right <em>starting point.</em></h2>
-
-      <ul class="offer-grid" role="list">
-        {offers.map((o) => (
-          <li class="offer" id={`offer-${o.slug}`}>
-            <span class="mono offer-kicker">{o.slug === 'review' ? 'Preliminary' : 'Full assessment'}</span>
-            <h3 class="h3 offer-name" set:html={markAgda(o.name)} />
-            <p class="body muted offer-short" set:html={markAgda(o.short)} />
-            <span class="mono offer-list-label">What it decides</span>
-            <p class="body offer-decision" set:html={markAgda(o.decision)} />
-            <span class="mono offer-list-label">What you receive</span>
-            <ul class="engage-list" role="list">
-              {o.receive.map((r) => <li set:html={markAgda(r)} />)}
-            </ul>
-            <span class="mono offer-list-label">Start here when</span>
-            <p class="body muted offer-suitable" set:html={markAgda(o.suitable)} />
-            <p class="body muted offer-exclusion" set:html={markAgda(o.exclusionShort)} />
-            <p class="offer-price"><span class="mono offer-price-note">{o.priceNote}</span> {o.price}</p>
-            <p class="body muted offer-timing">{o.timing}</p>
-          </li>
-        ))}
-      </ul>
-
+      <OfferChoice headingLevel="h2" />
       <p class="engage-terms">
         {PRICE_QUALIFIER} {AVAILABILITY}
         <a href="/services/" class="link">Scope, exclusions and how an engagement runs</a>.
@@ -327,11 +266,10 @@ const finding = {
   .finding-block { background: var(--paper-soft); border-bottom: 1px solid var(--hair); }
   .finding-block .h2 { max-width: 22ch; }
   .finding-block .lede { margin-top: 16px; max-width: 60ch; }
-  .finding-grid {
-    margin: 56px 0 0; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: clamp(40px, 6vw, 80px); border-top: 1px solid var(--hair-strong); padding-top: 32px;
+  .finding-scope {
+    margin: 48px 0 0; padding-top: 28px; border-top: 1px solid var(--hair-strong);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 22px clamp(32px, 5vw, 72px); align-content: start;
   }
-  .finding-scope { margin: 0; display: grid; gap: 22px; align-content: start; }
   .finding-scope div { display: grid; gap: 6px; }
   .finding-scope dt,
   .finding-verdict dt {
@@ -340,24 +278,15 @@ const finding = {
   }
   .finding-scope dd,
   .finding-verdict dd { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--ink); max-width: 52ch; }
-  .finding-chain { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--hair); }
-  .finding-chain > li { padding: 16px 0; border-bottom: 1px solid var(--hair); display: grid; gap: 6px; }
-  .finding-n { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
-  .finding-chain p { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--ink); max-width: 56ch; }
   .finding-verdict {
     margin: 40px 0 0; padding: 28px 0 0 28px; border-left: 2px solid var(--accent);
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
   }
   .finding-verdict div { display: grid; gap: 8px; align-content: start; }
-  .finding-limit dd { font-weight: 700; }
   .finding-note { margin: 24px 0 0; font-size: 15px; line-height: 1.6; color: var(--faint); max-width: 60ch; }
 
   .chain-head { margin: clamp(64px, 9vh, 104px) 0 0; padding-top: 32px; border-top: 1px solid var(--hair-strong); }
-  .chain-list { list-style: none; margin: 36px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
-  .chain-list > li { display: grid; gap: 10px; align-content: start; }
-  .chain-n { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
-  .chain-list p { margin: 0; max-width: 34ch; }
-  .chain-foot { margin: 36px 0 0; max-width: 62ch; }
+  .chain-foot { margin: 20px 0 0; max-width: 62ch; }
   .states { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px 32px; }
   .states > li { display: grid; gap: 8px; align-content: start; padding-top: 16px; border-top: 1px solid var(--hair); }
   .state-name { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); }
@@ -365,22 +294,6 @@ const finding = {
 
   /* 4 · Offers */
   .engage { border-bottom: 1px solid var(--hair); }
-  .engage .h2 { max-width: 22ch; margin: 0 0 56px; }
-  .offer-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 88px); }
-  .offer { display: grid; gap: 14px; align-content: start; padding-top: 24px; border-top: 1px solid var(--hair-strong); }
-  .offer-kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
-  .offer-name { margin: 0; }
-  .offer-short { margin: 0; max-width: 46ch; }
-  .offer-list-label { margin-top: 10px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
-  .offer-decision { margin: 0; max-width: 48ch; font-size: 16px; color: var(--ink); }
-  .offer-suitable { margin: 0; max-width: 48ch; font-size: 15px; }
-  .offer-exclusion { margin: 4px 0 0; max-width: 48ch; font-size: 15px; }
-  .engage-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-  .engage-list > li { position: relative; padding-left: 22px; font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--ink); max-width: 46ch; }
-  .engage-list > li::before { content: ''; position: absolute; left: 0; top: 11px; width: 10px; height: 1px; background: var(--accent); }
-  .offer-price { margin: 8px 0 0; font-family: var(--font-sans); font-size: 20px; font-weight: 700; color: var(--ink); display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; }
-  .offer-price-note { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); font-weight: 400; }
-  .offer-timing { margin: 0; max-width: 48ch; font-size: 15px; }
   .engage-terms {
     margin: 48px 0 0; padding-top: 28px; border-top: 1px solid var(--hair-strong);
     font-family: var(--font-sans); font-size: 16px; line-height: 1.65; color: var(--muted); max-width: 68ch;
@@ -401,11 +314,9 @@ const finding = {
   .close-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 
   @media (max-width: 880px) {
-    .finding-grid { grid-template-columns: 1fr; }
+    .finding-scope { grid-template-columns: 1fr; }
     .finding-verdict { grid-template-columns: 1fr; }
-    .chain-list { grid-template-columns: 1fr 1fr; gap: 28px; }
     .states { grid-template-columns: 1fr; }
-    .offer-grid { grid-template-columns: 1fr; }
     .basis-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {
@@ -415,7 +326,6 @@ const finding = {
     .hero-sub { margin-top: 16px; font-size: 17px; }
     .hero-cta { margin-top: 24px; }
     .hero-chain { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
-    .chain-list { grid-template-columns: 1fr; }
     .finding-verdict { padding-left: 18px; }
     .situations .h2, .engage .h2 { margin-bottom: 40px; }
   }
