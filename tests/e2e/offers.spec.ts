@@ -97,3 +97,57 @@ test.describe('navigation', () => {
     await expect(page.locator('#takeover-menu a[href="/services/"]')).toHaveAttribute('aria-current', 'page');
   });
 });
+
+test.describe('buyer journey pass', () => {
+  test('homepage carries no attestation specimen and one constructed finding', async ({ page }) => {
+    await page.goto('/');
+    const text = await page.locator('main').innerText();
+    expect(text).not.toMatch(/engineHash|manifestHash|keyId|scoredAt/);
+    expect(text).toMatch(/constructed illustration/i);
+    expect(text).toMatch(/four and ninety-six hours/);
+    expect(text).toMatch(/at least seven days/);
+    expect(text).toMatch(/not an issued assessment or a verified outcome/);
+    const finding = await page.locator('.finding-block').innerText();
+    expect(finding).not.toMatch(/£|\/ 5|108k|EXPOSED/);
+  });
+
+  test('the Review states its own decision and what the client keeps', async ({ page }) => {
+    for (const route of ['/', '/services/']) {
+      await page.goto(route);
+      const text = await page.locator('main').innerText();
+      expect(text, route).toMatch(/material intervention question/);
+      expect(text, route).toMatch(/does not include the AGDA™ verdict/);
+    }
+    await page.goto('/services/');
+    const review = await page.locator('#review').innerText();
+    expect(review).toMatch(/What it decides/i);
+    expect(review).toMatch(/What you keep/i);
+    expect(review).toMatch(/Start here when/i);
+  });
+
+  test('the primary action clears the consent banner on first load', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForTimeout(500);
+    const clear = await page.evaluate(() => {
+      const cta = document.querySelector('.hero .btn')!.getBoundingClientRect();
+      const banner = document.querySelector('.consent')!.getBoundingClientRect();
+      return cta.bottom < banner.top;
+    });
+    expect(clear).toBe(true);
+  });
+
+  test('quick navigation shows on desktop only and is keyboard reachable', async ({ page, isMobile }) => {
+    await page.goto('/');
+    const nav = page.locator('.quick-nav');
+    if (isMobile) {
+      await expect(nav).toBeHidden();
+    } else {
+      await expect(nav).toBeVisible();
+      await expect(nav.locator('a')).toHaveCount(3);
+      await page.keyboard.press('Tab'); // skip link
+      await page.keyboard.press('Tab'); // logo
+      await page.keyboard.press('Tab');
+      await expect(nav.locator('a').first()).toBeFocused();
+    }
+  });
+});

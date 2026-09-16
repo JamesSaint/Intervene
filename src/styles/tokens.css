@@ -30,7 +30,7 @@
   /* Warm text hierarchy on dark surfaces. */
   --muted:      #c8c6c4;
   --muted-soft: #a8a5a2;
-  --faint:      #797673;
+  --faint:      #8e8b87; /* 5.4:1 on --paper-soft; the previous #797673 sat at 4.1:1 */
 
   /* Accent: HIA-style muted gold. */
   --accent:       #c9b694;

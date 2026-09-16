@@ -25,12 +25,6 @@ const excluded = [
   'Formal regulatory certification.',
 ];
 
-const notProduct = [
-  { h: 'Not a governance framework.', p: 'We assess whether governance can intervene, not whether its artefacts are complete.' },
-  { h: 'Not a compliance solution.',  p: 'Regulatory pressure can make the question important. It is not the category. The category is Intervention Readiness.' },
-  { h: 'Not a risk score.',           p: 'One conclusion on one question: <span class="keep-together">can you stop it in time?</span> It informs a risk register; it does not replace one.' },
-  { h: 'Not a monitoring tool.',      p: 'A scoped assessment of one system, pathway and scenario. Ongoing monitoring and software integration are outside the standard engagement.' },
-];
 
 const useCases = [
   'Payments: routing, release or rejection, transaction prioritisation, real-time decisioning.',
@@ -90,6 +84,10 @@ const useCases = [
                 </dd>
               </div>
               <div>
+                <dt>What it decides</dt>
+                <dd set:html={markAgda(o.decision)} />
+              </div>
+              <div>
                 <dt>{o.slug === 'review' ? 'What you receive' : 'Full-assessment deliverables'}</dt>
                 <dd>
                   <ul class="plain" role="list">
@@ -97,6 +95,14 @@ const useCases = [
                   </ul>
                   {o.slug === 'assessment' && <p class="records-note">{RECORDS_NOTE}</p>}
                 </dd>
+              </div>
+              <div>
+                <dt>{o.slug === 'review' ? 'What you keep' : 'What you keep'}</dt>
+                <dd set:html={markAgda(o.retain)} />
+              </div>
+              <div>
+                <dt>Start here when</dt>
+                <dd set:html={markAgda(o.suitable)} />
               </div>
               <div>
                 <dt>{o.slug === 'review' ? 'Not included' : 'Separately scoped'}</dt>
@@ -278,21 +284,6 @@ const useCases = [
     </div>
   </section>
 
-  <!-- WHAT AGDA™ IS NOT -->
-  <section class="block" id="what-agda-is-not">
-    <div class="wrap">
-      <h2 class="h2">What <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> <em>is not.</em></h2>
-      <ul class="not-list" role="list">
-        {notProduct.map((n) => (
-          <li>
-            <h3 class="h3">{n.h}</h3>
-            <p class="body muted" set:html={markAgda(n.p)} />
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
   <!-- FAQ. Shared with /agda/; emitted as FAQPage JSON-LD. -->
   <section class="block">
     <div class="wrap">
@@ -449,18 +440,6 @@ const useCases = [
   /* ----- Beyond one system ----- */
   .wrap-narrow .body { max-width: 62ch; margin: 16px 0 0; }
 
-  /* ----- Not list ----- */
-  .not-list {
-    list-style: none;
-    margin: 64px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 56px 80px;
-  }
-  .not-list > li { display: grid; gap: 12px; }
-  .not-list p { max-width: 44ch; margin: 0; }
-
   /* ----- FAQ ----- */
   .faq-list { margin: 56px 0 0; border-top: 1px solid var(--hair-strong); }
   .faq-list > div {
@@ -506,7 +485,6 @@ const useCases = [
     .buyer-grid { grid-template-columns: 1fr; gap: 40px; }
     .control-grid { grid-template-columns: 1fr; gap: 40px; }
     .stage { grid-template-columns: 1fr; gap: 20px; }
-    .not-list { grid-template-columns: 1fr; gap: 48px; }
     .faq-list > div { grid-template-columns: 1fr; gap: 16px; }
     .close-grid { grid-template-columns: 1fr; gap: 48px; }
   }
