@@ -26,6 +26,12 @@ export interface Offer {
   exclusion: string;
   /** One line for the homepage card; the full exclusion is on /services/. */
   exclusionShort: string;
+  /** The practical decision the engagement supports. */
+  decision: string;
+  /** What the client keeps if they go no further. */
+  retain: string;
+  /** When this engagement is the right starting point. */
+  suitable: string;
   timing: string;
   price: string;
   priceNote: string;
@@ -46,7 +52,7 @@ export const offers: Offer[] = [
   {
     slug: 'review',
     name: 'Intervention Readiness Review',
-    short: 'A focused review to establish the intervention question, the evidence you hold and whether a full assessment is warranted.',
+    short: 'A documented executive view of where one system could fail to be stopped in time, what evidence you hold and what a full assessment would need to examine.',
     purpose:
       'A focused entry engagement to determine whether a selected system presents a material intervention question and whether a full AGDA™ Assessment is justified.',
     scope: [
@@ -63,6 +69,9 @@ export const offers: Offer[] = [
     ],
     exclusion: 'The Review does not include the AGDA™ verdict, the SEDI findings or signed SEDI result records. It is not a discounted AGDA™ Assessment.',
     exclusionShort: 'The Review does not include the AGDA™ verdict. It is not a discounted AGDA™ Assessment.',
+    decision: 'Whether the selected system carries a material intervention question, and what you would need to assess, and to have access to, before relying on the answer.',
+    retain: 'The executive review stands on its own: a stated intervention question for the system, the preliminary chain, the evidence you hold and the gaps, and a scoped recommendation. It supports prioritisation and budget decisions whether or not a full Assessment follows.',
+    suitable: 'Start here when the system is newly identified, the evidence position is unclear, or several systems compete for attention. Where the system, pathway and scenario are already defined and evidence access is available, discuss a full Assessment directly.',
     timing: 'Scope, access and timing are agreed in the proposal.',
     price: '£20,000 to £35,000 + VAT',
     priceNote: 'Indicative fee',
@@ -92,6 +101,9 @@ export const offers: Offer[] = [
     exclusion:
       'Additional systems, pathways or scenarios, enterprise-wide inventory, governance redesign, legal opinion, full regulatory compliance assessment, model validation, penetration or cybersecurity testing, software development, implementation and remediation delivery are separately scoped. It is not regulatory certification.',
     exclusionShort: 'Connected systems, additional scenarios and implementation work are scoped separately. It is not regulatory certification.',
+    decision: 'Whether the agreed pathway can continue operating under its present intervention arrangements, and what has to change before the organisation relies on it.',
+    retain: 'The full package: scope record, evidence register, SEDI findings, the verdict with its confidence basis and limitations, executive interpretation and remediation priorities.',
+    suitable: 'Start here when the system, pathway and scenario are defined, the stakeholders and evidence are accessible, and the decision cannot wait for a preliminary review.',
     timing: 'Once an engagement begins, a standard assessment is estimated to run over approximately four weeks, subject to scope, stakeholder access and evidence readiness. The proposal sets the detailed timetable.',
     price: '£75,000 to £95,000 + VAT',
     priceNote: 'Indicative initial range',
@@ -145,7 +157,7 @@ export const offerFaqs = [
   {
     question: 'Is the Intervention Readiness Review a full AGDA™ Assessment?',
     answer:
-      'No. The Review establishes the intervention question, the evidence position and a recommendation on further assessment. It does not include the AGDA™ verdict, the SEDI findings or signed SEDI result records.',
+      'No. The Review is a standalone executive review of one system: the intervention question, the preliminary chain, the evidence you hold and the gaps, and a scoped recommendation. It supports prioritisation and budget decisions on its own. It does not include the AGDA™ verdict, the SEDI findings or signed SEDI result records.',
   },
   {
     question: 'Can a client challenge the conclusion?',
