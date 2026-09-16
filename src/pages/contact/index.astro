@@ -9,13 +9,13 @@ const info: { k: string; v: string; href?: string }[] = [
   { k: 'Response window', v: 'You receive a direct response within one to two working days. We do not auto-reply.' },
   { k: 'Email',           v: contactEmail, href: `mailto:${contactEmail}` },
   { k: 'No obligation',   v: 'An initial conversation is brief and creates no engagement. We will say if we are not the right fit.' },
-  { k: 'Office',          v: 'London, United Kingdom. Global mandates.' },
+  { k: 'Office',          v: 'London, United Kingdom.' },
 ];
 ---
 
 <BaseLayout
   title="Book a Conversation · Intervene"
-  description="Book a confidential conversation about an AGDA™ Intervention Readiness assessment for a consequential system where intervention must remain possible."
+  description="Book a confidential conversation about an Intervention Readiness Review or a full AGDA™ Assessment of a consequential system where intervention must remain possible."
   current="contact"
   ogImage="/assets/og/og-contact.png"
   pageType="ContactPage"
@@ -96,8 +96,33 @@ const info: { k: string; v: string; href?: string }[] = [
                 name="message"
                 rows="5"
                 required
+                aria-describedby="f-msg-help"
                 placeholder="A single line is enough."></textarea>
+              <p class="small muted field-help" id="f-msg-help">
+                The system, the decision or action it influences, and what
+                might require intervention.
+              </p>
             </div>
+            <fieldset class="choice-set">
+              <legend class="field-legend">Starting point</legend>
+              <div class="choice-list">
+                <label class="choice">
+                  <input type="radio" name="starting_point" value="not-sure" checked />
+                  <span class="choice-marker" aria-hidden="true"></span>
+                  <span class="choice-label">Not sure yet</span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="starting_point" value="review" />
+                  <span class="choice-marker" aria-hidden="true"></span>
+                  <span class="choice-label">Intervention Readiness Review</span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="starting_point" value="assessment" />
+                  <span class="choice-marker" aria-hidden="true"></span>
+                  <span class="choice-label">Full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment</span>
+                </label>
+              </div>
+            </fieldset>
 
             <input
               type="text"
@@ -179,6 +204,10 @@ const info: { k: string; v: string; href?: string }[] = [
      now live in src/styles/forms.css so the Snapshot does not
      duplicate them. Only the page layout remains here. */
   .form-col .h2 { max-width: 22ch; margin: 0 0 40px; }
+  .field-help { margin: 8px 0 0; }
+  .choice-set { border: 0; padding: 0; margin: 0; min-width: 0; }
+  .choice-set legend { padding: 0; }
+  .choice-set .choice-list { margin-top: 12px; }
 
   @media (max-width: 880px) {
     .hero { padding-top: 96px; padding-bottom: 96px; }

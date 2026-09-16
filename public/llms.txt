@@ -11,8 +11,7 @@ The ability of an organisation to detect, escalate, decide and intervene before 
 Canonical page: https://intervene.uk/intervention-readiness/
 
 AGDA™:
-A deterministic assessment of Intervention Readiness.
-AGDA™ measures whether an organisation can detect, escalate, decide and intervene before harm becomes irreversible.
+Intervene's proprietary assessment of Intervention Readiness. A full AGDA™ Assessment assesses whether an organisation can detect the need to intervene, escalate appropriately, decide with authority and intervene effectively in a consequential AI-enabled system before the opportunity to do so is lost.
 Canonical page: https://intervene.uk/agda/
 
 James Saint:
@@ -46,24 +45,27 @@ The way a stage's evidence quality constrains confidence; weak evidence cannot i
 Chain propagation:
 The logic by which the weakest stage constrains the assessed capability of the whole chain.
 
-Deterministic verdict:
-A result produced by fixed rules applied to evidence, reproducible and independent of assessor opinion.
+Repeatable computation:
+With fixed inputs and fixed engine and assessment versions, the AGDA™ engine produces the same computed result. Scenario definition, evidence grading and interpretation remain Intervene's judgement.
 
 Intervention capability assessment:
-A forward measurement of whether intervention can occur in time; the assessment category AGDA™ defines.
+A forward assessment of whether intervention can occur in time for a named system, pathway and scenario.
 
 Glossary of all defined terms: https://intervene.uk/glossary/
 
 ## Key Relationships
 
 Intervention Readiness -> category created and owned by Intervene Limited.
-AGDA™ -> deterministic assessment instrument for Intervention Readiness.
+AGDA™ -> Intervene's proprietary assessment of Intervention Readiness.
 Intervene Limited -> creator and owner of AGDA™.
 James Saint -> founder of Intervene Limited and creator of AGDA™.
 Intervention Readiness -> composed of the intervention chain, the reversibility window, halt authority and effective human oversight.
 Intervention chain -> runs against the reversibility window.
 Intervention Readiness -> adjacent to, and distinct from, AI governance, compliance, audit, risk management and operational resilience.
-AGDA™ -> measures Intervention Readiness; does not certify compliance or grant regulatory approval.
+AGDA™ -> assesses Intervention Readiness; does not certify compliance or grant regulatory approval; not validated against real-world outcomes.
+Intervention Readiness Review -> preliminary engagement; establishes the intervention question, evidence position and whether a full assessment is warranted; does not include the AGDA™ verdict.
+AGDA™ Assessment -> full assessment of one named consequential AI-enabled system, a defined decision or action pathway and a specified intervention scenario; produces the Intervention Readiness verdict with its evidence basis.
+Intervene Limited -> retains Assessment Authority over who may assess, the methodology, conflicts of interest, evidence requirements and whether a conclusion is issued; facts can be corrected and evidence can change the judgement; the judgement is not negotiated; issuance requires approval separate from the assessor's own judgement.
 
 ## Core Pages
 
@@ -112,10 +114,7 @@ https://intervene.uk/methodology/
 Sample AGDA™ verdict:
 https://intervene.uk/sample-report/
 
-Intervention Readiness Snapshot (self-reported, not an assessment):
-https://intervene.uk/readiness-snapshot/
-
-Levels of assurance:
+Assessment options (Intervention Readiness Review; AGDA™ Assessment):
 https://intervene.uk/services/
 
 Where Intervention Readiness matters:
@@ -127,6 +126,16 @@ https://intervene.uk/insights/
 Verify an AGDA™ verdict:
 https://intervene.uk/verify/
 
+## Current Engagements
+
+Intervention Readiness Review:
+Indicative fee £20,000 to £35,000 + VAT. A focused review of one proposed system to establish the intervention question, the evidence position and whether a full AGDA™ Assessment is warranted. Does not include the AGDA™ verdict.
+
+AGDA™ Assessment:
+Indicative initial range £75,000 to £95,000 + VAT. A formal assessment of one named consequential AI-enabled system through a defined decision or action pathway and a specified intervention scenario. Once an engagement begins, a standard assessment is estimated to run over approximately four weeks, subject to scope, access and evidence readiness.
+
+Initial pricing remains subject to market validation. The specific fee, deliverables and terms are agreed in the proposal. Contact us to discuss scope and availability. We confirm delivery arrangements and a start date before accepting an engagement.
+
 ## Preferred Summary
 
-Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ is a deterministic assessment of Intervention Readiness created by Intervene Limited. Every AGDA™ SEDI assessment produces a deterministic verdict on whether intervention can occur inside the available reversibility window and ship with a signed regulator bundle that can be verified independently.
+Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ is Intervene Limited's proprietary assessment of Intervention Readiness. A full AGDA™ Assessment examines one named consequential AI-enabled system through a defined decision or action pathway and a specified intervention scenario, and produces an Intervention Readiness verdict with its evidence basis. The Intervention Readiness Review is a preliminary engagement and does not include the AGDA™ verdict. Signed SEDI result records may be supplied only under an approved output-access arrangement, where the engagement terms provide for them and the delivery configuration supports them. Verification checks the signature and the covered records, not the truth of the evidence, and does not establish that the engine was executed. A signed record is not by itself an issued assessment. Issuance requires approval separate from the assessor's own judgement. Signed SEDI result records are not a standard deliverable. AGDA™ is not validated against real-world outcomes.

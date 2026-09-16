@@ -1,166 +1,64 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { markAgda } from '../../lib/marks';
+import { offers, activities, offerFaqs, buyingGroup, PRICE_QUALIFIER, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
 
-const reportLayers = [
-  {
-    name: 'Executive',
-    audience: 'CRO, board, audit committee',
-    body: 'Headline verdict, viability status, critical failure summary, regulatory exposure, priority actions. One-page decision frame.',
-  },
-  {
-    name: 'Operational',
-    audience: 'Head of Operational Resilience, Head of Model Risk',
-    body: 'Plus temporal gating with reasons, causal chain with timing, scenario impact, intervention chain, dimension findings.',
-  },
-  {
-    name: 'Specialist',
-    audience: 'Intervention readiness owner, regulator liaison',
-    body: 'Plus irreversibility profile, failure profiles, single points of failure, framework pressure, regulatory mapping, JSON export, attestation envelope.',
-  },
+/* Everything commercial on this page reads from src/lib/offers.ts so the
+   homepage, this page, the shared FAQ and the Offer schema nodes cannot
+   disagree. Copy here is limited to framing. */
+
+const included = [
+  'One named AI-enabled system, one defined consequential pathway and one specified intervention scenario.',
+  'Relevant business, risk and technology stakeholders.',
+  'Structured interviews and walkthroughs.',
+  'Review of relevant evidence.',
+  'Intervention-chain analysis and the AGDA™ assessment.',
+  'Executive-level findings and the defined assessment artefacts.',
 ];
 
-const buyerQuestions = [
-  {
-    audience: 'Executive leadership',
-    question: 'Can we proceed with confidence?',
-    answer: 'Evidence for deployment, approval and risk-acceptance decisions where assertion is not enough.',
-  },
-  {
-    audience: 'Risk leadership',
-    question: 'Can intervention still occur before harm becomes irreversible?',
-    answer: 'A measured view of detection, escalation, decision and intervention capability against a reversibility window.',
-  },
-  {
-    audience: 'Board & audit committee',
-    question: 'What evidence supports this decision?',
-    answer: 'An AGDA™ SEDI verdict and signed regulator bundle that can be verified after the decision is made.',
-  },
-];
-
-const tiers = [
-  {
-    name: 'Pilot',
-    framing: 'Initial evidence for one consequential system.',
-    question: 'Can this system be stopped before harm becomes irreversible?',
-    for: 'A first assessment, on the system carrying the decision that cannot wait.',
-    evidence: 'A signed Intervention Readiness verdict on one system, with the limiting stage named.',
-    decision: 'Deployment confidence, risk acceptance, remediation priority, board oversight and regulatory preparation.',
-    why: 'Creates a defensible evidence standard before the organisation relies on assertion or expands assessment across more systems.',
-    formats: [
-      'Short pilot · 1 system · four weeks',
-      'Structured pilot · 1 system',
-      'Structured pilot · 2 systems',
-      'Structured pilot · 3 systems',
-    ],
-    includes: 'Failure Exposure Report at all three audience layers, signed regulator bundle, attestation envelope, Intervention Simulator access, board evidence readout and close-out memo.',
-  },
-  {
-    name: 'Annual subscription',
-    framing: 'Standing evidence for recurring assurance decisions.',
-    question: 'Does Intervention Readiness remain evidenced as systems, dependence and operating conditions change?',
-    for: 'Organisations that have completed a pilot and need recurring evidence for material systems.',
-    evidence: 'Two assessed systems per year, quarterly re-run rights, engine-hash pinning, updated verdicts and annual board evidence readout.',
-    decision: 'Continued deployment, control investment, oversight renewal, risk committee decisions and regulator-facing assurance.',
-    why: 'Keeps the answer current as automation becomes more embedded and the cost of delayed intervention increases.',
-    formats: [
-      'Annual term',
-      'Equivalent quarterly term',
-    ],
-    includes: 'Standing Intervention Simulator access, two assessed systems per year, engine-hash pinning, quarterly re-run rights on each system, annual board evidence readout.',
-  },
-  {
-    name: 'Enterprise master',
-    framing: 'Group-level evidence across systems and entities.',
-    question: 'Can a complex organisation evidence intervention capability across the systems that matter most?',
-    for: 'Multi-entity groups, regulated portfolios and organisations facing material automation exposure across several operating units.',
-    evidence: 'Portfolio-level Intervention Readiness verdicts, signed SEDI regulator bundles for every assessed system, group CRO review, multi-entity reporting and designated AGDA™ operation.',
-    decision: 'Group assurance, regulatory engagement, critical deployment governance, resilience investment and board-level risk appetite.',
-    why: 'Aligns evidence across entities so the board is not comparing local assertions against group-level exposure.',
-    formats: [
-      'Enterprise assurance · annual term · custom-scoped',
-    ],
-    includes: 'Up to 5 assessed systems per year, regulator-liaison support, quarterly portfolio review with group CRO, board evidence readouts, multi-entity invoicing, designated AGDA™ operator.',
-    triggers: 'Custom scope applies when assurance spans multiple legal entities, material system portfolios or sustained regulator engagement.',
-  },
-];
-
-const addons = [
-  'Additional assessed system, post-pilot',
-  'Additional re-run, beyond quarterly included in Annual',
-  'Additional named Intervention Simulator operator',
-  'Additional board evidence readout, remote',
-  'Additional board evidence readout, on-site',
-  'Regulator bundle, post-engine-version change',
-];
-
-const services = [
-  'Operator enablement, internal assurance team (up to 2 raters)',
-  'Operator enablement, external assurance firm',
-  'External assurance firm annual renewal',
-  'Regulator-liaison support block',
+const excluded = [
+  'Enterprise-wide AI inventory or organisation-wide governance redesign.',
+  'Legal opinion or full regulatory compliance assessment.',
+  'Model validation, penetration testing or cybersecurity testing.',
+  'Software development, technology implementation or remediation programme delivery.',
+  'Unlimited interviews, additional unrelated systems or ongoing programme management.',
+  'Formal regulatory certification.',
 ];
 
 const notProduct = [
-  { h: 'Not a governance framework.', p: 'We measure whether governance can intervene, not whether its artefacts are complete.' },
-  { h: 'Not a compliance solution.',  p: 'Regulatory exposure is an output, not the category. The category is Intervention Readiness.' },
-  { h: 'Not a risk score.',           p: 'One verdict on one question: <span class="keep-together">can you stop it in time?</span> It informs a risk register; it does not replace one.' },
-  { h: 'Not a monitoring tool.',      p: 'A point-in-time verdict on intervention capability. Runtime monitoring is a different product.' },
+  { h: 'Not a governance framework.', p: 'We assess whether governance can intervene, not whether its artefacts are complete.' },
+  { h: 'Not a compliance solution.',  p: 'Regulatory pressure can make the question important. It is not the category. The category is Intervention Readiness.' },
+  { h: 'Not a risk score.',           p: 'One conclusion on one question: <span class="keep-together">can you stop it in time?</span> It informs a risk register; it does not replace one.' },
+  { h: 'Not a monitoring tool.',      p: 'A scoped assessment of one system, pathway and scenario. Ongoing monitoring and software integration are outside the standard engagement.' },
 ];
 
-const benchmarks = [
-  { h: 'Board assurance.',                       p: 'Where the question is whether oversight can actually intervene, not whether oversight has been described.' },
-  { h: 'Model risk and operational resilience.', p: 'Where the system is material, automated, and capable of creating harm faster than authority can move.' },
-  { h: 'Regulatory engagement preparation.',     p: 'Where the organisation needs verifiable evidence of Intervention Readiness, not certification or regulatory approval.' },
-];
-
-const stages = [
-  {
-    n: '01',
-    name: 'Nominate',
-    body: 'You name one consequential system and the single intervention question it has to answer.',
-  },
-  {
-    n: '02',
-    name: 'Scope',
-    body: 'Together you fix the success condition, the harm window and the evidence the assessment will draw on. You provide access to the people who know how the system is actually run, rather than how it is documented.',
-  },
-  {
-    n: '03',
-    name: 'Evidence',
-    body: 'You supply the control, escalation and drill evidence, with subject-matter time to explain it. It is graded for quality, not taken on assertion.',
-  },
-  {
-    n: '04',
-    name: 'Assess',
-    body: 'A trained rater runs the SEDI assessment against the eight dimensions. No system access, no integration, and nothing asked of you beyond clarification.',
-  },
-  {
-    n: '05',
-    name: 'Deliver',
-    body: 'The signed verdict is issued, presented at a board or executive readout, and closed out with a memo recording agreed actions and ownership. You provide the attendance.',
-  },
+const useCases = [
+  'Payments: routing, release or rejection, transaction prioritisation, real-time decisioning.',
+  'Fraud and financial crime: detection, transaction monitoring, case prioritisation, customer restrictions.',
+  'Credit and lending: credit assessment, affordability, credit-limit decisions, customer risk classification.',
+  'Wealth and investment: recommendations, portfolio decisions, suitability, risk alerts.',
+  'Treasury and markets: trading recommendations, automated execution, liquidity decisions, market-risk responses.',
 ];
 ---
 
 <BaseLayout
-  title="Evidence of Intervention Readiness · Intervene"
-  description="AGDA™ SEDI Intervention Readiness assessments provide signed regulator-bundle evidence for deployment, oversight, risk acceptance and regulatory scrutiny."
+  title="Assessment Options and Indicative Pricing · Intervene"
+  description="Choose an Intervention Readiness Review or a full AGDA™ Assessment. Scope, evidence access, deliverables and indicative fees are agreed before work begins."
   current="services"
   ogImage="/assets/og/og-services.png"
+  faqs={offerFaqs}
 >
   <!-- HERO -->
   <section class="hero">
     <div class="wrap">
-      <h1 class="h1 reveal">
-        Evidence for decisions that cannot rely on assertion.
-      </h1>
+      <h1 class="h1 reveal">Two ways to begin. <em>One named system.</em></h1>
       <p class="lede muted reveal">
-        A consequential system can act faster than the authority meant to
-        govern it. A control inventory alone does not establish whether
-        intervention can happen in time.
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> exists to answer whether intervention remains
-        possible before harm becomes irreversible.
+        The starting point is the system, the decision or action it
+        influences, and the intervention question. We agree the evidence and
+        access required before selecting the engagement. An Intervention
+        Readiness Review establishes whether a full assessment is warranted.
+        A full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment examines the agreed system, pathway and
+        scenario in depth.
       </p>
       <div class="hero-cta reveal">
         <a href="/contact/" class="btn">Discuss your system</a>
@@ -169,47 +67,55 @@ const stages = [
     </div>
   </section>
 
-
-  <!-- START HERE. The first engagement, stated in buying order:
-       suitability, scope, contribution, deliverables, timeframe, price.
-       Placed above the tier table because the pilot is the only thing a
-       first-time buyer can actually purchase. -->
+  <!-- THE TWO OFFERS. Spec sheets, from src/lib/offers.ts. -->
   <section class="block start-here">
     <div class="wrap">
-      <span class="label section-kicker">Start here</span>
-      <h2 class="h2">The short pilot. <em>One system, four weeks.</em></h2>
-      <p class="lede muted start-lede">
-        Almost every engagement begins the same way. One consequential system,
-        one intervention question, one signed verdict. Everything below this
-        section exists for organisations that have already run one.
-      </p>
+      <span class="label section-kicker">Current engagements</span>
+      <h2 class="h2">Choose the right <em>starting point.</em></h2>
 
-      <dl class="start-list">
-        <div>
-          <dt>Who it is for</dt>
-          <dd>Executive, risk or board teams facing a material deployment, approval, remediation or oversight decision, where the organisation needs verifiable evidence of Intervention Readiness rather than certification or regulatory approval.</dd>
-        </div>
-        <div>
-          <dt>Scope</dt>
-          <dd>One consequential system and the single intervention question it has to answer. Scope is fixed with you before work begins.</dd>
-        </div>
-        <div>
-          <dt>What you provide</dt>
-          <dd>The system and the question. Access to the right people while scope is fixed. Control, escalation and drill evidence, with subject-matter time to explain it. Board or executive time for the readout. No system access and no integration.</dd>
-        </div>
-        <div>
-          <dt>What you receive</dt>
-          <dd>A signed Intervention Readiness Verdict. A Failure Exposure Report at executive, operational and specialist layers. A board evidence readout. A close-out memo recording agreed actions and ownership.</dd>
-        </div>
-        <div>
-          <dt>Timeframe</dt>
-          <dd>Four weeks from named system to signed verdict, at this format. The five phases of an engagement run inside that window.</dd>
-        </div>
-        <div>
-          <dt>Commercial terms</dt>
-          <dd>Scope and price are fixed with you before work begins, and neither moves once the engagement starts. Clinical AI, medical devices, critical infrastructure and defence are scoped at a premium.</dd>
-        </div>
-      </dl>
+      <div class="offers">
+        {offers.map((o) => (
+          <article class="offer" id={o.slug} aria-labelledby={`offer-${o.slug}-name`}>
+            <span class="mono offer-kicker">{o.slug === 'review' ? 'Preliminary engagement' : 'Full assessment'}</span>
+            <h3 class="h3 offer-name" id={`offer-${o.slug}-name`} set:html={markAgda(o.name)} />
+            <p class="lede muted offer-purpose" set:html={markAgda(o.purpose)} />
+
+            <dl class="start-list">
+              <div>
+                <dt>Scope</dt>
+                <dd>
+                  <ul class="plain" role="list">
+                    {o.scope.map((x) => <li set:html={markAgda(x)} />)}
+                  </ul>
+                </dd>
+              </div>
+              <div>
+                <dt>{o.slug === 'review' ? 'What you receive' : 'Full-assessment deliverables'}</dt>
+                <dd>
+                  <ul class="plain" role="list">
+                    {o.receive.map((x) => <li set:html={markAgda(x)} />)}
+                  </ul>
+                  {o.slug === 'assessment' && <p class="records-note">{RECORDS_NOTE}</p>}
+                </dd>
+              </div>
+              <div>
+                <dt>{o.slug === 'review' ? 'Not included' : 'Separately scoped'}</dt>
+                <dd set:html={markAgda(o.exclusion)} />
+              </div>
+              <div>
+                <dt>Timing</dt>
+                <dd>{o.timing}</dd>
+              </div>
+              <div>
+                <dt>{o.priceNote}</dt>
+                <dd class="price">{o.price}</dd>
+              </div>
+            </dl>
+          </article>
+        ))}
+      </div>
+
+      <p class="body muted footnote price-qualifier">{PRICE_QUALIFIER} {AVAILABILITY}</p>
 
       <div class="cta-row start-cta">
         <a href="/contact/" class="btn">Discuss your system</a>
@@ -218,78 +124,52 @@ const stages = [
     </div>
   </section>
 
-  <!-- COMMERCIAL THESIS -->
+  <!-- SCOPE BOUNDARY -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">You are not buying activity. <em>You are buying evidence.</em></h2>
+      <h2 class="h2">What the standard assessment <em>includes and excludes.</em></h2>
       <p class="lede muted">
-        The value of an <a href="/intervention-readiness/" class="link">Intervention Readiness</a>
-        assessment is determined by the significance of the decision it
-        supports: deployment, high-risk system approval, regulatory scrutiny,
-        board assurance, operational resilience or executive confidence.
+        One named system does not mean unlimited pathways or scenarios. The
+        conclusion applies to the agreed conditions and evidence. Additional
+        systems, scenarios or implementation work require separate agreement.
       </p>
-
-      <ul class="buyer-grid reveal" role="list">
-        {buyerQuestions.map((b) => (
-          <li>
-            <span class="mono buyer-audience">{b.audience}</span>
-            <h3 class="h3">{b.question}</h3>
-            <p class="body muted" set:html={markAgda(b.answer)} />
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-  <!-- WHAT YOU GET -->
-  <section class="block">
-    <div class="wrap">
-      <h2 class="h2">What every assessment produces.</h2>
-      <p class="lede muted">
-        One result, read three ways. All three layers derive from the same
-        verdict, engine hash and attestation envelope, so they cannot disagree.
-      </p>
-
-      <ul class="layers reveal" role="list">
-        {reportLayers.map((l) => (
-          <li>
-            <h3 class="h3">{l.name}.</h3>
-            <span class="mono layer-aud">{l.audience}</span>
-            <p class="body muted">{l.body}</p>
-          </li>
-        ))}
-      </ul>
-
-      <div class="labs">
-        <h3 class="h3">Intervention Simulator.</h3>
-        <p class="body muted">
-          A what-if console for the resilience function. Test whether proposed
-          changes improve intervention timing without re-running the full
-          assessment. Included with the Pilot, and with the Annual subscription
-          as standing access across the year.
-        </p>
+      <div class="scope-grid">
+        <div>
+          <span class="mono col-label">Included</span>
+          <ul class="scope-list" role="list">
+            {included.map((x) => <li set:html={markAgda(x)} />)}
+          </ul>
+        </div>
+        <div>
+          <span class="mono col-label">Excluded unless separately contracted</span>
+          <ul class="scope-list" role="list">
+            {excluded.map((x) => <li>{x}</li>)}
+          </ul>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- HOW AN ENGAGEMENT RUNS -->
+  <!-- HOW AN ASSESSMENT RUNS -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">How an engagement runs.</h2>
+      <h2 class="h2">How a full assessment runs.</h2>
       <p class="lede muted">
-        Five phases from named system to signed verdict, with your obligation
-        named in the phase it falls in.
+        Four activities. Once an engagement begins, a standard full assessment
+        is estimated to run over approximately four weeks, subject to scope,
+        stakeholder access and evidence readiness. The proposal sets the
+        detailed timetable.
       </p>
 
       <ol class="stages" role="list">
-        {stages.map((s) => (
+        {activities.map((a, i) => (
           <li class="stage reveal">
             <div class="stage-head">
-              <span class="mono stage-n">{s.n}</span>
-              <h3 class="h3">{s.name}.</h3>
+              <span class="mono stage-n">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="h3">{a.name}.</h3>
             </div>
             <div class="stage-body">
-              <p class="body muted">{s.body}</p>
+              <p class="body muted" set:html={markAgda(a.body)} />
             </div>
           </li>
         ))}
@@ -297,113 +177,103 @@ const stages = [
     </div>
   </section>
 
-  <!-- THREE TIERS -->
+  <!-- WHO SHOULD BE IN THE CONVERSATION -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Three levels of assurance. <em>Scoped by decision significance.</em></h2>
+      <h2 class="h2">Who should be <em>in the conversation.</em></h2>
       <p class="lede muted">
-        The commercial unit is evidence of Intervention Readiness. Price comes
-        after the question answered, the evidence produced, and the decision
-        being supported.
+        An assessment is rarely bought by one person. The preferred
+        configuration brings three owners together. Legal, compliance,
+        enterprise risk, internal audit and procurement join as required.
       </p>
-      <p class="body muted tiers-note">
-        The first engagement is the short pilot: one system, four weeks, scoped
-        with you before work begins.
+      <ul class="buyer-grid reveal" role="list">
+        {buyingGroup.map((b) => (
+          <li>
+            <h3 class="h3">{b.role}</h3>
+            <p class="body muted">{b.example}</p>
+          </li>
+        ))}
+      </ul>
+
+      <h3 class="h3 services-head">Where we are starting.</h3>
+      <p class="body muted">
+        Our initial commercial focus is large UK and European regulated
+        financial institutions, on consequential pathways such as:
       </p>
-      <p class="body muted tiers-note">
+      <ul class="scope-list usecases" role="list">
+        {useCases.map((x) => <li>{x}</li>)}
+      </ul>
+      <p class="body muted footnote">
+        Financial services is the proving ground, not the limit. Other sectors
+        are discussed case by case.
+      </p>
+      <p class="body muted footnote">
         If your work puts you close to boards, risk leaders or accountable
         executives who should face this question, the
         <a href="/network/" class="link">Intervention Readiness Network</a>
         explains how the question can be put in front of them without becoming
         a sales role.
       </p>
-
-      <ol class="tiers" role="list">
-        {tiers.map((t) => (
-          <li class="tier reveal">
-            <div class="tier-head">
-              <span class="mono tier-label">Assurance level</span>
-              <h3 class="h3">{t.name}.</h3>
-              <span class="mono tier-framing">{t.framing}</span>
-            </div>
-
-            <div class="tier-body">
-              <dl class="tier-fields">
-                <div>
-                  <dt>Question answered</dt>
-                  <dd>{t.question}</dd>
-                </div>
-                <div>
-                  <dt>Who it is for</dt>
-                  <dd>{t.for}</dd>
-                </div>
-                <div>
-                  <dt>Evidence produced</dt>
-                  <dd set:html={markAgda(t.evidence)} />
-                </div>
-                <div>
-                  <dt>Decision supported</dt>
-                  <dd>{t.decision}</dd>
-                </div>
-                <div>
-                  <dt>Why it matters</dt>
-                  <dd>{t.why}</dd>
-                </div>
-              </dl>
-
-              <div class="tier-price-block">
-                <span class="mono price-heading">Formats</span>
-                <ul class="formats" role="list">
-                  {t.formats.map((f) => (
-                    <li><span class="format-label">{f}</span></li>
-                  ))}
-                </ul>
-              </div>
-
-              <p class="body muted tier-includes">
-                <strong>Assessment scope.</strong> <span set:html={markAgda(t.includes)} />
-              </p>
-              {t.triggers && (
-                <p class="mono tier-triggers">{t.triggers}</p>
-              )}
-            </div>
-          </li>
-        ))}
-      </ol>
-
-      <p class="body muted footnote tiers-footnote">
-        Every engagement is scoped with you before work begins. Clinical AI,
-        medical devices, critical infrastructure and defence are scoped at a
-        premium.
-      </p>
     </div>
   </section>
 
-  <!-- ADD-ONS -->
+  <!-- HOW THE ENGAGEMENT IS CONTROLLED -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Add-ons.</h2>
-      <p class="lede muted">
-        Additional evidence, re-runs and support when the decision requires
-        more coverage beyond what the engagement already includes.
+      <h2 class="h2">How the engagement <em>is controlled.</em></h2>
+      <div class="control-grid">
+        <div>
+          <h3 class="h3">Authority.</h3>
+          <p class="body muted">
+            Intervene retains Assessment Authority: over who may perform an
+            assessment, the methodology they apply, conflicts of interest, the
+            evidence requirements, and whether a conclusion is issued.
+            {SELF_APPROVAL}
+          </p>
+        </div>
+        <div>
+          <h3 class="h3">Independence.</h3>
+          <p class="body muted">
+            Facts can be corrected. Evidence can change the judgement. The
+            judgement itself is not negotiated. Agreement with the conclusion
+            or a favourable result is not a deliverable or an acceptance
+            criterion.
+          </p>
+        </div>
+        <div>
+          <h3 class="h3">Signed records.</h3>
+          <p class="body muted">
+            Signed SEDI result records are not a standard deliverable (see
+            the deliverables above). A signed record is not by itself an
+            issued assessment; issue is a separate, controlled step. The
+            signature covers specified records, not every item displayed in a
+            report or included in an export.
+            <a href="/verify/" class="link">What verification establishes</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEYOND ONE SYSTEM. Later-stage, not standard packages. -->
+  <section class="block">
+    <div class="wrap-narrow">
+      <h2 class="h2">Beyond one system.</h2>
+      <p class="body muted">
+        Neither of the following is a standard package today. Both are scoped
+        separately, informed by what initial engagements establish.
       </p>
-
-      <ul class="rate-card" role="list">
-        {addons.map((a) => (
-          <li><span class="rate-label">{a}</span></li>
-        ))}
-      </ul>
-
-      <h3 class="h3 services-head">Assessment support.</h3>
-      <ul class="rate-card" role="list">
-        {services.map((a) => (
-          <li><span class="rate-label">{a}</span></li>
-        ))}
-      </ul>
-
-      <p class="body muted footnote">
-        Scoped with you alongside the engagement they extend, on the same terms
-        as the assurance levels above.
+      <p class="body muted">
+        <strong class="ink">Structured Multi-System Assessment.</strong> Connected systems or
+        business areas assessed with a consistent method, recognising shared
+        evidence, dependencies and stakeholders. There is no standard
+        multiplier or published tariff.
+      </p>
+      <p class="body muted">
+        <strong class="ink">Standing Intervention Readiness Capability.</strong> Scheduled or
+        material-change reassessment for organisations that need repeated
+        evidence. A later development; scope and terms will be defined after
+        initial paid engagements.
       </p>
     </div>
   </section>
@@ -412,11 +282,6 @@ const stages = [
   <section class="block" id="what-agda-is-not">
     <div class="wrap">
       <h2 class="h2">What <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> <em>is not.</em></h2>
-      <p class="lede muted">
-        The category boundary matters. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> measures Intervention
-        Readiness. It does not sell governance theatre under another name.
-      </p>
-
       <ul class="not-list" role="list">
         {notProduct.map((n) => (
           <li>
@@ -428,29 +293,18 @@ const stages = [
     </div>
   </section>
 
-  <!-- BENCHMARKS -->
+  <!-- FAQ. Shared with /agda/; emitted as FAQPage JSON-LD. -->
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">Where the assessment belongs.</h2>
-      <p class="lede muted">
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is priced against board assurance, model risk and
-        operational resilience budgets. Not software procurement.
-      </p>
-
-      <ul class="benchmarks" role="list">
-        {benchmarks.map((b) => (
-          <li>
-            <h3 class="h3">{b.h}</h3>
-            <p class="body muted">{b.p}</p>
-          </li>
+      <h2 class="h2">Frequently asked questions.</h2>
+      <dl class="faq-list">
+        {offerFaqs.map((faq) => (
+          <div>
+            <dt set:html={markAgda(faq.question)} />
+            <dd set:html={markAgda(faq.answer)} />
+          </div>
         ))}
-      </ul>
-
-      <p class="body footnote">
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> turns that budget into a formal verdict on one
-        question: can the organisation intervene before harm becomes
-        irreversible? Formal SEDI assessments add a signed regulator bundle.
-      </p>
+      </dl>
     </div>
   </section>
 
@@ -459,13 +313,14 @@ const stages = [
     <div class="wrap">
       <div class="close-grid">
         <h2 class="h2 reveal">
-          Nominate a system. <em>Measure whether it can be stopped in time.</em>
+          Bring a named system, <em>its decision, and the intervention question.</em>
         </h2>
         <div class="close-cta reveal">
           <p class="body muted">
-            The pilot is sized around one consequential system and one
-            Intervention Readiness question. Review the sample verdict first if
-            you want to see the evidence standard.
+            We can then establish whether a Review or a full assessment is the
+            appropriate next step, and confirm delivery arrangements and a
+            start date in the proposal. Review the sample verdict first if you
+            want to see the shape of a finding.
           </p>
           <div class="cta-row">
             <a href="/contact/" class="btn">Discuss your system</a>
@@ -489,195 +344,101 @@ const stages = [
 
   .block .h2 { max-width: 28ch; }
   .block .lede { margin-top: 16px; max-width: 60ch; }
-  /* The free step, placed before the price list rather than after it. */
-  .tiers-note { margin-top: 20px; max-width: 60ch; }
+  .ink { color: var(--ink); font-weight: 700; }
 
-  /* ----- Buyer questions ----- */
+  /* ----- Offers. Two spec sheets side by side, stacked on narrow screens. ----- */
+  .start-here { background: var(--paper-soft); border-bottom: 1px solid var(--hair); }
+  .start-here .h2 { max-width: 22ch; }
+  .offers {
+    margin: 56px 0 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 80px);
+  }
+  .offer { display: grid; gap: 12px; align-content: start; min-width: 0; }
+  .offer-kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  .offer-name { margin: 0; font-size: 28px; }
+  .offer-purpose { margin: 4px 0 8px; max-width: 48ch; font-size: 17px; }
+  .start-list {
+    margin: 16px 0 0;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--hair-strong);
+  }
+  .start-list > div {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .start-list dt {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); padding-top: 4px;
+  }
+  .start-list dd {
+    margin: 0; font-family: var(--font-sans); font-size: 16px;
+    line-height: 1.6; color: var(--ink); max-width: 52ch;
+  }
+  .start-list dd.price { font-size: 22px; font-weight: 700; }
+  .plain { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .plain > li { position: relative; padding-left: 18px; }
+  .plain > li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 8px; height: 1px; background: var(--accent);
+  }
+  .records-note { margin: 14px 0 0; font-size: 14px; line-height: 1.6; color: var(--muted); max-width: 52ch; }
+  .price-qualifier { margin-top: 40px; }
+  .start-cta { margin-top: 40px; }
+
+  /* ----- Scope grid ----- */
+  .scope-grid {
+    margin: 56px 0 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+  }
+  .col-label {
+    display: block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); padding-bottom: 14px; border-bottom: 1px solid var(--hair-strong);
+  }
+  .scope-list { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 12px; }
+  .scope-list > li {
+    position: relative; padding-left: 20px;
+    font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--ink); max-width: 52ch;
+  }
+  .scope-list > li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 8px; height: 1px; background: var(--accent);
+  }
+  .usecases { margin-top: 20px; }
+
+  /* ----- Buyer group ----- */
   .buyer-grid {
     list-style: none;
-    margin: 72px 0 0;
+    margin: 56px 0 0;
     padding: 0;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 48px;
     border-top: 1px solid var(--hair-strong);
   }
-  .buyer-grid > li {
-    padding-top: 32px;
-    display: grid;
-    gap: 12px;
-    align-content: start;
-  }
-  .buyer-audience {
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-size: 11px;
-  }
-  .buyer-grid .h3 { margin: 0; }
+  .buyer-grid > li { padding-top: 32px; display: grid; gap: 12px; align-content: start; }
+  .buyer-grid .h3 { margin: 0; font-size: 20px; }
   .buyer-grid p { margin: 0; max-width: 34ch; }
+  .services-head { margin: 64px 0 12px; font-size: 22px; }
 
-  /* ----- Report layers ----- */
-  .layers {
-    list-style: none;
-    margin: 80px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    column-gap: 48px;
-    border-top: 1px solid var(--hair-strong);
-  }
-  .layers > li {
-    padding: 32px 0;
-    border-bottom: 1px solid var(--hair);
-    display: grid;
-    gap: 10px;
-    align-content: start;
-  }
-  .layer-aud {
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-size: 11px;
-  }
-  .layers p { max-width: 36ch; margin: 4px 0 0; }
-
-  .labs {
-    margin-top: 56px;
-    padding: 32px;
-    background: var(--paper-soft);
-    border-left: 2px solid var(--accent);
-    max-width: 72ch;
-  }
-  .labs .h3 { margin: 0 0 12px; }
-  .labs p { margin: 0; max-width: 60ch; }
-
-  /* ----- Tiers ----- */
-  .tiers {
-    list-style: none;
-    margin: 80px 0 0;
-    padding: 0;
-    display: grid;
-    gap: 56px;
-  }
-  .tier {
-    padding-top: 40px;
-    border-top: 1px solid var(--hair-strong);
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 40px;
-    align-items: start;
-  }
-  .tier-head { display: grid; gap: 8px; align-content: start; }
-  .tier-head .h3 { margin: 0; font-size: 28px; }
-  .tier-label,
-  .tier-framing {
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-size: 11px;
-  }
-  .tier-body {
-    display: grid;
-    gap: 28px;
-    min-width: 0;
-  }
-  .tier-fields {
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 40px;
-    border-top: 1px solid var(--hair);
-  }
-  .tier-fields > div {
-    padding: 20px 0;
-    border-bottom: 1px solid var(--hair);
-  }
-  .tier-fields > div:last-child {
-    grid-column: 1 / -1;
-  }
-  .tier-fields dt {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    line-height: 1.3;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .tier-fields dd {
-    margin: 8px 0 0;
-    max-width: 48ch;
-    font-family: var(--font-sans);
-    font-size: 15px;
-    line-height: 1.58;
-    color: var(--ink);
-  }
-  .tier-fields > div:last-child dd {
-    max-width: 68ch;
-    color: var(--muted);
-  }
-  .tier-price-block {
-    display: grid;
-    gap: 12px;
-  }
-  .price-heading {
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-size: 11px;
-  }
-
-  .formats {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 0;
-    border-top: 1px solid var(--hair-strong);
-  }
-  .formats > li {
-    padding: 16px 0;
-    border-bottom: 1px solid var(--hair);
-  }
-  .format-label {
-    font-family: var(--font-sans);
-    font-size: 15px;
-    color: var(--ink);
-  }
-  .tier-includes {
-    margin: 0;
-    max-width: 80ch;
-  }
-  .tier-includes strong { color: var(--ink); font-weight: 500; }
-  .tier-triggers {
-    margin: 0;
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  /* ----- Rate card ----- */
-  .rate-card {
-    list-style: none;
+  /* ----- Control grid ----- */
+  .control-grid {
     margin: 56px 0 0;
-    padding: 0;
-    border-top: 1px solid var(--hair-strong);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
   }
-  .rate-card > li {
-    padding: 20px 0;
-    border-bottom: 1px solid var(--hair);
-  }
-  .rate-label {
-    font-family: var(--font-sans);
-    font-size: 15px;
-    color: var(--ink);
-  }
-  .services-head {
-    margin: 64px 0 0;
-    font-size: 22px;
-  }
+  .control-grid > div { display: grid; gap: 12px; align-content: start; }
+  .control-grid .h3 { margin: 0; }
+  .control-grid p { margin: 0; max-width: 36ch; }
+
   .footnote {
     margin: 32px 0 0;
     max-width: 76ch;
@@ -685,10 +446,13 @@ const stages = [
     font-size: 14px;
   }
 
+  /* ----- Beyond one system ----- */
+  .wrap-narrow .body { max-width: 62ch; margin: 16px 0 0; }
+
   /* ----- Not list ----- */
   .not-list {
     list-style: none;
-    margin: 80px 0 0;
+    margin: 64px 0 0;
     padding: 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -697,17 +461,14 @@ const stages = [
   .not-list > li { display: grid; gap: 12px; }
   .not-list p { max-width: 44ch; margin: 0; }
 
-  /* ----- Benchmarks ----- */
-  .benchmarks {
-    list-style: none;
-    margin: 64px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 48px;
+  /* ----- FAQ ----- */
+  .faq-list { margin: 56px 0 0; border-top: 1px solid var(--hair-strong); }
+  .faq-list > div {
+    display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 48px;
+    padding: 28px 0; border-bottom: 1px solid var(--hair);
   }
-  .benchmarks > li { display: grid; gap: 12px; }
-  .benchmarks p { max-width: 36ch; margin: 0; }
+  .faq-list dt { font-family: var(--font-sans); font-size: 18px; line-height: 1.35; color: var(--ink); }
+  .faq-list dd { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.62; color: var(--muted); }
 
   /* ----- Close ----- */
   .close-grid {
@@ -717,24 +478,12 @@ const stages = [
     align-items: start;
   }
   .close-grid .h2 { max-width: 24ch; margin: 0; }
-  .close-cta {
-    display: grid;
-    gap: 24px;
-    align-content: start;
-    padding-top: 12px;
-  }
+  .close-cta { display: grid; gap: 24px; align-content: start; padding-top: 12px; }
   .close-cta .body { margin: 0; max-width: 42ch; }
   .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
-  .close-cta .btn { justify-self: start; }
 
   /* ----- Engagement stages ----- */
-  .stages {
-    list-style: none;
-    margin: 72px 0 0;
-    padding: 0;
-    display: grid;
-    gap: 40px;
-  }
+  .stages { list-style: none; margin: 72px 0 0; padding: 0; display: grid; gap: 40px; }
   .stage {
     padding-top: 32px;
     border-top: 1px solid var(--hair-strong);
@@ -745,61 +494,24 @@ const stages = [
   }
   .stage-head { display: grid; gap: 8px; align-content: start; }
   .stage-head .h3 { margin: 0; }
-  .stage-n {
-    color: var(--accent);
-    letter-spacing: 0.06em;
-    font-size: 11px;
-  }
+  .stage-n { color: var(--accent); letter-spacing: 0.06em; font-size: 11px; }
   .stage-body { display: grid; gap: 20px; min-width: 0; }
   .stage-body > p { margin: 0; max-width: 60ch; }
 
   /* ----- Responsive ----- */
   @media (max-width: 880px) {
     .hero { padding-top: 96px; padding-bottom: 96px; }
+    .offers { grid-template-columns: 1fr; gap: 56px; }
+    .scope-grid { grid-template-columns: 1fr; gap: 40px; }
     .buyer-grid { grid-template-columns: 1fr; gap: 40px; }
-    .layers { grid-template-columns: 1fr; }
-    .tier { grid-template-columns: 1fr; gap: 24px; }
-    .tier-fields { grid-template-columns: 1fr; }
-    .tier-fields > div:last-child { grid-column: auto; }
-    .rate-card > li { padding: 16px 0; }
+    .control-grid { grid-template-columns: 1fr; gap: 40px; }
     .stage { grid-template-columns: 1fr; gap: 20px; }
     .not-list { grid-template-columns: 1fr; gap: 48px; }
-    .benchmarks { grid-template-columns: 1fr; gap: 40px; }
+    .faq-list > div { grid-template-columns: 1fr; gap: 16px; }
     .close-grid { grid-template-columns: 1fr; gap: 48px; }
   }
-
-  /* START HERE. The pilot, above the tier table. Reads as a specification
-     sheet rather than a pitch: term on the left, answer on the right. */
-  .start-here { background: var(--paper-soft); border-bottom: 1px solid var(--hair); }
-  .start-here .h2 { max-width: 22ch; }
-  .start-lede { margin-top: 24px; max-width: 62ch; }
-  .start-list {
-    margin: 56px 0 0;
-    display: grid;
-    gap: 0;
-    border-top: 1px solid var(--hair-strong);
-  }
-  .start-list > div {
-    display: grid;
-    grid-template-columns: 200px minmax(0, 1fr);
-    gap: 24px;
-    padding: 24px 0;
-    border-bottom: 1px solid var(--hair);
-  }
-  .start-list dt {
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--accent); padding-top: 4px;
-  }
-  .start-list dd {
-    margin: 0; font-family: var(--font-sans); font-size: 17px;
-    line-height: 1.65; color: var(--ink); max-width: 62ch;
-  }
-  .start-cta { margin-top: 48px; }
-
   @media (max-width: 720px) {
     .start-list > div { grid-template-columns: 1fr; gap: 10px; }
     .start-list dt { padding-top: 0; }
   }
-
-  .tiers-footnote { margin-top: 40px; max-width: 64ch; }
 </style>

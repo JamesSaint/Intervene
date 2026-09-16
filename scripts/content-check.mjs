@@ -20,6 +20,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { RETIRED_SCOPES, RETIRED_EXEMPT, scanRetired } from './lib/retired-claims.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -123,6 +124,38 @@ for (const scope of SCOPES) {
   }
 }
 
+/* Second scope: retired offers and unsupported claims, sitewide. See
+   scripts/lib/retired-claims.mjs for the lists and the reasoning. Same
+   comment stripping, so code comments that name the old material for
+   history do not trip it. */
+const retiredFindings = [];
+for (const scope of RETIRED_SCOPES) {
+  const target = join(root, scope);
+  const files = statSync(target).isDirectory() ? walk(target) : [target];
+  for (const file of files) {
+    const rel = relative(root, file);
+    if (RETIRED_EXEMPT.some((prefix) => rel.startsWith(prefix))) continue;
+    const copy = /\.(astro|ts|js|mjs)$/.test(file)
+      ? stripNonCopy(readFileSync(file, 'utf8'))
+      : readFileSync(file, 'utf8');
+    for (const f of scanRetired(copy)) retiredFindings.push({ file: rel, ...f });
+  }
+}
+
+if (retiredFindings.length > 0) {
+  console.error(`\ncontent-check: ${retiredFindings.length} retired-claim finding(s).\n`);
+  for (const f of retiredFindings) {
+    console.error(`  ${f.file}:${f.line}  "${f.term}"`);
+    console.error(`    ${f.text}\n`);
+  }
+  console.error(
+    'A retired offer or an unsupported claim is back in public copy. The\n' +
+      'current offers live in src/lib/offers.ts; the claim limits are in\n' +
+      'scripts/lib/retired-claims.mjs.\n',
+  );
+  process.exit(1);
+}
+
 if (findings.length > 0) {
   console.error(`\ncontent-check: ${findings.length} finding(s).\n`);
   for (const f of findings) {
@@ -137,4 +170,4 @@ if (findings.length > 0) {
   process.exit(1);
 }
 
-console.log('content-check: clean across', SCOPES.join(', '));
+console.log('content-check: clean across', SCOPES.join(', '), 'and retired-claims scope', RETIRED_SCOPES.join(', '));
