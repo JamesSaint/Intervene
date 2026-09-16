@@ -8,12 +8,12 @@ const faqs = [
     answer: 'Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.',
   },
   {
-    question: 'What does AGDA™ measure?',
-    answer: 'AGDA™ measures Intervention Readiness. It evaluates whether an organisation can detect, escalate, decide and intervene within the available reversibility window.',
+    question: 'What does AGDA™ assess?',
+    answer: 'AGDA™ assesses Intervention Readiness: whether an organisation can detect, escalate, decide and intervene within the available reversibility window.',
   },
   {
     question: 'How is Intervention Readiness different from governance?',
-    answer: 'Governance describes structures, responsibilities and controls. Intervention Readiness measures whether those structures can actually intervene before harm becomes irreversible.',
+    answer: 'Governance describes structures, responsibilities and controls. Intervention Readiness asks whether those structures can actually intervene before harm becomes irreversible.',
   },
   {
     question: 'How is Intervention Readiness different from compliance?',
@@ -65,10 +65,10 @@ const clusters = [
 ];
 
 const boundaries = [
-  { h: 'vs AI governance', p: 'Governance describes structure. Intervention Readiness measures whether that structure can act in time.', href: '/intervention-readiness/vs-ai-governance/' },
+  { h: 'vs AI governance', p: 'Governance describes structure. Intervention Readiness asks whether that structure can act in time.', href: '/intervention-readiness/vs-ai-governance/' },
   { h: 'vs Compliance', p: 'Compliance asks whether obligations are met. Intervention Readiness asks whether intervention remains possible in time.', href: '/intervention-readiness/vs-compliance/' },
   { h: 'vs Audit', p: 'Audit attests to the past. Intervention Readiness states whether intervention can occur going forward.', href: '/intervention-readiness/vs-audit/' },
-  { h: 'vs Risk management', p: 'Risk management estimates likelihood and impact. Intervention Readiness measures whether the response beats the harm window.', href: '/intervention-readiness/vs-risk-management/' },
+  { h: 'vs Risk management', p: 'Risk management estimates likelihood and impact. Intervention Readiness asks whether the response beats the harm window.', href: '/intervention-readiness/vs-risk-management/' },
   { h: 'vs Operational resilience', p: 'Resilience keeps services within tolerance. Intervention Readiness governs the chain that prevents irreversible automated harm.', href: '/intervention-readiness/vs-operational-resilience/' },
   { h: 'The category map', p: 'Intervention Readiness placed against every adjacent discipline, with the boundaries named.', href: '/intervention-readiness/category-map/' },
 ];
@@ -88,7 +88,7 @@ const relationships = [
   },
   {
     h: 'Governance',
-    p: 'Governance shows who is responsible and which controls exist. Intervention Readiness measures whether those controls can detect, escalate, decide and intervene under pressure.',
+    p: 'Governance shows who is responsible and which controls exist. Intervention Readiness asks whether those controls can detect, escalate, decide and intervene under pressure.',
   },
   {
     h: 'AGDA™',
@@ -99,7 +99,7 @@ const relationships = [
 
 <BaseLayout
   title="What Is Intervention Readiness? · Intervene"
-  description="Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ measures it."
+  description="Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ assesses it."
   current="intervention-readiness"
   ogImage="/assets/og/og-intervention-readiness.png"
   faqs={faqs}
@@ -127,10 +127,10 @@ const relationships = [
             system begins to create harm.
           </p>
           <p class="body muted">
-            Most organisations can evidence policies, controls, committees and
-            escalation structures. Fewer can evidence that those structures can
-            alter or halt system outcomes before the reversibility window
-            closes.
+            An organisation can evidence policies, controls, committees and
+            escalation structures and still be unable to show that they can
+            alter or halt a system's outcomes before the reversibility window
+            closes. That second test is the category.
           </p>
         </div>
 
@@ -207,16 +207,15 @@ const relationships = [
       <h2 class="h2">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> relates to Intervention Readiness.</h2>
       <p class="body">
         <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is not the category. Intervention Readiness is the
-        category. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is Intervene's proprietary assessment that
-        measures it.
+        category. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is Intervene's proprietary assessment of it.
       </p>
       <p class="body muted">
         <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> evaluates evidence across Detect, Escalate, Decide and
         Intervene. A full assessment returns an Intervention Readiness
         verdict on whether the chain completes before harm becomes
-        irreversible, with its evidence basis. Signed SEDI result records form part of the
-        agreed outputs where the agreed scope includes them and the delivery
-        configuration supports them.
+        irreversible, with its evidence basis. Signed SEDI result records are
+        not a standard deliverable; they may be supplied only under an approved
+        output-access arrangement.
       </p>
       <div class="cta">
         <a href="/agda/" class="btn"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span></a>
