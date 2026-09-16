@@ -107,6 +107,16 @@ test.describe('buyer journey pass', () => {
     expect(text).toMatch(/4 to 96 hours|four and ninety-six hours/);
     expect(text).toMatch(/≥ 7 days|at least seven days/);
     expect(text).toMatch(/not an issued assessment or a verified outcome/);
+    // The fourth stage carries no assessed duration in the illustration.
+    const chain = await page.locator('.finding-chain').innerText();
+    expect(chain).toMatch(/Not assessed/);
+    expect(chain).not.toMatch(/Cannot recover/);
+    expect(chain).toMatch(/not to scale and not added together/);
+    // The fork never makes the Review compulsory or predictive.
+    const fork = await page.locator('.offer-choice').innerText();
+    expect(fork).toMatch(/Neither is a prerequisite/);
+    expect(fork).toMatch(/does not commit you to one or determine its verdict/);
+    expect(fork).not.toMatch(/confirms nothing|predicts nothing/);
     const finding = await page.locator('.finding-block').innerText();
     expect(finding).not.toMatch(/£|\/ 5|108k|EXPOSED/);
   });
@@ -119,6 +129,10 @@ test.describe('buyer journey pass', () => {
       expect(text, route).toMatch(/does not include the AGDA™ verdict/);
     }
     await page.goto('/services/');
+    // The compact fork above the sheets carries no prices or deliverables.
+    const compact = await page.locator('.choose .offer-choice').innerText();
+    expect(compact).not.toMatch(/£|What you receive|Boundary/);
+    expect(compact).toMatch(/Appropriate when/i);
     const review = await page.locator('#review').innerText();
     expect(review).toMatch(/What it decides/i);
     expect(review).toMatch(/What you keep/i);

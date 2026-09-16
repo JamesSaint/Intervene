@@ -6,8 +6,9 @@
  * nothing about availability or acceptance. Content reads from
  * src/lib/offers.ts so the diagram cannot drift from the offer sheets.
  *
- * `compact` drops the deliverable lists (used above the full sheets on
- * /services/, where the sheets carry them).
+ * `compact` keeps only the distinguishing question, "appropriate when"
+ * and a link to each sheet (used above the full sheets on /services/,
+ * which carry scope, outputs, boundaries and prices).
  */
 import { offers } from '../lib/offers';
 import { markAgda } from '../lib/marks';
@@ -70,38 +71,43 @@ const H = headingLevel;
             <dt>Appropriate when</dt>
             <dd>{when}</dd>
           </div>
-          <div>
-            <dt>What you receive</dt>
-            <dd>
-              <span set:html={markAgda(output)} />
-              {!compact && (
+          {!compact && (
+            <div>
+              <dt>What you receive</dt>
+              <dd>
+                <span set:html={markAgda(output)} />
                 <ul class="oc-list" role="list">
                   {receive.map((r) => <li set:html={markAgda(r)} />)}
                 </ul>
-              )}
-            </dd>
-          </div>
-          <div>
-            <dt>Boundary</dt>
-            <dd set:html={markAgda(boundary)} />
-          </div>
-          <div>
-            <dt>{o.priceNote}</dt>
-            <dd class="oc-price">{o.price}</dd>
-          </div>
+              </dd>
+            </div>
+          )}
+          {!compact && (
+            <div>
+              <dt>Boundary</dt>
+              <dd set:html={markAgda(boundary)} />
+            </div>
+          )}
+          {!compact && (
+            <div>
+              <dt>{o.priceNote}</dt>
+              <dd class="oc-price">{o.price}</dd>
+            </div>
+          )}
         </dl>
         <a href={href} class="link oc-link">
-          {n === 'A' ? 'Review in full' : 'Assessment in full'} <span aria-hidden="true">→</span>
+          {n === 'A' ? 'Review sheet: scope, outputs, boundary and indicative fee' : 'Assessment sheet: scope, deliverables, boundary and indicative range'} <span aria-hidden="true">→</span>
         </a>
       </li>
     ))}
   </ol>
 
   <p class="body muted oc-foot">
-    Completing a Review does not commit you to a full Assessment and does not
-    predict its result. Choosing a route confirms nothing about availability
-    or acceptance; delivery arrangements and a start date are confirmed
-    before an engagement is accepted.
+    You can discuss either starting point directly. A Review may recommend a
+    full Assessment but does not commit you to one or determine its verdict.
+    {compact
+      ? 'Scope, availability and delivery arrangements are confirmed before an engagement is accepted.'
+      : ''}
   </p>
 </figure>
 
