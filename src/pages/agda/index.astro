@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import VerdictBlock from '../../components/VerdictBlock.astro';
 import { markAgda } from '../../lib/marks';
-import { assessment, offerFaqs } from '../../lib/offers';
+import { assessment, offerFaqs, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
 
 const isnot = [
   { h: 'Not a maturity model', p: 'No five-point scale that always lands at three. A full AGDA™ Assessment answers one question: can the chain complete in time for this system, pathway and scenario.' },
@@ -99,9 +99,8 @@ const faqs = [
         The engine applies repeatable rules to recorded inputs under fixed
         assessment versions. The assessment also requires judgement about
         evidence, scope and interpretation. Intervene owns that judgement and
-        the conclusion, and an assessment is not issued on the assessor's own
-        approval. A signed engine record is not by itself an issued
-        assessment.
+        the conclusion. {SELF_APPROVAL} A signed engine record is not by
+        itself an issued assessment.
       </p>
     </div>
   </section>
@@ -134,6 +133,7 @@ const faqs = [
           <li set:html={markAgda(d)} />
         ))}
       </ul>
+      <p class="body muted deliver-note">{RECORDS_NOTE}</p>
       <p class="body muted deliver-note">
         The assessment is not regulatory certification, a model-validation
         exercise or a guarantee of safety. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is not validated against

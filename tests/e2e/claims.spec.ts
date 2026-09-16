@@ -105,17 +105,22 @@ test.describe('validation and signing claims', () => {
     await page.goto('/services/');
     const services = await page.locator('main').innerText();
     expect(services).toMatch(/Intervene retains Assessment Authority/);
-    expect(services).toMatch(/not issued on the assessor's own approval/);
+    expect(services).toMatch(/Issuance requires approval separate from the assessor's own judgement/);
+    expect(services).not.toMatch(/not issued on the assessor's own approval/);
+    expect(services).not.toMatch(/does not depend on any named/);
     expect(services).toMatch(/A signed record is not by itself an issued assessment/);
   });
 
-  test('distribution of records, verifier and trust material is set in the terms, not promised', async ({ page }) => {
-    for (const route of ['/verify/', '/services/', '/methodology/']) {
+  test('records are not a deliverable; distribution requires an approved output-access arrangement', async ({ page }) => {
+    for (const route of ['/', '/agda/', '/services/', '/methodology/', '/verify/']) {
       await page.goto(route);
       const text = await page.locator('main').innerText();
-      expect(text, route).toMatch(/set in the engagement terms|set in its terms/);
-      expect(text, route).not.toMatch(/ships? with the verifier|Take the record from the supervised entity|delivered with an engagement/);
+      expect(text, route).toMatch(/not a standard deliverable/);
+      expect(text, route).not.toMatch(/form part of the agreed outputs|ships? with the verifier|Take the record from the supervised entity|delivered with an engagement/);
     }
+    await page.goto('/services/');
+    const deliverables = await page.locator('#assessment .plain').allInnerTexts();
+    expect(deliverables.join(' ')).not.toMatch(/Signed SEDI/);
   });
 
   test('signing is conditional on every page that mentions it', async ({ page }) => {
@@ -123,7 +128,7 @@ test.describe('validation and signing claims', () => {
       await page.goto(route);
       const text = await page.locator('main').innerText();
       if (/[Ss]igned SEDI/.test(text)) {
-        expect(text, route).toMatch(/where (the agreed scope includes them|contracted|supplied|agreed)/);
+        expect(text, route).toMatch(/approved output-access arrangement/);
       }
       expect(text, route).not.toMatch(/Every (AGDA™ )?(SEDI )?assessment (ships|includes)/);
     }
