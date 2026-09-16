@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { offers, PRICE_QUALIFIER, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../src/lib/offers';
+import { offers, offerFaqs, PRICE_QUALIFIER, FEE_BASIS, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../src/lib/offers';
 import { terms } from '../../src/lib/terms';
 
 /**
@@ -19,9 +19,11 @@ describe('llms.txt mirrors the offers', () => {
     });
   }
 
-  it('carries the price qualifier and the availability wording', () => {
+  it('carries the price qualifier, the fee basis and the availability wording', () => {
     expect(llms).toContain(PRICE_QUALIFIER);
+    expect(llms).toContain(FEE_BASIS);
     expect(llms).toContain(AVAILABILITY);
+    expect(llms).toContain('A Review is not required first');
     expect(llms).not.toMatch(/available now|accepted now|immediately available/i);
   });
 
@@ -53,6 +55,14 @@ describe('llms.txt mirrors the offers', () => {
 
   it('does not list the withdrawn Snapshot as a core page', () => {
     expect(llms).not.toContain('/readiness-snapshot/');
+  });
+});
+
+describe('the shared FAQ answers whether a Review is required first', () => {
+  it('has a direct answer', () => {
+    const q = offerFaqs.find((f) => /Review first/.test(f.question))!;
+    expect(q.answer).toMatch(/^No\./);
+    expect(q.answer).toMatch(/discuss a full AGDA™ Assessment directly/);
   });
 });
 

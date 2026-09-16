@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { markAgda } from '../../lib/marks';
-import { offers, activities, offerFaqs, buyingGroup, PRICE_QUALIFIER, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
+import { offers, activities, offerFaqs, buyingGroup, PRICE_QUALIFIER, FEE_BASIS, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
 import OfferChoice from '../../components/OfferChoice.astro';
 
 /* Everything commercial on this page reads from src/lib/offers.ts so the
@@ -129,7 +129,7 @@ const useCases = [
         ))}
       </div>
 
-      <p class="body muted footnote price-qualifier">{PRICE_QUALIFIER} {AVAILABILITY}</p>
+      <p class="body muted footnote price-qualifier">{PRICE_QUALIFIER} {FEE_BASIS} {AVAILABILITY}</p>
 
       <div class="cta-row start-cta">
         <a href="/contact/" class="btn">Discuss your system</a>
