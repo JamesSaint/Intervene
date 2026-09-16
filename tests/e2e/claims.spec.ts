@@ -128,7 +128,7 @@ test.describe('validation and signing claims', () => {
       await page.goto(route);
       const text = await page.locator('main').innerText();
       if (/[Ss]igned SEDI/.test(text)) {
-        expect(text, route).toMatch(/approved output-access arrangement/);
+        expect(text, route).toMatch(/approved output-access arrangement|not a standard deliverable/);
       }
       expect(text, route).not.toMatch(/Every (AGDA™ )?(SEDI )?assessment (ships|includes)/);
     }

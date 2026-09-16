@@ -45,9 +45,9 @@ const bundleFields = [
 ];
 
 const audiences = [
-  { h: 'Audit committee.', p: 'Where the engagement terms provide for it: confirm that the signed SEDI result the chair is being asked to rely on matches the signed commitments for the stated engine version, input and output, using the key and registry material supplied under those terms rather than a conversation with Intervene.' },
-  { h: 'Internal audit.',  p: 'Where the engagement terms provide for it: run the agda-verify CLI in your own environment. Compare hashes, manifest and signature against the record. Pass or fail is mechanical.' },
-  { h: 'Regulator.',       p: 'Where the engagement terms provide for a record to be shared with a supervisor: the same check runs in the regulator estate, independent of any conversation with Intervene or with the entity.' },
+  { h: 'Audit committee.', p: 'Confirm that the signed SEDI result the chair is being asked to rely on matches the signed commitments for the stated engine version, input and output, using the supplied key and registry material rather than a conversation with Intervene.' },
+  { h: 'Internal audit.',  p: 'Run the agda-verify CLI in your own environment. Compare hashes, manifest and signature against the record. Pass or fail is mechanical.' },
+  { h: 'Regulator.',       p: 'Where a record is shared with a supervisor, the same check runs in the regulator estate, independent of any conversation with Intervene or with the entity.' },
 ];
 ---
 
@@ -158,9 +158,7 @@ const audiences = [
 
       <p class="body muted note">
         The transcript above shows what a successful check prints. Neither
-        the verifier nor any record is published here. What is supplied with
-        an engagement, and to whom, requires an approved output-access
-        arrangement and is set in the engagement terms.
+        the verifier nor any record is published here.
       </p>
 
       <p class="body muted note">
@@ -221,8 +219,8 @@ const audiences = [
       <p class="lede muted">
         The same record and the same command give the same answer wherever
         they are run. Whether a record, the verifier and its trust material
-        are supplied to a given recipient requires an approved output-access
-        arrangement and is set in the engagement terms.
+        reach a given recipient depends on the approved output-access
+        arrangement and the engagement terms.
       </p>
 
       <ul class="audiences" role="list">
