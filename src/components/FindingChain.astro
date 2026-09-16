@@ -16,7 +16,7 @@ const stages = [
   { n: '01', name: 'Detect',    value: '~12 min',        note: 'Drift identified above threshold.',                              rel: 'within',  relText: 'Within the window' },
   { n: '02', name: 'Escalate',  value: '4 to 96 hours',  note: 'To reach a person with authority to halt.',                    rel: 'may',     relText: 'May consume or exceed the window' },
   { n: '03', name: 'Decide',    value: '≥ 7 days',       note: 'To obtain the quorum that person needs. No out-of-cycle route.', rel: 'exceeds', relText: 'Exceeds the window on its own' },
-  { n: '04', name: 'Intervene', value: '~6 min',         note: 'To propagate a halt, if instructed. Decisions already made are reprocessed next day.', rel: 'after', relText: 'Cannot recover the delay above' },
+  { n: '04', name: 'Intervene', value: 'Not assessed',   note: 'The source assumes about six minutes to propagate a halt if instructed; no duration is assessed here, and decisions already made are reprocessed next day.', rel: 'after', relText: 'Preceding delay already exceeds the window' },
 ];
 ---
 
@@ -47,10 +47,11 @@ const stages = [
   </ol>
 
   <p class="fc-result">
-    <span class="mono fc-result-label">Limiting dependency</span>
+    <span class="mono fc-result-label">Decisive constraint in this example</span>
     Authority, not detection. The route to a person with authority may itself
     exceed the window, and the quorum that person needs exceeds it on its own.
-    Faster detection cannot change that.
+    Faster detection cannot change that. Naming this constraint does not show
+    that the other stages are adequate.
   </p>
 
   <p class="fc-footnote" id="finding-chain-note">
@@ -82,7 +83,7 @@ const stages = [
     display: block; width: 13px; height: 13px; border-radius: 50%;
     border: 1px solid var(--accent); background: var(--paper-soft);
   }
-  /* The limiting stage is the one filled node: shape carries the meaning,
+  /* The decisive stage is the one filled node: shape carries the meaning,
      the text beside it says it in words. */
   .fc-exceeds .fc-node { background: var(--accent); }
   .fc-n { margin-top: 12px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
