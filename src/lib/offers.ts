@@ -39,7 +39,14 @@ export interface Offer {
 }
 
 export const PRICE_QUALIFIER =
-  'Initial pricing remains subject to market validation. The specific fee, deliverables and terms are agreed in the proposal.';
+  'Initial pricing remains subject to market validation.';
+
+/* What moves a quoted fee within its range. Shown once beneath the two
+   sheets on /services/ and mirrored in llms.txt. Additional systems,
+   pathways, scenarios and implementation work are separately scoped;
+   that boundary lives in each offer's exclusion row, not here. */
+export const FEE_BASIS =
+  'The final fee reflects the agreed scope and assessment boundary, stakeholder involvement, the evidence position and the depth of investigation required. The proposal confirms the scope, outputs, fee, terms and timetable.';
 
 /* Enquiry-led publication. The site describes the intended offers and
    invites discussion; it does not imply that either engagement is
@@ -71,7 +78,7 @@ export const offers: Offer[] = [
     exclusionShort: 'The Review does not include the AGDA™ verdict. It is not a discounted AGDA™ Assessment.',
     decision: 'Whether the selected system carries a material intervention question, and what you would need to assess, and to have access to, before relying on the answer.',
     retain: 'The executive review stands on its own: a stated intervention question for the system, the preliminary chain, the evidence you hold and the gaps, and a scoped recommendation. It supports prioritisation and budget decisions whether or not a full Assessment follows.',
-    suitable: 'Start here when the system is newly identified, the evidence position is unclear, or you need a documented basis for deciding whether this one system warrants a full Assessment. Where the system, pathway and scenario are already defined and evidence access is available, discuss a full Assessment directly.',
+    suitable: 'The system is newly identified, the evidence position is unclear, or you need a documented basis for deciding whether this one system warrants a full Assessment. If the system, pathway and scenario are already defined and evidence access is available, discuss a full Assessment directly.',
     timing: 'Scope, access and timing are agreed in the proposal.',
     price: '£20,000 to £35,000 + VAT',
     priceNote: 'Indicative fee',
@@ -103,7 +110,7 @@ export const offers: Offer[] = [
     exclusionShort: 'Connected systems, additional scenarios and implementation work are scoped separately. It is not regulatory certification.',
     decision: 'Whether the agreed pathway can continue operating under its present intervention arrangements, and what has to change before the organisation relies on it.',
     retain: 'The full package: scope record, evidence register, SEDI findings, the verdict with its confidence basis and limitations, executive interpretation and remediation priorities.',
-    suitable: 'Start here when the system, pathway and scenario are defined, the stakeholders and evidence are accessible, and the decision cannot wait for a preliminary review.',
+    suitable: 'The system, pathway and scenario are defined, the stakeholders and evidence are accessible, and the decision cannot wait for a preliminary review.',
     timing: 'Once an engagement begins, a standard assessment is estimated to run over approximately four weeks, subject to scope, stakeholder access and evidence readiness. The proposal sets the detailed timetable.',
     price: '£75,000 to £95,000 + VAT',
     priceNote: 'Indicative initial range',
@@ -158,6 +165,11 @@ export const offerFaqs = [
     question: 'Is the Intervention Readiness Review a full AGDA™ Assessment?',
     answer:
       'No. The Review is a standalone executive review of one system: the intervention question, the preliminary chain, the evidence you hold and the gaps, and a scoped recommendation. It supports prioritisation and budget decisions on its own. It does not include the AGDA™ verdict, the SEDI findings or signed SEDI result records.',
+  },
+  {
+    question: 'Do we need a Review first?',
+    answer:
+      'No. If the system, intervention question and assessment scope are sufficiently clear, and relevant evidence access is available, we can discuss a full AGDA™ Assessment directly. The Review is a separate preliminary engagement for organisations that need to establish those foundations.',
   },
   {
     question: 'Can a client challenge the conclusion?',
