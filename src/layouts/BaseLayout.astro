@@ -311,6 +311,20 @@ const structuredData = {
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#0a0a0a" />
     <meta name="color-scheme" content="dark" />
+    <script is:inline>
+      // Motion opt-in. Runs before first paint so the entrance styles
+      // never hide content from a visitor without scripts or with
+      // reduced motion. If the motion module fails to load, the
+      // attribute is dropped and everything settles into place.
+      (function () {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var h = document.documentElement;
+        h.setAttribute('data-motion', '');
+        window.setTimeout(function () {
+          if (!h.hasAttribute('data-motion-ready')) h.removeAttribute('data-motion');
+        }, 2500);
+      })();
+    </script>
 
     <link rel="icon" href="/assets/images/favicons/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicons/favicon-32x32.png" />
@@ -377,8 +391,11 @@ const structuredData = {
     <ConsentBanner />
 
     <script>
-      import { initReveal } from '../lib/reveal.ts';
+      import { initReveal, initDisclosures, initPageNav } from '../lib/motion.ts';
+      document.documentElement.setAttribute('data-motion-ready', '');
       initReveal();
+      initDisclosures();
+      initPageNav();
     </script>
   </body>
 </html>

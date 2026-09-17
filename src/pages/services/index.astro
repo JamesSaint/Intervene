@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { markAgda } from '../../lib/marks';
 import { offers, activities, offerFaqs, buyingGroup, PRICE_QUALIFIER, FEE_BASIS, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
 import OfferChoice from '../../components/OfferChoice.astro';
+import PageNav from '../../components/PageNav.astro';
 
 /* Everything commercial on this page reads from src/lib/offers.ts so the
    homepage, this page, the shared FAQ and the Offer schema nodes cannot
@@ -27,6 +28,16 @@ const excluded = [
 ];
 
 
+const pageNav = [
+  { href: '#begin', label: 'Where to begin' },
+  { href: '#engagements', label: 'The two engagements' },
+  { href: '#scope', label: 'Included and excluded' },
+  { href: '#how-it-runs', label: 'How it runs' },
+  { href: '#who', label: 'Who takes part' },
+  { href: '#control', label: 'How it is controlled' },
+  { href: '#faq', label: 'Questions' },
+];
+
 const useCases = [
   'Payments: routing, release or rejection, transaction prioritisation, real-time decisioning.',
   'Fraud and financial crime: detection, transaction monitoring, case prioritisation, customer restrictions.',
@@ -46,8 +57,8 @@ const useCases = [
   <!-- HERO -->
   <section class="hero">
     <div class="wrap">
-      <h1 class="h1 reveal">Two ways to begin. <em>One named system.</em></h1>
-      <p class="lede muted reveal">
+      <h1 class="h1">Two ways to begin. <em>One named system.</em></h1>
+      <p class="lede muted">
         The starting point is the system, the decision or action it
         influences, and the intervention question. We agree the evidence and
         access required before selecting the engagement. An Intervention
@@ -55,83 +66,109 @@ const useCases = [
         A full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment examines the agreed system, pathway and
         scenario in depth.
       </p>
-      <div class="hero-cta reveal">
+      <div class="hero-cta">
         <a href="/contact/" class="btn">Discuss your system</a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
       </div>
     </div>
   </section>
 
+  <PageNav items={pageNav} />
+
   <!-- WHERE TO BEGIN. Compact shared diagram; the sheets below carry the detail. -->
-  <section class="block choose">
+  <section class="block choose" id="begin">
     <div class="wrap">
       <OfferChoice compact headingLevel="h2" />
     </div>
   </section>
 
-  <!-- THE TWO OFFERS. Spec sheets, from src/lib/offers.ts. -->
-  <section class="block start-here">
+  <!-- THE TWO OFFERS. Spec sheets, from src/lib/offers.ts. Labels sit
+       above their content, and each row of the two sheets shares a grid
+       row, so equivalent information sits level across the pair. Three
+       tiers: what it is and costs; what it decides and returns; the
+       scope, boundary and timing behind that. -->
+  <section class="block start-here" id="engagements">
     <div class="wrap">
       <span class="label section-kicker">Current engagements</span>
       <h2 class="h2">The two engagements <em>in full.</em></h2>
+      <p class="lede muted">
+        Fees are indicative ranges. {PRICE_QUALIFIER}
+      </p>
 
       <div class="offers">
         {offers.map((o) => (
           <article class="offer" id={o.slug} aria-labelledby={`offer-${o.slug}-name`}>
-            <span class="mono offer-kicker">{o.slug === 'review' ? 'Preliminary engagement' : 'Full assessment'}</span>
-            <h3 class="h3 offer-name" id={`offer-${o.slug}-name`} set:html={markAgda(o.name)} />
-            <p class="lede muted offer-purpose" set:html={markAgda(o.purpose)} />
+            <header class="sheet-head">
+              <span class="mono offer-kicker">{o.slug === 'review' ? 'Route A · Preliminary engagement' : 'Route B · Full assessment'}</span>
+              <h3 class="h3 offer-name" id={`offer-${o.slug}-name`} set:html={markAgda(o.name)} />
+              <p class="offer-purpose" set:html={markAgda(o.purpose)} />
+            </header>
 
-            <dl class="start-list">
-              <div>
-                <dt>Scope</dt>
-                <dd>
-                  <ul class="plain" role="list">
-                    {o.scope.map((x) => <li set:html={markAgda(x)} />)}
-                  </ul>
-                </dd>
+            <div class="sheet-summary">
+              <div class="sheet-fee">
+                <h4 class="sheet-label">{o.priceNote}</h4>
+                <p class="price">{o.price}</p>
+                <p class="price-flag">Indicative. Confirmed in the proposal.</p>
               </div>
-              <div>
-                <dt>What it decides</dt>
-                <dd set:html={markAgda(o.decision)} />
+              <div class="sheet-when">
+                <h4 class="sheet-label">Start here when</h4>
+                <p set:html={markAgda(o.suitable)} />
               </div>
-              <div>
-                <dt>{o.slug === 'review' ? 'What you receive' : 'Full-assessment deliverables'}</dt>
-                <dd>
-                  <ul class="plain" role="list">
-                    {o.receive.map((x) => <li set:html={markAgda(x)} />)}
-                  </ul>
-                  {o.slug === 'assessment' && <p class="records-note">{RECORDS_NOTE}</p>}
-                </dd>
-              </div>
-              <div>
-                <dt>{o.slug === 'review' ? 'What you keep' : 'What you keep'}</dt>
-                <dd set:html={markAgda(o.retain)} />
-              </div>
-              <div>
-                <dt>Start here when</dt>
-                <dd set:html={markAgda(o.suitable)} />
-              </div>
-              <div>
-                <dt>{o.slug === 'review' ? 'Not included' : 'Separately scoped'}</dt>
-                <dd set:html={markAgda(o.exclusion)} />
-              </div>
-              <div>
-                <dt>Timing</dt>
-                <dd>{o.timing}</dd>
-              </div>
-              <div>
-                <dt>{o.priceNote}</dt>
-                <dd class="price">{o.price}</dd>
-              </div>
-            </dl>
+            </div>
+
+            <div class="sheet-row">
+              <h4 class="sheet-label">What it decides</h4>
+              <p set:html={markAgda(o.decision)} />
+            </div>
+
+            <div class="sheet-row">
+              <h4 class="sheet-label">{o.slug === 'review' ? 'What you receive' : 'Full-assessment deliverables'}</h4>
+              <ul class="dash-list" role="list">
+                {o.receive.map((x) => <li set:html={markAgda(x)} />)}
+              </ul>
+              {o.slug === 'assessment' && <p class="records-note">{RECORDS_NOTE}</p>}
+            </div>
+
+            <div class="sheet-row">
+              <h4 class="sheet-label">What you keep</h4>
+              <p set:html={markAgda(o.retain)} />
+            </div>
+
+            <div class="sheet-row sheet-row-detail">
+              <h4 class="sheet-label">Scope</h4>
+              <ul class="dash-list" role="list">
+                {o.scope.map((x) => <li set:html={markAgda(x)} />)}
+              </ul>
+            </div>
+
+            <div class="sheet-row sheet-row-detail">
+              <h4 class="sheet-label">{o.slug === 'review' ? 'Not included' : 'Separately scoped'}</h4>
+              {o.slug === 'review' ? (
+                <p set:html={markAgda(o.exclusion)} />
+              ) : (
+                <>
+                  <p set:html={markAgda(o.exclusionShort)} />
+                  <details class="disclosure sheet-disclosure">
+                    <summary>Full list of separately scoped work</summary>
+                    <div class="disclosure-body">
+                      <p set:html={markAgda(o.exclusion)} />
+                    </div>
+                  </details>
+                </>
+              )}
+            </div>
+
+            <div class="sheet-row sheet-row-detail">
+              <h4 class="sheet-label">Timing</h4>
+              <p>{o.timing}</p>
+            </div>
           </article>
         ))}
       </div>
 
-      <p class="body muted footnote price-qualifier">{PRICE_QUALIFIER} {FEE_BASIS} {AVAILABILITY}</p>
+      <p class="body muted footnote price-qualifier">{FEE_BASIS} {AVAILABILITY}</p>
 
-      <div class="cta-row start-cta">
+      <div class="cta-row">
         <a href="/contact/" class="btn">Discuss your system</a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
       </div>
@@ -139,7 +176,7 @@ const useCases = [
   </section>
 
   <!-- SCOPE BOUNDARY -->
-  <section class="block">
+  <section class="block" id="scope">
     <div class="wrap">
       <h2 class="h2">What the standard assessment <em>includes and excludes.</em></h2>
       <p class="lede muted">
@@ -149,14 +186,14 @@ const useCases = [
       </p>
       <div class="scope-grid">
         <div>
-          <span class="mono col-label">Included</span>
-          <ul class="scope-list" role="list">
+          <span class="col-label">Included</span>
+          <ul class="dash-list" role="list">
             {included.map((x) => <li set:html={markAgda(x)} />)}
           </ul>
         </div>
         <div>
-          <span class="mono col-label">Excluded unless separately contracted</span>
-          <ul class="scope-list" role="list">
+          <span class="col-label">Excluded unless separately contracted</span>
+          <ul class="dash-list" role="list">
             {excluded.map((x) => <li>{x}</li>)}
           </ul>
         </div>
@@ -165,7 +202,7 @@ const useCases = [
   </section>
 
   <!-- HOW AN ASSESSMENT RUNS -->
-  <section class="block">
+  <section class="block" id="how-it-runs">
     <div class="wrap">
       <h2 class="h2">How a full assessment runs.</h2>
       <p class="lede muted">
@@ -175,13 +212,13 @@ const useCases = [
         detailed timetable.
       </p>
 
-      <figure class="activity-seq" aria-labelledby="activity-seq-heading">
+      <figure class="activity-seq" data-reveal="scene" aria-labelledby="activity-seq-heading">
         <figcaption class="mono seq-caption" id="activity-seq-heading">Four activities, in order. No fixed duration is assigned to any one of them.</figcaption>
-        <div class="seq-rail" aria-hidden="true"></div>
+        <div class="rail draw seq-rail" aria-hidden="true"></div>
         <ol class="seq" role="list">
           {activities.map((a, i) => (
-            <li class="seq-step">
-              <span class="seq-node" aria-hidden="true"></span>
+            <li class="seq-step" style={`--i: ${i}`}>
+              <span class="node seq-node" aria-hidden="true"></span>
               <span class="mono stage-n">{String(i + 1).padStart(2, '0')}</span>
               <h3 class="h3 seq-name">{a.name}.</h3>
               <p class="body muted" set:html={markAgda(a.body)} />
@@ -197,7 +234,7 @@ const useCases = [
   </section>
 
   <!-- WHO SHOULD BE IN THE CONVERSATION -->
-  <section class="block">
+  <section class="block" id="who">
     <div class="wrap">
       <h2 class="h2">Who should be <em>in the conversation.</em></h2>
       <p class="lede muted">
@@ -205,7 +242,7 @@ const useCases = [
         configuration brings three owners together. Legal, compliance,
         enterprise risk, internal audit and procurement join as required.
       </p>
-      <ul class="buyer-grid reveal" role="list">
+      <ul class="feature-grid buyer-grid" role="list" data-reveal="stagger">
         {buyingGroup.map((b) => (
           <li>
             <h3 class="h3">{b.role}</h3>
@@ -219,7 +256,7 @@ const useCases = [
         Our initial commercial focus is large UK and European regulated
         financial institutions, on consequential pathways such as:
       </p>
-      <ul class="scope-list usecases" role="list">
+      <ul class="dash-list usecases" role="list">
         {useCases.map((x) => <li>{x}</li>)}
       </ul>
       <p class="body muted footnote">
@@ -237,11 +274,11 @@ const useCases = [
   </section>
 
   <!-- HOW THE ENGAGEMENT IS CONTROLLED -->
-  <section class="block">
+  <section class="block" id="control">
     <div class="wrap">
       <h2 class="h2">How the engagement <em>is controlled.</em></h2>
-      <div class="control-grid">
-        <div>
+      <ul class="feature-grid control-grid" role="list" data-reveal="stagger">
+        <li>
           <h3 class="h3">Authority.</h3>
           <p class="body muted">
             Intervene retains Assessment Authority: over who may perform an
@@ -249,8 +286,8 @@ const useCases = [
             evidence requirements, and whether a conclusion is issued.
             {SELF_APPROVAL}
           </p>
-        </div>
-        <div>
+        </li>
+        <li>
           <h3 class="h3">Independence.</h3>
           <p class="body muted">
             Facts can be corrected. Evidence can change the judgement. The
@@ -258,8 +295,8 @@ const useCases = [
             or a favourable result is not a deliverable or an acceptance
             criterion.
           </p>
-        </div>
-        <div>
+        </li>
+        <li>
           <h3 class="h3">Signed records.</h3>
           <p class="body muted">
             Signed SEDI result records are not a standard deliverable (see
@@ -269,13 +306,13 @@ const useCases = [
             report or included in an export.
             <a href="/verify/" class="link">What verification establishes</a>.
           </p>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
   </section>
 
   <!-- BEYOND ONE SYSTEM. Later-stage, not standard packages. -->
-  <section class="block">
+  <section class="block" id="beyond">
     <div class="wrap-narrow">
       <h2 class="h2">Beyond one system.</h2>
       <p class="body muted">
@@ -298,7 +335,7 @@ const useCases = [
   </section>
 
   <!-- FAQ. Shared with /agda/; emitted as FAQPage JSON-LD. -->
-  <section class="block">
+  <section class="block" id="faq">
     <div class="wrap">
       <h2 class="h2">Frequently asked questions.</h2>
       <dl class="faq-list">
@@ -316,10 +353,10 @@ const useCases = [
   <section class="block tight">
     <div class="wrap">
       <div class="close-grid">
-        <h2 class="h2 reveal">
+        <h2 class="h2">
           Bring a named system, <em>its decision, and the intervention question.</em>
         </h2>
-        <div class="close-cta reveal">
+        <div class="close-cta">
           <p class="body muted">
             We can then establish whether a Review or a full assessment is the
             appropriate next step, and confirm delivery arrangements and a
@@ -337,193 +374,120 @@ const useCases = [
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-top: 144px;
-    padding-bottom: 144px;
-    border-bottom: 1px solid var(--hair);
-  }
+  /* /services/ is the dense-page reference: two spec sheets, a scope
+     boundary, a four-step sequence, three grids and a FAQ. Everything
+     here composes from the shared scale; the sheet is the one component
+     that is particular to this page. */
   .hero .h1 { max-width: 22ch; }
-  .hero .lede { margin-top: 32px; max-width: 62ch; }
-  .hero-cta { margin-top: 48px; display: flex; gap: 16px; flex-wrap: wrap; }
-
-  .block .h2 { max-width: 28ch; }
-  .block .lede { margin-top: 16px; max-width: 60ch; }
   .ink { color: var(--ink); font-weight: 700; }
 
-  /* ----- Offers. Two spec sheets side by side, stacked on narrow screens. ----- */
+  /* ----- Offer sheets ----- */
   .start-here { background: var(--paper-soft); border-bottom: 1px solid var(--hair); }
   .start-here .h2 { max-width: 22ch; }
   .offers {
-    margin: 56px 0 0;
+    margin: var(--gap-intro) 0 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: clamp(40px, 6vw, 80px);
+    column-gap: clamp(40px, 6vw, 80px);
   }
-  .offer { display: grid; gap: 12px; align-content: start; min-width: 0; }
+  /* Subgrid keeps the eight rows of the two sheets level. Browsers
+     without it fall back to independent sheets. */
+  .offer { display: grid; align-content: start; min-width: 0; }
+  @supports (grid-template-rows: subgrid) {
+    .offer { grid-template-rows: subgrid; grid-row: span 8; }
+  }
+
+  .sheet-head { display: grid; gap: var(--gap-item); align-content: start; padding-bottom: var(--space-4); }
   .offer-kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
-  .offer-name { margin: 0; font-size: 28px; }
-  .offer-purpose { margin: 4px 0 8px; max-width: 48ch; font-size: 17px; }
-  .start-list {
-    margin: 16px 0 0;
-    display: grid;
-    gap: 0;
-    border-top: 1px solid var(--hair-strong);
+  .offer-name { margin: 0; font-size: clamp(24px, 2.2vw, 30px); }
+  .offer-purpose { margin: 4px 0 0; max-width: 46ch; font-family: var(--font-sans); font-size: 17px; line-height: 1.6; color: var(--muted); }
+
+  .sheet-label {
+    margin: 0;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent);
   }
-  .start-list > div {
+  .sheet-summary {
     display: grid;
-    grid-template-columns: 150px minmax(0, 1fr);
-    gap: 20px;
-    padding: 20px 0;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: var(--space-4) var(--space-5);
+    padding: var(--space-4) 0;
+    border-top: 2px solid var(--accent);
+    border-bottom: 1px solid var(--hair-strong);
+    align-content: start;
+  }
+  .sheet-summary > div { display: grid; gap: 8px; align-content: start; min-width: 0; }
+  .sheet-summary p { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--ink); }
+  .price { font-size: clamp(24px, 2.2vw, 30px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; }
+  .price-flag { font-size: 13px; color: var(--muted); }
+
+  .sheet-row {
+    display: grid; gap: 10px; align-content: start;
+    padding: var(--space-4) 0;
     border-bottom: 1px solid var(--hair);
   }
-  .start-list dt {
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--accent); padding-top: 4px;
-  }
-  .start-list dd {
-    margin: 0; font-family: var(--font-sans); font-size: 16px;
-    line-height: 1.6; color: var(--ink); max-width: 52ch;
-  }
-  .start-list dd.price { font-size: 22px; font-weight: 700; }
-  .plain { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-  .plain > li { position: relative; padding-left: 18px; }
-  .plain > li::before {
-    content: ''; position: absolute; left: 0; top: 11px;
-    width: 8px; height: 1px; background: var(--accent);
-  }
-  .records-note { margin: 14px 0 0; font-size: 14px; line-height: 1.6; color: var(--muted); max-width: 52ch; }
-  .price-qualifier { margin-top: 40px; }
-  .start-cta { margin-top: 40px; }
+  .sheet-row p { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--ink); max-width: 52ch; }
+  .sheet-row .dash-list > li { font-size: 16px; max-width: 52ch; }
+  .sheet-row-detail p,
+  .sheet-row-detail .dash-list > li { font-size: 15px; color: var(--muted); }
+  .sheet-row-detail .sheet-label { color: var(--muted); }
+  .records-note { margin-top: var(--space-3); font-size: 14px; color: var(--muted); max-width: 52ch; }
+  .sheet-disclosure { margin-top: 6px; border-top: 0; border-bottom: 0; }
+  .sheet-disclosure > summary { min-height: 44px; padding: 10px 0; font-size: 14px; justify-content: flex-start; gap: 12px; }
+  .sheet-disclosure .disclosure-body p { font-size: 15px; }
+  .price-qualifier { margin-top: var(--space-5); }
+  .start-here .cta-row { margin-top: var(--space-5); }
 
   /* ----- Scope grid ----- */
   .scope-grid {
-    margin: 56px 0 0;
+    margin: var(--gap-intro) 0 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 64px;
+    gap: var(--space-7);
   }
-  .col-label {
-    display: block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--muted); padding-bottom: 14px; border-bottom: 1px solid var(--hair-strong);
-  }
-  .scope-list { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 12px; }
-  .scope-list > li {
-    position: relative; padding-left: 20px;
-    font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--ink); max-width: 52ch;
-  }
-  .scope-list > li::before {
-    content: ''; position: absolute; left: 0; top: 11px;
-    width: 8px; height: 1px; background: var(--accent);
-  }
-  .usecases { margin-top: 20px; }
+  .usecases { margin-top: var(--space-4); }
 
-  /* ----- Buyer group ----- */
-  .buyer-grid {
-    list-style: none;
-    margin: 56px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 48px;
-    border-top: 1px solid var(--hair-strong);
-  }
-  .buyer-grid > li { padding-top: 32px; display: grid; gap: 12px; align-content: start; }
-  .buyer-grid .h3 { margin: 0; font-size: 20px; }
-  .buyer-grid p { margin: 0; max-width: 34ch; }
-  .services-head { margin: 64px 0 12px; font-size: 22px; }
-
-  /* ----- Control grid ----- */
-  .control-grid {
-    margin: 56px 0 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 48px;
-  }
-  .control-grid > div { display: grid; gap: 12px; align-content: start; }
-  .control-grid .h3 { margin: 0; }
-  .control-grid p { margin: 0; max-width: 36ch; }
-
-  .footnote {
-    margin: 32px 0 0;
-    max-width: 76ch;
-    color: var(--muted);
-    font-size: 14px;
-  }
+  /* ----- Buyer group and control grid: shared feature grid. ----- */
+  .services-head { margin: var(--gap-sub) 0 var(--gap-item); }
 
   /* ----- Beyond one system ----- */
-  .wrap-narrow .body { max-width: 62ch; margin: 16px 0 0; }
-
-  /* ----- FAQ ----- */
-  .faq-list { margin: 56px 0 0; border-top: 1px solid var(--hair-strong); }
-  .faq-list > div {
-    display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 48px;
-    padding: 28px 0; border-bottom: 1px solid var(--hair);
-  }
-  .faq-list dt { font-family: var(--font-sans); font-size: 18px; line-height: 1.35; color: var(--ink); }
-  .faq-list dd { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.62; color: var(--muted); }
-
-  /* ----- Close ----- */
-  .close-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 96px;
-    align-items: start;
-  }
-  .close-grid .h2 { max-width: 24ch; margin: 0; }
-  .close-cta { display: grid; gap: 24px; align-content: start; padding-top: 12px; }
-  .close-cta .body { margin: 0; max-width: 42ch; }
-  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .wrap-narrow .body { max-width: var(--measure); margin: var(--space-3) 0 0; }
 
   /* ----- Where to begin ----- */
   .choose { border-bottom: 1px solid var(--hair); }
 
   /* ----- Activity sequence: the SEDI rail, four steps ----- */
-  .activity-seq { margin: 64px 0 0; }
-  .seq-caption { display: block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: 40px; }
-  .seq-rail { height: 1px; background: var(--hair-strong); margin-bottom: -7px; }
+  .activity-seq { margin: var(--gap-intro) 0 0; }
+  .seq-caption { display: block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: var(--space-5); }
+  .seq-rail { margin-bottom: -7px; }
   .seq { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 32px; position: relative; z-index: 1; }
   .seq-step { display: grid; gap: 10px; align-content: start; }
-  .seq-node { display: block; width: 13px; height: 13px; border-radius: 50%; border: 1px solid var(--accent); background: var(--paper); }
-  .seq-step .stage-n { margin-top: 10px; }
+  .seq-step .stage-n { margin-top: 10px; color: var(--accent); letter-spacing: 0.06em; font-size: 11px; }
   .seq-name { margin: 0; font-size: 22px; }
   .seq-step p { margin: 0; max-width: 32ch; font-size: 15px; }
-  .seq-foot { margin-top: 40px; }
-
-  /* ----- Engagement stages (legacy list styles retained for other uses) ----- */
-  .stages { list-style: none; margin: 72px 0 0; padding: 0; display: grid; gap: 40px; }
-  .stage {
-    padding-top: 32px;
-    border-top: 1px solid var(--hair-strong);
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 40px;
-    align-items: start;
+  .seq-foot { margin-top: var(--space-5); }
+  html[data-motion] .seq-step {
+    opacity: 0; transform: translateY(var(--move-reveal));
+    transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out);
+    transition-delay: calc(200ms + var(--i) * 140ms);
   }
-  .stage-head { display: grid; gap: 8px; align-content: start; }
-  .stage-head .h3 { margin: 0; }
-  .stage-n { color: var(--accent); letter-spacing: 0.06em; font-size: 11px; }
-  .stage-body { display: grid; gap: 20px; min-width: 0; }
-  .stage-body > p { margin: 0; max-width: 60ch; }
+  html[data-motion] .activity-seq.in .seq-step { opacity: 1; transform: none; }
 
   /* ----- Responsive ----- */
   @media (max-width: 880px) {
-    .hero { padding-top: 96px; padding-bottom: 96px; }
-    .offers { grid-template-columns: 1fr; gap: 56px; }
-    .scope-grid { grid-template-columns: 1fr; gap: 40px; }
-    .buyer-grid { grid-template-columns: 1fr; gap: 40px; }
-    .control-grid { grid-template-columns: 1fr; gap: 40px; }
-    .stage { grid-template-columns: 1fr; gap: 20px; }
+    .offers { grid-template-columns: 1fr; row-gap: var(--space-7); }
+    @supports (grid-template-rows: subgrid) {
+      .offer { grid-template-rows: auto; grid-row: auto; }
+    }
+    .scope-grid { grid-template-columns: 1fr; gap: var(--space-5); }
     .seq-rail { display: none; }
     .seq { grid-template-columns: 1fr; gap: 28px; }
     .seq-step { grid-template-columns: 13px 1fr; column-gap: 16px; }
     .seq-node { grid-row: 1 / span 3; margin-top: 6px; }
     .seq-step .stage-n { margin-top: 0; }
     .seq-step p { max-width: none; }
-    .faq-list > div { grid-template-columns: 1fr; gap: 16px; }
-    .close-grid { grid-template-columns: 1fr; gap: 48px; }
   }
-  @media (max-width: 720px) {
-    .start-list > div { grid-template-columns: 1fr; gap: 10px; }
-    .start-list dt { padding-top: 0; }
+  @media (max-width: 560px) {
+    .sheet-summary { grid-template-columns: 1fr; }
   }
 </style>

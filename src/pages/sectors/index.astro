@@ -42,8 +42,8 @@ const sectors = [
 >
   <section class="hero">
     <div class="wrap">
-      <h1 class="h1 reveal">Where Intervention Readiness <em>matters most.</em></h1>
-      <p class="lede muted reveal">
+      <h1 class="h1">Where Intervention Readiness <em>matters most.</em></h1>
+      <p class="lede muted">
         Systems are becoming more capable. Organisations are becoming more
         dependent on automation. Regulators increasingly require effective
         human oversight. The question is the same in every sector: can you stop
@@ -79,7 +79,7 @@ const sectors = [
         operational or reputational exposure, the question applies. Tell us
         the system and the decision it supports.
       </p>
-      <div class="cta">
+      <div class="cta-row">
         <a href="/contact/" class="btn">Discuss your system</a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
       </div>
@@ -88,35 +88,26 @@ const sectors = [
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-top: 144px;
-    padding-bottom: 144px;
-    border-bottom: 1px solid var(--hair);
-  }
+  /* Four sectors, each a label, a heading and two paragraphs. They read
+     as one list, so they share one section's rhythm: a hairline between
+     entries rather than a full section each. */
   .hero .h1 { max-width: 24ch; }
-  .hero .lede { margin-top: 32px; max-width: 58ch; }
-
-  .sector { scroll-margin-top: var(--header-h); }
+  .sector { padding-top: var(--gap-sub); padding-bottom: var(--gap-sub); }
+  .sector + .sector > .wrap { border-top: 1px solid var(--hair); padding-top: var(--gap-sub); }
+  .sector:first-of-type { padding-top: var(--section); }
+  .sector:last-of-type { padding-bottom: var(--section); }
   .sector-grid {
     display: grid;
     grid-template-columns: 1fr 1.4fr;
-    gap: 64px;
+    gap: var(--space-7);
     align-items: start;
   }
-  .sector-lead .label {
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--hair);
-  }
+  .sector-lead .label { margin-bottom: var(--space-3); }
   .sector-lead .h2 { max-width: 20ch; }
-  .sector-body { display: grid; gap: 16px; padding-top: 8px; }
+  .sector-body { display: grid; gap: var(--space-3); padding-top: 6px; }
   .sector-body .body { max-width: 56ch; margin: 0; }
 
-  .cta-band .h2 { max-width: 22ch; }
-  .cta-band .body { margin: 16px 0 32px; max-width: 56ch; }
-  .cta-band .cta { display: flex; flex-wrap: wrap; gap: 16px; }
-
   @media (max-width: 880px) {
-    .hero { padding-top: 88px; padding-bottom: 88px; }
-    .sector-grid { grid-template-columns: 1fr; gap: 24px; }
+    .sector-grid { grid-template-columns: 1fr; gap: var(--space-4); }
   }
 </style>

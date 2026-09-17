@@ -179,27 +179,27 @@ const schema = {
   <!-- 1. THE QUESTION -->
   <section class="hero">
     <div class="wrap">
-      <span class="label reveal">Intervention Readiness Network</span>
-      <h1 class="h1 reveal">
+      <span class="label">Intervention Readiness Network</span>
+      <h1 class="h1">
         Governance describes what should happen. <em>Intervention proves what can happen.</em>
       </h1>
-      <p class="lede muted reveal">
+      <p class="lede muted">
         An organisation can hold AI governance, risk controls, named human
         oversight and a documented escalation path, and still be unable to show
         that a consequential system could be stopped or constrained once it is
         running.
       </p>
-      <p class="body muted reveal hero-body">
+      <p class="body muted hero-body">
         The immediate problem is not the policy on paper. It is the evidence
         that intervention can actually happen, and the gap often surfaces at the
         worst possible moment.
       </p>
 
-      <div class="cta-row reveal">
+      <div class="cta-row">
         <a class="btn" href="#start">Discuss the Network</a>
       </div>
 
-      <ul class="beats reveal" role="list">
+      <ul class="beats" role="list" data-reveal="stagger">
         <li>
           <span class="mono beat-word">Detect</span>
           <span class="beat-body">that something has gone wrong.</span>
@@ -230,7 +230,7 @@ const schema = {
         when an organisation should confront this question at all.
       </p>
 
-      <dl class="rows reveal">
+      <dl class="rows">
         {standing.map((row) => (
           <div>
             <dt>{row.k}</dt>
@@ -262,7 +262,7 @@ const schema = {
       </p>
 
       <div class="ask-grid">
-        <div class="ask-col reveal">
+        <div class="ask-col">
           <span class="mono col-label">What we ask</span>
           <ul class="asked" role="list">
             {asked.map((row) => (
@@ -274,7 +274,7 @@ const schema = {
           </ul>
         </div>
 
-        <div class="ask-col reveal">
+        <div class="ask-col">
           <span class="mono col-label">What we do not ask</span>
           <ul class="not-asked" role="list">
             {notAsked.map((row) => (
@@ -302,7 +302,7 @@ const schema = {
         intellectual access, not commercial access.
       </p>
 
-      <dl class="rows reveal">
+      <dl class="rows">
         {participation.map((row) => (
           <div>
             <dt>{row.k}</dt>
@@ -339,7 +339,7 @@ const schema = {
         them separate is what makes the mechanism legible rather than covert.
       </p>
 
-      <dl class="rows reveal">
+      <dl class="rows">
         {link.map((row) => (
           <div>
             <dt>{row.k}</dt>
@@ -366,13 +366,13 @@ const schema = {
         'AGDA™ is sold as an independent assessment. The Network is therefore designed so that commercial relationships cannot reach the assessment itself.',
       )} />
 
-      <ul class="firewall reveal" role="list">
+      <ul class="firewall" role="list">
         {firewall.map((line) => (
           <li set:html={markAgda(line)} />
         ))}
       </ul>
 
-      <ul class="exclusions reveal" role="list">
+      <ul class="exclusions" role="list">
         {exclusions.map((line) => (
           <li>{line}</li>
         ))}
@@ -403,7 +403,7 @@ const schema = {
   <section class="block" id="start">
     <div class="wrap">
       <div class="start-grid">
-        <div class="start-col reveal">
+        <div class="start-col">
           <h2 class="h2">There is no form. <em>There is a conversation.</em></h2>
           <p class="body muted">
             Write to us and we will reply. If it makes sense, we talk for twenty
@@ -419,7 +419,7 @@ const schema = {
           </p>
         </div>
 
-        <aside class="start-aside reveal">
+        <aside class="start-aside">
           <span class="mono col-label">What is useful to include</span>
           <dl class="rows tight-rows">
             {useful.map((row) => (
@@ -453,28 +453,17 @@ const schema = {
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-top: 144px;
-    padding-bottom: 112px;
-    border-bottom: 1px solid var(--hair);
-  }
   .hero .h1 { max-width: 24ch; }
-  .hero .lede { margin-top: 32px; max-width: 54ch; }
-  .hero-body { margin-top: 24px; max-width: 54ch; }
-
-  .cta-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 48px;
-  }
+  .hero .lede { max-width: 54ch; }
+  .hero-body { margin-top: var(--space-4); max-width: 54ch; }
+  .hero .cta-row { margin-top: var(--space-5); }
 
   /* The question made concrete. Three words carry the whole category, so
      they sit on their own rule rather than inside the prose above. */
   .beats {
     list-style: none;
-    margin: 64px 0 0;
-    padding-top: 32px;
+    margin: var(--gap-sub) 0 0;
+    padding-top: var(--space-5);
     border-top: 1px solid var(--hair-strong);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -708,7 +697,6 @@ const schema = {
   }
 
   @media (max-width: 720px) {
-    .hero { padding-top: 112px; padding-bottom: 88px; }
     .beats {
       grid-template-columns: 1fr;
       gap: 24px;

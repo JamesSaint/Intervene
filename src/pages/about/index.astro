@@ -44,8 +44,8 @@ const role = [
   <section class="hero">
     <div class="wrap">
       <span class="label">Why it matters</span>
-      <h1 class="h1 reveal">Capability moved faster than intervention.</h1>
-      <p class="lede muted reveal">
+      <h1 class="h1">Capability moved faster than intervention.</h1>
+      <p class="lede muted">
         AI systems are becoming more capable. Organisations are becoming more
         dependent on automation. Human oversight only matters if intervention
         remains possible.
@@ -57,7 +57,7 @@ const role = [
   <section class="block">
     <div class="wrap">
       <div class="founder">
-        <figure class="portrait reveal">
+        <figure class="portrait">
           <img
             src="/assets/images/james-saint.jpg"
             alt="James Saint, Founder and Principal Advisor, Intervene"
@@ -69,7 +69,7 @@ const role = [
           <figcaption>James Saint · London · 2026</figcaption>
         </figure>
 
-        <div class="bio reveal">
+        <div class="bio">
           <div class="founder-meta">
             <p class="mono role">Founder</p>
             <LinkedInButton href={socialLinks.jamesSaintLinkedIn} label="James Saint on LinkedIn" />
@@ -152,7 +152,7 @@ const role = [
         will and will not deliver.
       </p>
 
-      <ul class="commitments" role="list">
+      <ul class="feature-grid commitments" role="list" style="--cols: 2" data-reveal="stagger">
         {commitments.map((c) => (
           <li>
             <h3 class="h3">{c.h}</h3>
@@ -174,8 +174,8 @@ const role = [
       </p>
 
       <div class="sector-group">
-        <span class="mono group-label">Primary</span>
-        <ul class="sectors three" role="list">
+        <span class="col-label">Primary</span>
+        <ul class="feature-grid sectors" role="list" style="--cols: 3">
           {sectorsPrimary.map((s) => (
             <li>
               <h3 class="h3">{s.h}</h3>
@@ -186,8 +186,8 @@ const role = [
       </div>
 
       <div class="sector-group">
-        <span class="mono group-label">By invitation</span>
-        <ul class="sectors two" role="list">
+        <span class="col-label">By invitation</span>
+        <ul class="feature-grid sectors" role="list" style="--cols: 2">
           {sectorsInvite.map((s) => (
             <li>
               <h3 class="h3">{s.h}</h3>
@@ -198,7 +198,7 @@ const role = [
       </div>
 
       <div class="sector-group not-served">
-        <span class="mono group-label">Not currently served</span>
+        <span class="col-label">Not currently served</span>
         <p class="body muted not-text">
           Consumer internet, enterprise productivity, B2B SaaS, advertising
           tech. Not because the work is unimportant, but because Intervene's
@@ -218,7 +218,7 @@ const role = [
         <a href="/agda/" class="link">what <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is not</a>.
       </p>
 
-      <ul class="not-list" role="list">
+      <ul class="feature-grid not-list" role="list" style="--cols: 4" data-reveal="stagger">
         {role.map((n) => (
           <li>
             <h3 class="h3">{n.h}</h3>
@@ -233,8 +233,8 @@ const role = [
   <section class="block tight">
     <div class="wrap">
       <div class="close-grid">
-        <h2 class="h2 reveal">The question returns to the same place.</h2>
-        <div class="close-cta reveal">
+        <h2 class="h2">The question returns to the same place.</h2>
+        <div class="close-cta">
           <p class="body muted">
             <span class="keep-together">Can you stop it in time?</span> Name the system you are
             accountable for and we will tell you whether an assessment would
@@ -252,50 +252,33 @@ const role = [
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-top: 144px;
-    padding-bottom: 144px;
-    border-bottom: 1px solid var(--hair);
-  }
+  /* Founder narrative beside the portrait, then three grids. The
+     grids are the shared feature grid; the narrative column is local. */
   .hero .h1 { max-width: 24ch; }
-  .hero .lede { margin-top: 32px; max-width: 52ch; }
-
   .block .h2 { max-width: 24ch; }
-  .block .lede { margin-top: 16px; max-width: 56ch; }
 
   /* Founder */
   .founder {
     display: grid;
     grid-template-columns: 1fr 1.3fr;
-    gap: 80px;
+    gap: var(--space-7);
     align-items: start;
   }
-  .portrait {
-    margin: 0;
-    display: grid;
-    gap: 16px;
-  }
+  .portrait { margin: 0; display: grid; gap: var(--space-3); }
   .portrait img {
     width: 100%;
     height: auto;
     display: block;
     filter: grayscale(1);
-    transition: filter 600ms cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .portrait:hover img { filter: grayscale(0); }
   .portrait figcaption {
     font-family: var(--font-mono);
     font-size: 11px;
     letter-spacing: 0.04em;
     color: var(--muted);
   }
-  .bio { display: grid; gap: 16px; align-content: start; }
-  .bio .h2 { margin: 0; }
-  .founder-meta {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
+  .bio { display: grid; gap: var(--space-3); align-content: start; }
+  .founder-meta { display: flex; align-items: center; gap: 14px; }
   .bio .role {
     color: var(--muted);
     margin: 0;
@@ -303,131 +286,32 @@ const role = [
     letter-spacing: 0.04em;
     font-size: 11px;
   }
-  .bio .body { margin: 8px 0 0; max-width: 56ch; }
-  .bio .q { font-style: italic; }
-
-  .specs {
-    margin: 32px 0 0;
-    padding-top: 24px;
-    border-top: 1px solid var(--hair);
-    display: grid;
-    gap: 16px;
-  }
-  .specs > div {
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 24px;
-    align-items: baseline;
-  }
-  .specs dt {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-  .specs dd {
-    margin: 0;
-    font-family: var(--font-sans);
-    font-size: 14px;
-    color: var(--ink);
-  }
+  .bio .body { margin: 0; max-width: 56ch; }
+  .bio .q { font-style: italic; color: var(--ink); }
 
   /* Aside quote */
   .aside {
-    margin-top: 48px;
-    padding-top: 32px;
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
     border-top: 1px solid var(--hair);
     font-style: italic;
     max-width: 60ch;
   }
 
-  /* Commitments */
-  .commitments {
-    list-style: none;
-    margin: 80px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 56px 80px;
-  }
-  .commitments > li { display: grid; gap: 12px; }
-  .commitments p { max-width: 44ch; margin: 0; }
-
   /* Sectors */
-  .sector-group { margin-top: 64px; }
-  .sector-group:first-of-type { margin-top: 80px; }
-  .group-label {
-    display: block;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-size: 11px;
-    margin-bottom: 24px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--hair);
-  }
-  .sectors {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 48px 64px;
-  }
-  .sectors.three { grid-template-columns: 1fr 1fr 1fr; }
-  .sectors.two   { grid-template-columns: 1fr 1fr; }
-  .sectors > li  { display: grid; gap: 12px; }
-  .sectors p     { max-width: 36ch; margin: 0; }
-  .not-served    { padding-top: 24px; }
-  .not-text      { max-width: 76ch; margin: 0; }
+  .sector-group { margin-top: var(--gap-sub); }
+  .sector-group:first-of-type { margin-top: var(--gap-intro); }
+  .sectors { margin-top: var(--space-4); padding-top: 0; border-top: 0; }
+  .not-served .col-label { margin-bottom: var(--space-3); }
+  .not-text { max-width: 72ch; margin: 0; }
 
-  /* Not list (what we are not) */
-  .not-list {
-    list-style: none;
-    margin: 80px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    column-gap: 48px;
-    border-top: 1px solid var(--hair);
-  }
-  .not-list > li {
-    padding: 32px 0;
-    border-bottom: 1px solid var(--hair);
-    display: grid;
-    gap: 12px;
-    align-content: start;
-  }
-  .not-list p { max-width: 32ch; margin: 0; }
+  /* What Intervene does */
+  .not-list { gap: var(--space-5) var(--space-6); }
 
-  /* Close */
-  .close-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 96px;
-    align-items: start;
-  }
-  .close-grid .h2 { max-width: 24ch; margin: 0; }
-  .close-cta {
-    display: grid;
-    gap: 24px;
-    align-content: start;
-    padding-top: 12px;
-  }
-  .close-cta .body { margin: 0; max-width: 38ch; }
-  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
   .close-cta .btn { justify-self: start; }
 
   @media (max-width: 880px) {
-    .hero { padding-top: 96px; padding-bottom: 96px; }
-    .founder { grid-template-columns: 1fr; gap: 48px; }
-    .commitments { grid-template-columns: 1fr; gap: 48px; }
-    .sectors.three, .sectors.two { grid-template-columns: 1fr; gap: 40px; }
-    .not-list { grid-template-columns: 1fr 1fr; }
-    .specs > div { grid-template-columns: 1fr; gap: 4px; }
-    .close-grid { grid-template-columns: 1fr; gap: 48px; }
-  }
-  @media (max-width: 560px) {
-    .not-list { grid-template-columns: 1fr; }
+    .founder { grid-template-columns: 1fr; gap: var(--space-6); }
+    .portrait { max-width: 360px; }
   }
 </style>

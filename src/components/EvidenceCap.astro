@@ -9,7 +9,7 @@ const grades = [
 const MAX = 5;
 ---
 
-<figure class="ev-cap reveal" aria-label="Evidence-confidence ladder. Policy evidence carries less confidence than operational or stress evidence.">
+<figure class="ev-cap" data-reveal="scene" aria-label="Evidence-confidence ladder. Policy evidence carries less confidence than operational or stress evidence.">
   <div class="chart">
     <div class="scale" aria-hidden="true">
       {[1, 2, 3, 4, 5].map((n) => (
@@ -25,7 +25,7 @@ const MAX = 5;
       </div>
 
       {grades.map((g, i) => (
-        <div class="row" style={`--w: ${(g.weight / MAX) * 100}%; --delay: ${i * 100}ms`}>
+        <div class="row" style={`--w: ${(g.weight / MAX) * 100}%; --delay: ${i * 90}ms`}>
           <span class="grade-label">{g.label}</span>
           <span class="track">
             <span class="bar"></span>
@@ -39,13 +39,7 @@ const MAX = 5;
 </figure>
 
 <style>
-  .ev-cap {
-    margin: 80px 0 0;
-    padding: 0;
-    /* parent .reveal is overridden so children animate individually */
-    opacity: 1;
-    transform: none;
-  }
+  .ev-cap { margin: var(--gap-intro) 0 0; padding: 0; }
 
   .chart {
     --left-col: 180px;
@@ -120,12 +114,16 @@ const MAX = 5;
   .bar {
     position: absolute;
     inset: 0 auto 0 0;
-    width: 0;
+    width: var(--w);
     background: var(--accent);
-    transition: width 720ms cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  /* Draw once when motion is on: bars grow to their weight in order. */
+  html[data-motion] .bar {
+    width: 0;
+    transition: width var(--dur-draw) var(--ease-draw);
     transition-delay: var(--delay);
   }
-  .ev-cap.in .bar { width: var(--w); }
+  html[data-motion] .ev-cap.in .bar { width: var(--w); }
 
   .cap-text {
     font-family: var(--font-mono);
@@ -133,14 +131,16 @@ const MAX = 5;
     color: var(--muted);
     text-align: right;
     letter-spacing: 0.04em;
-    opacity: 0;
-    transition: opacity 360ms cubic-bezier(0.4, 0, 0.2, 1);
-    transition-delay: calc(var(--delay) + 480ms);
   }
-  .ev-cap.in .cap-text { opacity: 1; }
+  html[data-motion] .cap-text {
+    opacity: 0;
+    transition: opacity var(--dur-reveal) var(--ease-out);
+    transition-delay: calc(var(--delay) + 400ms);
+  }
+  html[data-motion] .ev-cap.in .cap-text { opacity: 1; }
 
   figcaption {
-    margin-top: 56px;
+    margin-top: var(--space-5);
     font-family: var(--font-sans);
     font-size: 14px;
     color: var(--muted);
@@ -159,11 +159,5 @@ const MAX = 5;
     .cap-text { display: none; }
     .grade-label { font-size: 14px; }
     .track { height: 18px; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .bar, .cap-text { transition: none !important; }
-    .ev-cap .bar { width: var(--w) !important; }
-    .ev-cap .cap-text { opacity: 1 !important; }
   }
 </style>

@@ -9,7 +9,7 @@ const MAX = 5;
 const ticks = [5, 4, 3, 2, 1, 0];
 ---
 
-<figure class="ceiling reveal" aria-label="Chain ceiling propagation. Claimed scores in light ghost tracks. Actual capped scores in dark bars.">
+<figure class="ceiling" data-reveal="scene" aria-label="Chain ceiling propagation. Claimed scores in light ghost tracks. Actual capped scores in dark bars.">
   <div class="chart">
     <ol class="axis-y" aria-hidden="true">
       {ticks.map((t) => <li>{t}</li>)}
@@ -26,7 +26,7 @@ const ticks = [5, 4, 3, 2, 1, 0];
         {bars.map((b, i) => (
           <div
             class="col"
-            style={`--actual: ${(b.actual / MAX) * 100}%; --claim: ${b.claimed !== null ? (b.claimed / MAX) * 100 : 0}%; --delay: ${i * 120}ms`}
+            style={`--actual: ${(b.actual / MAX) * 100}%; --claim: ${b.claimed !== null ? (b.claimed / MAX) * 100 : 0}%; --delay: ${i * 110}ms`}
           >
             {b.claimed !== null && (
               <span class="ghost" aria-label={`Claimed ${b.claimed.toFixed(1)}`}>
@@ -51,13 +51,7 @@ const ticks = [5, 4, 3, 2, 1, 0];
 </figure>
 
 <style>
-  .ceiling {
-    margin: 80px 0 0;
-    padding: 0;
-    /* parent override; children stagger on .in */
-    opacity: 1;
-    transform: none;
-  }
+  .ceiling { margin: var(--gap-intro) 0 0; padding: 0; }
 
   .chart {
     display: grid;
@@ -142,16 +136,11 @@ const ticks = [5, 4, 3, 2, 1, 0];
   }
 
   .ghost {
-    height: 0;
+    height: var(--claim);
     background: var(--paper-soft);
     border: 1px solid var(--hair);
     border-bottom: 0;
     z-index: 1;
-    opacity: 0;
-    transition:
-      height 600ms cubic-bezier(0.65, 0, 0.35, 1),
-      opacity 360ms cubic-bezier(0.4, 0, 0.2, 1);
-    transition-delay: var(--delay);
   }
   .ghost-label {
     position: absolute;
@@ -164,17 +153,12 @@ const ticks = [5, 4, 3, 2, 1, 0];
     letter-spacing: 0.04em;
     color: var(--muted);
     text-transform: lowercase;
-    opacity: 0;
-    transition: opacity 360ms cubic-bezier(0.4, 0, 0.2, 1);
-    transition-delay: calc(var(--delay) + 700ms);
   }
 
   .bar {
-    height: 0;
+    height: var(--actual);
     background: var(--accent);
     z-index: 2;
-    transition: height 720ms cubic-bezier(0.65, 0, 0.35, 1);
-    transition-delay: calc(var(--delay) + 200ms);
   }
   .score {
     position: absolute;
@@ -185,18 +169,33 @@ const ticks = [5, 4, 3, 2, 1, 0];
     font-family: var(--font-mono);
     font-size: 12px;
     color: var(--ink);
-    opacity: 0;
-    transition: opacity 360ms cubic-bezier(0.4, 0, 0.2, 1);
-    transition-delay: calc(var(--delay) + 800ms);
   }
 
-  .ceiling.in .ghost { height: var(--claim); opacity: 1; }
-  .ceiling.in .ghost-label { opacity: 1; }
-  .ceiling.in .bar { height: var(--actual); }
-  .ceiling.in .score { opacity: 1; }
+  /* Draw once when motion is on: the claimed track rises first, then
+     the capped bar, then the labels. Stage by stage, left to right. */
+  html[data-motion] .ghost {
+    height: 0; opacity: 0;
+    transition: height 520ms var(--ease-draw), opacity var(--dur-reveal) var(--ease-out);
+    transition-delay: var(--delay);
+  }
+  html[data-motion] .bar {
+    height: 0;
+    transition: height var(--dur-draw) var(--ease-draw);
+    transition-delay: calc(var(--delay) + 160ms);
+  }
+  html[data-motion] .ghost-label,
+  html[data-motion] .score {
+    opacity: 0;
+    transition: opacity var(--dur-reveal) var(--ease-out);
+    transition-delay: calc(var(--delay) + 700ms);
+  }
+  html[data-motion] .ceiling.in .ghost { height: var(--claim); opacity: 1; }
+  html[data-motion] .ceiling.in .bar { height: var(--actual); }
+  html[data-motion] .ceiling.in .ghost-label,
+  html[data-motion] .ceiling.in .score { opacity: 1; }
 
   figcaption {
-    margin-top: 64px;
+    margin-top: var(--space-6);
     font-family: var(--font-sans);
     font-size: 14px;
     color: var(--muted);
@@ -210,13 +209,5 @@ const ticks = [5, 4, 3, 2, 1, 0];
     .stage { font-size: 12px; bottom: -28px; }
     .ghost-label { font-size: 9px; top: -18px; }
     .score { font-size: 11px; top: -18px; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .ghost, .ghost-label, .bar, .score { transition: none !important; }
-    .ceiling .ghost { height: var(--claim); opacity: 1; }
-    .ceiling .ghost-label { opacity: 1; }
-    .ceiling .bar { height: var(--actual); }
-    .ceiling .score { opacity: 1; }
   }
 </style>

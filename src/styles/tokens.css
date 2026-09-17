@@ -2,7 +2,8 @@
    intervene · design tokens
    Dark advisory foundation adapted from Human Integrity Advisory:
    near-black surfaces, warm text hierarchy, and one muted gold
-   signal. Gold is structural: buttons, active rules, and proof marks.
+   signal. Gold is structural: actions, selected states, decisive
+   findings and proof marks. Nothing else is gold.
    ============================================================ */
 
 :root {
@@ -32,8 +33,11 @@
   --muted-soft: #a8a5a2;
   --faint:      #8e8b87; /* 5.4:1 on --paper-soft; the previous #797673 sat at 4.1:1 */
 
-  /* Accent: HIA-style muted gold. */
+  /* Accent: HIA-style muted gold. --accent-hover is the filled-button
+     hover state; a lighter tint rather than an opacity drop, so the
+     label keeps its contrast while the button moves. */
   --accent:       #c9b694;
+  --accent-hover: #d9c9ab;
   --accent-soft:  rgba(201, 182, 148, 0.40);
   --accent-faint: rgba(201, 182, 148, 0.08);
   /* Back-compat alias: focus ring referenced --bronze before the
@@ -45,33 +49,85 @@
   --hold: #c9b694;
   --pass: #8aaa91;
 
-  /* Spatial */
+  /* ---- Spatial scale. Eight steps; everything below composes from
+     these rather than from ad hoc pixel values. ---- */
+  --space-1: 8px;
+  --space-2: 12px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 64px;
+  --space-8: 96px;
+
+  /* Section rhythm. A major section is one --section of air above and
+     below; a tight section (closing CTA, short reference blocks) is
+     one --section-tight. Heroes carry more above than below so the
+     first body section reads as a continuation, not a new page. */
+  --section:       clamp(64px, 9vh, 112px);
+  --section-tight: clamp(48px, 7vh, 80px);
+  --hero-top:      clamp(72px, 10vh, 120px);
+  --hero-bottom:   clamp(56px, 8vh, 96px);
+
+  /* Relationships inside a section: heading to intro, intro to the
+     content it introduces, and the gap between subsections. */
+  --gap-h1:      28px;   /* h1 to lede in a hero */
+  --gap-head:    16px;   /* h2 to its lede */
+  --gap-intro:   40px;   /* lede to the diagram, list or grid below */
+  --gap-sub:     56px;   /* between subsections inside one block */
+  --gap-group:   24px;   /* between items of a grid or list */
+  --gap-item:    12px;   /* between lines inside one item */
+
+  /* Widths */
   --gutter:       64px;
-  --gutter-tight: 32px;
+  --gutter-tight: 24px;
   --max:          1280px;
   --max-narrow:   880px;
   --max-reading:  680px;
   --max-report:   980px;
+  --max-diagram:  1120px;
+  --measure:      62ch;  /* body prose */
+  --measure-lede: 58ch;  /* introductions */
+  --measure-item: 44ch;  /* text inside a grid cell */
   --header-h:     64px;
 
-  /* Motion */
+  /* Components */
+  --card-pad:  clamp(24px, 3vw, 36px);
+  --anchor-offset: calc(var(--header-h) + 24px);
+
+  /* ---- Motion. Three registers: interface feedback, section
+     entrances, and diagram draws. Reduced motion collapses all three
+     to near-instant. ---- */
   --ease:        cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:    cubic-bezier(0.2, 0, 0, 1);
+  --ease-draw:   cubic-bezier(0.65, 0, 0.35, 1);
   --ease-state:  var(--ease);
-  --dur-hover:   180ms;
-  --dur-reveal:  400ms;
+  --dur-fast:    160ms;  /* hover, focus, active-nav */
+  --dur-hover:   var(--dur-fast);
+  --dur-expand:  220ms;  /* details open and close */
+  --dur-reveal:  380ms;  /* section entrance */
+  --dur-draw:    700ms;  /* one connector draw */
   --dur-menu:    320ms;
+  --move-reveal: 10px;   /* entrance travel */
+  --stagger:     60ms;   /* per item in a staggered group */
 }
 
 @media (prefers-reduced-motion: reduce) {
   :root {
-    --dur-hover: 120ms;
-    --dur-reveal: 120ms;
-    --dur-menu: 120ms;
+    --dur-fast: 80ms;
+    --dur-hover: 80ms;
+    --dur-expand: 0ms;
+    --dur-reveal: 0ms;
+    --dur-draw: 0ms;
+    --dur-menu: 80ms;
+    --move-reveal: 0px;
+    --stagger: 0ms;
   }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 120ms !important;
+    transition-duration: 80ms !important;
+    transition-delay: 0ms !important;
     scroll-behavior: auto !important;
   }
 }

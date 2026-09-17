@@ -1,6 +1,19 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageNav from '../../components/PageNav.astro';
 import { markAgda } from '../../lib/marks';
+
+const pageNav = [
+  { href: '#system', label: 'The system' },
+  { href: '#controls', label: 'Evidence' },
+  { href: '#authority', label: 'Where it breaks' },
+  { href: '#stages', label: 'Stage by stage' },
+  { href: '#gates', label: 'Gate register' },
+  { href: '#decision', label: 'The decision' },
+  { href: '#register', label: 'Evidence register' },
+  { href: '#conclusion', label: 'Conclusion' },
+  { href: '#limits', label: 'Limits' },
+];
 
 const cover = [
   { k: 'System',    v: 'CRED-MOD-04 · Retail Credit Decisioning' },
@@ -70,10 +83,10 @@ const evidence = [
 
       <div class="cover-grid">
         <div class="cover-left">
-          <h1 class="h1 reveal">
+          <h1 class="h1">
             Retail credit. <em>Cannot stop in time.</em>
           </h1>
-          <p class="lede muted reveal">
+          <p class="lede muted">
             <strong class="finding-lead">Detection works. Authority does not.</strong>
             A drift signal is generated in about twelve minutes, but reaching a
             person who can halt the model takes between four and ninety-six
@@ -83,7 +96,7 @@ const evidence = [
             pathway can continue operating under its present authority
             arrangements.
           </p>
-          <p class="body muted reveal provenance-note">
+          <p class="body muted provenance-note">
             This is a constructed example, written to show the shape and
             structure of a finding from a full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment. It uses
             no client data and describes no real organisation. It has not been
@@ -101,7 +114,7 @@ const evidence = [
             ))}
           </dl>
 
-          <p class="cover-proof reveal cover-proof-note">
+          <p class="cover-proof cover-proof-note">
             A full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment issues a verdict with its evidence basis.
             Signed SEDI result records are not a standard deliverable and may
             be supplied only under an approved output-access arrangement. This
@@ -110,7 +123,7 @@ const evidence = [
           </p>
         </div>
 
-        <aside class="cover-right reveal" aria-label="Historical attestation summary">
+        <aside class="cover-right" aria-label="Historical attestation summary">
           <span class="env-label mono">Illustrative · shape of an attestation envelope</span>
           <pre class="envelope" tabindex="0" aria-label="Illustrative attestation record"><code>{`sampleStatus       constructed example, not signed
 engineVersion      not applicable
@@ -140,8 +153,10 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     </div>
   </section>
 
+  <PageNav items={pageNav} />
+
   <!-- 1. SYSTEM OVERVIEW -->
-  <section class="block">
+  <section class="block" id="system">
     <div class="wrap">
       <h2 class="h2">The assessed system. <em>The intervention question.</em></h2>
       <p class="lede muted">
@@ -150,7 +165,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
         internal model risk taxonomy.
       </p>
 
-      <dl class="specs">
+      <dl class="spec-list specs">
         {systemSpecs.map((s) => (
           <div>
             <dt>{s.k}</dt>
@@ -162,7 +177,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   </section>
 
   <!-- 2. CONTROL REALITY INDEX -->
-  <section class="block">
+  <section class="block" id="controls">
     <div class="wrap">
       <h2 class="h2">Intervention Readiness evidence.</h2>
       <p class="lede muted">
@@ -183,8 +198,8 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
             <tr>
               <td class="mono">{c.code}</td>
               <td class="cell-name">{c.name}</td>
-              <td class="cell-body">{c.assessment}</td>
-              <td><span class={`pill pill-${c.rag}`}>{c.terminal}</span></td>
+              <td class="cell-body" data-col="Assessment">{c.assessment}</td>
+              <td data-col="Classification"><span class={`pill pill-${c.rag}`}>{c.terminal}</span></td>
             </tr>
           ))}
         </tbody>
@@ -193,7 +208,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   </section>
 
   <!-- 3. ESCALATION VIABILITY -->
-  <section class="block">
+  <section class="block" id="authority">
     <div class="wrap">
       <h2 class="h2">The chain breaks <em>at authority.</em></h2>
       <p class="lede muted">
@@ -222,7 +237,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   </section>
 
   <!-- 4. TEMPORAL GATING -->
-  <section class="block">
+  <section class="block" id="stages">
     <div class="wrap">
       <h2 class="h2">Stage by stage. Against the clock.</h2>
       <p class="lede muted">
@@ -231,7 +246,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
         end points and any overlap have not been demonstrated. The quorum
         delay alone is sufficient to support the timing conclusion.
       </p>
-      <ul class="stage-grid" role="list">
+      <ul class="stage-grid" role="list" data-reveal="stagger">
         {stages.map((s) => (
           <li>
             <span class="stage-name">{s.stage}</span>
@@ -245,7 +260,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   </section>
 
   <!-- 5. GATE REGISTER -->
-  <section class="block">
+  <section class="block" id="gates">
     <div class="wrap">
       <h2 class="h2">Gate register.</h2>
       <p class="lede muted">
@@ -263,8 +278,8 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
             <tr>
               <td class="mono">{g.id}</td>
               <td class="cell-body">{g.desc}</td>
-              <td class="mono">{g.measured}</td>
-              <td><span class={`pill pill-${g.rag}`}>{g.verdict}</span></td>
+              <td class="mono" data-col="Illustrative value">{g.measured}</td>
+              <td data-col="Verdict"><span class={`pill pill-${g.rag}`}>{g.verdict}</span></td>
             </tr>
           ))}
         </tbody>
@@ -273,7 +288,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   </section>
 
   <!-- 6. BOARD CONCLUSION -->
-  <section class="block">
+  <section class="block" id="decision">
     <div class="wrap">
       <h2 class="h2">The decision <em>the finding supports.</em></h2>
       <p class="lede muted">
@@ -308,7 +323,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   </section>
 
   <!-- 11. EVIDENCE REGISTER -->
-  <section class="block">
+  <section class="block" id="register">
     <div class="wrap">
       <h2 class="h2">Evidence register.</h2>
       <p class="lede muted">
@@ -326,8 +341,8 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
             <tr>
               <td class="mono">{e.id}</td>
               <td class="cell-body">{e.desc}</td>
-              <td class="mono">{e.type}</td>
-              <td class="cell-body">{e.open}</td>
+              <td class="mono" data-col="Type">{e.type}</td>
+              <td class="cell-body" data-col="What it supports and what remains open">{e.open}</td>
             </tr>
           ))}
         </tbody>
@@ -336,7 +351,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   </section>
 
   <!-- 12. EXPOSURE -->
-  <section class="block">
+  <section class="block" id="exposure">
     <div class="wrap-narrow">
       <h2 class="h2">Exposure and consequence.</h2>
       <p class="body">
@@ -351,7 +366,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   </section>
 
   <!-- 13. VERDICT STATE -->
-  <section class="block">
+  <section class="block" id="conclusion">
     <div class="wrap">
       <h2 class="h2">The illustrative <em>conclusion.</em></h2>
       <p class="lede muted">
@@ -386,7 +401,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   </section>
 
   <!-- 14. AUTHORITY -->
-  <section class="block">
+  <section class="block" id="limits">
     <div class="wrap-narrow">
       <h2 class="h2">Assessment authority <em>and limitations.</em></h2>
       <p class="body">
@@ -434,9 +449,13 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
 </BaseLayout>
 
 <style>
+  /* Reference document: a cover, then numbered sections of tables,
+     registers and one callout. Type is a step smaller than the
+     commercial pages; the reader is here to read closely. */
+
   /* ----- COVER ----- */
   .cover {
-    padding: 96px 0 96px;
+    padding: var(--hero-top) 0 var(--hero-bottom);
     border-bottom: 1px solid var(--hair-strong);
   }
   .cover-kicker {
@@ -445,23 +464,23 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     text-transform: uppercase;
     letter-spacing: 0.06em;
     font-size: 11px;
-    padding-bottom: 24px;
+    padding-bottom: var(--space-4);
     border-bottom: 1px solid var(--hair);
-    margin-bottom: 64px;
+    margin-bottom: var(--space-6);
   }
   .cover-grid {
     display: grid;
     grid-template-columns: 1.3fr 1fr;
-    gap: 80px;
+    gap: var(--space-7);
     align-items: start;
   }
   .cover .h1 { max-width: 18ch; margin: 0; }
-  .cover .lede { margin: 32px 0 0; max-width: 52ch; }
-  .cover-proof { margin-top: 28px; }
+  .cover .lede { margin: var(--gap-h1) 0 0; max-width: 52ch; }
+  .cover-proof { margin-top: var(--space-4); }
 
   .cover-meta {
-    margin: 56px 0 0;
-    padding-top: 24px;
+    margin: var(--space-6) 0 0;
+    padding-top: var(--space-4);
     border-top: 1px solid var(--hair);
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -485,8 +504,8 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
 
   .cover-right {
     display: grid;
-    gap: 16px;
-    padding: 32px;
+    gap: var(--space-3);
+    padding: var(--card-pad);
     background: var(--paper-soft);
     border: 1px solid var(--hair);
   }
@@ -508,7 +527,6 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     line-height: 1.5;
     word-break: break-all;
   }
-
   .envelope {
     margin: 0;
     padding: 0;
@@ -522,38 +540,15 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     white-space: pre;
   }
 
-  /* ----- COMMON ----- */
-  .block .h2 { max-width: 28ch; }
-  .block .lede { margin-top: 16px; max-width: 60ch; }
-
   /* ----- SPECS ----- */
-  .specs {
-    margin: 56px 0 0;
-    padding-top: 24px;
-    border-top: 1px solid var(--hair-strong);
-  }
-  .specs > div {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 24px;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--hair);
-    align-items: baseline;
-  }
-  .specs dt {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-  .specs dd { margin: 0; display: flex; gap: 16px; align-items: baseline; }
+  .specs { margin: var(--gap-intro) 0 0; }
+  .specs dd { display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; }
   .specs .val { font-family: var(--font-sans); font-weight: 500; color: var(--ink); }
   .specs .unit { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
 
   /* ----- TABLES ----- */
   .tbl {
-    margin: 56px 0 0;
+    margin: var(--gap-intro) 0 0;
     width: 100%;
     border-collapse: collapse;
   }
@@ -571,7 +566,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   .tbl thead th:last-child { padding-right: 0; }
   .tbl tbody td {
     vertical-align: top;
-    padding: 20px 16px 20px 0;
+    padding: 18px 16px 18px 0;
     border-bottom: 1px solid var(--hair);
     font-family: var(--font-sans);
     font-size: 14px;
@@ -604,13 +599,13 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
 
   /* ----- VERDICT ROW ----- */
   .verdict-row {
-    margin: 48px 0 0;
-    padding: 24px 0;
+    margin: var(--gap-intro) 0 0;
+    padding: var(--space-4) 0;
     border-top: 1px solid var(--hair-strong);
     border-bottom: 1px solid var(--hair);
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
+    gap: var(--space-4);
   }
   .verdict-row > div { display: grid; gap: 6px; }
   .verdict-row dt {
@@ -628,8 +623,8 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     color: var(--ink);
   }
   .callout-note {
-    margin-top: 32px;
-    padding: 24px;
+    margin-top: var(--space-5);
+    padding: var(--space-4);
     border-left: 2px solid var(--warn);
     background: var(--paper-soft);
     color: var(--ink);
@@ -640,15 +635,15 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   /* ----- STAGE GRID ----- */
   .stage-grid {
     list-style: none;
-    margin: 56px 0 0;
+    margin: var(--gap-intro) 0 0;
     padding: 0;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    column-gap: 32px;
+    column-gap: var(--space-5);
     border-top: 1px solid var(--hair-strong);
   }
   .stage-grid > li {
-    padding: 24px 0;
+    padding: var(--space-4) 0;
     border-bottom: 1px solid var(--hair);
     display: grid;
     gap: 8px;
@@ -685,8 +680,8 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
 
   /* ----- CALLOUT ----- */
   .callout {
-    margin: 48px 0 0;
-    padding: 40px;
+    margin: var(--gap-intro) 0 0;
+    padding: var(--card-pad);
     border: 1px solid var(--warn);
     background: var(--paper-soft);
   }
@@ -697,13 +692,13 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     letter-spacing: 0.06em;
     color: var(--warn);
     text-transform: uppercase;
-    margin-bottom: 16px;
+    margin-bottom: var(--space-3);
   }
-  .callout .h3 { max-width: none; margin: 0 0 16px; }
+  .callout .h3 { max-width: none; margin: 0 0 var(--space-3); }
   .callout .body { margin: 0; max-width: 72ch; }
 
   .actions {
-    margin: 24px 0 0;
+    margin: var(--space-4) 0 0;
     padding: 0 0 0 22px;
     display: grid;
     gap: 14px;
@@ -715,23 +710,14 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     color: var(--ink);
   }
   .actions strong { font-weight: 500; }
-  .actions .owner {
-    display: block;
-    margin-top: 4px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
 
   /* ----- VIABILITY ----- */
   .viability {
-    margin: 56px 0 0;
+    margin: var(--gap-intro) 0 0;
     display: grid;
     grid-template-columns: 1.2fr 1fr;
-    gap: 64px;
-    padding: 32px 0;
+    gap: var(--space-7);
+    padding: var(--space-5) 0;
     border-top: 1px solid var(--hair-strong);
     border-bottom: 1px solid var(--hair);
   }
@@ -747,7 +733,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     display: block;
     font-family: var(--font-sans);
     font-weight: 500;
-    font-size: clamp(48px, 6vw, 72px);
+    font-size: clamp(44px, 6vw, 72px);
     letter-spacing: -0.035em;
     color: var(--warn);
     line-height: 1;
@@ -759,48 +745,42 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     text-transform: uppercase;
     letter-spacing: 0.06em;
     font-size: 11px;
-    margin: 0 0 24px;
+    margin: 0 0 var(--space-4);
   }
   .viability .body { max-width: 56ch; }
   .viability-right .body { margin: 0; }
   .callout-foot { margin-top: 20px; max-width: 64ch; font-size: 14px; }
-  .wrap-narrow .body { max-width: 62ch; margin: 16px 0 0; }
+  .wrap-narrow .body { max-width: var(--measure); }
 
-  /* ----- CLOSE ----- */
-  .close-grid {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 64px;
-    align-items: start;
-  }
-  .close-grid .h2 { max-width: 24ch; margin: 0; }
-  .close-cta {
-    display: grid;
-    gap: 24px;
-    align-content: start;
-    padding-top: 12px;
-  }
-  .close-cta .body { margin: 0; max-width: 42ch; }
-  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
   .close-cta .btn { justify-self: start; }
 
   /* ----- RESPONSIVE ----- */
   @media (max-width: 880px) {
-    .cover { padding: 64px 0 64px; }
-    .cover-kicker { margin-bottom: 40px; }
-    .cover-grid { grid-template-columns: 1fr; gap: 48px; }
+    .cover-kicker { margin-bottom: var(--space-5); }
+    .cover-grid { grid-template-columns: 1fr; gap: var(--space-6); }
     .cover-meta { grid-template-columns: 1fr 1fr; gap: 16px 24px; }
-    .cover-right { padding: 24px; }
     .verdict-row { grid-template-columns: 1fr 1fr; }
     .stage-grid { grid-template-columns: 1fr 1fr; }
-    .viability { grid-template-columns: 1fr; gap: 40px; }
-    .close-grid { grid-template-columns: 1fr; gap: 32px; }
+    .viability { grid-template-columns: 1fr; gap: var(--space-5); }
     .tbl thead { display: none; }
     .tbl tbody tr { display: grid; gap: 4px; padding: 16px 0; border-bottom: 1px solid var(--hair); }
     .tbl tbody td { padding: 0; border: 0; }
     .tbl tbody td.cell-name { font-weight: 500; }
-    .specs > div { grid-template-columns: 1fr; gap: 6px; }
-    .specs dd { flex-direction: column; gap: 4px; }
+    .tbl .mono { white-space: normal; }
+    .tbl td[data-col]::before {
+      content: attr(data-col);
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin: 8px 0 2px;
+    }
+  }
+  @media (max-width: 560px) {
+    .verdict-row, .stage-grid { grid-template-columns: 1fr; }
+    .cover-meta { grid-template-columns: 1fr; }
   }
 
   /* Provenance and verification limits. Deliberately plain: the point is
