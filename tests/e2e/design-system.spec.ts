@@ -73,7 +73,9 @@ test.describe('motion opt-in', () => {
 test.describe('anchors and page navigation', () => {
   test('anchored sections clear the sticky header', async ({ page }) => {
     await page.goto('/services/#assessment');
-    await page.waitForTimeout(300);
+    // Wait past the entrance transition: the content column travels 10px
+    // as it settles, and the target must clear the header after that.
+    await page.waitForTimeout(900);
     const { top, header } = await page.evaluate(() => ({
       top: document.getElementById('assessment')!.getBoundingClientRect().top,
       header: document.querySelector('.site-header')!.getBoundingClientRect().bottom,
@@ -105,7 +107,8 @@ test.describe('offer sheets', () => {
     for (const slug of ['review', 'assessment']) {
       const sheet = page.locator(`#${slug}`);
       await expect(sheet.locator('.price')).toBeVisible();
-      await expect(sheet.locator('.price-flag')).toContainText('Indicative');
+      await expect(sheet.locator('.price-flag')).toContainText('The proposal confirms the fee');
+      await expect(sheet.locator('.sheet-label').first()).toContainText(/Indicative/);
       await expect(sheet.locator('.sheet-label', { hasText: 'Start here when' })).toBeVisible();
     }
     await expect(page.locator('#review')).toContainText('does not include the AGDA™ verdict');
