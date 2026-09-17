@@ -36,7 +36,7 @@ const faqs = [
   <section class="block">
     <div class="wrap">
       <h2 class="h2">The four stages.</h2>
-      <ol class="steps" role="list">
+      <ol class="feature-grid steps" role="list" style="--cols: 4" data-reveal="stagger">
         <li>
           <span class="mono">01 Detect</span>
           <p class="body muted">A deviation is identified, not merely produced. Detection is the gap between when a system starts to fail and when a signal reaches anyone who can act.</p>
@@ -76,19 +76,5 @@ const faqs = [
 </HubLayout>
 
 <style>
-  .steps {
-    list-style: none;
-    margin: 56px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
-    border-top: 1px solid var(--hair-strong);
-  }
-  .steps > li { padding-top: 28px; display: grid; gap: 12px; align-content: start; }
-  .steps .mono { color: var(--accent); font-size: 11px; letter-spacing: 0.06em; }
-  .steps p { margin: 0; }
-
-  @media (max-width: 880px) { .steps { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
+  .steps { margin-top: var(--gap-intro); }
 </style>

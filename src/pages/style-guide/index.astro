@@ -1,5 +1,51 @@
 ---
+/**
+ * Internal style guide. Documents the shared system in src/styles and
+ * global.css so a page can be built from it without reading the CSS.
+ * Not indexed. Sample copy is current site copy; nothing here is a
+ * claim.
+ */
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageNav from '../../components/PageNav.astro';
+
+const pageNav = [
+  { href: '#rhythm', label: 'Rhythm' },
+  { href: '#type', label: 'Type' },
+  { href: '#widths', label: 'Widths' },
+  { href: '#colour', label: 'Colour' },
+  { href: '#actions', label: 'Actions' },
+  { href: '#components', label: 'Components' },
+  { href: '#motion', label: 'Motion' },
+];
+
+const rhythm = [
+  { k: '--section', v: 'clamp(64px, 9vh, 112px)', u: 'Above and below a major section (.block).' },
+  { k: '--section-tight', v: 'clamp(48px, 7vh, 80px)', u: 'A closing CTA or a short reference block (.block.tight).' },
+  { k: '--hero-top / --hero-bottom', v: 'clamp(72px, 10vh, 120px) / clamp(56px, 8vh, 96px)', u: 'Every inner-page hero. More above than below.' },
+  { k: '--gap-h1', v: '28px', u: 'h1 to lede in a hero.' },
+  { k: '--gap-head', v: '16px', u: 'h2 to its lede or first paragraph.' },
+  { k: '--gap-intro', v: '40px', u: 'Lede to the grid, list, table or diagram it introduces.' },
+  { k: '--gap-sub', v: '56px', u: 'Between subsections that share one section.' },
+  { k: '--gap-group / --gap-item', v: '24px / 12px', u: 'Between items of a grid; between lines inside one item.' },
+];
+
+const widths = [
+  { k: '--max', v: '1280px', u: '.wrap: grids, tables, diagrams.' },
+  { k: '--max-diagram', v: '1120px', u: 'The homepage finding and offer fork.' },
+  { k: '--max-narrow', v: '880px', u: '.wrap-narrow: one-column argument.' },
+  { k: '--max-reading', v: '680px', u: '.wrap-reading: insight notes and legal documents.' },
+  { k: '--measure, --measure-lede, --measure-item', v: '62ch, 58ch, 44ch', u: 'Body, introduction, and text inside a grid cell.' },
+  { k: '--gutter / --gutter-tight', v: '64px / 24px', u: 'Page gutter; phone gutter below 720px.' },
+];
+
+const motion = [
+  { k: '--dur-fast', v: '160ms', u: 'Hover, focus, active navigation.' },
+  { k: '--dur-expand', v: '220ms', u: 'A disclosure opening or closing.' },
+  { k: '--dur-reveal', v: '380ms', u: 'A section entrance: fade with --move-reveal (10px) of travel, once.' },
+  { k: '--dur-draw', v: '700ms', u: 'One connector draw in a diagram. Stages follow at 140ms intervals.' },
+  { k: '--stagger', v: '60ms', u: 'Per item in a staggered grid, capped at eight.' },
+  { k: 'prefers-reduced-motion', v: 'all durations 0 to 80ms', u: 'Entrances and draws are skipped; the complete static state shows at once.' },
+];
 ---
 
 <BaseLayout
@@ -8,84 +54,229 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   current="style-guide"
   noindex={true}
 >
-  <section class="block">
+  <section class="hero">
     <div class="wrap">
+      <span class="label">Internal</span>
       <h1 class="h1">Style guide.</h1>
-      <p class="lede muted" style="margin-top: 24px; max-width: 56ch;">
-        Montserrat and JetBrains Mono. Near-black surfaces, warm type, restrained gold.
+      <p class="lede muted">
+        Montserrat and JetBrains Mono. Near-black surfaces, warm type, one
+        gold. Gold is for actions, selected states and decisive findings.
+        Everything on this page is defined once in
+        <span class="mono">src/styles</span>.
       </p>
     </div>
   </section>
 
-  <section class="block">
+  <PageNav items={pageNav} />
+
+  <section class="block" id="rhythm">
+    <div class="wrap">
+      <h2 class="h2">Rhythm.</h2>
+      <p class="lede muted">
+        Eight spacing steps (8, 12, 16, 24, 32, 48, 64, 96) and six named
+        relationships. Pages use the relationships, not the steps.
+      </p>
+      <dl class="spec-list guide-list">
+        {rhythm.map((r) => (
+          <div><dt>{r.k}</dt><dd><span class="mono val">{r.v}</span> {r.u}</dd></div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="block" id="type">
     <div class="wrap">
       <h2 class="h2">Type.</h2>
+      <p class="lede muted">
+        One italic accent per headline where the page pattern calls for it.
+        Mono for labels, proof marks and identifiers only.
+      </p>
       <div class="stack">
         <div>
-          <span class="mono muted">H1</span>
-          <p class="h1">Move first. Or be moved <em>by what you missed.</em></p>
+          <span class="mono muted">display-xl · homepage only</span>
+          <p class="display-xl">Can you stop it <em>in time?</em></p>
         </div>
         <div>
-          <span class="mono muted">H2</span>
-          <p class="h2">Three services. <em>One question.</em></p>
+          <span class="mono muted">h1 · clamp(38px, 5vw, 64px)</span>
+          <p class="h1">Two ways to begin. <em>One named system.</em></p>
         </div>
         <div>
-          <span class="mono muted">H3</span>
-          <p class="h3">Exposure assessment.</p>
+          <span class="mono muted">h2 · clamp(28px, 3.6vw, 48px)</span>
+          <p class="h2">Detection works. <em>Authority does not.</em></p>
         </div>
         <div>
-          <span class="mono muted">Lede</span>
-          <p class="lede">
-            Independent advisory for boards facing irreversible exposure.
-            Deterministic, attested intervention-capability assessment.
+          <span class="mono muted">h3 · clamp(20px, 1.9vw, 26px)</span>
+          <p class="h3">What prevents intervention in this example.</p>
+        </div>
+        <div>
+          <span class="mono muted">label</span>
+          <span class="label section-kicker">Where the question arrives</span>
+        </div>
+        <div>
+          <span class="mono muted">lede · clamp(17px, 1.4vw, 21px)</span>
+          <p class="lede muted">
+            Intervention Readiness is the ability of an organisation to detect,
+            escalate, decide and intervene before harm becomes irreversible.
           </p>
         </div>
         <div>
-          <span class="mono muted">Body</span>
-          <p class="body">
-            One system. One scenario. A clear view of where intervention
-            capability breaks down.
+          <span class="mono muted">body · 17px</span>
+          <p class="body muted">
+            Documented responsibilities alone do not establish whether the
+            people named can intervene in time. The assessment examines
+            whether they can.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="block">
+  <section class="block" id="widths">
+    <div class="wrap">
+      <h2 class="h2">Widths.</h2>
+      <dl class="spec-list guide-list">
+        {widths.map((r) => (
+          <div><dt>{r.k}</dt><dd><span class="mono val">{r.v}</span> {r.u}</dd></div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="block" id="colour">
     <div class="wrap">
       <h2 class="h2">Colour.</h2>
+      <p class="lede muted">
+        Three surfaces, three text tones, one accent, three signal colours
+        reserved for the sample verdict.
+      </p>
       <div class="palette">
-        <div class="sw"><div class="chip" style="background: #0a0a0a; border: 1px solid var(--hair);"></div><span class="mono">paper · #0A0A0A</span></div>
-        <div class="sw"><div class="chip" style="background: #141414; border: 1px solid var(--hair);"></div><span class="mono">paper-soft · #141414</span></div>
-        <div class="sw"><div class="chip" style="background: #f0f0f0;"></div><span class="mono">ink · #F0F0F0</span></div>
-        <div class="sw"><div class="chip" style="background: #c8c6c4;"></div><span class="mono">muted · #C8C6C4</span></div>
-        <div class="sw"><div class="chip" style="background: #c9b694;"></div><span class="mono">accent · #C9B694</span></div>
+        <div class="sw"><div class="chip" style="background: var(--paper); border: 1px solid var(--hair);"></div><span class="mono">paper · #0A0A0A</span></div>
+        <div class="sw"><div class="chip" style="background: var(--paper-soft); border: 1px solid var(--hair);"></div><span class="mono">paper-soft · #141414</span></div>
+        <div class="sw"><div class="chip" style="background: var(--paper-raise); border: 1px solid var(--hair);"></div><span class="mono">paper-raise · #181818</span></div>
+        <div class="sw"><div class="chip" style="background: var(--ink);"></div><span class="mono">ink · #F0F0F0</span></div>
+        <div class="sw"><div class="chip" style="background: var(--muted);"></div><span class="mono">muted · #C8C6C4</span></div>
+        <div class="sw"><div class="chip" style="background: var(--faint);"></div><span class="mono">faint · #8E8B87</span></div>
+        <div class="sw"><div class="chip" style="background: var(--accent);"></div><span class="mono">accent · #C9B694</span></div>
+        <div class="sw"><div class="chip" style="background: var(--accent-hover);"></div><span class="mono">accent-hover · #D9C9AB</span></div>
+        <div class="sw"><div class="chip" style="background: var(--warn);"></div><span class="mono">warn · #D66A5F</span></div>
+        <div class="sw"><div class="chip" style="background: var(--pass);"></div><span class="mono">pass · #8AAA91</span></div>
       </div>
     </div>
   </section>
 
-  <section class="block">
+  <section class="block" id="actions">
     <div class="wrap">
-      <h2 class="h2">Buttons.</h2>
+      <h2 class="h2">Actions.</h2>
+      <p class="lede muted">
+        One filled button per view. The ghost button is its alternative.
+        Links underline in hairline and turn gold on hover and focus. Focus
+        is always a 2px gold ring, never a colour change alone.
+      </p>
       <div class="row">
-        <a href="#" class="btn">Request a discussion</a>
-        <a href="#" class="btn-ghost">Our method</a>
-        <a href="#" class="link">Inline link</a>
+        <a href="#actions" class="btn">Discuss your system</a>
+        <a href="#actions" class="btn-ghost">View sample verdict</a>
+        <a href="#actions" class="link">Inline link</a>
+        <a href="#actions" class="arrow-link">Arrow link <span aria-hidden="true">→</span></a>
       </div>
+    </div>
+  </section>
+
+  <section class="block" id="components">
+    <div class="wrap">
+      <h2 class="h2">Components.</h2>
+      <p class="lede muted">
+        Each is one class in <span class="mono">global.css</span>. Pages set
+        column counts and label widths with custom properties.
+      </p>
+
+      <h3 class="h3 guide-h3">Feature grid · <span class="mono">.feature-grid</span>, <span class="mono">--cols</span></h3>
+      <ul class="feature-grid" role="list" style="--cols: 3">
+        <li><h4 class="h3">Detect</h4><p class="body muted">Can the system surface the conditions that need attention, in time?</p></li>
+        <li><h4 class="h3">Escalate</h4><p class="body muted">Does the signal reach an authority before the window to act has closed?</p></li>
+        <li><h4 class="h3">Decide</h4><p class="body muted">Can the decision be made under pressure with incomplete information?</p></li>
+      </ul>
+
+      <h3 class="h3 guide-h3">Dash list and column label · <span class="mono">.dash-list</span>, <span class="mono">.col-label</span></h3>
+      <span class="col-label">Included</span>
+      <ul class="dash-list" role="list">
+        <li>One named AI-enabled system, one defined consequential pathway and one specified intervention scenario.</li>
+        <li>Structured interviews and walkthroughs.</li>
+      </ul>
+
+      <h3 class="h3 guide-h3">Spec list · <span class="mono">.spec-list</span>, <span class="mono">--spec-col</span></h3>
+      <dl class="spec-list" style="--spec-col: 160px">
+        <div><dt>System</dt><dd>CRED-MOD-04, a retail credit decisioning model.</dd></div>
+        <div><dt>Scenario</dt><dd>A macro shock coincides with model drift.</dd></div>
+      </dl>
+
+      <h3 class="h3 guide-h3">Cards · <span class="mono">.card-grid</span>, <span class="mono">.card</span></h3>
+      <ul class="card-grid" role="list">
+        <li class="card"><span class="mono guide-kicker">A consequential deployment</span><h4 class="h3 card-title">You are about to depend on something you cannot easily reverse.</h4><p class="body muted">A card that is not a link has no hover state.</p></li>
+        <li><a class="card" href="#components"><span class="mono guide-kicker">Linked card</span><h4 class="h3 card-title">A card that is a link.</h4><p class="body muted">Gold rule and raised surface on hover and focus.</p></a></li>
+      </ul>
+
+      <h3 class="h3 guide-h3">Disclosure · <span class="mono">details.disclosure</span></h3>
+      <details class="disclosure">
+        <summary>Full list of separately scoped work</summary>
+        <div class="disclosure-body">
+          <p>Native details: readable without scripts, animated with them. Used only for secondary detail; material conditions stay visible.</p>
+        </div>
+      </details>
+
+      <h3 class="h3 guide-h3">Definition box · <span class="mono">.definition-box</span></h3>
+      <aside class="definition-box">
+        <span class="box-label">Defined term</span>
+        <p>Intervention Readiness means the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.</p>
+      </aside>
+
+      <h3 class="h3 guide-h3">Code block · <span class="mono">.code-block</span></h3>
+      <span class="code-caption">Example · illustrative values</span>
+      <pre class="code-block" tabindex="0"><code>attestationVersion 1.2
+keyId              2026-05-02-d7e5468e</code></pre>
+    </div>
+  </section>
+
+  <section class="block" id="motion">
+    <div class="wrap">
+      <h2 class="h2">Motion.</h2>
+      <p class="lede muted">
+        Three registers. Interface feedback, section entrances, and diagram
+        draws. Entrances run once when a section enters the viewport and only
+        when <span class="mono">html[data-motion]</span> is set, so a visitor
+        without scripts, or with reduced motion, sees the complete page.
+      </p>
+      <dl class="spec-list guide-list">
+        {motion.map((r) => (
+          <div><dt>{r.k}</dt><dd><span class="mono val">{r.v}</span> {r.u}</dd></div>
+        ))}
+      </dl>
+      <p class="body muted footnote">
+        Not used: scroll hijacking, cursor effects, typewriter text, counters,
+        particles, glow, looping pulses. A diagram never moves in proportion
+        to a duration; a sequence is reading order, not time.
+      </p>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .stack { display: grid; gap: 48px; margin-top: 48px; max-width: 880px; }
-  .stack > div > .mono { display: block; margin-bottom: 12px; }
+  .guide-list { --spec-col: 260px; margin-top: var(--gap-intro); }
+  .guide-list .val { display: block; margin-bottom: 4px; color: var(--accent); font-size: 12px; }
+  .stack { display: grid; gap: var(--space-6); margin-top: var(--gap-intro); max-width: 880px; }
+  .stack > div > .mono { display: block; margin-bottom: var(--space-2); }
+  .stack .display-xl { font-size: clamp(40px, 6vw, 72px); }
   .palette {
-    margin-top: 48px;
+    margin-top: var(--gap-intro);
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--space-3);
   }
-  .sw .chip { height: 96px; }
-  .sw .mono { display: block; margin-top: 12px; color: var(--muted); }
-  .row { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+  .sw .chip { height: 80px; }
+  .sw .mono { display: block; margin-top: var(--space-2); color: var(--muted); }
+  .row { margin-top: var(--gap-intro); display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+  .guide-h3 { margin: var(--gap-sub) 0 var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--hair); }
+  .guide-h3 .mono { color: var(--accent); font-size: 12px; text-transform: none; letter-spacing: 0.04em; }
+  .guide-kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  .card-grid { grid-template-columns: repeat(2, 1fr); list-style: none; padding: 0; }
+  @media (max-width: 720px) { .card-grid { grid-template-columns: 1fr; } }
 </style>

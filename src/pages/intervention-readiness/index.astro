@@ -107,8 +107,8 @@ const relationships = [
   <section class="hero">
     <div class="wrap">
       <span class="label">Canonical definition</span>
-      <h1 class="h1 reveal">What is Intervention Readiness?</h1>
-      <p class="lede muted reveal">
+      <h1 class="h1">What is Intervention Readiness?</h1>
+      <p class="lede muted">
         Intervention Readiness is the ability of an organisation to
         <strong>detect, escalate, decide and intervene</strong> before harm
         becomes irreversible.
@@ -135,7 +135,7 @@ const relationships = [
         </div>
 
         <aside class="definition-box" aria-label="Intervention Readiness definition">
-          <span class="mono box-label">Defined term</span>
+          <span class="box-label">Defined term</span>
           <p>
             Intervention Readiness means the ability of an organisation to
             detect, escalate, decide and intervene before harm becomes
@@ -156,7 +156,7 @@ const relationships = [
         possible.
       </p>
 
-      <ol class="chain" role="list">
+      <ol class="feature-grid chain" role="list" style="--cols: 4" data-reveal="stagger">
         <li>
           <span class="mono">01</span>
           <h3 class="h3">Systems become more powerful.</h3>
@@ -191,7 +191,7 @@ const relationships = [
         often assume.
       </p>
 
-      <ul class="relationship-grid" role="list">
+      <ul class="feature-grid relationship-grid" role="list" style="--cols: 2" data-reveal="stagger">
         {relationships.map((r) => (
           <li>
             <h3 class="h3" set:html={markAgda(r.h)} />
@@ -217,7 +217,7 @@ const relationships = [
         not a standard deliverable; they may be supplied only under an approved
         output-access arrangement.
       </p>
-      <div class="cta">
+      <div class="cta-row">
         <a href="/agda/" class="btn"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span></a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
       </div>
@@ -230,7 +230,7 @@ const relationships = [
       <p class="lede muted">
         Four components carry Intervention Readiness. Each has its own page.
       </p>
-      <ul class="relationship-grid" role="list">
+      <ul class="feature-grid relationship-grid" role="list" style="--cols: 2" data-reveal="stagger">
         {clusters.map((c) => (
           <li>
             <h3 class="h3"><a href={c.href} class="link" set:html={markAgda(c.h)} /></h3>
@@ -249,7 +249,7 @@ const relationships = [
         risk management and operational resilience. It is none of them. These
         pages hold the boundaries.
       </p>
-      <ul class="relationship-grid" role="list">
+      <ul class="feature-grid relationship-grid" role="list" style="--cols: 3" data-reveal="stagger">
         {boundaries.map((b) => (
           <li>
             <h3 class="h3"><a href={b.href} class="link" set:html={markAgda(b.h)} /></h3>
@@ -257,7 +257,7 @@ const relationships = [
           </li>
         ))}
       </ul>
-      <div class="cta">
+      <div class="cta-row">
         <a href="/glossary/" class="btn-ghost">Glossary of Intervention Readiness</a>
       </div>
     </div>
@@ -279,121 +279,24 @@ const relationships = [
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-top: 144px;
-    padding-bottom: 144px;
-    border-bottom: 1px solid var(--hair);
-  }
-  .hero .h1 { max-width: 22ch; }
-  .hero .lede { margin-top: 32px; max-width: 58ch; }
+  /* The category page: definition beside the argument, then four grids
+     and a FAQ. Grids are the shared feature grid. */
   .hero strong { color: var(--ink); font-weight: 600; }
-
   .definition-grid {
     display: grid;
     grid-template-columns: 1.35fr 0.85fr;
-    gap: 80px;
+    gap: var(--space-7);
     align-items: start;
   }
   .definition-grid .body { max-width: 60ch; }
-  .definition-box {
-    padding: 28px 0 28px 28px;
-    border-left: 2px solid var(--accent);
-  }
-  .box-label {
-    display: block;
-    margin-bottom: 16px;
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  .definition-box p {
-    margin: 0;
-    font-family: var(--font-sans);
-    font-size: clamp(22px, 2.6vw, 32px);
-    line-height: 1.25;
-    color: var(--ink);
-  }
-
-  .block .h2 { max-width: 28ch; }
-  .block .lede { margin-top: 16px; max-width: 62ch; }
-  .wrap-narrow .body { max-width: 62ch; }
-  .cta { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
-
-  .chain {
-    list-style: none;
-    margin: 72px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
-    border-top: 1px solid var(--hair-strong);
-  }
-  .chain > li {
-    padding-top: 28px;
-    display: grid;
-    gap: 12px;
-    align-content: start;
-  }
-  .chain .mono {
-    color: var(--accent);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-  }
-  .chain .h3,
-  .relationship-grid .h3 { margin: 0; }
-  .chain p,
-  .relationship-grid p { margin: 0; }
-
-  .relationship-grid {
-    list-style: none;
-    margin: 72px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 48px 80px;
-  }
-  .relationship-grid > li {
-    padding-top: 24px;
-    border-top: 1px solid var(--hair);
-    display: grid;
-    gap: 12px;
-  }
-
-  .faq-list {
-    margin: 56px 0 0;
-    border-top: 1px solid var(--hair-strong);
-  }
-  .faq-list > div {
-    display: grid;
-    grid-template-columns: 0.8fr 1.2fr;
-    gap: 48px;
-    padding: 28px 0;
-    border-bottom: 1px solid var(--hair);
-  }
-  .faq-list dt {
-    font-family: var(--font-sans);
-    font-size: 18px;
-    line-height: 1.35;
-    color: var(--ink);
-  }
-  .faq-list dd {
-    margin: 0;
-    font-family: var(--font-sans);
-    font-size: 16px;
-    line-height: 1.62;
-    color: var(--muted);
-  }
+  .definition-grid .h2 + .body { margin-top: var(--gap-head); }
+  .definition-grid .body + .body { margin-top: var(--space-3); }
+  .chain .mono { color: var(--accent); }
+  .relationship-grid { gap: var(--space-5) var(--space-7); }
+  .relationship-grid .h3 .link { border-bottom-color: transparent; }
+  .relationship-grid .h3 .link:hover { border-bottom-color: var(--accent); }
 
   @media (max-width: 880px) {
-    .hero { padding-top: 96px; padding-bottom: 96px; }
-    .definition-grid,
-    .faq-list > div { grid-template-columns: 1fr; gap: 24px; }
-    .chain { grid-template-columns: 1fr 1fr; }
-    .relationship-grid { grid-template-columns: 1fr; gap: 40px; }
-  }
-
-  @media (max-width: 560px) {
-    .chain { grid-template-columns: 1fr; }
+    .definition-grid { grid-template-columns: 1fr; gap: var(--space-5); }
   }
 </style>

@@ -47,8 +47,8 @@ const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.def
   <section class="hero">
     <div class="wrap">
       <span class="label">Comparison</span>
-      <h1 class="h1 reveal" set:html={markAgda(`Intervention Readiness vs ${other}`)} />
-      <p class="lede muted reveal" set:html={markAgda(verdict)} />
+      <h1 class="h1" set:html={markAgda(`Intervention Readiness vs ${other}`)} />
+      <p class="lede muted" set:html={markAgda(verdict)} />
     </div>
   </section>
 
@@ -60,7 +60,7 @@ const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.def
           <p class="body muted" set:html={markAgda(whatOther)} />
         </div>
         <aside class="definition-box" aria-label="Intervention Readiness definition">
-          <span class="mono box-label">The category</span>
+          <span class="box-label">The category</span>
           <p>{irDefinition}</p>
         </aside>
       </div>
@@ -70,7 +70,7 @@ const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.def
   <section class="block">
     <div class="wrap">
       <h2 class="h2">What each answers.</h2>
-      <table class="compare">
+      <table class="table-compare">
         <thead>
           <tr>
             <th scope="col">Question</th>
@@ -82,8 +82,8 @@ const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.def
           {rows.map((r) => (
             <tr>
               <th scope="row" set:html={markAgda(r.aspect)} />
-              <td set:html={markAgda(r.other)} />
-              <td set:html={markAgda(r.ir)} />
+              <td data-col={other} set:html={markAgda(r.other)} />
+              <td data-col="Intervention Readiness" set:html={markAgda(r.ir)} />
             </tr>
           ))}
         </tbody>
@@ -102,7 +102,7 @@ const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.def
     <div class="wrap-narrow">
       <h2 class="h2">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> evidences it.</h2>
       <p class="body muted" set:html={markAgda(agda)} />
-      <div class="cta">
+      <div class="cta-row">
         <a href="/intervention-readiness/" class="btn">What is Intervention Readiness?</a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
       </div>
@@ -125,115 +125,18 @@ const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.def
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-top: 144px;
-    padding-bottom: 96px;
-    border-bottom: 1px solid var(--hair);
-  }
+  /* Comparison page: hero, what the adjacent discipline does beside the
+     category definition, a three-column table, two prose sections, FAQ. */
   .hero .h1 { max-width: 20ch; }
-  .hero .lede { margin-top: 32px; max-width: 58ch; }
-
   .definition-grid {
     display: grid;
     grid-template-columns: 1.35fr 0.85fr;
-    gap: 80px;
+    gap: var(--space-7);
     align-items: start;
   }
-  .definition-grid .body { max-width: 58ch; }
-  .definition-box {
-    padding: 28px 0 28px 28px;
-    border-left: 2px solid var(--accent);
-  }
-  .box-label {
-    display: block;
-    margin-bottom: 16px;
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  .definition-box p {
-    margin: 0;
-    font-family: var(--font-sans);
-    font-size: clamp(20px, 2.4vw, 28px);
-    line-height: 1.28;
-    color: var(--ink);
-  }
-
-  .block .h2 { max-width: 28ch; }
-  .wrap-narrow .body { max-width: 62ch; }
-  .cta { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
-
-  .compare {
-    margin-top: 48px;
-    width: 100%;
-    border-collapse: collapse;
-    font-family: var(--font-sans);
-  }
-  .compare th,
-  .compare td {
-    text-align: left;
-    vertical-align: top;
-    padding: 20px 24px 20px 0;
-    border-top: 1px solid var(--hair);
-    font-size: 16px;
-    line-height: 1.55;
-  }
-  .compare thead th {
-    border-top: 1px solid var(--hair-strong);
-    border-bottom: 1px solid var(--hair-strong);
-    color: var(--ink);
-    font-size: 12px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  .compare tbody th {
-    color: var(--ink);
-    font-weight: 600;
-    width: 24%;
-  }
-  .compare td { color: var(--muted); }
-  .compare td:last-child { color: var(--ink); }
-
-  .faq-list {
-    margin: 56px 0 0;
-    border-top: 1px solid var(--hair-strong);
-  }
-  .faq-list > div {
-    display: grid;
-    grid-template-columns: 0.8fr 1.2fr;
-    gap: 48px;
-    padding: 28px 0;
-    border-bottom: 1px solid var(--hair);
-  }
-  .faq-list dt {
-    font-family: var(--font-sans);
-    font-size: 18px;
-    line-height: 1.35;
-    color: var(--ink);
-  }
-  .faq-list dd {
-    margin: 0;
-    font-family: var(--font-sans);
-    font-size: 16px;
-    line-height: 1.62;
-    color: var(--muted);
-  }
-
+  .definition-grid .body { margin-top: var(--gap-head); }
+  .definition-grid .definition-box p { font-size: clamp(19px, 2.2vw, 26px); }
   @media (max-width: 880px) {
-    .hero { padding-top: 96px; padding-bottom: 64px; }
-    .definition-grid,
-    .faq-list > div { grid-template-columns: 1fr; gap: 24px; }
-    .compare,
-    .compare thead,
-    .compare tbody,
-    .compare tr,
-    .compare th,
-    .compare td { display: block; width: 100%; }
-    .compare thead { display: none; }
-    .compare tbody tr { padding: 16px 0; border-top: 1px solid var(--hair); }
-    .compare th,
-    .compare td { padding: 6px 0; border: 0; }
-    .compare tbody th { width: 100%; }
+    .definition-grid { grid-template-columns: 1fr; gap: var(--space-5); }
   }
 </style>
