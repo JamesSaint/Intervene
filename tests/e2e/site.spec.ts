@@ -56,9 +56,15 @@ for (const route of CHANGED) {
     // mid-fade. The banner's own contrast is checked on /contact/, where it
     // does not overlap page copy at the tested viewports.
     await page.locator('.consent [data-consent="denied"]').click({ timeout: 2000 }).catch(() => {});
-    await page.evaluate(() => document.querySelectorAll('.reveal, .dim-grid, .window-grid').forEach((e) => e.classList.add('in')));
-    // The longest staged reveal (EvidenceCap) settles at about 1.2s.
-    await page.waitForTimeout(1500);
+    // Settle every entrance so axe measures the final state of the whole
+    // page, not only what has scrolled into view.
+    await page.evaluate(() =>
+      document
+        .querySelectorAll('.reveal, [data-reveal], .block > .wrap, .block > .wrap-narrow, .block > .wrap-reading, .window-grid')
+        .forEach((e) => e.classList.add('in')),
+    );
+    // The longest staged draw (FindingChain, OfferChoice) settles at about 1.3s.
+    await page.waitForTimeout(1600);
     const results = await new AxeBuilder({ page }).analyze();
     const serious = results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
     expect(serious.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([]);

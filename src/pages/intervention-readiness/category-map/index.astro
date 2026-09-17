@@ -32,8 +32,8 @@ const faqs = [
   <section class="hero">
     <div class="wrap">
       <span class="label">Category boundaries</span>
-      <h1 class="h1 reveal">The category map.</h1>
-      <p class="lede muted reveal">
+      <h1 class="h1">The category map.</h1>
+      <p class="lede muted">
         Intervention Readiness is adjacent to five established disciplines and
         is none of them. Each describes something real. None measures whether
         intervention can occur before harm becomes irreversible.
@@ -43,7 +43,7 @@ const faqs = [
 
   <section class="block">
     <div class="wrap">
-      <table class="map">
+      <table class="table-compare map">
         <thead>
           <tr>
             <th scope="col">Discipline</th>
@@ -55,8 +55,8 @@ const faqs = [
           {rows.map((r) => (
             <tr>
               <th scope="row"><a href={r.href} class="link">{r.d}</a></th>
-              <td>{r.does}</td>
-              <td>{r.misses}</td>
+              <td data-col="What it does">{r.does}</td>
+              <td data-col="What it does not measure">{r.misses}</td>
             </tr>
           ))}
         </tbody>
@@ -79,7 +79,7 @@ const faqs = [
         Readiness verdict with its evidence basis. Signed SEDI result records
         may be supplied only under an approved output-access arrangement, where the engagement terms provide for them and the delivery configuration supports them.
       </p>
-      <div class="cta">
+      <div class="cta-row">
         <a href="/intervention-readiness/" class="btn">What is Intervention Readiness?</a>
         <a href="/glossary/" class="btn-ghost">Glossary</a>
       </div>
@@ -88,48 +88,7 @@ const faqs = [
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-top: 144px;
-    padding-bottom: 96px;
-    border-bottom: 1px solid var(--hair);
-  }
   .hero .h1 { max-width: 18ch; }
-  .hero .lede { margin-top: 32px; max-width: 60ch; }
-
-  .map {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: var(--font-sans);
-  }
-  .map th,
-  .map td {
-    text-align: left;
-    vertical-align: top;
-    padding: 20px 24px 20px 0;
-    border-top: 1px solid var(--hair);
-    font-size: 16px;
-    line-height: 1.55;
-  }
-  .map thead th {
-    border-top: 1px solid var(--hair-strong);
-    border-bottom: 1px solid var(--hair-strong);
-    color: var(--ink);
-    font-size: 12px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  .map tbody th { color: var(--ink); font-weight: 600; width: 24%; }
-  .map td { color: var(--muted); }
-  .map td:last-child { color: var(--ink); }
-  .note { margin-top: 40px; max-width: 62ch; }
-  .cta { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
-
-  @media (max-width: 880px) {
-    .hero { padding-top: 96px; padding-bottom: 64px; }
-    .map, .map thead, .map tbody, .map tr, .map th, .map td { display: block; width: 100%; }
-    .map thead { display: none; }
-    .map tbody tr { padding: 16px 0; border-top: 1px solid var(--hair); }
-    .map th, .map td { padding: 6px 0; border: 0; }
-    .map tbody th { width: 100%; }
-  }
+  .map { margin-top: 0; }
+  .note { margin-top: var(--space-5); max-width: var(--measure); }
 </style>

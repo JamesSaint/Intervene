@@ -19,20 +19,20 @@
 
 <section class="hero">
   <div class="wrap">
-    <span class="label reveal">Intervention Readiness Snapshot</span>
-    <h1 class="h1 reveal">Can you stop it in time?</h1>
-    <p class="lede muted reveal">
+    <span class="label">Intervention Readiness Snapshot</span>
+    <h1 class="h1">Can you stop it in time?</h1>
+    <p class="lede muted">
       You have governance. Controls. Named owners.
       Ten questions about one system that runs without you,
       and the last one is the one that matters.
     </p>
-    <p class="orientation reveal">
+    <p class="orientation">
       Intervene measures Intervention Readiness: whether an organisation could
       stop a system it is running before harm becomes irreversible. This takes
       about two minutes, and you can read the whole result without giving a
       name, an email address or an organisation.
     </p>
-    <p class="demo-notice reveal">
+    <p class="demo-notice">
       <strong>Demonstration only. Withdrawn from use.</strong>
       The result this returns is a worked example. It is the same for every
       visitor and is not read from the answers you give, so it cannot tell you
@@ -40,11 +40,11 @@
       framing is worth seeing. The result is not a finding, and Intervene is
       not offering it as one until the result logic is built.
     </p>
-    <div class="cta-row reveal">
+    <div class="cta-row">
       <a class="btn" href="#snapshot" data-snapshot-begin>Begin</a>
       <a class="btn-ghost" href="/sample-report/">See a sample verdict</a>
     </div>
-    <p class="framing reveal">
+    <p class="framing">
       No sign-in and no contact details. Nothing here is assessed: it records
       what you tell it. Your answers stay in this tab until you press Generate.
       <a href="/legal/privacy/" class="link">Privacy</a>.
@@ -53,13 +53,8 @@
 </section>
 
 <style>
-  .hero {
-    padding-top: 144px;
-    padding-bottom: 128px;
-    border-bottom: 1px solid var(--hair);
-  }
   .hero .h1 { max-width: 16ch; }
-  .hero .lede { margin-top: 32px; max-width: 56ch; }
+  .hero .lede { max-width: 56ch; }
 
   /* For someone who arrived on a forwarded link and has not read a
      single other page. The lede above assumes the site; this does not.
@@ -74,12 +69,7 @@
     max-width: 60ch;
   }
 
-  .cta-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 48px;
-  }
+  .cta-row { margin-top: var(--space-5); }
 
   .framing {
     margin: 56px 0 0;
@@ -92,9 +82,6 @@
     max-width: 72ch;
   }
 
-  @media (max-width: 880px) {
-    .hero { padding-top: 112px; padding-bottom: 88px; }
-  }
 
   .demo-notice {
     margin: 32px 0 0;

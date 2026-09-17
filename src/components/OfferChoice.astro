@@ -42,7 +42,7 @@ const routes = [
 const H = headingLevel;
 ---
 
-<figure class="offer-choice" aria-labelledby="offer-choice-heading">
+<figure class="offer-choice" data-reveal="scene" aria-labelledby="offer-choice-heading">
   <figcaption class="oc-caption">
     <span class="label section-kicker">Where should we begin?</span>
     <H class="h2" id="offer-choice-heading">Two starting points. <em>Neither is a prerequisite for the other.</em></H>
@@ -53,7 +53,7 @@ const H = headingLevel;
   </figcaption>
 
   <div class="oc-root" aria-hidden="true">
-    <span class="oc-node"></span>
+    <span class="node oc-node"></span>
     <span class="oc-stem"></span>
   </div>
 
@@ -62,7 +62,7 @@ const H = headingLevel;
       <li class="oc-route">
         <span class="oc-branch" aria-hidden="true"></span>
         <div class="oc-head">
-          <span class="oc-node" aria-hidden="true"></span>
+          <span class="node oc-node" aria-hidden="true"></span>
           <span class="mono oc-n">Route {n} · {kicker}</span>
           <span class="oc-name" set:html={markAgda(o.name)} />
         </div>
@@ -114,17 +114,13 @@ const H = headingLevel;
 <style>
   .offer-choice { margin: 0; }
   .oc-caption .h2 { max-width: 26ch; margin-top: 12px; }
-  .oc-lede { margin: 16px 0 0; max-width: 60ch; }
+  .oc-lede { margin: var(--gap-head) 0 0; max-width: var(--measure-lede); }
 
   /* Root node and stem, then two branches: the rail language from the
      methodology page, turned into a fork. */
-  .oc-root { position: relative; height: 56px; margin-top: 40px; display: grid; justify-items: center; }
+  .oc-root { position: relative; height: 56px; margin-top: var(--gap-intro); display: grid; justify-items: center; }
   .oc-root .oc-node { position: relative; z-index: 1; }
   .oc-stem { position: absolute; top: 13px; bottom: 0; left: 50%; width: 1px; background: var(--hair-strong); }
-  .oc-node {
-    display: block; width: 13px; height: 13px; border-radius: 50%;
-    border: 1px solid var(--accent); background: var(--paper);
-  }
   .oc-routes {
     list-style: none; margin: 0; padding: 0;
     display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px);
@@ -142,7 +138,7 @@ const H = headingLevel;
   .oc-name { font-family: var(--font-sans); font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
 
   .oc-fields { margin: 8px 0 0; display: grid; gap: 0; border-top: 1px solid var(--hair-strong); }
-  .oc-fields > div { display: grid; gap: 6px; padding: 16px 0; border-bottom: 1px solid var(--hair); }
+  .oc-fields > div { display: grid; gap: 6px; padding: var(--space-3) 0; border-bottom: 1px solid var(--hair); }
   .oc-fields dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
   .oc-fields dd { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--ink); max-width: 46ch; }
   .oc-fields dd.oc-price { font-size: 20px; font-weight: 700; }
@@ -150,11 +146,35 @@ const H = headingLevel;
   .oc-list > li { position: relative; padding-left: 18px; color: var(--muted); font-size: 15px; }
   .oc-list > li::before { content: ''; position: absolute; left: 0; top: 11px; width: 8px; height: 1px; background: var(--accent); }
   .oc-link { display: inline-block; font-size: 15px; }
-  .oc-foot { margin: 40px 0 0; max-width: 66ch; }
+  .oc-foot { margin: var(--gap-intro) 0 0; max-width: 66ch; }
+
+  /* ---- Sequence. The stem draws down, the bar opens from the centre,
+     both branches draw together, both heads appear together. Neither
+     route leads; nothing about the order suggests one comes first. ---- */
+  html[data-motion] .oc-stem { transform: scaleY(0); transform-origin: top center; transition: transform 320ms var(--ease-draw) 80ms; }
+  html[data-motion] .oc-routes::before { transform: scaleX(0); transform-origin: center; transition: transform 360ms var(--ease-draw) 360ms; }
+  html[data-motion] .oc-branch { transform: scaleY(0); transform-origin: top center; transition: transform 280ms var(--ease-draw) 680ms; }
+  html[data-motion] .oc-head,
+  html[data-motion] .oc-fields,
+  html[data-motion] .oc-link,
+  html[data-motion] .oc-foot {
+    opacity: 0; transform: translateY(var(--move-reveal));
+    transition: opacity var(--dur-reveal) var(--ease-out) 900ms, transform var(--dur-reveal) var(--ease-out) 900ms;
+  }
+  html[data-motion] .oc-fields,
+  html[data-motion] .oc-link { transition-delay: 1040ms; }
+  html[data-motion] .oc-foot { transition-delay: 1120ms; }
+  html[data-motion] .offer-choice.in .oc-stem,
+  html[data-motion] .offer-choice.in .oc-branch { transform: scaleY(1); }
+  html[data-motion] .offer-choice.in .oc-routes::before { transform: scaleX(1); }
+  html[data-motion] .offer-choice.in .oc-head,
+  html[data-motion] .offer-choice.in .oc-fields,
+  html[data-motion] .offer-choice.in .oc-link,
+  html[data-motion] .offer-choice.in .oc-foot { opacity: 1; transform: none; }
 
   @media (max-width: 720px) {
     .oc-root { display: none; }
-    .oc-routes { grid-template-columns: 1fr; gap: 40px; }
+    .oc-routes { grid-template-columns: 1fr; gap: var(--space-6); }
     .oc-routes::before { display: none; }
     .oc-route { padding-top: 0; }
     .oc-branch { display: none; }
@@ -162,5 +182,9 @@ const H = headingLevel;
     .oc-head .oc-node { margin-top: 0; grid-row: 1 / span 2; }
     .oc-head .oc-n { grid-column: 2; }
     .oc-head .oc-name { grid-column: 2; }
+    /* No connectors on a phone, so the heads need no wait. */
+    html[data-motion] .oc-head { transition-delay: 0ms; }
+    html[data-motion] .oc-fields, html[data-motion] .oc-link { transition-delay: 120ms; }
+    html[data-motion] .oc-foot { transition-delay: 200ms; }
   }
 </style>
