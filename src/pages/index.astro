@@ -327,6 +327,14 @@ const finding = {
     .hero-sub { margin-top: 16px; font-size: 17px; }
     .hero-cta { margin-top: 24px; }
     .hero-chain { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+    /* On a phone the primary action follows the headline directly, and
+       the definition follows it, so the action sits above the consent
+       banner on the smallest screens. DOM order is unchanged. */
+    .hero-home .wrap { display: grid; }
+    .hero-home .hero-cta { order: 1; }
+    .hero-home .hero-sub { order: 2; margin-top: var(--space-4); }
+    .hero-home .hero-note,
+    .hero-home .hero-chain { order: 3; }
     .finding-verdict { padding-left: 18px; }
     .situations-head { margin-bottom: var(--space-5); }
     .close-q { font-size: clamp(34px, 10vw, 48px); }

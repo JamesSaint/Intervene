@@ -8,7 +8,7 @@
 
 :root {
   /* Type */
-  --font-sans: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans: 'Montserrat', 'Montserrat Fallback', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   /* Surfaces */
@@ -93,7 +93,11 @@
 
   /* Components */
   --card-pad:  clamp(24px, 3vw, 36px);
-  --anchor-offset: calc(var(--header-h) + 24px);
+  /* The rendered header is 80px (logo plus 18px padding each side);
+     --header-h is the layout constant the menu and header share. The
+     offset also absorbs the 10px entrance travel of the target's
+     content column, so an anchored heading never lands under the bar. */
+  --anchor-offset: calc(var(--header-h) + 40px);
 
   /* ---- Motion. Three registers: interface feedback, section
      entrances, and diagram draws. Reduced motion collapses all three

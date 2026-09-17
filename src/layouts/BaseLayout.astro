@@ -391,11 +391,12 @@ const structuredData = {
     <ConsentBanner />
 
     <script>
-      import { initReveal, initDisclosures, initPageNav } from '../lib/motion.ts';
+      import { initReveal, initDisclosures, initPageNav, initAnchorSettle } from '../lib/motion.ts';
       document.documentElement.setAttribute('data-motion-ready', '');
       initReveal();
       initDisclosures();
       initPageNav();
+      initAnchorSettle();
     </script>
   </body>
 </html>
