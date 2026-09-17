@@ -1,14 +1,19 @@
 ---
+/**
+ * The SEDI chain: four nodes on a rail. When motion is enabled the rail
+ * draws once, left to right, and each stage's node and name follow in
+ * order. The order is the chain's order, not a duration.
+ */
 const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
 ---
 
-<figure class="chain-flow reveal" aria-label="The intervention capability chain: Detect, Escalate, Decide, Intervene.">
-  <div class="rail" aria-hidden="true"></div>
+<figure class="chain-flow" data-reveal="scene" aria-label="The intervention capability chain: Detect, Escalate, Decide, Intervene.">
+  <div class="rail draw" aria-hidden="true"></div>
   <ol role="list">
-    {stages.map((s) => (
-      <li>
+    {stages.map((s, i) => (
+      <li style={`--i: ${i}`}>
         <span class="node" aria-hidden="true"></span>
-        <span class="label">{s}</span>
+        <span class="stage">{s}</span>
       </li>
     ))}
   </ol>
@@ -16,27 +21,8 @@ const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
 </figure>
 
 <style>
-  .chain-flow {
-    margin: 0;
-    padding: 64px 0 0;
-    /* override .reveal defaults from global.css: this figure manages
-       its own choreography via the .in class below. */
-    opacity: 1;
-    transform: none;
-  }
-
-  .chain-flow > .rail {
-    position: relative;
-    height: 1px;
-    background: var(--hair-strong);
-    margin-bottom: -7px;
-    z-index: 0;
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform 900ms cubic-bezier(0.65, 0, 0.35, 1);
-  }
-  .chain-flow.in > .rail { transform: scaleX(1); }
-
+  .chain-flow { margin: 0; padding: var(--gap-intro) 0 0; }
+  .chain-flow > .rail { margin-bottom: -7px; z-index: 0; }
   .chain-flow ol {
     list-style: none;
     margin: 0;
@@ -46,48 +32,16 @@ const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
     position: relative;
     z-index: 1;
   }
-  .chain-flow li {
-    display: grid;
-    justify-items: center;
-    gap: 20px;
-  }
-
-  .node {
-    display: block;
-    width: 13px;
-    height: 13px;
-    border: 1px solid var(--accent);
-    background: var(--paper);
-    border-radius: 50%;
-    transform: scale(0);
-    transition:
-      transform 360ms cubic-bezier(0.65, 0, 0.35, 1);
-  }
-  .label {
+  .chain-flow li { display: grid; justify-items: center; gap: 20px; }
+  .stage {
     margin: 0;
     font-family: var(--font-sans);
     font-size: 16px;
     font-weight: 700;
     color: var(--ink);
-    opacity: 0;
-    transform: translateY(8px);
-    transition:
-      opacity 360ms cubic-bezier(0.4, 0, 0.2, 1),
-      transform 360ms cubic-bezier(0.4, 0, 0.2, 1);
   }
-
-  .chain-flow.in li:nth-child(1) .node { transition-delay: 180ms; transform: scale(1); }
-  .chain-flow.in li:nth-child(2) .node { transition-delay: 380ms; transform: scale(1); }
-  .chain-flow.in li:nth-child(3) .node { transition-delay: 580ms; transform: scale(1); }
-  .chain-flow.in li:nth-child(4) .node { transition-delay: 780ms; transform: scale(1); }
-
-  .chain-flow.in li:nth-child(1) .label { transition-delay: 240ms; opacity: 1; transform: none; }
-  .chain-flow.in li:nth-child(2) .label { transition-delay: 440ms; opacity: 1; transform: none; }
-  .chain-flow.in li:nth-child(3) .label { transition-delay: 640ms; opacity: 1; transform: none; }
-  .chain-flow.in li:nth-child(4) .label { transition-delay: 840ms; opacity: 1; transform: none; }
-
   figcaption {
-    margin-top: 48px;
+    margin-top: var(--space-5);
     font-family: var(--font-sans);
     font-size: 14px;
     color: var(--muted);
@@ -95,21 +49,27 @@ const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
     max-width: 60ch;
     margin-left: auto;
     margin-right: auto;
-    opacity: 0;
-    transform: translateY(6px);
-    transition:
-      opacity 360ms cubic-bezier(0.4, 0, 0.2, 1),
-      transform 360ms cubic-bezier(0.4, 0, 0.2, 1);
-    transition-delay: 980ms;
   }
-  .chain-flow.in figcaption { opacity: 1; transform: none; }
+
+  /* Sequence: rail 0 to 700ms; stages from 160ms, 140ms apart. */
+  html[data-motion] .chain-flow li {
+    opacity: 0;
+    transform: translateY(var(--move-reveal));
+    transition:
+      opacity var(--dur-reveal) var(--ease-out),
+      transform var(--dur-reveal) var(--ease-out);
+    transition-delay: calc(160ms + var(--i) * 140ms);
+  }
+  html[data-motion] .chain-flow figcaption {
+    opacity: 0;
+    transition: opacity var(--dur-reveal) var(--ease-out) 760ms;
+  }
+  html[data-motion] .chain-flow.in li { opacity: 1; transform: none; }
+  html[data-motion] .chain-flow.in figcaption { opacity: 1; }
 
   @media (max-width: 720px) {
     .chain-flow > .rail { display: none; }
-    .chain-flow ol {
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
+    .chain-flow ol { grid-template-columns: 1fr; gap: var(--space-4); }
     .chain-flow li {
       grid-template-columns: 14px 1fr;
       justify-items: start;
@@ -117,18 +77,5 @@ const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
       gap: 16px;
     }
     figcaption { text-align: left; margin-left: 0; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .chain-flow > .rail,
-    .chain-flow .node,
-    .chain-flow .label,
-    .chain-flow figcaption {
-      transform: none !important;
-      opacity: 1 !important;
-      transition: none !important;
-    }
-    .chain-flow > .rail { transform: scaleX(1) !important; }
-    .chain-flow .node { transform: scale(1) !important; }
   }
 </style>

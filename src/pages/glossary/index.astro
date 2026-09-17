@@ -28,8 +28,8 @@ const faqs = [
   <section class="hero">
     <div class="wrap">
       <span class="label">Reference</span>
-      <h1 class="h1 reveal">Glossary of Intervention Readiness.</h1>
-      <p class="lede muted reveal">
+      <h1 class="h1">Glossary of Intervention Readiness.</h1>
+      <p class="lede muted">
         The vocabulary of the category, defined once. Each term is used the
         same way across the site, the schema and the verdict.
       </p>
@@ -61,7 +61,7 @@ const faqs = [
         Intervention Readiness is the category. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is the proprietary
         assessment of it, created and owned by Intervene Limited.
       </p>
-      <div class="cta">
+      <div class="cta-row">
         <a href="/intervention-readiness/" class="btn">What is Intervention Readiness?</a>
         <a href="/agda/" class="btn-ghost"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span></a>
       </div>
@@ -70,39 +70,27 @@ const faqs = [
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-top: 144px;
-    padding-bottom: 96px;
-    border-bottom: 1px solid var(--hair);
-  }
+  /* Reference list: term left, definition right, one rule per entry.
+     Each entry is an anchor, so it clears the sticky header. */
   .hero .h1 { max-width: 20ch; }
-  .hero .lede { margin-top: 32px; max-width: 56ch; }
-
-  .glossary {
-    margin: 0;
-    border-top: 1px solid var(--hair-strong);
-  }
+  .glossary { margin: 0; border-top: 1px solid var(--hair-strong); }
   .glossary > div {
     display: grid;
     grid-template-columns: 0.8fr 1.2fr;
-    gap: 48px;
-    padding: 32px 0;
+    gap: var(--space-6);
+    padding: var(--space-4) 0;
     border-bottom: 1px solid var(--hair);
-    scroll-margin-top: 96px;
   }
   .glossary dt {
     font-family: var(--font-sans);
-    font-size: clamp(20px, 2.2vw, 26px);
-    line-height: 1.2;
+    font-size: clamp(19px, 2vw, 24px);
+    line-height: 1.25;
     color: var(--ink);
+    max-width: 24ch;
   }
-  .glossary dd { margin: 0; display: grid; gap: 12px; }
-  .glossary .body { max-width: 56ch; }
-
-  .cta { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
-
+  .glossary dd { margin: 0; display: grid; gap: var(--gap-item); justify-items: start; }
+  .glossary .body { max-width: 56ch; margin: 0; }
   @media (max-width: 880px) {
-    .hero { padding-top: 96px; padding-bottom: 64px; }
-    .glossary > div { grid-template-columns: 1fr; gap: 16px; }
+    .glossary > div { grid-template-columns: 1fr; gap: var(--space-2); }
   }
 </style>

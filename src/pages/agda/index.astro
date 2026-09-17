@@ -37,14 +37,14 @@ const faqs = [
   <section class="hero">
     <div class="wrap">
       <span class="label">The assessment</span>
-      <h1 class="h1 reveal"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> assesses Intervention Readiness.</h1>
-      <p class="lede muted reveal">
+      <h1 class="h1"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> assesses Intervention Readiness.</h1>
+      <p class="lede muted">
         Intervene's proprietary assessment of whether an organisation can
         detect the need to intervene, escalate appropriately, decide with
         authority and intervene effectively in a consequential AI-enabled
         system before the opportunity to do so is lost.
       </p>
-      <div class="hero-cta reveal">
+      <div class="hero-cta">
         <a href="/contact/" class="btn">Discuss your system</a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
       </div>
@@ -53,6 +53,7 @@ const faqs = [
 
   <section class="block">
     <div class="wrap-narrow">
+      <div class="subsection">
       <h2 class="h2">An assessment, <em>not a governance framework.</em></h2>
       <p class="body">
         Audit tells you whether a control existed. Model risk tells you whether
@@ -64,11 +65,9 @@ const faqs = [
         That is <a href="/intervention-readiness/" class="link">Intervention Readiness</a>: the ability to
         detect, escalate, decide and intervene before harm becomes irreversible.
       </p>
-    </div>
-  </section>
+      </div>
 
-  <section class="block">
-    <div class="wrap-narrow">
+      <div class="subsection">
       <h2 class="h2">One system, a defined pathway <em>and a specified scenario.</em></h2>
       <p class="body">
         We agree the system boundary, the consequential decision or action,
@@ -82,11 +81,9 @@ const faqs = [
         organisation or of every use of the system. Connected systems are
         scoped separately.
       </p>
-    </div>
-  </section>
+      </div>
 
-  <section class="block">
-    <div class="wrap-narrow">
+      <div class="subsection">
       <h2 class="h2">Evidence and <em>accountable judgement.</em></h2>
       <p class="body">
         <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> examines relevant records, interviews and walkthroughs across
@@ -102,6 +99,7 @@ const faqs = [
         the conclusion. {SELF_APPROVAL} A signed engine record is not by
         itself an issued assessment.
       </p>
+      </div>
     </div>
   </section>
 
@@ -117,7 +115,7 @@ const faqs = [
       <div class="verdict-stage">
         <VerdictBlock />
       </div>
-      <a href="/methodology/" class="link verdict-more">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> works</a>
+      <a href="/methodology/" class="arrow-link">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> works <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
@@ -128,7 +126,7 @@ const faqs = [
         The engagement scope lists the outputs. The standard package
         comprises:
       </p>
-      <ul class="deliver" role="list">
+      <ul class="dash-list deliver" role="list" data-reveal="stagger">
         {assessment.receive.map((d) => (
           <li set:html={markAgda(d)} />
         ))}
@@ -141,21 +139,21 @@ const faqs = [
         are established technical properties with different purposes from
         empirical validation.
       </p>
-      <a href="/sample-report/" class="services-link">See a constructed sample verdict <span aria-hidden="true">→</span></a>
+      <a href="/sample-report/" class="arrow-link">See a constructed sample verdict <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
   <section class="block">
     <div class="wrap">
       <h2 class="h2">What <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> <em>is not.</em></h2>
-      <div class="card-grid isnot-grid">
+      <ul class="card-grid isnot-grid" role="list" data-reveal="stagger">
         {isnot.map((d) => (
-          <div class="card">
+          <li class="card">
             <h3 class="h3 card-title">{d.h}</h3>
-            <p class="body-sm muted" set:html={markAgda(d.p)} />
-          </div>
+            <p class="body muted" set:html={markAgda(d.p)} />
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   </section>
 
@@ -181,7 +179,7 @@ const faqs = [
         <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment. Before that, inspect the sample verdict and
         how verification works.
       </p>
-      <div class="cta">
+      <div class="cta-row">
         <a href="/contact/" class="btn">Discuss your system</a>
         <a href="/services/" class="btn-ghost">Assessment options</a>
       </div>
@@ -190,90 +188,33 @@ const faqs = [
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-top: 144px;
-    padding-bottom: 144px;
-    border-bottom: 1px solid var(--hair);
-  }
+  /* Commercial and explanation page for the instrument. Three short
+     arguments share one section; the verdict specimen, deliverables,
+     boundaries and FAQ each take their own. */
   .hero .h1 { max-width: 24ch; }
-  .hero .lede { margin-top: 32px; max-width: 58ch; }
-  .hero-cta { margin-top: 48px; display: flex; gap: 16px; flex-wrap: wrap; }
+  .subsection + .subsection { margin-top: var(--gap-sub); padding-top: var(--gap-sub); border-top: 1px solid var(--hair); }
+  .subsection .body { margin: 0; }
+  .subsection .h2 + .body { margin-top: var(--gap-head); }
+  .subsection .body + .body { margin-top: var(--space-3); }
 
-  .block .h2 { max-width: 26ch; }
-  .block .lede { margin-top: 16px; max-width: 56ch; }
-  .wrap-narrow .body { max-width: 62ch; margin: 0 0 16px; }
-
-  .verdict-stage { margin-top: 48px; display: flex; justify-content: flex-start; max-width: 760px; }
-  .verdict-more { display: inline-block; margin-top: 32px; font-size: 15px; }
+  .verdict-stage { margin-top: var(--gap-intro); display: flex; justify-content: flex-start; max-width: 760px; }
 
   .deliver {
-    list-style: none;
-    margin: 64px 0 0;
-    padding: 0;
-    display: grid;
+    margin: var(--gap-intro) 0 0;
     grid-template-columns: 1fr 1fr;
-    gap: 20px 64px;
+    gap: var(--space-4) var(--space-7);
     border-top: 1px solid var(--hair-strong);
-    padding-top: 40px;
+    padding-top: var(--space-5);
   }
-  .deliver > li {
-    position: relative; padding-left: 22px;
-    font-family: var(--font-sans); font-size: 17px; line-height: 1.6;
-    color: var(--ink); max-width: 46ch;
-  }
-  .deliver > li::before {
-    content: ''; position: absolute; left: 0; top: 11px;
-    width: 10px; height: 1px; background: var(--accent);
-  }
-  .deliver-note { margin: 40px 0 0; max-width: 62ch; }
+  .deliver > li { font-size: 17px; max-width: 46ch; padding-left: 22px; }
+  .deliver > li::before { width: 10px; }
+  .deliver-note { margin: var(--space-5) 0 0; max-width: var(--measure); }
+  .deliver-note + .deliver-note { margin-top: var(--space-3); }
 
-  .isnot-grid { margin-top: 56px; }
-  .isnot-grid .card-title { margin: 0; }
-  .isnot-grid p { margin: 0; }
-
-  .faq-list {
-    margin: 56px 0 0;
-    border-top: 1px solid var(--hair-strong);
-  }
-  .faq-list > div {
-    display: grid;
-    grid-template-columns: 0.8fr 1.2fr;
-    gap: 48px;
-    padding: 28px 0;
-    border-bottom: 1px solid var(--hair);
-  }
-  .faq-list dt {
-    font-family: var(--font-sans);
-    font-size: 18px;
-    line-height: 1.35;
-    color: var(--ink);
-  }
-  .faq-list dd {
-    margin: 0;
-    font-family: var(--font-sans);
-    font-size: 16px;
-    line-height: 1.62;
-    color: var(--muted);
-  }
-
-  .services-link {
-    display: inline-block;
-    margin-top: 48px;
-    font-family: var(--font-sans);
-    font-size: 15px;
-    color: var(--ink);
-    border-bottom: 1px solid var(--hair-strong);
-    padding-bottom: 2px;
-    transition: border-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .services-link:hover { border-color: var(--accent); }
-
-  .cta-band .body { margin: 16px 0 32px; max-width: 56ch; }
-  .cta-band .cta { display: flex; flex-wrap: wrap; gap: 16px; }
+  .isnot-grid { margin-top: var(--gap-intro); list-style: none; padding: 0; }
+  .isnot-grid .h3 { font-size: 21px; }
 
   @media (max-width: 880px) {
-    .hero { padding-top: 88px; padding-bottom: 88px; }
-    .deliver { grid-template-columns: 1fr; gap: 40px; }
-    .faq-list > div { grid-template-columns: 1fr; gap: 16px; }
+    .deliver { grid-template-columns: 1fr; gap: var(--space-3); }
   }
 </style>

@@ -1,7 +1,17 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProofMarks from '../../components/ProofMarks.astro';
+import PageNav from '../../components/PageNav.astro';
 import { markAgda } from '../../lib/marks';
+
+const pageNav = [
+  { href: '#coverage', label: 'Coverage' },
+  { href: '#envelope', label: 'The envelope' },
+  { href: '#how', label: 'How to verify' },
+  { href: '#keys', label: 'Keys and registry' },
+  { href: '#who', label: 'Who can check' },
+  { href: '#establishes', label: 'What it establishes' },
+];
 
 /* What the Ed25519 signature commits to and what it does not. Checked
    against the AGDA attestation specification v1.2 (docs/security/
@@ -58,10 +68,10 @@ const audiences = [
 >
   <section class="hero">
     <div class="wrap">
-      <h1 class="h1 reveal">
+      <h1 class="h1">
         What the signature covers. <em>What it does not.</em>
       </h1>
-      <p class="lede muted reveal">
+      <p class="lede muted">
         This page explains how a check of a signed SEDI result record works.
         Signed records are not a standard deliverable: which artefacts are
         supplied, to whom and under what arrangement requires an approved
@@ -70,24 +80,26 @@ const audiences = [
         Node.js 18+ and never contacts Intervene infrastructure. A signed
         record is not by itself an issued assessment.
       </p>
-      <div class="hero-proof reveal"><ProofMarks /></div>
+      <div class="hero-proof"><ProofMarks /></div>
     </div>
   </section>
 
+  <PageNav items={pageNav} />
+
   <!-- THE BUNDLE -->
-  <section class="block">
+  <section class="block" id="coverage">
     <div class="wrap-narrow">
       <h2 class="h2">Coverage.</h2>
       <p class="lede muted">
         The Ed25519 signature is over the canonical attestation envelope. The
         envelope commits to the following, and to nothing else.
       </p>
-      <span class="mono col-label">Covered by the signature</span>
-      <ul class="limits" role="list">
+      <span class="col-label">Covered by the signature</span>
+      <ul class="dash-list" role="list">
         {covered.map((x) => <li>{x}</li>)}
       </ul>
-      <span class="mono col-label">Not covered by the signature</span>
-      <ul class="limits" role="list">
+      <span class="col-label">Not covered by the signature</span>
+      <ul class="dash-list" role="list">
         {notCovered.map((x) => <li>{x}</li>)}
       </ul>
       <p class="body muted note">
@@ -96,7 +108,12 @@ const audiences = [
         committed.
       </p>
 
-      <h2 class="h2 fields-head">The envelope.</h2>
+    </div>
+  </section>
+
+  <section class="block" id="envelope">
+    <div class="wrap-narrow">
+      <h2 class="h2">The envelope.</h2>
       <p class="lede muted">
         A signed record commits to the attestation envelope, the signed
         result, the exact input that was hashed and the resolved manifest.
@@ -105,8 +122,8 @@ const audiences = [
         set in the engagement terms. The fields below are the envelope.
       </p>
 
-      <span class="env-example mono">Example envelope · illustrative values</span>
-      <pre class="envelope" tabindex="0" aria-label="Attestation envelope example"><code>{`{
+      <span class="code-caption">Example envelope · illustrative values</span>
+      <pre class="code-block" tabindex="0" aria-label="Attestation envelope example"><code>{`{
   "attestationVersion": "1.2",
   "engineVersion":      "2.0.6",
   "engineHash":         "17594a80a72888a18e8b2c40b6e2fddaf56989f0bb417bc884111f8260355e50",
@@ -122,7 +139,7 @@ const audiences = [
   "signature":          "M4Gb2ZqAfD...pLQX7w=="
 }`}</code></pre>
 
-      <dl class="fields">
+      <dl class="spec-list fields">
         {bundleFields.map((f) => (
           <div>
             <dt class="mono">{f.k}</dt>
@@ -134,7 +151,7 @@ const audiences = [
   </section>
 
   <!-- HOW TO VERIFY -->
-  <section class="block">
+  <section class="block" id="how">
     <div class="wrap-narrow">
       <h2 class="h2">How to verify.</h2>
       <p class="lede muted">
@@ -142,8 +159,8 @@ const audiences = [
         entity does not control.
       </p>
 
-      <span class="env-example mono">Example run · illustrative output</span>
-      <pre class="cmd" tabindex="0" aria-label="Verify command"><code>$ agda-verify --key-id 2026-05-02-d7e5468e --bundle ./bundle.json
+      <span class="code-caption">Example run · illustrative output</span>
+      <pre class="code-block cmd" tabindex="0" aria-label="Verify command"><code>$ agda-verify --key-id 2026-05-02-d7e5468e --bundle ./bundle.json
 [verify] result:
   attestation present: ✓ yes
   manifest found:      ✓ yes
@@ -174,7 +191,7 @@ const audiences = [
   </section>
 
   <!-- PUBLIC KEY CHAIN -->
-  <section class="block">
+  <section class="block" id="keys">
     <div class="wrap-narrow">
       <h2 class="h2">Public keys, registry and trust.</h2>
       <p class="lede muted">
@@ -191,7 +208,7 @@ const audiences = [
         distribution and its registry.
       </p>
 
-      <dl class="fields">
+      <dl class="spec-list fields">
         <div>
           <dt class="mono">Key material</dt>
           <dd>public-keys/. Ed25519 public keys only.</dd>
@@ -213,7 +230,7 @@ const audiences = [
   </section>
 
   <!-- WHO VERIFIES -->
-  <section class="block">
+  <section class="block" id="who">
     <div class="wrap">
       <h2 class="h2">Who can check a record, <em>where the terms provide for it.</em></h2>
       <p class="lede muted">
@@ -223,7 +240,7 @@ const audiences = [
         arrangement and the engagement terms.
       </p>
 
-      <ul class="audiences" role="list">
+      <ul class="feature-grid audiences" role="list" data-reveal="stagger">
         {audiences.map((a) => (
           <li>
             <h3 class="h3">{a.h}</h3>
@@ -235,7 +252,7 @@ const audiences = [
   </section>
 
   <!-- POSITION -->
-  <section class="block">
+  <section class="block" id="establishes">
     <div class="wrap-narrow">
       <h2 class="h2">What a successful check establishes. <em>And what it does not.</em></h2>
       <p class="body">
@@ -246,8 +263,8 @@ const audiences = [
         computation was correct; that would require an engine replay, which
         is a separate activity.
       </p>
-      <span class="mono col-label">Not established by verification</span>
-      <ul class="limits" role="list">
+      <span class="col-label">Not established by verification</span>
+      <ul class="dash-list" role="list">
         {notEstablished.map((x) => <li set:html={markAgda(x)} />)}
       </ul>
       <p class="body muted note">
@@ -284,134 +301,17 @@ const audiences = [
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-top: 144px;
-    padding-bottom: 144px;
-    border-bottom: 1px solid var(--hair);
-  }
+  /* Reference page: coverage lists, an envelope, a field list, a
+     transcript, and who can run the check. Shared components carry it;
+     the local rules place them. */
   .hero .h1 { max-width: 20ch; }
-  .hero .lede { margin-top: 32px; max-width: 56ch; }
-  .hero-proof { margin-top: 36px; }
+  .hero-proof { margin-top: var(--space-5); }
 
-  .block .h2 { max-width: 28ch; }
-  .block .lede { margin-top: 16px; max-width: 56ch; }
-
-  .envelope,
-  .cmd {
-    margin: 48px 0 0;
-    padding: 32px;
-    background: var(--paper-soft);
-    border: 1px solid var(--hair);
-    font-family: var(--font-mono);
-    font-size: 12.5px;
-    line-height: 1.7;
-    color: var(--ink);
-    overflow-x: auto;
-    white-space: pre;
-  }
-  .cmd {
-    background: var(--paper-mid);
-    color: var(--ink);
-    border-color: var(--hair-strong);
-  }
-
-  .fields {
-    margin: 48px 0 0;
-    padding-top: 24px;
-    border-top: 1px solid var(--hair-strong);
-  }
-  .fields > div {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 24px;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--hair);
-    align-items: baseline;
-  }
-  .fields dt {
-    color: var(--muted);
-    font-size: 12px;
-    letter-spacing: 0.04em;
-  }
-  .fields dd {
-    margin: 0;
-    font-family: var(--font-sans);
-    font-size: 15px;
-    color: var(--ink);
-    line-height: 1.55;
-  }
-
-  .note {
-    margin-top: 32px;
-    max-width: 76ch;
-  }
-  .col-label {
-    display: block; margin-top: 40px; font-size: 11px; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--muted); padding-bottom: 12px;
-    border-bottom: 1px solid var(--hair-strong);
-  }
-  .limits { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 12px; }
-  .limits > li {
-    position: relative; padding-left: 20px;
-    font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--ink); max-width: 66ch;
-  }
-  .limits > li::before {
-    content: ''; position: absolute; left: 0; top: 11px;
-    width: 8px; height: 1px; background: var(--accent);
-  }
-  .fields-head { margin-top: 72px; }
-
-  .audiences {
-    list-style: none;
-    margin: 80px 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 56px;
-    border-top: 1px solid var(--hair-strong);
-    padding-top: 32px;
-  }
-  .audiences > li { display: grid; gap: 12px; align-content: start; }
-  .audiences p { max-width: 36ch; margin: 0; }
-
-  .aside {
-    margin-top: 32px;
-    padding-top: 24px;
-    border-top: 1px solid var(--hair);
-    font-style: italic;
-    max-width: 56ch;
-  }
-
-  .close-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 96px;
-    align-items: start;
-  }
-  .close-grid .h2 { max-width: 24ch; margin: 0; }
-  .close-cta {
-    display: grid;
-    gap: 24px;
-    align-content: start;
-    padding-top: 12px;
-  }
-  .close-cta .body { margin: 0; max-width: 42ch; }
-  .cta-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-
-  @media (max-width: 880px) {
-    .hero { padding-top: 96px; padding-bottom: 96px; }
-    .audiences { grid-template-columns: 1fr; gap: 40px; }
-    .fields > div { grid-template-columns: 1fr; gap: 4px; }
-    .close-grid { grid-template-columns: 1fr; gap: 48px; }
-    .envelope, .cmd { padding: 20px; font-size: 11.5px; }
-  }
-
-  .env-example {
-    display: block; font-size: 10px; letter-spacing: 0.18em;
-    text-transform: uppercase; color: var(--faint); margin-bottom: 12px;
-  }
+  .cmd { background: var(--paper-mid); border-color: var(--hair-strong); }
+  .fields { margin-top: var(--gap-intro); }
+  .fields dt { font-family: var(--font-mono); text-transform: none; letter-spacing: 0.04em; font-size: 12px; }
+  .note { margin-top: var(--space-4); max-width: 72ch; }
+  .col-label { margin-top: var(--gap-intro); }
+  .col-label + .dash-list > li { max-width: 66ch; }
+  .lede + .code-caption { margin-top: var(--gap-intro); }
 </style>

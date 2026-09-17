@@ -33,13 +33,13 @@ const insights = [
 >
   <section class="hero">
     <div class="wrap-narrow">
-      <h1 class="h1 reveal">Evidence notes on <em>intervention failure.</em></h1>
-      <p class="lede muted reveal">
+      <h1 class="h1">Evidence notes on <em>intervention failure.</em></h1>
+      <p class="lede muted">
         Where Intervention Readiness fails, and why control frameworks often
         miss it. Written for the people accountable when a consequential system
         runs on.
       </p>
-      <p class="body muted network-note reveal">
+      <p class="body muted network-note">
         Experienced practitioners sometimes see this failure pattern before the
         organisation names it. The
         <a href="/network/" class="link">Intervention Readiness Network</a>
@@ -51,25 +51,16 @@ const insights = [
 
   <section class="block">
     <div class="wrap">
-      <div class="insights-list" role="list">
+      <ul class="insights-list" role="list">
         {insights.map((a) => (
-          <InsightCard title={a.title} dek={a.dek} href={a.href} kicker={a.kicker} />
+          <li><InsightCard title={a.title} dek={a.dek} href={a.href} kicker={a.kicker} /></li>
         ))}
-      </div>
+      </ul>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-top: 144px;
-    padding-bottom: 96px;
-    border-bottom: 1px solid var(--hair);
-  }
   .hero .h1 { max-width: 18ch; }
-  .hero .lede { margin-top: 32px; max-width: 52ch; }
-  .network-note { margin-top: 28px; max-width: 58ch; }
-  @media (max-width: 880px) {
-    .hero { padding-top: 88px; padding-bottom: 64px; }
-  }
+  .network-note { margin-top: var(--space-4); max-width: var(--measure-lede); }
 </style>

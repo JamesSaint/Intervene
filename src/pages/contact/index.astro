@@ -22,8 +22,8 @@ const info: { k: string; v: string; href?: string }[] = [
 >
   <section class="hero">
     <div class="wrap">
-      <h1 class="h1 reveal">Discuss <em>your system.</em></h1>
-      <p class="lede muted reveal">
+      <h1 class="h1">Discuss <em>your system.</em></h1>
+      <p class="lede muted">
         Name the system, decision or exposure where you need to know whether
         intervention remains possible. A single line is enough to establish
         context.
@@ -34,7 +34,7 @@ const info: { k: string; v: string; href?: string }[] = [
   <section class="block">
     <div class="wrap">
       <div class="contact-grid">
-        <aside class="info-col reveal">
+        <aside class="info-col">
           <h2 class="h2">What the first conversation covers.</h2>
           <p class="body muted">
             Twenty minutes, at no charge. We establish which system you mean,
@@ -48,7 +48,7 @@ const info: { k: string; v: string; href?: string }[] = [
             nothing is committed until scope and fees are agreed in writing.
           </p>
 
-          <dl class="info-list">
+          <dl class="spec-list info-list">
             {info.map((row) => (
               <div>
                 <dt>{row.k}</dt>
@@ -58,7 +58,7 @@ const info: { k: string; v: string; href?: string }[] = [
           </dl>
         </aside>
 
-        <div class="form-col reveal">
+        <div class="form-col">
           <h2 class="h2">Tell us what may need to be stopped.</h2>
 
           <form class="form" data-contact action={FORMSPREE_ENDPOINT} method="POST" novalidate>
@@ -155,63 +155,31 @@ const info: { k: string; v: string; href?: string }[] = [
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-top: 144px;
-    padding-bottom: 144px;
-    border-bottom: 1px solid var(--hair);
-  }
+  /* Commercial page: what the conversation covers beside the form. */
   .hero .h1 { max-width: 16ch; }
-  .hero .lede { margin-top: 32px; max-width: 52ch; }
-
   .contact-grid {
     display: grid;
     grid-template-columns: 1fr 1.4fr;
-    gap: 96px;
+    gap: var(--space-8);
     align-items: start;
   }
-
-  /* Info column */
   .info-col .h2 { max-width: 24ch; }
-  .info-col .body { margin: 16px 0 0; max-width: 36ch; }
-  .info-list {
-    margin: 40px 0 0;
-    padding-top: 24px;
-    border-top: 1px solid var(--hair);
-    display: grid;
-    gap: 20px;
-  }
-  .info-list > div {
-    display: grid;
-    grid-template-columns: 130px 1fr;
-    gap: 16px;
-  }
-  .info-list dt {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-  .info-list dd {
-    margin: 0;
-    font-family: var(--font-sans);
-    font-size: 14px;
-    color: var(--ink);
-    line-height: 1.55;
-  }
+  .info-col .body { margin: var(--gap-head) 0 0; max-width: 40ch; }
+  .info-col .body + .body { margin-top: var(--space-3); }
+  .info-list { --spec-col: 130px; margin-top: var(--gap-intro); border-top-color: var(--hair); }
+  .info-list > div { padding: 12px 0; gap: var(--space-3); border-bottom: 0; }
+  .info-list dd { font-size: 14px; }
 
   /* Form column. Field, choice, error, status and submit-row styles
-     now live in src/styles/forms.css so the Snapshot does not
-     duplicate them. Only the page layout remains here. */
-  .form-col .h2 { max-width: 22ch; margin: 0 0 40px; }
+     live in src/styles/forms.css so the Snapshot does not duplicate
+     them. Only the page layout remains here. */
+  .form-col .h2 { max-width: 22ch; margin: 0 0 var(--space-5); }
   .field-help { margin: 8px 0 0; }
   .choice-set { border: 0; padding: 0; margin: 0; min-width: 0; }
   .choice-set legend { padding: 0; }
   .choice-set .choice-list { margin-top: 12px; }
 
   @media (max-width: 880px) {
-    .hero { padding-top: 96px; padding-bottom: 96px; }
-    .contact-grid { grid-template-columns: 1fr; gap: 64px; }
-    .info-list > div { grid-template-columns: 1fr; gap: 4px; }
+    .contact-grid { grid-template-columns: 1fr; gap: var(--space-6); }
   }
 </style>

@@ -7,6 +7,12 @@
  * not as proportional or consecutive blocks: their endpoints and any
  * overlap have not been established, and no total is computed.
  *
+ * Motion, when enabled: the assumed window is stated first, the rail
+ * draws once, the four stages appear in order, and the decisive stage
+ * (Decide) fills its node last, with the constraint statement. Nothing
+ * moves in proportion to a duration; the sequence is reading order,
+ * not time. The static state carries every label and qualification.
+ *
  * Facts are the corrected sample's own (src/pages/sample-report). Nothing
  * is added: no score, no exposure figure, no evidence grade.
  */
@@ -20,7 +26,7 @@ const stages = [
 ];
 ---
 
-<figure class="finding-chain" aria-labelledby="finding-chain-heading" aria-describedby="finding-chain-note">
+<figure class="finding-chain" data-reveal="scene" aria-labelledby="finding-chain-heading" aria-describedby="finding-chain-note">
   <figcaption class="fc-caption">
     <h3 class="h3" id="finding-chain-heading">What prevents intervention in this example.</h3>
     <p class="body muted fc-window">
@@ -30,11 +36,11 @@ const stages = [
     </p>
   </figcaption>
 
-  <div class="fc-rail" aria-hidden="true"></div>
+  <div class="rail draw fc-rail" aria-hidden="true"></div>
   <ol class="fc-stages" role="list">
-    {stages.map((s) => (
-      <li class={`fc-stage fc-${s.rel}`}>
-        <span class="fc-node" aria-hidden="true"></span>
+    {stages.map((s, i) => (
+      <li class={`fc-stage fc-${s.rel}`} style={`--i: ${i}`}>
+        <span class={`node fc-node${s.rel === 'exceeds' ? ' is-filled' : ''}`} aria-hidden="true"></span>
         <span class="mono fc-n">{s.n} {s.name}</span>
         <span class="fc-value">{s.value}</span>
         <span class="fc-rel">
@@ -63,26 +69,23 @@ const stages = [
 </figure>
 
 <style>
-  .finding-chain { margin: 48px 0 0; }
+  .finding-chain { margin: var(--gap-intro) 0 0; }
   .fc-caption .h3 { margin: 0; max-width: 30ch; }
-  .fc-window { margin: 12px 0 0; max-width: 60ch; }
+  .fc-window { margin: var(--gap-item) 0 0; max-width: 60ch; }
   .fc-window-label {
     display: inline-block; margin-right: 10px; font-size: 11px; letter-spacing: 0.14em;
     text-transform: uppercase; color: var(--accent);
   }
   .fc-window strong { color: var(--ink); font-weight: 700; }
 
-  .fc-rail { height: 1px; background: var(--hair-strong); margin: 40px 0 -7px; }
+  .fc-rail { margin: var(--gap-intro) 0 -7px; }
   .fc-stages {
     list-style: none; margin: 0; padding: 0;
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 28px;
     position: relative; z-index: 1;
   }
   .fc-stage { display: grid; gap: 8px; align-content: start; }
-  .fc-node {
-    display: block; width: 13px; height: 13px; border-radius: 50%;
-    border: 1px solid var(--accent); background: var(--paper-soft);
-  }
+  .fc-node { background: var(--paper-soft); }
   /* The decisive stage is the one filled node: shape carries the meaning,
      the text beside it says it in words. */
   .fc-exceeds .fc-node { background: var(--accent); }
@@ -92,22 +95,47 @@ const stages = [
   .fc-mark { display: inline-block; width: 10px; height: 10px; border: 1px solid var(--muted); flex: none; }
   .fc-within .fc-mark { border-radius: 50%; }
   .fc-may .fc-mark { background: linear-gradient(135deg, transparent 50%, var(--muted) 50%); }
-  .fc-exceeds .fc-mark { background: var(--muted); }
   .fc-after .fc-mark { border-style: dashed; }
   .fc-exceeds .fc-rel { color: var(--ink); }
   .fc-exceeds .fc-mark { background: var(--ink); border-color: var(--ink); }
   .fc-note { font-family: var(--font-sans); font-size: 14px; line-height: 1.55; color: var(--muted); max-width: 30ch; }
 
   .fc-result {
-    margin: 40px 0 0; padding: 20px 0 0 24px; border-left: 2px solid var(--accent);
+    margin: var(--gap-intro) 0 0; padding: 20px 0 0 24px; border-left: 2px solid var(--accent);
     font-family: var(--font-sans); font-size: 17px; line-height: 1.6; color: var(--ink); max-width: 60ch;
   }
   .fc-result-label { display: block; margin-bottom: 8px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
-  .fc-footnote { margin: 24px 0 0; font-size: 14px; line-height: 1.6; color: var(--faint); max-width: 66ch; }
+  .fc-footnote { margin: var(--space-4) 0 0; font-size: 14px; line-height: 1.6; color: var(--faint); max-width: 66ch; }
+
+  /* ---- Sequence. Runs once when the figure enters the viewport. ----
+     0ms      window statement
+     120ms    rail draws (700ms)
+     240ms+   stages 1 to 4, 140ms apart
+     900ms    Decide node fills; the constraint statement follows.   */
+  html[data-motion] .fc-window,
+  html[data-motion] .fc-stage,
+  html[data-motion] .fc-result {
+    opacity: 0;
+    transform: translateY(var(--move-reveal));
+    transition:
+      opacity var(--dur-reveal) var(--ease-out),
+      transform var(--dur-reveal) var(--ease-out);
+  }
+  html[data-motion] .fc-rail { transition-delay: 120ms; }
+  html[data-motion] .fc-stage { transition-delay: calc(240ms + var(--i) * 140ms); }
+  html[data-motion] .fc-exceeds .fc-node {
+    background: var(--paper-soft);
+    transition: background-color var(--dur-fast) var(--ease) 900ms;
+  }
+  html[data-motion] .fc-result { transition-delay: 980ms; }
+  html[data-motion] .finding-chain.in .fc-window,
+  html[data-motion] .finding-chain.in .fc-stage,
+  html[data-motion] .finding-chain.in .fc-result { opacity: 1; transform: none; }
+  html[data-motion] .finding-chain.in .fc-exceeds .fc-node { background: var(--accent); }
 
   @media (max-width: 720px) {
     .fc-rail { display: none; }
-    .fc-stages { grid-template-columns: 1fr; gap: 24px; }
+    .fc-stages { grid-template-columns: 1fr; gap: var(--space-4); }
     .fc-stage { grid-template-columns: 13px 1fr; column-gap: 16px; align-items: start; }
     .fc-node { grid-row: 1 / span 4; margin-top: 4px; }
     .fc-n { margin-top: 0; }

@@ -17,7 +17,7 @@ const { title, dek, href, kicker = 'Note' } = Astro.props;
 <a class="insight-row" href={href}>
   <span class="insight-meta mono">{kicker}</span>
   <span class="insight-main">
-    <h3 class="insight-title" set:html={markAgda(title)}></h3>
+    <h2 class="insight-title" set:html={markAgda(title)}></h2>
     <p class="insight-dek" set:html={markAgda(dek)}></p>
   </span>
   <span class="insight-cue" aria-hidden="true">→</span>
@@ -27,9 +27,9 @@ const { title, dek, href, kicker = 'Note' } = Astro.props;
   .insight-row {
     display: grid;
     grid-template-columns: 140px 1fr 40px;
-    gap: 40px;
+    gap: var(--space-5);
     align-items: start;
-    padding: 40px 0;
+    padding: var(--space-5) 0;
     border-top: 1px solid var(--hair-strong);
     color: var(--ink);
   }
@@ -49,7 +49,7 @@ const { title, dek, href, kicker = 'Note' } = Astro.props;
     line-height: 1.1;
     margin: 0;
     max-width: 26ch;
-    transition: opacity var(--dur-hover) var(--ease);
+    transition: color var(--dur-fast) var(--ease);
   }
   .insight-dek {
     font-family: var(--font-sans);
@@ -64,10 +64,13 @@ const { title, dek, href, kicker = 'Note' } = Astro.props;
     line-height: 1;
     padding-top: 10px;
     justify-self: end;
-    transition: transform var(--dur-hover) var(--ease);
+    transition: transform var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
   }
-  .insight-row:hover .insight-title { opacity: 0.6; }
-  .insight-row:hover .insight-cue { transform: translateX(6px); }
+  .insight-row:hover .insight-title,
+  .insight-row:focus-visible .insight-title { color: var(--accent); }
+  .insight-row:hover .insight-cue,
+  .insight-row:focus-visible .insight-cue { transform: translateX(6px); color: var(--accent); }
+  .insight-row:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
   @media (max-width: 720px) {
     .insight-row {
