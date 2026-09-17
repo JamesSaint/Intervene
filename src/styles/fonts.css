@@ -1,2 +1,29 @@
 /* intervene · type loading. Montserrat aligns the advisory system with HIA. */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* Metric-matched fallback while Montserrat loads. Arial, scaled and
+   with its vertical metrics overridden to Montserrat's, so the swap
+   changes glyph shapes rather than line lengths and page height. Not
+   self-hosting: the web font still comes from Google Fonts. Values are
+   the Montserrat-to-Arial overrides published for this purpose. */
+@font-face {
+  font-family: 'Montserrat Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
+  size-adjust: 112.83%;
+  ascent-override: 85.79%;
+  descent-override: 22.25%;
+  line-gap-override: 0%;
+  font-weight: 400 600;
+}
+/* Arial Bold is narrower against Montserrat Bold than the regular
+   weights are, so headings take a larger adjustment; measured on the
+   site's own headlines. */
+@font-face {
+  font-family: 'Montserrat Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Helvetica Neue Bold'), local('Helvetica Bold');
+  size-adjust: 116.8%;
+  ascent-override: 85.79%;
+  descent-override: 22.25%;
+  line-gap-override: 0%;
+  font-weight: 700 800;
+}

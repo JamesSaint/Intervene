@@ -25,6 +25,13 @@
   color: var(--ink);
 }
 
+/* The smallest phones (320 to 360px): one step down, so a four-word
+   headline holds to three lines and the action stays on the first
+   screen with the consent banner open. */
+@media (max-width: 360px) {
+  .h1 { font-size: 34px; }
+}
+
 .h2 {
   font-family: var(--font-sans);
   font-weight: 700;

@@ -162,6 +162,10 @@
     .consent-actions { width: 100%; }
     .consent-btn { flex: 1; text-align: center; }
   }
+  @media (max-width: 360px) {
+    .consent-inner { padding: 12px var(--gutter-tight); gap: 10px; }
+    .consent-copy { font-size: 12px; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .consent { transition: none; }

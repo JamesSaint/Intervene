@@ -9,6 +9,11 @@
  * 2. Disclosure closing. Native <details> opens with a CSS animation;
  *    closing needs a class so the body can fade before it collapses.
  * 3. On-this-page navigation. Marks the section currently in view.
+ * 4. Anchor settling. A page opened at a fragment scrolls to it before
+ *    the web font arrives; when the font swaps in, the content above
+ *    changes height and the target drifts under the header. Once fonts
+ *    are ready the target is scrolled to again, unless the reader has
+ *    already moved.
  */
 
 const REVEAL =
@@ -40,6 +45,15 @@ export function initReveal(root: Document | ParentNode = document): () => void {
   );
 
   nodes.forEach((n) => io.observe(n));
+
+  // Printing, and any other moment the page must be complete at once:
+  // drop the opt-in and every gated element takes its resting state.
+  const settle = () => {
+    html.removeAttribute('data-motion');
+    io.disconnect();
+  };
+  window.addEventListener('beforeprint', settle, { once: true });
+
   return () => io.disconnect();
 }
 
@@ -101,4 +115,29 @@ export function initPageNav(root: Document | ParentNode = document): () => void 
   window.addEventListener('scroll', onScroll, { passive: true });
   update();
   return () => window.removeEventListener('scroll', onScroll);
+}
+
+export function initAnchorSettle(): void {
+  if (!location.hash || !('fonts' in document)) return;
+  const id = decodeURIComponent(location.hash.slice(1));
+  const target = document.getElementById(id);
+  if (!target) return;
+  let moved = false;
+  const onMove = () => { moved = true; };
+  window.addEventListener('wheel', onMove, { passive: true, once: true });
+  window.addEventListener('touchstart', onMove, { passive: true, once: true });
+  window.addEventListener('keydown', onMove, { once: true });
+  const settle = () => {
+    window.removeEventListener('wheel', onMove);
+    window.removeEventListener('touchstart', onMove);
+    window.removeEventListener('keydown', onMove);
+    if (moved) return;
+    target.scrollIntoView({ block: 'start', behavior: 'instant' as ScrollBehavior });
+  };
+  // Two frames after the fonts resolve, so the swapped layout is the
+  // one being scrolled to; then once more after a beat for a late swap.
+  document.fonts.ready.then(() => {
+    requestAnimationFrame(() => requestAnimationFrame(settle));
+    window.setTimeout(settle, 400);
+  });
 }
