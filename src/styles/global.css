@@ -65,7 +65,7 @@ a, button, summary, input, textarea, select, [tabindex] { scroll-margin-top: var
   padding-bottom: var(--hero-bottom);
   border-bottom: 1px solid var(--hair);
 }
-.hero .h1 { max-width: calc(22 * var(--ch)); }
+.hero .h1 { max-width: calc(22.5 * var(--ch)); }
 .hero .lede { margin-top: var(--gap-h1); max-width: var(--measure-lede); }
 .hero-cta {
   margin-top: var(--space-5);
