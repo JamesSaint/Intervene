@@ -83,7 +83,7 @@ Canonical site: `https://intervene.uk/`
 ├── src/
 │   ├── components/                Header, menu, logo, proof marks, diagrams, cards
 │   ├── layouts/                   Base, legal, hub, insight, comparison layouts
-│   ├── lib/                       Terms, AGDA mark rendering, reveal, contact form
+│   ├── lib/                       Terms, AGDA mark rendering, motion runtime, contact form
 │   ├── pages/                     File-based routes listed above
 │   └── styles/                    Tokens, fonts, reset, typography, global rules
 ├── .github/workflows/deploy.yml   Build and deploy to GitHub Pages

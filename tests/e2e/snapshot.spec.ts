@@ -214,7 +214,7 @@ test.describe('after the result', () => {
 });
 
 test.describe('privacy and AGDA protection', () => {
-  test('transmits no answer data while the visitor is answering', async ({ page }) => {
+  test('transmits no answer data while the visitor is answering', async ({ page, baseURL }) => {
     // The site already loads Google Fonts and fires a consent-denied GA4
     // page ping; that is pre-existing behaviour and carries no answers.
     // What must never happen is an answer value leaving the browser.
@@ -239,9 +239,13 @@ test.describe('privacy and AGDA protection', () => {
     const leaks: string[] = [];
     const unexpectedHosts: string[] = [];
 
+    // "Local" is the origin the suite is running against, whatever host
+    // and port the config chose; the application's own allowlist is not
+    // involved here.
+    const localOrigin = new URL(baseURL ?? 'http://127.0.0.1:4321').origin;
     page.on('request', (request) => {
       const url = request.url();
-      const isLocal = url.startsWith('http://localhost');
+      const isLocal = url.startsWith(localOrigin);
       const isKnown = KNOWN_THIRD_PARTIES.some((host) => url.includes(host));
 
       if (!isLocal && !isKnown) unexpectedHosts.push(url);

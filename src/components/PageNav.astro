@@ -1,0 +1,24 @@
+---
+/**
+ * "On this page" for long reference pages. A single row of section
+ * links beneath the hero; the section in view carries the gold rule.
+ * Targets are ids that already exist on the page, so every link works
+ * without scripts and the URL fragments are stable.
+ */
+interface Props {
+  items: Array<{ href: string; label: string }>;
+  label?: string;
+}
+const { items, label = 'On this page' } = Astro.props;
+---
+
+<nav class="page-nav" aria-label={label}>
+  <div class="wrap page-nav-inner">
+    <span class="page-nav-label" aria-hidden="true">{label}</span>
+    <ul role="list">
+      {items.map((it) => (
+        <li><a href={it.href}>{it.label}</a></li>
+      ))}
+    </ul>
+  </div>
+</nav>

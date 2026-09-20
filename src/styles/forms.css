@@ -297,7 +297,7 @@
   font-family: var(--font-sans);
   font-size: 12px;
   line-height: 1.55;
-  max-width: 40ch;
+  max-width: calc(40 * var(--ch));
 }
 
 /* ---- Honeypot ---- */
