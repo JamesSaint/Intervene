@@ -1,6 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const PORT = 4321;
+// Loopback by numeric address, not "localhost": on this machine the name
+// resolves to ::1 first, where an unrelated dev server may be listening.
+// PW_PORT lets a run target a preview on another port, for example a
+// production build kept up for review on 4399.
+const HOST = '127.0.0.1';
+const PORT = Number(process.env.PW_PORT ?? 4321);
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -9,7 +14,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? 'github' : 'list',
   use: {
-    baseURL: `http://localhost:${PORT}`,
+    baseURL: `http://${HOST}:${PORT}`,
     trace: 'on-first-retry',
   },
   projects: [
@@ -20,8 +25,8 @@ export default defineConfig({
     { name: 'mobile', use: { ...devices['Pixel 5'] } },
   ],
   webServer: {
-    command: `npm run build && npm run preview -- --port ${PORT}`,
-    url: `http://localhost:${PORT}/readiness-snapshot/`,
+    command: `npm run build && npm run preview -- --host ${HOST} --port ${PORT}`,
+    url: `http://${HOST}:${PORT}/readiness-snapshot/`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },
