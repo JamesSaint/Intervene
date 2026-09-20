@@ -46,6 +46,30 @@ export function initReveal(root: Document | ParentNode = document): () => void {
 
   nodes.forEach((n) => io.observe(n));
 
+  // Second opinion. If the observer misses an element (a browser quirk,
+  // a jump the observer has not caught up with), a scroll or resize
+  // sweep reveals anything whose top is inside the viewport.
+  let pending = new Set(nodes);
+  let raf = 0;
+  const sweep = () => {
+    raf = 0;
+    const limit = window.innerHeight * 1.05;
+    pending.forEach((n) => {
+      if (n.classList.contains('in')) { pending.delete(n); return; }
+      const r = n.getBoundingClientRect();
+      if (r.top < limit && r.bottom > 0) { n.classList.add('in'); io.unobserve(n); pending.delete(n); }
+    });
+    if (!pending.size) { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); }
+  };
+  const onScroll = () => { if (!raf) raf = requestAnimationFrame(sweep); };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  window.addEventListener('focusin', (e) => {
+    const group = (e.target as Element).closest?.(REVEAL);
+    if (group && !group.classList.contains('in')) { group.classList.add('in'); io.unobserve(group); pending.delete(group as HTMLElement); }
+  });
+  sweep();
+
   // Printing, and any other moment the page must be complete at once:
   // drop the opt-in and every gated element takes its resting state.
   const settle = () => {
@@ -122,22 +146,28 @@ export function initAnchorSettle(): void {
   const id = decodeURIComponent(location.hash.slice(1));
   const target = document.getElementById(id);
   if (!target) return;
+  // Any deliberate movement cancels the correction: wheel, touch, a key,
+  // a pointer on the scrollbar, or focus moving to another element.
   let moved = false;
   const onMove = () => { moved = true; };
-  window.addEventListener('wheel', onMove, { passive: true, once: true });
-  window.addEventListener('touchstart', onMove, { passive: true, once: true });
-  window.addEventListener('keydown', onMove, { once: true });
-  const settle = () => {
-    window.removeEventListener('wheel', onMove);
-    window.removeEventListener('touchstart', onMove);
-    window.removeEventListener('keydown', onMove);
+  const events: Array<[string, AddEventListenerOptions]> = [
+    ['wheel', { passive: true, once: true }],
+    ['touchstart', { passive: true, once: true }],
+    ['keydown', { once: true }],
+    ['pointerdown', { passive: true, once: true }],
+    ['focusin', { once: true }],
+  ];
+  events.forEach(([name, opts]) => window.addEventListener(name, onMove, opts));
+  const settle = (last: boolean) => {
+    if (last) events.forEach(([name]) => window.removeEventListener(name, onMove));
     if (moved) return;
     target.scrollIntoView({ block: 'start', behavior: 'instant' as ScrollBehavior });
   };
   // Two frames after the fonts resolve, so the swapped layout is the
   // one being scrolled to; then once more after a beat for a late swap.
+  // The cancel listeners stay live until the last correction.
   document.fonts.ready.then(() => {
-    requestAnimationFrame(() => requestAnimationFrame(settle));
-    window.setTimeout(settle, 400);
+    requestAnimationFrame(() => requestAnimationFrame(() => settle(false)));
+    window.setTimeout(() => settle(true), 400);
   });
 }

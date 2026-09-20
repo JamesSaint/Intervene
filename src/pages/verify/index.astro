@@ -304,14 +304,14 @@ const audiences = [
   /* Reference page: coverage lists, an envelope, a field list, a
      transcript, and who can run the check. Shared components carry it;
      the local rules place them. */
-  .hero .h1 { max-width: 20ch; }
+  .hero .h1 { max-width: calc(20 * var(--ch)); }
   .hero-proof { margin-top: var(--space-5); }
 
   .cmd { background: var(--paper-mid); border-color: var(--hair-strong); }
   .fields { margin-top: var(--gap-intro); }
   .fields dt { font-family: var(--font-mono); text-transform: none; letter-spacing: 0.04em; font-size: 12px; }
-  .note { margin-top: var(--space-4); max-width: 72ch; }
+  .note { margin-top: var(--space-4); max-width: calc(72 * var(--ch)); }
   .col-label { margin-top: var(--gap-intro); }
-  .col-label + .dash-list > li { max-width: 66ch; }
+  .col-label + .dash-list > li { max-width: calc(66 * var(--ch)); }
   .lede + .code-caption { margin-top: var(--gap-intro); }
 </style>

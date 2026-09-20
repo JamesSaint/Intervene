@@ -65,7 +65,7 @@ a, button, summary, input, textarea, select, [tabindex] { scroll-margin-top: var
   padding-bottom: var(--hero-bottom);
   border-bottom: 1px solid var(--hair);
 }
-.hero .h1 { max-width: 22ch; }
+.hero .h1 { max-width: calc(22 * var(--ch)); }
 .hero .lede { margin-top: var(--gap-h1); max-width: var(--measure-lede); }
 .hero-cta {
   margin-top: var(--space-5);
@@ -93,7 +93,7 @@ a, button, summary, input, textarea, select, [tabindex] { scroll-margin-top: var
 
 /* Heading and introduction inside a block. The lede sits close to
    its heading; whatever follows the lede sits one --gap-intro below. */
-.block .h2 { max-width: 26ch; }
+.block .h2 { max-width: calc(26 * var(--ch)); }
 .block .h2 + .lede,
 .block .h2 + .body { margin-top: var(--gap-head); }
 .block .lede { max-width: var(--measure-lede); }
@@ -107,7 +107,7 @@ a, button, summary, input, textarea, select, [tabindex] { scroll-margin-top: var
   font-size: 14px;
   line-height: 1.6;
   color: var(--muted);
-  max-width: 72ch;
+  max-width: calc(72 * var(--ch));
 }
 
 /* ------------------------------------------------------------------
@@ -249,6 +249,20 @@ html[data-motion] [data-reveal='stagger'] > :nth-child(5) { transition-delay: ca
 html[data-motion] [data-reveal='stagger'] > :nth-child(6) { transition-delay: calc(var(--stagger) * 5); }
 html[data-motion] [data-reveal='stagger'] > :nth-child(7) { transition-delay: calc(var(--stagger) * 6); }
 html[data-motion] [data-reveal='stagger'] > :nth-child(n + 8) { transition-delay: calc(var(--stagger) * 7); }
+
+/* A group that receives keyboard focus, or that contains the URL's
+   target, is shown at once. Nothing focusable is ever an invisible
+   target, whatever the observer has or has not done. */
+html[data-motion] .block > :is(.wrap, .wrap-narrow, .wrap-reading):focus-within,
+html[data-motion] [data-reveal]:focus-within,
+html[data-motion] [data-reveal='stagger']:focus-within > *,
+html[data-motion] .block > :is(.wrap, .wrap-narrow, .wrap-reading):has(:target),
+html[data-motion] [data-reveal]:has(:target),
+html[data-motion] [data-reveal='stagger']:has(:target) > * {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0ms;
+}
 
 /* Legacy class kept as an alias so nothing breaks while pages migrate. */
 html[data-motion] .reveal:not(.in) { opacity: 0; transform: translateY(var(--move-reveal)); }
@@ -442,7 +456,7 @@ a.card:focus-visible::before { transform: scaleX(1); }
   font-size: 18px;
   line-height: 1.35;
   color: var(--ink);
-  max-width: 34ch;
+  max-width: calc(34 * var(--ch));
 }
 .faq-list dd {
   margin: 0;
@@ -462,7 +476,7 @@ a.card:focus-visible::before { transform: scaleX(1); }
 .definition-box {
   padding: var(--space-4) 0 var(--space-4) 28px;
   border-left: 2px solid var(--accent);
-  max-width: 60ch;
+  max-width: calc(60 * var(--ch));
 }
 .definition-box .box-label {
   display: block;
@@ -706,20 +720,20 @@ html[data-motion] .disclosure.closing > .disclosure-body {
   gap: var(--space-7);
   align-items: start;
 }
-.close-grid .h2 { max-width: 22ch; margin: 0; }
+.close-grid .h2 { max-width: calc(22 * var(--ch)); margin: 0; }
 .close-cta {
   display: grid;
   gap: var(--space-4);
   align-content: start;
   padding-top: 10px;
 }
-.close-cta .body { margin: 0; max-width: 44ch; }
+.close-cta .body { margin: 0; max-width: calc(44 * var(--ch)); }
 @media (max-width: 880px) {
   .close-grid { grid-template-columns: 1fr; gap: var(--space-5); }
 }
 
 /* Narrow closing band: heading, one paragraph, actions. */
-.cta-band .h2 { max-width: 22ch; }
+.cta-band .h2 { max-width: calc(22 * var(--ch)); }
 .cta-band .body { margin: var(--gap-head) 0 0; max-width: var(--measure-lede); }
 .cta-band .cta-row { margin-top: var(--space-5); }
 

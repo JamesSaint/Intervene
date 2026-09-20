@@ -72,7 +72,7 @@ const faqs = [
 <style>
   /* Reference list: term left, definition right, one rule per entry.
      Each entry is an anchor, so it clears the sticky header. */
-  .hero .h1 { max-width: 20ch; }
+  .hero .h1 { max-width: calc(20 * var(--ch)); }
   .glossary { margin: 0; border-top: 1px solid var(--hair-strong); }
   .glossary > div {
     display: grid;
@@ -86,10 +86,10 @@ const faqs = [
     font-size: clamp(19px, 2vw, 24px);
     line-height: 1.25;
     color: var(--ink);
-    max-width: 24ch;
+    max-width: calc(24 * var(--ch));
   }
   .glossary dd { margin: 0; display: grid; gap: var(--gap-item); justify-items: start; }
-  .glossary .body { max-width: 56ch; margin: 0; }
+  .glossary .body { max-width: calc(56 * var(--ch)); margin: 0; }
   @media (max-width: 880px) {
     .glossary > div { grid-template-columns: 1fr; gap: var(--space-2); }
   }

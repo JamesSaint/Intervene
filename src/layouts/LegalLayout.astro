@@ -42,7 +42,7 @@ const { title, description, heading, updated, current } = Astro.props;
     font-size: 11px;
     margin: 0 0 var(--space-4);
   }
-  .legal-hero .h1 { max-width: 18ch; margin: 0; font-size: clamp(32px, 4.4vw, 52px); }
+  .legal-hero .h1 { max-width: calc(18 * var(--ch)); margin: 0; font-size: clamp(32px, 4.4vw, 52px); }
 
   .legal-body { padding: var(--section-tight) 0 var(--section); }
   .legal-body h2 {

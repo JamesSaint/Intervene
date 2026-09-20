@@ -70,6 +70,26 @@ test.describe('motion opt-in', () => {
   });
 });
 
+test('keyboard focus reveals a group the observer has not reached', async ({ page }) => {
+  await page.goto('/services/');
+  await page.waitForTimeout(200);
+  const link = page.locator('#control a.link').first();
+  await link.focus();
+  await page.waitForTimeout(500);
+  const group = page.locator('#control > .wrap');
+  await expect(group).toHaveClass(/\bin\b/);
+  expect(await group.evaluate((e) => getComputedStyle(e).opacity)).toBe('1');
+});
+
+test('the fragment correction yields to a reader who has already scrolled', async ({ page }) => {
+  await page.goto('/services/#assessment');
+  await page.waitForTimeout(100);
+  await page.mouse.wheel(0, 900);
+  await page.waitForTimeout(900);
+  const top = await page.evaluate(() => document.getElementById('assessment')!.getBoundingClientRect().top);
+  expect(top).toBeLessThan(0);
+});
+
 test.describe('anchors and page navigation', () => {
   test('anchored sections clear the sticky header', async ({ page }) => {
     await page.goto('/services/#assessment');

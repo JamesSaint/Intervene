@@ -453,9 +453,9 @@ const schema = {
 </BaseLayout>
 
 <style>
-  .hero .h1 { max-width: 24ch; }
-  .hero .lede { max-width: 54ch; }
-  .hero-body { margin-top: var(--space-4); max-width: 54ch; }
+  .hero .h1 { max-width: calc(24 * var(--ch)); }
+  .hero .lede { max-width: calc(54 * var(--ch)); }
+  .hero-body { margin-top: var(--space-4); max-width: calc(54 * var(--ch)); }
   .hero .cta-row { margin-top: var(--space-5); }
 
   /* The question made concrete. Three words carry the whole category, so
@@ -493,7 +493,7 @@ const schema = {
   .who-lede,
   .ask-lede,
   .link-lede,
-  .ind-lede { margin-top: 24px; max-width: 56ch; }
+  .ind-lede { margin-top: 24px; max-width: calc(56 * var(--ch)); }
 
   /* Label left, description right. Same shape as the /contact/ info
      list, widened because these descriptions are sentences. */
@@ -526,10 +526,10 @@ const schema = {
     font-size: 15.5px;
     color: var(--muted);
     line-height: 1.6;
-    max-width: 62ch;
+    max-width: calc(62 * var(--ch));
   }
 
-  .who-note { margin-top: 40px; max-width: 62ch; }
+  .who-note { margin-top: 40px; max-width: calc(62 * var(--ch)); }
 
   .col-label {
     display: block;
@@ -557,7 +557,7 @@ const schema = {
     gap: 28px;
   }
   .asked .h3 { margin: 0 0 8px; }
-  .asked .body { margin: 0; max-width: 46ch; }
+  .asked .body { margin: 0; max-width: calc(46 * var(--ch)); }
 
   .not-asked {
     list-style: none;
@@ -585,9 +585,9 @@ const schema = {
     height: 1px;
     background: var(--faint);
   }
-  .not-asked-note { margin-top: 28px; max-width: 40ch; }
+  .not-asked-note { margin-top: 28px; max-width: calc(40 * var(--ch)); }
 
-  .part-lede { margin-top: 24px; max-width: 56ch; }
+  .part-lede { margin-top: 24px; max-width: calc(56 * var(--ch)); }
 
   /* The boundary. Set apart from the rows above it because it is the
      half of this section that stops it becoming a benefits list. */
@@ -597,12 +597,12 @@ const schema = {
     border-top: 1px solid var(--hair);
     display: grid;
     gap: 20px;
-    max-width: 66ch;
+    max-width: calc(66 * var(--ch));
   }
   .bounds .body { margin: 0; }
   .bounds strong { color: var(--ink); }
 
-  .link-note { margin-top: 40px; max-width: 62ch; }
+  .link-note { margin-top: 40px; max-width: calc(62 * var(--ch)); }
 
   /* The two settled statements, set apart with the bronze rule the site
      uses where a claim has to be checkable rather than persuasive. */
@@ -620,7 +620,7 @@ const schema = {
     font-size: 17px;
     line-height: 1.6;
     color: var(--ink);
-    max-width: 62ch;
+    max-width: calc(62 * var(--ch));
   }
 
   .exclusions {
@@ -636,7 +636,7 @@ const schema = {
     font-size: 15.5px;
     line-height: 1.6;
     color: var(--muted);
-    max-width: 66ch;
+    max-width: calc(66 * var(--ch));
     padding-left: 22px;
     position: relative;
   }
@@ -650,12 +650,12 @@ const schema = {
     background: var(--accent);
   }
 
-  .ind-close { margin-top: 40px; max-width: 52ch; color: var(--ink); }
+  .ind-close { margin-top: 40px; max-width: calc(52 * var(--ch)); color: var(--ink); }
 
   /* Quieter than everything above it. The restraint is the point. */
   .recognition { border-top: 1px solid var(--hair); }
   .recognition-copy {
-    max-width: 66ch;
+    max-width: calc(66 * var(--ch));
     color: var(--muted-soft);
     font-size: 15.5px;
   }
@@ -666,8 +666,8 @@ const schema = {
     gap: 96px;
     align-items: start;
   }
-  .start-col .h2 { max-width: 18ch; }
-  .start-col .body { margin: 24px 0 0; max-width: 46ch; }
+  .start-col .h2 { max-width: calc(18 * var(--ch)); }
+  .start-col .body { margin: 24px 0 0; max-width: calc(46 * var(--ch)); }
   .start-note { margin-top: 20px; }
 
   .start-aside {
@@ -675,7 +675,7 @@ const schema = {
   }
   .tight-rows { margin-top: 24px; padding-top: 20px; }
   .tight-rows > div { grid-template-columns: 140px 1fr; gap: 20px; }
-  .aside-note { margin-top: 28px; max-width: 40ch; }
+  .aside-note { margin-top: 28px; max-width: calc(40 * var(--ch)); }
 
   .fine {
     padding: 48px 0 88px;
@@ -687,7 +687,7 @@ const schema = {
     font-size: 13px;
     line-height: 1.7;
     color: var(--faint);
-    max-width: 92ch;
+    max-width: calc(92 * var(--ch));
   }
 
   @media (max-width: 980px) {
