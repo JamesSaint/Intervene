@@ -156,15 +156,15 @@ const info: { k: string; v: string; href?: string }[] = [
 
 <style>
   /* Commercial page: what the conversation covers beside the form. */
-  .hero .h1 { max-width: 16ch; }
+  .hero .h1 { max-width: calc(16 * var(--ch)); }
   .contact-grid {
     display: grid;
     grid-template-columns: 1fr 1.4fr;
     gap: var(--space-8);
     align-items: start;
   }
-  .info-col .h2 { max-width: 24ch; }
-  .info-col .body { margin: var(--gap-head) 0 0; max-width: 40ch; }
+  .info-col .h2 { max-width: calc(24 * var(--ch)); }
+  .info-col .body { margin: var(--gap-head) 0 0; max-width: calc(40 * var(--ch)); }
   .info-col .body + .body { margin-top: var(--space-3); }
   .info-list { --spec-col: 130px; margin-top: var(--gap-intro); border-top-color: var(--hair); }
   .info-list > div { padding: 12px 0; gap: var(--space-3); border-bottom: 0; }
@@ -173,7 +173,7 @@ const info: { k: string; v: string; href?: string }[] = [
   /* Form column. Field, choice, error, status and submit-row styles
      live in src/styles/forms.css so the Snapshot does not duplicate
      them. Only the page layout remains here. */
-  .form-col .h2 { max-width: 22ch; margin: 0 0 var(--space-5); }
+  .form-col .h2 { max-width: calc(22 * var(--ch)); margin: 0 0 var(--space-5); }
   .field-help { margin: 8px 0 0; }
   .choice-set { border: 0; padding: 0; margin: 0; min-width: 0; }
   .choice-set legend { padding: 0; }

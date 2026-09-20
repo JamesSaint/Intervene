@@ -86,9 +86,15 @@
   --max-reading:  680px;
   --max-report:   980px;
   --max-diagram:  1120px;
-  --measure:      62ch;  /* body prose */
-  --measure-lede: 58ch;  /* introductions */
-  --measure-item: 44ch;  /* text inside a grid cell */
+  /* One character of measure. Montserrat's "0" advance in em, set by
+     weight below, so a width written as calc(N * var(--ch)) is the same
+     box whether the web font or its metric-matched fallback is
+     rendering. A literal Nch would shrink 5% in the fallback and change
+     line counts at swap. */
+  --ch: 0.6622em;
+  --measure:      calc(62 * var(--ch));  /* body prose */
+  --measure-lede: calc(58 * var(--ch));  /* introductions */
+  --measure-item: calc(44 * var(--ch));  /* text inside a grid cell */
   --header-h:     64px;
 
   /* Components */
@@ -114,6 +120,12 @@
   --dur-menu:    320ms;
   --move-reveal: 10px;   /* entrance travel */
   --stagger:     60ms;   /* per item in a staggered group */
+}
+
+/* Bold text has a wider "0". Set on the element so its own width
+   resolves with the bold value; inline children inherit it. */
+:is(h1, h2, h3, h4, .h1, .h2, .h3, .display-xl, .close-q, .insight-title, .price, .offer-name, .oc-name, .fc-value, strong, b) {
+  --ch: 0.6787em;
 }
 
 @media (prefers-reduced-motion: reduce) {

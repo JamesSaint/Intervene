@@ -6,6 +6,7 @@ import ConsentBanner from '../components/ConsentBanner.astro';
 import { terms, termId, termUrl } from '../lib/terms';
 import { socialLinks } from '../lib/social';
 import { offers } from '../lib/offers';
+import { buildId } from '../lib/build';
 import '../styles/global.css';
 
 interface Props {
@@ -311,6 +312,7 @@ const structuredData = {
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#0a0a0a" />
     <meta name="color-scheme" content="dark" />
+    {buildId && <meta name="intervene-build" content={buildId} />}
     <script is:inline>
       // Motion opt-in. Runs before first paint so the entrance styles
       // never hide content from a visitor without scripts or with

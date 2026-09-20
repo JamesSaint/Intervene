@@ -244,9 +244,9 @@ const finding = {
   .hero-sub {
     margin: var(--gap-h1) 0 0; font-family: var(--font-sans);
     font-size: clamp(18px, 1.8vw, 22px); font-weight: 400; letter-spacing: 0;
-    color: var(--muted); line-height: 1.6; max-width: 48ch;
+    color: var(--muted); line-height: 1.6; max-width: calc(48 * var(--ch));
   }
-  .hero-note { margin: var(--space-4) 0 0; font-size: 15px; color: var(--muted); max-width: 52ch; line-height: 1.6; }
+  .hero-note { margin: var(--space-4) 0 0; font-size: 15px; color: var(--muted); max-width: calc(52 * var(--ch)); line-height: 1.6; }
   .hero-chain {
     list-style: none; margin: clamp(32px, 6vh, 56px) 0 0; padding: var(--space-4) 0 0;
     border-top: 1px solid var(--hair); display: flex; flex-wrap: wrap; gap: 18px 36px;
@@ -258,7 +258,7 @@ const finding = {
 
   /* 2 · Situations */
   .situations { border-bottom: 1px solid var(--hair); }
-  .situations-head { max-width: 20ch; margin: 0 0 var(--gap-intro); }
+  .situations-head { max-width: calc(20 * var(--ch)); margin: 0 0 var(--gap-intro); }
   .situation-grid { list-style: none; margin: 0; padding: 0; }
   .situation-kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
   .situation-grid .h3 { font-size: 21px; margin: 0; }
@@ -266,7 +266,7 @@ const finding = {
 
   /* 3 · Finding */
   .finding-block { background: var(--paper-soft); border-bottom: 1px solid var(--hair); }
-  .finding-block .h2 { max-width: 22ch; }
+  .finding-block .h2 { max-width: calc(22 * var(--ch)); }
   .finding-scope {
     margin: var(--gap-intro) 0 0; padding-top: var(--space-4); border-top: 1px solid var(--hair-strong);
     display: grid; grid-template-columns: 1fr 1fr; gap: 22px clamp(32px, 5vw, 72px); align-content: start;
@@ -278,41 +278,41 @@ const finding = {
     text-transform: uppercase; color: var(--faint);
   }
   .finding-scope dd,
-  .finding-verdict dd { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--ink); max-width: 52ch; }
+  .finding-verdict dd { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--ink); max-width: calc(52 * var(--ch)); }
   .finding-verdict {
     margin: var(--gap-intro) 0 0; padding: var(--space-4) 0 0 var(--space-4); border-left: 2px solid var(--accent);
     display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5);
   }
   .finding-verdict div { display: grid; gap: 8px; align-content: start; }
-  .finding-note { margin: var(--space-4) 0 0; font-size: 15px; line-height: 1.6; color: var(--faint); max-width: 60ch; }
+  .finding-note { margin: var(--space-4) 0 0; font-size: 15px; line-height: 1.6; color: var(--faint); max-width: calc(60 * var(--ch)); }
 
   .chain-head { margin: var(--gap-sub) 0 0; padding-top: var(--space-5); border-top: 1px solid var(--hair-strong); }
   .chain-foot { margin: var(--gap-head) 0 0; max-width: var(--measure); }
   .states { list-style: none; margin: var(--space-5) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4) var(--space-5); }
   .states > li { display: grid; gap: 8px; align-content: start; padding-top: var(--space-3); border-top: 1px solid var(--hair); }
   .state-name { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); }
-  .states p { margin: 0; max-width: 34ch; font-size: 15px; }
+  .states p { margin: 0; max-width: calc(34 * var(--ch)); font-size: 15px; }
 
   /* 4 · Offers */
   .engage { border-bottom: 1px solid var(--hair); }
   .engage-terms {
     margin: var(--gap-intro) 0 0; padding-top: var(--space-4); border-top: 1px solid var(--hair-strong);
-    font-family: var(--font-sans); font-size: 16px; line-height: 1.65; color: var(--muted); max-width: 68ch;
+    font-family: var(--font-sans); font-size: 16px; line-height: 1.65; color: var(--muted); max-width: calc(68 * var(--ch));
   }
 
   /* 5 · Basis and next step */
   .basis { background: var(--paper-soft); border-bottom: 1px solid var(--hair); }
   .basis-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(40px, 6vw, 96px); align-items: start; }
-  .basis .h2 { max-width: 20ch; font-size: clamp(26px, 3vw, 36px); }
-  .basis .body { margin: var(--gap-head) 0 0; max-width: 52ch; }
+  .basis .h2 { max-width: calc(20 * var(--ch)); font-size: clamp(26px, 3vw, 36px); }
+  .basis .body { margin: var(--gap-head) 0 0; max-width: calc(52 * var(--ch)); }
   .basis .body + .body { margin-top: var(--space-3); }
   .basis .cta-row { margin-top: var(--space-5); }
 
   /* 6 · Close */
   .close { padding-top: clamp(88px, 13vh, 160px); padding-bottom: clamp(88px, 13vh, 160px); }
   .close-wrap { display: grid; gap: var(--space-4); justify-items: start; }
-  .close-q { font-family: var(--font-sans); font-weight: 700; font-size: clamp(40px, 6vw, 88px); letter-spacing: -0.02em; line-height: 1.0; margin: 0; max-width: 18ch; color: var(--ink); }
-  .close-line { font-family: var(--font-sans); font-size: 16px; line-height: 1.65; color: var(--muted); margin: 0; max-width: 56ch; }
+  .close-q { font-family: var(--font-sans); font-weight: 700; font-size: clamp(40px, 6vw, 88px); letter-spacing: -0.02em; line-height: 1.0; margin: 0; max-width: calc(18 * var(--ch)); color: var(--ink); }
+  .close-line { font-family: var(--font-sans); font-size: 16px; line-height: 1.65; color: var(--muted); margin: 0; max-width: calc(56 * var(--ch)); }
 
   @media (max-width: 880px) {
     .finding-scope { grid-template-columns: 1fr; }
