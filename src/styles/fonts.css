@@ -9,19 +9,52 @@
 @font-face {
   font-family: 'Montserrat Fallback';
   src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
-  size-adjust: 112.83%;
+  size-adjust: 112.79%;
   ascent-override: 85.79%;
   descent-override: 22.25%;
   line-gap-override: 0%;
-  font-weight: 400 600;
+  font-weight: 400;
 }
-/* Arial Bold is narrower against Montserrat Bold than the regular
-   weights are, so headings take a larger adjustment; measured on the
-   site's own headlines. */
+/* Italic 400, the headline accent. Fitted on the site's 31 italic
+   fragments; Montserrat Italic runs wider against Arial Italic than
+   the uprights do. */
+@font-face {
+  font-family: 'Montserrat Fallback';
+  src: local('Arial Italic'), local('Arial-ItalicMT'), local('Helvetica Neue Italic'), local('Helvetica Oblique');
+  size-adjust: 114.32%;
+  ascent-override: 85.79%;
+  descent-override: 22.25%;
+  line-gap-override: 0%;
+  font-weight: 400;
+  font-style: italic;
+}
+/* Montserrat Medium (500) has no Arial counterpart: regular Arial,
+   scaled to the medium width. Semi-bold (600) sits nearer Arial Bold. */
+@font-face {
+  font-family: 'Montserrat Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
+  size-adjust: 114.67%;
+  ascent-override: 85.79%;
+  descent-override: 22.25%;
+  line-gap-override: 0%;
+  font-weight: 500;
+}
 @font-face {
   font-family: 'Montserrat Fallback';
   src: local('Arial Bold'), local('Arial-BoldMT'), local('Helvetica Neue Bold'), local('Helvetica Bold');
-  size-adjust: 116.8%;
+  size-adjust: 108.17%;
+  ascent-override: 85.79%;
+  descent-override: 22.25%;
+  line-gap-override: 0%;
+  font-weight: 600;
+}
+/* Bold takes its own adjustment. Fitted on the site's 111 headings:
+   Montserrat Bold is 10.06% wider than Arial Bold. The regular fit over
+   339 paragraphs is 112.79%; 500 and 600 were fitted the same way. */
+@font-face {
+  font-family: 'Montserrat Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Helvetica Neue Bold'), local('Helvetica Bold');
+  size-adjust: 110.06%;
   ascent-override: 85.79%;
   descent-override: 22.25%;
   line-gap-override: 0%;

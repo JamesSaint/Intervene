@@ -127,7 +127,7 @@ const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.def
 <style>
   /* Comparison page: hero, what the adjacent discipline does beside the
      category definition, a three-column table, two prose sections, FAQ. */
-  .hero .h1 { max-width: 20ch; }
+  .hero .h1 { max-width: calc(20 * var(--ch)); }
   .definition-grid {
     display: grid;
     grid-template-columns: 1.35fr 0.85fr;

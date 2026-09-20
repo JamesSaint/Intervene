@@ -113,7 +113,7 @@ const H = headingLevel;
 
 <style>
   .offer-choice { margin: 0; }
-  .oc-caption .h2 { max-width: 26ch; margin-top: 12px; }
+  .oc-caption .h2 { max-width: calc(26 * var(--ch)); margin-top: 12px; }
   .oc-lede { margin: var(--gap-head) 0 0; max-width: var(--measure-lede); }
 
   /* Root node and stem, then two branches: the rail language from the
@@ -140,13 +140,13 @@ const H = headingLevel;
   .oc-fields { margin: 8px 0 0; display: grid; gap: 0; border-top: 1px solid var(--hair-strong); }
   .oc-fields > div { display: grid; gap: 6px; padding: var(--space-3) 0; border-bottom: 1px solid var(--hair); }
   .oc-fields dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
-  .oc-fields dd { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--ink); max-width: 46ch; }
+  .oc-fields dd { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--ink); max-width: calc(46 * var(--ch)); }
   .oc-fields dd.oc-price { font-size: 20px; font-weight: 700; }
   .oc-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
   .oc-list > li { position: relative; padding-left: 18px; color: var(--muted); font-size: 15px; }
   .oc-list > li::before { content: ''; position: absolute; left: 0; top: 11px; width: 8px; height: 1px; background: var(--accent); }
   .oc-link { display: inline-block; font-size: 15px; }
-  .oc-foot { margin: var(--gap-intro) 0 0; max-width: 66ch; }
+  .oc-foot { margin: var(--gap-intro) 0 0; max-width: calc(66 * var(--ch)); }
 
   /* ---- Sequence. The stem draws down, the bar opens from the centre,
      both branches draw together, both heads appear together. Neither

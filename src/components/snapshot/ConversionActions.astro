@@ -154,7 +154,7 @@ const markAgda = (value: string) =>
     font-size: 16px;
     line-height: 1.65;
     color: var(--muted);
-    max-width: 68ch;
+    max-width: calc(68 * var(--ch));
   }
 
   /* Same treatment as the contrast block above, so the eye reads the
@@ -208,7 +208,7 @@ const markAgda = (value: string) =>
   .action-note {
     margin: 0;
     color: var(--faint);
-    max-width: 40ch;
+    max-width: calc(40 * var(--ch));
   }
 
   @media (max-width: 880px) {

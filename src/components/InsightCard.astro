@@ -48,7 +48,7 @@ const { title, dek, href, kicker = 'Note' } = Astro.props;
     letter-spacing: -0.025em;
     line-height: 1.1;
     margin: 0;
-    max-width: 26ch;
+    max-width: calc(26 * var(--ch));
     transition: color var(--dur-fast) var(--ease);
   }
   .insight-dek {
@@ -57,7 +57,7 @@ const { title, dek, href, kicker = 'Note' } = Astro.props;
     line-height: 1.55;
     color: var(--muted);
     margin: 0;
-    max-width: 52ch;
+    max-width: calc(52 * var(--ch));
   }
   .insight-cue {
     font-size: 22px;
