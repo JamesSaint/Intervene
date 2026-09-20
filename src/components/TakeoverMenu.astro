@@ -214,10 +214,9 @@ const isCurrent = (href: string) => {
     transform: none;
   }
   .takeover-body a:hover,
-  .takeover-body a:focus-visible {
-    color: var(--accent);
-    outline: none;
-  }
+  .takeover-body a:focus-visible { color: var(--accent); }
+  /* Focus is the ring as well as the colour, never the colour alone. */
+  .takeover-body a:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
   /* Active route: one bronze rule. The only accent in the overlay. */
   .takeover-body a[aria-current='page']::before {
     content: '';
