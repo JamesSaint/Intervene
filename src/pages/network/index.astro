@@ -7,9 +7,9 @@
  * that should face it, and Intervene carries everything after that.
  *
  * WHAT THIS PAGE IS NOT ALLOWED TO BECOME. A referral programme. The
- * commercial arrangement is one quiet paragraph, sixth of seven, and it
- * is not a call to action. If the page ever reads as though payment is
- * the reason to take part, it is wrong and the fix is to cut, not to
+ * commercial arrangement is one quiet paragraph, fifth of six, and it is
+ * not a call to action. If the page ever reads as though payment is the
+ * reason to take part, it is wrong and the fix is to cut, not to
  * balance.
  *
  * The vocabulary is load bearing. Participants, never partners,
@@ -21,6 +21,15 @@
  * paid for work arising from the findings, is open with legal advice and
  * deliberately absent. Publishing an unsupported mechanism would be
  * worse than publishing none.
+ *
+ * The Snapshot material is gone. This page once asked participants to
+ * forward an attributed link to the ten question demonstration and
+ * explained what that link recorded. The demonstration is withdrawn and
+ * no link is issued, so the ask, the forwarding instructions, the
+ * attribution mechanics and the promise of a fuller result are all
+ * removed rather than marked paused. The privacy notice still describes
+ * the referral-link processing for anyone who arrived on one while it
+ * was live; that is a retention obligation and stays where it is.
  *
  * There is no form here. Interest routes through /contact/, which
  * already has a handler, a privacy notice, a retention rule and a
@@ -56,33 +65,8 @@ const standing = [
   },
 ];
 
-const asked = [
-  {
-    h: 'One person.',
-    p: 'Somebody you believe genuinely carries accountability for a consequential system already running.',
-  },
-  {
-    h: 'One link.',
-    p: 'Paused. The ten question demonstration this pointed to is withdrawn while its result is rebuilt, so there is nothing to forward at present. Nothing else about participation changes, and your attribution code remains yours.',
-  },
-  {
-    h: 'Your judgement that it is relevant.',
-    p: 'Nothing beyond that. If the question does not apply to anyone you know, it does not apply, and saying so is useful.',
-  },
-];
-
-const notAsked = [
-  'Sell AGDA™.',
-  'Explain Intervene.',
-  'Qualify the prospect.',
-  'Negotiate anything.',
-  'Defend the methodology.',
-  'Make a high-stakes commercial introduction.',
-];
-
 /**
- * What participation is actually worth, which the page previously left
- * unanswered. The review was right that a page clear about what somebody
+ * What participation is actually worth. A page clear about what somebody
  * does not do has to be equally clear about why they would bother.
  *
  * The value is proximity to a forming field, not commercial upside. Every
@@ -92,13 +76,11 @@ const notAsked = [
  * entitlement, and none of it may become one without this comment being
  * deleted on purpose.
  *
- * Two claims were cut before publication. Findings no longer arrive
- * "before they are published", because that is preferential access and
- * commits us to a publication order nobody has designed. And the
- * briefings row no longer ends "There is no newsletter", because a public
- * prohibition on a mailing list is a promise about a decision that has
- * not been taken. Neither cut weakens the row. Both remove a commitment
- * that would have had to be kept.
+ * Two claims were cut before publication. Findings do not arrive "before
+ * they are published", because that is preferential access and commits
+ * us to a publication order nobody has designed. And the briefings row
+ * does not end "There is no newsletter", because a public prohibition on
+ * a mailing list is a promise about a decision that has not been taken.
  */
 const participation = [
   {
@@ -112,29 +94,6 @@ const participation = [
   {
     k: 'Occasional briefings',
     v: 'A short research note when there is something worth saying.',
-  },
-];
-
-const link = [
-  {
-    k: 'On arrival',
-    v: 'The code is read and removed from the address bar. It is held in the page for that visit and written nowhere on the reader’s device.',
-  },
-  {
-    k: 'What it identifies',
-    v: 'Which participant the visit came through. It carries no recipient identity, and none can be derived from it.',
-  },
-  {
-    k: 'On completion',
-    v: 'We know a Snapshot was completed on your link. We do not know who completed it.',
-  },
-  {
-    k: 'If they identify themselves',
-    v: 'They may choose to give their details to receive the fuller result. That is a separate act, taken later and by them, and it is the only route by which we come to know who they are.',
-  },
-  {
-    k: 'What you are told',
-    v: 'Only that an organisation has been attributed to you, and only once that organisation has volunteered itself. You are never told who received your link.',
   },
 ];
 
@@ -195,10 +154,6 @@ const schema = {
         worst possible moment.
       </p>
 
-      <div class="cta-row">
-        <a class="btn" href="#start">Discuss the Network</a>
-      </div>
-
       <ul class="beats" role="list" data-reveal="stagger">
         <li>
           <span class="mono beat-word">Detect</span>
@@ -224,7 +179,7 @@ const schema = {
   <section class="block" id="who">
     <div class="wrap">
       <h2 class="h2">Who the Network <em>is for.</em></h2>
-      <p class="lede muted who-lede">
+      <p class="lede muted section-lede">
         A question like this does not travel well from a stranger. What matters
         is not a contact list. It is enough judgement and standing to recognise
         when an organisation should confront this question at all.
@@ -238,64 +193,14 @@ const schema = {
           </div>
         ))}
       </dl>
-
-      <p class="body muted who-note">
-        Two boundaries, stated plainly rather than buried. Anybody holding a
-        current supervisory or regulatory role is outside this entirely. A
-        current fiduciary role at an organisation does not prevent you taking
-        part, and it does mean no payment arises in relation to that
-        organisation.
-      </p>
     </div>
   </section>
 
-  <!-- 3. THE ASK -->
-  <section class="block" id="ask">
-    <div class="wrap">
-      <h2 class="h2">We ask you to forward one link. <em>That is paused.</em></h2>
-      <p class="lede muted ask-lede">
-        The role is deliberately small, because a small role is one you can
-        fill without spending standing you took years to build. Right now it is
-        smaller still: the instrument the link pointed to is withdrawn, so we
-        are not asking you to send anything to anyone. We will say so here when
-        that changes.
-      </p>
-
-      <div class="ask-grid">
-        <div class="ask-col">
-          <span class="mono col-label">What we ask</span>
-          <ul class="asked" role="list">
-            {asked.map((row) => (
-              <li>
-                <h3 class="h3">{row.h}</h3>
-                <p class="body muted" set:html={markAgda(row.p)} />
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div class="ask-col">
-          <span class="mono col-label">What we do not ask</span>
-          <ul class="not-asked" role="list">
-            {notAsked.map((row) => (
-              <li set:html={markAgda(row)} />
-            ))}
-          </ul>
-          <p class="body muted not-asked-note">
-            Establishing the need, qualifying the opportunity and carrying the
-            commercial conversation is our work. If a recipient has questions,
-            they come to us.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 4. WHAT PARTICIPATION GIVES YOU -->
+  <!-- 3. WHY SPEAK TO INTERVENE -->
   <section class="block" id="participation">
     <div class="wrap">
       <h2 class="h2">Early sight of a field <em>still being defined.</em></h2>
-      <p class="lede muted part-lede">
+      <p class="lede muted section-lede">
         Intervention Readiness is new enough that the evidence base is still
         forming. Participation puts you close to that work, and close to people
         carrying the same question in other sectors. What is on offer is
@@ -310,6 +215,10 @@ const schema = {
           </div>
         ))}
       </dl>
+
+      <p class="body muted role-note" set:html={markAgda(
+        'The role itself is small, because a small role is one you can fill without spending standing you took years to build. Where you judge that an organisation should face this question, you say so. Establishing the need, qualifying the opportunity and carrying the commercial conversation is our work. Nobody is asked to sell AGDA™, explain Intervene, qualify a prospect, negotiate anything or defend the methodology. If an organisation has questions, they come to us.',
+      )} />
 
       <div class="bounds">
         <p class="body muted">
@@ -330,39 +239,11 @@ const schema = {
     </div>
   </section>
 
-  <!-- 5. WHAT THE LINK DOES -->
-  <section class="block" id="link">
-    <div class="wrap">
-      <h2 class="h2">Your link says it came from you. <em>It says nothing about who you sent it to.</em></h2>
-      <p class="lede muted link-lede">
-        Attribution and identification are two separate events, and keeping
-        them separate is what makes the mechanism legible rather than covert.
-      </p>
-
-      <dl class="rows">
-        {link.map((row) => (
-          <div>
-            <dt>{row.k}</dt>
-            <dd>{row.v}</dd>
-          </div>
-        ))}
-      </dl>
-
-      <p class="body muted link-note">
-        What this does not claim: that a recipient can never become known to
-        us. They can, by their own choice, in their own time. What it claims is
-        narrower and checkable. We never learn who they are through your link.
-        How this is recorded is set out in the
-        <a href="/legal/privacy/" class="link">privacy notice</a>.
-      </p>
-    </div>
-  </section>
-
-  <!-- 6. INDEPENDENCE -->
+  <!-- 4. INDEPENDENCE -->
   <section class="block" id="independence">
     <div class="wrap">
       <h2 class="h2">Nobody with a commercial interest <em>goes near the verdict.</em></h2>
-      <p class="lede muted ind-lede" set:html={markAgda(
+      <p class="lede muted section-lede" set:html={markAgda(
         'AGDA™ is sold as an independent assessment. The Network is therefore designed so that commercial relationships cannot reach the assessment itself.',
       )} />
 
@@ -385,7 +266,7 @@ const schema = {
     </div>
   </section>
 
-  <!-- 7. RECOGNITION -->
+  <!-- 5. RECOGNITION -->
   <section class="block tight recognition">
     <div class="wrap">
       <p class="body muted recognition-copy">
@@ -399,7 +280,7 @@ const schema = {
     </div>
   </section>
 
-  <!-- 8. HOW THIS STARTS -->
+  <!-- 6. HOW THIS STARTS -->
   <section class="block" id="start">
     <div class="wrap">
       <div class="start-grid">
@@ -407,8 +288,7 @@ const schema = {
           <h2 class="h2">There is no form. <em>There is a conversation.</em></h2>
           <p class="body muted">
             Write to us and we will reply. If it makes sense, we talk for twenty
-            minutes, and if it still makes sense after that you are issued a
-            link of your own. Nothing is signed and nothing is joined.
+            minutes. Nothing is signed and nothing is joined.
           </p>
           <div class="cta-row">
             <a class="btn" href="/contact/">Talk to Intervene</a>
@@ -456,9 +336,8 @@ const schema = {
   .hero .h1 { max-width: calc(24 * var(--ch)); }
   .hero .lede { max-width: calc(54 * var(--ch)); }
   .hero-body { margin-top: var(--space-4); max-width: calc(54 * var(--ch)); }
-  .hero .cta-row { margin-top: var(--space-5); }
 
-  /* The question made concrete. Three words carry the whole category, so
+  /* The question made concrete. Four words carry the whole category, so
      they sit on their own rule rather than inside the prose above. */
   .beats {
     list-style: none;
@@ -466,7 +345,7 @@ const schema = {
     padding-top: var(--space-5);
     border-top: 1px solid var(--hair-strong);
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 0;
   }
   .beats li {
@@ -490,10 +369,7 @@ const schema = {
     color: var(--muted);
   }
 
-  .who-lede,
-  .ask-lede,
-  .link-lede,
-  .ind-lede { margin-top: 24px; max-width: calc(56 * var(--ch)); }
+  .section-lede { margin-top: 24px; max-width: calc(56 * var(--ch)); }
 
   /* Label left, description right. Same shape as the /contact/ info
      list, widened because these descriptions are sentences. */
@@ -529,7 +405,7 @@ const schema = {
     max-width: calc(62 * var(--ch));
   }
 
-  .who-note { margin-top: 40px; max-width: calc(62 * var(--ch)); }
+  .role-note { margin-top: 40px; max-width: calc(62 * var(--ch)); }
 
   .col-label {
     display: block;
@@ -540,54 +416,6 @@ const schema = {
     padding-bottom: 20px;
     border-bottom: 1px solid var(--hair-strong);
   }
-
-  .ask-grid {
-    margin-top: 56px;
-    display: grid;
-    grid-template-columns: 1.25fr 1fr;
-    gap: 72px;
-    align-items: start;
-  }
-
-  .asked {
-    list-style: none;
-    margin: 28px 0 0;
-    padding: 0;
-    display: grid;
-    gap: 28px;
-  }
-  .asked .h3 { margin: 0 0 8px; }
-  .asked .body { margin: 0; max-width: calc(46 * var(--ch)); }
-
-  .not-asked {
-    list-style: none;
-    margin: 28px 0 0;
-    padding: 0;
-    display: grid;
-    gap: 14px;
-  }
-  .not-asked li {
-    font-family: var(--font-sans);
-    font-size: 15.5px;
-    line-height: 1.5;
-    color: var(--muted-soft);
-    padding-left: 22px;
-    position: relative;
-  }
-  /* A struck-through mark would be decoration. A rule reads as a list of
-     things that are simply not on the list. */
-  .not-asked li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.72em;
-    width: 12px;
-    height: 1px;
-    background: var(--faint);
-  }
-  .not-asked-note { margin-top: 28px; max-width: calc(40 * var(--ch)); }
-
-  .part-lede { margin-top: 24px; max-width: calc(56 * var(--ch)); }
 
   /* The boundary. Set apart from the rows above it because it is the
      half of this section that stops it becoming a benefits list. */
@@ -602,10 +430,8 @@ const schema = {
   .bounds .body { margin: 0; }
   .bounds strong { color: var(--ink); }
 
-  .link-note { margin-top: 40px; max-width: calc(62 * var(--ch)); }
-
-  /* The two settled statements, set apart with the bronze rule the site
-     uses where a claim has to be checkable rather than persuasive. */
+  /* The settled statements, set apart with the bronze rule the site uses
+     where a claim has to be checkable rather than persuasive. */
   .firewall {
     list-style: none;
     margin: 48px 0 0;
@@ -668,6 +494,7 @@ const schema = {
   }
   .start-col .h2 { max-width: calc(18 * var(--ch)); }
   .start-col .body { margin: 24px 0 0; max-width: calc(46 * var(--ch)); }
+  .start-col .cta-row { margin-top: var(--space-5); }
   .start-note { margin-top: 20px; }
 
   .start-aside {
@@ -691,7 +518,8 @@ const schema = {
   }
 
   @media (max-width: 980px) {
-    .ask-grid { grid-template-columns: 1fr; gap: 56px; }
+    .beats { grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
+    .beats li:nth-child(3) { padding-left: 0; border-left: 0; }
     .start-grid { grid-template-columns: 1fr; gap: 64px; }
     .rows > div { grid-template-columns: 240px 1fr; gap: 24px; }
   }
