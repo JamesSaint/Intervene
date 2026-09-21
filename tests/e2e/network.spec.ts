@@ -37,14 +37,12 @@ test.describe('Network page', () => {
 
   test('leads with the question, not with joining', async ({ page }) => {
     await page.goto(ROUTE);
-    // The diagnostic it used to lead with is withdrawn while its result is
-    // a worked example, so the first action is now what participation asks.
-    const primary = page.locator('.hero a.btn').first();
-    await expect(primary).toHaveAttribute('href', '#ask');
-    await expect(primary).toContainText('What we ask of you');
+    // No action in the hero. The one button on the page sits in #start and
+    // goes to /contact/, so a reader meets the question before the ask.
+    await expect(page.locator('.hero a.btn')).toHaveCount(0);
 
-    // Detect, Decide, Intervene, once each.
-    await expect(page.locator('.beat-word')).toHaveText(['Detect', 'Decide', 'Intervene']);
+    // Detect, Escalate, Decide, Intervene, once each.
+    await expect(page.locator('.beat-word')).toHaveText(['Detect', 'Escalate', 'Decide', 'Intervene']);
   });
 
   test('names who it is for in a heading a scanner can find', async ({ page }) => {
@@ -54,6 +52,34 @@ test.describe('Network page', () => {
     await expect(page.locator('#who .rows > div')).toHaveCount(5);
     await expect(page.locator('#who dt').nth(0)).toHaveText('Former regulators and supervisors');
     await expect(page.locator('#who dt').nth(4)).toHaveText('Experienced chairs and non-executives');
+  });
+
+  test('carries none of the withdrawn Snapshot mechanics', async ({ page }) => {
+    await page.goto(ROUTE);
+    const body = (await page.locator('main').innerText()).toLowerCase();
+    // The page once asked participants to forward an attributed link to the
+    // Snapshot and explained what that link recorded. The instrument is
+    // withdrawn and no link is issued, so none of that may remain, paused
+    // or otherwise. The privacy notice keeps the referral-link processing
+    // for anyone who arrived on one while it was live; this page does not.
+    for (const forbidden of [
+      'snapshot',
+      'paused',
+      'withdrawn',
+      'forward',
+      'your link',
+      'one link',
+      'issued a link',
+      'attribut',
+      'fuller result',
+      'address bar',
+      'recipient',
+    ]) {
+      expect(body, `"${forbidden}" must not appear on /network/`).not.toContain(forbidden);
+    }
+    await expect(page.locator('#ask')).toHaveCount(0);
+    await expect(page.locator('#link')).toHaveCount(0);
+    await expect(page.locator('main a[href="/readiness-snapshot/"]')).toHaveCount(0);
   });
 
   test('answers what participation is worth, and what it is not', async ({ page }) => {
@@ -71,6 +97,14 @@ test.describe('Network page', () => {
     expect(rows).toContain('chatham house rule');
     expect(rows).not.toContain('intervention readiness index');
     expect(rows).toContain('judged on quality alone');
+
+    // The role, stated once and in prose: what the participant does and
+    // what Intervene does. The list of things not asked was folded in here
+    // when the forwarding section went.
+    const role = (await section.locator('.role-note').innerText()).toLowerCase();
+    expect(role).toContain('the role itself is small');
+    expect(role).toContain('carrying the commercial conversation is our work');
+    expect(role).toContain('nobody is asked to sell agda');
 
     // The half that stops it becoming a benefits list.
     const bounds = (await section.locator('.bounds').innerText()).toLowerCase();
@@ -113,6 +147,9 @@ test.describe('Network page', () => {
   test('routes interest to /contact/ and builds no form of its own', async ({ page }) => {
     await page.goto(ROUTE);
 
+    // One button on the whole page, and it goes to /contact/.
+    const buttons = page.locator('main a.btn, main .btn-ghost');
+    await expect(buttons).toHaveCount(1);
     const contactCta = page.locator('#start a.btn');
     await expect(contactCta).toHaveAttribute('href', '/contact/');
     await expect(contactCta).toContainText('Talk to Intervene');
@@ -132,6 +169,14 @@ test.describe('Network page', () => {
     await expect(firewall.nth(1)).toContainText('No commercial payment varies');
     await expect(firewall.nth(2)).toContainText('no methodological authority');
 
+    // The two boundaries on who may take part live here and nowhere else.
+    const exclusions = page.locator('.exclusions li');
+    await expect(exclusions).toHaveCount(4);
+    await expect(exclusions.nth(0)).toContainText('current supervisory or regulatory role');
+    await expect(exclusions.nth(1)).toContainText('no payment arises in relation to that organisation');
+    await expect(exclusions.nth(2)).toContainText('Bribery Act 2010');
+    await expect(exclusions.nth(3)).toContainText('before they sign');
+
     // The remediation mechanism is open with legal advice. Nothing about
     // it may appear until it is settled.
     const body = (await page.locator('main').innerText()).toLowerCase();
@@ -148,19 +193,6 @@ test.describe('Network page', () => {
     await expect(page.locator('.recognition h2')).toHaveCount(0);
     await expect(page.locator('.recognition a')).toHaveCount(0);
     await expect(page.locator('.recognition .btn')).toHaveCount(0);
-  });
-
-  test('does not claim a recipient can never become known', async ({ page }) => {
-    await page.goto(ROUTE);
-    const body = (await page.locator('main').innerText()).toLowerCase();
-    expect(body).toContain('separate events');
-    // The page names the overclaim and then refuses it, so the words
-    // appear. What must never appear is us asserting it.
-    expect(body).toContain('what this does not claim');
-    expect(body).toContain('they can, by their own choice');
-    expect(body).not.toContain('we will never know');
-    expect(body).not.toContain('we can never know');
-    expect(body).not.toContain('we never learn who they are.');
   });
 
   test('uses none of the prohibited programme vocabulary', async ({ page }) => {

@@ -52,10 +52,12 @@ Canonical site: `https://intervene.uk/`
 /verify/                            Verdict verification model
 /about/                             Founder and practice rationale
 /contact/                           Confidential discussion form
+/network/                           Intervention Readiness Network, footer only
 /legal/terms/                       Terms and conditions
 /legal/privacy/                     Privacy policy
 /legal/gdpr/                        UK GDPR statement
 /style-guide/                       Internal style guide, noindex
+/readiness-snapshot/                Withdrawn Snapshot, noindex, reachable by URL only
 ```
 
 `/method/` is retained as a noindex redirect stub to `/methodology/`.
@@ -158,7 +160,7 @@ Field, choice, error and status styles live in `src/styles/forms.css` and are sh
 
 `/readiness-snapshot/` is a self-reported triage instrument. It is **not** an AGDA™ assessment and no copy may imply that it is.
 
-**Current state: public launch.** The route is indexable, present in the sitemap, in the takeover menu and footer, and linked from the homepage, `/services/`, `/sample-report/` and the insight pages. The Snapshot still renders its result from the static prototype path until the Worker is introduced; reviewers reach any of the sixteen combinations with `?preview=<area>-<basis>`, for example `/readiness-snapshot/?preview=decide-documented`.
+**Current state: withdrawn.** The route is `noindex`, absent from the sitemap, and carries no inbound links from the takeover menu, the footer, the homepage, `/services/`, `/sample-report/`, `/network/` or the insight pages. It stays reachable by URL and states that its result is a worked example, not a reading of the visitor's answers. The result still renders from the static prototype path; reviewers reach any of the sixteen combinations with `?preview=<area>-<basis>`, for example `/readiness-snapshot/?preview=decide-documented`. `tests/e2e/snapshot.spec.ts` holds the withdrawal; restore the links and the structured data in the same change that lands the result logic.
 
 Two rules govern the code:
 
@@ -168,6 +170,12 @@ Two rules govern the code:
 Prototype files marked `PHASE 1 ONLY` are deleted when the Worker-backed response path replaces the static result: `src/lib/snapshot/prototype-result.ts` and `src/lib/snapshot/prototype-preview.ts`.
 
 The remaining backend work adds a Cloudflare Worker at `api.intervene.uk` and replaces the static prototype result path. It needs accounts and secrets that do not exist yet. The full plan governs sequencing and gates.
+
+## Intervention Readiness Network
+
+`/network/` describes who the Network is for, why somebody with relevant standing would speak to Intervene, and the independence boundaries between any commercial introduction and an AGDA™ verdict. It is a mechanism, not a membership: participants, never partners, members, affiliates or introducers, and no word that implies a ladder or a status. `tests/e2e/network.spec.ts` enforces the vocabulary.
+
+The page carries no form. Its one action is a button to `/contact/`. It no longer asks participants to forward an attributed Snapshot link and no link is issued; that material went with the Snapshot's withdrawal rather than being marked paused. The privacy notice keeps its referral-link section for anyone who arrived on such a link while it was live, because the retention rule there still applies to notes already received.
 
 ## License
 
