@@ -39,10 +39,10 @@ describe('llms.txt mirrors the offers', () => {
   });
 
   it('states that the Review does not include the verdict', () => {
-    expect(llms.toLowerCase()).toContain('does not include the agda™ verdict');
+    expect(llms.toLowerCase()).toContain('does not include the agda® verdict');
   });
 
-  it('carries the canonical AGDA™ definition verbatim', () => {
+  it('carries the canonical AGDA® definition verbatim', () => {
     const agda = terms.find((t) => t.slug === 'agda')!;
     expect(llms).toContain(agda.definition);
   });
@@ -62,7 +62,7 @@ describe('the shared FAQ answers whether a Review is required first', () => {
   it('has a direct answer', () => {
     const q = offerFaqs.find((f) => /Review first/.test(f.question))!;
     expect(q.answer).toMatch(/^No\./);
-    expect(q.answer).toMatch(/discuss a full AGDA™ Assessment directly/);
+    expect(q.answer).toMatch(/discuss a full AGDA® Assessment directly/);
   });
 });
 
@@ -72,7 +72,7 @@ describe('offers are internally consistent', () => {
   });
 
   it('the Review says what it does not include', () => {
-    expect(offers[0].exclusion).toMatch(/does not include the AGDA™ verdict/);
+    expect(offers[0].exclusion).toMatch(/does not include the AGDA® verdict/);
   });
 
   it('the Assessment lists the evidence register as a deliverable', () => {

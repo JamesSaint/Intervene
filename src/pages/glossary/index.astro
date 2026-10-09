@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { markAgda } from '../../lib/marks';
 import { terms } from '../../lib/terms';
+import Agda from '../../components/Agda.astro';
 
 // Render the single source-of-truth vocabulary. Hub terms link to their
 // dedicated page; the rest are canonically defined here at their anchor.
@@ -13,8 +14,8 @@ const faqs = [
     answer: 'Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.',
   },
   {
-    question: 'What does AGDA™ assess?',
-    answer: 'AGDA™ assesses Intervention Readiness: whether an organisation can detect, escalate, decide and intervene within the available reversibility window.',
+    question: 'What does AGDA® assess?',
+    answer: 'AGDA® assesses Intervention Readiness: whether an organisation can detect, escalate, decide and intervene within the available reversibility window.',
   },
 ];
 ---
@@ -58,12 +59,12 @@ const faqs = [
     <div class="wrap-narrow">
       <h2 class="h2">The category, the instrument, the owner.</h2>
       <p class="body muted">
-        Intervention Readiness is the category. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is the proprietary
+        Intervention Readiness is the category. <Agda /> is the proprietary
         assessment of it, created and owned by Intervene Limited.
       </p>
       <div class="cta-row">
         <a href="/intervention-readiness/" class="btn">What is Intervention Readiness?</a>
-        <a href="/agda/" class="btn-ghost"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span></a>
+        <a href="/agda/" class="btn-ghost"><Agda /></a>
       </div>
     </div>
   </section>

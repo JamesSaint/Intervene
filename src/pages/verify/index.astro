@@ -31,7 +31,7 @@ const notCovered = [
 const notEstablished = [
   'That the engine was executed, or that its computation was correct. The check compares hashes and a signature; it does not rerun the engine.',
   'That the underlying evidence is true or complete.',
-  'That the assessment method is empirically valid. AGDA™ is not validated against real-world outcomes.',
+  'That the assessment method is empirically valid. AGDA® is not validated against real-world outcomes.',
   'That a regulator accepts the conclusion, or that any obligation is met.',
   'That intervention will work in a future event.',
   'That no revocation exists beyond those present in the registry supplied with the verifier.',
@@ -40,7 +40,7 @@ const notEstablished = [
 
 const bundleFields = [
   { k: 'attestationVersion', v: 'The attestation envelope schema version. Current production format: 1.2.' },
-  { k: 'engineVersion',      v: 'The AGDA™ engine semver. Pinned at the assessment.' },
+  { k: 'engineVersion',      v: 'The AGDA® engine semver. Pinned at the assessment.' },
   { k: 'engineHash',         v: 'Engine hash recorded in the resolved manifest and committed by the attestation envelope.' },
   { k: 'transformVersion',   v: 'Transform identity for the assessed output. N/A for the core SEDI engine.' },
   { k: 'catalogueVersion',   v: 'Failure-mode catalogue version used by the assessment.' },
@@ -49,7 +49,7 @@ const bundleFields = [
   { k: 'keyId',              v: 'Date-stamped Ed25519 key identifier matched to the public key in the manifest registry.' },
   { k: 'scoredAt',           v: 'ISO-8601 UTC timestamp. The moment of attestation.' },
   { k: 'inputHash',          v: 'SHA-256 of the canonical input record. Includes the fact model.' },
-  { k: 'outputHash',         v: 'SHA-256 of the canonical AGDA™ result payload, excluding the attestation field.' },
+  { k: 'outputHash',         v: 'SHA-256 of the canonical AGDA® result payload, excluding the attestation field.' },
   { k: 'manifestHash',       v: 'SHA-256 of the resolved engine manifest, binding key, catalogue and engine identity together.' },
   { k: 'signature',          v: 'Base64 Ed25519 signature over the canonical attestation envelope, excluding the signature field.' },
 ];
@@ -62,8 +62,8 @@ const audiences = [
 ---
 
 <BaseLayout
-  title="Verify Signed AGDA™ SEDI Result Records · Intervene"
-  description="How to check signed AGDA™ SEDI result records, what the signature covers, and what verification does not establish."
+  title="Verify Signed AGDA® SEDI Result Records · Intervene"
+  description="How to check signed AGDA® SEDI result records, what the signature covers, and what verification does not establish."
   current="verify"
 >
   <section class="hero">

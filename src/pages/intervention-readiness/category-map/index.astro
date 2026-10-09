@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { markAgda } from '../../../lib/marks';
+import Agda from '../../../components/Agda.astro';
 
 const rows = [
   { d: 'AI governance', does: 'Assigns responsibility and sets controls for AI systems', misses: 'Whether those controls can act in time', href: '/intervention-readiness/vs-ai-governance/' },
@@ -73,7 +74,7 @@ const faqs = [
     <div class="wrap-narrow">
       <h2 class="h2">The category, measured.</h2>
       <p class="body muted">
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is Intervene's proprietary assessment of Intervention
+        <Agda /> is Intervene's proprietary assessment of Intervention
         Readiness. A full assessment examines detect, escalate, decide and
         intervene against the available time and returns an Intervention
         Readiness verdict with its evidence basis. Signed SEDI result records

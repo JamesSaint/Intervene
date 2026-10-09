@@ -4,6 +4,8 @@
  * assay, not a card. The verdict states are carried by numbered evidence
  * rows and restrained signal dots, without decorative geometry.
  */
+import Agda from './Agda.astro';
+
 const states = [
   { state: 'open',      name: 'Before impact', line: 'Intervention completes in time. The window stays open.' },
   { state: 'narrowing', name: 'At risk',       line: 'Completes within a margin ordinary pressure can erode.' },
@@ -13,7 +15,7 @@ const states = [
 
 <figure
   class="verdict-block"
-  aria-label="AGDA™ Intervention Readiness verdict. A specimen of the verdict format, not a result. A full AGDA™ Assessment returns one of three states: before impact, at risk, or after impact. The Intervention Readiness Review does not produce a verdict."
+  aria-label="AGDA® Intervention Readiness verdict. A specimen of the verdict format, not a result. A full AGDA® Assessment returns one of three states: before impact, at risk, or after impact. The Intervention Readiness Review does not produce a verdict."
 >
   <div class="vb-frame">
     <span class="vb-corner tl" aria-hidden="true"></span>
@@ -40,7 +42,7 @@ const states = [
 
   </div>
   <figcaption class="vb-caption">
-    A full AGDA™ Assessment returns one of these three states. The
+    A full <Agda /> Assessment returns one of these three states. The
     Intervention Readiness Review does not produce a verdict. A specimen
     of the verdict format, not a result.
   </figcaption>

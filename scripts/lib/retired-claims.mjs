@@ -55,7 +55,7 @@ export const RETIRED_LABELS = [
 ];
 
 export const UNSUPPORTED_CLAIMS = [
-  { name: 'universal signing', re: /every (agda™ )?(sedi )?assessment (ships|includes|returns|carries)/i },
+  { name: 'universal signing', re: /every (agda® )?(sedi )?assessment (ships|includes|returns|carries)/i },
   { name: 'judgement denied', re: /not our opinion/i },
   { name: 'judgement denied', re: /independent of assessor/i },
   { name: 'judgement denied', re: /opinion is not reproducible/i },
@@ -93,10 +93,10 @@ export const UNSUPPORTED_CLAIMS = [
   },
   {
     name: 'review process presented as operational',
-    re: /reviewed for compliance with the AGDA™ methodology before authorised issuance/i,
+    re: /reviewed for compliance with the AGDA® methodology before authorised issuance/i,
     held: {
       why: 'Revised strategy §11: use this as current-tense public copy only when the process and authorised roles are operational. No Authorised Reviewer is appointed; no controlled issuance process is released.',
-      permitWhen: 'At least one Authorised Reviewer is appointed under §10, the P3 review rule is adopted, and issuance runs through the controlled AGDA™ process (§5 rule 7, D6) or an explicitly approved transitional arrangement (§9).',
+      permitWhen: 'At least one Authorised Reviewer is appointed under §10, the P3 review rule is adopted, and issuance runs through the controlled AGDA® process (§5 rule 7, D6) or an explicitly approved transitional arrangement (§9).',
       update: 'Remove this entry and the next; move the preferred description to PERMITTED_FIXTURES; update tests/e2e/claims.spec.ts "authority and issuance" test.',
     },
   },
@@ -183,7 +183,7 @@ export const HELD_CLAIMS = UNSUPPORTED_CLAIMS.filter((c) => c.held);
  */
 export const PERMITTED_FIXTURES = [
   'There is no populated corpus and no outcome-validation evidence.',
-  'AGDA™ is not validated against real-world outcomes.',
+  'AGDA® is not validated against real-world outcomes.',
   'not validated against real-world outcomes',
   'Signed SEDI result records are supplied where the agreed scope includes them and the delivery configuration supports them.',
   'repeatable computation',
@@ -207,7 +207,7 @@ export const PERMITTED_FIXTURES = [
 export const PROHIBITED_FIXTURES = [
   'Short pilot: one system, four weeks.',
   'Every assessment ships with a signed regulator bundle.',
-  'Every AGDA™ SEDI assessment includes a signed bundle.',
+  'Every AGDA® SEDI assessment includes a signed bundle.',
   'Not our opinion. The engine is deterministic.',
   'reproducible and independent of assessor opinion',
   'provided under NDA alongside populated-corpus and outcome-validation evidence',
@@ -219,7 +219,7 @@ export const PROHIBITED_FIXTURES = [
   'authority cannot be reached inside the assumed window',
   'The assessment records what is measured, what is declared and what is assumed.',
   'Intervene appoints an Assessment Lead and a Technical Assessment Lead.',
-  'Assessment performed by an approved assessor and reviewed for compliance with the AGDA™ methodology before authorised issuance.',
+  'Assessment performed by an approved assessor and reviewed for compliance with the AGDA® methodology before authorised issuance.',
   'Public keys ship with the verifier package.',
   'Take the record from the supervised entity.',
   'Delivery does not depend on any named individual.',

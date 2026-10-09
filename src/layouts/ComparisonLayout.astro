@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import { markAgda } from '../lib/marks';
 import { terms } from '../lib/terms';
+import Agda from '../components/Agda.astro';
 
 interface Row {
   aspect: string;
@@ -100,7 +101,7 @@ const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.def
 
   <section class="block">
     <div class="wrap-narrow">
-      <h2 class="h2">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> evidences it.</h2>
+      <h2 class="h2">How <Agda /> evidences it.</h2>
       <p class="body muted" set:html={markAgda(agda)} />
       <div class="cta-row">
         <a href="/intervention-readiness/" class="btn">What is Intervention Readiness?</a>
