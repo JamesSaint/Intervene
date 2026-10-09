@@ -154,11 +154,11 @@ const practicalTests: Record<Area, string> = {
 
 export const contrastBlock = [
   'Everything above is your own answer. Nothing here has been checked.',
-  'AGDA™ collects the evidence instead of accepting the claim, tests each claim against it, and returns the same verdict whoever runs it. This asks whether intervention might work. AGDA™ establishes what the evidence actually shows.',
+  'AGDA® collects the evidence instead of accepting the claim, tests each claim against it, and returns the same verdict whoever runs it. This asks whether intervention might work. AGDA® establishes what the evidence actually shows.',
 ];
 
 export const disclaimer =
-  'Indicative only, from ten self-reported answers. Not an AGDA™ assessment, an assurance opinion or a certification. Nothing you entered has been tested against evidence.';
+  'Indicative only, from ten self-reported answers. Not an AGDA® assessment, an assurance opinion or a certification. Nothing you entered has been tested against evidence.';
 
 export interface PrototypeResult {
   leastConfidentArea: Area;

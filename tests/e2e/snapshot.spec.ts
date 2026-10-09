@@ -81,7 +81,7 @@ test.describe('Snapshot journey', () => {
       'Everything above is your own answer',
     );
     await expect(page.locator('[data-result-disclaimer]')).toContainText(
-      /not an AGDA™ assessment/i,
+      /not an AGDA® assessment/i,
     );
   });
 

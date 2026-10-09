@@ -4,6 +4,7 @@ import { markAgda } from '../../lib/marks';
 import { offers, activities, offerFaqs, buyingGroup, PRICE_QUALIFIER, FEE_BASIS, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
 import OfferChoice from '../../components/OfferChoice.astro';
 import PageNav from '../../components/PageNav.astro';
+import Agda from '../../components/Agda.astro';
 
 /* Everything commercial on this page reads from src/lib/offers.ts so the
    homepage, this page, the shared FAQ and the Offer schema nodes cannot
@@ -14,7 +15,7 @@ const included = [
   'Relevant business, risk and technology stakeholders.',
   'Structured interviews and walkthroughs.',
   'Review of relevant evidence.',
-  'Intervention-chain analysis and the AGDA™ assessment.',
+  'Intervention-chain analysis and the AGDA® assessment.',
   'Executive-level findings and the defined assessment artefacts.',
 ];
 
@@ -49,7 +50,7 @@ const useCases = [
 
 <BaseLayout
   title="Assessment Options and Indicative Pricing · Intervene"
-  description="Choose an Intervention Readiness Review or a full AGDA™ Assessment. Scope, evidence access, deliverables and indicative fees are agreed before work begins."
+  description="Choose an Intervention Readiness Review or a full AGDA® Assessment. Scope, evidence access, deliverables and indicative fees are agreed before work begins."
   current="services"
   ogImage="/assets/og/og-services.png"
   faqs={offerFaqs}
@@ -63,7 +64,7 @@ const useCases = [
         influences, and the intervention question. We agree the evidence and
         access required before selecting the engagement. An Intervention
         Readiness Review establishes whether a full assessment is warranted.
-        A full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment examines the agreed system, pathway and
+        A full <Agda /> Assessment examines the agreed system, pathway and
         scenario in depth.
       </p>
       <div class="hero-cta">
