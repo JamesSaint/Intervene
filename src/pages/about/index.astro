@@ -3,10 +3,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import LinkedInButton from '../../components/LinkedInButton.astro';
 import { markAgda } from '../../lib/marks';
 import { socialLinks } from '../../lib/social';
+import Agda from '../../components/Agda.astro';
 
 const commitments = [
-  { h: 'Independent judgement.',         p: 'No vendor affiliation, no co-marketing and no commercial relationship may reach an AGDA™ assessment. We do not implement what we recommend.' },
-  { h: 'Documented methodology.',        p: 'Theses, catalogues, corpus governance and rater protocols are the documented basis of the method. They are not published here, and are provided under NDA during diligence. AGDA™ is not validated against real-world outcomes.' },
+  { h: 'Independent judgement.',         p: 'No vendor affiliation, no co-marketing and no commercial relationship may reach an AGDA® assessment. We do not implement what we recommend.' },
+  { h: 'Documented methodology.',        p: 'Theses, catalogues, corpus governance and rater protocols are the documented basis of the method. They are not published here, and are provided under NDA during diligence. AGDA® is not validated against real-world outcomes.' },
   { h: 'Verifiable records.',            p: 'Signed SEDI result records, where supplied, carry an Ed25519 attestation over specified records. Inputs and outputs are hashed. An audit committee can check them with the verifier and trust material supplied under the engagement terms.' },
   { h: 'Refusal of false control.',      p: 'If the evidence does not support the conclusion, the assessment does not reach it. Findings the client did not want, in writing, before the regulator does.' },
 ];
@@ -116,7 +117,7 @@ const role = [
           </p>
 
           <p class="body">
-            That is why we developed <span class="agda-mark">AGDA<span class="agda-tm">™</span></span>, our proprietary assessment
+            That is why we developed <Agda />, our proprietary assessment
             of Intervention Readiness. It assesses whether an organisation can
             detect, escalate, decide and intervene within the time available,
             and issues an Intervention Readiness verdict with its evidence
@@ -132,7 +133,7 @@ const role = [
           </p>
 
           <p class="body">
-            For those accountable for consequential systems, <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> provides
+            For those accountable for consequential systems, <Agda /> provides
             a defensible answer to a question governance papers alone cannot
             settle.
           </p>
@@ -215,7 +216,7 @@ const role = [
       <h2 class="h2">What Intervene <em>does.</em></h2>
       <p class="lede muted">
         The practice in four statements. For the product's own boundaries, see
-        <a href="/agda/" class="link">what <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is not</a>.
+        <a href="/agda/" class="link">what <Agda /> is not</a>.
       </p>
 
       <ul class="feature-grid not-list" role="list" style="--cols: 4" data-reveal="stagger">

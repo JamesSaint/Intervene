@@ -41,6 +41,7 @@
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { markAgda } from '../../lib/marks';
+import Agda from '../../components/Agda.astro';
 
 const standing = [
   {
@@ -98,8 +99,8 @@ const participation = [
 ];
 
 const firewall = [
-  'A commercial introduction never affects AGDA™ evidence, interpretation, scoring, findings or verdict.',
-  'No commercial payment varies according to the outcome of an AGDA™ assessment. Any fee arises on contract signature.',
+  'A commercial introduction never affects AGDA® evidence, interpretation, scoring, findings or verdict.',
+  'No commercial payment varies according to the outcome of an AGDA® assessment. Any fee arises on contract signature.',
   'Commercial participation confers no methodological authority. Evidence, challenge and sector insight may be submitted through the same documented route open to any external practitioner, and are judged on quality alone.',
 ];
 
@@ -217,14 +218,14 @@ const schema = {
       </dl>
 
       <p class="body muted role-note" set:html={markAgda(
-        'The role itself is small, because a small role is one you can fill without spending standing you took years to build. Where you judge that an organisation should face this question, you say so. Establishing the need, qualifying the opportunity and carrying the commercial conversation is our work. Nobody is asked to sell AGDA™, explain Intervene, qualify a prospect, negotiate anything or defend the methodology. If an organisation has questions, they come to us.',
+        'The role itself is small, because a small role is one you can fill without spending standing you took years to build. Where you judge that an organisation should face this question, you say so. Establishing the need, qualifying the opportunity and carrying the commercial conversation is our work. Nobody is asked to sell AGDA®, explain Intervene, qualify a prospect, negotiate anything or defend the methodology. If an organisation has questions, they come to us.',
       )} />
 
       <div class="bounds">
         <p class="body muted">
           <strong>What this is not.</strong> Participation is not accreditation
           and carries no authorisation of any kind. It grants no access to the
-          AGDA<span class="agda-tm">™</span> criteria or rubric, no licence to
+          <Agda /> criteria or rubric, no licence to
           use the method, and no standing to assess anybody. There is nothing to
           progress through and nothing to qualify for.
         </p>
@@ -244,7 +245,7 @@ const schema = {
     <div class="wrap">
       <h2 class="h2">Nobody with a commercial interest <em>goes near the verdict.</em></h2>
       <p class="lede muted section-lede" set:html={markAgda(
-        'AGDA™ is sold as an independent assessment. The Network is therefore designed so that commercial relationships cannot reach the assessment itself.',
+        'AGDA® is sold as an independent assessment. The Network is therefore designed so that commercial relationships cannot reach the assessment itself.',
       )} />
 
       <ul class="firewall" role="list">

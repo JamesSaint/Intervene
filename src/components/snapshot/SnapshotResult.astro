@@ -17,6 +17,8 @@
 
 import type { PrototypeResult } from '../../lib/snapshot/prototype-result';
 import { QUESTION_SET_VERSION } from '../../lib/snapshot/questions';
+import Agda from '../Agda.astro';
+import { markAgda } from '../../lib/marks';
 
 interface Props {
   result: PrototypeResult;
@@ -30,8 +32,6 @@ const generated = new Date().toLocaleDateString('en-GB', {
   year: 'numeric',
 });
 
-const markAgda = (value: string) =>
-  value.replace(/AGDA(?:™)?/g, '<span class="agda-mark">AGDA<span class="agda-tm">™</span></span>');
 ---
 
 <section
@@ -88,7 +88,7 @@ const markAgda = (value: string) =>
            below and in the hero. Sitting exactly where the argument
            ends, it read as the action set, so visitors stopped there and
            never reached the real one. -->
-      <h3 class="h3">What <em>AGDA<span class="agda-tm">™</span></em> does that this does not.</h3>
+      <h3 class="h3">What <em><Agda /></em> does that this does not.</h3>
       {r.contrastBlock.map((para) => (
         <p set:html={markAgda(para)} />
       ))}

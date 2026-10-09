@@ -61,7 +61,7 @@ export const offers: Offer[] = [
     name: 'Intervention Readiness Review',
     short: 'A documented executive view of where one system could fail to be stopped in time, what evidence you hold and what a full assessment would need to examine.',
     purpose:
-      'A focused entry engagement to determine whether a selected system presents a material intervention question and whether a full AGDA™ Assessment is justified.',
+      'A focused entry engagement to determine whether a selected system presents a material intervention question and whether a full AGDA® Assessment is justified.',
     scope: [
       'One proposed system.',
       'Limited stakeholder access.',
@@ -72,10 +72,10 @@ export const offers: Offer[] = [
     receive: [
       'A concise executive review stating what needs to be assessed and why it matters.',
       'The evidence and access position: what exists, what is missing and who would need to take part.',
-      'A recommendation on whether a full AGDA™ Assessment is warranted, and the proposed scope if it is.',
+      'A recommendation on whether a full AGDA® Assessment is warranted, and the proposed scope if it is.',
     ],
-    exclusion: 'The Review does not include the AGDA™ verdict, the SEDI findings or signed SEDI result records. It is not a discounted AGDA™ Assessment.',
-    exclusionShort: 'The Review does not include the AGDA™ verdict. It is not a discounted AGDA™ Assessment.',
+    exclusion: 'The Review does not include the AGDA® verdict, the SEDI findings or signed SEDI result records. It is not a discounted AGDA® Assessment.',
+    exclusionShort: 'The Review does not include the AGDA® verdict. It is not a discounted AGDA® Assessment.',
     decision: 'Whether the selected system carries a material intervention question, and what you would need to assess, and to have access to, before relying on the answer.',
     retain: 'The executive review stands on its own: a stated intervention question for the system, the preliminary chain, the evidence you hold and the gaps, and a scoped recommendation. It supports prioritisation and budget decisions whether or not a full Assessment follows.',
     suitable: 'The system is newly identified, the evidence position is unclear, or you need a documented basis for deciding whether this one system warrants a full Assessment. If the system, pathway and scenario are already defined and evidence access is available, discuss a full Assessment directly.',
@@ -83,11 +83,11 @@ export const offers: Offer[] = [
     price: '£20,000 to £35,000 + VAT',
     priceNote: 'Indicative fee',
     schemaDescription:
-      'A focused review of one proposed system to establish the intervention question, the evidence position and whether a full AGDA™ Assessment is warranted. Does not include the AGDA™ verdict.',
+      'A focused review of one proposed system to establish the intervention question, the evidence position and whether a full AGDA® Assessment is warranted. Does not include the AGDA® verdict.',
   },
   {
     slug: 'assessment',
-    name: 'AGDA™ Assessment',
+    name: 'AGDA® Assessment',
     short: 'A formal assessment of one consequential AI-enabled system through a defined decision or action pathway and a specified intervention scenario.',
     purpose:
       'A formal assessment of Intervention Readiness for one named consequential AI-enabled system, examined through a defined decision or action pathway and a specified intervention scenario.',
@@ -150,7 +150,7 @@ export const activities = [
   },
   {
     name: 'Assess the intervention chain',
-    body: 'Analyse Detect, Escalate, Decide and Intervene against the available time, the dependencies between stages and the evidence behind each, using the AGDA™ methodology.',
+    body: 'Analyse Detect, Escalate, Decide and Intervene against the available time, the dependencies between stages and the evidence behind each, using the AGDA® methodology.',
   },
   {
     name: 'Issue the agreed outputs',
@@ -162,14 +162,14 @@ export const activities = [
 // and /services/, so the schema answers are identical to the copy.
 export const offerFaqs = [
   {
-    question: 'Is the Intervention Readiness Review a full AGDA™ Assessment?',
+    question: 'Is the Intervention Readiness Review a full AGDA® Assessment?',
     answer:
-      'No. The Review is a standalone executive review of one system: the intervention question, the preliminary chain, the evidence you hold and the gaps, and a scoped recommendation. It supports prioritisation and budget decisions on its own. It does not include the AGDA™ verdict, the SEDI findings or signed SEDI result records.',
+      'No. The Review is a standalone executive review of one system: the intervention question, the preliminary chain, the evidence you hold and the gaps, and a scoped recommendation. It supports prioritisation and budget decisions on its own. It does not include the AGDA® verdict, the SEDI findings or signed SEDI result records.',
   },
   {
     question: 'Do we need a Review first?',
     answer:
-      'No. If the system, intervention question and assessment scope are sufficiently clear, and relevant evidence access is available, we can discuss a full AGDA™ Assessment directly. The Review is a separate preliminary engagement for organisations that need to establish those foundations.',
+      'No. If the system, intervention question and assessment scope are sufficiently clear, and relevant evidence access is available, we can discuss a full AGDA® Assessment directly. The Review is a separate preliminary engagement for organisations that need to establish those foundations.',
   },
   {
     question: 'Can a client challenge the conclusion?',
@@ -182,9 +182,9 @@ export const offerFaqs = [
       'No. For signed SEDI result records, verification checks the signature and the integrity of the records covered by the attestation. It does not prove the truth of the underlying evidence, validate the methodology or guarantee future intervention.',
   },
   {
-    question: 'Does AGDA™ monitor a live system?',
+    question: 'Does AGDA® monitor a live system?',
     answer:
-      'No. AGDA™ is a scoped assessment of one named system, pathway and scenario. Ongoing monitoring, software integration and remediation implementation are outside the standard engagement.',
+      'No. AGDA® is a scoped assessment of one named system, pathway and scenario. Ongoing monitoring, software integration and remediation implementation are outside the standard engagement.',
   },
 ];
 
