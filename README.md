@@ -9,7 +9,7 @@
 
 Intervene Limited defines and measures **Intervention Readiness**: the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.
 
-The public site introduces the category, explains **AGDA™** as Intervene's proprietary assessment of it, sets out the two current engagements (Intervention Readiness Review; AGDA™ Assessment), publishes the core vocabulary, and shows a constructed sample finding and how signed SEDI result records are verified where contracted.
+The public site introduces the category, explains **AGDA®** as Intervene's proprietary assessment of it, sets out the two current engagements (Intervention Readiness Review; AGDA® Assessment), publishes the core vocabulary, and shows a constructed sample finding and how signed SEDI result records are verified where contracted.
 
 Canonical site: `https://intervene.uk/`
 
@@ -39,9 +39,9 @@ Canonical site: `https://intervene.uk/`
 /intervention-readiness/vs-audit/
 /intervention-readiness/vs-risk-management/
 /intervention-readiness/vs-operational-resilience/
-/agda/                              AGDA™ instrument page
-/methodology/                       How AGDA™ measures Intervention Readiness
-/sample-report/                     Constructed sample AGDA™ verdict
+/agda/                              AGDA® instrument page
+/methodology/                       How AGDA® measures Intervention Readiness
+/sample-report/                     Constructed sample AGDA® verdict
 /services/                          Assessment options: the two current engagements
 /sectors/                           Where Intervention Readiness matters
 /insights/                          Evidence notes index
@@ -67,7 +67,7 @@ Canonical site: `https://intervene.uk/`
 - Routes default to `index, follow`; pages opt out with the `noindex` prop.
 - `public/robots.txt` allows the site and disallows `/style-guide/`.
 - `@astrojs/sitemap` excludes the style guide, legal pages, and the legacy `/method/` redirect.
-- `BaseLayout.astro` emits JSON-LD for the organisation, founder, website, breadcrumb trail, AGDA™, Intervention Readiness, and the defined-term set.
+- `BaseLayout.astro` emits JSON-LD for the organisation, founder, website, breadcrumb trail, AGDA®, Intervention Readiness, and the defined-term set.
 - `public/llms.txt` mirrors the canonical category definitions and page relationships for LLM and crawler consumption.
 
 ## Source Layout
@@ -105,6 +105,7 @@ The Intervene site is intentionally restrained.
 - The two current engagements, their indicative ranges, deliverables and the Review's exclusion live once in `src/lib/offers.ts`. `public/llms.txt` mirrors them by hand; `tests/unit/offers-parity.test.ts` fails on drift. `scripts/lib/retired-claims.mjs` keeps the withdrawn pilot, licence tiers and unsupported claims from returning; `npm run content-check` runs it.
 - Signed SEDI result records are never described as standard. The wording is "where the agreed scope includes them and the delivery configuration supports them". What the signature covers is stated on `/verify/` against the AGDA attestation specification.
 - Avoid em dashes in prose. Use periods, semicolons, commas, or full stops.
+- AGDA is a registered trade mark: write `AGDA®`. Only the `®` takes the accent; the letters keep their context. Set it with `<Agda />` in templates or `markAgda()` for copy held in strings, never by hand. Plain-text contexts (titles, meta, JSON-LD, aria-labels, `llms.txt`) use `AGDA®` unstyled. `tests/unit/agda-mark.test.ts` enforces it.
 
 ## Local Development
 
@@ -158,7 +159,7 @@ Field, choice, error and status styles live in `src/styles/forms.css` and are sh
 
 ## Intervention Readiness Snapshot
 
-`/readiness-snapshot/` is a self-reported triage instrument. It is **not** an AGDA™ assessment and no copy may imply that it is.
+`/readiness-snapshot/` is a self-reported triage instrument. It is **not** an AGDA® assessment and no copy may imply that it is.
 
 **Current state: withdrawn.** The route is `noindex`, absent from the sitemap, and carries no inbound links from the takeover menu, the footer, the homepage, `/services/`, `/sample-report/`, `/network/` or the insight pages. It stays reachable by URL and states that its result is a worked example, not a reading of the visitor's answers. The result still renders from the static prototype path; reviewers reach any of the sixteen combinations with `?preview=<area>-<basis>`, for example `/readiness-snapshot/?preview=decide-documented`. `tests/e2e/snapshot.spec.ts` holds the withdrawal; restore the links and the structured data in the same change that lands the result logic.
 
@@ -173,10 +174,10 @@ The remaining backend work adds a Cloudflare Worker at `api.intervene.uk` and re
 
 ## Intervention Readiness Network
 
-`/network/` describes who the Network is for, why somebody with relevant standing would speak to Intervene, and the independence boundaries between any commercial introduction and an AGDA™ verdict. It is a mechanism, not a membership: participants, never partners, members, affiliates or introducers, and no word that implies a ladder or a status. `tests/e2e/network.spec.ts` enforces the vocabulary.
+`/network/` describes who the Network is for, why somebody with relevant standing would speak to Intervene, and the independence boundaries between any commercial introduction and an AGDA® verdict. It is a mechanism, not a membership: participants, never partners, members, affiliates or introducers, and no word that implies a ladder or a status. `tests/e2e/network.spec.ts` enforces the vocabulary.
 
 The page carries no form. Its one action is a button to `/contact/`. It no longer asks participants to forward an attributed Snapshot link and no link is issued; that material went with the Snapshot's withdrawal rather than being marked paused. The privacy notice keeps its referral-link section for anyone who arrived on such a link while it was live, because the retention rule there still applies to notes already received.
 
 ## License
 
-All content is proprietary to **Intervene Limited**. AGDA™ is a trademark of Intervene Limited. Viewing is permitted. Reuse, reproduction, or redistribution is not permitted without explicit written consent.
+All content is proprietary to **Intervene Limited**. AGDA® is a trademark of Intervene Limited. Viewing is permitted. Reuse, reproduction, or redistribution is not permitted without explicit written consent.

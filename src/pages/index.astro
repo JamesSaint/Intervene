@@ -4,6 +4,7 @@ import { offers, PRICE_QUALIFIER, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } fr
 import { markAgda } from '../lib/marks';
 import FindingChain from '../components/FindingChain.astro';
 import OfferChoice from '../components/OfferChoice.astro';
+import Agda from '../components/Agda.astro';
 
 /* Section order, front to back: doorway, relevance (three situations),
    what the assessment shows (one constructed finding, the four stages,
@@ -51,7 +52,7 @@ const finding = {
 
 <BaseLayout
   title="Intervention Readiness · Intervene"
-  description="AGDA™ assesses whether your organisation can detect, escalate, decide and intervene in a consequential AI-enabled system within the time available."
+  description="AGDA® assesses whether your organisation can detect, escalate, decide and intervene in a consequential AI-enabled system within the time available."
   current="home"
 >
   <!-- 1 · DOORWAY -->
@@ -62,7 +63,7 @@ const finding = {
       <p class="hero-sub">
         Intervention Readiness is the ability of an organisation to detect,
         escalate, decide and intervene before harm becomes irreversible.
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is Intervene's proprietary assessment of it.
+        <Agda /> is Intervene's proprietary assessment of it.
       </p>
       <div class="hero-cta">
         <a href="/contact/" class="btn">Discuss your system</a>
@@ -70,7 +71,7 @@ const finding = {
       </div>
       <p class="hero-note">
         Two starting points: an Intervention Readiness Review, or a full
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment of one named system through a defined
+        <Agda /> Assessment of one named system through a defined
         pathway and a specified intervention scenario.
       </p>
       <ul class="hero-chain" role="list" aria-label="Intervention readiness chain">
@@ -109,7 +110,7 @@ const finding = {
       <span class="label section-kicker">What a finding looks like</span>
       <h2 class="h2">Detection works. <em>Authority does not.</em></h2>
       <p class="lede muted">
-        A constructed illustration of a full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment finding.
+        A constructed illustration of a full <Agda /> Assessment finding.
         It describes no real organisation, uses no client data, and is not an
         issued assessment or a verified outcome.
       </p>
@@ -135,7 +136,7 @@ const finding = {
         <a href="/sample-report/" class="link">Read the full constructed sample</a>.
       </p>
 
-      <h3 class="h3 chain-head">What a full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment returns.</h3>
+      <h3 class="h3 chain-head">What a full <Agda /> Assessment returns.</h3>
       <p class="body muted chain-foot">
         Each stage is assessed against evidence. The weakest stage constrains
         the chain, and the assessment names it. A full Assessment returns one of

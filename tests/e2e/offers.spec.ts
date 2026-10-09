@@ -38,7 +38,7 @@ for (const route of ['/', '/services/']) {
     test('the Review says it does not include the verdict', async ({ page }) => {
       await page.goto(route);
       const text = await bodyText(page);
-      expect(text).toMatch(/does not include the AGDA™ verdict/);
+      expect(text).toMatch(/does not include the AGDA® verdict/);
     });
 
     test('carries no retired offer', async ({ page }) => {
@@ -56,7 +56,7 @@ test.describe('structured data', () => {
     const org = graph.find((n: any) => n['@type'] === 'Organization');
     expect(org.makesOffer.map((o: any) => o.name)).toEqual(offers.map((o) => o.name));
     const review = org.makesOffer.find((o: any) => o.name === offers[0].name);
-    expect(review.description).toMatch(/Does not include the AGDA™ verdict/);
+    expect(review.description).toMatch(/Does not include the AGDA® verdict/);
     for (const o of org.makesOffer) expect(o.priceSpecification).toBeUndefined();
   });
 
@@ -72,7 +72,7 @@ test.describe('structured data', () => {
         expect(rendered.map((r) => r.replace(/\s+/g, ' ').trim())).toContain(answer.replace(/\s+/g, ' ').trim());
       }
       const reviewQ = faq.mainEntity.find((q: any) => /Review/.test(q.name));
-      expect(reviewQ.acceptedAnswer.text).toMatch(/does not include the AGDA™ verdict/);
+      expect(reviewQ.acceptedAnswer.text).toMatch(/does not include the AGDA® verdict/);
     });
   }
 });
@@ -82,7 +82,7 @@ test.describe('verdict attribution', () => {
     test(`${route} attributes verdict states to the full Assessment`, async ({ page }) => {
       await page.goto(route);
       const text = await bodyText(page);
-      expect(text).toMatch(/full AGDA™ Assessment/);
+      expect(text).toMatch(/full AGDA® Assessment/);
       expect(text).not.toMatch(/Every assessment returns/);
     });
   }
@@ -126,7 +126,7 @@ test.describe('buyer journey pass', () => {
       await page.goto(route);
       const text = await page.locator('main').innerText();
       expect(text, route).toMatch(/material intervention question/);
-      expect(text, route).toMatch(/does not include the AGDA™ verdict/);
+      expect(text, route).toMatch(/does not include the AGDA® verdict/);
     }
     await page.goto('/services/');
     // The compact fork above the sheets carries no prices or deliverables.

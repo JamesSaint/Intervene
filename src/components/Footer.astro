@@ -2,6 +2,7 @@
 import Hallmark from './Hallmark.astro';
 import LinkedInButton from './LinkedInButton.astro';
 import { socialLinks, contactEmail } from '../lib/social';
+import Agda from './Agda.astro';
 const year = new Date().getFullYear();
 ---
 
@@ -21,7 +22,7 @@ const year = new Date().getFullYear();
       <ul role="list">
         <li><a href="/intervention-readiness/">Intervention Readiness</a></li>
         <li><a href="/about/">Why it matters</a></li>
-        <li><a href="/agda/"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span></a></li>
+        <li><a href="/agda/"><Agda /></a></li>
         <li><a href="/methodology/">How it works</a></li>
         <li><a href="/sample-report/">Sample verdict</a></li>
         <li><a href="/services/">Assessment options</a></li>
@@ -48,7 +49,7 @@ const year = new Date().getFullYear();
     <p class="meta">
       <span class="meta-name">Intervene Limited</span>
       <span aria-hidden="true" class="meta-sep">·</span>
-      <span>Owner and developer of <span class="agda-mark">AGDA<span class="agda-tm">™</span></span></span>
+      <span>Owner and developer of <Agda /></span>
       <span aria-hidden="true" class="meta-sep">·</span>
       <span>Registered in England and Wales, company number 17317647</span>
       <span aria-hidden="true" class="meta-sep">·</span>
