@@ -5,6 +5,7 @@ import EvidenceCap from '../../components/EvidenceCap.astro';
 import ChainCeiling from '../../components/ChainCeiling.astro';
 import PageNav from '../../components/PageNav.astro';
 import { markAgda } from '../../lib/marks';
+import Agda from '../../components/Agda.astro';
 
 const pageNav = [
   { href: '#scope', label: 'Scope first' },
@@ -36,7 +37,7 @@ const stances = [
 ];
 
 const docs = [
-  { h: 'AGDA™ Thesis',             p: 'The intellectual position. Eight falsifiable claims.' },
+  { h: 'AGDA® Thesis',             p: 'The intellectual position. Eight falsifiable claims.' },
   { h: 'Failure Mode Catalogue',   p: 'Forty canonical intervention failure modes, referenced by identifier in a verdict.' },
   { h: 'Corpus Governance',        p: 'The governance mechanism by which validation cases would be authored, challenged and locked. It exists as a mechanism; no populated corpus exists yet.' },
   { h: 'Rater Protocol',           p: 'The protocol external raters follow when governed corpus evidence is supplied.' },
@@ -44,8 +45,8 @@ const docs = [
 ---
 
 <BaseLayout
-  title="How AGDA™ Works · Intervene"
-  description="How AGDA™ examines the SEDI intervention chain, supporting evidence, authority and timing to assess Intervention Readiness."
+  title="How AGDA® Works · Intervene"
+  description="How AGDA® examines the SEDI intervention chain, supporting evidence, authority and timing to assess Intervention Readiness."
   current="methodology"
   ogImage="/assets/og/og-methodology.png"
 >
@@ -53,7 +54,7 @@ const docs = [
     <div class="wrap">
       <h1 class="h1">Follow the response from signal <em>to effective intervention.</em></h1>
       <p class="lede muted">
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> examines four connected capabilities: Detect, Escalate, Decide
+        <Agda /> examines four connected capabilities: Detect, Escalate, Decide
         and Intervene. Together they form the SEDI intervention chain.
       </p>
     </div>
@@ -90,7 +91,7 @@ const docs = [
         Detect, Escalate, Decide, Intervene. Four sequential stages running
         against the available time. The engine computes whether the
         cumulative chain completes before harm becomes irreversible. A full
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment returns one of three states.
+        <Agda /> Assessment returns one of three states.
       </p>
       <ChainFlow />
 
@@ -210,7 +211,7 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
       <p class="lede muted">
         Four documents anchor the practice. None is published on this site;
         each is provided under NDA during diligence. There is no populated
-        corpus and no outcome-validation evidence. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is not
+        corpus and no outcome-validation evidence. <Agda /> is not
         validated against real-world outcomes.
       </p>
       <ul class="feature-grid docs" role="list" style="--cols: 4" data-reveal="stagger">

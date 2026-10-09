@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageNav from '../../components/PageNav.astro';
 import { markAgda } from '../../lib/marks';
+import Agda from '../../components/Agda.astro';
 
 const pageNav = [
   { href: '#system', label: 'The system' },
@@ -71,8 +72,8 @@ const evidence = [
 ---
 
 <BaseLayout
-  title="Sample AGDA™ Verdict · Intervene"
-  description="A constructed, unsigned AGDA™ Intervention Readiness verdict showing how detect, escalate, decide and intervene are assessed against evidence and timing."
+  title="Sample AGDA® Verdict · Intervene"
+  description="A constructed, unsigned AGDA® Intervention Readiness verdict showing how detect, escalate, decide and intervene are assessed against evidence and timing."
   current="sample-report"
   ogImage="/assets/og/og-sample-report.png"
 >
@@ -98,7 +99,7 @@ const evidence = [
           </p>
           <p class="body muted provenance-note">
             This is a constructed example, written to show the shape and
-            structure of a finding from a full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment. It uses
+            structure of a finding from a full <Agda /> Assessment. It uses
             no client data and describes no real organisation. It has not been
             run as an assessment, is not issued and is not signed. The
             identifiers, timings and evidence descriptions are illustrative.
@@ -115,7 +116,7 @@ const evidence = [
           </dl>
 
           <p class="cover-proof cover-proof-note">
-            A full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment issues a verdict with its evidence basis.
+            A full <Agda /> Assessment issues a verdict with its evidence basis.
             Signed SEDI result records are not a standard deliverable and may
             be supplied only under an approved output-access arrangement. This
             page carries neither a verdict nor a signed record.
@@ -370,7 +371,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     <div class="wrap">
       <h2 class="h2">The illustrative <em>conclusion.</em></h2>
       <p class="lede muted">
-        The state a full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment would report for this scenario.
+        The state a full <Agda /> Assessment would report for this scenario.
         Illustrative, not issued, not signed.
       </p>
 
@@ -393,7 +394,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
             overall governance, other systems or legal conformity. The
             six-hour window is a scenario assumption; no operational harm
             threshold, regulatory breach, financial loss or empirical
-            validation of <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is established.
+            validation of <Agda /> is established.
           </p>
         </div>
       </div>
@@ -425,7 +426,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
         <h2 class="h2">Run this <em>against your own system.</em></h2>
         <div class="close-cta">
           <p class="body muted">
-            This page shows the shape of a finding. A full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment
+            This page shows the shape of a finding. A full <Agda /> Assessment
             applies the current methodology to one of your named systems, a
             defined pathway and a specified scenario. The conclusion is
             Intervene's. Signed SEDI result records are not a standard
@@ -433,7 +434,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
           </p>
           <div class="cta-row">
             <a href="/contact/" class="btn">Discuss your system</a>
-            <a href="/methodology/" class="btn-ghost">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> works</a>
+            <a href="/methodology/" class="btn-ghost">How <Agda /> works</a>
           </div>
         </div>
       </div>

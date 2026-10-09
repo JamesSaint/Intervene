@@ -19,6 +19,9 @@ import { chromium } from 'playwright';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
+/* AGDA® in card copy: the ® set as the site sets it (lib/marks.ts). */
+const markAgda = (v) => v.replace(/AGDA®/g, 'AGDA<span class="agda-reg">®</span>');
+
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 /* The four SEDI stages: descriptive, not a claim. The previous
@@ -42,7 +45,7 @@ const CARDS = {
   },
   agda: {
     kicker: 'The assessment',
-    lines: ['AGDA™ assesses', 'Intervention Readiness.'],
+    lines: ['AGDA® assesses', 'Intervention Readiness.'],
     meta: SEDI,
   },
   'category-map': {
@@ -81,7 +84,7 @@ const CARDS = {
     meta: SEDI,
   },
   methodology: {
-    kicker: 'How AGDA™ works',
+    kicker: 'How AGDA® works',
     lines: ['Follow the response', 'from signal to', 'effective intervention.'],
     meta: SEDI,
   },
@@ -237,7 +240,8 @@ const html = (card) => `
   }
   .hm-cell:last-child { border-right: 0; }
   .hm-word { letter-spacing: 0.14em; color: var(--ink); }
-  .hm-tm { font-size: 7px; vertical-align: super; }
+  /* The ® as the site sets it: .agda-reg in global.css. */
+  .hm-reg, .agda-reg { color: var(--accent); font-size: 0.46em; letter-spacing: 0; line-height: 0; margin-left: 0.06em; vertical-align: 0.8em; }
   .hm-serial { letter-spacing: 0.06em; color: var(--muted); text-transform: uppercase; }
   .seal { width: 12px; height: 12px; border: 1px solid var(--accent); position: relative; }
   .seal::after {
@@ -252,19 +256,19 @@ const html = (card) => `
 <div class="wordmark">intervene</div>
 
 <div class="stack">
-  <div class="kicker">${card.kicker}</div>
+  <div class="kicker">${markAgda(card.kicker)}</div>
   <div class="headline">${card.lines
     .map((l, i) =>
       i === card.lines.length - 1
-        ? `<div class="accent">${l}</div>`
-        : `<div>${l}</div>`,
+        ? `<div class="accent">${markAgda(l)}</div>`
+        : `<div>${markAgda(l)}</div>`,
     )
     .join('')}</div>
   <div class="meta">${card.meta.map((m) => `<span>${m}</span>`).join('')}</div>
 </div>
 
 <div class="hallmark">
-  <span class="hm-cell hm-word">AGDA<span class="hm-tm">™</span></span>
+  <span class="hm-cell hm-word">AGDA<span class="hm-reg">®</span></span>
   <span class="hm-cell hm-serial">Assay · 2026</span>
   <span class="hm-cell"><span class="seal"></span></span>
 </div>

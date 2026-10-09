@@ -45,14 +45,19 @@ a, button, summary, input, textarea, select, [tabindex] { scroll-margin-top: var
   background: var(--accent);
 }
 
+/* AGDA® brand mark. Set it with <Agda /> or markAgda() (lib/marks.ts),
+   never by hand. The letters keep their context; only the ® takes the
+   accent, as the ™ did before registration. Montserrat draws ® at cap
+   height where ™ was already small and raised, so it is set smaller and
+   lifted until its top meets the cap line, where the ™ sat. */
 .agda-mark { white-space: nowrap; }
-.agda-tm {
+.agda-reg {
   color: var(--accent);
-  font-size: 0.62em;
+  font-size: 0.46em;
   letter-spacing: 0;
   line-height: 0;
-  margin-left: 0.04em;
-  vertical-align: super;
+  margin-left: 0.06em;
+  vertical-align: 0.8em;
 }
 
 /* ------------------------------------------------------------------

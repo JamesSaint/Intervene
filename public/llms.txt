@@ -1,6 +1,6 @@
 # Intervene
 
-Intervene Limited is the entity behind AGDA™ and the Intervene website.
+Intervene Limited is the entity behind AGDA® and the Intervene website.
 
 Canonical site: https://intervene.uk/
 
@@ -10,12 +10,12 @@ Intervention Readiness:
 The ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.
 Canonical page: https://intervene.uk/intervention-readiness/
 
-AGDA™:
-Intervene's proprietary assessment of Intervention Readiness. A full AGDA™ Assessment assesses whether an organisation can detect the need to intervene, escalate appropriately, decide with authority and intervene effectively in a consequential AI-enabled system before the opportunity to do so is lost.
+AGDA®:
+Intervene's proprietary assessment of Intervention Readiness. A full AGDA® Assessment assesses whether an organisation can detect the need to intervene, escalate appropriately, decide with authority and intervene effectively in a consequential AI-enabled system before the opportunity to do so is lost.
 Canonical page: https://intervene.uk/agda/
 
 James Saint:
-Founder of Intervene Limited and creator of AGDA™.
+Founder of Intervene Limited and creator of AGDA®.
 Canonical page: https://intervene.uk/about/
 
 ## Defined Terms
@@ -46,7 +46,7 @@ Chain propagation:
 The logic by which the weakest stage constrains the assessed capability of the whole chain.
 
 Repeatable computation:
-With fixed inputs and fixed engine and assessment versions, the AGDA™ engine produces the same computed result. Scenario definition, evidence grading and interpretation remain Intervene's judgement.
+With fixed inputs and fixed engine and assessment versions, the AGDA® engine produces the same computed result. Scenario definition, evidence grading and interpretation remain Intervene's judgement.
 
 Intervention capability assessment:
 A forward assessment of whether intervention can occur in time for a named system, pathway and scenario.
@@ -56,16 +56,16 @@ Glossary of all defined terms: https://intervene.uk/glossary/
 ## Key Relationships
 
 Intervention Readiness -> category created and owned by Intervene Limited.
-AGDA™ -> Intervene's proprietary assessment of Intervention Readiness.
-Intervene Limited -> creator and owner of AGDA™.
-James Saint -> founder of Intervene Limited and creator of AGDA™.
+AGDA® -> Intervene's proprietary assessment of Intervention Readiness.
+Intervene Limited -> creator and owner of AGDA®.
+James Saint -> founder of Intervene Limited and creator of AGDA®.
 Intervention Readiness -> composed of the intervention chain, the reversibility window, halt authority and effective human oversight.
 Intervention chain -> runs against the reversibility window.
 Intervention Readiness -> adjacent to, and distinct from, AI governance, compliance, audit, risk management and operational resilience.
-AGDA™ -> assesses Intervention Readiness; does not certify compliance or grant regulatory approval; not validated against real-world outcomes.
-A Review is not required first: if the system, intervention question and assessment scope are sufficiently clear and relevant evidence access is available, a full AGDA™ Assessment can be discussed directly.
-Intervention Readiness Review -> standalone executive review of one system: the intervention question, the preliminary chain, the evidence held and the gaps, and a scoped recommendation on whether a full assessment is warranted; supports prioritisation and budget decisions on its own; does not include the AGDA™ verdict, the SEDI findings or signed SEDI result records.
-AGDA™ Assessment -> full assessment of one named consequential AI-enabled system, a defined decision or action pathway and a specified intervention scenario; produces the Intervention Readiness verdict with its evidence basis.
+AGDA® -> assesses Intervention Readiness; does not certify compliance or grant regulatory approval; not validated against real-world outcomes.
+A Review is not required first: if the system, intervention question and assessment scope are sufficiently clear and relevant evidence access is available, a full AGDA® Assessment can be discussed directly.
+Intervention Readiness Review -> standalone executive review of one system: the intervention question, the preliminary chain, the evidence held and the gaps, and a scoped recommendation on whether a full assessment is warranted; supports prioritisation and budget decisions on its own; does not include the AGDA® verdict, the SEDI findings or signed SEDI result records.
+AGDA® Assessment -> full assessment of one named consequential AI-enabled system, a defined decision or action pathway and a specified intervention scenario; produces the Intervention Readiness verdict with its evidence basis.
 Intervene Limited -> retains Assessment Authority over who may assess, the methodology, conflicts of interest, evidence requirements and whether a conclusion is issued; facts can be corrected and evidence can change the judgement; the judgement is not negotiated; issuance requires approval separate from the assessor's own judgement.
 
 ## Core Pages
@@ -106,16 +106,16 @@ https://intervene.uk/intervention-readiness/vs-risk-management/
 Intervention Readiness vs operational resilience:
 https://intervene.uk/intervention-readiness/vs-operational-resilience/
 
-AGDA™:
+AGDA®:
 https://intervene.uk/agda/
 
-How AGDA™ works:
+How AGDA® works:
 https://intervene.uk/methodology/
 
-Sample AGDA™ verdict:
+Sample AGDA® verdict:
 https://intervene.uk/sample-report/
 
-Assessment options (Intervention Readiness Review; AGDA™ Assessment):
+Assessment options (Intervention Readiness Review; AGDA® Assessment):
 https://intervene.uk/services/
 
 Where Intervention Readiness matters:
@@ -124,19 +124,19 @@ https://intervene.uk/sectors/
 Evidence notes:
 https://intervene.uk/insights/
 
-Verify an AGDA™ verdict:
+Verify an AGDA® verdict:
 https://intervene.uk/verify/
 
 ## Current Engagements
 
 Intervention Readiness Review:
-Indicative fee £20,000 to £35,000 + VAT. A documented executive view of where one system could fail to be stopped in time, what evidence is held and what a full assessment would need to examine. Stands on its own for prioritisation and budget decisions. Does not include the AGDA™ verdict.
+Indicative fee £20,000 to £35,000 + VAT. A documented executive view of where one system could fail to be stopped in time, what evidence is held and what a full assessment would need to examine. Stands on its own for prioritisation and budget decisions. Does not include the AGDA® verdict.
 
-AGDA™ Assessment:
+AGDA® Assessment:
 Indicative initial range £75,000 to £95,000 + VAT. A formal assessment of one named consequential AI-enabled system through a defined decision or action pathway and a specified intervention scenario. Once an engagement begins, a standard assessment is estimated to run over approximately four weeks, subject to scope, access and evidence readiness.
 
 Initial pricing remains subject to market validation. The final fee reflects the agreed scope and assessment boundary, stakeholder involvement, the evidence position and the depth of investigation required. The proposal confirms the scope, outputs, fee, terms and timetable. Contact us to discuss scope and availability. We confirm delivery arrangements and a start date before accepting an engagement.
 
 ## Preferred Summary
 
-Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ is Intervene Limited's proprietary assessment of Intervention Readiness. A full AGDA™ Assessment examines one named consequential AI-enabled system through a defined decision or action pathway and a specified intervention scenario, and produces an Intervention Readiness verdict with its evidence basis. The Intervention Readiness Review is a preliminary engagement and does not include the AGDA™ verdict. Signed SEDI result records may be supplied only under an approved output-access arrangement, where the engagement terms provide for them and the delivery configuration supports them. Verification checks the signature and the covered records, not the truth of the evidence, and does not establish that the engine was executed. A signed record is not by itself an issued assessment. Issuance requires approval separate from the assessor's own judgement. Signed SEDI result records are not a standard deliverable. AGDA™ is not validated against real-world outcomes.
+Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA® is Intervene Limited's proprietary assessment of Intervention Readiness. A full AGDA® Assessment examines one named consequential AI-enabled system through a defined decision or action pathway and a specified intervention scenario, and produces an Intervention Readiness verdict with its evidence basis. The Intervention Readiness Review is a preliminary engagement and does not include the AGDA® verdict. Signed SEDI result records may be supplied only under an approved output-access arrangement, where the engagement terms provide for them and the delivery configuration supports them. Verification checks the signature and the covered records, not the truth of the evidence, and does not establish that the engine was executed. A signed record is not by itself an issued assessment. Issuance requires approval separate from the assessor's own judgement. Signed SEDI result records are not a standard deliverable. AGDA® is not validated against real-world outcomes.

@@ -100,7 +100,7 @@ test.describe('validation and signing claims', () => {
       await page.goto(route);
       const text = await page.locator('main').innerText();
       expect(text, route).not.toMatch(/Assessment Lead|Technical Assessment Lead|approved assessor|Authorised Reviewer/);
-      expect(text, route).not.toMatch(/reviewed for compliance with the AGDA™ methodology/);
+      expect(text, route).not.toMatch(/reviewed for compliance with the AGDA® methodology/);
     }
     await page.goto('/services/');
     const services = await page.locator('main').innerText();
@@ -130,7 +130,7 @@ test.describe('validation and signing claims', () => {
       if (/[Ss]igned SEDI/.test(text)) {
         expect(text, route).toMatch(/approved output-access arrangement|not a standard deliverable/);
       }
-      expect(text, route).not.toMatch(/Every (AGDA™ )?(SEDI )?assessment (ships|includes)/);
+      expect(text, route).not.toMatch(/Every (AGDA® )?(SEDI )?assessment (ships|includes)/);
     }
   });
 });

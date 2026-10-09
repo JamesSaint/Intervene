@@ -3,32 +3,33 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import VerdictBlock from '../../components/VerdictBlock.astro';
 import { markAgda } from '../../lib/marks';
 import { assessment, offerFaqs, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
+import Agda from '../../components/Agda.astro';
 
 const isnot = [
-  { h: 'Not a maturity model', p: 'No five-point scale that always lands at three. A full AGDA™ Assessment answers one question: can the chain complete in time for this system, pathway and scenario.' },
-  { h: 'Not a controls checklist', p: 'Existence of a control is not evidence it works under pressure. AGDA™ distinguishes documented arrangements from exercised capability. A policy fallback is not a measurement.' },
+  { h: 'Not a maturity model', p: 'No five-point scale that always lands at three. A full AGDA® Assessment answers one question: can the chain complete in time for this system, pathway and scenario.' },
+  { h: 'Not a controls checklist', p: 'Existence of a control is not evidence it works under pressure. AGDA® distinguishes documented arrangements from exercised capability. A policy fallback is not a measurement.' },
   { h: 'Not a negotiated result', p: 'The engine applies repeatable rules to recorded inputs under fixed versions. Defining the scenario, grading evidence and interpreting the result are Intervene\'s judgement. Facts can be corrected and evidence can change the conclusion; the conclusion is not negotiated.' },
 ];
 
 const faqs = [
   {
-    question: 'What does AGDA™ assess?',
-    answer: 'AGDA™ assesses Intervention Readiness: whether an organisation can detect the need to intervene, escalate appropriately, decide with authority and intervene effectively in a consequential AI-enabled system before the opportunity to do so is lost.',
+    question: 'What does AGDA® assess?',
+    answer: 'AGDA® assesses Intervention Readiness: whether an organisation can detect the need to intervene, escalate appropriately, decide with authority and intervene effectively in a consequential AI-enabled system before the opportunity to do so is lost.',
   },
   {
-    question: 'Is AGDA™ an AI governance framework?',
-    answer: 'No. AGDA™ is not an AI governance framework. It assesses whether governance can actually intervene when required.',
+    question: 'Is AGDA® an AI governance framework?',
+    answer: 'No. AGDA® is not an AI governance framework. It assesses whether governance can actually intervene when required.',
   },
   ...offerFaqs,
   {
-    question: 'How is AGDA™ related to Intervention Readiness?',
-    answer: 'Intervention Readiness is the category. AGDA™ is Intervene Limited\'s proprietary assessment of it.',
+    question: 'How is AGDA® related to Intervention Readiness?',
+    answer: 'Intervention Readiness is the category. AGDA® is Intervene Limited\'s proprietary assessment of it.',
   },
 ];
 ---
 
 <BaseLayout
-  title="AGDA™ Assessment · Intervene"
+  title="AGDA® Assessment · Intervene"
   description="Intervene's proprietary assessment of Intervention Readiness: one named consequential AI-enabled system, one defined pathway and one intervention scenario."
   current="agda"
   ogImage="/assets/og/og-agda.png"
@@ -37,7 +38,7 @@ const faqs = [
   <section class="hero">
     <div class="wrap">
       <span class="label">The assessment</span>
-      <h1 class="h1"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span> assesses Intervention Readiness.</h1>
+      <h1 class="h1"><Agda /> assesses Intervention Readiness.</h1>
       <p class="lede muted">
         Intervene's proprietary assessment of whether an organisation can
         detect the need to intervene, escalate appropriately, decide with
@@ -86,7 +87,7 @@ const faqs = [
       <div class="subsection">
       <h2 class="h2">Evidence and <em>accountable judgement.</em></h2>
       <p class="body">
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> examines relevant records, interviews and walkthroughs across
+        <Agda /> examines relevant records, interviews and walkthroughs across
         Detect, Escalate, Decide and Intervene. It distinguishes documented
         arrangements from exercised capability. A policy fallback is not a
         measurement, and a walkthrough or a record of a previous drill is not a
@@ -107,7 +108,7 @@ const faqs = [
     <div class="wrap">
       <h2 class="h2">One question. <em>Three verdict states.</em></h2>
       <p class="lede muted">
-        A full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment examines the intervention chain, Detect to
+        A full <Agda /> Assessment examines the intervention chain, Detect to
         Escalate to Decide to Intervene, against the available time and
         returns one of three states. The Intervention Readiness Review does
         not produce a verdict.
@@ -115,13 +116,13 @@ const faqs = [
       <div class="verdict-stage">
         <VerdictBlock />
       </div>
-      <a href="/methodology/" class="arrow-link">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> works <span aria-hidden="true">→</span></a>
+      <a href="/methodology/" class="arrow-link">How <Agda /> works <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">What a full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment <em>delivers.</em></h2>
+      <h2 class="h2">What a full <Agda /> Assessment <em>delivers.</em></h2>
       <p class="lede muted">
         The engagement scope lists the outputs. The standard package
         comprises:
@@ -134,7 +135,7 @@ const faqs = [
       <p class="body muted deliver-note">{RECORDS_NOTE}</p>
       <p class="body muted deliver-note">
         The assessment is not regulatory certification, a model-validation
-        exercise or a guarantee of safety. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is not validated against
+        exercise or a guarantee of safety. <Agda /> is not validated against
         real-world outcomes. Repeatable computation and signature verification
         are established technical properties with different purposes from
         empirical validation.
@@ -145,7 +146,7 @@ const faqs = [
 
   <section class="block">
     <div class="wrap">
-      <h2 class="h2">What <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> <em>is not.</em></h2>
+      <h2 class="h2">What <Agda /> <em>is not.</em></h2>
       <ul class="card-grid isnot-grid" role="list" data-reveal="stagger">
         {isnot.map((d) => (
           <li class="card">
@@ -176,7 +177,7 @@ const faqs = [
       <h2 class="h2">From assessment to engagement.</h2>
       <p class="body muted">
         Two starting points: an Intervention Readiness Review, or a full
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment. Before that, inspect the sample verdict and
+        <Agda /> Assessment. Before that, inspect the sample verdict and
         how verification works.
       </p>
       <div class="cta-row">

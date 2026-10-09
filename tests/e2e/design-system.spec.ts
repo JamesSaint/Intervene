@@ -131,8 +131,8 @@ test.describe('offer sheets', () => {
       await expect(sheet.locator('.sheet-label').first()).toContainText(/Indicative/);
       await expect(sheet.locator('.sheet-label', { hasText: 'Start here when' })).toBeVisible();
     }
-    await expect(page.locator('#review')).toContainText('does not include the AGDA™ verdict');
-    await expect(page.locator('#review')).toContainText('It is not a discounted AGDA™ Assessment');
+    await expect(page.locator('#review')).toContainText('does not include the AGDA® verdict');
+    await expect(page.locator('#review')).toContainText('It is not a discounted AGDA® Assessment');
     await expect(page.locator('#assessment')).toContainText('Signed SEDI result records are not a standard deliverable');
     await expect(page.locator('#assessment')).toContainText('approximately four weeks');
     // The one disclosure holds the long boundary list; the short boundary

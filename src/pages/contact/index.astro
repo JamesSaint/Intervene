@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { contactEmail } from '../../lib/social';
+import Agda from '../../components/Agda.astro';
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xvzwdyob';
 
@@ -15,7 +16,7 @@ const info: { k: string; v: string; href?: string }[] = [
 
 <BaseLayout
   title="Book a Conversation · Intervene"
-  description="Book a confidential conversation about an Intervention Readiness Review or a full AGDA™ Assessment of a consequential system where intervention must remain possible."
+  description="Book a confidential conversation about an Intervention Readiness Review or a full AGDA® Assessment of a consequential system where intervention must remain possible."
   current="contact"
   ogImage="/assets/og/og-contact.png"
   pageType="ContactPage"
@@ -119,7 +120,7 @@ const info: { k: string; v: string; href?: string }[] = [
                 <label class="choice">
                   <input type="radio" name="starting_point" value="assessment" />
                   <span class="choice-marker" aria-hidden="true"></span>
-                  <span class="choice-label">Full <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> Assessment</span>
+                  <span class="choice-label">Full <Agda /> Assessment</span>
                 </label>
               </div>
             </fieldset>

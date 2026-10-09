@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { markAgda } from '../../lib/marks';
+import Agda from '../../components/Agda.astro';
 
 const faqs = [
   {
@@ -8,8 +9,8 @@ const faqs = [
     answer: 'Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.',
   },
   {
-    question: 'What does AGDA™ assess?',
-    answer: 'AGDA™ assesses Intervention Readiness: whether an organisation can detect, escalate, decide and intervene within the available reversibility window.',
+    question: 'What does AGDA® assess?',
+    answer: 'AGDA® assesses Intervention Readiness: whether an organisation can detect, escalate, decide and intervene within the available reversibility window.',
   },
   {
     question: 'How is Intervention Readiness different from governance?',
@@ -24,20 +25,20 @@ const faqs = [
     answer: 'Effective human oversight means humans are informed, authorised and able to alter or halt system outcomes before the relevant harm window closes.',
   },
   {
-    question: 'How does AGDA™ produce a verdict?',
-    answer: 'A full AGDA™ Assessment assesses evidence across Detect, Escalate, Decide and Intervene, applies evidence-quality constraints and chain propagation, and returns an Intervention Readiness verdict with its evidence basis. Intervene retains responsibility for the judgement. Signed SEDI result records may be supplied only under an approved output-access arrangement, where the engagement terms provide for them and the delivery configuration supports them.',
+    question: 'How does AGDA® produce a verdict?',
+    answer: 'A full AGDA® Assessment assesses evidence across Detect, Escalate, Decide and Intervene, applies evidence-quality constraints and chain propagation, and returns an Intervention Readiness verdict with its evidence basis. Intervene retains responsibility for the judgement. Signed SEDI result records may be supplied only under an approved output-access arrangement, where the engagement terms provide for them and the delivery configuration supports them.',
   },
   {
-    question: 'Can AGDA™ support evidence of human intervention capability?',
-    answer: 'Yes. AGDA™ produces evidence of human intervention capability by measuring whether human oversight can detect, escalate, decide and intervene before harm becomes irreversible.',
+    question: 'Can AGDA® support evidence of human intervention capability?',
+    answer: 'Yes. AGDA® produces evidence of human intervention capability by measuring whether human oversight can detect, escalate, decide and intervene before harm becomes irreversible.',
   },
   {
     question: 'Who created the category?',
-    answer: 'Intervene Limited defined Intervention Readiness as a category and built AGDA™, its proprietary assessment of it. James Saint founded Intervene Limited and created AGDA™.',
+    answer: 'Intervene Limited defined Intervention Readiness as a category and built AGDA®, its proprietary assessment of it. James Saint founded Intervene Limited and created AGDA®.',
   },
   {
     question: 'Is Intervention Readiness a standard?',
-    answer: 'No. Intervention Readiness is a category, not a standard: the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ is the instrument that measures it, and it does not certify compliance.',
+    answer: 'No. Intervention Readiness is a category, not a standard: the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA® is the instrument that measures it, and it does not certify compliance.',
   },
 ];
 
@@ -91,15 +92,15 @@ const relationships = [
     p: 'Governance shows who is responsible and which controls exist. Intervention Readiness asks whether those controls can detect, escalate, decide and intervene under pressure.',
   },
   {
-    h: 'AGDA™',
-    p: 'AGDA™ is Intervene\'s proprietary assessment of Intervention Readiness. A full AGDA™ Assessment examines one named system, a defined pathway and a specified scenario, and returns an Intervention Readiness verdict with its evidence basis.',
+    h: 'AGDA®',
+    p: 'AGDA® is Intervene\'s proprietary assessment of Intervention Readiness. A full AGDA® Assessment examines one named system, a defined pathway and a specified scenario, and returns an Intervention Readiness verdict with its evidence basis.',
   },
 ];
 ---
 
 <BaseLayout
   title="What Is Intervention Readiness? · Intervene"
-  description="Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA™ assesses it."
+  description="Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA® assesses it."
   current="intervention-readiness"
   ogImage="/assets/og/og-intervention-readiness.png"
   faqs={faqs}
@@ -204,13 +205,13 @@ const relationships = [
 
   <section class="block">
     <div class="wrap-narrow">
-      <h2 class="h2">How <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> relates to Intervention Readiness.</h2>
+      <h2 class="h2">How <Agda /> relates to Intervention Readiness.</h2>
       <p class="body">
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is not the category. Intervention Readiness is the
-        category. <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> is Intervene's proprietary assessment of it.
+        <Agda /> is not the category. Intervention Readiness is the
+        category. <Agda /> is Intervene's proprietary assessment of it.
       </p>
       <p class="body muted">
-        <span class="agda-mark">AGDA<span class="agda-tm">™</span></span> evaluates evidence across Detect, Escalate, Decide and
+        <Agda /> evaluates evidence across Detect, Escalate, Decide and
         Intervene. A full assessment returns an Intervention Readiness
         verdict on whether the chain completes before harm becomes
         irreversible, with its evidence basis. Signed SEDI result records are
@@ -218,7 +219,7 @@ const relationships = [
         output-access arrangement.
       </p>
       <div class="cta-row">
-        <a href="/agda/" class="btn"><span class="agda-mark">AGDA<span class="agda-tm">™</span></span></a>
+        <a href="/agda/" class="btn"><Agda /></a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
       </div>
     </div>

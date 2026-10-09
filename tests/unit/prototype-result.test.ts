@@ -189,11 +189,11 @@ describe('result discipline', () => {
   });
 
   it('states plainly what the result is not', () => {
-    // The three denials that are load-bearing. "AGDA™ methodology is
+    // The three denials that are load-bearing. "AGDA® methodology is
     // proprietary and is not reproduced here" was dropped in copy-2.0:
     // the plan protects AGDA by architectural separation, not by
     // disclaimer, and the sentence read as written for a review.
-    expect(disclaimer).toMatch(/not an AGDA™ assessment/i);
+    expect(disclaimer).toMatch(/not an AGDA® assessment/i);
     expect(disclaimer).toMatch(/assurance opinion/i);
     expect(disclaimer).toMatch(/certification/i);
     expect(disclaimer).toMatch(/nothing you entered has been tested against evidence/i);

@@ -34,9 +34,9 @@ const result = resolvePrototypeResult(null);
 
 const faqs = [
   {
-    question: 'Is the Intervention Readiness Snapshot an AGDA™ assessment?',
+    question: 'Is the Intervention Readiness Snapshot an AGDA® assessment?',
     answer:
-      'No. The Snapshot records what you report about your own organisation and shows you the pattern in your answers. It does not collect evidence, test any claim against evidence, or produce an assessment verdict. AGDA™ is the deterministic assessment instrument and is a separate, commissioned engagement.',
+      'No. The Snapshot records what you report about your own organisation and shows you the pattern in your answers. It does not collect evidence, test any claim against evidence, or produce an assessment verdict. AGDA® is the deterministic assessment instrument and is a separate, commissioned engagement.',
   },
   {
     question: 'Do I have to give my contact details to see the result?',
@@ -90,7 +90,7 @@ const faqs = [
   /* Printable result. Everything except the result block is dropped, so
      what prints is the response pattern, the contrast block and the
      disclaimer, on white. Deliberately not a report artefact: it must
-     not resemble an AGDA™ signed verdict or a regulator bundle. */
+     not resemble an AGDA® signed verdict or a regulator bundle. */
   @media print {
     .site-header,
     .site-footer,
@@ -119,7 +119,7 @@ const faqs = [
     }
 
     [data-snapshot-result] .label,
-    [data-snapshot-result] .agda-tm {
+    [data-snapshot-result] .agda-reg {
       color: #6b5c3e !important;
     }
   }
