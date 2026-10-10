@@ -9,8 +9,8 @@ const { current } = Astro.props;
   <a href="#main" class="skip-link">Skip to content</a>
   <div class="wrap header-inner">
     <Logo size="md" href="/" />
-    <!-- Three buyer destinations, desktop only. The takeover menu remains
-         the full site structure and the only navigation on small screens. -->
+    <!-- The direct conversation link remains available on tablets. Wider
+         screens also expose options and evidence beside the full menu. -->
     <nav class="quick-nav" aria-label="Primary">
       <a href="/services/" aria-current={current === 'services' ? 'page' : undefined}>Assessment options</a>
       <a href="/sample-report/" aria-current={current === 'sample-report' ? 'page' : undefined}>Sample verdict</a>
@@ -55,15 +55,15 @@ const { current } = Astro.props;
   .quick-nav {
     display: none;
     align-items: center;
-    gap: 32px;
+    gap: 24px;
     margin-left: auto;
-    margin-right: 28px;
+    margin-right: 24px;
   }
   .quick-nav a {
     font-family: var(--font-sans);
     font-size: 12px;
     font-weight: 600;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
     display: inline-flex;
@@ -77,8 +77,12 @@ const { current } = Astro.props;
   .quick-nav a[aria-current='page'] { color: var(--ink); border-bottom-color: var(--accent); }
   .quick-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
   .quick-nav .quick-cta { color: var(--ink); }
-  @media (min-width: 1200px) {
+  @media (min-width: 720px) {
     .quick-nav { display: flex; }
+    .quick-nav a:not(.quick-cta) { display: none; }
+  }
+  @media (min-width: 1100px) {
+    .quick-nav a:not(.quick-cta) { display: inline-flex; }
   }
   .menu-trigger {
     display: inline-flex;

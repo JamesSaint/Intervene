@@ -32,33 +32,9 @@ const info: { k: string; v: string; href?: string }[] = [
     </div>
   </section>
 
-  <section class="block">
+  <section class="block contact-body">
     <div class="wrap">
       <div class="contact-grid">
-        <aside class="info-col">
-          <h2 class="h2">What the first conversation covers.</h2>
-          <p class="body muted">
-            Twenty minutes, at no charge. We establish which system you mean,
-            the decision it supports, the harm window it runs against, and
-            whether an assessment would answer your question or whether
-            something else would. If it would not, we say so.
-          </p>
-          <p class="body muted">
-            Include the system, decision, harm window or oversight concern in
-            your message. We do not pre-qualify by email questionnaire, and
-            nothing is committed until scope and fees are agreed in writing.
-          </p>
-
-          <dl class="spec-list info-list">
-            {info.map((row) => (
-              <div>
-                <dt>{row.k}</dt>
-                <dd>{row.href ? <a href={row.href} class="link">{row.v}</a> : row.v}</dd>
-              </div>
-            ))}
-          </dl>
-        </aside>
-
         <div class="form-col">
           <h2 class="h2">Tell us what may need to be stopped.</h2>
 
@@ -145,6 +121,30 @@ const info: { k: string; v: string; href?: string }[] = [
             <div class="form-status" hidden role="status"></div>
           </form>
         </div>
+
+        <aside class="info-col">
+          <h2 class="h2">What the first conversation covers.</h2>
+          <p class="body muted">
+            Twenty minutes, at no charge. We establish which system you mean,
+            the decision it supports, the harm window it runs against, and
+            whether an assessment would answer your question or whether
+            something else would. If it would not, we say so.
+          </p>
+          <p class="body muted">
+            Include the system, decision, harm window or oversight concern in
+            your message. We do not pre-qualify by email questionnaire, and
+            nothing is committed until scope and fees are agreed in writing.
+          </p>
+
+          <dl class="spec-list info-list">
+            {info.map((row) => (
+              <div>
+                <dt>{row.k}</dt>
+                <dd>{row.href ? <a href={row.href} class="link">{row.v}</a> : row.v}</dd>
+              </div>
+            ))}
+          </dl>
+        </aside>
       </div>
     </div>
   </section>
@@ -156,14 +156,16 @@ const info: { k: string; v: string; href?: string }[] = [
 </BaseLayout>
 
 <style>
-  /* Commercial page: what the conversation covers beside the form. */
+  /* The form leads in reading and keyboard order. Context sits beside it
+     on desktop and follows it when the columns stack. */
   .hero .h1 { max-width: calc(16 * var(--ch)); }
   .contact-grid {
     display: grid;
-    grid-template-columns: 1fr 1.4fr;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
     gap: var(--space-8);
     align-items: start;
   }
+  .contact-body { padding-top: var(--space-6); }
   .info-col .h2 { max-width: calc(24 * var(--ch)); }
   .info-col .body { margin: var(--gap-head) 0 0; max-width: calc(40 * var(--ch)); }
   .info-col .body + .body { margin-top: var(--space-3); }

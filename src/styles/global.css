@@ -26,7 +26,8 @@ body { padding-bottom: var(--consent-clearance, 0px); }
   max-width: var(--max);
   padding-right: max(var(--gutter), calc(min(100vw, var(--max)) - var(--max-narrow) + var(--gutter)));
 }
-.wrap-reading { max-width: var(--max-reading); }
+/* Reading widths describe the text, with the outer gutters added separately. */
+.wrap-reading { max-width: calc(var(--max-reading) + 2 * var(--gutter)); }
 
 @media (max-width: 720px) {
   .wrap, .wrap-narrow, .wrap-reading { padding: 0 var(--gutter-tight); }
@@ -677,7 +678,7 @@ html[data-motion] .disclosure.closing > .disclosure-body {
 
 /* ------------------------------------------------------------------
    On this page
-   A row of section links beneath the hero of a long reference page.
+   A wrapping index beneath the hero of a long reference page.
    The current section carries the gold rule.
    ------------------------------------------------------------------ */
 .page-nav {
@@ -688,12 +689,9 @@ html[data-motion] .disclosure.closing > .disclosure-body {
   display: flex;
   align-items: baseline;
   gap: var(--space-4);
-  padding-top: 0;
-  padding-bottom: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-2);
 }
-.page-nav-inner::-webkit-scrollbar { display: none; }
 .page-nav-label {
   flex: none;
   font-family: var(--font-mono);
@@ -708,13 +706,14 @@ html[data-motion] .disclosure.closing > .disclosure-body {
   margin: 0;
   padding: 0;
   display: flex;
-  gap: var(--space-4);
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: 0 var(--space-4);
 }
 .page-nav a {
   display: inline-flex;
   align-items: center;
   min-height: 48px;
-  white-space: nowrap;
   padding: 12px 0;
   font-family: var(--font-sans);
   font-size: 14px;
@@ -727,8 +726,10 @@ html[data-motion] .disclosure.closing > .disclosure-body {
 .page-nav a:hover { color: var(--ink); }
 .page-nav a[aria-current='true'] { color: var(--ink); border-bottom-color: var(--accent); }
 .page-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-@media (max-width: 720px) {
-  .page-nav-label { display: none; }
+@media (max-width: 880px) {
+  .page-nav-inner { display: grid; gap: var(--space-1); padding-top: var(--space-4); }
+  .page-nav ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .page-nav a { width: 100%; height: 100%; line-height: 1.5; }
 }
 
 /* ------------------------------------------------------------------

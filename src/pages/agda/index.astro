@@ -5,6 +5,16 @@ import { markAgda } from '../../lib/marks';
 import { assessment, offerFaqs, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
 import AgdaLogo from '../../components/AgdaLogo.astro';
 import Agda from '../../components/Agda.astro';
+import PageNav from '../../components/PageNav.astro';
+
+const pageNav = [
+  { href: '#scope', label: 'Scope and evidence' },
+  { href: '#verdict', label: 'Verdict states' },
+  { href: '#deliverables', label: 'What you receive' },
+  { href: '#boundaries', label: 'Assessment boundaries' },
+  { href: '#questions', label: 'Questions' },
+  { href: '#engagement', label: 'Next step' },
+];
 
 const isnot = [
   { h: 'Not a maturity model', p: 'No five-point scale that always lands at three. A full AGDA® Assessment answers one question: can the chain complete in time for this system, pathway and scenario.' },
@@ -54,59 +64,67 @@ const faqs = [
     </div>
   </section>
 
-  <section class="block">
-    <div class="wrap-narrow">
+  <PageNav items={pageNav} />
+
+  <section class="block" id="scope">
+    <div class="wrap">
       <div class="subsection">
-      <h2 class="h2">An assessment, <em>not a governance framework.</em></h2>
-      <p class="body">
-        Audit tells you whether a control existed. Model risk tells you whether
-        a model behaves. Governance reviews tell you whether responsibilities
-        have been assigned. None of those, by itself, tells you whether humans
-        can still intervene inside the time available.
-      </p>
-      <p class="body muted">
-        That is <a href="/intervention-readiness/" class="link">Intervention Readiness</a>: the ability to
-        detect, escalate, decide and intervene before harm becomes irreversible.
-      </p>
+        <h2 class="h2">An assessment, <em>not a governance framework.</em></h2>
+        <div class="subsection-copy">
+          <p class="body">
+            Audit tells you whether a control existed. Model risk tells you whether
+            a model behaves. Governance reviews tell you whether responsibilities
+            have been assigned. None of those, by itself, tells you whether humans
+            can still intervene inside the time available.
+          </p>
+          <p class="body muted">
+            That is <a href="/intervention-readiness/" class="link">Intervention Readiness</a>: the ability to
+            detect, escalate, decide and intervene before harm becomes irreversible.
+          </p>
+        </div>
       </div>
 
       <div class="subsection">
-      <h2 class="h2">One system, a defined pathway <em>and a specified scenario.</em></h2>
-      <p class="body">
-        We agree the system boundary, the consequential decision or action,
-        the circumstances requiring intervention and the available time. The
-        conclusion applies to those assessed conditions. It does not extend
-        automatically to every pathway, future event or system in the
-        organisation.
-      </p>
-      <p class="body muted">
-        A finding about one pathway is not an assessment of the entire
-        organisation or of every use of the system. Connected systems are
-        scoped separately.
-      </p>
+        <h2 class="h2">One system, a defined pathway <em>and a specified scenario.</em></h2>
+        <div class="subsection-copy">
+          <p class="body">
+            We agree the system boundary, the consequential decision or action,
+            the circumstances requiring intervention and the available time. The
+            conclusion applies to those assessed conditions. It does not extend
+            automatically to every pathway, future event or system in the
+            organisation.
+          </p>
+          <p class="body muted">
+            A finding about one pathway is not an assessment of the entire
+            organisation or of every use of the system. Connected systems are
+            scoped separately.
+          </p>
+        </div>
       </div>
 
       <div class="subsection">
-      <h2 class="h2">Evidence and <em>accountable judgement.</em></h2>
-      <p class="body">
-        <Agda /> examines relevant records, interviews and walkthroughs across
-        Detect, Escalate, Decide and Intervene. It distinguishes documented
-        arrangements from exercised capability. A policy fallback is not a
-        measurement, and a walkthrough or a record of a previous drill is not a
-        live operational test.
-      </p>
-      <p class="body muted">
-        The engine applies repeatable rules to recorded inputs under fixed
-        assessment versions. The assessment also requires judgement about
-        evidence, scope and interpretation. Intervene owns that judgement and
-        the conclusion. {SELF_APPROVAL} A signed engine record is not by
-        itself an issued assessment.
-      </p>
+        <h2 class="h2">Evidence and <em>accountable judgement.</em></h2>
+        <div class="subsection-copy">
+          <p class="body">
+            <Agda /> examines relevant records, interviews and walkthroughs across
+            Detect, Escalate, Decide and Intervene. It distinguishes documented
+            arrangements from exercised capability. A policy fallback is not a
+            measurement, and a walkthrough or a record of a previous drill is not a
+            live operational test.
+          </p>
+          <p class="body muted">
+            The engine applies repeatable rules to recorded inputs under fixed
+            assessment versions. The assessment also requires judgement about
+            evidence, scope and interpretation. Intervene owns that judgement and
+            the conclusion. {SELF_APPROVAL} A signed engine record is not by
+            itself an issued assessment.
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="block">
+  <section class="block" id="verdict">
     <div class="wrap">
       <h2 class="h2">One question. <em>Three verdict states.</em></h2>
       <p class="lede muted">
@@ -122,7 +140,7 @@ const faqs = [
     </div>
   </section>
 
-  <section class="block">
+  <section class="block" id="deliverables">
     <div class="wrap">
       <h2 class="h2">What a full <Agda /> Assessment <em>delivers.</em></h2>
       <p class="lede muted">
@@ -146,7 +164,7 @@ const faqs = [
     </div>
   </section>
 
-  <section class="block">
+  <section class="block" id="boundaries">
     <div class="wrap">
       <h2 class="h2">What <Agda /> <em>is not.</em></h2>
       <ul class="card-grid isnot-grid" role="list" data-reveal="stagger">
@@ -160,7 +178,7 @@ const faqs = [
     </div>
   </section>
 
-  <section class="block">
+  <section class="block" id="questions">
     <div class="wrap">
       <h2 class="h2">Frequently asked questions.</h2>
       <dl class="faq-list">
@@ -174,7 +192,7 @@ const faqs = [
     </div>
   </section>
 
-  <section class="block tight">
+  <section class="block tight" id="engagement">
     <div class="wrap-narrow cta-band">
       <h2 class="h2">From assessment to engagement.</h2>
       <p class="body muted">
@@ -196,8 +214,13 @@ const faqs = [
      boundaries and FAQ each take their own. */
   .hero .h1 { max-width: calc(24 * var(--ch)); }
   .subsection + .subsection { margin-top: var(--gap-sub); padding-top: var(--gap-sub); border-top: 1px solid var(--hair); }
+  .subsection .h2 { font-size: clamp(28px, 2.5vw, 36px); }
   .subsection .body { margin: 0; }
-  .subsection .h2 + .body { margin-top: var(--gap-head); }
+  .subsection-copy { margin-top: var(--gap-head); }
+  @media (min-width: 1100px) {
+    .subsection { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: var(--space-7); }
+    .subsection-copy { margin-top: 0; }
+  }
   .subsection .body + .body { margin-top: var(--space-3); }
 
   .verdict-stage { margin-top: var(--gap-intro); display: flex; justify-content: flex-start; max-width: 760px; }

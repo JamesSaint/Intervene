@@ -89,9 +89,9 @@
   --gap-item:    12px;   /* between lines inside one item */
 
   /* Widths */
-  --gutter:       64px;
+  --gutter:       clamp(24px, 4vw, 64px);
   --gutter-tight: 24px;
-  --max:          1280px;
+  --max:          1440px;
   --max-narrow:   880px;
   --max-reading:  680px;
   --max-report:   980px;
