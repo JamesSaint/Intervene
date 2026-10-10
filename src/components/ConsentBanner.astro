@@ -23,38 +23,67 @@
   const KEY = 'intv-consent';
 
   class Consent {
-    constructor(el) {
+    private el: HTMLElement;
+    private isOpen = false;
+    private returnFocus: HTMLElement | null = null;
+    private hideTimer: number | undefined;
+
+    constructor(el: HTMLElement) {
       this.el = el;
-      el.querySelectorAll('[data-consent]').forEach((b) => {
+      el.querySelectorAll<HTMLButtonElement>('[data-consent]').forEach((b) => {
         b.addEventListener('click', () => this.choose(b.getAttribute('data-consent')));
       });
-      document.querySelectorAll('[data-consent-reopen]').forEach((t) => {
-        t.addEventListener('click', (e) => { e.preventDefault(); this.open(); });
+      document.querySelectorAll<HTMLButtonElement>('[data-consent-reopen]').forEach((t) => {
+        t.addEventListener('click', () => this.open(t));
       });
-      // Show only when no prior choice exists.
+      // Reserve exactly the banner's height, including after a resize,
+      // so the final footer links can always scroll clear of it.
+      new ResizeObserver(() => this.reserveSpace()).observe(el);
       let stored = null;
-      try { stored = localStorage.getItem(KEY); } catch (e) {}
+      try { stored = localStorage.getItem(KEY); } catch {}
       if (stored !== 'granted' && stored !== 'denied') this.open();
     }
 
-    open() {
+    private reserveSpace() {
+      const height = this.isOpen ? this.el.offsetHeight : 0;
+      document.body.style.setProperty('--consent-clearance', `${height}px`);
+    }
+
+    private open(trigger: HTMLElement | null = null) {
+      window.clearTimeout(this.hideTimer);
+      this.isOpen = true;
+      this.returnFocus = trigger;
       this.el.hidden = false;
-      requestAnimationFrame(() => this.el.classList.add('open'));
+      this.reserveSpace();
+      requestAnimationFrame(() => {
+        if (!this.isOpen) return;
+        this.el.classList.add('open');
+        // Initial display is non-blocking. An explicit reopening brings
+        // the keyboard to the controls and returns it after choosing.
+        if (trigger) this.el.querySelector<HTMLButtonElement>('[data-consent]')?.focus({ preventScroll: true });
+      });
     }
 
-    close() {
+    private close() {
+      this.isOpen = false;
       this.el.classList.remove('open');
-      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce) { this.el.hidden = true; return; }
-      this.el.addEventListener('transitionend', () => { this.el.hidden = true; }, { once: true });
+      this.returnFocus?.focus({ preventScroll: true });
+      this.returnFocus = null;
+      const finish = () => {
+        if (this.isOpen) return;
+        this.el.hidden = true;
+        this.reserveSpace();
+      };
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) finish();
+      else this.hideTimer = window.setTimeout(finish, 340);
     }
 
-    choose(value) {
-      try { localStorage.setItem(KEY, value); } catch (e) {}
-      if (value === 'granted') {
-        window.gtag?.('consent', 'update', { analytics_storage: 'granted' });
-      } else {
-        window.gtag?.('consent', 'update', { analytics_storage: 'denied' });
+    private choose(value: string | null) {
+      if (value !== 'granted' && value !== 'denied') return;
+      try { localStorage.setItem(KEY, value); } catch {}
+      const gtag = (window as Window & { gtag?: (...args: unknown[]) => void }).gtag;
+      gtag?.('consent', 'update', { analytics_storage: value });
+      if (value === 'denied') {
         // Expire any GA cookies already set in a prior session.
         document.cookie.split(';').forEach((c) => {
           const name = c.split('=')[0].trim();
@@ -68,7 +97,7 @@
     }
   }
 
-  const el = document.querySelector('.consent');
+  const el = document.querySelector<HTMLElement>('.consent');
   if (el) new Consent(el);
 </script>
 
@@ -97,6 +126,7 @@
     justify-content: space-between;
     gap: 32px;
     padding: 16px var(--gutter);
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
   }
   .consent-copy {
     font-family: var(--font-sans);
@@ -118,12 +148,10 @@
     gap: 12px;
     flex-shrink: 0;
   }
-  /* 44px minimum. Accept and Decline were 37px tall, under the WCAG 2.2
-     target size minimum, and they are the two most consequential
-     controls on the site. */
+  /* A 44px target for both choices, with a visible keyboard ring. */
   .consent-btn {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
@@ -148,8 +176,8 @@
   }
   .consent-accept:hover {
     color: var(--inverse-ink);
-    background: var(--accent-soft);
-    border-color: var(--accent-soft);
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
   }
 
   @media (max-width: 720px) {
@@ -158,12 +186,13 @@
       align-items: flex-start;
       gap: 14px;
       padding: 16px var(--gutter-tight);
+      padding-bottom: calc(16px + env(safe-area-inset-bottom));
     }
     .consent-actions { width: 100%; }
     .consent-btn { flex: 1; text-align: center; }
   }
   @media (max-width: 360px) {
-    .consent-inner { padding: 12px var(--gutter-tight); gap: 10px; }
+    .consent-inner { padding: 12px var(--gutter-tight); padding-bottom: calc(12px + env(safe-area-inset-bottom)); gap: 10px; }
     .consent-copy { font-size: 12px; }
   }
 

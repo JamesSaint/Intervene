@@ -71,7 +71,7 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
     display: inline-block;
     margin-bottom: var(--space-5);
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--muted);
@@ -79,10 +79,10 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
     transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
   }
   .back-link:hover { color: var(--ink); border-color: var(--accent); }
-  .insight-header .h1 { font-size: clamp(30px, 3.6vw, 40px); max-width: calc(22 * var(--ch)); }
+  .insight-header .h1 { font-size: clamp(32px, 3.6vw, 48px); max-width: calc(22 * var(--ch)); }
   /* On the smallest phones use the H2 scale for long tracked titles. */
   @media (max-width: 360px) {
-    .insight-header .h1 { font-size: 24px; line-height: 1.25; }
+    .insight-header .h1 { font-size: 30px; line-height: 1.2; }
   }
   .dek { margin-top: var(--gap-h1); max-width: calc(48 * var(--ch)); color: var(--ink); }
   .insight-header .meta {
@@ -100,8 +100,8 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
   .prose :global(h2) {
     font-family: var(--font-sans);
     font-weight: 600;
-    font-size: clamp(21px, 2.4vw, 24px);
-    letter-spacing: 0.08em; text-transform: uppercase;
+    font-size: clamp(28px, 2.4vw, 34px);
+    letter-spacing: var(--tracking-heading); text-transform: none;
     line-height: 1.2;
     margin: var(--gap-sub) 0 var(--space-3);
     color: var(--ink);

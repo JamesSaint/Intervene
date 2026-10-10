@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found · Intervene" description="Find your way back to Intervene or explore the assessment options." noindex>
+  <section class="hero missing-page">
+    <div class="wrap">
+      <span class="label">404 · Page not found</span>
+      <h1 class="h1">This page is unavailable.</h1>
+      <p class="lede">The page may have moved, or the address may be incorrect.</p>
+      <div class="hero-cta">
+        <a href="/" class="btn">Return to the homepage</a>
+        <a href="/services/" class="btn-ghost">Explore assessment options →</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .missing-page { padding-bottom: var(--section); }
+  .hero .h1 { max-width: calc(24 * var(--ch)); }
+</style>

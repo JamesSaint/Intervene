@@ -42,8 +42,8 @@ const MAX = 5;
   .ev-cap { margin: var(--gap-intro) 0 0; padding: 0; }
 
   .chart {
-    --left-col: 180px;
-    --right-col: 120px;
+    --left-col: 152px;
+    --right-col: 144px;
     --gutter: 24px;
   }
 
@@ -60,10 +60,12 @@ const MAX = 5;
     bottom: 6px;
     transform: translateX(-50%);
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     letter-spacing: 0.04em;
     color: var(--muted);
   }
+
+  .tick:last-child { transform: translateX(-100%); }
 
   /* Bar rows */
   .rows {
@@ -101,7 +103,7 @@ const MAX = 5;
   }
   .grade-label {
     font-family: var(--font-sans);
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 500;
     color: var(--ink);
   }
@@ -127,10 +129,11 @@ const MAX = 5;
 
   .cap-text {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     color: var(--muted);
     text-align: right;
     letter-spacing: 0.04em;
+    white-space: nowrap;
   }
   html[data-motion] .cap-text {
     opacity: 0;
@@ -142,22 +145,22 @@ const MAX = 5;
   figcaption {
     margin-top: var(--space-5);
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 16px;
     color: var(--muted);
+    line-height: 1.65;
     max-width: calc(60 * var(--ch));
   }
 
   @media (max-width: 720px) {
-    .chart { --left-col: 120px; --right-col: 0px; --gutter: 16px; }
-    .scale { margin-right: 0; height: 22px; }
+    .scale { margin-left: 0; margin-right: 0; height: 28px; }
     .row {
-      grid-template-columns: var(--left-col) 1fr;
-      gap: var(--gutter);
-      padding: 12px 0;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px 16px;
+      padding: 16px 0;
     }
-    .gridlines { right: 0; }
-    .cap-text { display: none; }
-    .grade-label { font-size: 14px; }
-    .track { height: 18px; }
+    .gridlines { display: none; }
+    .grade-label { grid-column: 1; grid-row: 1; }
+    .cap-text { grid-column: 2; grid-row: 1; }
+    .track { grid-column: 1 / -1; grid-row: 2; height: 18px; }
   }
 </style>

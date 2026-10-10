@@ -101,6 +101,12 @@ test.describe('navigation', () => {
 test.describe('buyer journey pass', () => {
   test('homepage carries no attestation specimen and one constructed finding', async ({ page }) => {
     await page.goto('/');
+    const example = page.locator('.finding-example');
+    await expect(example).not.toHaveAttribute('open', '');
+    await example.locator('summary').focus();
+    await page.keyboard.press('Enter');
+    await expect(example).toHaveAttribute('open', '');
+    await expect(page.locator('.finding-chain')).toBeVisible();
     const text = await page.locator('main').innerText();
     expect(text).not.toMatch(/engineHash|manifestHash|keyId|scoredAt/);
     expect(text).toMatch(/constructed illustration/i);
@@ -119,6 +125,9 @@ test.describe('buyer journey pass', () => {
     expect(fork).not.toMatch(/confirms nothing|predicts nothing/);
     const finding = await page.locator('.finding-block').innerText();
     expect(finding).not.toMatch(/£|\/ 5|108k|EXPOSED/);
+    await example.locator('summary').focus();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('.finding-chain')).toBeHidden();
   });
 
   test('the Review states its own decision and what the client keeps', async ({ page }) => {
@@ -150,7 +159,7 @@ test.describe('buyer journey pass', () => {
     expect(clear).toBe(true);
   });
 
-  test('quick navigation shows on desktop only and is keyboard reachable', async ({ page, isMobile }) => {
+  test('quick navigation shows on desktop only and is keyboard reachable', async ({ page, isMobile, browserName }) => {
     await page.goto('/');
     const nav = page.locator('.quick-nav');
     if (isMobile) {
@@ -158,9 +167,10 @@ test.describe('buyer journey pass', () => {
     } else {
       await expect(nav).toBeVisible();
       await expect(nav.locator('a')).toHaveCount(3);
-      await page.keyboard.press('Tab'); // skip link
-      await page.keyboard.press('Tab'); // logo
-      await page.keyboard.press('Tab');
+      const tab = browserName === 'webkit' ? 'Alt+Tab' : 'Tab';
+      await page.keyboard.press(tab); // skip link
+      await page.keyboard.press(tab); // logo
+      await page.keyboard.press(tab);
       await expect(nav.locator('a').first()).toBeFocused();
     }
   });

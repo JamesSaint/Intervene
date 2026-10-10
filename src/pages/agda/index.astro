@@ -215,8 +215,16 @@ const faqs = [
   .deliver-note + .deliver-note { margin-top: var(--space-3); }
 
   .isnot-grid { margin-top: var(--gap-intro); list-style: none; padding: 0; }
-  .isnot-grid .h3 { font-size: 21px; }
+  .isnot-grid .h3 { font-size: var(--type-card); }
 
+  /* On a phone the product mark, statement and action lead. The
+     introductory label accompanies the explanation below the actions. */
+  @media (max-width: 560px) {
+    .hero:has(.product-identity) { padding-top: 24px; }
+    .hero .product-identity { margin-bottom: 16px; }
+    .hero > .wrap > .label { order: 2; margin: 24px 0 0; }
+    .hero:has(.product-identity) .hero-cta { margin-top: 16px; }
+  }
   @media (max-width: 880px) {
     .deliver { grid-template-columns: 1fr; gap: var(--space-3); }
   }

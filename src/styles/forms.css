@@ -31,7 +31,7 @@
 .field label,
 .field-legend {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.04em;
   color: var(--muted);
   text-transform: uppercase;
@@ -78,7 +78,7 @@
 
 .field-hint {
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.5;
   color: var(--faint);
   margin: 0;
@@ -219,7 +219,7 @@
 
 .field-error {
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.5;
   color: var(--warn);
   margin: 0;

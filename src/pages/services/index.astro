@@ -76,10 +76,10 @@ const useCases = [
 
   <PageNav items={pageNav} />
 
-  <!-- WHERE TO BEGIN. Compact shared diagram; the sheets below carry the detail. -->
+  <!-- WHERE TO BEGIN. Compact shared comparison; the sheets below carry the detail. -->
   <section class="block choose" id="begin">
     <div class="wrap">
-      <OfferChoice compact headingLevel="h2" />
+      <OfferChoice compact headingLevel="h2" editorial />
     </div>
   </section>
 
@@ -399,27 +399,27 @@ const useCases = [
   }
 
   .sheet-head { display: grid; gap: var(--gap-item); align-content: start; padding-bottom: var(--space-4); }
-  .offer-kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  .offer-kicker { font-size: var(--type-caption); letter-spacing: 0; text-transform: none; color: var(--accent); }
   .offer-name { margin: 0; font-size: clamp(24px, 2.2vw, 30px); }
   .offer-purpose { margin: 4px 0 0; max-width: calc(46 * var(--ch)); font-family: var(--font-sans); font-size: 17px; line-height: 1.6; color: var(--muted); }
 
   .sheet-label {
     margin: 0;
-    font-family: var(--font-sans); font-size: 12px; font-weight: 600; letter-spacing: 0.24em;
-    text-transform: uppercase; color: var(--accent);
+    font-family: var(--font-mono); font-size: var(--type-caption); font-weight: 400; letter-spacing: 0;
+    text-transform: none; color: var(--accent);
   }
   .sheet-summary {
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-template-columns: 1fr;
     gap: var(--space-4) var(--space-5);
     padding: var(--space-4) 0;
-    border-top: 2px solid var(--accent);
+    border-top: 1px solid var(--hair-strong);
     border-bottom: 1px solid var(--hair-strong);
     align-content: start;
   }
   .sheet-summary > div { display: grid; gap: 8px; align-content: start; min-width: 0; }
-  .sheet-summary p { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--ink); }
-  .sheet-summary .price { font-family: var(--font-mono); font-size: clamp(24px, 2.2vw, 30px); font-weight: 600; letter-spacing: 0; line-height: 1.15; }
+  .sheet-summary p { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--ink); }
+  .sheet-summary .price { font-family: var(--font-mono); font-size: clamp(20px, 1.8vw, 24px); font-weight: 400; letter-spacing: 0; line-height: 1.15; }
   .price-flag { font-size: 13px; color: var(--muted); }
 
   .sheet-row {
@@ -430,12 +430,12 @@ const useCases = [
   .sheet-row p { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--ink); max-width: calc(52 * var(--ch)); }
   .sheet-row .dash-list > li { font-size: 16px; max-width: calc(52 * var(--ch)); }
   .sheet-row-detail p,
-  .sheet-row-detail .dash-list > li { font-size: 15px; color: var(--muted); }
+  .sheet-row-detail .dash-list > li { font-size: 16px; color: var(--muted); }
   .sheet-row-detail .sheet-label { color: var(--muted); }
-  .records-note { margin-top: var(--space-3); font-size: 14px; color: var(--muted); max-width: calc(52 * var(--ch)); }
+  .records-note { margin-top: var(--space-3); font-size: 16px; color: var(--muted); max-width: calc(52 * var(--ch)); }
   .sheet-disclosure { margin-top: 6px; border-top: 0; border-bottom: 0; }
-  .sheet-disclosure > summary { min-height: 44px; padding: 10px 0; font-size: 14px; justify-content: flex-start; gap: 12px; }
-  .sheet-disclosure .disclosure-body p { font-size: 15px; }
+  .sheet-disclosure > summary { min-height: 44px; padding: 10px 32px 10px 0; font-size: 16px; justify-content: flex-start; gap: 12px; }
+  .sheet-disclosure .disclosure-body p { font-size: 16px; }
   .price-qualifier { margin-top: var(--space-5); }
   .start-here .cta-row { margin-top: var(--space-5); }
 
@@ -459,13 +459,13 @@ const useCases = [
 
   /* ----- Activity sequence: the SEDI rail, four steps ----- */
   .activity-seq { margin: var(--gap-intro) 0 0; }
-  .seq-caption { display: block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: var(--space-5); }
+  .seq-caption { display: block; font-size: var(--type-caption); letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: var(--space-5); }
   .seq-rail { margin-bottom: -7px; }
   .seq { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 32px; position: relative; z-index: 1; }
   .seq-step { display: grid; gap: 10px; align-content: start; }
-  .seq-step .stage-n { margin-top: 10px; color: var(--accent); letter-spacing: 0.06em; font-size: 11px; }
+  .seq-step .stage-n { margin-top: 10px; color: var(--accent); letter-spacing: 0.06em; font-size: var(--type-caption); }
   .seq-name { margin: 0; font-size: 22px; }
-  .seq-step p { margin: 0; max-width: calc(32 * var(--ch)); font-size: 15px; }
+  .seq-step p { margin: 0; max-width: calc(32 * var(--ch)); font-size: 16px; }
   .seq-foot { margin-top: var(--space-5); }
   html[data-motion] .seq-step {
     opacity: 0; transform: translateY(var(--move-reveal));

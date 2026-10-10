@@ -1,17 +1,17 @@
-/* Intervene typography, aligned with brand kit v3.0. */
+/* Approved brand fonts, with the homepage editorial hierarchy shared site-wide. */
 
 .display-xl, .h1, .h2, .h3 {
   font-family: var(--font-sans);
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: var(--tracking-heading);
+  text-transform: none;
   margin: 0;
   color: var(--ink);
 }
-.display-xl { font-size: clamp(32px, 6vw, 72px); line-height: 1.08; }
-.h1 { font-size: clamp(30px, 3.6vw, 40px); line-height: 1.15; }
-.h2 { font-size: clamp(21px, 2.4vw, 24px); line-height: 1.25; }
-.h3 { font-size: clamp(16px, 1.9vw, 18px); line-height: 1.3; }
+.display-xl { font-size: var(--type-display); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.06; }
+.h1 { font-size: var(--type-h1); line-height: 1.13; }
+.h2 { font-size: var(--type-h2); line-height: 1.2; }
+.h3 { font-size: var(--type-h3); line-height: 1.3; }
 
 :where(.display-xl, .h1, .h2, .h3, .close-q, .insight-title, main h1, main h2, main h3, main h4, main h5, main h6) {
   text-wrap: balance;
@@ -21,8 +21,8 @@
 }
 :where(main h1, main h2, main h3, main h4, main h5, main h6) {
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: var(--tracking-heading);
+  text-transform: none;
 }
 :is(.display-xl, .h1, .h2, .h3, .close-q, .insight-title, main h1, main h2, main h3, main h4, main h5, main h6) :is(em, .em) {
   font-style: normal;
@@ -30,9 +30,9 @@
 }
 :where(.lede, .body, .body-sm, main p, main li) { text-wrap: pretty; }
 .keep-together { white-space: nowrap; }
-.lede { font-family: var(--font-sans); font-size: clamp(18px, 1.6vw, 20px); line-height: 1.5; font-weight: 400; color: var(--muted); }
-.body { font-family: var(--font-sans); font-size: 16px; line-height: 1.6; font-weight: 400; color: var(--muted); }
-.body-sm { font-family: var(--font-sans); font-size: 14px; line-height: 1.5; }
+.lede { font-family: var(--font-sans); font-size: clamp(18px, 1.5vw, 22px); line-height: 1.65; font-weight: 400; color: var(--muted); }
+.body { font-family: var(--font-sans); font-size: var(--type-body); line-height: 1.7; font-weight: 400; color: var(--muted); }
+.body-sm { font-family: var(--font-sans); font-size: 16px; line-height: 1.65; }
 .mono { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0; font-weight: 400; }
 em, .em { font-style: italic; font-weight: 400; }
 .muted { color: var(--muted); }

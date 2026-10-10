@@ -19,10 +19,10 @@ const pageNav = [
 ];
 
 const rhythm = [
-  { k: '--section', v: 'clamp(64px, 9vh, 112px)', u: 'Above and below a major section (.block).' },
+  { k: '--section', v: 'clamp(64px, 8vw, 112px)', u: 'Above and below a major section (.block).' },
   { k: '--section-tight', v: 'clamp(48px, 7vh, 80px)', u: 'A closing CTA or a short reference block (.block.tight).' },
-  { k: '--hero-top / --hero-bottom', v: 'clamp(72px, 10vh, 120px) / clamp(56px, 8vh, 96px)', u: 'Every inner-page hero. More above than below.' },
-  { k: '--gap-h1', v: '28px', u: 'h1 to lede in a hero.' },
+  { k: '--hero-top / --hero-bottom', v: 'clamp(48px, 7vh, 80px) / clamp(40px, 6vh, 64px)', u: 'Inner-page heroes; compact spacing on phones and short viewports.' },
+  { k: '--gap-h1', v: '24px', u: 'h1 to lede in a hero.' },
   { k: '--gap-head', v: '16px', u: 'h2 to its lede or first paragraph.' },
   { k: '--gap-intro', v: '40px', u: 'Lede to the grid, list, table or diagram it introduces.' },
   { k: '--gap-sub', v: '56px', u: 'Between subsections that share one section.' },
@@ -31,8 +31,8 @@ const rhythm = [
 
 const widths = [
   { k: '--max', v: '1280px', u: '.wrap: grids, tables, diagrams.' },
-  { k: '--max-diagram', v: '1120px', u: 'The homepage finding and offer fork.' },
-  { k: '--max-narrow', v: '880px', u: '.wrap-narrow: one-column argument.' },
+  { k: '--max-diagram', v: '1120px', u: 'Wide technical diagrams where required.' },
+  { k: '--max-narrow', v: '880px', u: '.wrap-narrow: one-column argument aligned to the main content edge.' },
   { k: '--max-reading', v: '680px', u: '.wrap-reading: insight notes and legal documents.' },
   { k: '--measure, --measure-lede, --measure-item', v: '62ch, 58ch, 44ch', u: 'Body, introduction, and text inside a grid cell.' },
   { k: '--gutter / --gutter-tight', v: '64px / 24px', u: 'Page gutter; phone gutter below 720px.' },
@@ -88,7 +88,7 @@ const motion = [
     <div class="wrap">
       <h2 class="h2">Type.</h2>
       <p class="lede muted">
-        Headings use Montserrat SemiBold, uppercase, with 0.08em spacing.
+        Headings use Montserrat SemiBold. Content headings use sentence case with -0.015em spacing; the primary statement and short capability labels retain capitals with 0.08em spacing.
         Labels use Montserrat SemiBold with 0.24em spacing.
         IBM Plex Mono is for data, references and captions.
       </p>
@@ -98,15 +98,15 @@ const motion = [
           <p class="display-xl">Can you stop it <em>in time?</em></p>
         </div>
         <div>
-          <span class="mono muted">h1 · clamp(30px, 3.6vw, 40px)</span>
+          <span class="mono muted">h1 · clamp(32px, 4.6vw, 64px)</span>
           <p class="h1">Two ways to begin. <em>One named system.</em></p>
         </div>
         <div>
-          <span class="mono muted">h2 · clamp(21px, 2.4vw, 24px)</span>
+          <span class="mono muted">h2 · clamp(30px, 3.1vw, 44px)</span>
           <p class="h2">Detection works. <em>Authority does not.</em></p>
         </div>
         <div>
-          <span class="mono muted">h3 · clamp(16px, 1.9vw, 18px)</span>
+          <span class="mono muted">h3 · clamp(22px, 2.2vw, 30px)</span>
           <p class="h3">What prevents intervention in this example.</p>
         </div>
         <div>
@@ -114,14 +114,14 @@ const motion = [
           <span class="label section-kicker">Where the question arrives</span>
         </div>
         <div>
-          <span class="mono muted">lede · clamp(18px, 1.6vw, 20px)</span>
+          <span class="mono muted">lede · clamp(18px, 1.5vw, 22px)</span>
           <p class="lede muted">
             Intervention Readiness is the ability of an organisation to detect,
             escalate, decide and intervene before harm becomes irreversible.
           </p>
         </div>
         <div>
-          <span class="mono muted">body · 16px</span>
+          <span class="mono muted">body · 17px; 16px on phones</span>
           <p class="body muted">
             Documented responsibilities alone do not establish whether the
             people named can intervene in time. The assessment examines
@@ -169,7 +169,7 @@ const motion = [
     <div class="wrap">
       <h2 class="h2">Actions.</h2>
       <p class="lede muted">
-        One filled button per view. The ghost button is its alternative.
+        One filled button per view. Secondary hero actions use a text link; other action groups may use a ghost button.
         Links underline in hairline and turn gold on hover and focus. Focus
         is always a 2px gold ring, never a colour change alone.
       </p>
@@ -213,7 +213,7 @@ const motion = [
       <h3 class="h3 guide-h3">Cards · <span class="mono">.card-grid</span>, <span class="mono">.card</span></h3>
       <ul class="card-grid" role="list">
         <li class="card"><span class="mono guide-kicker">A consequential deployment</span><h4 class="h3 card-title">You are about to depend on something you cannot easily reverse.</h4><p class="body muted">A card that is not a link has no hover state.</p></li>
-        <li><a class="card" href="#components"><span class="mono guide-kicker">Linked card</span><h4 class="h3 card-title">A card that is a link.</h4><p class="body muted">Gold rule and raised surface on hover and focus.</p></a></li>
+        <li><a class="card" href="#components"><span class="mono guide-kicker">Linked card</span><h4 class="h3 card-title">A card that is a link.</h4><p class="body muted">Gold rule on hover and a visible focus ring.</p></a></li>
       </ul>
 
       <h3 class="h3 guide-h3">Disclosure · <span class="mono">details.disclosure</span></h3>
@@ -265,7 +265,7 @@ keyId              2026-05-02-d7e5468e</code></pre>
   .guide-list .val { display: block; margin-bottom: 4px; color: var(--accent); font-size: 12px; }
   .stack { display: grid; gap: var(--space-6); margin-top: var(--gap-intro); max-width: 880px; }
   .stack > div > .mono { display: block; margin-bottom: var(--space-2); }
-  .stack .display-xl { font-size: clamp(40px, 6vw, 72px); }
+  .stack .display-xl { font-size: var(--type-display); }
   .palette {
     margin-top: var(--gap-intro);
     display: grid;
