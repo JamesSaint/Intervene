@@ -127,7 +127,8 @@ test.describe('buyer journey pass', () => {
     expect(finding).not.toMatch(/£|\/ 5|108k|EXPOSED/);
     await example.locator('summary').focus();
     await page.keyboard.press('Enter');
-    await expect(page.locator('.finding-chain')).toBeHidden();
+    await expect(example.locator('.example-body')).toBeHidden();
+    await expect(page.locator('.finding-chain')).toBeVisible();
   });
 
   test('the Review states its own decision and what the client keeps', async ({ page }) => {

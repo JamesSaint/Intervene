@@ -1,4 +1,5 @@
 ---
+import IntegrityNote from '../../components/IntegrityNote.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { markAgda } from '../../lib/marks';
 import { offers, activities, offerFaqs, buyingGroup, PRICE_QUALIFIER, FEE_BASIS, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
@@ -58,14 +59,7 @@ const useCases = [
   <section class="hero">
     <div class="wrap">
       <h1 class="h1">Two ways to begin. <em>One named system.</em></h1>
-      <p class="lede muted">
-        The starting point is the system, the decision or action it
-        influences, and the intervention question. We agree the evidence and
-        access required before selecting the engagement. An Intervention
-        Readiness Review establishes whether a full assessment is warranted.
-        A full <Agda /> Assessment examines the agreed system, pathway and
-        scenario in depth.
-      </p>
+      <p class="lede muted">A Review establishes the intervention question and evidence position. A full <Agda /> Assessment examines the defined system, pathway and scenario. Either can be the starting point.</p>
       <div class="hero-cta">
         <a href="/contact/" class="btn">Discuss your system</a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
@@ -126,7 +120,7 @@ const useCases = [
               <ul class="dash-list" role="list">
                 {o.receive.map((x) => <li set:html={markAgda(x)} />)}
               </ul>
-              {o.slug === 'assessment' && <p class="records-note">{RECORDS_NOTE}</p>}
+              {o.slug === 'assessment' && <><p class="records-note">{RECORDS_NOTE}</p><IntegrityNote /></>}
             </div>
 
             <div class="sheet-row">

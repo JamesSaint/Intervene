@@ -1,5 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import ReadingNav from '../components/ReadingNav.astro';
+import { pageOutline } from '../lib/page-outline';
 import { markAgda } from '../lib/marks';
 
 interface Props {
@@ -20,6 +22,7 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
   month: 'long',
   year: 'numeric',
 });
+const outline = pageOutline(await Astro.slots.render('default'));
 ---
 
 <BaseLayout
@@ -41,19 +44,21 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
       </div>
     </header>
 
-    <div class="wrap-reading prose">
-      <slot />
-    </div>
-
-    <div class="wrap-reading insight-close">
-      <p class="body muted">
-        If this describes a system you are accountable for, look at the
-        evidence format an assessment produces, and decide whether to open a
-        conversation.
-      </p>
-      <div class="cta-row">
-        <a href="/contact/" class="btn">Discuss your system</a>
-        <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
+    <div class="wrap-reading reading-layout">
+      <ReadingNav items={outline.items} />
+      <div class="reading-content">
+        <div class="prose"><Fragment set:html={outline.html} /></div>
+        <div class="insight-close">
+          <p class="body muted">
+            If this describes a system you are accountable for, look at the
+            evidence format an assessment produces, and decide whether to open a
+            conversation.
+          </p>
+          <div class="cta-row">
+            <a href="/contact/" class="btn">Discuss your system</a>
+            <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
+          </div>
+        </div>
       </div>
     </div>
   </article>
@@ -68,7 +73,9 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
     border-bottom: 1px solid var(--hair);
   }
   .back-link {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     margin-bottom: var(--space-5);
     font-family: var(--font-mono);
     font-size: var(--type-caption);
@@ -95,8 +102,7 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
   }
 
   .prose {
-    padding-top: var(--section-tight);
-    padding-bottom: var(--section-tight);
+    padding: 0;
   }
   .prose :global(h2) {
     font-family: var(--font-sans);

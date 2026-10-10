@@ -1,4 +1,5 @@
 ---
+import IntegrityNote from '../../components/IntegrityNote.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { markAgda } from '../../lib/marks';
 import Agda from '../../components/Agda.astro';
@@ -207,8 +208,7 @@ const relationships = [
     <div class="wrap-narrow">
       <h2 class="h2">How <Agda /> relates to Intervention Readiness.</h2>
       <p class="body">
-        <Agda /> is not the category. Intervention Readiness is the
-        category. <Agda /> is Intervene's proprietary assessment of it.
+        Intervention Readiness is the category. <Agda /> is Intervene's proprietary assessment of it.
       </p>
       <p class="body muted">
         <Agda /> evaluates evidence across Detect, Escalate, Decide and
@@ -218,8 +218,9 @@ const relationships = [
         not a standard deliverable; they may be supplied only under an approved
         output-access arrangement.
       </p>
+      <IntegrityNote />
       <div class="cta-row">
-        <a href="/agda/" class="btn"><Agda /></a>
+        <a href="/agda/" class="btn">Explore the assessment</a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
       </div>
     </div>

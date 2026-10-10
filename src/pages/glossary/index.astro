@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageNav from '../../components/PageNav.astro';
 import { markAgda } from '../../lib/marks';
 import { terms } from '../../lib/terms';
 import Agda from '../../components/Agda.astro';
@@ -37,6 +38,7 @@ const faqs = [
     </div>
   </section>
 
+  <PageNav items={terms.map((term) => ({ href: `#${term.slug}`, label: term.name }))} />
   <section class="block">
     <div class="wrap">
       <dl class="glossary">
@@ -64,7 +66,7 @@ const faqs = [
       </p>
       <div class="cta-row">
         <a href="/intervention-readiness/" class="btn">What is Intervention Readiness?</a>
-        <a href="/agda/" class="btn-ghost"><Agda /></a>
+        <a href="/agda/" class="btn-ghost">Explore the assessment</a>
       </div>
     </div>
   </section>

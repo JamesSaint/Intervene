@@ -1,4 +1,5 @@
 ---
+import IntegrityNote from '../../components/IntegrityNote.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageNav from '../../components/PageNav.astro';
 import { markAgda } from '../../lib/marks';
@@ -103,6 +104,7 @@ const evidence = [
             Nothing on this page is evidence about anyone.
           </p>
 
+          <nav class="related-links" aria-label="Inspect the constructed report"><a class="link" href="#controls">Evidence</a><a class="link" href="#authority">Finding</a><a class="link" href="#decision">Decision</a><a class="link" href="#limits">Limitations</a></nav>
           <dl class="cover-meta">
             {cover.map((c) => (
               <div>
@@ -130,7 +132,8 @@ inputHash          not applicable
 outputHash         not applicable
 attestation        none. this page is not signed
 signatureCovers    input, output and manifest commitments only. see /verify/`}</code></pre>
-          <p class="env-verify mono">
+          <IntegrityNote />
+      <p class="env-verify mono">
             current verify path · agda-verify --bundle ./bundle.json
           </p>
           <p class="env-limits">

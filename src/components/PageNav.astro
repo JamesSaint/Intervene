@@ -5,6 +5,7 @@
  * Targets are ids that already exist on the page, so every link works
  * without scripts and the URL fragments are stable.
  */
+import { markAgda } from '../lib/marks';
 interface Props {
   items: Array<{ href: string; label: string }>;
   label?: string;
@@ -17,7 +18,7 @@ const { items, label = 'On this page' } = Astro.props;
     <span class="page-nav-label" aria-hidden="true">{label}</span>
     <ul role="list">
       {items.map((it) => (
-        <li><a href={it.href}>{it.label}</a></li>
+        <li><a href={it.href} set:html={markAgda(it.label)} /></li>
       ))}
     </ul>
   </div>

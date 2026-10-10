@@ -1,4 +1,5 @@
 ---
+import IntegrityNote from '../../components/IntegrityNote.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProofMarks from '../../components/ProofMarks.astro';
 import PageNav from '../../components/PageNav.astro';
@@ -80,6 +81,7 @@ const audiences = [
         Node.js 18+ and never contacts Intervene infrastructure. A signed
         record is not by itself an issued assessment.
       </p>
+      <IntegrityNote />
       <div class="hero-proof"><ProofMarks /></div>
     </div>
   </section>
@@ -94,14 +96,10 @@ const audiences = [
         The Ed25519 signature is over the canonical attestation envelope. The
         envelope commits to the following, and to nothing else.
       </p>
-      <span class="col-label">Covered by the signature</span>
-      <ul class="dash-list" role="list">
-        {covered.map((x) => <li>{x}</li>)}
-      </ul>
-      <span class="col-label">Not covered by the signature</span>
-      <ul class="dash-list" role="list">
-        {notCovered.map((x) => <li>{x}</li>)}
-      </ul>
+      <div class="coverage-grid">
+        <div><h3 class="col-label">Covered by the signature</h3><ul class="dash-list" role="list">{covered.map((x) => <li>{x}</li>)}</ul></div>
+        <div><h3 class="col-label">Not covered by the signature</h3><ul class="dash-list" role="list">{notCovered.map((x) => <li>{x}</li>)}</ul></div>
+      </div>
       <p class="body muted note">
         Read a report header alongside the signed input and output. The
         header is not proof that the displayed name was cryptographically
@@ -312,6 +310,9 @@ const audiences = [
   .fields dt { font-family: var(--font-mono); text-transform: none; letter-spacing: 0.04em; font-size: 12px; }
   .note { margin-top: var(--space-4); }
   .col-label { margin-top: var(--gap-intro); }
+  .coverage-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-7); }
+  .coverage-grid .col-label { font-size: var(--type-caption); }
+  @media (max-width: 880px) { .coverage-grid { grid-template-columns: 1fr; gap: 0; } }
 
   .lede + .code-caption { margin-top: var(--gap-intro); }
 </style>

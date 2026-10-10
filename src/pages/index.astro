@@ -5,41 +5,15 @@ import FindingChain from '../components/FindingChain.astro';
 import OfferChoice from '../components/OfferChoice.astro';
 import AgdaLogo from '../components/AgdaLogo.astro';
 import Agda from '../components/Agda.astro';
+import SediExplorer from '../components/SediExplorer.astro';
+import IntegrityNote from '../components/IntegrityNote.astro';
 
-const situations = [
-  {
-    kicker: 'A consequential deployment',
-    h: 'You are about to depend on something you cannot easily reverse.',
-    p: 'Approval is close, the system will act without a human confirming each decision, and nobody has established how quickly it could be stopped.',
-  },
-  {
-    kicker: 'Board or regulator scrutiny',
-    h: 'Someone has asked for evidence, not assurance.',
-    p: 'An audit committee, a supervisor or a risk committee wants to see that oversight works. Policies and control coverage do not answer the question they asked.',
-  },
-  {
-    kicker: 'Untested arrangements',
-    h: 'The arrangements exist. Nobody has run them under pressure.',
-    p: 'Escalation routes, halt authority and named owners are documented. Whether they hold at 3am, during a change freeze, or when the primary contact is unavailable is a separate question.',
-  },
+const questions = [
+  { h: 'Who can actually stop it?', p: 'Not who owns the risk. Who has the authority to intervene?' },
+  { h: 'Will they know in time?', p: 'Does actionable information reach the right people before the intervention window closes?' },
+  { h: 'What happens when they act?', p: 'Does intervention work under actual operating conditions?' },
 ];
-
-const capabilities = [
-  { name: 'Detect', question: 'Can the organisation recognise when intervention is required?' },
-  { name: 'Escalate', question: 'Can the right people be informed in time?' },
-  { name: 'Decide', question: 'Can accountable decision-makers determine what action is necessary?' },
-  { name: 'Intervene', question: 'Can the organisation execute an effective intervention?' },
-];
-
-const states = [
-  { name: 'Before impact', p: 'The chain completes in time under the assessed conditions.' },
-  { name: 'At risk', p: 'The chain completes, but within a margin that ordinary operational pressure can erode.' },
-  { name: 'After impact', p: 'The chain does not complete in time. Intervention lands after the consequence.' },
-];
-
-/* The constructed retail-credit example, as corrected on /sample-report/.
-   Facts are the sample's own; nothing is added: no score, no money, no
-   evidence grade, no regulatory conclusion. */
+// The existing constructed sample. No client evidence or issued conclusion.
 const finding = {
   system: 'CRED-MOD-04, a retail credit decisioning model. Automated approve, decline or refer decisions; the question concerns the auto-decline pathway.',
   scenario: 'A macro shock coincides with model drift and creates a need to stop or redirect the affected pathway.',
@@ -47,27 +21,21 @@ const finding = {
   limits: 'One pathway and one scenario. Nothing here is a conclusion about any institution, other systems or legal conformity.',
 };
 ---
-
 <BaseLayout
   title="Intervention Readiness · Intervene"
   description="AGDA® assesses whether your organisation can detect, escalate, decide and intervene in a consequential AI-enabled system within the time available."
   current="home"
 >
-  <!-- 1 · DOORWAY -->
-  <section class="hero hero-home">
+  <section class="hero hero-home" aria-labelledby="home-question">
     <div class="wrap">
-      <a class="label hero-label hero-link" href="/intervention-readiness/">Intervention Readiness</a>
-      <h1 class="display-xl">Can you stop it <em>in time?</em></h1>
+      <a class="label hero-link" href="/intervention-readiness/">Intervention Readiness</a>
+      <h1 class="display-xl" id="home-question">Can you stop it <em>in time?</em></h1>
       <div class="hero-intro">
-        <p class="hero-sub">
-          Intervention Readiness is the ability to detect, escalate, decide
-          and intervene before harm becomes irreversible. <Agda /> assesses
-          whether your organisation can do it in the time available.
-        </p>
+        <p class="hero-sub">Consequential systems need people who can act before harm becomes irreversible.</p>
         <div class="hero-actions">
           <div class="hero-cta">
             <a href="/contact/" class="btn">Discuss your system</a>
-            <a href="#offers" class="link hero-secondary">Compare the two options <span aria-hidden="true">→</span></a>
+            <a href="/agda/" class="link hero-secondary">Explore <Agda /> <span aria-hidden="true">→</span></a>
           </div>
           <p class="hero-note">One named system. One defined pathway. One intervention scenario.</p>
         </div>
@@ -76,298 +44,152 @@ const finding = {
     </div>
   </section>
 
-  <!-- 2 · RELEVANCE -->
-  <section class="block situations">
+  <section class="block situations" aria-labelledby="home-problem">
     <div class="wrap">
       <div class="section-heading">
-        <span class="label section-kicker">Where the question arrives</span>
-        <h2 class="h2 situations-head">When the ability to act needs to be established.</h2>
+        <span class="label section-kicker">The problem</span>
+        <h2 class="h2" id="home-problem">Responsibilities are documented. Can the people act?</h2>
       </div>
-      <ul class="situation-grid" role="list" data-reveal="stagger">
-        {situations.map((s, i) => (
-          <li class="situation">
-            <span class="mono situation-index" aria-hidden="true">0{i + 1}</span>
-            <span class="mono situation-kicker">{s.kicker}</span>
-            <h3 class="h3">{s.h}</h3>
-            <p class="body muted">{s.p}</p>
-          </li>
+      <ol class="problem-questions" role="list">
+        {questions.map((q, i) => (
+          <li><span class="mono problem-index" aria-hidden="true">0{i + 1}</span><h3 class="h3">{q.h}</h3><p class="body muted">{q.p}</p></li>
         ))}
-      </ul>
-      <p class="body muted situations-foot">
-        Documented responsibilities alone do not establish whether the people
-        named can intervene in time. The assessment examines whether they can.
-      </p>
+      </ol>
     </div>
   </section>
 
-  <!-- 3 · WHAT THE ASSESSMENT SHOWS -->
-  <section class="block finding-block">
+  <section class="block method-block" aria-labelledby="home-method">
     <div class="wrap">
       <div class="assessment-intro">
-        <div class="assessment-identity">
-          <AgdaLogo />
-          <span class="label assessment-label">The assessment</span>
-        </div>
+        <div class="assessment-identity"><AgdaLogo /><span class="label">The method</span></div>
         <div>
-          <h2 class="h2 assessment-head">Assess the ability to intervene.</h2>
+          <h2 class="h2" id="home-method">Assess the ability to intervene.</h2>
           <p class="lede muted"><Agda /> assesses whether organisations can detect, escalate, decide and intervene when consequential systems require human intervention.</p>
-          <a href="/agda/" class="link assessment-link">Explore the assessment <span aria-hidden="true">→</span></a>
         </div>
       </div>
+      <SediExplorer />
+      <nav class="related-links" aria-label="Explore the method"><a href="/methodology/" class="link">The methodology and its limits <span aria-hidden="true">→</span></a></nav>
+    </div>
+  </section>
 
-      <ol class="capabilities" role="list" aria-label="Detect, Escalate, Decide, Intervene">
-        {capabilities.map((c, i) => (
-          <li>
-            <div class="capability-top"><span class="mono">0{i + 1}</span>{i < 3 && <span aria-hidden="true">→</span>}</div>
-            <h3>{c.name}</h3>
-            <p>{c.question}</p>
-          </li>
-        ))}
-      </ol>
-
-      <div class="assessment-output">
+  <section class="block finding-block" aria-labelledby="home-evidence">
+    <div class="wrap">
+      <div class="section-heading">
+        <span class="label section-kicker">The evidence</span>
         <div>
-          <span class="label section-kicker">The outcome</span>
-          <h3 class="h3">A verdict with its evidence and limits.</h3>
+          <h2 class="h2" id="home-evidence">A verdict. Supported by evidence.</h2>
+          <p class="body muted">A full <Agda /> Assessment returns a verdict, evidence register, SEDI findings and executive interpretation. The Review does not produce a verdict.</p>
         </div>
-        <p class="body muted">Each stage is assessed against evidence. The weakest stage constrains the chain, and the assessment names it, so remediation can be prioritised. A full <Agda /> Assessment returns one of three states, with an evidence register, SEDI findings and an executive interpretation. The Review does not produce a verdict.</p>
       </div>
-      <ul class="states" role="list">
-        {states.map((st) => (
-          <li><span class="state-name">{st.name}</span><p class="body muted">{st.p}</p></li>
-        ))}
-      </ul>
-
+      <div class="example-heading">
+        <span class="mono example-label">Constructed illustration</span>
+        <h3 class="h3">Detection works. Authority does not.</h3>
+        <p class="body muted">Can the auto-decline pathway stop within an assumed six-hour window? No client data; not an issued assessment or a verified outcome.</p>
+      </div>
+      <FindingChain />
       <details class="finding-example">
-        <summary>
-          <span class="mono example-label">Constructed illustration</span>
-          <span class="example-title">Detection works. Authority does not.</span>
-          <span class="example-toggle" aria-hidden="true"></span>
-        </summary>
+        <summary><span class="example-title">Inspect the scope, decision and limitations</span><span class="example-toggle" aria-hidden="true"></span></summary>
         <div class="example-body">
-          <p class="lede muted">
-            A constructed illustration of a full <Agda /> Assessment finding.
-            It describes no real organisation, uses no client data, and is not an
-            issued assessment or a verified outcome.
-          </p>
-
           <dl class="finding-scope">
             <div><dt>System</dt><dd>{finding.system}</dd></div>
             <div><dt>Scenario</dt><dd>{finding.scenario}</dd></div>
           </dl>
-
-          <FindingChain />
-
           <dl class="finding-verdict">
-            <div>
-              <dt>Decision the finding supports</dt>
-              <dd>{finding.decision}</dd>
-            </div>
-            <div>
-              <dt>Assumptions and limits</dt>
-              <dd>{finding.limits}</dd>
-            </div>
+            <div><dt>Decision the finding supports</dt><dd>{finding.decision}</dd></div>
+            <div><dt>Assumptions and limits</dt><dd>{finding.limits}</dd></div>
           </dl>
-          <p class="finding-note">
-            <a href="/sample-report/" class="link">Read the full constructed sample</a>.
-          </p>
         </div>
       </details>
+      <nav class="related-links" aria-label="Inspect the assessment output"><a href="/sample-report/" class="btn-ghost">View sample verdict</a><a href="/agda/#verdict" class="link">The three verdict states <span aria-hidden="true">→</span></a></nav>
+      <div class="evidence-notes">
+        <p>{SELF_APPROVAL} {RECORDS_NOTE} <a href="/verify/" class="link">What verification establishes</a>.</p>
+        <IntegrityNote />
+      </div>
     </div>
   </section>
 
-  <!-- 4 · THE TWO OFFERS. Shared content; the full sheets are on /services/. -->
   <section class="block engage" id="offers">
     <div class="wrap">
       <OfferChoice headingLevel="h2" editorial />
-      <p class="engage-terms">
-        {PRICE_QUALIFIER} The proposal confirms the scope, outputs, fee, terms
-        and timetable. {AVAILABILITY}
-        <a href="/services/" class="link">Scope, fees and how an engagement runs</a>.
-      </p>
+      <p class="engage-terms">{PRICE_QUALIFIER} The proposal confirms scope, outputs, fee, terms and timetable. {AVAILABILITY} <a href="/services/" class="link">Scope, fees and how an engagement runs</a>.</p>
     </div>
   </section>
 
-  <!-- 5 · HOW THE CONCLUSION IS CONTROLLED, AND THE NEXT STEP -->
-  <section class="block basis">
-    <div class="wrap">
-      <div class="basis-grid">
-        <div>
-          <span class="label section-kicker">Assessment responsibility</span>
-          <h2 class="h2">A conclusion with a visible basis.</h2>
-          <p class="body muted">
-            The assessment identifies the limiting parts of the intervention
-            chain and explains the evidence and assumptions behind the result.
-            Intervene retains responsibility for the conclusion. Clients can
-            correct facts, challenge interpretation and provide further
-            evidence. {SELF_APPROVAL}
-          </p>
-          <p class="body muted">
-            {RECORDS_NOTE} Where they are supplied, a check establishes the
-            integrity of the covered records, not the truth of the evidence.
-            <a href="/verify/" class="link">What verification establishes</a>.
-          </p>
-        </div>
-        <div>
-          <span class="label section-kicker">The next step</span>
-          <h2 class="h2">Start with the system and the decision.</h2>
-          <p class="body muted">
-            Tell us the system and the decision it supports. The first
-            conversation is twenty minutes at no charge, and you receive a
-            direct response within one to two working days. We do not
-            pre-qualify by email questionnaire. Scope, delivery arrangements
-            and a start date are confirmed in the proposal.
-          </p>
-          <div class="cta-row">
-            <a href="/contact/" class="btn">Discuss your system</a>
-            <a href="/services/" class="btn-ghost">Assessment options</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 6 · CLOSE -->
-  <section class="block close">
+  <section class="block close" aria-labelledby="home-decision">
     <div class="wrap close-wrap">
-      <div>
-        <span class="label section-kicker">Before you depend on it</span>
-        <h2 class="close-q">Can you stop it <em>in time?</em></h2>
-      </div>
-      <div class="close-action">
-        <p class="close-line">Establish what limits intervention before the organisation relies on the pathway.</p>
-        <a href="/contact/" class="btn">Discuss your system <span aria-hidden="true">→</span></a>
-        <a href="/sample-report/" class="link">View sample verdict</a>
-      </div>
+      <h2 class="close-q" id="home-decision">Can you stop it <em>in time?</em></h2>
+      <div class="close-action"><p class="close-line">Establish what your organisation can actually do before it matters.</p><a href="/contact/" class="btn">Discuss your system <span aria-hidden="true">→</span></a></div>
     </div>
   </section>
 </BaseLayout>
-
 <style>
-  /* One content edge throughout; long headings use editorial case while
-     the primary statement and short capability names retain brand capitals. */
   .hero { background: var(--paper-deep); padding: clamp(48px, 7vh, 80px) 0 40px; }
-  .hero-link { display: inline-block; }
-  .hero .display-xl { font-size: var(--type-display); line-height: 1.06; max-width: none; margin: 24px 0 0; }
-  .hero-intro { display: grid; grid-template-columns: 1.35fr 1fr; gap: 64px; margin-top: 40px; }
-  .hero-sub { margin: 0; font-size: clamp(18px, 1.5vw, 22px); line-height: 1.6; color: var(--muted); }
+  .hero-link { display: inline-flex; align-items: center; min-height: 44px; }
+  .hero .display-xl { font-size: var(--type-display); line-height: 1.06; margin: 24px 0 0; }
+  .hero-intro { display: grid; grid-template-columns: 1.35fr 1fr; gap: var(--space-7); margin-top: 40px; }
+  .hero-sub { margin: 0; font-size: var(--type-support); line-height: 1.6; color: var(--muted); }
   .hero-actions { padding-top: 4px; }
   .hero-cta { margin: 0; align-items: flex-start; gap: 20px; flex-direction: column; }
-  .hero-secondary { font-size: 16px; line-height: 1.5; padding: 8px 0; }
-  .hero-note { font-family: var(--font-mono); font-size: 12px; line-height: 1.65; color: var(--faint); margin: 20px 0 0; }
-  .hero-principle { border-top: 1px solid var(--hair); padding-top: 24px; margin: 40px 0 0; color: var(--faint); font-size: 16px; line-height: 1.6; }
+  .hero-secondary { display: inline-flex; align-items: center; gap: 8px; font-size: var(--type-small); line-height: 1.5; min-height: 44px; }
+  .hero-note { font-family: var(--font-mono); font-size: var(--type-caption); line-height: 1.65; color: var(--faint); margin: 20px 0 0; }
+  .hero-principle { border-top: 1px solid var(--hair); padding-top: 24px; margin: 40px 0 0; color: var(--faint); font-size: var(--type-small); line-height: 1.6; }
   .hero-principle span { color: var(--ink); }
-  .block { padding: var(--section) 0; }
-  .section-heading { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; align-items: start; margin-bottom: 48px; }
-  .section-heading .label { margin: 10px 0 0; }
+  .section-heading, .assessment-intro { display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-6); align-items: start; margin-bottom: 48px; }
+  .section-heading .label { margin-top: 10px; }
   .block .h2, .block .h3 { text-transform: none; letter-spacing: var(--tracking-heading); font-weight: 600; }
-  .block .h2 { font-size: var(--type-h2); line-height: 1.2; max-width: none; }
+  .block .h2 { font-size: var(--type-h2); line-height: 1.2; }
   .block .h3 { font-size: var(--type-h3); line-height: 1.3; }
   .block .body { font-size: var(--type-body); line-height: 1.7; }
-
-  .situations { border-bottom: 1px solid var(--hair); }
-  .situation-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
-  .situation { border-top: 1px solid var(--hair-strong); padding-top: 20px; display: grid; gap: 20px; align-content: start; }
-  .situation-index { color: var(--accent); font-size: 13px; }
-  .situation-kicker { font-size: 12px; color: var(--faint); line-height: 1.6; }
-  .situation-grid .h3 { font-size: var(--type-card); margin: 0; }
-  .situation p { margin: 0; }
-  .situations-foot { border-top: 1px solid var(--hair); padding-top: 24px; margin: 40px 0 0; }
-
-  .finding-block { background: var(--paper-soft); border-bottom: 1px solid var(--hair); }
-  .assessment-intro { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
-  .assessment-identity { display: flex; flex-direction: column; gap: 32px; padding-top: 8px; align-items: flex-start; }
+  .situations, .method-block, .finding-block, .engage { border-bottom: 1px solid var(--hair); }
+  .problem-questions { list-style: none; margin: 0; padding: 0; }
+  .problem-questions li { display: grid; grid-template-columns: 40px 1fr 1fr; gap: var(--space-6); align-items: baseline; padding: 32px 0; border-top: 1px solid var(--hair-strong); }
+  .problem-index { color: var(--accent); font-size: var(--type-caption); }
+  .problem-questions :is(h3, p) { margin: 0; }
+  .assessment-identity { display: grid; gap: 32px; justify-items: start; padding-top: 8px; }
   .assessment-identity :global(.agda-logo.logo) { width: 256px; }
-  .assessment-label { font-size: 11px; color: var(--faint); }
-  .assessment-intro .lede { font-size: 20px; line-height: 1.65; margin-top: 24px; }
-  .assessment-link { display: inline-block; margin-top: 24px; padding: 8px 0; font-size: 16px; }
-  .capabilities { margin: 56px 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
-  .capabilities li { border-top: 1px solid var(--hair-strong); padding-top: 16px; }
-  .capability-top { display: flex; justify-content: space-between; color: var(--accent); font-size: 13px; }
-  .capabilities h3 { color: var(--ink); font-size: clamp(16px, 1.5vw, 20px); letter-spacing: 0.08em; text-transform: uppercase; margin: 24px 0 16px; }
-  .capabilities p { font-size: 16px; line-height: 1.65; color: var(--muted); margin: 0; }
-  .assessment-output { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; border-top: 1px solid var(--hair); padding-top: 40px; }
-  .assessment-output .h3 { margin-top: 20px; }
-  .assessment-output .body { margin: 0; }
-  .states { margin: 32px 0 48px; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-  .states li { border-top: 1px solid var(--hair-strong); padding-top: 20px; }
-  .state-name { font-size: 20px; font-weight: 500; color: var(--ink); }
-  .states .body { margin: 12px 0 0; font-size: 16px; }
-
-  /* The example is optional depth, with all assumptions retained in a
-     native disclosure that works with keyboard input and no JavaScript. */
-  .finding-example { border-top: 1px solid var(--hair-strong); border-bottom: 1px solid var(--hair-strong); }
-  .finding-example summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 1fr 2fr 24px; gap: 24px; align-items: center; padding: 28px 0; }
+  .assessment-intro .lede { font-size: var(--type-support); line-height: 1.65; margin-top: 24px; }
+  .finding-block { background: var(--paper-soft); }
+  .example-heading { border-top: 1px solid var(--hair-strong); padding-top: 32px; }
+  .example-label { font-size: var(--type-caption); line-height: 1.6; color: var(--accent); }
+  .example-heading .h3 { margin: 16px 0; }
+  .finding-example { border-block: 1px solid var(--hair-strong); margin-top: 32px; }
+  .finding-example summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 24px 0; }
   .finding-example summary::-webkit-details-marker { display: none; }
   .finding-example summary:is(:hover, :focus-visible) .example-title { color: var(--accent); }
   .finding-example summary:active .example-title { color: var(--accent-hover); }
   .finding-example summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
-  .example-label { font-size: 12px; line-height: 1.6; color: var(--muted); }
-  .example-title { font-size: 22px; line-height: 1.4; font-weight: 500; color: var(--ink); }
-  .example-toggle { width: 20px; height: 20px; position: relative; }
+  .example-title { font-size: var(--type-body); line-height: 1.5; color: var(--ink); }
+  .example-toggle { width: 20px; height: 20px; position: relative; flex: none; }
   .example-toggle::before, .example-toggle::after { content: ''; position: absolute; background: var(--accent); }
   .example-toggle::before { width: 18px; height: 1px; top: 9px; left: 1px; }
   .example-toggle::after { height: 18px; width: 1px; top: 1px; left: 9px; }
   .finding-example[open] .example-toggle::after { display: none; }
-  .example-body { padding: 8px 0 40px; }
-  .example-body > .lede { font-size: var(--type-body); line-height: 1.7; }
-  .finding-scope, .finding-verdict { margin: 32px 0 0; padding-top: 24px; border-top: 1px solid var(--hair); display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-  .finding-scope dt, .finding-verdict dt { font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-bottom: 12px; }
-  .finding-scope dd, .finding-verdict dd { margin: 0; font-size: 16px; line-height: 1.7; color: var(--muted); }
-  .finding-note { margin: 24px 0 0; font-size: 16px; }
-
-  .engage { border-bottom: 1px solid var(--hair); }
-  .engage-terms { margin: 32px 0 0; padding-top: 24px; border-top: 1px solid var(--hair); font-size: 16px; line-height: 1.7; color: var(--muted); }
-  .basis { background: var(--paper-soft); border-bottom: 1px solid var(--hair); }
-  .basis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
-  .basis .label { margin-bottom: 24px; }
-  .basis .h2 { font-size: clamp(28px, 2.5vw, 36px); }
-  .basis .body { margin: 24px 0 0; font-size: 16px; }
-  .basis .body + .body { margin-top: 16px; }
-  .basis .cta-row { margin-top: 32px; }
-  .close-wrap { display: grid; grid-template-columns: 1.4fr 1fr; gap: 64px; align-items: end; }
-  .close-q { color: var(--ink); font-size: clamp(36px, 4.2vw, 60px); line-height: 1.13; letter-spacing: var(--tracking-heading); text-transform: none; margin: 24px 0 0; }
+  .example-body { padding: 8px 0 32px; }
+  .finding-scope, .finding-verdict { margin: 0; padding: 24px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .finding-verdict { margin-top: 24px; border-top: 1px solid var(--hair); }
+  .finding-scope dt, .finding-verdict dt { font-family: var(--font-mono); font-size: var(--type-caption); color: var(--accent); margin-bottom: 12px; }
+  .finding-scope dd, .finding-verdict dd { margin: 0; font-size: var(--type-small); line-height: 1.7; color: var(--muted); }
+  .evidence-notes { border-top: 1px solid var(--hair); margin-top: 32px; padding-top: 24px; }
+  .evidence-notes > p { font-size: var(--type-small); line-height: 1.7; color: var(--muted); margin: 0; }
+  .engage-terms { margin: 32px 0 0; padding-top: 24px; border-top: 1px solid var(--hair); font-size: var(--type-small); line-height: 1.7; color: var(--muted); }
+  .close-wrap { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--space-7); align-items: end; }
+  .close-q { color: var(--ink); font-size: clamp(36px, 4.2vw, 60px); line-height: 1.13; letter-spacing: var(--tracking-heading); text-transform: none; margin: 0; }
   .close-action { display: grid; justify-items: start; gap: 24px; }
-  .close-line { font-size: 18px; line-height: 1.65; color: var(--muted); margin: 0; }
-  .close-action .link { padding: 8px 0; font-size: 16px; }
-
-  @media (max-height: 760px) and (min-width: 881px) {
-    .hero { padding-top: 40px; }
-    .hero .display-xl { font-size: clamp(44px, 6vw, 80px); }
-    .hero-intro { margin-top: 28px; }
-  }
-  @media (max-width: 1100px) {
-    .hero-intro { gap: 40px; grid-template-columns: 1.1fr 1fr; }
-    .situation-grid { gap: 24px; }
-    .assessment-intro, .assessment-output, .section-heading { grid-template-columns: 1fr 1.8fr; gap: 32px; }
-    .assessment-identity :global(.agda-logo.logo) { width: 224px; }
-    .capabilities { grid-template-columns: repeat(2, 1fr); gap: 32px 40px; }
-    .capabilities li:nth-child(2) .capability-top > span:last-child { visibility: hidden; }
-    .basis-grid, .close-wrap { gap: 40px; }
-  }
+  .close-line { font-size: var(--type-support); line-height: 1.65; color: var(--muted); margin: 0; }
+  @media (max-height: 760px) and (min-width: 881px) { .hero { padding-top: 40px; } .hero .display-xl { font-size: clamp(44px, 6vw, 80px); } .hero-intro { margin-top: 28px; } }
+  @media (max-width: 1100px) { .hero-intro { gap: 40px; } .section-heading, .assessment-intro { grid-template-columns: 1fr 1.8fr; gap: 32px; } .assessment-identity :global(.agda-logo.logo) { width: 224px; } .problem-questions li { gap: 24px; } }
   @media (max-width: 960px) {
     .hero-intro { grid-template-columns: 1fr; gap: 24px; }
     .hero-actions { grid-row: 1; }
     .hero-cta { flex-direction: row; align-items: center; gap: 16px 24px; }
-    .hero-note { max-width: none; margin-top: 16px; }
-    .section-heading, .assessment-intro, .assessment-output { grid-template-columns: 1fr; gap: 24px; }
+    .hero-note { margin-top: 16px; }
+    .section-heading, .assessment-intro, .close-wrap { grid-template-columns: 1fr; gap: 24px; }
     .section-heading .label { margin-top: 0; }
-    .situation-grid { grid-template-columns: 1fr; gap: 32px; }
-    .situation { grid-template-columns: 40px 1fr; gap: 12px 24px; }
-    .situation-index { grid-row: span 3; }
-    .situation-kicker, .situation .h3, .situation p { grid-column: 2; }
-
-    .assessment-identity { gap: 20px; padding-top: 0; }
-    .assessment-output .h3 { margin-top: 16px; }
-    .states { grid-template-columns: 1fr; gap: 24px; }
-    .states li { display: grid; grid-template-columns: 160px 1fr; gap: 24px; }
-    .states .body { margin: 0; }
-    .finding-example summary { grid-template-columns: 1fr 24px; gap: 12px 24px; }
-    .example-label { grid-column: 1; }
-    .example-title { grid-column: 1; }
-    .example-toggle { grid-column: 2; grid-row: 1 / span 2; }
-    .basis-grid, .close-wrap { grid-template-columns: 1fr; gap: 48px; }
-
+    .assessment-identity { padding-top: 0; }
+    .problem-questions li { grid-template-columns: 32px 1fr; gap: 12px 24px; }
+    .problem-index { grid-row: span 2; padding-top: 8px; }
+    .problem-questions p { grid-column: 2; }
+    .close-wrap { gap: 32px; }
   }
   @media (max-width: 560px) {
     .hero { padding-top: 32px; padding-bottom: 32px; }
@@ -375,26 +197,13 @@ const finding = {
     .hero-intro { margin-top: 24px; gap: 24px; }
     .hero-cta { flex-direction: column; align-items: stretch; gap: 12px; }
     .hero-secondary { align-self: flex-start; }
-    .hero-note { font-size: 12px; }
     .hero-sub { font-size: 18px; }
     .hero-principle { margin-top: 32px; font-size: 15px; }
     .hero-principle span { display: block; }
-    .block { padding: 64px 0; }
     .section-heading { margin-bottom: 32px; }
-    .section-heading .label { font-size: 11px; }
-    .situation { grid-template-columns: 24px 1fr; column-gap: 16px; }
-    .situation .h3 { font-size: 22px; }
-    .situation .body { font-size: 16px; }
-    .assessment-intro .lede { font-size: 18px; }
-    .capabilities { margin: 40px 0; gap: 28px 24px; }
-    .capabilities h3 { color: var(--ink); font-size: 14px; }
-    .capabilities p { font-size: 16px; }
-    .assessment-output .body { font-size: 16px; }
-    .states li { grid-template-columns: 1fr; gap: 12px; }
+    .problem-questions li { grid-template-columns: 24px 1fr; column-gap: 16px; }
+    .problem-questions .h3 { font-size: var(--type-card); }
     .finding-scope, .finding-verdict { grid-template-columns: 1fr; gap: 24px; }
-    .example-title { font-size: 20px; }
-    .basis .label, .close .label { font-size: 11px; }
-    .close-q { color: var(--ink); font-size: clamp(30px, 8vw, 44px); }
-    .close-line { font-size: 17px; }
+    .close-q { font-size: clamp(30px, 8vw, 44px); }
   }
 </style>

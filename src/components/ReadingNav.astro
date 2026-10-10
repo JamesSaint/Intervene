@@ -1,0 +1,35 @@
+---
+import { markAgda } from '../lib/marks';
+import type { OutlineItem } from '../lib/page-outline';
+interface Props { items: OutlineItem[] }
+const { items } = Astro.props;
+---
+<aside class="reading-index">
+  <nav class="reading-desktop" aria-label="On this page">
+    <span class="label">On this page</span>
+    <ul role="list">{items.map(({ href, label }) => <li><a href={href} set:html={markAgda(label)} /></li>)}</ul>
+  </nav>
+  <details class="reading-mobile">
+    <summary>On this page <span aria-hidden="true">+</span></summary>
+    <nav aria-label="On this page"><ul role="list">{items.map(({ href, label }) => <li><a href={href} set:html={markAgda(label)} /></li>)}</ul></nav>
+  </details>
+</aside>
+<style>
+  .reading-index { min-width: 0; align-self: start; position: sticky; top: var(--anchor-offset); }
+  .reading-mobile { display: none; }
+  ul { list-style: none; margin: 16px 0 0; padding: 0; }
+  a { display: flex; align-items: center; min-height: 44px; padding: 12px 0; border-bottom: 1px solid var(--hair); font-size: var(--type-small); line-height: 1.6; color: var(--muted); }
+  a:is(:hover, :focus-visible) { color: var(--accent); border-bottom-color: var(--accent); }
+  a:active { color: var(--accent-hover); }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  @media (max-width: 880px) {
+    .reading-index { position: static; }
+    .reading-desktop { display: none; }
+    .reading-mobile { display: block; border-block: 1px solid var(--hair-strong); }
+    summary { cursor: pointer; list-style: none; min-height: 48px; padding: 16px 0; display: flex; justify-content: space-between; color: var(--ink); font-size: var(--type-small); }
+    summary::-webkit-details-marker { display: none; }
+    summary:is(:hover, :focus-visible), summary > span { color: var(--accent); }
+    details[open] summary > span { transform: rotate(45deg); }
+    ul { margin: 0 0 16px; }
+  }
+</style>

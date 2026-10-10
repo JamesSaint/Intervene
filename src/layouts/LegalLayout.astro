@@ -1,5 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import ReadingNav from '../components/ReadingNav.astro';
+import { pageOutline } from '../lib/page-outline';
 
 interface Props {
   title: string;
@@ -10,6 +12,7 @@ interface Props {
 }
 
 const { title, description, heading, updated, current } = Astro.props;
+const outline = pageOutline(await Astro.slots.render('default'));
 ---
 
 <BaseLayout title={title} description={description} current={current} noindex={true}>
@@ -21,8 +24,9 @@ const { title, description, heading, updated, current } = Astro.props;
   </section>
 
   <section class="block legal-body">
-    <div class="wrap-reading">
-      <slot />
+    <div class="wrap-reading reading-layout">
+      <ReadingNav items={outline.items} />
+      <div class="reading-content"><Fragment set:html={outline.html} /></div>
     </div>
   </section>
 </BaseLayout>
@@ -44,8 +48,8 @@ const { title, description, heading, updated, current } = Astro.props;
   }
   .legal-hero .h1 { margin: 0; font-size: clamp(32px, 3.6vw, 48px); }
 
-  .legal-body { padding: var(--section-tight) 0 var(--section); }
-  .legal-body h2 {
+  .legal-body { padding: 0; }
+  .legal-body .reading-content h2 {
     font-family: var(--font-sans);
     font-weight: 600;
     font-size: clamp(26px, 2.4vw, 32px);
@@ -55,27 +59,27 @@ const { title, description, heading, updated, current } = Astro.props;
     border-top: 1px solid var(--hair);
     color: var(--ink);
   }
-  .legal-body h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
-  .legal-body p,
-  .legal-body li {
+  .legal-body .reading-content h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+  .legal-body .reading-content p,
+  .legal-body .reading-content li {
     font-family: var(--font-sans);
     font-size: var(--type-body);
     line-height: 1.7;
     color: var(--ink);
   }
-  .legal-body p { margin: 0 0 18px; }
-  .legal-body ul {
+  .legal-body .reading-content p { margin: 0 0 18px; }
+  .legal-body .reading-content ul {
     margin: 0 0 18px;
     padding-left: 22px;
   }
-  .legal-body li { margin-bottom: 8px; }
-  .legal-body strong { font-weight: 600; }
-  .legal-body a {
+  .legal-body .reading-content li { margin-bottom: 8px; }
+  .legal-body .reading-content strong { font-weight: 600; }
+  .legal-body .reading-content a {
     color: var(--ink);
     border-bottom: 1px solid var(--hair-strong);
     transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
   }
-  .legal-body a:is(:hover, :focus-visible) { border-bottom-color: var(--accent); color: var(--accent); }
-  .legal-body a:active { color: var(--accent-hover); }
-  .legal-body a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .legal-body .reading-content a:is(:hover, :focus-visible) { border-bottom-color: var(--accent); color: var(--accent); }
+  .legal-body .reading-content a:active { color: var(--accent-hover); }
+  .legal-body .reading-content a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 </style>
