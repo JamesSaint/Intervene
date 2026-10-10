@@ -108,3 +108,28 @@ The demonstration is still a constructed, unsigned example. No approved issued c
 Protected methodological, legal and commercial material remains in place. No conversion uplift, production performance uplift or regulatory acceptance is claimed. The form integration is covered by the existing mocked browser checks; no real enquiry was sent.
 
 Changes remain local and uncommitted. No push or production deployment was performed.
+
+
+## Motion refinement follow-up
+
+This follow-up extends the motion system after the website refinement recorded above.
+
+- Added finite, eight-pixel opening motion to page headings and introductory copy. Headings remain opaque throughout; primary hero actions do not wait for an entrance.
+- Added one-time staggered entrances to the homepage problem rows and public SEDI stages, using the existing motion tokens.
+- Replaced the disclosure fade with shared 220ms height expansion and collapse for SEDI explanations, homepage scope detail, services detail and mobile reading contents. Repeated input reverses from the visible height. Summary focus remains outside the clipped body; closing content is temporarily inert.
+- Made disclosure indicators transition between their open and closed states. Selected SEDI text and reading links use the existing colour transitions.
+- Added three-pixel directional feedback to links with explicit arrows and to linked insight rows, restricted to hover-capable pointers or keyboard focus and disabled under reduced motion.
+- Made focus reveal every containing entrance group immediately. Disclosure content settles before focus or link activation, on resizing, before printing and when motion preference changes.
+- Made live reduced-motion changes reveal all content immediately, without the global short interface transition interpolating hidden sections. Browsers without animation or inert support keep native disclosure behaviour. All disclosures remain usable with JavaScript disabled.
+- Retained the existing evidence-diagram timing, numerical labels and qualifications. No animated totals, outcome simulation or repeating decorative effects were added. Brand assets, primary and secondary button treatments, protected assessment logic, commercial terms and integrations remain unchanged.
+
+Implementation is in the shared motion runtime and global stylesheet, with markup and state cues in `SediExplorer`, `ReadingNav`, `InsightCard`, the homepage, services and internal style guide. Browser coverage is in `tests/e2e/motion-enhancements.spec.ts`; existing design-system and reading-navigation checks now verify immediate focus visibility and settled native contents.
+
+Follow-up validation:
+
+- Static build: 33 pages; type checking reports no errors, warnings or hints. All 118 unit tests and the content check pass.
+- Complete Chromium desktop/mobile suite: 298 passed, two intentional mobile skips.
+- Complete desktop Safari, mobile Safari and desktop Firefox suites: 448 passed, two intentional mobile skips.
+- Twenty-four additional expanded-state accessibility and overflow scans across Chromium, Safari and Firefox, on the homepage, methodology, services and terms pages at 320px and 1440px: no reported violations or document overflow after animations settle. Early scans sampled text mid-fade; the completed scans wait for finite animations to finish.
+- Browser coverage includes rapid reversal, open/close cleanup, resize, focused contents navigation, live reduced-motion changes, JavaScript-disabled operation and unavailable animation/inert support. Visual checks cover the homepage and expanded SEDI layouts on desktop and narrow mobile screens.
+- Protected sources, public assets, dependencies and deployment configuration have no changes in this follow-up. `git diff --check` is clean. Changes remain local and uncommitted; no push or deployment was performed.

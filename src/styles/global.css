@@ -276,7 +276,43 @@ html[data-motion] [data-reveal]:has(:target),
 html[data-motion] [data-reveal='stagger']:has(:target) > * {
   opacity: 1;
   transform: none;
-  transition-delay: 0ms;
+  transition: none;
+}
+
+/* Page openings stay opaque throughout. Actions and logos do not move.
+   These finite entrances change presentation only, never text layout. */
+html[data-motion] :is(.hero, .insight-header) h1 {
+  animation: heading-arrive var(--dur-reveal) var(--ease-out) both;
+}
+html[data-motion] :is(.hero, .insight-header) :is(.lede, .hero-sub) {
+  animation: heading-arrive var(--dur-reveal) var(--ease-out) 60ms both;
+}
+html[data-motion] :is(.hero, .insight-header):has(:target) :is(h1, .lede, .hero-sub) { animation: none; }
+@keyframes heading-arrive {
+  from { transform: translateY(8px); }
+  to { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-motion] :is(.hero, .insight-header) :is(h1, .lede, .hero-sub) { animation: none; }
+  /* The universal 80ms interface feedback must not tween a reveal's
+     hidden state when motion preference changes on an open page. */
+  .block > :is(.wrap, .wrap-narrow, .wrap-reading),
+  [data-reveal], [data-reveal] *, .reveal {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* A small directional cue belongs only to links with an explicit arrow. */
+:is(.link, .arrow-link) > span[aria-hidden='true'] {
+  display: inline-block;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  :is(.link, .arrow-link):hover > span[aria-hidden='true'] { transform: translateX(3px); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  :is(.link, .arrow-link):focus-visible > span[aria-hidden='true'] { transform: translateX(3px); }
 }
 
 /* Legacy class kept as an alias so nothing breaks while pages migrate. */
@@ -640,7 +676,8 @@ a.card:focus-visible::before { transform: scaleX(1); }
 }
 .disclosure > summary::after { width: 18px; height: 1px; right: 0; top: 50%; }
 .disclosure > summary::before { width: 1px; height: 18px; right: 8.5px; top: calc(50% - 9px); }
-.disclosure[open] > summary::before { display: none; }
+.disclosure > summary::before { transition: transform var(--dur-expand) var(--ease-out); transform-origin: center; }
+.disclosure[open]:not([data-disclosure-state='closed']) > summary::before { transform: scaleY(0); }
 .disclosure-body {
   padding: 4px 0 var(--space-4);
   font-family: var(--font-sans);
@@ -650,20 +687,11 @@ a.card:focus-visible::before { transform: scaleX(1); }
 }
 .disclosure-body > :first-child { margin-top: 0; }
 .disclosure-body > :last-child { margin-bottom: 0; }
-html[data-motion] .disclosure[open] > .disclosure-body {
-  animation: disclosure-in var(--dur-expand) var(--ease-out);
-}
-html[data-motion] .disclosure.closing > .disclosure-body {
-  animation: disclosure-out var(--dur-expand) var(--ease) forwards;
-}
-@keyframes disclosure-in {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes disclosure-out {
-  from { opacity: 1; transform: none; }
-  to   { opacity: 0; transform: translateY(-4px); }
-}
+/* An unpadded wrapper lets the complete body, including its spacing,
+   expand from zero. Flow-root contains child margins; overflow clips
+   only moving content, so the summary's focus ring stays visible. */
+[data-disclosure-body] { display: flow-root; }
+[data-disclosure-state] > [data-disclosure-body] { overflow: hidden; }
 
 /* ------------------------------------------------------------------
    On this page

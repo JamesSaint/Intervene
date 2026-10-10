@@ -1,13 +1,14 @@
 /**
- * Motion runtime. Three jobs, all optional: the page reads fully with
+ * Motion runtime. Four jobs, all optional: the page reads fully with
  * this module absent.
  *
  * 1. Section entrances. Elements matching the reveal selector fade up
  *    once as they enter the viewport. The hidden state exists only
  *    while html[data-motion] is set (see BaseLayout), so nothing is
  *    hidden without scripts or under reduced motion.
- * 2. Disclosure closing. Native <details> opens with a CSS animation;
- *    closing needs a class so the body can fade before it collapses.
+ * 2. Disclosure expansion. Native <details> remains the fallback;
+ *    optional body animation smooths opening and closing without
+ *    delaying summary focus or leaving collapsed links focusable.
  * 3. On-this-page navigation. Marks the section currently in view.
  * 4. Anchor settling. A page opened at a fragment scrolls to it before
  *    the web font arrives; when the font swaps in, the content above
@@ -65,8 +66,11 @@ export function initReveal(root: Document | ParentNode = document): () => void {
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
   window.addEventListener('focusin', (e) => {
-    const group = (e.target as Element).closest?.(REVEAL);
-    if (group && !group.classList.contains('in')) { group.classList.add('in'); io.unobserve(group); pending.delete(group as HTMLElement); }
+    let group = (e.target as Element).closest(REVEAL);
+    while (group) {
+      if (!group.classList.contains('in')) { group.classList.add('in'); io.unobserve(group); pending.delete(group as HTMLElement); }
+      group = group.parentElement?.closest(REVEAL) ?? null;
+    }
   });
   sweep();
 
@@ -77,28 +81,80 @@ export function initReveal(root: Document | ParentNode = document): () => void {
     io.disconnect();
   };
   window.addEventListener('beforeprint', settle, { once: true });
+  const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  preference.addEventListener('change', () => { if (preference.matches) settle(); });
 
   return () => io.disconnect();
 }
 
 export function initDisclosures(root: Document | ParentNode = document): void {
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  root.querySelectorAll<HTMLDetailsElement>('details.disclosure').forEach((d) => {
-    const summary = d.querySelector(':scope > summary');
-    const body = d.querySelector<HTMLElement>(':scope > .disclosure-body');
-    if (!summary || !body) return;
-    summary.addEventListener('click', (e) => {
-      if (!d.open || reduce || d.classList.contains('closing')) return;
-      e.preventDefault();
-      d.classList.add('closing');
-      const done = () => {
-        d.classList.remove('closing');
-        d.open = false;
-      };
-      body.addEventListener('animationend', done, { once: true });
-      window.setTimeout(done, 300);
+  const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const finishers: Array<() => void> = [];
+
+  root.querySelectorAll<HTMLDetailsElement>('details[data-disclosure]').forEach((details) => {
+    const summary = details.querySelector<HTMLElement>(':scope > summary');
+    const body = details.querySelector<HTMLElement>(':scope > [data-disclosure-body]');
+    if (!summary || !body || typeof body.animate !== 'function' || !('inert' in body)) return;
+
+    let animation: Animation | null = null;
+    let expanded = details.open;
+    const finish = () => {
+      const previous = animation;
+      animation = null;
+      previous?.cancel();
+      details.open = expanded;
+      body.inert = false;
+      delete details.dataset.disclosureState;
+    };
+    finishers.push(() => { if (animation) finish(); });
+
+    summary.addEventListener('click', (event) => {
+      if (event.defaultPrevented || event.button !== 0) return;
+      // Snapshot the visible height before cancelling an interrupted
+      // transition. Rapid toggles reverse from here, never from zero.
+      const height = details.open ? body.getBoundingClientRect().height : 0;
+      expanded = animation ? !expanded : !details.open;
+      const previous = animation;
+      animation = null;
+      previous?.cancel();
+      event.preventDefault();
+
+      if (preference.matches || !document.documentElement.hasAttribute('data-motion')) {
+        finish();
+        return;
+      }
+
+      // Keep native contents rendered until closing completes. Inert
+      // removes closing links from both focus and the accessibility tree.
+      if (!expanded && body.contains(document.activeElement)) summary.focus();
+      details.open = true;
+      body.inert = !expanded;
+      details.dataset.disclosureState = expanded ? 'open' : 'closed';
+      const destination = expanded ? body.getBoundingClientRect().height : 0;
+      const styles = getComputedStyle(body);
+      const current = body.animate(
+        [{ height: `${height}px` }, { height: `${destination}px` }],
+        {
+          duration: parseFloat(styles.getPropertyValue('--dur-expand')) || 220,
+          easing: styles.getPropertyValue('--ease-out').trim() || 'ease-out',
+        }
+      );
+      animation = current;
+      current.finished.then(() => { if (animation === current) finish(); }, () => {});
     });
+
+    // A contents link must reach its target against the settled layout.
+    // Likewise, resizing or changing motion preference clears all fixed
+    // heights rather than clipping text at a former viewport width.
+    body.addEventListener('focusin', () => { if (animation) finish(); });
+    body.addEventListener('click', () => { if (animation) finish(); });
   });
+
+  const finishAll = () => finishers.forEach((finish) => finish());
+  window.addEventListener('resize', finishAll, { passive: true });
+  window.addEventListener('beforeprint', finishAll);
+  window.addEventListener('pagehide', finishAll);
+  preference.addEventListener('change', finishAll);
 }
 
 export function initPageNav(root: Document | ParentNode = document): () => void {

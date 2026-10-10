@@ -50,7 +50,7 @@ const finding = {
         <span class="label section-kicker">The problem</span>
         <h2 class="h2" id="home-problem">Responsibilities are documented. Can the people act?</h2>
       </div>
-      <ol class="problem-questions" role="list">
+      <ol class="problem-questions" role="list" data-reveal="stagger">
         {questions.map((q, i) => (
           <li><span class="mono problem-index" aria-hidden="true">0{i + 1}</span><h3 class="h3">{q.h}</h3><p class="body muted">{q.p}</p></li>
         ))}
@@ -87,17 +87,19 @@ const finding = {
         <p class="body muted">Can the auto-decline pathway stop within an assumed six-hour window? No client data; not an issued assessment or a verified outcome.</p>
       </div>
       <FindingChain />
-      <details class="finding-example">
+      <details class="finding-example" data-disclosure>
         <summary><span class="example-title">Inspect the scope, decision and limitations</span><span class="example-toggle" aria-hidden="true"></span></summary>
-        <div class="example-body">
-          <dl class="finding-scope">
-            <div><dt>System</dt><dd>{finding.system}</dd></div>
-            <div><dt>Scenario</dt><dd>{finding.scenario}</dd></div>
-          </dl>
-          <dl class="finding-verdict">
-            <div><dt>Decision the finding supports</dt><dd>{finding.decision}</dd></div>
-            <div><dt>Assumptions and limits</dt><dd>{finding.limits}</dd></div>
-          </dl>
+        <div data-disclosure-body>
+          <div class="example-body">
+            <dl class="finding-scope">
+              <div><dt>System</dt><dd>{finding.system}</dd></div>
+              <div><dt>Scenario</dt><dd>{finding.scenario}</dd></div>
+            </dl>
+            <dl class="finding-verdict">
+              <div><dt>Decision the finding supports</dt><dd>{finding.decision}</dd></div>
+              <div><dt>Assumptions and limits</dt><dd>{finding.limits}</dd></div>
+            </dl>
+          </div>
         </div>
       </details>
       <nav class="related-links" aria-label="Inspect the assessment output"><a href="/sample-report/" class="btn-ghost">View sample verdict</a><a href="/agda/#verdict" class="link">The three verdict states <span aria-hidden="true">→</span></a></nav>
@@ -158,12 +160,13 @@ const finding = {
   .finding-example summary:is(:hover, :focus-visible) .example-title { color: var(--accent); }
   .finding-example summary:active .example-title { color: var(--accent-hover); }
   .finding-example summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
-  .example-title { font-size: var(--type-body); line-height: 1.5; color: var(--ink); }
+  .example-title { transition: color var(--dur-fast) var(--ease); font-size: var(--type-body); line-height: 1.5; color: var(--ink); }
   .example-toggle { width: 20px; height: 20px; position: relative; flex: none; }
   .example-toggle::before, .example-toggle::after { content: ''; position: absolute; background: var(--accent); }
   .example-toggle::before { width: 18px; height: 1px; top: 9px; left: 1px; }
   .example-toggle::after { height: 18px; width: 1px; top: 1px; left: 9px; }
-  .finding-example[open] .example-toggle::after { display: none; }
+  .example-toggle::after { transition: transform var(--dur-expand) var(--ease-out); transform-origin: center; }
+  .finding-example[open]:not([data-disclosure-state='closed']) .example-toggle::after { transform: scaleY(0); }
   .example-body { padding: 8px 0 32px; }
   .finding-scope, .finding-verdict { margin: 0; padding: 24px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
   .finding-verdict { margin-top: 24px; border-top: 1px solid var(--hair); }

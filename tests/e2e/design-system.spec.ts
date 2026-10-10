@@ -52,7 +52,7 @@ test.describe('motion opt-in', () => {
 
   test('entrances play once and the hero is available immediately', async ({ page }) => {
     await page.goto('/');
-    // The hero is never an entrance target.
+    // Opening motion keeps the hero opaque and its action available.
     const heroOpacity = await page.locator('.hero .display-xl').evaluate((e) => getComputedStyle(e).opacity);
     expect(heroOpacity).toBe('1');
     const cta = page.locator('.hero .btn');
@@ -75,7 +75,6 @@ test('keyboard focus reveals a group the observer has not reached', async ({ pag
   await page.waitForTimeout(200);
   const link = page.locator('#control a.link').first();
   await link.focus();
-  await page.waitForTimeout(500);
   const group = page.locator('#control > .wrap');
   await expect(group).toHaveClass(/\bin\b/);
   expect(await group.evaluate((e) => getComputedStyle(e).opacity)).toBe('1');
