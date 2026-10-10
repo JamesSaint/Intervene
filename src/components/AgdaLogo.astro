@@ -9,10 +9,20 @@ const assets = {
 };
 const asset = assets[variant];
 ---
-<img class:list={['agda-logo', variant]} src={`/assets/brand/${asset.file}`} width={asset.width} height={asset.height} alt={asset.alt} />
+{variant === 'lockup' ? (
+  <picture>
+    <source media="(max-width: 360px)" srcset="/assets/brand/agda-reverse.svg" width="224" height="50" />
+    <img class="agda-logo lockup" src={`/assets/brand/${asset.file}`} width={asset.width} height={asset.height} alt={asset.alt} />
+  </picture>
+) : (
+  <img class:list={['agda-logo', variant]} src={`/assets/brand/${asset.file}`} width={asset.width} height={asset.height} alt={asset.alt} />
+)}
 <style>
   .agda-logo { display: block; height: auto; flex: none; }
   .logo { width: 224px; }
   .lockup { width: 280px; }
   .small { width: 80px; }
+  picture { display: block; }
+  /* Use the approved full wordmark where the 280px lockup cannot fit. */
+  @media (max-width: 360px) { .lockup { width: 224px; } }
 </style>

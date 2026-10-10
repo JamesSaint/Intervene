@@ -1,6 +1,7 @@
 ---
+import IntegrityNote from '../../components/IntegrityNote.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ChainFlow from '../../components/ChainFlow.astro';
+import SediExplorer from '../../components/SediExplorer.astro';
 import EvidenceCap from '../../components/EvidenceCap.astro';
 import ChainCeiling from '../../components/ChainCeiling.astro';
 import PageNav from '../../components/PageNav.astro';
@@ -93,7 +94,7 @@ const docs = [
         cumulative chain completes before harm becomes irreversible. A full
         <Agda /> Assessment returns one of three states.
       </p>
-      <ChainFlow />
+      <SediExplorer />
 
       <ul class="verdicts" role="list" data-reveal="stagger">
         <li>
@@ -180,6 +181,7 @@ const docs = [
         signature does not cover, is on the
         <a href="/verify/" class="link">verify page</a>.
       </p>
+      <IntegrityNote />
       <span class="code-caption">Example envelope · illustrative values</span>
       <pre class="code-block" tabindex="0" aria-label="Attestation envelope example"><code>{`attestationVersion 1.2
 engineVersion      2.0.6

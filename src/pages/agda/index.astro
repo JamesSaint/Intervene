@@ -1,4 +1,5 @@
 ---
+import IntegrityNote from '../../components/IntegrityNote.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import VerdictBlock from '../../components/VerdictBlock.astro';
 import { markAgda } from '../../lib/marks';
@@ -51,12 +52,7 @@ const faqs = [
       <div class="product-identity"><AgdaLogo variant="lockup" /></div>
       <span class="label">The assessment</span>
       <h1 class="h1"><Agda /> assesses Intervention Readiness.</h1>
-      <p class="lede muted">
-        Intervene's proprietary assessment of whether an organisation can
-        detect the need to intervene, escalate appropriately, decide with
-        authority and intervene effectively in a consequential AI-enabled
-        system before the opportunity to do so is lost.
-      </p>
+      <p class="lede muted"><Agda /> assesses whether organisations can detect, escalate, decide and intervene when consequential systems require human intervention.</p>
       <div class="hero-cta">
         <a href="/contact/" class="btn">Discuss your system</a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
@@ -153,6 +149,7 @@ const faqs = [
         ))}
       </ul>
       <p class="body muted deliver-note">{RECORDS_NOTE}</p>
+      <IntegrityNote />
       <p class="body muted deliver-note">
         The assessment is not regulatory certification, a model-validation
         exercise or a guarantee of safety. <Agda /> is not validated against

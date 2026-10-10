@@ -94,19 +94,7 @@ const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.def
 
   <section class="block">
     <div class="wrap-narrow">
-      <h2 class="h2" set:html={markAgda(`How they relate.`)} />
-      <p class="body muted" set:html={markAgda(relate)} />
-    </div>
-  </section>
-
-  <section class="block">
-    <div class="wrap-narrow">
-      <h2 class="h2">How <Agda /> evidences it.</h2>
-      <p class="body muted" set:html={markAgda(agda)} />
-      <div class="cta-row">
-        <a href="/intervention-readiness/" class="btn">What is Intervention Readiness?</a>
-        <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
-      </div>
+      <div class="section-intro"><h2 class="h2">How they relate.</h2><p class="body muted" set:html={markAgda(relate)} /></div>
     </div>
   </section>
 
@@ -121,6 +109,17 @@ const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.def
           </div>
         ))}
       </dl>
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <div class="section-intro">
+        <h2 class="h2">How <Agda /> evidences it.</h2>
+        <div><p class="body muted" set:html={markAgda(agda)} />
+          <div class="cta-row"><a href="/agda/" class="btn">Explore the assessment</a><a href="/sample-report/" class="btn-ghost">View sample verdict</a></div>
+          <nav class="related-links" aria-label="Related concepts"><a href="/intervention-readiness/" class="link">What is Intervention Readiness?</a><a href="/intervention-readiness/category-map/" class="link">The category map</a></nav>
+        </div>
+      </div>
     </div>
   </section>
 </BaseLayout>

@@ -1,0 +1,64 @@
+---
+/** Public explanation only. The protected rubric is not reproduced here. */
+const stages = [
+  { name: 'Detect', question: 'Can the organisation recognise when intervention is required?', evidence: 'Signals, monitoring records and evidence of how the need to act is recognised.', failure: 'A warning exists but does not become an actionable signal.', consequence: 'The available intervention window is spent before the response begins.' },
+  { name: 'Escalate', question: 'Can the right people be informed in time?', evidence: 'Escalation routes, contact arrangements and records of reaching decision authority.', failure: 'The signal reaches someone who cannot authorise action.', consequence: 'Reaching the person with authority may consume the remaining time.' },
+  { name: 'Decide', question: 'Can accountable decision-makers determine what action is necessary?', evidence: 'Decision records, halt authority and arrangements for decisions under pressure.', failure: 'A decision depends on a quorum or approval route that cannot operate in time.', consequence: 'Detection and escalation cannot compensate for unavailable decision authority.' },
+  { name: 'Intervene', question: 'Can the organisation execute an effective intervention?', evidence: 'Intervention procedures and records of exercises or action taking effect.', failure: 'An authorised action does not take effect under the relevant operating conditions.', consequence: 'The response must take effect before the consequence becomes irreversible.' },
+];
+---
+<div class="sedi-explorer">
+  <p class="sedi-instruction">Select a stage.</p>
+  <ol role="list" aria-label="The SEDI intervention chain">
+    {stages.map((stage, i) => (
+      <li>
+        <details>
+          <summary>
+            <span class="sedi-index mono">0{i + 1}<span aria-hidden="true">{i < 3 ? ' →' : ''}</span></span>
+            <span class="sedi-name">{stage.name}</span>
+            <span class="sedi-question">{stage.question}</span>
+            <span class="sedi-toggle" aria-hidden="true"></span>
+          </summary>
+          <dl>
+            <div><dt>Evidence examined</dt><dd>{stage.evidence}</dd></div>
+            <div><dt>Possible failure</dt><dd>{stage.failure}</dd></div>
+            <div><dt>Consequence for intervention</dt><dd>{stage.consequence}</dd></div>
+          </dl>
+        </details>
+      </li>
+    ))}
+  </ol>
+  <p class="sedi-caption">The weakest stage constrains the chain. Public explanations only, not assessment criteria or findings.</p>
+</div>
+<style>
+  .sedi-explorer { margin-top: var(--gap-intro); }
+  .sedi-instruction, .sedi-caption { color: var(--muted); font-size: var(--type-small); line-height: 1.6; margin: 0; }
+  ol { list-style: none; margin: 24px 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
+  li { min-width: 0; border-top: 1px solid var(--hair-strong); }
+  summary { list-style: none; cursor: pointer; padding: 20px 0; position: relative; display: grid; gap: 20px; }
+  summary::-webkit-details-marker { display: none; }
+  .sedi-index { display: flex; justify-content: space-between; color: var(--accent); font-size: var(--type-caption); padding-right: 32px; }
+  .sedi-name { font-size: clamp(26px, 2.5vw, 36px); font-weight: 600; letter-spacing: var(--tracking-heading); color: var(--ink); }
+  .sedi-question { color: var(--muted); font-size: var(--type-body); line-height: 1.6; }
+  .sedi-toggle { position: absolute; right: 0; top: 21px; width: 18px; height: 18px; }
+  .sedi-toggle::before, .sedi-toggle::after { content: ''; position: absolute; background: var(--accent); }
+  .sedi-toggle::before { height: 1px; width: 18px; top: 8px; }
+  .sedi-toggle::after { width: 1px; height: 18px; left: 8px; }
+  details[open] .sedi-toggle::after { display: none; }
+  summary:is(:hover, :focus-visible) .sedi-name, details[open] .sedi-name { color: var(--accent); }
+  summary:active .sedi-name { color: var(--accent-hover); }
+  summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+  dl { margin: 0; padding-bottom: 24px; display: grid; gap: 24px; }
+  dt { color: var(--accent); font-family: var(--font-mono); font-size: var(--type-caption); line-height: 1.6; margin-bottom: 8px; }
+  dd { margin: 0; color: var(--muted); font-size: var(--type-small); line-height: 1.7; }
+  @media (max-width: 1100px) { ol { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) {
+    ol { grid-template-columns: 1fr; gap: 0; }
+    summary { grid-template-columns: 32px 1fr; gap: 12px; padding: 24px 32px 24px 0; }
+    .sedi-index { padding: 0; grid-row: 1 / span 2; padding-top: 8px; }
+    .sedi-index > span { display: none; }
+    .sedi-question { grid-column: 2; }
+    .sedi-toggle { top: 33px; }
+    dl { padding-left: 44px; }
+  }
+</style>

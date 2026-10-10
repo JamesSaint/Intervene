@@ -173,7 +173,7 @@ test.describe('interface feedback', () => {
     await btn.focus();
     const ring = await btn.evaluate((e) => getComputedStyle(e).outlineStyle);
     expect(ring).toBe('solid');
-    const cursor = await page.locator('.situation-grid .situation').first().evaluate((e) => getComputedStyle(e).cursor);
+    const cursor = await page.locator('.problem-questions li').first().evaluate((e) => getComputedStyle(e).cursor);
     expect(cursor).toBe('auto');
   });
 

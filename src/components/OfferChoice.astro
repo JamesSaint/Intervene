@@ -47,15 +47,12 @@ const H = headingLevel;
 const RouteHeading = editorial ? 'h3' : 'span';
 ---
 
-<figure class:list={["offer-choice", { "offer-choice--editorial": editorial }]} data-reveal="scene" aria-labelledby="offer-choice-heading">
+<figure class:list={["offer-choice", { "offer-choice--editorial": editorial, "offer-choice--compact": compact }]} data-reveal="scene" aria-labelledby="offer-choice-heading">
   <figcaption class="oc-caption">
     <span class="label section-kicker">Where should we begin?</span>
     <H class="h2" id="offer-choice-heading">Two starting points.{!editorial && <em> Neither is a prerequisite for the other.</em>}</H>
     {editorial && <p class="oc-principle">Neither is a prerequisite for the other.</p>}
-    <p class="body muted oc-lede">
-      Which route fits depends on how defined the system, pathway and scenario
-      already are, and what evidence you can put in front of an assessor.
-    </p>
+    <p class="body muted oc-lede">Choose by the intervention question and available evidence.</p>
   </figcaption>
 
   <div class="oc-root" aria-hidden="true">
@@ -77,6 +74,8 @@ const RouteHeading = editorial ? 'h3' : 'span';
             <dt>Appropriate when</dt>
             <dd>{editorial ? whenShort : when}</dd>
           </div>
+          {editorial && !compact && <div><dt>Question and decision</dt><dd set:html={markAgda(o.decision)} /></div>}
+          {editorial && !compact && <div><dt>Evidence examined</dt><dd>{o.slug === 'review' ? o.scope[3] : o.scope[4]}</dd></div>}
           {!compact && (
             <div>
               <dt>What you receive</dt>
@@ -109,7 +108,7 @@ const RouteHeading = editorial ? 'h3' : 'span';
   </ol>
 
   <p class="body muted oc-foot">
-    You can discuss either starting point directly. A Review may recommend a
+    A Review may recommend a
     full Assessment but does not commit you to one or determine its verdict.
     {compact
       ? 'Scope, availability and delivery arrangements are confirmed before an engagement is accepted.'
@@ -187,12 +186,12 @@ const RouteHeading = editorial ? 'h3' : 'span';
   .offer-choice--editorial .oc-lede { font-size: 17px; line-height: 1.7; margin: 0; }
   .offer-choice--editorial .oc-root, .offer-choice--editorial .oc-branch,
   .offer-choice--editorial .oc-node, .offer-choice--editorial .oc-routes::before { display: none; }
-  .offer-choice--editorial .oc-routes { margin-top: 48px; gap: 0 48px; grid-template-rows: auto auto auto auto auto auto; }
-  .offer-choice--editorial .oc-route { border-top: 1px solid var(--hair-strong); padding-top: 24px; grid-row: span 6; grid-template-rows: subgrid; gap: 0; }
+  .offer-choice--editorial .oc-routes { margin-top: 48px; gap: 0 48px; grid-template-rows: repeat(8, auto); }
+  .offer-choice--editorial .oc-route { border-top: 1px solid var(--hair-strong); padding-top: 24px; grid-row: span 8; grid-template-rows: subgrid; gap: 0; }
   .offer-choice--editorial .oc-head { justify-items: start; text-align: left; gap: 16px; padding-bottom: 28px; align-content: start; }
   .offer-choice--editorial .oc-n { font-size: 12px; letter-spacing: 0; text-transform: none; }
   .offer-choice--editorial .oc-name { font-size: var(--type-h3); line-height: 1.3; letter-spacing: var(--tracking-heading); text-transform: none; }
-  .offer-choice--editorial .oc-fields { display: grid; grid-row: span 4; grid-template-rows: subgrid; margin: 0; border-top: 0; }
+  .offer-choice--editorial .oc-fields { display: grid; grid-row: span 6; grid-template-rows: subgrid; margin: 0; border-top: 0; }
   .offer-choice--editorial .oc-fields > div { gap: 12px; padding: 24px 0; align-content: start; }
   .offer-choice--editorial .oc-fields dt { font-size: 12px; letter-spacing: 0; text-transform: none; color: var(--faint); }
   .offer-choice--editorial .oc-fields dd { font-size: 17px; line-height: 1.7; }
@@ -203,17 +202,20 @@ const RouteHeading = editorial ? 'h3' : 'span';
   .offer-choice--editorial .oc-link { font-size: 16px; padding: 12px 0; justify-self: start; margin-top: 16px; }
   .offer-choice--editorial .oc-foot { margin-top: 32px; font-size: 16px; line-height: 1.7; }
   html[data-motion] .offer-choice--editorial :is(.oc-head, .oc-fields, .oc-link, .oc-foot) { opacity: 1; transform: none; transition: none; }
+  .offer-choice--compact .oc-routes { grid-template-rows: repeat(3, auto); }
+  .offer-choice--compact .oc-route { grid-row: span 3; }
+  .offer-choice--compact .oc-fields { grid-row: span 1; }
   @media (max-width: 880px) {
     .offer-choice--editorial .oc-caption { grid-template-columns: 1fr; gap: 20px; }
     .offer-choice--editorial .oc-caption .label { grid-row: auto; margin-top: 0; }
     .offer-choice--editorial .oc-routes { gap: 0 32px; }
   }
   @media (max-width: 720px) {
-    .offer-choice--editorial .oc-routes { grid-template-rows: none; gap: 40px; margin-top: 32px; }
-    .offer-choice--editorial .oc-route { grid-row: auto; grid-template-rows: none; }
+    .offer-choice--editorial .oc-routes, .offer-choice--compact .oc-routes { grid-template-rows: none; gap: 40px; margin-top: 32px; }
+    .offer-choice--editorial .oc-route, .offer-choice--compact .oc-route { grid-row: auto; grid-template-rows: none; }
     .offer-choice--editorial .oc-head { grid-template-columns: 1fr; padding-bottom: 8px; }
     .offer-choice--editorial .oc-head .oc-n, .offer-choice--editorial .oc-head .oc-name { grid-column: 1; }
-    .offer-choice--editorial .oc-fields { grid-row: auto; grid-template-rows: none; }
+    .offer-choice--editorial .oc-fields, .offer-choice--compact .oc-fields { grid-row: auto; grid-template-rows: none; }
     .offer-choice--editorial .oc-fields > div { padding: 20px 0; }
     .offer-choice--editorial .oc-fields dd, .offer-choice--editorial .oc-list > li { font-size: 16px; }
     .offer-choice--editorial .oc-caption .label { font-size: 11px; }

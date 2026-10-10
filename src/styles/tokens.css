@@ -18,6 +18,8 @@
   --type-h3: clamp(22px, 2.2vw, 30px);
   --type-card: clamp(22px, 1.9vw, 26px);
   --type-body: 17px;
+  --type-small: 16px;
+  --type-support: clamp(18px, 1.5vw, 22px);
   --type-caption: 12px;
   --tracking-heading: -0.015em;
 

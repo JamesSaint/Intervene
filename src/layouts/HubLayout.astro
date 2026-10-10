@@ -65,18 +65,6 @@ const term = terms.find((t) => t.slug === termSlug)!;
     <slot />
   </div>
 
-  <section class="block">
-    <div class="wrap-narrow">
-      <h2 class="h2">How <Agda /> evidences it.</h2>
-      <p class="body muted" set:html={markAgda(agda)} />
-      <div class="cta-row">
-        {related.map((r) => (
-          <a href={r.href} class={r.ghost ? 'btn-ghost' : 'btn'} set:html={markAgda(r.label)} />
-        ))}
-      </div>
-    </div>
-  </section>
-
   <section class="block tight">
     <div class="wrap">
       <h2 class="h2">Frequently asked questions.</h2>
@@ -88,6 +76,18 @@ const term = terms.find((t) => t.slug === termSlug)!;
           </div>
         ))}
       </dl>
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <div class="section-intro">
+        <h2 class="h2">How <Agda /> evidences it.</h2>
+        <div>
+          <p class="body muted" set:html={markAgda(agda)} />
+          <div class="cta-row"><a href="/agda/" class="btn">Explore the assessment</a><a href="/sample-report/" class="btn-ghost">View sample verdict</a></div>
+          <nav class="related-links" aria-label="Related concepts">{related.map((r) => <a href={r.href} class="link" set:html={markAgda(r.label)} />)}</nav>
+        </div>
+      </div>
     </div>
   </section>
 </BaseLayout>

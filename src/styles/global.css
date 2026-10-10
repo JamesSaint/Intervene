@@ -780,3 +780,19 @@ html[data-motion] .rail.draw.in { transform: scaleX(1); }
   display: grid;
   border-bottom: 1px solid var(--hair-strong);
 }
+
+/* Longer prose uses the page width for a useful index and reading column.
+   Text fills that column naturally; no character-count caps or forced breaks. */
+.reading-layout { display: grid; grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.75fr); gap: var(--space-7); padding-top: var(--section-tight); padding-bottom: var(--section); align-items: start; }
+.reading-content { min-width: 0; }
+.section-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr); gap: var(--space-7); align-items: start; }
+.section-intro .body { margin: 0; }
+.related-links { display: flex; flex-wrap: wrap; gap: 8px 32px; margin-top: 32px; }
+.related-links .link { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--type-small); }
+@media (max-width: 880px) {
+  .reading-layout, .section-intro { grid-template-columns: 1fr; gap: var(--space-5); }
+  .page-nav-inner { padding-top: var(--space-2); }
+  .page-nav ul { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: var(--space-4); padding-bottom: 4px; }
+  .page-nav li { flex: none; }
+  .page-nav a { white-space: nowrap; }
+}

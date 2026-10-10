@@ -29,17 +29,17 @@
   font-weight: inherit;
 }
 :where(.lede, .body, .body-sm, main p, main li) { text-wrap: wrap; }
-.lede { font-family: var(--font-sans); font-size: clamp(18px, 1.5vw, 22px); line-height: 1.65; font-weight: 400; color: var(--muted); }
+.lede { font-family: var(--font-sans); font-size: var(--type-support); line-height: 1.65; font-weight: 400; color: var(--muted); }
 .body { font-family: var(--font-sans); font-size: var(--type-body); line-height: 1.7; font-weight: 400; color: var(--muted); }
-.body-sm { font-family: var(--font-sans); font-size: 16px; line-height: 1.65; }
-.mono { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0; font-weight: 400; }
+.body-sm { font-family: var(--font-sans); font-size: var(--type-small); line-height: 1.65; }
+.mono { font-family: var(--font-mono); font-size: var(--type-caption); letter-spacing: 0; font-weight: 400; }
 em, .em { font-style: italic; font-weight: 400; }
 .muted { color: var(--muted); }
 .label {
   display: block;
   margin: 0 0 20px;
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: var(--type-caption);
   font-weight: 600;
   letter-spacing: 0.24em;
   line-height: 1.2;

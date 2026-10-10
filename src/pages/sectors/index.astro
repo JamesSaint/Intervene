@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageNav from '../../components/PageNav.astro';
 import { markAgda } from '../../lib/marks';
 
 const sectors = [
@@ -44,16 +45,12 @@ const sectors = [
     <div class="wrap">
       <h1 class="h1">Where Intervention Readiness <em>matters most.</em></h1>
       <p class="lede muted">
-        Systems are becoming more capable. Organisations are becoming more
-        dependent on automation. Regulators increasingly require effective
-        human oversight. The question is the same in every sector: can you stop
-        it in time? Our initial commercial focus is large UK and European
-        regulated financial institutions; other sectors are discussed case by
-        case.
+        Our initial commercial focus is large UK and European regulated financial institutions; other sectors are discussed case by case. Regulators increasingly require effective human oversight. The question is the same in every sector: can you stop it in time?
       </p>
     </div>
   </section>
 
+  <PageNav items={sectors.map((sector) => ({ href: `#${sector.id}`, label: sector.name }))} />
   {sectors.map((s) => (
     <section class="block sector" id={s.id}>
       <div class="wrap">

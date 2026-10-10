@@ -7,6 +7,7 @@
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageNav from '../../components/PageNav.astro';
+import SediExplorer from '../../components/SediExplorer.astro';
 
 const pageNav = [
   { href: '#rhythm', label: 'Rhythm' },
@@ -31,6 +32,7 @@ const rhythm = [
 
 const widths = [
   { k: '--max', v: '1440px', u: 'All page containers: text fills the available width of its section or grid column before wrapping.' },
+  { k: '.reading-layout', v: '0.75fr / 1.75fr', u: 'Long articles and policies: section navigation beside the prose; a native disclosure above it on phones.' },
   { k: '--max-diagram', v: '1120px', u: 'Wide technical diagrams where required.' },
   { k: '--gutter / --gutter-tight', v: 'clamp(24px, 4vw, 64px) / 24px', u: 'Page gutter; phone gutter below 720px.' },
 ];
@@ -85,7 +87,7 @@ const motion = [
     <div class="wrap">
       <h2 class="h2">Type.</h2>
       <p class="lede muted">
-        Headings use Montserrat SemiBold in sentence case with -0.015em spacing. Short capability labels retain capitals with 0.08em spacing.
+        Headings use Montserrat SemiBold in sentence case with -0.015em spacing. Interactive stage names use the same sentence case. Compact diagram labels may retain capitals with 0.08em spacing.
         Labels use Montserrat SemiBold with 0.24em spacing.
         IBM Plex Mono is for data, references and captions.
       </p>
@@ -185,10 +187,12 @@ const motion = [
     <div class="wrap">
       <h2 class="h2">Components.</h2>
       <p class="lede muted">
-        Each is one class in <span class="mono">global.css</span>. Pages set
-        column counts and label widths with custom properties.
+        Shared styles live in <span class="mono">global.css</span>. Pages use shared components and set column counts with custom properties.
       </p>
 
+      <h3 class="h3 guide-h3">SEDI exploration</h3>
+      <p class="body muted">Native disclosures expose the public explanation with keyboard or touch input and with JavaScript disabled. No protected criteria are published.</p>
+      <SediExplorer />
       <h3 class="h3 guide-h3">Feature grid · <span class="mono">.feature-grid</span>, <span class="mono">--cols</span></h3>
       <ul class="feature-grid" role="list" style="--cols: 3">
         <li><h4 class="h3">Detect</h4><p class="body muted">Can the system surface the conditions that need attention, in time?</p></li>
