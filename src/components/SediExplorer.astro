@@ -9,21 +9,23 @@ const stages = [
 ---
 <div class="sedi-explorer">
   <p class="sedi-instruction">Select a stage.</p>
-  <ol role="list" aria-label="The SEDI intervention chain">
+  <ol role="list" aria-label="The SEDI intervention chain" data-reveal="stagger">
     {stages.map((stage, i) => (
       <li>
-        <details>
+        <details data-disclosure>
           <summary>
             <span class="sedi-index mono">0{i + 1}<span aria-hidden="true">{i < 3 ? ' →' : ''}</span></span>
             <span class="sedi-name">{stage.name}</span>
             <span class="sedi-question">{stage.question}</span>
             <span class="sedi-toggle" aria-hidden="true"></span>
           </summary>
-          <dl>
-            <div><dt>Evidence examined</dt><dd>{stage.evidence}</dd></div>
-            <div><dt>Possible failure</dt><dd>{stage.failure}</dd></div>
-            <div><dt>Consequence for intervention</dt><dd>{stage.consequence}</dd></div>
-          </dl>
+          <div data-disclosure-body>
+            <dl>
+              <div><dt>Evidence examined</dt><dd>{stage.evidence}</dd></div>
+              <div><dt>Possible failure</dt><dd>{stage.failure}</dd></div>
+              <div><dt>Consequence for intervention</dt><dd>{stage.consequence}</dd></div>
+            </dl>
+          </div>
         </details>
       </li>
     ))}
@@ -38,13 +40,14 @@ const stages = [
   summary { list-style: none; cursor: pointer; padding: 20px 0; position: relative; display: grid; gap: 20px; }
   summary::-webkit-details-marker { display: none; }
   .sedi-index { display: flex; justify-content: space-between; color: var(--accent); font-size: var(--type-caption); padding-right: 32px; }
-  .sedi-name { font-size: clamp(26px, 2.5vw, 36px); font-weight: 600; letter-spacing: var(--tracking-heading); color: var(--ink); }
+  .sedi-name { transition: color var(--dur-fast) var(--ease); font-size: clamp(26px, 2.5vw, 36px); font-weight: 600; letter-spacing: var(--tracking-heading); color: var(--ink); }
   .sedi-question { color: var(--muted); font-size: var(--type-body); line-height: 1.6; }
   .sedi-toggle { position: absolute; right: 0; top: 21px; width: 18px; height: 18px; }
   .sedi-toggle::before, .sedi-toggle::after { content: ''; position: absolute; background: var(--accent); }
   .sedi-toggle::before { height: 1px; width: 18px; top: 8px; }
   .sedi-toggle::after { width: 1px; height: 18px; left: 8px; }
-  details[open] .sedi-toggle::after { display: none; }
+  .sedi-toggle::after { transition: transform var(--dur-expand) var(--ease-out); transform-origin: center; }
+  details[open]:not([data-disclosure-state='closed']) .sedi-toggle::after { transform: scaleY(0); }
   summary:is(:hover, :focus-visible) .sedi-name, details[open] .sedi-name { color: var(--accent); }
   summary:active .sedi-name { color: var(--accent-hover); }
   summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }

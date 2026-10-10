@@ -142,10 +142,12 @@ const useCases = [
               ) : (
                 <>
                   <p set:html={markAgda(o.exclusionShort)} />
-                  <details class="disclosure sheet-disclosure">
+                  <details class="disclosure sheet-disclosure" data-disclosure>
                     <summary>Full list of separately scoped work</summary>
-                    <div class="disclosure-body">
-                      <p set:html={markAgda(o.exclusion)} />
+                    <div data-disclosure-body>
+                      <div class="disclosure-body">
+                        <p set:html={markAgda(o.exclusion)} />
+                      </div>
                     </div>
                   </details>
                 </>

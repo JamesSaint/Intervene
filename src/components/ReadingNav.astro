@@ -9,16 +9,16 @@ const { items } = Astro.props;
     <span class="label">On this page</span>
     <ul role="list">{items.map(({ href, label }) => <li><a href={href} set:html={markAgda(label)} /></li>)}</ul>
   </nav>
-  <details class="reading-mobile">
+  <details class="reading-mobile" data-disclosure>
     <summary>On this page <span aria-hidden="true">+</span></summary>
-    <nav aria-label="On this page"><ul role="list">{items.map(({ href, label }) => <li><a href={href} set:html={markAgda(label)} /></li>)}</ul></nav>
+    <nav data-disclosure-body aria-label="On this page"><ul role="list">{items.map(({ href, label }) => <li><a href={href} set:html={markAgda(label)} /></li>)}</ul></nav>
   </details>
 </aside>
 <style>
   .reading-index { min-width: 0; align-self: start; position: sticky; top: var(--anchor-offset); }
   .reading-mobile { display: none; }
   ul { list-style: none; margin: 16px 0 0; padding: 0; }
-  a { display: flex; align-items: center; min-height: 44px; padding: 12px 0; border-bottom: 1px solid var(--hair); font-size: var(--type-small); line-height: 1.6; color: var(--muted); }
+  a { transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); display: flex; align-items: center; min-height: 44px; padding: 12px 0; border-bottom: 1px solid var(--hair); font-size: var(--type-small); line-height: 1.6; color: var(--muted); }
   a:is(:hover, :focus-visible) { color: var(--accent); border-bottom-color: var(--accent); }
   a:active { color: var(--accent-hover); }
   a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
@@ -29,7 +29,8 @@ const { items } = Astro.props;
     summary { cursor: pointer; list-style: none; min-height: 48px; padding: 16px 0; display: flex; justify-content: space-between; color: var(--ink); font-size: var(--type-small); }
     summary::-webkit-details-marker { display: none; }
     summary:is(:hover, :focus-visible), summary > span { color: var(--accent); }
-    details[open] summary > span { transform: rotate(45deg); }
+    summary > span { transition: transform var(--dur-expand) var(--ease-out); }
+    details[open]:not([data-disclosure-state='closed']) summary > span { transform: rotate(45deg); }
     ul { margin: 0 0 16px; }
   }
 </style>

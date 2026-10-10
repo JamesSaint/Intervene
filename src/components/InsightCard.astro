@@ -71,6 +71,13 @@ const { title, dek, href, kicker = 'Note' } = Astro.props;
   .insight-row:active :is(.insight-title, .insight-cue) { color: var(--accent-hover); }
   .insight-row:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .insight-row:hover .insight-cue { transform: translateX(3px); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .insight-row:focus-visible .insight-cue { transform: translateX(3px); }
+  }
+
   @media (max-width: 720px) {
     .insight-row {
       grid-template-columns: 1fr 32px;

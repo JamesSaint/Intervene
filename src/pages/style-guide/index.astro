@@ -220,10 +220,12 @@ const motion = [
       </ul>
 
       <h3 class="h3 guide-h3">Disclosure · <span class="mono">details.disclosure</span></h3>
-      <details class="disclosure">
+      <details class="disclosure" data-disclosure>
         <summary>Full list of separately scoped work</summary>
-        <div class="disclosure-body">
-          <p>Native details: readable without scripts, animated with them. Used only for secondary detail; material conditions stay visible.</p>
+        <div data-disclosure-body>
+          <div class="disclosure-body">
+            <p>Native details: readable without scripts, animated with them. Used only for secondary detail; material conditions stay visible.</p>
+          </div>
         </div>
       </details>
 
@@ -249,6 +251,7 @@ keyId              2026-05-02-d7e5468e</code></pre>
         when <span class="mono">html[data-motion]</span> is set, so a visitor
         without scripts, or with reduced motion, sees the complete page.
       </p>
+      <p class="body muted">Page headings settle over 380 milliseconds while staying visible. SEDI stages and problem rows enter once in reading order. Native disclosures expand and collapse over 220 milliseconds, reverse smoothly on repeated input and settle immediately when focused content, resizing or a changed motion preference requires it. Directional link cues move three pixels on hover or keyboard focus.</p>
       <dl class="spec-list guide-list">
         {motion.map((r) => (
           <div><dt>{r.k}</dt><dd><span class="mono val">{r.v}</span> {r.u}</dd></div>

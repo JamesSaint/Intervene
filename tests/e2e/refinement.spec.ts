@@ -57,7 +57,10 @@ for (const route of ['/legal/terms/', '/insights/accountability-theatre/']) {
   test(`reading navigation on ${route} reaches an unchanged section`, async ({ page, isMobile }) => {
     await page.goto(route);
     await dismissConsent(page);
-    if (isMobile) await page.locator('.reading-mobile summary').click();
+    if (isMobile) {
+      await page.locator('.reading-mobile summary').click();
+      await expect(page.locator('.reading-mobile')).not.toHaveAttribute('data-disclosure-state');
+    }
     const nav = page.locator(isMobile ? '.reading-mobile nav' : '.reading-desktop');
     const links = await nav.locator('a').all();
     expect(links.length).toBeGreaterThan(1);
