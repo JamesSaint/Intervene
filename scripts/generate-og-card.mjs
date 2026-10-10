@@ -2,9 +2,11 @@
  * Renders the Open Graph cards in public/assets/og/ using the approved
  * Intervene wordmark from Logo.astro.
  *
- * The template retains the corner brackets, mono kicker, two or three
- * headline lines with the last one in accent, mono meta row, and hallmark
- * at the bottom right.
+ * Typography follows the v3.0 brand kit: Montserrat 600 for headlines
+ * and kickers, IBM Plex Mono 400 for captions and references. Fonts are
+ * bundled in scripts/assets/fonts/ so generation works offline.
+ * The template retains the corner brackets, accent final headline line,
+ * meta row, and hallmark at the bottom right.
  *
  * Usage:
  *   node scripts/generate-og-card.mjs <slug>
@@ -160,9 +162,21 @@ const CARDS = {
   },
 };
 
+const fontFace = (family, weight, filename) => {
+  const data = readFileSync(resolve(root, 'scripts/assets/fonts', filename)).toString('base64');
+  return `@font-face {
+    font-family: '${family}'; font-style: normal; font-weight: ${weight};
+    src: url('data:font/woff2;base64,${data}') format('woff2');
+  }`;
+};
+const fonts = [
+  fontFace('Montserrat', 600, 'montserrat-semibold.woff2'),
+  fontFace('IBM Plex Mono', 400, 'ibm-plex-mono-regular.woff2'),
+].join('\n');
+
 const html = (card) => `
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap');
+  ${fonts}
 
   :root {
     --paper: #0a0a0a;
@@ -171,7 +185,7 @@ const html = (card) => `
     --muted: #9a9a9a;
     --hair-strong: rgba(201, 182, 148, 0.3);
     --font-sans: 'Montserrat', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-mono: 'IBM Plex Mono', monospace;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -212,23 +226,24 @@ const html = (card) => `
 
   .kicker {
     display: flex; align-items: center; gap: 16px;
-    font-family: var(--font-mono); font-size: 14px; font-weight: 400;
-    letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+    font-family: var(--font-sans); font-size: 14px; font-weight: 600;
+    line-height: 1.2; white-space: nowrap; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent);
   }
   .kicker::before { content: ''; width: 6px; height: 6px; background: var(--accent); }
 
   .headline {
     /* Held clear of the right-hand bracket at 80px + 30px. */
     margin-top: 26px; max-width: 1000px;
-    font-size: 56px; font-weight: 800; line-height: 1.08;
-    letter-spacing: -0.012em; text-transform: uppercase; color: var(--ink);
+    font-size: 56px; font-weight: 600; line-height: 1.08;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink);
   }
+  .headline > div { white-space: nowrap; }
   .headline .accent { color: var(--accent); }
 
   .meta {
     margin-top: 34px; display: flex; gap: 32px;
     font-family: var(--font-mono); font-size: 13px; font-weight: 400;
-    letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+    line-height: 1.5; letter-spacing: 0; color: var(--muted);
   }
   .meta span { display: flex; align-items: center; gap: 11px; }
   .meta span::before { content: ''; width: 5px; height: 5px; background: var(--accent); }
@@ -251,7 +266,7 @@ const html = (card) => `
   .hm-word { letter-spacing: 0.14em; color: var(--ink); }
   /* The ® as the site sets it: .agda-reg in global.css. */
   .hm-reg, .agda-reg { color: var(--accent); font-size: 0.46em; letter-spacing: 0; line-height: 0; margin-left: 0.06em; vertical-align: 0.8em; }
-  .hm-serial { letter-spacing: 0.06em; color: var(--muted); text-transform: uppercase; }
+  .hm-serial { letter-spacing: 0; color: var(--muted); }
   .seal { width: 12px; height: 12px; border: 1px solid var(--accent); position: relative; }
   .seal::after {
     content: ''; position: absolute; inset: 3px; background: var(--accent);
@@ -295,25 +310,58 @@ for (const slug of slugs) {
 }
 
 const browser = await chromium.launch();
-const page = await browser.newPage({
-  viewport: { width: 1200, height: 630 },
-  deviceScaleFactor: 1,
-});
-for (const slug of slugs) {
-  await page.setContent(html(CARDS[slug]));
-  // Wait for the copy's actual fonts and fail if the provider is unavailable.
-  // document.fonts.ready alone also resolves after failed font downloads.
-  await page.evaluate(async () => {
-    await document.fonts.ready;
-    for (const font of ['800 56px Montserrat', '400 14px "JetBrains Mono"']) {
-      const loaded = await document.fonts.load(font);
-      if (!loaded.length || loaded.some((face) => face.status !== 'loaded')) {
-        throw new Error(`Required Open Graph font did not load: ${font}`);
-      }
-    }
+try {
+  const page = await browser.newPage({
+    viewport: { width: 1200, height: 630 },
+    deviceScaleFactor: 1,
   });
-  const out = resolve(root, `public/assets/og/og-${slug}.png`);
-  await page.screenshot({ path: out });
-  console.log(`og-${slug}.png written to public/assets/og/`);
+  // All assets are embedded. Reject network requests to keep rendering offline.
+  await page.route('**/*', (route) => route.abort());
+  for (const slug of slugs) {
+    await page.setContent(html(CARDS[slug]));
+    // Wait for the bundled fonts and fail if either cannot be decoded.
+    // document.fonts.ready alone also resolves after failed font downloads.
+    await page.evaluate(async () => {
+      await document.fonts.ready;
+      for (const font of ['600 56px Montserrat', '400 13px "IBM Plex Mono"']) {
+        const loaded = await document.fonts.load(font);
+        if (!loaded.length || loaded.some((face) => face.status !== 'loaded')) {
+          throw new Error(`Required Open Graph font did not load: ${font}`);
+        }
+      }
+    });
+    // Keep the authored line breaks and fit tracked headlines to their box.
+    // Check every card before saving so a future copy change cannot be clipped.
+    const size = await page.evaluate(() => {
+      const headline = document.querySelector('.headline');
+      const width = headline.getBoundingClientRect().width;
+      const lines = [...headline.children];
+      const textWidth = (element) => {
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        return range.getBoundingClientRect().width;
+      };
+      let size = 56;
+      while (lines.some((line) => textWidth(line) > width) && size > 44) {
+        headline.style.fontSize = `${--size}px`;
+      }
+      if (lines.some((line) => textWidth(line) > width)) {
+        throw new Error('Headline exceeds its box at the minimum 44px size.');
+      }
+      const kicker = document.querySelector('.kicker');
+      if (kicker.scrollWidth > kicker.clientWidth) throw new Error('Kicker overflows.');
+      const meta = document.querySelector('.meta');
+      const hallmark = document.querySelector('.hallmark');
+      if (meta.scrollWidth > meta.clientWidth) throw new Error('Meta row overflows.');
+      if (meta.getBoundingClientRect().bottom > hallmark.getBoundingClientRect().top - 40) {
+        throw new Error('Copy exceeds the vertical space above the hallmark.');
+      }
+      return size;
+    });
+    const out = resolve(root, `public/assets/og/og-${slug}.png`);
+    await page.screenshot({ path: out });
+    console.log(`og-${slug}.png written to public/assets/og/ (headline ${size}px)`);
+  }
+} finally {
+  await browser.close();
 }
-await browser.close();
