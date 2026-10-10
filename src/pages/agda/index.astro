@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import VerdictBlock from '../../components/VerdictBlock.astro';
 import { markAgda } from '../../lib/marks';
 import { assessment, offerFaqs, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
+import AgdaLogo from '../../components/AgdaLogo.astro';
 import Agda from '../../components/Agda.astro';
 
 const isnot = [
@@ -37,6 +38,7 @@ const faqs = [
 >
   <section class="hero">
     <div class="wrap">
+      <div class="product-identity"><AgdaLogo variant="lockup" /></div>
       <span class="label">The assessment</span>
       <h1 class="h1"><Agda /> assesses Intervention Readiness.</h1>
       <p class="lede muted">

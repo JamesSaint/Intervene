@@ -1,4 +1,5 @@
 ---
+import Logo from './Logo.astro';
 import Hallmark from './Hallmark.astro';
 import LinkedInButton from './LinkedInButton.astro';
 import { socialLinks, contactEmail } from '../lib/social';
@@ -9,7 +10,7 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
   <div class="wrap foot-inner">
     <div class="brand-col">
-      <span class="brand">intervene</span>
+      <Logo size="md" href="/" />
       <span class="brand-line">Intervention Readiness, assessed.</span>
       <a class="brand-email" href={`mailto:${contactEmail}`}>{contactEmail}</a>
       <div class="brand-social">
@@ -75,13 +76,6 @@ const year = new Date().getFullYear();
     display: flex;
     align-items: center;
   }
-  .brand {
-    font-family: var(--font-sans);
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
   .brand-line {
     font-family: var(--font-sans);
     font-size: 14px;
@@ -112,7 +106,7 @@ const year = new Date().getFullYear();
   .primary-nav a {
     font-family: var(--font-sans);
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted-soft);
@@ -138,7 +132,7 @@ const year = new Date().getFullYear();
     gap: 0 10px;
     line-height: 1.7;
   }
-  .meta-name { color: var(--ink); font-weight: 700; }
+  .meta-name { color: var(--ink); font-weight: 600; }
   .meta-sep { color: var(--faint); }
 
   .foot-sub {

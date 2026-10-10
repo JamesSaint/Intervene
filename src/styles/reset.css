@@ -21,7 +21,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  font-feature-settings: 'ss01', 'cv11';
+  font-feature-settings: normal;
+  font-kerning: normal;
   min-height: 100vh;
   overflow-x: hidden;
 }

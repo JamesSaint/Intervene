@@ -380,7 +380,7 @@ const useCases = [
      here composes from the shared scale; the sheet is the one component
      that is particular to this page. */
   .hero .h1 { max-width: calc(22 * var(--ch)); }
-  .ink { color: var(--ink); font-weight: 700; }
+  .ink { color: var(--ink); font-weight: 600; }
 
   /* ----- Offer sheets ----- */
   .start-here { background: var(--paper-soft); border-bottom: 1px solid var(--hair); }
@@ -405,7 +405,7 @@ const useCases = [
 
   .sheet-label {
     margin: 0;
-    font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+    font-family: var(--font-sans); font-size: 12px; font-weight: 600; letter-spacing: 0.24em;
     text-transform: uppercase; color: var(--accent);
   }
   .sheet-summary {
@@ -419,7 +419,7 @@ const useCases = [
   }
   .sheet-summary > div { display: grid; gap: 8px; align-content: start; min-width: 0; }
   .sheet-summary p { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--ink); }
-  .price { font-size: clamp(24px, 2.2vw, 30px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; }
+  .sheet-summary .price { font-family: var(--font-mono); font-size: clamp(24px, 2.2vw, 30px); font-weight: 600; letter-spacing: 0; line-height: 1.15; }
   .price-flag { font-size: 13px; color: var(--muted); }
 
   .sheet-row {

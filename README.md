@@ -19,7 +19,7 @@ Canonical site: `https://intervene.uk/`
 | --- | --- |
 | Framework | [Astro](https://astro.build) 4.x, `output: 'static'`, `trailingSlash: 'always'` |
 | Runtime | Node.js 22 in GitHub Actions |
-| Type | Montserrat for interface and editorial copy, JetBrains Mono for proof marks and technical fragments |
+| Type | Montserrat for interface and editorial copy, IBM Plex Mono for proof marks and technical fragments |
 | Theme | Dark advisory surface, warm text hierarchy, muted gold accent, restrained verdict colours |
 | Forms | [Formspree](https://formspree.io) contact endpoint |
 | Hosting | GitHub Pages via GitHub Actions |

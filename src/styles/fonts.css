@@ -1,11 +1,40 @@
-/* intervene · type loading. Montserrat aligns the advisory system with HIA. */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap');
+/* Brand kit v3.0: locally hosted Montserrat and IBM Plex Mono. */
+@font-face {
+  font-family: 'Montserrat'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('/assets/fonts/montserrat-regular.woff2') format('woff2');
+}
 
-/* Metric-matched fallback while Montserrat loads. Arial, scaled and
-   with its vertical metrics overridden to Montserrat's, so the swap
-   changes glyph shapes rather than line lengths and page height. Not
-   self-hosting: the web font still comes from Google Fonts. Values are
-   the Montserrat-to-Arial overrides published for this purpose. */
+@font-face {
+  font-family: 'Montserrat'; font-style: normal; font-weight: 500; font-display: swap;
+  src: url('/assets/fonts/montserrat-medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Montserrat'; font-style: normal; font-weight: 600; font-display: swap;
+  src: url('/assets/fonts/montserrat-semibold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Montserrat'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('/assets/fonts/montserrat-bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('/assets/fonts/ibm-plex-mono-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 500; font-display: swap;
+  src: url('/assets/fonts/ibm-plex-mono-medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 600; font-display: swap;
+  src: url('/assets/fonts/ibm-plex-mono-semibold.woff2') format('woff2');
+}
+
+/* Metric-matched local fallbacks while the bundled fonts load. */
 @font-face {
   font-family: 'Montserrat Fallback';
   src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
@@ -15,9 +44,8 @@
   line-gap-override: 0%;
   font-weight: 400;
 }
-/* Italic 400, the headline accent. Fitted on the site's 31 italic
-   fragments; Montserrat Italic runs wider against Arial Italic than
-   the uprights do. */
+/* Italic 400 fallback for emphasis in running copy. Fitted on the site's 31 italic
+   fragments; Italic metrics differ from the upright fallback. */
 @font-face {
   font-family: 'Montserrat Fallback';
   src: local('Arial Italic'), local('Arial-ItalicMT'), local('Helvetica Neue Italic'), local('Helvetica Oblique');
@@ -58,5 +86,5 @@
   ascent-override: 85.79%;
   descent-override: 22.25%;
   line-gap-override: 0%;
-  font-weight: 700 800;
+  font-weight: 700;
 }
