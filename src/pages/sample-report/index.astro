@@ -464,7 +464,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    font-size: 11px;
+    font-size: var(--type-caption);
     padding-bottom: var(--space-4);
     border-bottom: 1px solid var(--hair);
     margin-bottom: var(--space-6);
@@ -490,7 +490,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   .cover-meta div { display: grid; gap: 6px; }
   .cover-meta dt {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     letter-spacing: 0.04em;
     color: var(--muted);
     text-transform: uppercase;
@@ -498,7 +498,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   .cover-meta dd {
     margin: 0;
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     color: var(--ink);
   }
@@ -514,7 +514,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    font-size: 11px;
+    font-size: var(--type-caption);
     padding-bottom: 14px;
     border-bottom: 1px solid var(--hair-strong);
   }
@@ -523,7 +523,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     padding-top: 14px;
     border-top: 1px solid var(--hair-strong);
     color: var(--muted);
-    font-size: 10px;
+    font-size: var(--type-caption);
     letter-spacing: 0.04em;
     line-height: 1.5;
     word-break: break-all;
@@ -545,7 +545,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   .specs { margin: var(--gap-intro) 0 0; }
   .specs dd { display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; }
   .specs .val { font-family: var(--font-mono); font-weight: 400; color: var(--ink); }
-  .specs .unit { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+  .specs .unit { font-family: var(--font-mono); font-size: var(--type-caption); color: var(--muted); letter-spacing: 0.04em; }
 
   /* ----- TABLES ----- */
   .tbl {
@@ -556,7 +556,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   .tbl thead th {
     text-align: left;
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     font-weight: 500;
     letter-spacing: 0.04em;
     color: var(--muted);
@@ -570,13 +570,13 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     padding: 18px 16px 18px 0;
     border-bottom: 1px solid var(--hair);
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.55;
   }
   .tbl tbody td:last-child { padding-right: 0; }
   .tbl .cell-name { font-weight: 500; }
   .tbl .cell-body { color: var(--muted); }
-  .tbl .mono { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink); white-space: nowrap; }
+  .tbl .mono { font-family: var(--font-mono); font-size: var(--type-caption); letter-spacing: 0.04em; color: var(--ink); white-space: nowrap; }
   .tbl .col-id   { width: 110px; }
   .tbl .col-tag  { width: 140px; }
   .tbl .col-num  { width: 140px; }
@@ -587,7 +587,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     align-items: center;
     padding: 5px 10px;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: var(--type-caption);
     letter-spacing: 0.06em;
     text-transform: uppercase;
     font-weight: 500;
@@ -611,7 +611,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   .verdict-row > div { display: grid; gap: 6px; }
   .verdict-row dt {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     letter-spacing: 0.04em;
     color: var(--muted);
     text-transform: uppercase;
@@ -619,7 +619,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   .verdict-row dd {
     margin: 0;
     font-family: var(--font-sans);
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 500;
     color: var(--ink);
   }
@@ -652,7 +652,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   }
   .stage-name {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     letter-spacing: 0.06em;
     color: var(--muted);
     text-transform: uppercase;
@@ -666,13 +666,13 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   }
   .stage-detail {
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 16px;
     color: var(--muted);
     line-height: 1.5;
     margin-top: 4px;
   }
   .stage-verdict {
-    font-size: 10px;
+    font-size: var(--type-caption);
     letter-spacing: 0.06em;
     margin-top: 12px;
   }
@@ -689,7 +689,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   .callout-label {
     display: inline-block;
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     letter-spacing: 0.06em;
     color: var(--warn);
     text-transform: uppercase;
@@ -706,7 +706,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   }
   .actions li {
     font-family: var(--font-sans);
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.55;
     color: var(--ink);
   }
@@ -724,7 +724,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   }
   .viability-label {
     display: block;
-    font-size: 11px;
+    font-size: var(--type-caption);
     letter-spacing: 0.06em;
     color: var(--muted);
     text-transform: uppercase;
@@ -745,12 +745,12 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    font-size: 11px;
+    font-size: var(--type-caption);
     margin: 0 0 var(--space-4);
   }
   .viability .body { max-width: calc(56 * var(--ch)); }
   .viability-right .body { margin: 0; }
-  .callout-foot { margin-top: 20px; max-width: calc(64 * var(--ch)); font-size: 14px; }
+  .callout-foot { margin-top: 20px; max-width: calc(64 * var(--ch)); font-size: 16px; }
   .wrap-narrow .body { max-width: var(--measure); }
 
   .close-cta .btn { justify-self: start; }
@@ -772,7 +772,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
       content: attr(data-col);
       display: block;
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: var(--type-caption);
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--faint);
@@ -793,7 +793,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     color: var(--faint);
   }
   .cover-proof-note {
-    font-size: 14px; line-height: 1.6; color: var(--faint); max-width: calc(52 * var(--ch));
+    font-size: 16px; line-height: 1.6; color: var(--faint); max-width: calc(52 * var(--ch));
   }
   .env-limits {
     margin: 16px 0 0; font-size: 13px; line-height: 1.6;

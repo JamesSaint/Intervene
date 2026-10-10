@@ -9,10 +9,14 @@ const MAX = 5;
 const ticks = [5, 4, 3, 2, 1, 0];
 ---
 
-<figure class="ceiling" data-reveal="scene" aria-label="Chain ceiling propagation. Claimed scores in light ghost tracks. Actual capped scores in dark bars.">
+<figure class="ceiling" data-reveal="scene" aria-label="Chain ceiling propagation. Claimed scores in outlined tracks. Actual capped scores in bronze bars.">
+  <div class="chart-key" aria-hidden="true">
+    <span><i class="key-capped"></i>Capped score</span>
+    <span><i class="key-claimed"></i>Claimed score</span>
+  </div>
   <div class="chart">
     <ol class="axis-y" aria-hidden="true">
-      {ticks.map((t) => <li>{t}</li>)}
+      {ticks.map((t) => <li style={`--tick: ${((MAX - t) / MAX) * 100}%`}>{t}</li>)}
     </ol>
 
     <div class="plot">
@@ -30,7 +34,7 @@ const ticks = [5, 4, 3, 2, 1, 0];
           >
             {b.claimed !== null && (
               <span class="ghost" aria-label={`Claimed ${b.claimed.toFixed(1)}`}>
-                <span class="ghost-label">claimed {b.claimed.toFixed(1)}</span>
+                <span class="ghost-label"><span class="claim-name">claimed </span>{b.claimed.toFixed(1)}</span>
               </span>
             )}
             <span class="bar" aria-label={`Capped at ${b.actual.toFixed(1)}`}>
@@ -53,6 +57,20 @@ const ticks = [5, 4, 3, 2, 1, 0];
 <style>
   .ceiling { margin: var(--gap-intro) 0 0; padding: 0; }
 
+  .chart-key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    margin-bottom: var(--space-5);
+    font-family: var(--font-mono);
+    font-size: var(--type-caption);
+    color: var(--muted);
+  }
+  .chart-key > span { display: inline-flex; align-items: center; gap: 10px; }
+  .chart-key i { width: 12px; height: 12px; display: block; font-style: normal; }
+  .key-capped { background: var(--accent); }
+  .key-claimed { background: var(--paper-soft); border: 1px solid var(--hair-strong); }
+
   .chart {
     display: grid;
     grid-template-columns: 32px 1fr;
@@ -64,15 +82,20 @@ const ticks = [5, 4, 3, 2, 1, 0];
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    position: relative;
+    /* Match the plot, excluding its 40px label band and 1px baseline. */
+    height: calc(100% - 41px);
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     letter-spacing: 0.04em;
     color: var(--muted);
     text-align: right;
-    padding-bottom: 40px;
+  }
+  .axis-y li {
+    position: absolute;
+    top: var(--tick);
+    right: 0;
+    transform: translateY(-50%);
   }
 
   .plot {
@@ -105,7 +128,7 @@ const ticks = [5, 4, 3, 2, 1, 0];
 
   .col {
     position: relative;
-    height: calc(100% - 40px);
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -149,9 +172,10 @@ const ticks = [5, 4, 3, 2, 1, 0];
     right: 0;
     text-align: center;
     font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.04em;
+    font-size: var(--type-caption);
+    letter-spacing: 0;
     color: var(--muted);
+    white-space: nowrap;
     text-transform: lowercase;
   }
 
@@ -197,17 +221,19 @@ const ticks = [5, 4, 3, 2, 1, 0];
   figcaption {
     margin-top: var(--space-6);
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 16px;
+    line-height: 1.65;
     color: var(--muted);
     max-width: calc(64 * var(--ch));
   }
 
   @media (max-width: 720px) {
     .chart { height: 320px; gap: 16px; grid-template-columns: 24px 1fr; }
-    .axis-y { font-size: 10px; }
+    .axis-y { font-size: var(--type-caption); }
     .ghost, .bar { left: 14%; right: 14%; }
     .stage { font-size: 12px; bottom: -28px; }
-    .ghost-label { font-size: 9px; top: -18px; }
-    .score { font-size: 11px; top: -18px; }
+    .ghost-label { font-size: var(--type-caption); top: -22px; }
+    .claim-name { display: none; }
+    .score { font-size: var(--type-caption); top: -22px; }
   }
 </style>

@@ -39,17 +39,17 @@ const { title, description, heading, updated, current } = Astro.props;
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    font-size: 11px;
+    font-size: var(--type-caption);
     margin: 0 0 var(--space-4);
   }
-  .legal-hero .h1 { max-width: calc(18 * var(--ch)); margin: 0; font-size: clamp(30px, 3.6vw, 40px); }
+  .legal-hero .h1 { max-width: calc(18 * var(--ch)); margin: 0; font-size: clamp(32px, 3.6vw, 48px); }
 
   .legal-body { padding: var(--section-tight) 0 var(--section); }
   .legal-body h2 {
     font-family: var(--font-sans);
     font-weight: 600;
-    font-size: 20px;
-    letter-spacing: 0.08em; text-transform: uppercase;
+    font-size: clamp(26px, 2.4vw, 32px);
+    letter-spacing: var(--tracking-heading); text-transform: none;
     margin: var(--gap-sub) 0 var(--space-2);
     padding-top: var(--space-4);
     border-top: 1px solid var(--hair);
@@ -59,7 +59,7 @@ const { title, description, heading, updated, current } = Astro.props;
   .legal-body p,
   .legal-body li {
     font-family: var(--font-sans);
-    font-size: 16px;
+    font-size: var(--type-body);
     line-height: 1.7;
     color: var(--ink);
   }

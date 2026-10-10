@@ -81,15 +81,18 @@ test.describe('contact form', () => {
     await expect(page.locator('#f-name')).toHaveValue('Test Person');
   });
 
-  test('is reachable and submittable by keyboard', async ({ page }) => {
+  test('is reachable and submittable by keyboard', async ({ page, browserName }) => {
     await page.goto(ROUTE);
     let requests = 0;
     await page.route('**/formspree.io/**', async (route) => { requests += 1; await route.fulfill({ status: 200, body: '{"ok":true}' }); });
     await fill(page);
     await page.focus('#f-name');
+    // Safari's Option-Tab reaches all controls without changing the
+    // user's system-wide keyboard preference.
+    const tab = browserName === 'webkit' ? 'Alt+Tab' : 'Tab';
     const order: string[] = [];
     for (let i = 0; i < 12; i += 1) {
-      await page.keyboard.press('Tab');
+      await page.keyboard.press(tab);
       const id = await page.evaluate(() => {
         const el = document.activeElement as HTMLElement | null;
         return el ? el.id || el.getAttribute('name') || el.tagName : '';

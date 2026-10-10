@@ -1,15 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-/**
- * The contact form is the only working form on the site. Its styles were
- * lifted out of the page and into src/styles/forms.css so the Snapshot
- * does not duplicate them. This asserts the extraction changed nothing
- * a visitor can see.
- *
- * One deliberate exception, called out in the plan: focus indication.
- * The page previously removed the outline and signalled focus with a
- * border colour change alone, which fails WCAG 2.4.7. A visible ring
- * has been added. That is a fix, not a regression.
+/** Shared contact styles retain the input, focus and choice behaviour.
+ * Labels use the current brand font and the site's readable caption size.
  */
 
 const PAPER = 'rgb(10, 10, 10)';
@@ -64,10 +56,10 @@ test.describe('contact form parity after CSS extraction', () => {
         };
       });
 
-    expect(styles.fontSize).toBe('11px');
+    expect(styles.fontSize).toBe('12px');
     expect(styles.textTransform).toBe('uppercase');
-    expect(styles.letterSpacing).toBe('0.44px');
-    expect(styles.fontFamily).toContain('JetBrains Mono');
+    expect(styles.letterSpacing).toBe('0.48px');
+    expect(styles.fontFamily).toContain('IBM Plex Mono');
   });
 
   test('the textarea keeps its minimum height and vertical resize', async ({ page }) => {

@@ -81,10 +81,17 @@ test('keyboard focus reveals a group the observer has not reached', async ({ pag
   expect(await group.evaluate((e) => getComputedStyle(e).opacity)).toBe('1');
 });
 
-test('the fragment correction yields to a reader who has already scrolled', async ({ page }) => {
+test('the fragment correction yields to a reader who has already scrolled', async ({ page, browserName, isMobile }) => {
   await page.goto('/services/#assessment');
   await page.waitForTimeout(100);
-  await page.mouse.wheel(0, 900);
+  if (browserName === 'webkit' && isMobile) {
+    // Mobile WebKit has no mouse-wheel input. A touch on the gutter
+    // cancels settling before the reader's subsequent scroll.
+    await page.touchscreen.tap(5, 200);
+    await page.evaluate(() => window.scrollBy({ top: 900, behavior: 'instant' }));
+  } else {
+    await page.mouse.wheel(0, 900);
+  }
   await page.waitForTimeout(900);
   const top = await page.evaluate(() => document.getElementById('assessment')!.getBoundingClientRect().top);
   expect(top).toBeLessThan(0);
@@ -166,7 +173,7 @@ test.describe('interface feedback', () => {
     await btn.focus();
     const ring = await btn.evaluate((e) => getComputedStyle(e).outlineStyle);
     expect(ring).toBe('solid');
-    const cursor = await page.locator('.situation-grid .card').first().evaluate((e) => getComputedStyle(e).cursor);
+    const cursor = await page.locator('.situation-grid .situation').first().evaluate((e) => getComputedStyle(e).cursor);
     expect(cursor).toBe('auto');
   });
 

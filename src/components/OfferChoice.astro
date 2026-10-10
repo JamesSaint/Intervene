@@ -6,6 +6,8 @@
  * nothing about availability or acceptance. Content reads from
  * src/lib/offers.ts so the diagram cannot drift from the offer sheets.
  *
+ * `editorial` presents the same routes as aligned homepage columns.
+ *
  * `compact` keeps only the distinguishing question, "appropriate when"
  * and a link to each sheet (used above the full sheets on /services/,
  * which carry scope, outputs, boundaries and prices).
@@ -13,8 +15,8 @@
 import { offers } from '../lib/offers';
 import { markAgda } from '../lib/marks';
 
-interface Props { compact?: boolean; headingLevel?: 'h2' | 'h3' }
-const { compact = false, headingLevel = 'h3' } = Astro.props;
+interface Props { compact?: boolean; headingLevel?: 'h2' | 'h3'; editorial?: boolean }
+const { compact = false, headingLevel = 'h3', editorial = false } = Astro.props;
 const [review, assessment] = offers;
 
 const routes = [
@@ -22,6 +24,7 @@ const routes = [
     o: review,
     n: 'A',
     kicker: 'Preliminary',
+    whenShort: 'You need to establish the material intervention question for one system, or clarify its scope and evidence position.',
     when: 'You need to establish whether this one system carries a material intervention question, and the proposed scope or evidence position needs clarifying before a full assessment is scoped.',
     output: 'An executive review of the question, the preliminary chain, the evidence position and a scoped recommendation.',
     receive: ['Executive review: what to assess and why', 'Evidence and access position', 'Scoped recommendation'],
@@ -32,6 +35,7 @@ const routes = [
     o: assessment,
     n: 'B',
     kicker: 'Full assessment',
+    whenShort: 'The system, pathway and scenario are defined, and relevant evidence access is available.',
     when: 'The named system, pathway and scenario are defined and relevant evidence access is available.',
     output: 'The full assessment package: an Intervention Readiness verdict with its basis and limitations, and what has to change before the organisation relies on the pathway.',
     receive: ['Evidence register with provenance and gaps', 'SEDI findings and chain analysis', 'Verdict, confidence basis, limitations', 'Executive interpretation and remediation priorities'],
@@ -40,12 +44,14 @@ const routes = [
   },
 ];
 const H = headingLevel;
+const RouteHeading = editorial ? 'h3' : 'span';
 ---
 
-<figure class="offer-choice" data-reveal="scene" aria-labelledby="offer-choice-heading">
+<figure class:list={["offer-choice", { "offer-choice--editorial": editorial }]} data-reveal="scene" aria-labelledby="offer-choice-heading">
   <figcaption class="oc-caption">
     <span class="label section-kicker">Where should we begin?</span>
-    <H class="h2" id="offer-choice-heading">Two starting points. <em>Neither is a prerequisite for the other.</em></H>
+    <H class="h2" id="offer-choice-heading">Two starting points.{!editorial && <em> Neither is a prerequisite for the other.</em>}</H>
+    {editorial && <p class="oc-principle">Neither is a prerequisite for the other.</p>}
     <p class="body muted oc-lede">
       Which route fits depends on how defined the system, pathway and scenario
       already are, and what evidence you can put in front of an assessor.
@@ -58,24 +64,24 @@ const H = headingLevel;
   </div>
 
   <ol class="oc-routes" role="list">
-    {routes.map(({ o, n, kicker, when, output, receive, boundary, href }) => (
+    {routes.map(({ o, n, kicker, when, whenShort, output, receive, boundary, href }) => (
       <li class="oc-route">
         <span class="oc-branch" aria-hidden="true"></span>
         <div class="oc-head">
           <span class="node oc-node" aria-hidden="true"></span>
           <span class="mono oc-n">Route {n} · {kicker}</span>
-          <span class="oc-name" set:html={markAgda(o.name)} />
+          <RouteHeading class="oc-name" set:html={markAgda(o.name)} />
         </div>
         <dl class="oc-fields">
           <div>
             <dt>Appropriate when</dt>
-            <dd>{when}</dd>
+            <dd>{editorial ? whenShort : when}</dd>
           </div>
           {!compact && (
             <div>
               <dt>What you receive</dt>
               <dd>
-                <span set:html={markAgda(output)} />
+                {!editorial && <span set:html={markAgda(output)} />}
                 <ul class="oc-list" role="list">
                   {receive.map((r) => <li set:html={markAgda(r)} />)}
                 </ul>
@@ -96,7 +102,7 @@ const H = headingLevel;
           )}
         </dl>
         <a href={href} class="link oc-link">
-          {n === 'A' ? 'Review sheet: scope, outputs, boundary and indicative fee' : 'Assessment sheet: scope, deliverables, boundary and indicative range'} <span aria-hidden="true">→</span>
+          {editorial ? (n === 'A' ? 'Explore the Review' : 'Explore the Assessment') : (n === 'A' ? 'Review sheet: scope, outputs, boundary and indicative fee' : 'Assessment sheet: scope, deliverables, boundary and indicative range')} <span aria-hidden="true">→</span>
         </a>
       </li>
     ))}
@@ -135,7 +141,7 @@ const H = headingLevel;
   .oc-head { display: grid; justify-items: center; gap: 12px; text-align: center; }
   .oc-head .oc-node { margin-top: -7px; }
   .oc-n { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
-  .oc-name { font-family: var(--font-sans); font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: 0.08em; text-transform: uppercase; }
+  .oc-name { margin: 0; font-family: var(--font-sans); font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: 0.08em; text-transform: uppercase; }
 
   .oc-fields { margin: 8px 0 0; display: grid; gap: 0; border-top: 1px solid var(--hair-strong); }
   .oc-fields > div { display: grid; gap: 6px; padding: var(--space-3) 0; border-bottom: 1px solid var(--hair); }
@@ -171,6 +177,47 @@ const H = headingLevel;
   html[data-motion] .offer-choice.in .oc-fields,
   html[data-motion] .offer-choice.in .oc-link,
   html[data-motion] .offer-choice.in .oc-foot { opacity: 1; transform: none; }
+
+  /* Homepage: two parallel editorial columns. The full offer sheets
+     retain their existing diagram and share the same commercial data. */
+  .offer-choice--editorial .oc-caption { display: grid; grid-template-columns: 1fr 2fr; gap: 20px 48px; }
+  .offer-choice--editorial .oc-caption .label { grid-row: 1 / span 3; margin-top: 10px; align-self: start; }
+  .offer-choice--editorial .oc-caption .h2 { font-size: var(--type-h2); line-height: 1.2; letter-spacing: var(--tracking-heading); text-transform: none; max-width: none; margin: 0; }
+  .oc-principle { font-size: 20px; line-height: 1.5; color: var(--ink); margin: 0; }
+  .offer-choice--editorial .oc-lede { font-size: 17px; line-height: 1.7; max-width: 57ch; margin: 0; }
+  .offer-choice--editorial .oc-root, .offer-choice--editorial .oc-branch,
+  .offer-choice--editorial .oc-node, .offer-choice--editorial .oc-routes::before { display: none; }
+  .offer-choice--editorial .oc-routes { margin-top: 48px; gap: 0 48px; grid-template-rows: auto auto auto auto auto auto; }
+  .offer-choice--editorial .oc-route { border-top: 1px solid var(--hair-strong); padding-top: 24px; grid-row: span 6; grid-template-rows: subgrid; gap: 0; }
+  .offer-choice--editorial .oc-head { justify-items: start; text-align: left; gap: 16px; padding-bottom: 28px; align-content: start; }
+  .offer-choice--editorial .oc-n { font-size: 12px; letter-spacing: 0; text-transform: none; }
+  .offer-choice--editorial .oc-name { font-size: var(--type-h3); line-height: 1.3; letter-spacing: var(--tracking-heading); text-transform: none; max-width: 22ch; }
+  .offer-choice--editorial .oc-fields { display: grid; grid-row: span 4; grid-template-rows: subgrid; margin: 0; border-top: 0; }
+  .offer-choice--editorial .oc-fields > div { gap: 12px; padding: 24px 0; align-content: start; }
+  .offer-choice--editorial .oc-fields dt { font-size: 12px; letter-spacing: 0; text-transform: none; color: var(--faint); }
+  .offer-choice--editorial .oc-fields dd { font-size: 17px; line-height: 1.7; max-width: 48ch; }
+  .offer-choice--editorial .oc-fields > div:nth-child(3) dd { font-size: 16px; color: var(--muted); }
+  .offer-choice--editorial .oc-fields dd.oc-price { font-size: clamp(18px, 1.8vw, 24px); line-height: 1.5; }
+  .offer-choice--editorial .oc-list { margin: 0; gap: 10px; }
+  .offer-choice--editorial .oc-list > li { font-size: 17px; line-height: 1.65; }
+  .offer-choice--editorial .oc-link { font-size: 16px; padding: 12px 0; justify-self: start; margin-top: 16px; }
+  .offer-choice--editorial .oc-foot { margin-top: 32px; font-size: 16px; line-height: 1.7; max-width: 76ch; }
+  html[data-motion] .offer-choice--editorial :is(.oc-head, .oc-fields, .oc-link, .oc-foot) { opacity: 1; transform: none; transition: none; }
+  @media (max-width: 880px) {
+    .offer-choice--editorial .oc-caption { grid-template-columns: 1fr; gap: 20px; }
+    .offer-choice--editorial .oc-caption .label { grid-row: auto; margin-top: 0; }
+    .offer-choice--editorial .oc-routes { gap: 0 32px; }
+  }
+  @media (max-width: 720px) {
+    .offer-choice--editorial .oc-routes { grid-template-rows: none; gap: 40px; margin-top: 32px; }
+    .offer-choice--editorial .oc-route { grid-row: auto; grid-template-rows: none; }
+    .offer-choice--editorial .oc-head { grid-template-columns: 1fr; padding-bottom: 8px; }
+    .offer-choice--editorial .oc-head .oc-n, .offer-choice--editorial .oc-head .oc-name { grid-column: 1; }
+    .offer-choice--editorial .oc-fields { grid-row: auto; grid-template-rows: none; }
+    .offer-choice--editorial .oc-fields > div { padding: 20px 0; }
+    .offer-choice--editorial .oc-fields dd, .offer-choice--editorial .oc-list > li { font-size: 16px; }
+    .offer-choice--editorial .oc-caption .label { font-size: 11px; }
+  }
 
   @media (max-width: 720px) {
     .oc-root { display: none; }

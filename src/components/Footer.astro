@@ -52,10 +52,11 @@ const year = new Date().getFullYear();
       <span aria-hidden="true" class="meta-sep">·</span>
       <span>Owner and developer of <Agda /></span>
       <span aria-hidden="true" class="meta-sep">·</span>
-      <span>Registered in England and Wales, company number 17317647</span>
+      <span>Registered in England and Wales, <span class="keep-together">company number 17317647</span></span>
       <span aria-hidden="true" class="meta-sep">·</span>
       <span>© {year} Intervene Limited</span>
     </p>
+    <p class="trade-mark-notice">AGDA is a registered trade mark of Intervene Limited in the United Kingdom (UK00004416503).</p>
   </div>
 </footer>
 
@@ -67,9 +68,9 @@ const year = new Date().getFullYear();
   }
   .foot-inner {
     display: grid;
-    grid-template-columns: 1.2fr auto 1fr;
+    grid-template-columns: 1.1fr 1fr;
     align-items: start;
-    gap: 48px;
+    gap: var(--space-7);
   }
   .brand-col { display: grid; gap: 12px; align-content: start; }
   .brand-social {
@@ -78,7 +79,7 @@ const year = new Date().getFullYear();
   }
   .brand-line {
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 16px;
     color: var(--muted);
     max-width: calc(34 * var(--ch));
     line-height: 1.5;
@@ -86,9 +87,12 @@ const year = new Date().getFullYear();
   .brand-email {
     justify-self: start;
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 16px;
     color: var(--muted);
     line-height: 1.5;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
     border-bottom: 1px solid transparent;
     transition:
       border-color var(--dur-hover) var(--ease),
@@ -101,26 +105,28 @@ const year = new Date().getFullYear();
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 32px;
   }
   .primary-nav a {
     font-family: var(--font-sans);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
     color: var(--muted-soft);
-    white-space: nowrap;
-    padding-bottom: 1px;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    line-height: 1.5;
+    padding: 8px 0;
     border-bottom: 1px solid transparent;
     transition:
       border-color var(--dur-hover) var(--ease),
       color var(--dur-hover) var(--ease);
   }
   .primary-nav a:hover { border-color: var(--accent); color: var(--ink); }
-  /* Moved out of the three-column grid and onto its own full-width row
-     beneath the supporting nav. In the old column it had roughly a
-     third of the width, so four facts became four stacked lines. */
+  /* Company facts remain in a full-width row below the navigation. */
   .meta {
     margin: 20px 0 0;
     font-family: var(--font-sans);
@@ -146,16 +152,19 @@ const year = new Date().getFullYear();
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: 4px 24px;
   }
   .supporting-nav a,
   .supporting-nav button {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--muted);
-    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    line-height: 1.5;
     border-bottom: 1px solid transparent;
     transition: color var(--dur-hover) var(--ease);
   }
@@ -169,13 +178,26 @@ const year = new Date().getFullYear();
   .supporting-nav a:hover,
   .supporting-nav button:hover { color: var(--ink); }
 
+  .trade-mark-notice {
+    margin: 12px 0 0;
+    color: var(--faint);
+    font-size: var(--type-caption);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 1000px) {
+    .primary-nav ul { grid-template-columns: 1fr; gap: 0; }
+  }
   @media (max-width: 720px) {
     .foot-inner {
       grid-template-columns: 1fr;
       gap: 32px;
       text-align: left;
     }
-    .meta { gap: 0 8px; }
-    .supporting-nav ul { gap: 16px 20px; }
+    .primary-nav ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 24px; }
+    .meta { display: grid; gap: 8px; }
+    .meta-sep { display: none; }
+    .supporting-nav ul { gap: 4px 20px; }
+    .foot-sub { margin-top: var(--space-5); padding-top: var(--space-4); }
   }
 </style>

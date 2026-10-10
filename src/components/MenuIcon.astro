@@ -33,9 +33,9 @@
   .line-2 { top: 50%; transform: translateY(-50%); }
   .line-3 { bottom: 0; }
 
-  [aria-expanded='true'] .line-1 { transform: translateY(6.25px) rotate(45deg); }
-  [aria-expanded='true'] .line-2 { opacity: 0; transform: translateY(-50%) scaleX(0); }
-  [aria-expanded='true'] .line-3 { transform: translateY(-6.25px) rotate(-45deg); }
+  :global([aria-expanded='true']) .line-1 { transform: translateY(6.25px) rotate(45deg); }
+  :global([aria-expanded='true']) .line-2 { opacity: 0; transform: translateY(-50%) scaleX(0); }
+  :global([aria-expanded='true']) .line-3 { transform: translateY(-6.25px) rotate(-45deg); }
 
   @media (prefers-reduced-motion: reduce) {
     .line { transition-duration: 80ms; }

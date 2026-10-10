@@ -124,7 +124,9 @@ export function initPageNav(root: Document | ParentNode = document): () => void 
   let ticking = false;
   const update = () => {
     ticking = false;
-    const line = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--anchor-offset')) || 88) + 8;
+    // Resolve calc() through the target's computed scroll margin. Reading
+    // the custom property directly returns the unevaluated expression.
+    const line = (parseFloat(getComputedStyle(targets[0]).scrollMarginTop) || 88) + 8;
     let current = targets[0].id;
     for (const t of targets) {
       if (t.getBoundingClientRect().top <= line) current = t.id;
