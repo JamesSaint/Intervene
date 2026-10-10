@@ -1,16 +1,7 @@
 # Intervene favicon pack
 
-This pack has been regenerated from the new Intervene logo icon.
+The active favicon set uses the approved Intervene R artwork from brand kit v3.0. `BaseLayout.astro` links to `favicon.ico`, `favicon.svg`, `apple-touch-icon.png` and `site.webmanifest`.
 
-## Included
-- Standard favicons: 16x16, 32x32, 48x48, 64x64, 96x96, favicon.ico
-- Apple touch icons: 57x57 through 180x180
-- Android icons: 192x192 and 512x512
-- Microsoft tile icons: 70x70, 144x144, 150x150, 310x310
-- browserconfig.xml
-- manifest.json
-- site.webmanifest
-- favicon-meta-tags.html
+Numbered favicon and Apple touch icon files, Android Chrome icons and Microsoft tiles retain their existing URLs and now use the approved R artwork. `manifest.json` mirrors `site.webmanifest`; `browserconfig.xml` retains the Windows tile references.
 
-## Typical install
-Upload the entire `favicons` folder to your site root, then paste the contents of `favicon-meta-tags.html` into the `<head>` of your pages.
+Artwork masters come from `assets/icons/` in the brand kit. Use the supplied platform assets for new integrations.

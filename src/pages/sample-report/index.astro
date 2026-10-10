@@ -544,7 +544,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   /* ----- SPECS ----- */
   .specs { margin: var(--gap-intro) 0 0; }
   .specs dd { display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; }
-  .specs .val { font-family: var(--font-sans); font-weight: 500; color: var(--ink); }
+  .specs .val { font-family: var(--font-mono); font-weight: 400; color: var(--ink); }
   .specs .unit { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
 
   /* ----- TABLES ----- */
@@ -658,8 +658,8 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     text-transform: uppercase;
   }
   .stage-value {
-    font-family: var(--font-sans);
-    font-weight: 500;
+    font-family: var(--font-mono);
+    font-weight: 400;
     font-size: 22px;
     color: var(--ink);
     margin-top: 4px;
@@ -733,9 +733,9 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   .viability-big {
     display: block;
     font-family: var(--font-sans);
-    font-weight: 500;
-    font-size: clamp(44px, 6vw, 72px);
-    letter-spacing: -0.035em;
+    font-weight: 600;
+    font-size: clamp(32px, 6vw, 72px);
+    letter-spacing: 0.08em; text-transform: uppercase;
     color: var(--warn);
     line-height: 1;
     margin-bottom: 12px;
@@ -786,7 +786,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
 
   /* Provenance and verification limits. Deliberately plain: the point is
      that the reader cannot mistake a constructed page for signed output. */
-  .finding-lead { display: block; color: var(--ink); font-weight: 700; margin-bottom: 10px; }
+  .finding-lead { display: block; color: var(--ink); font-weight: 600; margin-bottom: 10px; }
   .provenance-note {
     margin: 20px 0 0; max-width: calc(60 * var(--ch));
     padding-left: 16px; border-left: 2px solid var(--accent);

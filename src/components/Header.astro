@@ -55,14 +55,16 @@ const { current } = Astro.props;
   .quick-nav {
     display: none;
     align-items: center;
-    gap: 28px;
+    gap: 32px;
     margin-left: auto;
     margin-right: 28px;
   }
   .quick-nav a {
     font-family: var(--font-sans);
-    font-size: 14px;
-    letter-spacing: 0.01em;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
     color: var(--muted);
     padding: 6px 0;
     border-bottom: 1px solid transparent;
@@ -72,7 +74,7 @@ const { current } = Astro.props;
   .quick-nav a[aria-current='page'] { color: var(--ink); border-bottom-color: var(--accent); }
   .quick-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
   .quick-nav .quick-cta { color: var(--ink); }
-  @media (min-width: 900px) {
+  @media (min-width: 1200px) {
     .quick-nav { display: flex; }
   }
   .menu-trigger {

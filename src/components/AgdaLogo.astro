@@ -1,0 +1,18 @@
+---
+/** Approved artwork only. Use Agda.astro for mentions in copy. */
+interface Props { variant?: 'logo' | 'lockup' | 'small'; }
+const { variant = 'logo' } = Astro.props;
+const assets = {
+  logo: { file: 'agda-reverse.svg', width: 224, height: 50, alt: 'AGDA®' },
+  lockup: { file: 'agda-by-intervene-stacked-white.svg', width: 280, height: 92, alt: 'AGDA® by Intervene' },
+  small: { file: 'agda-small-white.svg', width: 80, height: 20, alt: 'AGDA®' },
+};
+const asset = assets[variant];
+---
+<img class:list={['agda-logo', variant]} src={`/assets/brand/${asset.file}`} width={asset.width} height={asset.height} alt={asset.alt} />
+<style>
+  .agda-logo { display: block; height: auto; flex: none; }
+  .logo { width: 224px; }
+  .lockup { width: 280px; }
+  .small { width: 80px; }
+</style>

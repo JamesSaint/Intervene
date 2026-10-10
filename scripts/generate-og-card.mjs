@@ -4,7 +4,7 @@
  *
  * Typography follows the v3.0 brand kit: Montserrat 600 for headlines
  * and kickers, IBM Plex Mono 400 for captions and references. Fonts are
- * bundled in scripts/assets/fonts/ so generation works offline.
+ * bundled in public/assets/fonts/ so generation works offline.
  * The template retains the corner brackets, accent final headline line,
  * meta row, and hallmark at the bottom right.
  *
@@ -163,7 +163,7 @@ const CARDS = {
 };
 
 const fontFace = (family, weight, filename) => {
-  const data = readFileSync(resolve(root, 'scripts/assets/fonts', filename)).toString('base64');
+  const data = readFileSync(resolve(root, 'public/assets/fonts', filename)).toString('base64');
   return `@font-face {
     font-family: '${family}'; font-style: normal; font-weight: ${weight};
     src: url('data:font/woff2;base64,${data}') format('woff2');
@@ -174,7 +174,9 @@ const fonts = [
   fontFace('IBM Plex Mono', 400, 'ibm-plex-mono-regular.woff2'),
 ].join('\n');
 
-const html = (card) => `
+const productWordmark = `data:image/svg+xml;base64,${readFileSync(resolve(root, 'public/assets/brand/agda-by-intervene-stacked-white.svg')).toString('base64')}`;
+const productCards = new Set(['agda', 'methodology', 'sample-report']);
+const html = (card, slug) => `
 <style>
   ${fonts}
 
@@ -222,6 +224,9 @@ const html = (card) => `
     display: block; height: 29px; width: auto; aspect-ratio: 9196 / 1027.7;
   }
 
+  .wordmark.product { top: 68px; }
+  .product-wordmark { display: block; width: 280px; height: auto; }
+
   .stack { position: absolute; left: 80px; top: 196px; right: 80px; }
 
   .kicker {
@@ -248,9 +253,8 @@ const html = (card) => `
   .meta span { display: flex; align-items: center; gap: 11px; }
   .meta span::before { content: ''; width: 5px; height: 5px; background: var(--accent); }
 
-  /* The hallmark, matching src/components/Hallmark.astro. It is a house
-     mark and already sits in the footer of every page including this
-     one, so the card carries it too. */
+  /* Retain the assay reference without a second loose brand logo.
+     Product cards use the supplied AGDA by Intervene lockup above. */
   .hallmark {
     position: absolute; right: 80px; bottom: 75px;
     display: inline-flex; align-items: stretch;
@@ -263,9 +267,8 @@ const html = (card) => `
     font-size: 11px;
   }
   .hm-cell:last-child { border-right: 0; }
-  .hm-word { letter-spacing: 0.14em; color: var(--ink); }
   /* The ® as the site sets it: .agda-reg in global.css. */
-  .hm-reg, .agda-reg { color: var(--accent); font-size: 0.46em; letter-spacing: 0; line-height: 0; margin-left: 0.06em; vertical-align: 0.8em; }
+  .agda-reg { color: var(--accent); font-size: 0.46em; letter-spacing: 0; line-height: 0; margin-left: 0.06em; vertical-align: 0.8em; }
   .hm-serial { letter-spacing: 0; color: var(--muted); }
   .seal { width: 12px; height: 12px; border: 1px solid var(--accent); position: relative; }
   .seal::after {
@@ -277,7 +280,7 @@ const html = (card) => `
 <div class="bracket tl"></div><div class="bracket tr"></div>
 <div class="bracket bl"></div><div class="bracket br"></div>
 
-<div class="wordmark">${wordmark}</div>
+<div class="wordmark${productCards.has(slug) ? ' product' : ''}">${productCards.has(slug) ? `<img class="product-wordmark" src="${productWordmark}" alt="AGDA® by Intervene">` : wordmark}</div>
 
 <div class="stack">
   <div class="kicker">${markAgda(card.kicker)}</div>
@@ -292,7 +295,6 @@ const html = (card) => `
 </div>
 
 <div class="hallmark">
-  <span class="hm-cell hm-word">AGDA<span class="hm-reg">®</span></span>
   <span class="hm-cell hm-serial">Assay · 2026</span>
   <span class="hm-cell"><span class="seal"></span></span>
 </div>
@@ -318,7 +320,7 @@ try {
   // All assets are embedded. Reject network requests to keep rendering offline.
   await page.route('**/*', (route) => route.abort());
   for (const slug of slugs) {
-    await page.setContent(html(CARDS[slug]));
+    await page.setContent(html(CARDS[slug], slug));
     // Wait for the bundled fonts and fail if either cannot be decoded.
     // document.fonts.ready alone also resolves after failed font downloads.
     await page.evaluate(async () => {
@@ -358,6 +360,7 @@ try {
       }
       return size;
     });
+    await page.evaluate(() => Promise.all([...document.images].map((image) => image.decode())));
     const out = resolve(root, `public/assets/og/og-${slug}.png`);
     await page.screenshot({ path: out });
     console.log(`og-${slug}.png written to public/assets/og/ (headline ${size}px)`);
