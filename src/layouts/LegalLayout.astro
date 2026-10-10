@@ -42,7 +42,7 @@ const { title, description, heading, updated, current } = Astro.props;
     font-size: var(--type-caption);
     margin: 0 0 var(--space-4);
   }
-  .legal-hero .h1 { max-width: calc(18 * var(--ch)); margin: 0; font-size: clamp(32px, 3.6vw, 48px); }
+  .legal-hero .h1 { margin: 0; font-size: clamp(32px, 3.6vw, 48px); }
 
   .legal-body { padding: var(--section-tight) 0 var(--section); }
   .legal-body h2 {
@@ -75,6 +75,7 @@ const { title, description, heading, updated, current } = Astro.props;
     border-bottom: 1px solid var(--hair-strong);
     transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
   }
-  .legal-body a:hover { border-bottom-color: var(--accent); color: var(--accent); }
+  .legal-body a:is(:hover, :focus-visible) { border-bottom-color: var(--accent); color: var(--accent); }
+  .legal-body a:active { color: var(--accent-hover); }
   .legal-body a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 </style>

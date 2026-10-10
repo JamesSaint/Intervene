@@ -28,7 +28,6 @@ const excluded = [
   'Formal regulatory certification.',
 ];
 
-
 const pageNav = [
   { href: '#begin', label: 'Where to begin' },
   { href: '#engagements', label: 'The two engagements' },
@@ -379,12 +378,12 @@ const useCases = [
      boundary, a four-step sequence, three grids and a FAQ. Everything
      here composes from the shared scale; the sheet is the one component
      that is particular to this page. */
-  .hero .h1 { max-width: calc(22 * var(--ch)); }
+
   .ink { color: var(--ink); font-weight: 600; }
 
   /* ----- Offer sheets ----- */
   .start-here { background: var(--paper-soft); border-bottom: 1px solid var(--hair); }
-  .start-here .h2 { max-width: calc(22 * var(--ch)); }
+
   .offers {
     margin: var(--gap-intro) 0 0;
     display: grid;
@@ -401,7 +400,7 @@ const useCases = [
   .sheet-head { display: grid; gap: var(--gap-item); align-content: start; padding-bottom: var(--space-4); }
   .offer-kicker { font-size: var(--type-caption); letter-spacing: 0; text-transform: none; color: var(--accent); }
   .offer-name { margin: 0; font-size: clamp(24px, 2.2vw, 30px); }
-  .offer-purpose { margin: 4px 0 0; max-width: calc(46 * var(--ch)); font-family: var(--font-sans); font-size: 17px; line-height: 1.6; color: var(--muted); }
+  .offer-purpose { margin: 4px 0 0; font-family: var(--font-sans); font-size: 17px; line-height: 1.6; color: var(--muted); }
 
   .sheet-label {
     margin: 0;
@@ -427,12 +426,12 @@ const useCases = [
     padding: var(--space-4) 0;
     border-bottom: 1px solid var(--hair);
   }
-  .sheet-row p { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--ink); max-width: calc(52 * var(--ch)); }
-  .sheet-row .dash-list > li { font-size: 16px; max-width: calc(52 * var(--ch)); }
+  .sheet-row p { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--ink); }
+  .sheet-row .dash-list > li { font-size: 16px; }
   .sheet-row-detail p,
   .sheet-row-detail .dash-list > li { font-size: 16px; color: var(--muted); }
   .sheet-row-detail .sheet-label { color: var(--muted); }
-  .records-note { margin-top: var(--space-3); font-size: 16px; color: var(--muted); max-width: calc(52 * var(--ch)); }
+  .records-note { margin-top: var(--space-3); font-size: 16px; color: var(--muted); }
   .sheet-disclosure { margin-top: 6px; border-top: 0; border-bottom: 0; }
   .sheet-disclosure > summary { min-height: 44px; padding: 10px 32px 10px 0; font-size: 16px; justify-content: flex-start; gap: 12px; }
   .sheet-disclosure .disclosure-body p { font-size: 16px; }
@@ -452,7 +451,7 @@ const useCases = [
   .services-head { margin: var(--gap-sub) 0 var(--gap-item); }
 
   /* ----- Beyond one system ----- */
-  .wrap-narrow .body { max-width: var(--measure); margin: var(--space-3) 0 0; }
+  .wrap-narrow .body { margin: var(--space-3) 0 0; }
 
   /* ----- Where to begin ----- */
   .choose { border-bottom: 1px solid var(--hair); }
@@ -465,7 +464,7 @@ const useCases = [
   .seq-step { display: grid; gap: 10px; align-content: start; }
   .seq-step .stage-n { margin-top: 10px; color: var(--accent); letter-spacing: 0.06em; font-size: var(--type-caption); }
   .seq-name { margin: 0; font-size: 22px; }
-  .seq-step p { margin: 0; max-width: calc(32 * var(--ch)); font-size: 16px; }
+  .seq-step p { margin: 0; font-size: 16px; }
   .seq-foot { margin-top: var(--space-5); }
   html[data-motion] .seq-step {
     opacity: 0; transform: translateY(var(--move-reveal));

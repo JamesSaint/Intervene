@@ -10,11 +10,11 @@
     <p class="consent-copy">
       Google Analytics cookies tell us which pages get read. They are set only
       if you accept, and the data goes to Google. Decline and none are set.
-      <a href="/legal/privacy/">What we collect</a>.
+      <a class="link" href="/legal/privacy/">What we collect</a>.
     </p>
     <div class="consent-actions">
-      <button type="button" class="consent-btn" data-consent="denied">Decline</button>
-      <button type="button" class="consent-btn consent-accept" data-consent="granted">Accept</button>
+      <button type="button" class="consent-btn btn-ghost" data-consent="denied">Decline</button>
+      <button type="button" class="consent-btn consent-accept btn" data-consent="granted">Accept</button>
     </div>
   </div>
 </div>
@@ -134,51 +134,14 @@
     line-height: 1.5;
     color: var(--muted);
     margin: 0;
-    max-width: calc(78 * var(--ch));
   }
-  .consent-copy a {
-    color: var(--muted);
-    border-bottom: 1px solid var(--hair-strong);
-    transition: color var(--dur-hover) var(--ease);
-  }
-  .consent-copy a:hover { color: var(--ink); }
-
   .consent-actions {
     display: flex;
     gap: 12px;
     flex-shrink: 0;
   }
-  /* A 44px target for both choices, with a visible keyboard ring. */
-  .consent-btn {
-    font-family: var(--font-mono);
-    font-size: var(--type-caption);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    background: transparent;
-    border: 1px solid var(--hair-strong);
-    padding: 12px 22px;
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition:
-      color var(--dur-hover) var(--ease),
-      border-color var(--dur-hover) var(--ease),
-      background var(--dur-hover) var(--ease);
-  }
-  .consent-btn:hover { color: var(--ink); border-color: var(--muted); }
-  .consent-accept {
-    color: var(--inverse-ink);
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-  .consent-accept:hover {
-    color: var(--inverse-ink);
-    background: var(--accent-hover);
-    border-color: var(--accent-hover);
-  }
+  /* Compact sizing; colour, hover, press and focus use the shared buttons. */
+  .consent-btn { font-size: var(--type-caption); padding: 12px 22px; }
 
   @media (max-width: 720px) {
     .consent-inner {

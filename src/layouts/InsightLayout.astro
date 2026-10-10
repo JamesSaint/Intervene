@@ -61,7 +61,7 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
 
 <style>
   /* Reading page: a narrow column, one kicker, a dek, and prose set at
-     18px on a 680px measure. Closing actions sit under a rule. */
+     18px within the available page width. Closing actions sit under a rule. */
   .insight-header {
     padding-top: var(--hero-top);
     padding-bottom: var(--hero-bottom);
@@ -78,13 +78,14 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
     border-bottom: 1px solid transparent;
     transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
   }
-  .back-link:hover { color: var(--ink); border-color: var(--accent); }
-  .insight-header .h1 { font-size: clamp(32px, 3.6vw, 48px); max-width: calc(22 * var(--ch)); }
+  .back-link:is(:hover, :focus-visible) { color: var(--accent); border-color: var(--accent); }
+  .back-link:active { color: var(--accent-hover); }
+  .insight-header .h1 { font-size: clamp(32px, 3.6vw, 48px); }
   /* On the smallest phones use the H2 scale for long tracked titles. */
   @media (max-width: 360px) {
     .insight-header .h1 { font-size: 30px; line-height: 1.2; }
   }
-  .dek { margin-top: var(--gap-h1); max-width: calc(48 * var(--ch)); color: var(--ink); }
+  .dek { margin-top: var(--gap-h1); color: var(--ink); }
   .insight-header .meta {
     display: block;
     margin-top: var(--space-4);
@@ -123,7 +124,6 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
     font-style: italic;
     line-height: 1.4;
     color: var(--muted);
-    max-width: calc(40 * var(--ch));
   }
   .prose :global(ul) {
     margin: 0 0 var(--space-4);
@@ -149,5 +149,5 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
     gap: var(--space-4);
     justify-items: start;
   }
-  .insight-close .body { max-width: calc(48 * var(--ch)); margin: 0; }
+  .insight-close .body { margin: 0; }
 </style>

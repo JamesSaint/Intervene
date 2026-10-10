@@ -52,7 +52,7 @@ const docs = [
 >
   <section class="hero">
     <div class="wrap">
-      <h1 class="h1">Follow the response <span class="phrase">from signal</span> <em class="phrase">to effective intervention.</em></h1>
+      <h1 class="h1">Follow the response from signal <em>to effective intervention.</em></h1>
       <p class="lede muted">
         <Agda /> examines four connected capabilities: Detect, Escalate, Decide
         and Intervene. Together they form the SEDI intervention chain.
@@ -244,11 +244,8 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
 
 <style>
   /* Long methodology headings use the available section width. Body
-     copy keeps the shared reading measure; diagrams manage their own draw. */
+     copy fills its column; diagrams manage their own draw. */
   .hero .h1, .block .h2 { max-width: 100%; }
-  @media (min-width: 881px) {
-    .hero .phrase { white-space: nowrap; }
-  }
   .verdicts {
     list-style: none;
     margin: var(--gap-sub) 0 0;
@@ -268,13 +265,12 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
     font-weight: 500;
   }
   .verdict-name.warn { color: var(--warn); }
-  .verdicts p { max-width: calc(36 * var(--ch)); margin: 0; }
+  .verdicts p { margin: 0; }
 
   .dim-grid { row-gap: var(--space-5); }
-  .stances { max-width: 1080px; gap: var(--space-6) var(--space-7); }
-  .stances p { max-width: calc(44 * var(--ch)); }
+  .stances { gap: var(--space-6) var(--space-7); }
 
-  .env-note { margin-top: var(--space-4); max-width: var(--measure); }
+  .env-note { margin-top: var(--space-4); }
 
   /* Four columns need room for the dimension names and document prose.
      Change the page grids before small desktop columns become cramped. */

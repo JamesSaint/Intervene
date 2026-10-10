@@ -30,12 +30,9 @@ const rhythm = [
 ];
 
 const widths = [
-  { k: '--max', v: '1280px', u: '.wrap: grids, tables, diagrams.' },
+  { k: '--max', v: '1440px', u: 'All page containers: text fills the available width of its section or grid column before wrapping.' },
   { k: '--max-diagram', v: '1120px', u: 'Wide technical diagrams where required.' },
-  { k: '--max-narrow', v: '880px', u: '.wrap-narrow: one-column argument aligned to the main content edge.' },
-  { k: '--max-reading', v: '680px', u: '.wrap-reading: insight notes and legal documents.' },
-  { k: '--measure, --measure-lede, --measure-item', v: '62ch, 58ch, 44ch', u: 'Body, introduction, and text inside a grid cell.' },
-  { k: '--gutter / --gutter-tight', v: '64px / 24px', u: 'Page gutter; phone gutter below 720px.' },
+  { k: '--gutter / --gutter-tight', v: 'clamp(24px, 4vw, 64px) / 24px', u: 'Page gutter; phone gutter below 720px.' },
 ];
 
 const motion = [
@@ -88,7 +85,7 @@ const motion = [
     <div class="wrap">
       <h2 class="h2">Type.</h2>
       <p class="lede muted">
-        Headings use Montserrat SemiBold. Content headings use sentence case with -0.015em spacing; the primary statement and short capability labels retain capitals with 0.08em spacing.
+        Headings use Montserrat SemiBold in sentence case with -0.015em spacing. Short capability labels retain capitals with 0.08em spacing.
         Labels use Montserrat SemiBold with 0.24em spacing.
         IBM Plex Mono is for data, references and captions.
       </p>
@@ -169,13 +166,15 @@ const motion = [
     <div class="wrap">
       <h2 class="h2">Actions.</h2>
       <p class="lede muted">
-        One filled button per view. Secondary hero actions use a text link; other action groups may use a ghost button.
+        One filled button per view. Secondary buttons keep a transparent background and an outline in every action group.
         Links underline in hairline and turn gold on hover and focus. Focus
-        is always a 2px gold ring, never a colour change alone.
+        is always a 2px gold ring, never a colour change alone. Pressed buttons give subtle feedback without moving; disabled controls do not react to hover.
       </p>
       <div class="row">
         <a href="#actions" class="btn">Discuss your system</a>
         <a href="#actions" class="btn-ghost">View sample verdict</a>
+        <button type="button" class="btn" disabled>Primary unavailable</button>
+        <button type="button" class="btn-ghost" disabled>Secondary unavailable</button>
         <a href="#actions" class="link">Inline link</a>
         <a href="#actions" class="arrow-link">Arrow link <span aria-hidden="true">→</span></a>
       </div>
@@ -263,7 +262,7 @@ keyId              2026-05-02-d7e5468e</code></pre>
 <style>
   .guide-list { --spec-col: 260px; margin-top: var(--gap-intro); }
   .guide-list .val { display: block; margin-bottom: 4px; color: var(--accent); font-size: 12px; }
-  .stack { display: grid; gap: var(--space-6); margin-top: var(--gap-intro); max-width: 880px; }
+  .stack { display: grid; gap: var(--space-6); margin-top: var(--gap-intro); }
   .stack > div > .mono { display: block; margin-bottom: var(--space-2); }
   .stack .display-xl { font-size: var(--type-display); }
   .palette {

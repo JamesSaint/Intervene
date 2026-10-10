@@ -195,3 +195,106 @@ test('a page-navigation anchor marks the section it actually opens', async ({ pa
   await expect(scope).toHaveAttribute('aria-current', 'true');
   await expect(page).toHaveURL(/#scope$/);
 });
+
+test('secondary actions retain the same transparent hover treatment in heroes and page sections', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/agda/');
+  await page.locator('[data-consent="denied"]').click();
+  const actions = [page.locator('.hero .btn-ghost'), page.locator('.cta-band .btn-ghost')];
+  const states = [];
+  for (const action of actions) {
+    await action.scrollIntoViewIfNeeded();
+    const normal = await action.boundingBox();
+    await action.hover();
+    await page.waitForTimeout(100);
+    const hovered = await action.boundingBox();
+    expect(hovered?.width).toBe(normal?.width);
+    expect(hovered?.height).toBe(normal?.height);
+    states.push(await action.evaluate((el) => {
+      const style = getComputedStyle(el);
+      return { background: style.backgroundColor, colour: style.color, border: style.borderColor, borderWidth: style.borderWidth };
+    }));
+    await page.mouse.move(0, 0);
+  }
+  expect(states[0]).toEqual(states[1]);
+  expect(states[0].background).toBe('rgba(0, 0, 0, 0)');
+  expect(states[0].borderWidth).toBe('1px');
+});
+
+test('disabled actions remain inactive when hovered', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/style-guide/');
+  await page.locator('[data-consent="denied"]').click();
+  const buttons = page.locator('main button:disabled');
+  await expect(buttons).toHaveCount(2);
+  for (const button of await buttons.all()) {
+    await button.scrollIntoViewIfNeeded();
+    await page.mouse.move(0, 0);
+    const appearance = (el: HTMLElement | SVGElement) => {
+      const style = getComputedStyle(el);
+      return { background: style.backgroundColor, colour: style.color, border: style.borderColor, opacity: style.opacity };
+    };
+    const normal = await button.evaluate(appearance);
+    await button.hover();
+    await page.waitForTimeout(100);
+    expect(await button.evaluate(appearance)).toEqual(normal);
+    await expect(button).toBeDisabled();
+  }
+});
+
+test('desktop headings fill their container and only wrap when the next word cannot fit', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Desktop line filling is checked at desktop viewport widths.');
+  for (const width of [1024, 1440, 1920]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of ['/services/', '/methodology/']) {
+      await page.goto(route);
+      await page.evaluate(() => document.fonts.ready);
+      const layout = await page.locator('main h1').evaluate((heading) => {
+        const bounds = heading.getBoundingClientRect();
+        const parent = heading.parentElement!;
+        const style = getComputedStyle(parent);
+        const available = parent.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+        const words: { right: number; top: number; width: number }[] = [];
+        const walker = document.createTreeWalker(heading, NodeFilter.SHOW_TEXT);
+        while (walker.nextNode()) {
+          const node = walker.currentNode;
+          for (const word of node.textContent!.matchAll(/\S+/g)) {
+            const range = document.createRange();
+            range.setStart(node, word.index!);
+            range.setEnd(node, word.index! + word[0].length);
+            const box = range.getBoundingClientRect();
+            words.push({ right: box.right, top: box.top, width: box.width });
+          }
+        }
+        const earlyBreaks = words.slice(1).filter((word, index) => {
+          const previous = words[index];
+          const space = parseFloat(getComputedStyle(heading).fontSize) * 0.3;
+          return word.top > previous.top + 2 && word.width + space < bounds.right - previous.right - 2;
+        });
+        return { width: bounds.width, available, earlyBreaks };
+      });
+      expect(layout.width, `${route} at ${width}px`).toBeCloseTo(layout.available, 0);
+      expect(layout.earlyBreaks, `${route} at ${width}px`).toEqual([]);
+    }
+  }
+});
+
+
+test('both homepage questions share sentence case and normal heading spacing', async ({ page }) => {
+  await page.goto('/');
+  const reference = await page.locator('.situations .h2').evaluate((el) => {
+    const style = getComputedStyle(el);
+    return { tracking: parseFloat(style.letterSpacing) / parseFloat(style.fontSize), weight: style.fontWeight, family: style.fontFamily };
+  });
+  for (const question of [page.locator('main h1'), page.locator('.close-q')]) {
+    await expect(question).toHaveText('Can you stop it in time?');
+    const style = await question.evaluate((el) => {
+      const css = getComputedStyle(el);
+      return { tracking: parseFloat(css.letterSpacing) / parseFloat(css.fontSize), transform: css.textTransform, weight: css.fontWeight, family: css.fontFamily };
+    });
+    expect(style.transform).toBe('none');
+    expect(style.tracking).toBeCloseTo(reference.tracking, 3);
+    expect(style.weight).toBe(reference.weight);
+    expect(style.family).toBe(reference.family);
+  }
+});

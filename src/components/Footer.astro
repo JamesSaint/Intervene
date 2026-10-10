@@ -81,7 +81,6 @@ const year = new Date().getFullYear();
     font-family: var(--font-sans);
     font-size: 16px;
     color: var(--muted);
-    max-width: calc(34 * var(--ch));
     line-height: 1.5;
   }
   .brand-email {
@@ -98,7 +97,8 @@ const year = new Date().getFullYear();
       border-color var(--dur-hover) var(--ease),
       color var(--dur-hover) var(--ease);
   }
-  .brand-email:hover { border-color: var(--accent); color: var(--ink); }
+  .brand-email:is(:hover, :focus-visible) { border-color: var(--accent); color: var(--accent); }
+  .brand-email:active { color: var(--accent-hover); }
   .brand-hallmark { margin-top: 8px; }
   .primary-nav ul {
     list-style: none;
@@ -125,7 +125,8 @@ const year = new Date().getFullYear();
       border-color var(--dur-hover) var(--ease),
       color var(--dur-hover) var(--ease);
   }
-  .primary-nav a:hover { border-color: var(--accent); color: var(--ink); }
+  .primary-nav a:is(:hover, :focus-visible) { border-color: var(--accent); color: var(--accent); }
+  .primary-nav a:active { color: var(--accent-hover); }
   /* Company facts remain in a full-width row below the navigation. */
   .meta {
     margin: 20px 0 0;
@@ -175,8 +176,8 @@ const year = new Date().getFullYear();
     padding: 0;
     cursor: pointer;
   }
-  .supporting-nav a:hover,
-  .supporting-nav button:hover { color: var(--ink); }
+  .supporting-nav :is(a, button):is(:hover, :focus-visible) { color: var(--accent); }
+  .supporting-nav :is(a, button):active { color: var(--accent-hover); }
 
   .trade-mark-notice {
     margin: 12px 0 0;

@@ -48,7 +48,6 @@ const { title, dek, href, kicker = 'Note' } = Astro.props;
     letter-spacing: var(--tracking-heading); text-transform: none;
     line-height: 1.3;
     margin: 0;
-    max-width: calc(26 * var(--ch));
     transition: color var(--dur-fast) var(--ease);
   }
   .insight-dek {
@@ -57,7 +56,6 @@ const { title, dek, href, kicker = 'Note' } = Astro.props;
     line-height: 1.7;
     color: var(--muted);
     margin: 0;
-    max-width: calc(52 * var(--ch));
   }
   .insight-cue {
     font-size: 22px;
@@ -69,7 +67,8 @@ const { title, dek, href, kicker = 'Note' } = Astro.props;
   .insight-row:hover .insight-title,
   .insight-row:focus-visible .insight-title { color: var(--accent); }
   .insight-row:hover .insight-cue,
-  .insight-row:focus-visible .insight-cue { transform: translateX(6px); color: var(--accent); }
+  .insight-row:focus-visible .insight-cue { color: var(--accent); }
+  .insight-row:active :is(.insight-title, .insight-cue) { color: var(--accent-hover); }
   .insight-row:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
   @media (max-width: 720px) {

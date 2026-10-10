@@ -232,7 +232,7 @@ const finding = {
     <div class="wrap close-wrap">
       <div>
         <span class="label section-kicker">Before you depend on it</span>
-        <h2 class="close-q">Can you stop it<br /><em>in time?</em></h2>
+        <h2 class="close-q">Can you stop it <em>in time?</em></h2>
       </div>
       <div class="close-action">
         <p class="close-line">Establish what limits intervention before the organisation relies on the pathway.</p>
@@ -249,13 +249,12 @@ const finding = {
   .hero { background: var(--paper-deep); padding: clamp(48px, 7vh, 80px) 0 40px; }
   .hero-link { display: inline-block; }
   .hero .display-xl { font-size: var(--type-display); line-height: 1.06; max-width: none; margin: 24px 0 0; }
-  .hero .display-xl em { display: block; }
   .hero-intro { display: grid; grid-template-columns: 1.35fr 1fr; gap: 64px; margin-top: 40px; }
-  .hero-sub { margin: 0; font-size: clamp(18px, 1.5vw, 22px); line-height: 1.6; color: var(--muted); max-width: 46ch; }
+  .hero-sub { margin: 0; font-size: clamp(18px, 1.5vw, 22px); line-height: 1.6; color: var(--muted); }
   .hero-actions { padding-top: 4px; }
   .hero-cta { margin: 0; align-items: flex-start; gap: 20px; flex-direction: column; }
   .hero-secondary { font-size: 16px; line-height: 1.5; padding: 8px 0; }
-  .hero-note { font-family: var(--font-mono); font-size: 12px; line-height: 1.65; color: var(--faint); max-width: 40ch; margin: 20px 0 0; }
+  .hero-note { font-family: var(--font-mono); font-size: 12px; line-height: 1.65; color: var(--faint); margin: 20px 0 0; }
   .hero-principle { border-top: 1px solid var(--hair); padding-top: 24px; margin: 40px 0 0; color: var(--faint); font-size: 16px; line-height: 1.6; }
   .hero-principle span { color: var(--ink); }
   .block { padding: var(--section) 0; }
@@ -273,14 +272,14 @@ const finding = {
   .situation-kicker { font-size: 12px; color: var(--faint); line-height: 1.6; }
   .situation-grid .h3 { font-size: var(--type-card); margin: 0; }
   .situation p { margin: 0; }
-  .situations-foot { border-top: 1px solid var(--hair); padding-top: 24px; margin: 40px 0 0; max-width: 64ch; }
+  .situations-foot { border-top: 1px solid var(--hair); padding-top: 24px; margin: 40px 0 0; }
 
   .finding-block { background: var(--paper-soft); border-bottom: 1px solid var(--hair); }
   .assessment-intro { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
   .assessment-identity { display: flex; flex-direction: column; gap: 32px; padding-top: 8px; align-items: flex-start; }
   .assessment-identity :global(.agda-logo.logo) { width: 256px; }
   .assessment-label { font-size: 11px; color: var(--faint); }
-  .assessment-intro .lede { font-size: 20px; line-height: 1.65; margin-top: 24px; max-width: 49ch; }
+  .assessment-intro .lede { font-size: 20px; line-height: 1.65; margin-top: 24px; }
   .assessment-link { display: inline-block; margin-top: 24px; padding: 8px 0; font-size: 16px; }
   .capabilities { margin: 56px 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
   .capabilities li { border-top: 1px solid var(--hair-strong); padding-top: 16px; }
@@ -289,7 +288,7 @@ const finding = {
   .capabilities p { font-size: 16px; line-height: 1.65; color: var(--muted); margin: 0; }
   .assessment-output { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; border-top: 1px solid var(--hair); padding-top: 40px; }
   .assessment-output .h3 { margin-top: 20px; }
-  .assessment-output .body { margin: 0; max-width: 57ch; }
+  .assessment-output .body { margin: 0; }
   .states { margin: 32px 0 48px; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
   .states li { border-top: 1px solid var(--hair-strong); padding-top: 20px; }
   .state-name { font-size: 20px; font-weight: 500; color: var(--ink); }
@@ -300,7 +299,8 @@ const finding = {
   .finding-example { border-top: 1px solid var(--hair-strong); border-bottom: 1px solid var(--hair-strong); }
   .finding-example summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 1fr 2fr 24px; gap: 24px; align-items: center; padding: 28px 0; }
   .finding-example summary::-webkit-details-marker { display: none; }
-  .finding-example summary:hover .example-title { color: var(--accent); }
+  .finding-example summary:is(:hover, :focus-visible) .example-title { color: var(--accent); }
+  .finding-example summary:active .example-title { color: var(--accent-hover); }
   .finding-example summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
   .example-label { font-size: 12px; line-height: 1.6; color: var(--muted); }
   .example-title { font-size: 22px; line-height: 1.4; font-weight: 500; color: var(--ink); }
@@ -310,25 +310,25 @@ const finding = {
   .example-toggle::after { height: 18px; width: 1px; top: 1px; left: 9px; }
   .finding-example[open] .example-toggle::after { display: none; }
   .example-body { padding: 8px 0 40px; }
-  .example-body > .lede { font-size: var(--type-body); line-height: 1.7; max-width: 66ch; }
+  .example-body > .lede { font-size: var(--type-body); line-height: 1.7; }
   .finding-scope, .finding-verdict { margin: 32px 0 0; padding-top: 24px; border-top: 1px solid var(--hair); display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
   .finding-scope dt, .finding-verdict dt { font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-bottom: 12px; }
-  .finding-scope dd, .finding-verdict dd { margin: 0; font-size: 16px; line-height: 1.7; color: var(--muted); max-width: 52ch; }
+  .finding-scope dd, .finding-verdict dd { margin: 0; font-size: 16px; line-height: 1.7; color: var(--muted); }
   .finding-note { margin: 24px 0 0; font-size: 16px; }
 
   .engage { border-bottom: 1px solid var(--hair); }
-  .engage-terms { margin: 32px 0 0; padding-top: 24px; border-top: 1px solid var(--hair); font-size: 16px; line-height: 1.7; color: var(--muted); max-width: 76ch; }
+  .engage-terms { margin: 32px 0 0; padding-top: 24px; border-top: 1px solid var(--hair); font-size: 16px; line-height: 1.7; color: var(--muted); }
   .basis { background: var(--paper-soft); border-bottom: 1px solid var(--hair); }
   .basis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
   .basis .label { margin-bottom: 24px; }
   .basis .h2 { font-size: clamp(28px, 2.5vw, 36px); }
-  .basis .body { margin: 24px 0 0; max-width: 52ch; font-size: 16px; }
+  .basis .body { margin: 24px 0 0; font-size: 16px; }
   .basis .body + .body { margin-top: 16px; }
   .basis .cta-row { margin-top: 32px; }
   .close-wrap { display: grid; grid-template-columns: 1.4fr 1fr; gap: 64px; align-items: end; }
-  .close-q { color: var(--ink); font-size: clamp(36px, 4.2vw, 60px); line-height: 1.13; letter-spacing: 0.08em; text-transform: uppercase; margin: 24px 0 0; }
+  .close-q { color: var(--ink); font-size: clamp(36px, 4.2vw, 60px); line-height: 1.13; letter-spacing: var(--tracking-heading); text-transform: none; margin: 24px 0 0; }
   .close-action { display: grid; justify-items: start; gap: 24px; }
-  .close-line { font-size: 18px; line-height: 1.65; color: var(--muted); margin: 0; max-width: 36ch; }
+  .close-line { font-size: 18px; line-height: 1.65; color: var(--muted); margin: 0; }
   .close-action .link { padding: 8px 0; font-size: 16px; }
 
   @media (max-height: 760px) and (min-width: 881px) {
@@ -356,8 +356,7 @@ const finding = {
     .situation { grid-template-columns: 40px 1fr; gap: 12px 24px; }
     .situation-index { grid-row: span 3; }
     .situation-kicker, .situation .h3, .situation p { grid-column: 2; }
-    .situation .h3 { max-width: 28ch; }
-    .situation p { max-width: 56ch; }
+
     .assessment-identity { gap: 20px; padding-top: 0; }
     .assessment-output .h3 { margin-top: 16px; }
     .states { grid-template-columns: 1fr; gap: 24px; }
@@ -368,7 +367,7 @@ const finding = {
     .example-title { grid-column: 1; }
     .example-toggle { grid-column: 2; grid-row: 1 / span 2; }
     .basis-grid, .close-wrap { grid-template-columns: 1fr; gap: 48px; }
-    .close-action { max-width: 48ch; }
+
   }
   @media (max-width: 560px) {
     .hero { padding-top: 32px; padding-bottom: 32px; }

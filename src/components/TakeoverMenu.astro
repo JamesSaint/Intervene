@@ -204,7 +204,8 @@ const isCurrent = (href: string) => {
     margin-right: -10px;
     color: var(--ink);
   }
-  .takeover-close:hover { color: var(--accent); }
+  .takeover-close:is(:hover, :focus-visible) { color: var(--accent); }
+  .takeover-close:active { color: var(--accent-hover); }
   .takeover-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .takeover-body {
     width: 100%;
@@ -247,6 +248,7 @@ const isCurrent = (href: string) => {
   }
   .takeover-body a:hover,
   .takeover-body a:focus-visible { color: var(--accent); }
+  .takeover-body a:active { color: var(--accent-hover); }
   /* Focus is the ring as well as the colour, never the colour alone. */
   .takeover-body a:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
   /* Active route: a bronze rule without shifting the link text. */

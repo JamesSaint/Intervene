@@ -255,8 +255,6 @@ const role = [
 <style>
   /* Founder narrative beside the portrait, then three grids. The
      grids are the shared feature grid; the narrative column is local. */
-  .hero .h1 { max-width: calc(24 * var(--ch)); }
-  .block .h2 { max-width: calc(24 * var(--ch)); }
 
   /* Founder */
   .founder {
@@ -287,7 +285,7 @@ const role = [
     letter-spacing: 0.04em;
     font-size: var(--type-caption);
   }
-  .bio .body { margin: 0; max-width: calc(56 * var(--ch)); }
+  .bio .body { margin: 0; }
   .bio .q { font-style: italic; color: var(--ink); }
 
   /* Aside quote */
@@ -296,7 +294,6 @@ const role = [
     padding-top: var(--space-4);
     border-top: 1px solid var(--hair);
     font-style: italic;
-    max-width: calc(60 * var(--ch));
   }
 
   /* Sectors */
@@ -304,7 +301,7 @@ const role = [
   .sector-group:first-of-type { margin-top: var(--gap-intro); }
   .sectors { margin-top: var(--space-4); padding-top: 0; border-top: 0; }
   .not-served .col-label { margin-bottom: var(--space-3); }
-  .not-text { max-width: calc(72 * var(--ch)); margin: 0; }
+  .not-text { margin: 0; }
 
   /* What Intervene does */
   .not-list { gap: var(--space-5) var(--space-6); }
