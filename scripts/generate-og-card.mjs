@@ -1,11 +1,10 @@
 /**
- * Renders an Open Graph card matching the twenty hand-made cards in
- * public/assets/og/.
+ * Renders the Open Graph cards in public/assets/og/ using the approved
+ * Intervene wordmark from Logo.astro.
  *
- * Those were produced by hand in June and there was no way to make a
- * twenty-first that matched. This reproduces the template: corner
- * brackets, wordmark, mono kicker, two or three headline lines with the
- * last one in accent, a mono meta row, and the hallmark bottom right.
+ * The template retains the corner brackets, mono kicker, two or three
+ * headline lines with the last one in accent, mono meta row, and hallmark
+ * at the bottom right.
  *
  * Usage:
  *   node scripts/generate-og-card.mjs <slug>
@@ -15,7 +14,8 @@
  * the copy on a published card is reviewable in the repository.
  */
 
-import { chromium } from 'playwright';
+import { chromium } from '@playwright/test';
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
@@ -23,6 +23,12 @@ import { dirname, resolve } from 'node:path';
 const markAgda = (v) => v.replace(/AGDA®/g, 'AGDA<span class="agda-reg">®</span>');
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+
+// Reuse the site's approved artwork, including its currentColor fill.
+// Fail if the component changes rather than silently reverting to typed text.
+const logoSource = readFileSync(resolve(root, 'src/components/Logo.astro'), 'utf8');
+const wordmark = logoSource.match(/<svg class="intervene-wordmark"[\s\S]*?<\/svg>/)?.[0];
+if (!wordmark) throw new Error('Approved Intervene wordmark not found in Logo.astro.');
 
 /* The four SEDI stages: descriptive, not a claim. The previous
    "deterministic · signed · independently verifiable" row asserted that
@@ -196,7 +202,10 @@ const html = (card) => `
 
   .wordmark {
     position: absolute; top: 78px; left: 80px;
-    font-size: 29px; font-weight: 600; letter-spacing: -0.015em; color: var(--ink);
+    color: #ffffff;
+  }
+  .intervene-wordmark {
+    display: block; height: 29px; width: auto; aspect-ratio: 9196 / 1027.7;
   }
 
   .stack { position: absolute; left: 80px; top: 196px; right: 80px; }
@@ -253,7 +262,7 @@ const html = (card) => `
 <div class="bracket tl"></div><div class="bracket tr"></div>
 <div class="bracket bl"></div><div class="bracket br"></div>
 
-<div class="wordmark">intervene</div>
+<div class="wordmark">${wordmark}</div>
 
 <div class="stack">
   <div class="kicker">${markAgda(card.kicker)}</div>
@@ -292,10 +301,17 @@ const page = await browser.newPage({
 });
 for (const slug of slugs) {
   await page.setContent(html(CARDS[slug]));
-  // The card is entirely type. A missing webfont would ship a card in
-  // Helvetica, so wait for the fonts rather than for the network.
-  await page.evaluate(() => document.fonts.ready);
-  await page.waitForTimeout(400);
+  // Wait for the copy's actual fonts and fail if the provider is unavailable.
+  // document.fonts.ready alone also resolves after failed font downloads.
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    for (const font of ['800 56px Montserrat', '400 14px "JetBrains Mono"']) {
+      const loaded = await document.fonts.load(font);
+      if (!loaded.length || loaded.some((face) => face.status !== 'loaded')) {
+        throw new Error(`Required Open Graph font did not load: ${font}`);
+      }
+    }
+  });
   const out = resolve(root, `public/assets/og/og-${slug}.png`);
   await page.screenshot({ path: out });
   console.log(`og-${slug}.png written to public/assets/og/`);
