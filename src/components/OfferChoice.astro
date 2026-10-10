@@ -119,8 +119,8 @@ const RouteHeading = editorial ? 'h3' : 'span';
 
 <style>
   .offer-choice { margin: 0; }
-  .oc-caption .h2 { max-width: calc(26 * var(--ch)); margin-top: 12px; }
-  .oc-lede { margin: var(--gap-head) 0 0; max-width: var(--measure-lede); }
+  .oc-caption .h2 { margin-top: 12px; }
+  .oc-lede { margin: var(--gap-head) 0 0; }
 
   /* Root node and stem, then two branches: the rail language from the
      methodology page, turned into a fork. */
@@ -146,13 +146,13 @@ const RouteHeading = editorial ? 'h3' : 'span';
   .oc-fields { margin: 8px 0 0; display: grid; gap: 0; border-top: 1px solid var(--hair-strong); }
   .oc-fields > div { display: grid; gap: 6px; padding: var(--space-3) 0; border-bottom: 1px solid var(--hair); }
   .oc-fields dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
-  .oc-fields dd { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--ink); max-width: calc(46 * var(--ch)); }
+  .oc-fields dd { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--ink); }
   .oc-fields dd.oc-price { font-family: var(--font-mono); font-size: 20px; font-weight: 400; letter-spacing: 0; }
   .oc-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
   .oc-list > li { position: relative; padding-left: 18px; color: var(--muted); font-size: 15px; }
   .oc-list > li::before { content: ''; position: absolute; left: 0; top: 11px; width: 8px; height: 1px; background: var(--accent); }
   .oc-link { display: inline-block; font-size: 15px; }
-  .oc-foot { margin: var(--gap-intro) 0 0; max-width: calc(66 * var(--ch)); }
+  .oc-foot { margin: var(--gap-intro) 0 0; }
 
   /* ---- Sequence. The stem draws down, the bar opens from the centre,
      both branches draw together, both heads appear together. Neither
@@ -184,24 +184,24 @@ const RouteHeading = editorial ? 'h3' : 'span';
   .offer-choice--editorial .oc-caption .label { grid-row: 1 / span 3; margin-top: 10px; align-self: start; }
   .offer-choice--editorial .oc-caption .h2 { font-size: var(--type-h2); line-height: 1.2; letter-spacing: var(--tracking-heading); text-transform: none; max-width: none; margin: 0; }
   .oc-principle { font-size: 20px; line-height: 1.5; color: var(--ink); margin: 0; }
-  .offer-choice--editorial .oc-lede { font-size: 17px; line-height: 1.7; max-width: 57ch; margin: 0; }
+  .offer-choice--editorial .oc-lede { font-size: 17px; line-height: 1.7; margin: 0; }
   .offer-choice--editorial .oc-root, .offer-choice--editorial .oc-branch,
   .offer-choice--editorial .oc-node, .offer-choice--editorial .oc-routes::before { display: none; }
   .offer-choice--editorial .oc-routes { margin-top: 48px; gap: 0 48px; grid-template-rows: auto auto auto auto auto auto; }
   .offer-choice--editorial .oc-route { border-top: 1px solid var(--hair-strong); padding-top: 24px; grid-row: span 6; grid-template-rows: subgrid; gap: 0; }
   .offer-choice--editorial .oc-head { justify-items: start; text-align: left; gap: 16px; padding-bottom: 28px; align-content: start; }
   .offer-choice--editorial .oc-n { font-size: 12px; letter-spacing: 0; text-transform: none; }
-  .offer-choice--editorial .oc-name { font-size: var(--type-h3); line-height: 1.3; letter-spacing: var(--tracking-heading); text-transform: none; max-width: 22ch; }
+  .offer-choice--editorial .oc-name { font-size: var(--type-h3); line-height: 1.3; letter-spacing: var(--tracking-heading); text-transform: none; }
   .offer-choice--editorial .oc-fields { display: grid; grid-row: span 4; grid-template-rows: subgrid; margin: 0; border-top: 0; }
   .offer-choice--editorial .oc-fields > div { gap: 12px; padding: 24px 0; align-content: start; }
   .offer-choice--editorial .oc-fields dt { font-size: 12px; letter-spacing: 0; text-transform: none; color: var(--faint); }
-  .offer-choice--editorial .oc-fields dd { font-size: 17px; line-height: 1.7; max-width: 48ch; }
+  .offer-choice--editorial .oc-fields dd { font-size: 17px; line-height: 1.7; }
   .offer-choice--editorial .oc-fields > div:nth-child(3) dd { font-size: 16px; color: var(--muted); }
   .offer-choice--editorial .oc-fields dd.oc-price { font-size: clamp(18px, 1.8vw, 24px); line-height: 1.5; }
   .offer-choice--editorial .oc-list { margin: 0; gap: 10px; }
   .offer-choice--editorial .oc-list > li { font-size: 17px; line-height: 1.65; }
   .offer-choice--editorial .oc-link { font-size: 16px; padding: 12px 0; justify-self: start; margin-top: 16px; }
-  .offer-choice--editorial .oc-foot { margin-top: 32px; font-size: 16px; line-height: 1.7; max-width: 76ch; }
+  .offer-choice--editorial .oc-foot { margin-top: 32px; font-size: 16px; line-height: 1.7; }
   html[data-motion] .offer-choice--editorial :is(.oc-head, .oc-fields, .oc-link, .oc-foot) { opacity: 1; transform: none; transition: none; }
   @media (max-width: 880px) {
     .offer-choice--editorial .oc-caption { grid-template-columns: 1fr; gap: 20px; }

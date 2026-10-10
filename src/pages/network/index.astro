@@ -334,9 +334,8 @@ const schema = {
 </BaseLayout>
 
 <style>
-  .hero .h1 { max-width: calc(24 * var(--ch)); }
-  .hero .lede { max-width: calc(54 * var(--ch)); }
-  .hero-body { margin-top: var(--space-4); max-width: calc(54 * var(--ch)); }
+
+  .hero-body { margin-top: var(--space-4); }
 
   /* The question made concrete. Four words carry the whole category, so
      they sit on their own rule rather than inside the prose above. */
@@ -370,7 +369,7 @@ const schema = {
     color: var(--muted);
   }
 
-  .section-lede { margin-top: 24px; max-width: calc(56 * var(--ch)); }
+  .section-lede { margin-top: 24px; }
 
   /* Label left, description right. Same shape as the /contact/ info
      list, widened because these descriptions are sentences. */
@@ -403,10 +402,9 @@ const schema = {
     font-size: 16px;
     color: var(--muted);
     line-height: 1.6;
-    max-width: calc(62 * var(--ch));
   }
 
-  .role-note { margin-top: 40px; max-width: calc(62 * var(--ch)); }
+  .role-note { margin-top: 40px; }
 
   .col-label {
     display: block;
@@ -426,7 +424,6 @@ const schema = {
     border-top: 1px solid var(--hair);
     display: grid;
     gap: 20px;
-    max-width: calc(66 * var(--ch));
   }
   .bounds .body { margin: 0; }
   .bounds strong { color: var(--ink); }
@@ -447,7 +444,6 @@ const schema = {
     font-size: 17px;
     line-height: 1.6;
     color: var(--ink);
-    max-width: calc(62 * var(--ch));
   }
 
   .exclusions {
@@ -463,7 +459,6 @@ const schema = {
     font-size: 16px;
     line-height: 1.6;
     color: var(--muted);
-    max-width: calc(66 * var(--ch));
     padding-left: 22px;
     position: relative;
   }
@@ -477,12 +472,11 @@ const schema = {
     background: var(--accent);
   }
 
-  .ind-close { margin-top: 40px; max-width: calc(52 * var(--ch)); color: var(--ink); }
+  .ind-close { margin-top: 40px; color: var(--ink); }
 
   /* Quieter than everything above it. The restraint is the point. */
   .recognition { border-top: 1px solid var(--hair); }
   .recognition-copy {
-    max-width: calc(66 * var(--ch));
     color: var(--muted-soft);
     font-size: 16px;
   }
@@ -493,8 +487,8 @@ const schema = {
     gap: 96px;
     align-items: start;
   }
-  .start-col .h2 { max-width: calc(18 * var(--ch)); }
-  .start-col .body { margin: 24px 0 0; max-width: calc(46 * var(--ch)); }
+
+  .start-col .body { margin: 24px 0 0; }
   .start-col .cta-row { margin-top: var(--space-5); }
   .start-note { margin-top: 20px; }
 
@@ -503,7 +497,7 @@ const schema = {
   }
   .tight-rows { margin-top: 24px; padding-top: 20px; }
   .tight-rows > div { grid-template-columns: 140px 1fr; gap: 20px; }
-  .aside-note { margin-top: 28px; max-width: calc(40 * var(--ch)); }
+  .aside-note { margin-top: 28px; }
 
   .fine {
     padding: 48px 0 88px;
@@ -515,7 +509,6 @@ const schema = {
     font-size: 13px;
     line-height: 1.7;
     color: var(--faint);
-    max-width: calc(92 * var(--ch));
   }
 
   @media (max-width: 980px) {

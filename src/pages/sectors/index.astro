@@ -91,7 +91,7 @@ const sectors = [
   /* Four sectors, each a label, a heading and two paragraphs. They read
      as one list, so they share one section's rhythm: a hairline between
      entries rather than a full section each. */
-  .hero .h1 { max-width: calc(24 * var(--ch)); }
+
   .sector { padding-top: var(--gap-sub); padding-bottom: var(--gap-sub); }
   .sector + .sector > .wrap { border-top: 1px solid var(--hair); padding-top: var(--gap-sub); }
   .sector:first-of-type { padding-top: var(--section); }
@@ -103,9 +103,9 @@ const sectors = [
     align-items: start;
   }
   .sector-lead .label { margin-bottom: var(--space-3); }
-  .sector-lead .h2 { max-width: calc(20 * var(--ch)); }
+
   .sector-body { display: grid; gap: var(--space-3); padding-top: 6px; }
-  .sector-body .body { max-width: calc(56 * var(--ch)); margin: 0; }
+  .sector-body .body { margin: 0; }
 
   @media (max-width: 880px) {
     .sector-grid { grid-template-columns: 1fr; gap: var(--space-4); }

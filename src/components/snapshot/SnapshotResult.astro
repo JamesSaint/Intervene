@@ -115,7 +115,6 @@ const generated = new Date().toLocaleDateString('en-GB', {
 
   .result-headline {
     margin: 28px 0 0;
-    max-width: calc(26 * var(--ch));
     /* The header is sticky. Without this, focusing the headline scrolls
        it underneath the header and hides the label above it. */
     scroll-margin-top: calc(var(--header-h) + 96px);
@@ -131,7 +130,6 @@ const generated = new Date().toLocaleDateString('en-GB', {
     font-size: 16px;
     line-height: 1.6;
     color: var(--accent);
-    max-width: calc(56 * var(--ch));
   }
 
   .strength {
@@ -140,14 +138,12 @@ const generated = new Date().toLocaleDateString('en-GB', {
     font-size: 16px;
     line-height: 1.6;
     color: var(--muted);
-    max-width: calc(70 * var(--ch));
   }
 
   .hypothesis {
     margin: 28px 0 0;
     padding: 4px 0 4px 28px;
     border-left: 2px solid var(--accent);
-    max-width: calc(66 * var(--ch));
   }
   .hypothesis p {
     margin: 0;
@@ -176,7 +172,6 @@ const generated = new Date().toLocaleDateString('en-GB', {
     font-size: 17px;
     line-height: 1.65;
     color: var(--ink);
-    max-width: calc(68 * var(--ch));
   }
   .callout-text.confidence {
     font-size: 15px;
@@ -189,14 +184,13 @@ const generated = new Date().toLocaleDateString('en-GB', {
     border: 1px solid var(--hair-strong);
     background: var(--paper-soft);
   }
-  .contrast .h3 { max-width: calc(30 * var(--ch)); }
+
   .contrast p {
     margin: 20px 0 0;
     font-family: var(--font-sans);
     font-size: 16px;
     line-height: 1.7;
     color: var(--muted);
-    max-width: calc(70 * var(--ch));
   }
   .contrast p:last-of-type {
     color: var(--ink);
@@ -206,7 +200,6 @@ const generated = new Date().toLocaleDateString('en-GB', {
     margin: 40px 0 0;
     color: var(--faint);
     line-height: 1.7;
-    max-width: calc(72 * var(--ch));
   }
 
   .generated {
@@ -238,7 +231,6 @@ const generated = new Date().toLocaleDateString('en-GB', {
     font-size: 15px;
     line-height: 1.55;
     color: var(--muted);
-    max-width: calc(60 * var(--ch));
   }
 
   .demo-banner strong { color: var(--ink); font-weight: 700; }

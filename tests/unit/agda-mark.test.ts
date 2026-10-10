@@ -22,9 +22,13 @@ const sources = ['src', 'public', 'scripts']
   .filter((f) => /\.(astro|ts|mjs|js|css|txt|json|md)$/.test(f));
 
 describe('the AGDA® mark', () => {
-  it('sets only the ® in the accent class', () => {
+  it('uses approved wordmark artwork, retains accessible text and accents only the ®', () => {
     expect(AGDA).toBe('AGDA®');
-    expect(AGDA_MARK).toBe('<span class="agda-mark">AGDA<span class="agda-reg">®</span></span>');
+    expect(AGDA_MARK).toContain('src="/assets/brand/agda-small-white.svg"');
+    expect(AGDA_MARK).toContain('alt="" aria-hidden="true"');
+    expect(AGDA_MARK).toContain('role="img" aria-label="AGDA®"');
+    expect(AGDA_MARK).toContain('<span class="agda-text">AGDA</span>');
+    expect(AGDA_MARK).toContain('<span class="agda-reg">®</span>');
   });
 
   it('marks bare and registered AGDA alike, once', () => {
@@ -41,7 +45,7 @@ describe('the AGDA® mark', () => {
   it('is never hand-written outside lib/marks.ts', () => {
     const offending = sources
       .filter((f) => !f.endsWith(join('lib', 'marks.ts')) && !f.endsWith('generate-og-card.mjs'))
-      .filter((f) => /<span class="agda-(mark|reg)">/.test(readFileSync(f, 'utf8')));
+      .filter((f) => /<span\b[^>]*class="agda-(mark|reg)"/.test(readFileSync(f, 'utf8')));
     expect(offending).toEqual([]);
   });
 });

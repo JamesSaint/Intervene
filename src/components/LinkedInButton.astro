@@ -10,7 +10,7 @@ const ariaLabel = `${label} (opens in new tab)`;
 ---
 
 <a
-  class:list={['linkedin-button', size]}
+  class:list={['linkedin-button', 'btn-ghost', size]}
   href={href}
   target="_blank"
   rel="noopener noreferrer"
@@ -23,18 +23,7 @@ const ariaLabel = `${label} (opens in new tab)`;
 </a>
 
 <style>
-  .linkedin-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent);
-    background: var(--accent-faint);
-    border: 1px solid var(--hair-strong);
-    transition:
-      background var(--dur-hover) var(--ease),
-      border-color var(--dur-hover) var(--ease),
-      color var(--dur-hover) var(--ease);
-  }
+  .linkedin-button { padding: 0; color: var(--accent); }
 
   .linkedin-button.sm {
     width: 44px;
@@ -52,14 +41,4 @@ const ariaLabel = `${label} (opens in new tab)`;
     fill: currentColor;
   }
 
-  .linkedin-button:hover {
-    color: var(--black);
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .linkedin-button:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-  }
 </style>

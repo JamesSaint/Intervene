@@ -73,8 +73,9 @@ const { current } = Astro.props;
     border-bottom: 1px solid transparent;
     transition: color var(--dur-hover) var(--ease), border-color var(--dur-hover) var(--ease);
   }
-  .quick-nav a:hover,
   .quick-nav a[aria-current='page'] { color: var(--ink); border-bottom-color: var(--accent); }
+  .quick-nav a:is(:hover, :focus-visible) { color: var(--accent); border-bottom-color: var(--accent); }
+  .quick-nav a:active { color: var(--accent-hover); }
   .quick-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
   .quick-nav .quick-cta { color: var(--ink); }
   @media (min-width: 720px) {
@@ -94,7 +95,8 @@ const { current } = Astro.props;
     color: var(--ink);
     transition: color var(--dur-hover) var(--ease);
   }
-  .menu-trigger:hover { color: var(--accent); }
+  .menu-trigger:is(:hover, :focus-visible) { color: var(--accent); }
+  .menu-trigger:active { color: var(--accent-hover); }
   .menu-trigger:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;

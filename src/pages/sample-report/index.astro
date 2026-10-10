@@ -58,9 +58,6 @@ const gates = [
   { id: 'G-06', desc: 'Halt instruction propagated to system',    measured: '~6 min (if instructed)', rag: 'green', verdict: 'PASS' },
 ];
 
-
-
-
 const evidence = [
   { id: 'E-12', desc: '"On-call halt authority exists." Stated in interview, no document.', type: 'Verbal',      open: 'A claim requiring corroboration. It does not establish available authority.' },
   { id: 'E-08', desc: 'MRC charter naming halt authority.',                                  type: 'Document',    open: 'Documented allocation of authority. It does not establish that the required quorum can be reached in time.' },
@@ -475,8 +472,8 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     gap: var(--space-7);
     align-items: start;
   }
-  .cover .h1 { max-width: calc(18 * var(--ch)); margin: 0; }
-  .cover .lede { margin: var(--gap-h1) 0 0; max-width: calc(52 * var(--ch)); }
+  .cover .h1 { margin: 0; }
+  .cover .lede { margin: var(--gap-h1) 0 0; }
   .cover-proof { margin-top: var(--space-4); }
 
   .cover-meta {
@@ -696,7 +693,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     margin-bottom: var(--space-3);
   }
   .callout .h3 { max-width: none; margin: 0 0 var(--space-3); }
-  .callout .body { margin: 0; max-width: calc(72 * var(--ch)); }
+  .callout .body { margin: 0; }
 
   .actions {
     margin: var(--space-4) 0 0;
@@ -748,10 +745,9 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     font-size: var(--type-caption);
     margin: 0 0 var(--space-4);
   }
-  .viability .body { max-width: calc(56 * var(--ch)); }
+
   .viability-right .body { margin: 0; }
-  .callout-foot { margin-top: 20px; max-width: calc(64 * var(--ch)); font-size: 16px; }
-  .wrap-narrow .body { max-width: var(--measure); }
+  .callout-foot { margin-top: 20px; font-size: 16px; }
 
   .close-cta .btn { justify-self: start; }
 
@@ -788,15 +784,15 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
      that the reader cannot mistake a constructed page for signed output. */
   .finding-lead { display: block; color: var(--ink); font-weight: 600; margin-bottom: 10px; }
   .provenance-note {
-    margin: 20px 0 0; max-width: calc(60 * var(--ch));
+    margin: 20px 0 0;
     padding-left: 16px; border-left: 2px solid var(--accent);
     color: var(--faint);
   }
   .cover-proof-note {
-    font-size: 16px; line-height: 1.6; color: var(--faint); max-width: calc(52 * var(--ch));
+    font-size: 16px; line-height: 1.6; color: var(--faint);
   }
   .env-limits {
     margin: 16px 0 0; font-size: 13px; line-height: 1.6;
-    color: var(--faint); max-width: calc(60 * var(--ch));
+    color: var(--faint);
   }
 </style>

@@ -140,7 +140,7 @@ const secondary = [
   }
 
   /* Wide enough to hold the heading on one line at this size. */
-  .conversion .h3 { max-width: none; white-space: nowrap; }
+  .conversion .h3 { max-width: none; }
 
   /* The one sentence connecting a completed Snapshot to the instrument
      that could actually settle the question. A completed Snapshot is a
@@ -153,7 +153,6 @@ const secondary = [
     font-size: 16px;
     line-height: 1.65;
     color: var(--muted);
-    max-width: calc(68 * var(--ch));
   }
 
   /* Same treatment as the contrast block above, so the eye reads the
@@ -207,7 +206,6 @@ const secondary = [
   .action-note {
     margin: 0;
     color: var(--faint);
-    max-width: calc(40 * var(--ch));
   }
 
   @media (max-width: 880px) {
