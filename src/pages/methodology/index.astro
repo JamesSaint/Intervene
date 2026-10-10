@@ -52,7 +52,7 @@ const docs = [
 >
   <section class="hero">
     <div class="wrap">
-      <h1 class="h1">Follow the response from signal <em>to effective intervention.</em></h1>
+      <h1 class="h1">Follow the response <span class="phrase">from signal</span> <em class="phrase">to effective intervention.</em></h1>
       <p class="lede muted">
         <Agda /> examines four connected capabilities: Detect, Escalate, Decide
         and Intervene. Together they form the SEDI intervention chain.
@@ -243,8 +243,12 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
 </BaseLayout>
 
 <style>
-  /* Explanation page: each section carries one diagram or one grid.
-     Grids are the shared feature grid; diagrams manage their own draw. */
+  /* Long methodology headings use the available section width. Body
+     copy keeps the shared reading measure; diagrams manage their own draw. */
+  .hero .h1, .block .h2 { max-width: 100%; }
+  @media (min-width: 881px) {
+    .hero .phrase { white-space: nowrap; }
+  }
   .verdicts {
     list-style: none;
     margin: var(--gap-sub) 0 0;
@@ -271,6 +275,12 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
   .stances p { max-width: calc(44 * var(--ch)); }
 
   .env-note { margin-top: var(--space-4); max-width: var(--measure); }
+
+  /* Four columns need room for the dimension names and document prose.
+     Change the page grids before small desktop columns become cramped. */
+  @media (min-width: 561px) and (max-width: 1200px) {
+    .dim-grid, .docs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
 
   @media (max-width: 880px) {
     .verdicts { grid-template-columns: 1fr; gap: var(--space-4); }
