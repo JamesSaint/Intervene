@@ -1,4 +1,7 @@
 ---
+// Intervene wordmark. Artwork from the brand kit (assets/intervene/svg/intervene-wordmark-*.svg),
+// inlined so it takes the text colour of its theme. Never typeset INTERVENE; never gold (BRAND.md v3.0).
+// Heights: header 18 px mobile / 22 px desktop (sm). Minimum width 120 px.
 interface Props {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   inverted?: boolean;
@@ -13,44 +16,32 @@ const {
   label = 'Intervene · home',
 } = Astro.props;
 
-const sizes = {
-  xs: { word: 16 },
-  sm: { word: 22 },
-  md: { word: 32 },
-  lg: { word: 56 },
-  xl: { word: 96 },
-};
-
-const s = sizes[size];
+// cap height in px; width follows the 8.948 : 1 artwork proportion
+const heights = { xs: 14, sm: 18, md: 22, lg: 40, xl: 72 };
+const h = heights[size];
 const Tag = href ? 'a' : 'span';
 ---
 
 <Tag
-  class:list={['intervene-logo', { inverted }]}
+  class:list={['intervene-logo', `size-${size}`, { inverted }]}
   href={href ?? undefined}
   aria-label={href ? label : undefined}
-  style={`--word: ${s.word}px;`}
+  style={`--logo-h: ${h}px;`}
 >
-  <span class="intervene-wordmark">intervene</span>
+  <svg class="intervene-wordmark" viewBox="0 0 9196 1027.7" role="img" aria-label="Intervene" focusable="false">
+    <path fill="currentColor" d="M182.3 0.0L182.3 1000.0L0.0 1000.0L0.0 0.0ZM347.3 1000.0L529.6 1000.0L529.6 236.8L1117.2 1000.0L1347.3 1000.0L1347.3 0.0L1165.0 0.0L1165.0 763.2L577.3 0.0L347.3 0.0ZM2472.3 166.8L2472.3 0.0L1512.3 0.0L1512.3 166.8L1901.1 166.8L1901.1 1000.0L2083.4 1000.0L2083.4 166.8ZM2637.3 166.8L3497.3 166.8L3497.3 0.0L2637.3 0.0ZM2637.3 416.6L2637.3 1000.0L3497.3 1000.0L3497.3 833.2L2819.6 833.2L2819.6 583.4L3445.7 583.4L3445.7 416.6ZM3769.2 166.8L4379.4 166.9L4390.2 167.9L4400.9 170.2L4411.3 173.6L4418.1 176.5L4427.9 181.9L4437.1 188.3L4451.2 201.2L4461.0 213.4L4469.3 226.9L4476.0 241.5L4480.9 257.1L4483.4 269.1L4485.1 285.5L4484.8 302.0L4482.7 318.3L4479.9 330.3L4474.5 345.6L4467.4 360.0L4458.7 373.2L4448.6 385.0L4437.1 395.1L4424.7 403.4L4411.3 409.8L4400.9 413.3L4393.8 414.9L4386.6 416.0L4375.8 416.6L3929.3 416.6L4303.3 1000.0L4517.5 1000.0L4250.5 583.4L4375.8 583.4L4395.1 582.8L4414.3 580.9L4433.3 577.7L4452.1 573.3L4470.5 567.6L4488.5 560.8L4506.1 552.7L4523.0 543.5L4547.3 527.7L4569.8 509.6L4583.8 496.3L4596.8 482.1L4614.6 459.2L4625.1 443.1L4638.9 417.7L4650.1 391.0L4656.0 372.6L4660.8 353.9L4665.5 325.4L4667.5 296.5L4667.1 277.2L4664.3 248.5L4660.8 229.5L4653.2 201.6L4642.9 174.5L4634.6 157.1L4620.0 132.2L4603.0 108.8L4590.4 94.1L4569.8 73.9L4547.3 55.7L4523.0 39.9L4506.1 30.7L4479.6 19.1L4461.3 12.8L4433.3 5.7L4404.7 1.4L4375.8 0.0L3662.3 0.0ZM4705.0 1.3L4715.4 0.5L4743.3 0.2L4919.6 0.0L4925.5 7.0L4944.4 36.4L4971.2 80.3L5015.9 149.9L5034.2 179.9L5108.2 295.9L5128.1 326.1L5245.2 512.2L5261.7 537.4L5281.4 570.0L5330.2 645.8L5352.0 682.6L5357.3 690.2L5359.9 692.4L5361.9 691.3L5364.1 688.1L5391.4 638.3L5396.9 629.6L5398.1 626.4L5403.3 618.4L5448.6 538.7L5474.7 491.5L5502.8 443.7L5532.7 389.7L5537.5 382.8L5538.9 379.1L5547.0 365.6L5565.9 331.3L5589.2 291.9L5599.1 273.6L5749.6 15.4L5758.2 2.3L5759.8 1.3L5762.6 0.9L5780.8 0.2L5929.5 0.0L5971.3 0.7L5978.4 1.4L5980.6 2.1L5981.4 2.9L5912.4 115.0L5890.2 151.4L5864.8 195.0L5676.9 502.8L5535.2 739.9L5506.3 789.3L5468.7 850.6L5416.8 938.0L5389.2 982.9L5366.0 1023.2L5363.4 1026.5L5360.7 1027.7L5358.4 1026.1L5355.9 1021.0L5341.3 997.3L5309.4 947.8L5272.2 887.9L5034.6 516.8L4852.2 236.1L4708.8 12.2L4704.5 6.8L4703.8 4.0ZM6146.0 166.8L7006.0 166.8L7006.0 0.0L6146.0 0.0ZM6146.0 416.6L6146.0 1000.0L7006.0 1000.0L7006.0 833.2L6328.3 833.2L6328.3 583.4L6954.4 583.4L6954.4 416.6ZM7171.0 1000.0L7353.3 1000.0L7353.3 236.8L7941.0 1000.0L8171.0 1000.0L8171.0 0.0L7988.7 0.0L7988.7 763.2L7401.1 0.0L7171.0 0.0ZM8336.0 166.8L9196.0 166.8L9196.0 0.0L8336.0 0.0ZM8336.0 416.6L8336.0 1000.0L9196.0 1000.0L9196.0 833.2L8518.3 833.2L8518.3 583.4L9144.4 583.4L9144.4 416.6Z" />
+  </svg>
 </Tag>
 
 <style>
   .intervene-logo {
     display: inline-flex;
     align-items: center;
-    color: var(--ink);
+    color: var(--ink-soft);
     line-height: 1;
-    transition: color var(--dur-hover) var(--ease-state);
   }
   .intervene-logo.inverted { color: var(--inverse-ink); }
-
-  .intervene-wordmark {
-    font-family: var(--font-sans);
-    font-size: var(--word);
-    font-weight: 700;
-    letter-spacing: -0.035em;
-    line-height: 0.9;
-  }
-
-  a.intervene-logo:hover { color: var(--bronze); }
+  .intervene-wordmark { display: block; height: var(--logo-h); width: auto; aspect-ratio: 9196 / 1027.7; }
+  /* header size steps down on small screens (inline --logo-h cannot be overridden, so set height directly) */
+  @media (max-width: 767px) { .intervene-logo.size-md .intervene-wordmark { height: 18px; } }
 </style>
