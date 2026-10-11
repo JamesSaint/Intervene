@@ -12,7 +12,6 @@ export const signatureCompany = 'Intervene Limited, registered in England and Wa
 export const signatureTrademark = 'AGDA is a registered trade mark of Intervene Limited in the United Kingdom (UK00004416503).';
 export const signaturePositioning = 'Assess the ability to intervene.';
 export const signatureHeader = 'Intervention Readiness, assessed.';
-export const signatureCapabilities = 'Detect · Escalate · Decide · Intervene';
 
 const escapeHtml = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -50,8 +49,8 @@ ${row('<span style="font-size:16px;line-height:22px;font-weight:600;letter-spaci
 ${row('<span style="font-size:13px;line-height:20px;">Founder, Intervene Limited</span>', '0 0 20px', 'sig-secondary')}
 ${row(`<span style="font-size:13px;line-height:22px;">${link(`mailto:${contactEmail}`, contactEmail)} · ${link('https://intervene.uk/', 'intervene.uk')} · ${link(socialLinks.jamesSaintLinkedIn, 'LinkedIn')}</span>`, '0 0 20px')}
 <div class="sig-band" style="border-top:1px solid #c9b694;border-bottom:1px solid #c9b694;padding:12px 0;margin:0 0 16px;font-size:12px;line-height:20px;">
-<a href="https://intervene.uk/agda/" style="display:inline-block;color:inherit;text-decoration:none;">${markAgdaEmail('AGDA®')}</a> · ${signaturePositioning}<br>
-<span class="sig-secondary" style="color:inherit;">${signatureCapabilities}</span>
+<a href="https://intervene.uk/agda/" style="display:inline-block;color:inherit;text-decoration:none;">${markAgdaEmail('AGDA®')}</a><br>
+<span class="sig-secondary" style="color:inherit;">${signaturePositioning}</span>
 </div>
 ${row(`<span style="font-size:11px;line-height:17px;">${escapeHtml(signatureCompany)}<br>${escapeHtml(signatureTrademark)}</span>`, '0 0 12px', 'sig-secondary')}
 ${Object.entries(signatureNotices).map(([name, notice]) => {
@@ -64,7 +63,7 @@ export const signatureHtml = `<style>${signatureCss}</style>${signatureFragment}
 export const signatureText = [
   'Intervene', signatureHeader, '', 'James Saint', 'Founder, Intervene Limited', contactEmail,
   'https://intervene.uk/', socialLinks.jamesSaintLinkedIn,
-  '', `AGDA® · ${signaturePositioning}`, signatureCapabilities, '', signatureCompany, signatureTrademark,
+  '', 'AGDA®', signaturePositioning, '', signatureCompany, signatureTrademark,
   '', ...Object.values(signatureNotices),
 ].join('\n');
 
