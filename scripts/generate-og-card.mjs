@@ -2,11 +2,12 @@
  * Renders the Open Graph cards in public/assets/og/ using the approved
  * Intervene wordmark from Logo.astro.
  *
- * Typography follows the v3.0 brand kit: Montserrat 600 for headlines
- * and kickers, IBM Plex Mono 400 for captions and references. Fonts are
- * bundled in public/assets/fonts/ so generation works offline.
- * The template retains the corner brackets, accent final headline line,
- * meta row, and hallmark at the bottom right.
+ * The card is set as the site's hero is set (typography.css, tokens.css):
+ * the light appearance on the hero's deep paper, one gold label, a
+ * sentence-case Montserrat 600 headline at the heading tracking, and an
+ * IBM Plex Mono note row on a hairline. No ornament: no brackets, wash,
+ * hallmark or gold headline line. Fonts are bundled in
+ * public/assets/fonts/ so generation works offline.
  *
  * Usage:
  *   node scripts/generate-og-card.mjs <slug>
@@ -143,7 +144,6 @@ const CARDS = {
   },
   network: {
     kicker: 'Intervention Readiness Network',
-    // Last line renders in accent, as on every other card.
     lines: ['Who should be asked', 'whether they could stop it?'],
     // No commercial word anywhere. The card travels without the page's
     // sixth section attached, and a card reading like a referral offer
@@ -152,7 +152,6 @@ const CARDS = {
   },
   'readiness-snapshot': {
     kicker: 'Readiness Snapshot',
-    // Last line renders in accent, as on every other card.
     lines: ['Which part of stopping it', 'can you actually evidence?'],
     // Deliberately NOT the "deterministic · signed · independently
     // verifiable" row the AGDA cards carry. None of those three words is
@@ -174,18 +173,20 @@ const fonts = [
   fontFace('IBM Plex Mono', 400, 'ibm-plex-mono-regular.woff2'),
 ].join('\n');
 
-const productWordmark = `data:image/svg+xml;base64,${readFileSync(resolve(root, 'public/assets/brand/agda-by-intervene-stacked-white.svg')).toString('base64')}`;
+const productWordmark = `data:image/svg+xml;base64,${readFileSync(resolve(root, 'public/assets/brand/agda-by-intervene-stacked-ink.svg')).toString('base64')}`;
 const productCards = new Set(['agda', 'methodology', 'sample-report']);
 const html = (card, slug) => `
 <style>
   ${fonts}
 
+  /* Light appearance values from tokens.css. */
   :root {
-    --paper: #0a0a0a;
-    --ink: #f0f0f0;
+    --paper-deep: #f4f4f2;
+    --ink: #1a1a1a;
+    --faint: #6b6b6b;
+    --hair: #e0e0e0;
     --accent: #c9b694;
-    --muted: #9a9a9a;
-    --hair-strong: rgba(201, 182, 148, 0.3);
+    --accent-text: #7a6c55;
     --font-sans: 'Montserrat', sans-serif;
     --font-mono: 'IBM Plex Mono', monospace;
   }
@@ -195,108 +196,62 @@ const html = (card, slug) => `
   body {
     width: 1200px;
     height: 630px;
-    background: var(--paper);
+    background: var(--paper-deep);
+    color: var(--ink);
     font-family: var(--font-sans);
     position: relative;
     overflow: hidden;
   }
 
-  /* The lift across the upper left, present on every existing card. */
-  .wash {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(120% 90% at 22% 8%, rgba(255,255,255,0.028), transparent 66%),
-      radial-gradient(90% 70% at 78% 96%, rgba(201,182,148,0.018), transparent 62%);
-  }
-
-  .bracket { position: absolute; width: 30px; height: 30px; }
-  .bracket.tl { top: 50px; left: 50px; border-top: 1px solid var(--hair-strong); border-left: 1px solid var(--hair-strong); }
-  .bracket.tr { top: 50px; right: 50px; border-top: 1px solid var(--hair-strong); border-right: 1px solid var(--hair-strong); }
-  .bracket.bl { bottom: 50px; left: 50px; border-bottom: 1px solid var(--hair-strong); border-left: 1px solid var(--hair-strong); }
-  .bracket.br { bottom: 50px; right: 50px; border-bottom: 1px solid var(--hair-strong); border-right: 1px solid var(--hair-strong); }
-
-  .wordmark {
-    position: absolute; top: 78px; left: 80px;
-    color: #ffffff;
-  }
+  .wordmark { position: absolute; top: 72px; left: 88px; color: var(--ink); }
   .intervene-wordmark {
-    display: block; height: 29px; width: auto; aspect-ratio: 9196 / 1027.7;
+    display: block; height: 26px; width: auto; aspect-ratio: 9196 / 1027.7;
   }
+  .wordmark.product { top: 64px; }
+  .product-wordmark { display: block; height: 72px; width: auto; }
 
-  .wordmark.product { top: 68px; }
-  .product-wordmark { display: block; width: 280px; height: auto; }
-
-  .stack { position: absolute; left: 80px; top: 196px; right: 80px; }
+  .stack { position: absolute; left: 88px; right: 88px; top: 200px; }
 
   .kicker {
-    display: flex; align-items: center; gap: 16px;
-    font-family: var(--font-sans); font-size: 14px; font-weight: 600;
-    line-height: 1.2; white-space: nowrap; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent);
+    font-size: 15px; font-weight: 600; line-height: 1.5;
+    letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap;
+    color: var(--accent-text);
   }
-  .kicker::before { content: ''; width: 6px; height: 6px; background: var(--accent); }
 
   .headline {
-    /* Held clear of the right-hand bracket at 80px + 30px. */
-    margin-top: 26px; max-width: 1000px;
-    font-size: 56px; font-weight: 600; line-height: 1.08;
-    letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink);
+    margin-top: 20px;
+    font-size: 68px; font-weight: 600; line-height: 1.06;
+    letter-spacing: -0.025em; color: var(--ink);
   }
   .headline > div { white-space: nowrap; }
-  .headline .accent { color: var(--accent); }
 
-  .meta {
-    margin-top: 34px; display: flex; gap: 32px;
-    font-family: var(--font-mono); font-size: 13px; font-weight: 400;
-    line-height: 1.5; letter-spacing: 0; color: var(--muted);
+  .foot {
+    position: absolute; left: 88px; right: 88px; bottom: 64px;
+    display: flex; justify-content: space-between; align-items: baseline; gap: 32px;
+    border-top: 1px solid var(--hair); padding-top: 20px;
+    font-family: var(--font-mono); font-size: 16px; font-weight: 400;
+    line-height: 1.5; letter-spacing: 0; color: var(--faint); white-space: nowrap;
   }
-  .meta span { display: flex; align-items: center; gap: 11px; }
-  .meta span::before { content: ''; width: 5px; height: 5px; background: var(--accent); }
+  .meta span + span::before { content: '·'; margin: 0 14px; }
 
-  /* Retain the assay reference without a second loose brand logo.
-     Product cards use the supplied AGDA by Intervene lockup above. */
-  .hallmark {
-    position: absolute; right: 80px; bottom: 75px;
-    display: inline-flex; align-items: stretch;
-    border: 1px solid var(--hair-strong); background: var(--paper);
-    font-family: var(--font-mono);
-  }
-  .hm-cell {
-    display: inline-flex; align-items: center; justify-content: center;
-    padding: 7px 11px; border-right: 1px solid var(--hair-strong);
-    font-size: 11px;
-  }
-  .hm-cell:last-child { border-right: 0; }
   /* The ® as the site sets it: .agda-reg in global.css. */
-  .agda-reg { color: var(--accent); font-size: 0.46em; letter-spacing: 0; line-height: 0; margin-left: 0.06em; vertical-align: 0.8em; }
-  .hm-serial { letter-spacing: 0; color: var(--muted); }
-  .seal { width: 12px; height: 12px; border: 1px solid var(--accent); position: relative; }
-  .seal::after {
-    content: ''; position: absolute; inset: 3px; background: var(--accent);
+  .agda-reg {
+    color: var(--accent); display: inline-block; font-size: 0.24em;
+    letter-spacing: 0; line-height: 1; margin-left: 0.06em; vertical-align: top;
   }
+  .kicker .agda-reg { font-size: 0.6em; }
 </style>
-
-<div class="wash"></div>
-<div class="bracket tl"></div><div class="bracket tr"></div>
-<div class="bracket bl"></div><div class="bracket br"></div>
 
 <div class="wordmark${productCards.has(slug) ? ' product' : ''}">${productCards.has(slug) ? `<img class="product-wordmark" src="${productWordmark}" alt="AGDA® by Intervene">` : wordmark}</div>
 
 <div class="stack">
   <div class="kicker">${markAgda(card.kicker)}</div>
-  <div class="headline">${card.lines
-    .map((l, i) =>
-      i === card.lines.length - 1
-        ? `<div class="accent">${markAgda(l)}</div>`
-        : `<div>${markAgda(l)}</div>`,
-    )
-    .join('')}</div>
-  <div class="meta">${card.meta.map((m) => `<span>${m}</span>`).join('')}</div>
+  <div class="headline">${card.lines.map((l) => `<div>${markAgda(l)}</div>`).join('')}</div>
 </div>
 
-<div class="hallmark">
-  <span class="hm-cell hm-serial">Assay · 2026</span>
-  <span class="hm-cell"><span class="seal"></span></span>
+<div class="foot">
+  <div class="meta">${card.meta.map((m) => `<span>${m}</span>`).join('')}</div>
+  <div>intervene.uk</div>
 </div>
 `;
 
@@ -325,7 +280,7 @@ try {
     // document.fonts.ready alone also resolves after failed font downloads.
     await page.evaluate(async () => {
       await document.fonts.ready;
-      for (const font of ['600 56px Montserrat', '400 13px "IBM Plex Mono"']) {
+      for (const font of ['600 68px Montserrat', '400 16px "IBM Plex Mono"']) {
         const loaded = await document.fonts.load(font);
         if (!loaded.length || loaded.some((face) => face.status !== 'loaded')) {
           throw new Error(`Required Open Graph font did not load: ${font}`);
@@ -343,20 +298,19 @@ try {
         range.selectNodeContents(element);
         return range.getBoundingClientRect().width;
       };
-      let size = 56;
-      while (lines.some((line) => textWidth(line) > width) && size > 44) {
+      let size = 68;
+      while (lines.some((line) => textWidth(line) > width) && size > 52) {
         headline.style.fontSize = `${--size}px`;
       }
       if (lines.some((line) => textWidth(line) > width)) {
-        throw new Error('Headline exceeds its box at the minimum 44px size.');
+        throw new Error('Headline exceeds its box at the minimum 52px size.');
       }
       const kicker = document.querySelector('.kicker');
       if (kicker.scrollWidth > kicker.clientWidth) throw new Error('Kicker overflows.');
-      const meta = document.querySelector('.meta');
-      const hallmark = document.querySelector('.hallmark');
-      if (meta.scrollWidth > meta.clientWidth) throw new Error('Meta row overflows.');
-      if (meta.getBoundingClientRect().bottom > hallmark.getBoundingClientRect().top - 40) {
-        throw new Error('Copy exceeds the vertical space above the hallmark.');
+      const foot = document.querySelector('.foot');
+      if (foot.scrollWidth > foot.clientWidth) throw new Error('Note row overflows.');
+      if (headline.getBoundingClientRect().bottom > foot.getBoundingClientRect().top - 40) {
+        throw new Error('Headline exceeds the vertical space above the note row.');
       }
       return size;
     });
