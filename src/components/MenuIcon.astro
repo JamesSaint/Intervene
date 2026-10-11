@@ -26,8 +26,8 @@
     background: currentColor;
     transform-origin: center;
     transition:
-      transform 280ms cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 200ms cubic-bezier(0.4, 0, 0.2, 1);
+      transform var(--dur-menu) var(--ease-out),
+      opacity var(--dur-fast) var(--ease);
   }
   .line-1 { top: 0; }
   .line-2 { top: 50%; transform: translateY(-50%); }

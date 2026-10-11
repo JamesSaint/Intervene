@@ -25,14 +25,14 @@ const rhythm = [
   { k: '--hero-top / --hero-bottom', v: 'clamp(48px, 7vh, 80px) / clamp(40px, 6vh, 64px)', u: 'Inner-page heroes; compact spacing on phones and short viewports.' },
   { k: '--gap-h1', v: '24px', u: 'h1 to lede in a hero.' },
   { k: '--gap-head', v: '16px', u: 'h2 to its lede or first paragraph.' },
-  { k: '--gap-intro', v: '40px', u: 'Lede to the grid, list, table or diagram it introduces.' },
+  { k: '--gap-intro', v: '48px', u: 'Lede to the grid, list, table or diagram it introduces.' },
   { k: '--gap-sub', v: '56px', u: 'Between subsections that share one section.' },
   { k: '--gap-group / --gap-item', v: '24px / 12px', u: 'Between items of a grid; between lines inside one item.' },
 ];
 
 const widths = [
-  { k: '--max', v: '1440px', u: 'Shared outer alignment for all page containers; grids define their own columns.' },
-  { k: '--measure-body / --measure-lede', v: '72ch / 64ch', u: 'Maximum line lengths for body copy and supporting statements.' },
+  { k: '--max', v: '1360px', u: 'Shared outer alignment for all page containers; grids define their own columns.' },
+  { k: '--measure-body / --measure-lede', v: '66ch and 58ch', u: 'Maximum line lengths for body copy and supporting statements.' },
   { k: '.reading-layout', v: '0.75fr / 1.75fr', u: 'Long articles and policies: section navigation beside the prose; a native disclosure above it on phones.' },
   { k: '--max-diagram', v: '1120px', u: 'Wide technical diagrams where required.' },
   { k: '--gutter / --gutter-tight', v: 'clamp(24px, 4vw, 64px) / 24px', u: 'Page gutter; phone gutter below 720px.' },
@@ -42,6 +42,13 @@ const motion = [
   { k: '--dur-fast', v: '160ms', u: 'Hover, focus, active navigation.' },
   { k: '--dur-expand', v: '220ms', u: 'A disclosure opening or closing.' },
   { k: '--dur-menu', v: '320ms', u: 'Opening and closing the navigation overlay.' },
+  { k: '--dur-enter', v: '640ms', u: 'Homepage line entrances.' },
+  { k: '--dur-reveal', v: '560ms', u: 'Once-only story headings.' },
+  { k: '--dur-trace', v: '1300ms', u: 'Full conceptual intervention trace; timely paths end sooner.' },
+  { k: '--ease-enter', v: 'cubic-bezier(0.16, 1, 0.3, 1)', u: 'Fast response followed by a controlled settle.' },
+  { k: '--ease-reveal', v: 'cubic-bezier(0.22, 0.65, 0.25, 1)', u: 'Perceptible masked headings after font layout.' },
+  { k: '--stagger / --motion-distance', v: '80ms / 20px', u: 'Homepage reading order and supporting copy travel.' },
+  { k: '--feedback-distance', v: '2px', u: 'Buttons lift on pointer hover. Supporting copy remains at full opacity during its entrance.' },
   { k: 'prefers-reduced-motion', v: 'all durations 0 to 80ms', u: 'Disclosures settle immediately; interface feedback takes no more than 80ms.' },
 ];
 ---
@@ -86,21 +93,21 @@ const motion = [
     <div class="wrap">
       <h2 class="h2">Type.</h2>
       <p class="lede muted">
-        Headings use Montserrat SemiBold in sentence case with -0.015em spacing. Interactive stage names use the same sentence case. Compact diagram labels may retain capitals with 0.08em spacing.
-        Labels use Montserrat SemiBold with 0.24em spacing.
+        Headings use Montserrat SemiBold in sentence case with -0.025em spacing. Interactive stage names use the same sentence case. Compact diagram labels may retain capitals with 0.08em spacing.
+        Labels use Montserrat SemiBold with 0.12em spacing.
         IBM Plex Mono is for data, references and captions.
       </p>
       <div class="stack">
         <div>
-          <span class="mono muted">display-xl · homepage only</span>
+          <span class="mono muted">display-xl · clamp(36px, 8vw, 112px); homepage only</span>
           <p class="display-xl">Can you stop it <em>in time?</em></p>
         </div>
         <div>
-          <span class="mono muted">h1 · clamp(32px, 4.6vw, 64px)</span>
+          <span class="mono muted">h1 · clamp(32px, 5vw, 72px)</span>
           <p class="h1">Two ways to begin. <em>One named system.</em></p>
         </div>
         <div>
-          <span class="mono muted">h2 · clamp(30px, 3.1vw, 44px)</span>
+          <span class="mono muted">h2 · clamp(30px, 3.3vw, 48px)</span>
           <p class="h2">Detection works. <em>Authority does not.</em></p>
         </div>
         <div>
@@ -245,11 +252,11 @@ keyId              2026-05-02-d7e5468e</code></pre>
     <div class="wrap">
       <h2 class="h2">Motion.</h2>
       <p class="lede muted">
-        Motion responds to deliberate interaction: controls, navigation and
-        disclosures. Headings, evidence and diagrams are visible immediately,
-        without scroll-triggered entrances.
+        Motion follows reading order: a bounded homepage entrance, once-only
+        story headings and a conceptual intervention trace. Reports, forms
+        and commercial terms retain their native reading pace.
       </p>
-      <p class="body muted">Native disclosures expand and collapse over 220 milliseconds, reverse smoothly on repeated input and settle immediately when focused content, resizing or a changed motion preference requires it. Directional link cues move three pixels on hover or keyboard focus. Reduced motion retains the complete layout and native disclosure behaviour.</p>
+      <p class="body muted">Native disclosures expand and collapse over 220 milliseconds, reverse smoothly on repeated input and settle immediately when focused content, resizing or a changed motion preference requires it. Directional link cues move three pixels on hover or keyboard focus. The intervention trace starts when its stages are visible and also responds to deliberate comparison or replay. An interrupted first pass can restart on return. Evidence emphasis highlights the stated constraint without moving values. Reduced motion shows the complete explanation immediately and removes replay.</p>
       <dl class="spec-list guide-list">
         {motion.map((r) => (
           <div><dt>{r.k}</dt><dd><span class="mono val">{r.v}</span> {r.u}</dd></div>
@@ -257,8 +264,9 @@ keyId              2026-05-02-d7e5468e</code></pre>
       </dl>
       <p class="body muted footnote">
         Not used: scroll hijacking, cursor effects, typewriter text, counters,
-        particles, glow, looping pulses. A diagram never moves in proportion
-        to a duration; a sequence is reading order, not time.
+        particles, glow, looping pulses. The intervention trace communicates conceptual order and the closing
+        boundary, never measured durations or assessment results. Separate
+        evidence intervals are never added or animated as a total.
       </p>
     </div>
   </section>

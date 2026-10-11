@@ -1,0 +1,61 @@
+/* Motion follows reading order. Only the homepage masks text; all
+   other entrances move already readable headings and structural cues. */
+.motion-line { display: block; overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.1em; }
+.motion-line > span { display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  html[data-motion] .hero-home[data-enter] .motion-line > span {
+    animation: headline-enter var(--dur-enter) var(--ease-reveal) backwards;
+  }
+  html[data-motion] .hero-home[data-enter] em.motion-line > span { animation-delay: var(--stagger); }
+  html[data-motion] .hero-home[data-enter] .hero-sub {
+    animation: support-enter var(--dur-enter) var(--ease-enter) calc(var(--stagger) * 2) backwards;
+  }
+  html[data-motion] .hero-home[data-enter] .hero-actions {
+    animation: action-enter var(--dur-enter) var(--ease-enter) calc(var(--stagger) * 3) backwards;
+  }
+  html[data-motion] .hero-home[data-enter] .hero-principle {
+    animation: support-enter var(--dur-enter) var(--ease-enter) calc(var(--stagger) * 4) backwards;
+  }
+  html[data-motion] .hero-home[data-enter]:focus-within :is(.motion-line > span, .hero-sub, .hero-actions, .hero-principle) {
+    animation: none;
+  }
+  .takeover[data-menu-enter] .takeover-body li { animation: nav-enter var(--dur-reveal) var(--ease-enter) backwards; }
+  .takeover[data-menu-enter] .takeover-body li:nth-child(2) { animation-delay: 25ms; }
+  .takeover[data-menu-enter] .takeover-body li:nth-child(3) { animation-delay: 50ms; }
+  .takeover[data-menu-enter] .takeover-body li:nth-child(4) { animation-delay: 75ms; }
+  .takeover[data-menu-enter] .takeover-body li:nth-child(5) { animation-delay: 100ms; }
+  .takeover[data-menu-enter] .takeover-body li:nth-child(6) { animation-delay: 125ms; }
+  .takeover[data-menu-enter] .takeover-body li:nth-child(7) { animation-delay: 150ms; }
+  .takeover[data-menu-enter] .takeover-body li[data-menu-settled],
+  .takeover[data-menu-enter] .takeover-body li:focus-within { animation: none; }
+  .btn, .btn-ghost { transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+  @media (hover: hover) {
+    :is(.btn, .btn-ghost):not(:disabled):hover { transform: translateY(calc(-1 * var(--feedback-distance))); }
+    :is(.btn, .btn-ghost):not(:disabled):active { transform: translateY(0); }
+  }
+}
+/* Multi-line links use a fragment-safe underline rather than a positioned
+   rectangle, so wrapped report and footer links keep the same treatment. */
+:is(.link, .arrow-link) {
+  text-decoration-line: underline;
+  border-bottom-color: transparent;
+  text-decoration-color: var(--hair-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+  transition: text-decoration-color var(--dur-fast) var(--ease), text-underline-offset var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+:is(.link, .arrow-link):is(:hover, :focus-visible) { border-bottom-color: transparent; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+@keyframes headline-enter { from { transform: translateY(45%); } to { transform: translateY(0); } }
+@keyframes support-enter { from { transform: translateY(var(--motion-distance)); } to { transform: translateY(0); } }
+@keyframes action-enter { from { transform: translateY(var(--motion-distance)); } to { transform: translateY(0); } }
+@keyframes nav-enter { from { transform: translateY(12px); } to { transform: translateY(0); } }
+@media print { .motion-line { overflow: visible; } *, *::before, *::after { animation: none !important; } }
+
+/* Highlight the already stated constraint once. No interval is drawn or
+   added to another: these are separate illustrative evidence facts. */
+@media (prefers-reduced-motion: no-preference) {
+  .finding-chain .fc-exceeds .fc-node.is-emphasised { animation: evidence-focus calc(var(--dur-reveal) + var(--dur-fast)) var(--ease-enter); }
+  .finding-chain .fc-result.is-emphasised { animation: evidence-rule calc(var(--dur-reveal) + var(--dur-fast)) var(--ease-enter); }
+}
+@keyframes evidence-focus { 0%, 100% { box-shadow: 0 0 0 0 transparent; } 40% { box-shadow: 0 0 0 6px var(--accent-soft); } }
+@keyframes evidence-rule { 0%, 100% { border-left-color: var(--accent); } 40% { border-left-color: var(--ink); } }

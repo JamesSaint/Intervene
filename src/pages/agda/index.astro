@@ -47,7 +47,7 @@ const faqs = [
   ogImage="/assets/og/og-agda.png"
   faqs={faqs}
 >
-  <section class="hero">
+  <section class="hero product-hero">
     <div class="wrap">
       <div class="product-identity"><AgdaLogo variant="lockup" /></div>
       <span class="label">The assessment</span>
@@ -122,17 +122,19 @@ const faqs = [
 
   <section class="block" id="verdict">
     <div class="wrap">
-      <h2 class="h2">One question. <em>Three verdict states.</em></h2>
-      <p class="lede muted">
-        A full <Agda /> Assessment examines the intervention chain, Detect to
-        Escalate to Decide to Intervene, against the available time and
-        returns one of three states. The Intervention Readiness Review does
-        not produce a verdict.
-      </p>
+      <div class="verdict-intro">
+        <h2 class="h2">One question. <em>Three verdict states.</em></h2>
+        <p class="lede muted">
+          A full <Agda /> Assessment examines the intervention chain, Detect to
+          Escalate to Decide to Intervene, against the available time and
+          returns one of three states. The Intervention Readiness Review does
+          not produce a verdict.
+        </p>
+        <a href="/methodology/" class="arrow-link">How <Agda /> works <span aria-hidden="true">→</span></a>
+      </div>
       <div class="verdict-stage">
         <VerdictBlock />
       </div>
-      <a href="/methodology/" class="arrow-link">How <Agda /> works <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
@@ -220,17 +222,28 @@ const faqs = [
   }
   .subsection .body + .body { margin-top: var(--space-3); }
 
-  .verdict-stage { margin-top: var(--gap-intro); display: flex; justify-content: flex-start; max-width: 760px; }
+  .verdict-intro { display: grid; gap: var(--space-4); justify-items: start; align-content: start; }
+  .verdict-intro :is(.h2, .lede, .arrow-link) { margin: 0; }
+  .verdict-stage { margin-top: var(--gap-intro); display: flex; justify-content: flex-start; }
+  @media (min-width: 1100px) {
+    .product-hero > .wrap { display: grid; grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.65fr); gap: 0 var(--space-7); }
+    .product-hero .product-identity { grid-row: 1 / span 4; padding-top: 8px; }
+    .product-hero :is(.label, .h1, .lede, .hero-cta) { grid-column: 2; }
+    #verdict > .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: var(--space-4) var(--space-7); align-items: start; }
+    #verdict .verdict-stage { grid-column: 2; grid-row: 1; margin: 0; }
+    #verdict :is(.h2, .lede, .arrow-link) { grid-column: 1; margin: 0; }
+    #verdict .arrow-link { justify-self: start; align-self: start; }
+  }
 
   .deliver {
     margin: var(--gap-intro) 0 0;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-4) var(--space-7);
+    gap: 0 var(--space-7);
     border-top: 1px solid var(--hair-strong);
     padding-top: var(--space-5);
   }
-  .deliver > li { font-size: 17px; padding-left: 22px; }
-  .deliver > li::before { width: 10px; }
+  .deliver > li { font-size: var(--type-body); padding: var(--space-3) 0 var(--space-3) 22px; border-bottom: 1px solid var(--hair); }
+  .deliver > li::before { width: 10px; top: 24px; }
   .deliver-note { margin: var(--space-5) 0 0; }
   .deliver-note + .deliver-note { margin-top: var(--space-3); }
 

@@ -9,6 +9,7 @@ import { socialLinks } from '../lib/social';
 import { offers } from '../lib/offers';
 import { buildId } from '../lib/build';
 import '../styles/global.css';
+import '../styles/motion.css';
 
 interface Props {
   title: string;
@@ -331,18 +332,6 @@ const structuredData = {
     <link rel="preload" href="/assets/fonts/montserrat-regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/assets/fonts/montserrat-semibold.woff2" as="font" type="font/woff2" crossorigin />
     {buildId && <meta name="intervene-build" content={buildId} />}
-    <script is:inline>
-      // Optional disclosure animation. Page content is always visible;
-      // reduced motion and a missing runtime retain native behaviour.
-      (function () {
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        var h = document.documentElement;
-        h.setAttribute('data-motion', '');
-        window.setTimeout(function () {
-          if (!h.hasAttribute('data-motion-ready')) h.removeAttribute('data-motion');
-        }, 2500);
-      })();
-    </script>
 
     <!-- Intervene R icon, brand kit v3.0 (assets/icons/favicon-intervene) -->
     <link rel="icon" href="/assets/images/favicons/favicon.ico" sizes="48x48" />
@@ -383,9 +372,11 @@ const structuredData = {
     <ConsentBanner />
 
     <script>
-      import { initReveal, initDisclosures, initPageNav, initAnchorSettle } from '../lib/motion.ts';
-      document.documentElement.setAttribute('data-motion-ready', '');
+      import { initMotion, initOpening, initReveal, initDisclosures, initPageNav, initAnchorSettle, initInterventionWindows } from '../lib/motion.ts';
+      initMotion();
+      initOpening();
       initReveal();
+      initInterventionWindows();
       initDisclosures();
       initPageNav();
       initAnchorSettle();

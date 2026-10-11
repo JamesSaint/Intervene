@@ -54,7 +54,7 @@ const { current } = Astro.props;
   .quick-nav {
     display: none;
     align-items: center;
-    gap: var(--space-4);
+    gap: var(--space-5);
     margin-left: auto;
     margin-right: 24px;
   }
@@ -76,7 +76,8 @@ const { current } = Astro.props;
   .quick-nav a:is(:hover, :focus-visible) { color: var(--accent); border-bottom-color: var(--accent); }
   .quick-nav a:active { color: var(--accent-hover); }
   .quick-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-  .quick-nav .quick-cta { color: var(--ink); }
+  .quick-nav .quick-cta { color: var(--ink); border: 1px solid var(--control-border); padding-inline: var(--space-3); }
+  .quick-nav .quick-cta:is(:hover, :focus-visible), .quick-nav .quick-cta[aria-current='page'] { color: var(--accent); border-color: var(--accent); }
   @media (min-width: 720px) {
     .quick-nav { display: flex; }
     .quick-nav a:not(.quick-cta) { display: none; }

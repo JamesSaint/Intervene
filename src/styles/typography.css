@@ -41,7 +41,7 @@ em, .em { font-style: italic; font-weight: 400; }
   font-family: var(--font-sans);
   font-size: var(--type-caption);
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   line-height: 1.5;
   text-transform: uppercase;
   color: var(--accent);

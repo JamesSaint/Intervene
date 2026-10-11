@@ -29,9 +29,9 @@ const finding = {
   <section class="hero hero-home" aria-labelledby="home-question">
     <div class="wrap">
       <a class="label hero-link" href="/intervention-readiness/">Intervention Readiness</a>
-      <h1 class="display-xl" id="home-question">Can you stop it <em>in time?</em></h1>
+      <h1 class="display-xl" id="home-question"><span class="motion-line"><span>Can you stop it </span></span><em class="motion-line"><span>in time?</span></em></h1>
       <div class="hero-intro">
-        <p class="hero-sub">Consequential systems need people who can act before harm becomes irreversible.</p>
+        <p class="hero-sub">Intervene’s <Agda /> assessment examines whether your organisation can act before harm from an AI-enabled system becomes irreversible.</p>
         <div class="hero-actions">
           <div class="hero-cta">
             <a data-primary-cta="discuss_system" href="/contact/" class="btn">Discuss your system</a>
@@ -127,14 +127,15 @@ const finding = {
 <style>
   .hero { background: var(--paper-deep); padding: var(--hero-top) 0 var(--hero-bottom); }
   .hero-link { display: inline-flex; align-items: center; min-height: 44px; }
-  .hero .display-xl { font-size: var(--type-display); line-height: 1.06; margin: var(--space-4) 0 0; }
-  .hero-intro { display: grid; grid-template-columns: 1.35fr 1fr; gap: var(--space-7); margin-top: var(--gap-intro); }
-  .hero-sub { margin: 0; font-size: var(--type-support); line-height: 1.6; color: var(--muted); }
+  .hero .display-xl { font-size: var(--type-display); line-height: 1.02; margin: var(--space-3) 0 0; }
+  .hero .display-xl em { display: block; }
+  .hero-intro { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-7); margin-top: var(--gap-intro); }
+  .hero-sub { max-width: 36ch; margin: 0; font-size: var(--type-support); line-height: 1.6; color: var(--muted); }
   .hero-actions { padding-top: 4px; }
-  .hero-cta { margin: 0; align-items: flex-start; gap: var(--space-3); flex-direction: column; }
+  .hero-cta { margin: 0; align-items: center; gap: var(--space-4); }
   .hero-secondary { display: inline-flex; align-items: center; gap: 8px; font-size: var(--type-small); line-height: 1.5; min-height: 44px; }
   .hero-note { font-family: var(--font-mono); font-size: var(--type-caption); line-height: 1.65; color: var(--faint); margin: var(--space-4) 0 0; }
-  .hero-principle { border-top: 1px solid var(--hair); padding-top: var(--space-4); margin: var(--gap-intro) 0 0; color: var(--faint); font-size: var(--type-small); line-height: 1.6; }
+  .hero-principle { display: flex; flex-wrap: wrap; gap: 0 var(--space-2); border-top: 1px solid var(--hair); padding-top: var(--space-4); margin: var(--gap-intro) 0 0; color: var(--faint); font-size: var(--type-small); line-height: 1.6; }
   .hero-principle span { color: var(--ink); }
   .section-heading, .assessment-intro { display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-6); align-items: start; margin-bottom: var(--space-6); }
   .section-heading .label { margin-top: 10px; }
@@ -175,7 +176,7 @@ const finding = {
   .close-q { color: var(--ink); font-size: var(--type-h1); line-height: 1.13; letter-spacing: var(--tracking-heading); text-transform: none; margin: 0; }
   .close-action { display: grid; justify-items: start; gap: 24px; }
   .close-line { font-size: var(--type-support); line-height: 1.65; color: var(--muted); margin: 0; }
-  @media (max-height: 760px) and (min-width: 881px) { .hero { padding-top: 40px; } .hero .display-xl { font-size: clamp(44px, 6vw, 80px); } .hero-intro { margin-top: 28px; } }
+  @media (max-height: 760px) and (min-width: 881px) { .hero { padding-top: 40px; } .hero .display-xl { font-size: clamp(44px, 6.6vw, 92px); } .hero-intro { margin-top: 28px; } }
   @media (max-width: 1100px) { .hero-intro { gap: 40px; } .section-heading, .assessment-intro { grid-template-columns: 1fr 1.8fr; gap: var(--space-5); } .assessment-identity :global(.agda-logo.logo) { width: 224px; } .problem-questions li { gap: 24px; } }
   @media (max-width: 960px) {
     .hero-intro { grid-template-columns: 1fr; gap: 24px; }
@@ -191,12 +192,12 @@ const finding = {
   }
   @media (max-width: 560px) {
     .hero { padding-top: var(--space-5); padding-bottom: 32px; }
-    .hero .display-xl { font-size: clamp(34px, 8.6vw, 48px); margin-top: 24px; }
+    .hero .display-xl { font-size: clamp(36px, 9.8vw, 54px); margin-top: 16px; }
     .hero-intro { margin-top: 24px; gap: 24px; }
     .hero-cta { flex-direction: column; align-items: stretch; gap: 12px; }
     .hero-secondary { align-self: flex-start; }
     .hero-sub { font-size: 18px; }
-    .hero-principle { margin-top: 32px; font-size: var(--type-small); }
+    .hero-principle { display: block; margin-top: 32px; font-size: var(--type-small); }
     .hero-principle span { display: block; }
     .section-heading { margin-bottom: 32px; }
     .problem-questions li { grid-template-columns: 24px 1fr; column-gap: 16px; }

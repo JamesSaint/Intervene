@@ -9,6 +9,9 @@ test('homepage follows six stages and exposes the finding before any interaction
   await page.goto('/');
   await expect(page.locator('main > section')).toHaveCount(6);
   await expect(page.locator('.hero-secondary')).toHaveAttribute('href', '/agda/');
+  await expect(page.locator('.hero-sub')).toContainText('Intervene’s');
+  await expect(page.locator('.hero-sub')).toContainText('assessment examines');
+  await expect(page.locator('.hero-sub [role="img"]')).toHaveAttribute('aria-label', 'AGDA®');
   await expect(page.locator('.finding-chain')).toBeVisible();
   await expect(page.locator('.finding-example')).not.toHaveAttribute('open', '');
   await expect(page.locator('.oc-fields')).toHaveCount(2);

@@ -50,7 +50,8 @@ test.describe('contact form parity after CSS extraction', () => {
     expect((Math.max(rule, surface) + 0.05) / (Math.min(rule, surface) + 0.05)).toBeGreaterThanOrEqual(3);
     expect(styles.borderTopWidth).toBe('0px');
     expect(styles.borderRadius).toBe('0px');
-    expect(styles.paddingTop).toBe('10px');
+    expect(styles.paddingTop).toBe('12px');
+    expect(await input.evaluate((el) => el.getBoundingClientRect().height)).toBeGreaterThanOrEqual(48);
     expect(styles.paddingLeft).toBe('0px');
   });
 
