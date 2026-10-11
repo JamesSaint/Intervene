@@ -10,6 +10,13 @@ export function initAppearance(): void {
   };
   let preference = read();
   let timer: number | undefined;
+  // Favicons sit in browser chrome, so follow its reported preference
+  // independently of the visitor's chosen page appearance.
+  const syncFavicon = () => {
+    const theme = system.matches ? 'dark' : 'light';
+    document.querySelector<HTMLLinkElement>('[data-appearance-icon]')?.setAttribute('href', `/assets/images/favicons/favicon-${theme}.svg`);
+    document.querySelector<HTMLLinkElement>('[data-appearance-icon-fallback]')?.setAttribute('href', `/assets/images/favicons/favicon-${theme}.png`);
+  };
   const syncControls = () => {
     document.querySelectorAll<HTMLButtonElement>('[data-appearance-option]').forEach(button => {
       button.setAttribute('aria-pressed', String(button.dataset.appearanceOption === preference));
@@ -33,12 +40,15 @@ export function initAppearance(): void {
     root.dataset.appearance = preference;
     const metas = document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]');
     metas.forEach(meta => { meta.removeAttribute('media'); meta.content = theme === 'dark' ? '#0a0a0a' : '#ffffff'; });
-    document.querySelector<HTMLLinkElement>('[data-appearance-icon]')?.setAttribute('href', `/assets/images/favicons/favicon-${theme}.svg`);
+    syncFavicon();
     syncControls();
   };
   apply();
   document.addEventListener('DOMContentLoaded', () => apply());
-  system.addEventListener('change', () => { if (preference === 'system') apply(true); else syncControls(); });
+  system.addEventListener('change', () => {
+    if (preference === 'system') apply(true);
+    else { syncFavicon(); syncControls(); }
+  });
   window.addEventListener('storage', event => {
     if (event.key === key || event.key === null) { preference = read(); apply(true); }
   });

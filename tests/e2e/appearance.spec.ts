@@ -6,6 +6,11 @@ const routes = readdirSync('dist', { recursive: true }).map(String)
   .filter(path => path.endsWith('.html') && !path.startsWith('assets/') && path !== 'method/index.html')
   .map(path => path === 'index.html' ? '/' : `/${path.replace(/index\.html$/, '')}`);
 
+async function expectFavicon(page: Page, theme: string) {
+  await expect(page.locator('[data-appearance-icon]')).toHaveAttribute('href', `/assets/images/favicons/favicon-${theme}.svg`);
+  await expect(page.locator('[data-appearance-icon-fallback]')).toHaveAttribute('href', `/assets/images/favicons/favicon-${theme}.png`);
+}
+
 async function choose(page: Page, preference: string) {
   if (page.viewportSize()!.width < 720) {
     if (!await page.locator('[data-takeover]').isVisible()) await page.locator('[data-menu-trigger]').click();
@@ -26,9 +31,11 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.goto('/');
     await expect(page.locator('html')).toHaveAttribute('data-appearance', 'system');
     await expect(page.locator('html')).toHaveAttribute('data-theme', scheme);
+    await expectFavicon(page, scheme);
     expect(await page.evaluate(() => localStorage.getItem('intervene:appearance'))).toBeNull();
     await page.emulateMedia({ colorScheme: scheme === 'dark' ? 'light' : 'dark' });
     await expect(page.locator('html')).toHaveAttribute('data-theme', scheme === 'dark' ? 'light' : 'dark');
+    await expectFavicon(page, scheme === 'dark' ? 'light' : 'dark');
   });
 
   test(`explicit ${scheme} overrides the OS, persists and returns to System`, async ({ page }) => {
@@ -37,17 +44,23 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.goto('/');
     await choose(page, scheme);
     await expect(page.locator('html')).toHaveAttribute('data-theme', scheme);
+    await expectFavicon(page, opposite);
     await expect(page.locator(`[data-appearance-option="${scheme}"]`).first()).toHaveAttribute('aria-pressed', 'true');
     expect(await page.evaluate(() => localStorage.getItem('intervene:appearance'))).toBe(scheme);
     await page.reload();
     await expect(page.locator('html')).toHaveAttribute('data-theme', scheme);
+    await expectFavicon(page, opposite);
     await page.goto('/agda/');
     await expect(page.locator('html')).toHaveAttribute('data-theme', scheme);
+    await expectFavicon(page, opposite);
     await page.emulateMedia({ colorScheme: scheme });
+    await expectFavicon(page, scheme);
     await page.emulateMedia({ colorScheme: opposite });
     await expect(page.locator('html')).toHaveAttribute('data-theme', scheme);
+    await expectFavicon(page, opposite);
     await choose(page, 'system');
     await expect(page.locator('html')).toHaveAttribute('data-theme', opposite);
+    await expectFavicon(page, opposite);
     expect(await page.evaluate(() => localStorage.getItem('intervene:appearance'))).toBe('system');
   });
 
@@ -61,6 +74,7 @@ for (const scheme of ['light', 'dark'] as const) {
     for (const route of routes) {
       await page.goto(route); await page.evaluate(() => document.fonts.ready);
       await expect(page.locator('html')).toHaveAttribute('data-theme', scheme);
+      await expectFavicon(page, scheme);
       expect(await page.evaluate(() => getComputedStyle(document.documentElement).colorScheme), route).toBe(scheme);
       expect(await page.evaluate(() => getComputedStyle(document.body).backgroundColor), route).toBe(scheme === 'dark' ? 'rgb(10, 10, 10)' : 'rgb(255, 255, 255)');
       const broken = await page.locator('img').evaluateAll(images => images.filter((image): image is HTMLImageElement => image instanceof HTMLImageElement).filter(image => image.getBoundingClientRect().width > 0 && (!image.complete || !image.naturalWidth)).map(image => image.src));
@@ -124,9 +138,11 @@ test('stored appearance is resolved before body parsing and first paint', async 
   await page.addInitScript(() => {
     localStorage.setItem('intervene:appearance', 'dark');
     (window as any).__bodyThemes = [];
+    (window as any).__bodyIcons = [];
     const observer = new MutationObserver(() => {
       if (document.body) {
         (window as any).__bodyThemes.push(document.documentElement.dataset.theme);
+        (window as any).__bodyIcons.push(Array.from(document.querySelectorAll('[data-appearance-icon], [data-appearance-icon-fallback]')).map(icon => icon.getAttribute('href')));
         observer.disconnect();
       }
     });
@@ -134,8 +150,11 @@ test('stored appearance is resolved before body parsing and first paint', async 
   });
   await page.goto('/');
   expect(await page.evaluate(() => (window as any).__bodyThemes)).toEqual(['dark']);
+  expect(await page.evaluate(() => (window as any).__bodyIcons)).toEqual([[
+    '/assets/images/favicons/favicon-light.png', '/assets/images/favicons/favicon-light.svg',
+  ]]);
   await expect.poll(() => page.evaluate(() => performance.getEntriesByType('paint').length)).toBeGreaterThan(0);
-  expect(await page.locator('[data-appearance-icon]').getAttribute('href')).toContain('favicon-dark.svg');
+  await expectFavicon(page, 'light');
   expect(await page.locator('meta[name="theme-color"]').first().getAttribute('content')).toBe('#0a0a0a');
 });
 
