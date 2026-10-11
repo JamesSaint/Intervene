@@ -1,5 +1,5 @@
 import { contactEmail, socialLinks } from './social';
-import { markAgdaEmail } from './marks';
+import { emailWordmark, markAgdaEmail, type EmailArtworkTone } from './marks';
 
 // Notices supplied by James. Keep these strings verbatim, including the space after each label.
 export const signatureNotices = {
@@ -16,10 +16,9 @@ export const signatureHeader = 'Intervention Readiness, assessed.';
 const escapeHtml = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 // Inherit the host message colour when CSS is stripped. Never force a canvas colour.
-// Retaining both unmodified transparent artworks is intentional: at least one contrasts
-// with a white or charcoal canvas. Intermediate colours can reveal both variants.
+// Each brand has one image. Picture sources adapt where retained; one black PNG is
+// the fallback where an email editor removes the source element.
 export const signatureCss = `
-.sig-root .sig-logo-white { display:none !important; }
 .sig-root { color:#1a1a1a !important; }
 .sig-root .sig-secondary { color:#4a4a4a !important; }
 .sig-root .sig-link { color:inherit !important; text-decoration:none !important; }
@@ -28,11 +27,8 @@ export const signatureCss = `
   .sig-root { color:#f0f0f0 !important; }
   .sig-root .sig-secondary { color:#c8c6c4 !important; }
   .sig-root .sig-environment { color:#c9b694 !important; }
-  .sig-root .sig-logo-black { display:none !important; }
-  .sig-root .sig-logo-white { display:inline-block !important; margin-left:0 !important; }
 }`;
 
-const logo = (tone: 'black' | 'white') => `<img class="sig-logo-${tone}" src="https://intervene.uk/assets/brand/intervene-wordmark-${tone}-transparent.png" width="120" height="14" alt="Intervene" style="display:inline-block;width:120px;height:auto;vertical-align:middle;border:0;${tone === 'white' ? 'margin-left:12px;' : ''}" />`;
 // Mail freezes imported table column widths. Normal blocks let this single-column
 // signature reflow when the compose window or recipient viewport changes.
 const row = (content: string, style: string, className = '') => `<div${className ? ` class="${className}"` : ''} style="padding:${style};color:inherit;">${content}</div>`;
@@ -40,16 +36,16 @@ const link = (href: string, text: string) => `<a class="sig-link" href="${escape
 
 // Mail already supplies the message gutter. Extra horizontal padding would
 // indent the signature farther than the body text.
-export const signatureFragment = `<div class="sig-root" style="padding:24px 0;background:transparent;color:inherit;font-family:Montserrat,'Helvetica Neue',Helvetica,Arial,sans-serif;text-align:left;">
+const renderSignature = (tone: EmailArtworkTone = 'adaptive') => `<div class="sig-root" style="padding:24px 0;background:transparent;color:inherit;font-family:Montserrat,'Helvetica Neue',Helvetica,Arial,sans-serif;text-align:left;">
 <div class="sig-header" style="border-left:2px solid #c9b694;padding:4px 0 4px 14px;margin:0 0 20px;">
-<a href="https://intervene.uk/" style="display:inline-block;color:inherit;text-decoration:none;">${logo('black')} ${logo('white')}</a>
+<a href="https://intervene.uk/" style="display:inline-block;color:inherit;text-decoration:none;">${emailWordmark('intervene', tone)}</a>
 ${row(`<span style="font-size:13px;line-height:20px;">${signatureHeader}</span>`, '4px 0 0', 'sig-secondary')}
 </div>
 ${row('<span style="font-size:16px;line-height:22px;font-weight:600;letter-spacing:-0.25px;">James Saint</span>', '0 0 2px')}
 ${row('<span style="font-size:13px;line-height:20px;">Founder, Intervene Limited</span>', '0 0 20px', 'sig-secondary')}
 ${row(`<span style="font-size:13px;line-height:22px;">${link(`mailto:${contactEmail}`, contactEmail)} · ${link('https://intervene.uk/', 'intervene.uk')} · ${link(socialLinks.jamesSaintLinkedIn, 'LinkedIn')}</span>`, '0 0 20px')}
 <div class="sig-band" style="border-top:1px solid #c9b694;border-bottom:1px solid #c9b694;padding:12px 0;margin:0 0 16px;font-size:12px;line-height:20px;">
-<a href="https://intervene.uk/agda/" style="display:inline-block;color:inherit;text-decoration:none;">${markAgdaEmail('AGDA®')}</a><br>
+<a href="https://intervene.uk/agda/" style="display:inline-block;color:inherit;text-decoration:none;">${markAgdaEmail('AGDA®', tone)}</a><br>
 <span class="sig-secondary" style="display:inline-block;padding-top:2px;color:inherit;">${signaturePositioning}</span>
 </div>
 ${row(`<span style="font-size:11px;line-height:17px;">${escapeHtml(signatureCompany)}<br>${escapeHtml(signatureTrademark)}</span>`, '0 0 12px', 'sig-secondary')}
@@ -59,6 +55,7 @@ ${Object.entries(signatureNotices).map(([name, notice]) => {
 }).join('\n')}
 </div>`;
 
+export const signatureFragment = renderSignature();
 export const signatureHtml = `<style>${signatureCss}</style>${signatureFragment}`;
 export const signatureText = [
   'Intervene', signatureHeader, '', 'James Saint', 'Founder, Intervene Limited', contactEmail,
@@ -69,11 +66,11 @@ export const signatureText = [
 
 /** A standalone document also used for previews; presentation colour never enters the clipboard. */
 export function signatureDocument(theme?: 'light' | 'dark'): string {
-  const presentation = theme ? `<style>html{color-scheme:${theme};}body{background:${theme === 'dark' ? '#1a1a1a' : '#ffffff'};color:${theme === 'dark' ? '#f0f0f0' : '#1a1a1a'};}\n${theme === 'dark' ? '.sig-root{color:#f0f0f0!important}.sig-root .sig-secondary{color:#c8c6c4!important}.sig-root .sig-logo-black{display:none!important}.sig-root .sig-logo-white{display:inline-block!important;margin-left:0!important}' : '.sig-root{color:#1a1a1a!important}.sig-root .sig-secondary{color:#4a4a4a!important}.sig-root .sig-logo-black{display:inline-block!important}.sig-root .sig-logo-white{display:none!important}'}</style>` : '';
+  const presentation = theme ? `<style>html{color-scheme:${theme};}body{background:${theme === 'dark' ? '#1a1a1a' : '#ffffff'};color:${theme === 'dark' ? '#f0f0f0' : '#1a1a1a'};}\n${theme === 'dark' ? '.sig-root{color:#f0f0f0!important}.sig-root .sig-secondary{color:#c8c6c4!important}' : '.sig-root{color:#1a1a1a!important}.sig-root .sig-secondary{color:#4a4a4a!important}'}</style>` : '';
   // Previews use the local public assets so they work before publishing. The actual
   // email document and clipboard fragment always retain absolute production URLs.
   // The preview wrapper supplies the site's gutter; Mail supplies its own.
-  const themedHtml = theme ? `${signatureHtml}<style>.sig-root .sig-environment{color:${theme === 'dark' ? '#c9b694' : '#7a6c55'}!important;}</style>` : signatureHtml;
-  const html = theme ? themedHtml.replaceAll('src="https://intervene.uk/assets/', 'src="/assets/') : themedHtml;
+  const themedHtml = theme ? `<style>${signatureCss}</style>${renderSignature(theme === 'dark' ? 'white' : 'black')}<style>.sig-root .sig-environment{color:${theme === 'dark' ? '#c9b694' : '#7a6c55'}!important;}</style>` : signatureHtml;
+  const html = theme ? themedHtml.replaceAll('https://intervene.uk/assets/', '/assets/') : themedHtml;
   return `<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="robots" content="noindex, nofollow"><title>James Saint · Intervene email signature</title><style>body{margin:0;}img{max-width:100%;}</style></head><body>${html}${presentation}</body></html>`;
 }
