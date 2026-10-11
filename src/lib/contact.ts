@@ -53,6 +53,12 @@ export function initContactForm(root: Document | ParentNode = document): () => v
 
     try {
       const data = new FormData(form);
+      const startingPoint = data.get('starting_point');
+      if (startingPoint === 'review') {
+        data.set('assessment_offering', 'Intervention Readiness Review');
+      } else if (startingPoint === 'assessment') {
+        data.set('assessment_offering', 'AGDA® Assessment');
+      }
       const res = await fetch(form.action, {
         method: 'POST',
         headers: { Accept: 'application/json' },

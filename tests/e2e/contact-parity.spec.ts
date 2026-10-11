@@ -105,7 +105,7 @@ test.describe('contact form parity after CSS extraction', () => {
 
   test('the form still posts to Formspree and is otherwise untouched', async ({ page }) => {
     const form = page.locator('form.form[data-contact]');
-    await expect(form).toHaveAttribute('action', 'https://formspree.io/f/xvzwdyob');
+    await expect(form).toHaveAttribute('action', 'https://formspree.io/f/xaqrkrpo');
     await expect(form).toHaveAttribute('method', 'POST');
     await expect(form).not.toHaveAttribute('novalidate', '');
   });

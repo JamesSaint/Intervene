@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { contactEmail } from '../../lib/social';
 import Agda from '../../components/Agda.astro';
 
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xvzwdyob';
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xaqrkrpo';
 
 const info: { k: string; v: string; href?: string }[] = [
   { k: 'Confidentiality', v: 'All correspondence is private and off record unless explicitly agreed otherwise. NDA available before substantive discussion.' },
@@ -39,6 +39,7 @@ const info: { k: string; v: string; href?: string }[] = [
           <h2 class="h2">Tell us what may need to be stopped.</h2>
 
           <form class="form" data-contact action={FORMSPREE_ENDPOINT} method="POST">
+            <input type="hidden" name="subject" value="Intervene | New enquiry" />
             <div class="field">
               <label for="f-name">Name</label>
               <input type="text" id="f-name" name="name" required autocomplete="name" />
