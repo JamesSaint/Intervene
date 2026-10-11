@@ -27,44 +27,57 @@
   --measure-lede: 58ch;
   --tracking-heading: -0.025em;
 
-  /* Surfaces */
-  --black:      #000000;
-  --paper:      #0a0a0a;
-  --paper-deep: #070707;
-  --paper-soft: #141414;
-  --paper-mid:  #1c1c1c;
-  --paper-raise:#181818;
-  --ink:        #f0f0f0;
-  --ink-soft:   #ffffff;
-  --inverse-ink:#0a0a0a;
-
-  /* Lines */
-  --hair:        rgba(201, 182, 148, 0.14);
-  --hair-soft:   rgba(201, 182, 148, 0.08);
-  --hair-strong: rgba(201, 182, 148, 0.30);
-  --control-border: rgba(201, 182, 148, 0.55);
-  --hair-fine:   rgba(240, 240, 240, 0.07);
-
-  /* Warm text hierarchy on dark surfaces. */
-  --muted:      #c8c6c4;
-  --muted-soft: #a8a5a2;
-  --faint:      #8e8b87; /* 5.4:1 on --paper-soft; the previous #797673 sat at 4.1:1 */
-
-  /* Accent: HIA-style muted gold. --accent-hover is the filled-button
-     hover state; a lighter tint rather than an opacity drop, so the
-     label keeps its contrast while the button moves. */
-  --accent:       #c9b694;
+  /* Approved brand kit v3.0.0: semantic appearance colours. */
+  color-scheme: light;
+  --black: #000000;
+  --paper: #ffffff;
+  --paper-deep: #f4f4f2;
+  --paper-soft: #f4f4f2;
+  --paper-mid: #f4f4f2;
+  --paper-raise: #f4f4f2;
+  --ink: #1a1a1a;
+  --ink-soft: #0a0a0a;
+  --inverse-ink: #ffffff;
+  --muted: #4a4a4a;
+  --muted-soft: #6b6b6b;
+  --faint: #6b6b6b;
+  --hair: #e0e0e0;
+  --hair-soft: #e0e0e0;
+  --hair-strong: #8c8c8c;
+  --hair-fine: #e0e0e0;
+  --control-border: #6b6b6b;
+  --control-active: #0a0a0a;
+  --accent: #c9b694;
   --accent-hover: #d9c9ab;
-  --accent-soft:  rgba(201, 182, 148, 0.40);
+  --accent-text: #7a6c55;
+  --accent-text-hover: #7a6c55;
+  --accent-soft: rgba(201, 182, 148, 0.40);
   --accent-faint: rgba(201, 182, 148, 0.08);
-  /* Back-compat alias: focus ring referenced --bronze before the
-     accent was named. Keep both pointed at the same value. */
-  --bronze:      var(--accent);
-
-  /* Signal (sparingly: warn, hold, pass for sample-report only) */
-  --warn: #d66a5f;
-  --hold: #c9b694;
-  --pass: #8aaa91;
+  --bronze: var(--accent);
+  --focus: #0a0a0a;
+  --button-bg: #0a0a0a;
+  --button-fg: #ffffff;
+  --button-hover: #4a4a4a;
+  --selected-bg: #8c7e66;
+  --selected-fg: #0a0a0a;
+  --field-bg: var(--paper);
+  --field-text: var(--ink);
+  --warn: #a33a2e;
+  --hold: #8a6a12;
+  --pass: #2f6b4a;
+  --sedi-signal: #8c7e66;
+  --evidence-text: var(--accent-text);
+  --verdict-error: var(--warn);
+  --verdict-pass: var(--pass);
+  --page-bg: var(--paper);
+  --surface-primary: var(--paper);
+  --surface-secondary: var(--paper-soft);
+  --text-primary: var(--ink);
+  --text-secondary: var(--muted);
+  --text-muted: var(--faint);
+  --border: var(--hair);
+  --divider: var(--hair-strong);
+  --dur-appearance: 220ms;
 
   /* ---- Spatial scale. Eight steps; everything below composes from
      these rather than from ad hoc pixel values. ---- */
@@ -126,6 +139,72 @@
   --stagger:     80ms;
   --motion-distance: 20px;
   --feedback-distance: 2px;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0a0a0a;
+  --paper-deep: #070707;
+  --paper-soft: #141414;
+  --paper-mid: #1c1c1c;
+  --paper-raise: #181818;
+  --ink: #f0f0f0;
+  --ink-soft: #ffffff;
+  --inverse-ink: #0a0a0a;
+  --muted: #c8c6c4;
+  --muted-soft: #a8a5a2;
+  --faint: #8e8b87;
+  --hair: rgba(201, 182, 148, 0.14);
+  --hair-soft: rgba(201, 182, 148, 0.08);
+  --hair-strong: rgba(201, 182, 148, 0.30);
+  --hair-fine: rgba(240, 240, 240, 0.07);
+  --control-border: rgba(201, 182, 148, 0.55);
+  --control-active: var(--accent);
+  --selected-bg: var(--accent);
+  --accent-text: var(--accent);
+  --accent-text-hover: var(--accent-hover);
+  --focus: var(--accent);
+  --button-bg: var(--accent);
+  --button-fg: var(--black);
+  --button-hover: var(--accent-hover);
+  --warn: #d66a5f;
+  --hold: #c9b694;
+  --pass: #8aaa91;
+  --sedi-signal: var(--accent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+  color-scheme: dark;
+  --paper: #0a0a0a;
+  --paper-deep: #070707;
+  --paper-soft: #141414;
+  --paper-mid: #1c1c1c;
+  --paper-raise: #181818;
+  --ink: #f0f0f0;
+  --ink-soft: #ffffff;
+  --inverse-ink: #0a0a0a;
+  --muted: #c8c6c4;
+  --muted-soft: #a8a5a2;
+  --faint: #8e8b87;
+  --hair: rgba(201, 182, 148, 0.14);
+  --hair-soft: rgba(201, 182, 148, 0.08);
+  --hair-strong: rgba(201, 182, 148, 0.30);
+  --hair-fine: rgba(240, 240, 240, 0.07);
+  --control-border: rgba(201, 182, 148, 0.55);
+  --control-active: var(--accent);
+  --selected-bg: var(--accent);
+  --accent-text: var(--accent);
+  --accent-text-hover: var(--accent-hover);
+  --focus: var(--accent);
+  --button-bg: var(--accent);
+  --button-fg: var(--black);
+  --button-hover: var(--accent-hover);
+  --warn: #d66a5f;
+  --hold: #c9b694;
+  --pass: #8aaa91;
+  --sedi-signal: var(--accent);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

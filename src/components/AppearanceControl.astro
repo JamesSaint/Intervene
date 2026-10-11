@@ -1,0 +1,41 @@
+---
+interface Props { placement?: 'header' | 'menu' }
+const { placement = 'header' } = Astro.props;
+const Tag = placement === 'header' ? 'details' : 'div';
+---
+<Tag class:list={['appearance', `appearance-${placement}`]} data-appearance>
+  {placement === 'header' && <summary aria-label="Appearance">
+    <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
+      <circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" />
+    </svg>
+    <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><path d="M20.5 14.2A9 9 0 0 1 9.8 3.5a9 9 0 1 0 10.7 10.7Z" /></svg>
+  </summary>}
+  <div class="appearance-options" role="group" aria-label="Appearance">
+    <span class="appearance-label">Appearance</span>
+    {['Light', 'Dark', 'System'].map(label => <button type="button" data-appearance-option={label.toLowerCase()} aria-pressed={label === 'System' ? 'true' : 'false'}>{label}</button>)}
+    <span class="appearance-current" data-appearance-current>System</span>
+  </div>
+  <span class="appearance-status" role="status" aria-live="polite" data-appearance-status></span>
+</Tag>
+<style>
+  .appearance { display: none; font-size: 13px; color: var(--ink); }
+  :global(html[data-appearance]) .appearance-menu { display: block; }
+  .appearance-header { position: relative; margin-right: 16px; }
+  @media (min-width: 720px) { :global(html[data-appearance]) .appearance-header { display: block; } }
+  .moon { display: none; }
+  :global(html[data-theme='dark']) .moon { display: block; }
+  :global(html[data-theme='dark']) .sun { display: none; }
+  summary { list-style: none; display: grid; place-items: center; width: 44px; height: 44px; cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+  summary:is(:hover, :focus-visible) { color: var(--accent-text); }
+  summary:focus-visible, button:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+  .appearance-options { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .appearance-header .appearance-options { position: absolute; right: 0; top: calc(100% + 18px); width: 250px; padding: 16px; border: 1px solid var(--hair-strong); background: var(--paper); }
+  .appearance-header .appearance-label { flex-basis: 100%; }
+  .appearance-label { font-family: var(--font-mono); color: var(--muted); margin-right: 8px; }
+  button { min-height: 44px; min-width: 60px; padding: 8px; border-bottom: 2px solid transparent; color: var(--muted); }
+  button[aria-pressed='true'] { color: var(--ink); border-bottom-color: var(--sedi-signal); font-weight: 600; }
+  button:is(:hover, :focus-visible) { color: var(--accent-text); }
+  .appearance-current { flex-basis: 100%; color: var(--faint); font-family: var(--font-mono); font-size: 12px; }
+  .appearance-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+</style>

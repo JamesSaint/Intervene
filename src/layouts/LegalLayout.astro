@@ -79,7 +79,7 @@ const outline = pageOutline(await Astro.slots.render('default'));
     border-bottom: 1px solid var(--hair-strong);
     transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
   }
-  .legal-body .reading-content a:is(:hover, :focus-visible) { border-bottom-color: var(--accent); color: var(--accent); }
-  .legal-body .reading-content a:active { color: var(--accent-hover); }
-  .legal-body .reading-content a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .legal-body .reading-content a:is(:hover, :focus-visible) { border-bottom-color: var(--accent); color: var(--accent-text); }
+  .legal-body .reading-content a:active { color: var(--accent-text-hover); }
+  .legal-body .reading-content a:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 </style>

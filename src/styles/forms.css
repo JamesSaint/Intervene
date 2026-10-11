@@ -42,8 +42,8 @@
 .field select {
   font-family: var(--font-sans);
   font-size: 16px;
-  color: var(--ink);
-  background: var(--paper);
+  color: var(--field-text);
+  background: var(--field-bg);
   border: 0;
   border-bottom: 1px solid var(--control-border);
   padding: 12px 0;
@@ -54,15 +54,15 @@
 }
 
 .field :is(input, textarea, select):not(:disabled):hover {
-  border-bottom-color: var(--accent);
+  border-bottom-color: var(--control-active);
 }
 
 .field input:focus-visible,
 .field textarea:focus-visible,
 .field select:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus);
   outline-offset: 3px;
-  border-bottom-color: var(--accent);
+  border-bottom-color: var(--control-active);
 }
 
 .field textarea {
@@ -159,8 +159,8 @@
 }
 
 .choice input:checked ~ .choice-marker {
-  border-color: var(--accent);
-  background: var(--accent);
+  border-color: var(--selected-bg);
+  background: var(--selected-bg);
 }
 
 .choice input:checked ~ .choice-marker::after {
@@ -168,7 +168,7 @@
 }
 
 .choice input:focus-visible ~ .choice-marker {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus);
   outline-offset: 3px;
 }
 
@@ -239,7 +239,7 @@
 }
 
 .error-summary:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus);
   outline-offset: 3px;
 }
 

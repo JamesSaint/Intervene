@@ -31,7 +31,7 @@ test.describe('motion opt-in', () => {
   });
 
   test('with reduced motion the complete static explanation is shown at once', async ({ browser }) => {
-    const ctx = await browser.newContext({ reducedMotion: 'reduce' });
+    const ctx = await browser.newContext({ reducedMotion: 'reduce', colorScheme: 'dark' });
     const page = await ctx.newPage();
     await page.goto('/');
     expect(await page.evaluate(() => document.documentElement.hasAttribute('data-motion'))).toBe(false);

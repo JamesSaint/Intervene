@@ -44,6 +44,6 @@ em, .em { font-style: italic; font-weight: 400; }
   letter-spacing: 0.12em;
   line-height: 1.5;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .product-identity { margin-bottom: var(--space-5); }

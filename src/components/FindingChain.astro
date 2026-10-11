@@ -69,7 +69,7 @@ const stages = [
   .fc-window { margin: 0; }
   .fc-window-label {
     display: inline-block; margin-right: 10px; font-size: var(--type-caption); letter-spacing: 0.04em;
-    text-transform: uppercase; color: var(--accent);
+    text-transform: uppercase; color: var(--accent-text);
   }
   .fc-window strong { color: var(--ink); font-weight: 600; }
 
@@ -87,8 +87,8 @@ const stages = [
   .fc-node { background: var(--paper-soft); }
   /* The decisive stage is the one filled node: shape carries the meaning,
      the text beside it says it in words. */
-  .fc-exceeds .fc-node { background: var(--accent); }
-  .fc-n { margin-top: 12px; font-size: var(--type-caption); letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); }
+  .fc-exceeds .fc-node { background: var(--sedi-signal); }
+  .fc-n { margin-top: 12px; font-size: var(--type-caption); letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent-text); }
   .fc-value { font-family: var(--font-mono); font-size: clamp(22px, 2.4vw, 32px); font-weight: 600; color: var(--ink); letter-spacing: 0; line-height: 1.1; }
   .fc-rel { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: var(--type-caption); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
   .fc-mark { display: inline-block; width: 10px; height: 10px; border: 1px solid var(--muted); flex: none; }
@@ -103,7 +103,7 @@ const stages = [
     margin: var(--gap-intro) 0 0; padding: var(--space-3) 0 var(--space-3) var(--space-4); border-left: 2px solid var(--accent);
     font-family: var(--font-sans); font-size: var(--type-body); line-height: 1.6; color: var(--ink);
   }
-  .fc-result-label { display: block; margin-bottom: 8px; font-size: var(--type-caption); letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); }
+  .fc-result-label { display: block; margin-bottom: 8px; font-size: var(--type-caption); letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent-text); }
   .fc-footnote { margin: var(--space-4) 0 0; font-size: var(--type-small); line-height: 1.6; color: var(--faint); }
 
   @media (max-width: 1100px) {

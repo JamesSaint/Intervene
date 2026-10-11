@@ -1,4 +1,5 @@
 ---
+import AppearanceControl from './AppearanceControl.astro';
 import Logo from './Logo.astro';
 import MenuIcon from './MenuIcon.astro';
 interface Props { current?: string }
@@ -16,6 +17,8 @@ const { current } = Astro.props;
       <a href="/sample-report/" aria-current={current === 'sample-report' ? 'page' : undefined}>Sample verdict</a>
       <a data-primary-cta="discuss_system" href="/contact/" class="quick-cta" aria-current={current === 'contact' ? 'page' : undefined}>Discuss your system</a>
     </nav>
+    <AppearanceControl />
+    <noscript><a class="no-script-menu" href="#footer-nav">Menu</a></noscript>
     <button
       type="button"
       class="menu-trigger"
@@ -30,6 +33,7 @@ const { current } = Astro.props;
 </header>
 
 <style>
+  .no-script-menu { display: inline-flex; min-height: 44px; align-items: center; margin-left: auto; }
   .site-header {
     position: sticky;
     top: 0;
@@ -73,11 +77,11 @@ const { current } = Astro.props;
     transition: color var(--dur-hover) var(--ease), border-color var(--dur-hover) var(--ease);
   }
   .quick-nav a[aria-current='page'] { color: var(--ink); border-bottom-color: var(--accent); }
-  .quick-nav a:is(:hover, :focus-visible) { color: var(--accent); border-bottom-color: var(--accent); }
-  .quick-nav a:active { color: var(--accent-hover); }
-  .quick-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  .quick-nav a:is(:hover, :focus-visible) { color: var(--accent-text); border-bottom-color: var(--accent); }
+  .quick-nav a:active { color: var(--accent-text-hover); }
+  .quick-nav a:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
   .quick-nav .quick-cta { color: var(--ink); border: 1px solid var(--control-border); padding-inline: var(--space-3); }
-  .quick-nav .quick-cta:is(:hover, :focus-visible), .quick-nav .quick-cta[aria-current='page'] { color: var(--accent); border-color: var(--accent); }
+  .quick-nav .quick-cta:is(:hover, :focus-visible), .quick-nav .quick-cta[aria-current='page'] { color: var(--accent-text); border-color: var(--control-active); }
   @media (min-width: 720px) {
     .quick-nav { display: flex; }
     .quick-nav a:not(.quick-cta) { display: none; }
@@ -85,8 +89,9 @@ const { current } = Astro.props;
   @media (min-width: 1100px) {
     .quick-nav a:not(.quick-cta) { display: inline-flex; }
   }
+  :global(html[data-appearance]) .menu-trigger { display: inline-flex; }
   .menu-trigger {
-    display: inline-flex;
+    display: none;
     align-items: center;
     justify-content: center;
     width: 44px;
@@ -95,10 +100,10 @@ const { current } = Astro.props;
     color: var(--ink);
     transition: color var(--dur-hover) var(--ease);
   }
-  .menu-trigger:is(:hover, :focus-visible) { color: var(--accent); }
-  .menu-trigger:active { color: var(--accent-hover); }
+  .menu-trigger:is(:hover, :focus-visible) { color: var(--accent-text); }
+  .menu-trigger:active { color: var(--accent-text-hover); }
   .menu-trigger:focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--focus);
     outline-offset: 2px;
   }
 </style>

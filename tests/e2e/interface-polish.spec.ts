@@ -21,11 +21,15 @@ test('menu traps focus, closes from the keyboard and preserves existing inert st
   await expect(page.locator('.site-header')).toHaveJSProperty('inert', true);
   await expect(page.locator('.consent')).toHaveJSProperty('inert', true);
 
+  const lastControl = menu.locator('[data-appearance-option="system"]');
   await links.last().focus();
+  await page.keyboard.press('Tab');
+  await expect(menu.locator('[data-appearance-option="light"]')).toBeFocused();
+  await lastControl.focus();
   await page.keyboard.press('Tab');
   await expect(menu.getByRole('link', { name: 'Intervene · home' })).toBeFocused();
   await page.keyboard.press('Shift+Tab');
-  await expect(links.last()).toBeFocused();
+  await expect(lastControl).toBeFocused();
   await links.first().focus();
   await page.keyboard.press('Shift+Tab');
   await expect(menu.getByRole('button', { name: 'Close menu' })).toBeFocused();
