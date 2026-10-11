@@ -80,43 +80,22 @@ export function initOpening(root: Document | ParentNode = document): void {
   window.addEventListener('beforeprint', settle);
 }
 
+/** Headings retain their document position throughout scrolling. Only
+ * decorative evidence cues are observed; text never moves on entry. */
 export function initReveal(root: Document | ParentNode = document): void {
   root.querySelectorAll<HTMLElement>(REVEAL).forEach((node) => node.classList.add('in'));
   const story = /^\/(?:$|agda\/$|methodology\/$|intervention-readiness\/$|about\/$)/.test(location.pathname);
   if (!story || !('IntersectionObserver' in window)) return;
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
   const seen = new WeakSet<Element>();
-  const headings = Array.from(root.querySelectorAll<HTMLElement>('main .block h2'));
   const evidence = Array.from(root.querySelectorAll<HTMLElement>('.fc-exceeds .fc-node, .fc-result'));
-  const active = new Map<HTMLElement, Animation>();
+  if (!evidence.length) return;
   const cues = new Map<HTMLElement, number>();
   let ready = false;
   let suspended = false;
   const finish = () => {
-    active.forEach((animation) => animation.cancel()); active.clear();
     cues.forEach((timer, node) => { window.clearTimeout(timer); node.classList.remove('is-emphasised'); }); cues.clear();
   };
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting || entry.intersectionRatio < 0.6 || !motionEnabled() || suspended) return;
-      const node = entry.target as HTMLElement;
-      observer.unobserve(node); seen.add(node);
-      if (typeof node.animate !== 'function') return;
-      const styles = getComputedStyle(node);
-      const distance = styles.getPropertyValue('--motion-distance').trim() || '20px';
-      // Keep the reveal on the compositor. An animated clip-path can
-      // stutter alongside touch scrolling in Safari. Text stays readable.
-      const animation = node.animate([
-        { transform: `translateY(${distance})` },
-        { transform: 'translateY(0)' },
-      ], {
-        duration: motionDuration(styles.getPropertyValue('--dur-reveal'), 560),
-        easing: styles.getPropertyValue('--ease-reveal').trim() || 'ease-out',
-      });
-      active.set(node, animation);
-      animation.finished.then(() => active.delete(node), () => active.delete(node));
-    });
-  }, { rootMargin: '-88px 0px -8% 0px', threshold: 0.6 });
   const evidenceObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting || entry.intersectionRatio < 0.5 || !motionEnabled() || suspended) return;
@@ -130,9 +109,8 @@ export function initReveal(root: Document | ParentNode = document): void {
     });
   }, { rootMargin: '-88px 0px -8% 0px', threshold: 0.5 });
   const arm = () => {
-    observer.disconnect(); evidenceObserver.disconnect();
+    evidenceObserver.disconnect();
     if (!ready || suspended || !motionEnabled()) return;
-    headings.filter((node) => !seen.has(node)).forEach((node) => observer.observe(node));
     evidence.filter((node) => !seen.has(node)).forEach((node) => evidenceObserver.observe(node));
   };
   afterFontPaint(() => { ready = true; arm(); });
@@ -141,9 +119,6 @@ export function initReveal(root: Document | ParentNode = document): void {
   window.addEventListener('pageshow', () => { suspended = false; requestAnimationFrame(arm); });
   document.addEventListener('visibilitychange', () => { if (document.hidden) finish(); arm(); });
   window.addEventListener('beforeprint', finish);
-  document.addEventListener('focusin', () => {
-    active.forEach((animation, node) => { if (node.contains(document.activeElement)) { animation.cancel(); active.delete(node); } });
-  });
 }
 
 /** Native comparison is immediate. Only the visible sequence owns autoplay. */
