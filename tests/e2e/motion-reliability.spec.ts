@@ -82,7 +82,10 @@ test('story headings wait until readable and change rendered position only once'
       const animation = original.apply(this, args);
       if (this.matches('#deliverables h2')) {
         const node = this;
-        const sample = () => (window as any).__headingSamples.push({ top: node.getBoundingClientRect().top, duration: animation.effect?.getTiming().duration });
+        const sample = () => (window as any).__headingSamples.push({
+          top: node.getBoundingClientRect().top, duration: animation.effect?.getTiming().duration,
+          clipPath: getComputedStyle(node).clipPath, opacity: getComputedStyle(node).opacity,
+        });
         sample(); setTimeout(sample, 200);
       }
       return animation;
@@ -97,6 +100,7 @@ test('story headings wait until readable and change rendered position only once'
   await expect.poll(() => page.evaluate(() => (window as any).__headingSamples.length)).toBe(2);
   const samples = await page.evaluate(() => (window as any).__headingSamples);
   expect(samples[0].duration).toBe(560);
+  expect(samples.every((sample: any) => sample.clipPath === 'none' && sample.opacity === '1')).toBe(true);
   expect(samples[0].top - samples[1].top).toBeGreaterThan(4);
   await expect.poll(() => heading.evaluate(node => getComputedStyle(node).transform)).toBe('none');
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
@@ -256,4 +260,41 @@ test('manual replay visibly advances when only part of the sequence is on screen
   await line.evaluate(async node => { await Promise.all(node.getAnimations().map(animation => animation.ready)); });
   const early = await trace(page); await page.waitForTimeout(180);
   expect(await trace(page)).toBeGreaterThan(early + 10);
+});
+
+
+test('stage pulses grow and fade without moving their node or leaving a halo', async ({ page }) => {
+  await prepare(page); await page.goto('/'); await replay(page);
+  const samples = await page.locator('.window-view:visible .window-stage-1 .window-node').evaluate(async node => {
+    const animation = node.getAnimations({ subtree: true }).find(a => (a as CSSAnimation).animationName === 'window-stage')!;
+    await animation.ready;
+    animation.pause();
+    const duration = Number(animation.effect!.getTiming().duration);
+    const sample = (time: number) => {
+      animation.currentTime = time;
+      const halo = getComputedStyle(node, '::after');
+      const bounds = node.getBoundingClientRect();
+      return {
+        top: bounds.top, left: bounds.left, width: bounds.width, height: bounds.height,
+        nodeOpacity: getComputedStyle(node).opacity, nodeTransform: getComputedStyle(node).transform,
+        opacity: Number(halo.opacity), scale: new DOMMatrixReadOnly(halo.transform).a,
+        shadow: getComputedStyle(node).boxShadow,
+      };
+    };
+    const states = [sample(0), sample(duration * 0.45), sample(duration)];
+    animation.play();
+    return states;
+  });
+  const [start, peak, end] = samples;
+  expect(peak.scale).toBeGreaterThan(start.scale);
+  expect(peak.opacity).toBeGreaterThan(start.opacity);
+  expect(end.opacity).toBe(0);
+  for (const sample of samples) {
+    expect([sample.top, sample.left, sample.width, sample.height]).toEqual([start.top, start.left, start.width, start.height]);
+    expect(sample.nodeOpacity).toBe('1');
+    expect(sample.nodeTransform).toBe('none');
+    expect(sample.shadow).toBe('none');
+  }
+  await expect.poll(() => page.locator('.window-view:visible').evaluate(node => node.getAnimations({ subtree: true }).filter(a => a.playState === 'running').length)).toBe(0);
+  expect(await page.locator('.window-view:visible .window-node').evaluateAll(nodes => nodes.every(node => getComputedStyle(node, '::after').opacity === '0'))).toBe(true);
 });
