@@ -316,10 +316,8 @@ const structuredData = {
     <link rel="preload" href="/assets/fonts/montserrat-semibold.woff2" as="font" type="font/woff2" crossorigin />
     {buildId && <meta name="intervene-build" content={buildId} />}
     <script is:inline>
-      // Motion opt-in. Runs before first paint so the entrance styles
-      // never hide content from a visitor without scripts or with
-      // reduced motion. If the motion module fails to load, the
-      // attribute is dropped and everything settles into place.
+      // Optional disclosure animation. Page content is always visible;
+      // reduced motion and a missing runtime retain native behaviour.
       (function () {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         var h = document.documentElement;

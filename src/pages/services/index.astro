@@ -462,13 +462,6 @@ const useCases = [
   .seq-name { margin: 0; font-size: 22px; }
   .seq-step p { margin: 0; font-size: 16px; }
   .seq-foot { margin-top: var(--space-5); }
-  html[data-motion] .seq-step {
-    opacity: 0; transform: translateY(var(--move-reveal));
-    transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out);
-    transition-delay: calc(200ms + var(--i) * 140ms);
-  }
-  html[data-motion] .activity-seq.in .seq-step { opacity: 1; transform: none; }
-
   /* ----- Responsive ----- */
   @media (max-width: 880px) {
     .offers { grid-template-columns: 1fr; row-gap: var(--space-7); }

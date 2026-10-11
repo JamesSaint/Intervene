@@ -5,7 +5,6 @@ import { test, expect } from '@playwright/test';
  */
 
 const PAPER = 'rgb(10, 10, 10)';
-const HAIR_STRONG = 'rgba(201, 182, 148, 0.3)';
 const INK = 'rgb(240, 240, 240)';
 
 test.describe('contact form parity after CSS extraction', () => {
@@ -13,7 +12,7 @@ test.describe('contact form parity after CSS extraction', () => {
     await page.goto('/contact/');
   });
 
-  test('text inputs keep their original treatment', async ({ page }) => {
+  test('text inputs retain their treatment with an accessible boundary', async ({ page }) => {
     const input = page.locator('#f-name');
     const styles = await input.evaluate((el) => {
       const s = getComputedStyle(el);
@@ -36,7 +35,19 @@ test.describe('contact form parity after CSS extraction', () => {
     expect(styles.backgroundColor).toBe(PAPER);
     expect(styles.borderBottomWidth).toBe('1px');
     expect(styles.borderBottomStyle).toBe('solid');
-    expect(styles.borderBottomColor).toBe(HAIR_STRONG);
+    // Composite the translucent rule on the actual field surface. A
+    // component boundary must retain at least 3:1 contrast.
+    const channels = (colour: string) => colour.match(/[\d.]+/g)!.map(Number);
+    const background = channels(styles.backgroundColor);
+    const border = channels(styles.borderBottomColor);
+    const alpha = border[3] ?? 1;
+    const luminance = (rgb: number[]) => rgb.slice(0, 3).map((v) => {
+      const channel = v / 255;
+      return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+    }).reduce((total, v, i) => total + v * [0.2126, 0.7152, 0.0722][i], 0);
+    const surface = luminance(background);
+    const rule = luminance(border.slice(0, 3).map((v, i) => v * alpha + background[i] * (1 - alpha)));
+    expect((Math.max(rule, surface) + 0.05) / (Math.min(rule, surface) + 0.05)).toBeGreaterThanOrEqual(3);
     expect(styles.borderTopWidth).toBe('0px');
     expect(styles.borderRadius).toBe('0px');
     expect(styles.paddingTop).toBe('10px');
@@ -56,9 +67,9 @@ test.describe('contact form parity after CSS extraction', () => {
         };
       });
 
-    expect(styles.fontSize).toBe('12px');
+    expect(parseFloat(styles.fontSize)).toBeGreaterThanOrEqual(13);
     expect(styles.textTransform).toBe('uppercase');
-    expect(styles.letterSpacing).toBe('0.48px');
+    expect(parseFloat(styles.letterSpacing) / parseFloat(styles.fontSize)).toBeCloseTo(0.04, 3);
     expect(styles.fontFamily).toContain('IBM Plex Mono');
   });
 

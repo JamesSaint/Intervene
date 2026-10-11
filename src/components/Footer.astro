@@ -63,7 +63,7 @@ const year = new Date().getFullYear();
 <style>
   .site-footer {
     border-top: 1px solid var(--hair);
-    padding: 72px 0 44px;
+    padding: var(--section-tight) 0 var(--space-6);
     background: var(--paper-deep);
   }
   .foot-inner {
@@ -131,7 +131,7 @@ const year = new Date().getFullYear();
   .meta {
     margin: 20px 0 0;
     font-family: var(--font-sans);
-    font-size: 12px;
+    font-size: var(--type-caption);
     color: var(--faint);
     display: flex;
     flex-wrap: wrap;
@@ -143,8 +143,8 @@ const year = new Date().getFullYear();
   .meta-sep { color: var(--faint); }
 
   .foot-sub {
-    margin-top: 56px;
-    padding-top: 28px;
+    margin-top: var(--gap-sub);
+    padding-top: var(--space-4);
     border-top: 1px solid var(--hair);
   }
   .supporting-nav ul {
@@ -159,8 +159,8 @@ const year = new Date().getFullYear();
   .supporting-nav button {
     font-family: var(--font-mono);
     font-size: var(--type-caption);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    letter-spacing: 0;
+    text-transform: none;
     color: var(--muted);
     display: inline-flex;
     align-items: center;

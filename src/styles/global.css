@@ -19,8 +19,7 @@ body { padding-bottom: var(--consent-clearance, 0px); }
   margin: 0 auto;
   padding: 0 var(--gutter);
 }
-/* Every page uses the available content width. Grids define their own
-   columns; text fills its column before moving to the next line. */
+/* Shared outer alignment; prose has its own readable measure. */
 .wrap, .wrap-narrow, .wrap-reading { max-width: var(--max); }
 
 @media (max-width: 720px) {
@@ -81,19 +80,9 @@ a, button, summary, input, textarea, select, [tabindex] { scroll-margin-top: var
   gap: var(--space-2);
 }
 
-/* On a phone the primary action moves up under the headline and the
-   lede follows it, so the action clears the consent banner on first
-   load. DOM order is unchanged; only the visual order moves. The
-   homepage hero composes itself and is excluded. */
 @media (max-width: 560px) {
-  .hero:not(.hero-home) .wrap:has(> .hero-cta) { display: grid; }
-  .hero:not(.hero-home) .wrap:has(> .hero-cta) > .label { order: -1; }
-  .hero:not(.hero-home) .wrap:has(> .hero-cta) > .hero-cta { order: 1; margin-top: var(--space-4); }
-  .hero:not(.hero-home) .wrap:has(> .hero-cta) > .lede { order: 2; margin-top: var(--space-4); }
-  .hero:not(.hero-home) .wrap:has(> .hero-cta) > .hero-cta ~ * { order: 3; }
-  .hero:not(.hero-home) { padding-top: 32px; }
-  .hero .hero-cta .btn,
-  .hero .hero-cta .btn-ghost { flex: 1 1 100%; }
+  .hero .hero-cta :is(.btn, .btn-ghost),
+  .cta-row :is(.btn, .btn-ghost) { flex: 1 1 100%; }
 }
 
 @media (max-height: 760px) and (min-width: 561px) {
@@ -130,11 +119,14 @@ a, button, summary, input, textarea, select, [tabindex] { scroll-margin-top: var
 .btn-ghost {
   position: relative;
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: var(--type-action);
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 13px 24px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  text-align: center;
+  max-width: 100%;
+  padding: var(--space-2) var(--space-4);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -156,7 +148,7 @@ a, button, summary, input, textarea, select, [tabindex] { scroll-margin-top: var
 .btn-ghost {
   background: transparent;
   color: var(--ink);
-  border-color: var(--hair-strong);
+  border-color: var(--control-border);
 }
 .btn-ghost:not(:disabled):is(:hover, :focus-visible) {
   border-color: var(--accent);
@@ -222,87 +214,6 @@ a, button, summary, input, textarea, select, [tabindex] { scroll-margin-top: var
 }
 .skip-link:focus { left: 16px; top: 16px; }
 
-/* ------------------------------------------------------------------
-   Reveal
-   Section entrances run only when the document has opted in: an
-   inline script in <head> sets html[data-motion] when JavaScript is
-   available and reduced motion is not requested. Without it, every
-   element sits in its final state, so the page reads fully with
-   scripts disabled. The script also drops the attribute after a short
-   grace period if the reveal module never loads.
-
-   Targets: the content column of every block, and any element that
-   carries data-reveal. A group moves as one; data-reveal="stagger"
-   offsets its direct children by --stagger each, capped at eight;
-   data-reveal="scene" only receives the .in class and choreographs
-   its own parts (the diagrams).
-   ------------------------------------------------------------------ */
-html[data-motion] .block > :is(.wrap, .wrap-narrow, .wrap-reading):not(.in),
-html[data-motion] [data-reveal]:not([data-reveal='scene']):not(.in) {
-  opacity: 0;
-  transform: translateY(var(--move-reveal));
-}
-html[data-motion] .block > :is(.wrap, .wrap-narrow, .wrap-reading),
-html[data-motion] [data-reveal]:not([data-reveal='scene']) {
-  transition:
-    opacity var(--dur-reveal) var(--ease-out),
-    transform var(--dur-reveal) var(--ease-out);
-}
-html[data-motion] [data-reveal='stagger'] > * {
-  transition:
-    opacity var(--dur-reveal) var(--ease-out),
-    transform var(--dur-reveal) var(--ease-out);
-}
-html[data-motion] [data-reveal='stagger']:not(.in) > * {
-  opacity: 0;
-  transform: translateY(var(--move-reveal));
-}
-html[data-motion] [data-reveal='stagger'] > :nth-child(2) { transition-delay: calc(var(--stagger) * 1); }
-html[data-motion] [data-reveal='stagger'] > :nth-child(3) { transition-delay: calc(var(--stagger) * 2); }
-html[data-motion] [data-reveal='stagger'] > :nth-child(4) { transition-delay: calc(var(--stagger) * 3); }
-html[data-motion] [data-reveal='stagger'] > :nth-child(5) { transition-delay: calc(var(--stagger) * 4); }
-html[data-motion] [data-reveal='stagger'] > :nth-child(6) { transition-delay: calc(var(--stagger) * 5); }
-html[data-motion] [data-reveal='stagger'] > :nth-child(7) { transition-delay: calc(var(--stagger) * 6); }
-html[data-motion] [data-reveal='stagger'] > :nth-child(n + 8) { transition-delay: calc(var(--stagger) * 7); }
-
-/* A group that receives keyboard focus, or that contains the URL's
-   target, is shown at once. Nothing focusable is ever an invisible
-   target, whatever the observer has or has not done. */
-html[data-motion] .block > :is(.wrap, .wrap-narrow, .wrap-reading):focus-within,
-html[data-motion] [data-reveal]:focus-within,
-html[data-motion] [data-reveal='stagger']:focus-within > *,
-html[data-motion] .block > :is(.wrap, .wrap-narrow, .wrap-reading):has(:target),
-html[data-motion] [data-reveal]:has(:target),
-html[data-motion] [data-reveal='stagger']:has(:target) > * {
-  opacity: 1;
-  transform: none;
-  transition: none;
-}
-
-/* Page openings stay opaque throughout. Actions and logos do not move.
-   These finite entrances change presentation only, never text layout. */
-html[data-motion] :is(.hero, .insight-header) h1 {
-  animation: heading-arrive var(--dur-reveal) var(--ease-out) both;
-}
-html[data-motion] :is(.hero, .insight-header) :is(.lede, .hero-sub) {
-  animation: heading-arrive var(--dur-reveal) var(--ease-out) 60ms both;
-}
-html[data-motion] :is(.hero, .insight-header):has(:target) :is(h1, .lede, .hero-sub) { animation: none; }
-@keyframes heading-arrive {
-  from { transform: translateY(8px); }
-  to { transform: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  html[data-motion] :is(.hero, .insight-header) :is(h1, .lede, .hero-sub) { animation: none; }
-  /* The universal 80ms interface feedback must not tween a reveal's
-     hidden state when motion preference changes on an open page. */
-  .block > :is(.wrap, .wrap-narrow, .wrap-reading),
-  [data-reveal], [data-reveal] *, .reveal {
-    transition: none !important;
-    animation: none !important;
-  }
-}
-
 /* A small directional cue belongs only to links with an explicit arrow. */
 :is(.link, .arrow-link) > span[aria-hidden='true'] {
   display: inline-block;
@@ -315,14 +226,6 @@ html[data-motion] :is(.hero, .insight-header):has(:target) :is(h1, .lede, .hero-
   :is(.link, .arrow-link):focus-visible > span[aria-hidden='true'] { transform: translateX(3px); }
 }
 
-/* Legacy class kept as an alias so nothing breaks while pages migrate. */
-html[data-motion] .reveal:not(.in) { opacity: 0; transform: translateY(var(--move-reveal)); }
-html[data-motion] .reveal {
-  transition:
-    opacity var(--dur-reveal) var(--ease-out),
-    transform var(--dur-reveal) var(--ease-out);
-}
-
 /* ------------------------------------------------------------------
    Cards
    Editorial columns: one top rule, no enclosing box. Linked groups
@@ -330,11 +233,12 @@ html[data-motion] .reveal {
    ------------------------------------------------------------------ */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--gap-group);
 }
 .card {
   position: relative;
+  min-width: 0;
   display: grid;
   gap: var(--gap-item);
   align-content: start;
@@ -590,7 +494,10 @@ a.card:focus-visible::before { transform: scaleX(1); }
   .table-compare tr,
   .table-compare th,
   .table-compare td { display: block; width: 100%; }
-  .table-compare thead { display: none; }
+  /* Keep column headers in the accessibility tree while row labels
+     carry the same meaning in the stacked visual layout. */
+  .table-compare thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .table-compare thead :is(tr, th) { width: 1px; min-width: 0; padding: 0; font-size: 1px; overflow: hidden; }
   .table-compare tbody tr { padding: 16px 0; border-top: 1px solid var(--hair); }
   .table-compare th,
   .table-compare td { padding: 6px 0; border: 0; }
@@ -637,7 +544,7 @@ a.card:focus-visible::before { transform: scaleX(1); }
 }
 .code-caption + .code-block { margin-top: var(--space-2); }
 @media (max-width: 720px) {
-  .code-block { padding: 18px 20px; font-size: 11.5px; }
+  .code-block { padding: 18px 20px; font-size: 12px; }
 }
 
 /* ------------------------------------------------------------------
@@ -749,6 +656,9 @@ a.card:focus-visible::before { transform: scaleX(1); }
   .page-nav ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .page-nav a { width: 100%; height: 100%; line-height: 1.5; }
 }
+@media (max-width: 560px) {
+  .page-nav ul { column-gap: var(--space-3); }
+}
 
 /* ------------------------------------------------------------------
    Closing section: heading left, one sentence and two actions right.
@@ -796,9 +706,6 @@ a.card:focus-visible::before { transform: scaleX(1); }
   box-sizing: border-box;
 }
 .node.is-filled { background: var(--accent); }
-html[data-motion] .rail.draw { transform: scaleX(0); transform-origin: left center; transition: transform var(--dur-draw) var(--ease-draw); }
-html[data-motion] .in .rail.draw,
-html[data-motion] .rail.draw.in { transform: scaleX(1); }
 
 /* Publication-style insight index. */
 .insights-list {
@@ -809,18 +716,13 @@ html[data-motion] .rail.draw.in { transform: scaleX(1); }
   border-bottom: 1px solid var(--hair-strong);
 }
 
-/* Longer prose uses the page width for a useful index and reading column.
-   Text fills that column naturally; no character-count caps or forced breaks. */
+/* A stable index and a measured reading column share the outer grid. */
 .reading-layout { display: grid; grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.75fr); gap: var(--space-7); padding-top: var(--section-tight); padding-bottom: var(--section); align-items: start; }
-.reading-content { min-width: 0; }
+.reading-content { min-width: 0; max-width: var(--measure-body); overflow-wrap: anywhere; }
 .section-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr); gap: var(--space-7); align-items: start; }
 .section-intro .body { margin: 0; }
-.related-links { display: flex; flex-wrap: wrap; gap: 8px 32px; margin-top: 32px; }
+.related-links { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-5); margin-top: var(--space-5); }
 .related-links .link { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--type-small); }
 @media (max-width: 880px) {
   .reading-layout, .section-intro { grid-template-columns: 1fr; gap: var(--space-5); }
-  .page-nav-inner { padding-top: var(--space-2); }
-  .page-nav ul { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: var(--space-4); padding-bottom: 4px; }
-  .page-nav li { flex: none; }
-  .page-nav a { white-space: nowrap; }
 }

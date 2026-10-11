@@ -12,26 +12,26 @@
 
 .form {
   display: grid;
-  gap: 20px;
+  gap: var(--space-4);
 }
 
 /* ---- Text fields ---- */
 
 .field {
   display: grid;
-  gap: 8px;
+  gap: var(--space-1);
 }
 
 .field-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: var(--space-4);
 }
 
 .field label,
 .field-legend {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: var(--type-caption);
   letter-spacing: 0.04em;
   color: var(--muted);
   text-transform: uppercase;
@@ -45,7 +45,7 @@
   color: var(--ink);
   background: var(--paper);
   border: 0;
-  border-bottom: 1px solid var(--hair-strong);
+  border-bottom: 1px solid var(--control-border);
   padding: 10px 0;
   width: 100%;
   border-radius: 0;
@@ -53,7 +53,7 @@
 }
 
 .field :is(input, textarea, select):not(:disabled):hover {
-  border-bottom-color: var(--accent-soft);
+  border-bottom-color: var(--accent);
 }
 
 .field input:focus-visible,
@@ -139,7 +139,7 @@
   width: 18px;
   height: 18px;
   margin-top: 3px;
-  border: 1px solid var(--hair-strong);
+  border: 1px solid var(--control-border);
   background: transparent;
   transition:
     border-color var(--dur-hover) var(--ease),
@@ -294,7 +294,7 @@
 .submit-row .small {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: var(--type-caption);
   line-height: 1.55;
 }
 
@@ -308,23 +308,21 @@
   opacity: 0;
 }
 
-/* ---- Disabled ----
-   A disabled control must read as deliberately unavailable rather than
-   broken. Dimming the button alone is not enough: a full-brightness
-   field next to a dimmed button looks like a bug. Fields, their labels
-   and consent text all dim together, and the underline goes dashed so
-   the state is not carried by opacity alone. */
+/* Disabled controls use deliberate colours and dashed field rules.
+   Labels and explanatory text remain readable. */
 
 .btn:disabled,
 .btn-ghost:disabled {
-  opacity: 0.45;
+  background: var(--paper-soft);
+  color: var(--faint);
+  border-color: var(--control-border);
   cursor: not-allowed;
 }
 
 .field input:disabled,
 .field textarea:disabled,
 .field select:disabled {
-  opacity: 0.4;
+  color: var(--faint);
   cursor: not-allowed;
   border-bottom-style: dashed;
 }
@@ -332,7 +330,7 @@
 .field:has(input:disabled) label,
 .field:has(textarea:disabled) label,
 .field:has(select:disabled) label {
-  opacity: 0.4;
+  color: var(--faint);
 }
 
 .consent-check:has(input:disabled) {
@@ -340,12 +338,12 @@
 }
 
 .consent-check input:disabled ~ .choice-marker {
-  opacity: 0.4;
+  border-color: var(--control-border);
   border-style: dashed;
 }
 
 .consent-check input:disabled ~ .consent-check-text {
-  opacity: 0.4;
+  color: var(--faint);
 }
 
 @media (max-width: 880px) {

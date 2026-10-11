@@ -1,8 +1,6 @@
 ---
 /**
- * The SEDI chain: four nodes on a rail. When motion is enabled the rail
- * draws once, left to right, and each stage's node and name follow in
- * order. The order is the chain's order, not a duration.
+ * The SEDI chain: four aligned stages on a static rail.
  */
 const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
 ---
@@ -10,8 +8,8 @@ const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
 <figure class="chain-flow" data-reveal="scene" aria-label="The intervention capability chain: Detect, Escalate, Decide, Intervene.">
   <div class="rail draw" aria-hidden="true"></div>
   <ol role="list">
-    {stages.map((s, i) => (
-      <li style={`--i: ${i}`}>
+    {stages.map((s) => (
+      <li>
         <span class="node" aria-hidden="true"></span>
         <span class="stage">{s}</span>
       </li>
@@ -37,8 +35,8 @@ const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
     margin: 0;
     font-family: var(--font-sans);
     font-size: 18px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+    text-transform: none;
+    letter-spacing: var(--tracking-heading);
     font-weight: 600;
     color: var(--ink);
   }
@@ -52,22 +50,6 @@ const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
     margin-left: auto;
     margin-right: auto;
   }
-
-  /* Sequence: rail 0 to 700ms; stages from 160ms, 140ms apart. */
-  html[data-motion] .chain-flow li {
-    opacity: 0;
-    transform: translateY(var(--move-reveal));
-    transition:
-      opacity var(--dur-reveal) var(--ease-out),
-      transform var(--dur-reveal) var(--ease-out);
-    transition-delay: calc(160ms + var(--i) * 140ms);
-  }
-  html[data-motion] .chain-flow figcaption {
-    opacity: 0;
-    transition: opacity var(--dur-reveal) var(--ease-out) 760ms;
-  }
-  html[data-motion] .chain-flow.in li { opacity: 1; transform: none; }
-  html[data-motion] .chain-flow.in figcaption { opacity: 1; }
 
   @media (max-width: 720px) {
     .chain-flow > .rail { display: none; }

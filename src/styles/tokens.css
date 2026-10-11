@@ -20,7 +20,11 @@
   --type-body: 17px;
   --type-small: 16px;
   --type-support: clamp(18px, 1.5vw, 22px);
-  --type-caption: 12px;
+  --type-caption: 13px;
+  --type-action: 14px;
+  --type-finding: clamp(28px, 3.1vw, 44px);
+  --measure-body: 72ch;
+  --measure-lede: 64ch;
   --tracking-heading: -0.015em;
 
   /* Surfaces */
@@ -38,6 +42,7 @@
   --hair:        rgba(201, 182, 148, 0.14);
   --hair-soft:   rgba(201, 182, 148, 0.08);
   --hair-strong: rgba(201, 182, 148, 0.30);
+  --control-border: rgba(201, 182, 148, 0.55);
   --hair-fine:   rgba(240, 240, 240, 0.07);
 
   /* Warm text hierarchy on dark surfaces. */
@@ -83,12 +88,12 @@
 
   /* Relationships inside a section: heading to intro, intro to the
      content it introduces, and the gap between subsections. */
-  --gap-h1:      24px;   /* h1 to lede in a hero */
-  --gap-head:    16px;   /* h2 to its lede */
+  --gap-h1:      var(--space-4);   /* h1 to lede in a hero */
+  --gap-head:    var(--space-3);   /* h2 to its lede */
   --gap-intro:   40px;   /* lede to the diagram, list or grid below */
-  --gap-sub:     56px;   /* between subsections inside one block */
-  --gap-group:   24px;   /* between items of a grid or list */
-  --gap-item:    12px;   /* between lines inside one item */
+  --gap-sub:     calc(var(--space-5) + var(--space-4));   /* between subsections inside one block */
+  --gap-group:   var(--space-4);   /* between items of a grid or list */
+  --gap-item:    var(--space-2);   /* between lines inside one item */
 
   /* Widths */
   --gutter:       clamp(24px, 4vw, 64px);
@@ -100,27 +105,18 @@
 
   /* Components */
   --card-pad:  clamp(24px, 3vw, 36px);
-  /* The rendered header is 80px (logo plus 18px padding each side);
-     --header-h is the layout constant the menu and header share. The
-     offset also absorbs the 10px entrance travel of the target's
-     content column, so an anchored heading never lands under the bar. */
+  /* Header clearance plus space above an anchored heading. */
   --anchor-offset: calc(var(--header-h) + 40px);
 
-  /* ---- Motion. Three registers: interface feedback, section
-     entrances, and diagram draws. Reduced motion collapses all three
-     to near-instant. ---- */
+  /* Feedback and deliberate disclosure changes only. Content and
+     technical diagrams are always visible in their final state. */
   --ease:        cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out:    cubic-bezier(0.2, 0, 0, 1);
-  --ease-draw:   cubic-bezier(0.65, 0, 0.35, 1);
   --ease-state:  var(--ease);
   --dur-fast:    160ms;  /* hover, focus, active-nav */
   --dur-hover:   var(--dur-fast);
   --dur-expand:  220ms;  /* details open and close */
-  --dur-reveal:  380ms;  /* section entrance */
-  --dur-draw:    700ms;  /* one connector draw */
   --dur-menu:    320ms;
-  --move-reveal: 10px;   /* entrance travel */
-  --stagger:     60ms;   /* per item in a staggered group */
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -128,11 +124,7 @@
     --dur-fast: 80ms;
     --dur-hover: 80ms;
     --dur-expand: 0ms;
-    --dur-reveal: 0ms;
-    --dur-draw: 0ms;
     --dur-menu: 80ms;
-    --move-reveal: 0px;
-    --stagger: 0ms;
   }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

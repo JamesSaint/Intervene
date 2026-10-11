@@ -37,8 +37,8 @@ const { current } = Astro.props;
     background: var(--paper);
     border-bottom: 1px solid var(--hair);
     transition:
-      background 200ms ease,
-      border-color 200ms ease;
+      background var(--dur-fast) var(--ease),
+      border-color var(--dur-fast) var(--ease);
   }
   .site-header[data-takeover-open] {
     border-bottom-color: var(--hair);
@@ -54,16 +54,16 @@ const { current } = Astro.props;
   .quick-nav {
     display: none;
     align-items: center;
-    gap: 24px;
+    gap: var(--space-4);
     margin-left: auto;
     margin-right: 24px;
   }
   .quick-nav a {
     font-family: var(--font-sans);
-    font-size: 12px;
+    font-size: var(--type-action);
     font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: 0;
+    text-transform: none;
     color: var(--muted);
     display: inline-flex;
     align-items: center;

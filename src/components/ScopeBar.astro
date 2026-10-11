@@ -31,9 +31,6 @@ const { pattern, duration } = Astro.props;
     top: 0;
     bottom: 0;
     left: 0;
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform 720ms cubic-bezier(0.65, 0, 0.35, 1);
   }
 
   /* Focused: a single short block at the start. The fill itself is 25% wide;
@@ -46,14 +43,7 @@ const { pattern, duration } = Astro.props;
   /* Recurring: dashes spanning the full bar. */
   .scope-recurring .fill {
     width: 100%;
-    background-image: linear-gradient(
-      to right,
-      var(--accent) 0,
-      var(--accent) 12px,
-      transparent 12px,
-      transparent 24px
-    );
-    background-size: 24px 100%;
+    border-top: 2px dashed var(--accent);
   }
 
   /* Continuous: solid line. */
@@ -62,21 +52,14 @@ const { pattern, duration } = Astro.props;
     background: var(--accent);
   }
 
-  /* Activation: the parent card has .reveal which the IntersectionObserver
-     adds .in to. We mirror that here. */
-  :global(.reveal.in) .fill { transform: scaleX(1); }
-
   .scope-meta {
     display: block;
     margin-top: 14px;
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--type-caption);
     letter-spacing: 0.04em;
     color: var(--muted);
     text-transform: uppercase;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .fill { transition: none; transform: scaleX(1); }
-  }
 </style>
