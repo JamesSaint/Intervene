@@ -73,40 +73,47 @@ test('opening waits for font layout, moves visibly, settles and never restarts o
   expect(await page.locator('.motion-line > span').first().evaluate(node => getComputedStyle(node).transform)).toBe('none');
 });
 
-test('story headings wait until readable and change rendered position only once', async ({ page }) => {
+test('story headings stay fixed in the document during scrolling and repeated entry', async ({ page }) => {
   await prepare(page);
   await page.addInitScript(() => {
-    (window as any).__headingSamples = [];
+    (window as any).__headingStarts = 0;
     const original = Element.prototype.animate;
     Element.prototype.animate = function (...args: Parameters<Element['animate']>) {
-      const animation = original.apply(this, args);
-      if (this.matches('#deliverables h2')) {
-        const node = this;
-        const sample = () => (window as any).__headingSamples.push({
-          top: node.getBoundingClientRect().top, duration: animation.effect?.getTiming().duration,
-          clipPath: getComputedStyle(node).clipPath, opacity: getComputedStyle(node).opacity,
-        });
-        sample(); setTimeout(sample, 200);
-      }
-      return animation;
+      if (this.matches('main .block h2')) (window as any).__headingStarts++;
+      return original.apply(this, args);
     };
   });
-  await page.goto('/agda/'); await page.evaluate(() => document.fonts.ready);
-  const heading = page.locator('#deliverables h2');
-  await heading.evaluate(node => window.scrollTo({ top: node.getBoundingClientRect().top + scrollY - innerHeight + 20, behavior: 'instant' }));
-  await page.waitForTimeout(250);
-  expect(await page.evaluate(() => (window as any).__headingSamples.length)).toBe(0);
-  await heading.evaluate(node => window.scrollTo({ top: node.getBoundingClientRect().top + scrollY - 160, behavior: 'instant' }));
-  await expect.poll(() => page.evaluate(() => (window as any).__headingSamples.length)).toBe(2);
-  const samples = await page.evaluate(() => (window as any).__headingSamples);
-  expect(samples[0].duration).toBe(560);
-  expect(samples.every((sample: any) => sample.clipPath === 'none' && sample.opacity === '1')).toBe(true);
-  expect(samples[0].top - samples[1].top).toBeGreaterThan(4);
-  await expect.poll(() => heading.evaluate(node => getComputedStyle(node).transform)).toBe('none');
-  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
-  await heading.evaluate(node => node.scrollIntoView({ block: 'center', behavior: 'instant' }));
-  await page.waitForTimeout(250);
-  expect(await page.evaluate(() => (window as any).__headingSamples.length)).toBe(2);
+  for (const route of ['/', '/agda/', '/methodology/', '/intervention-readiness/', '/about/']) {
+    await page.goto(route); await page.evaluate(() => document.fonts.ready);
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    const headings = page.locator('main .block h2');
+    const index = await headings.evaluateAll(nodes => nodes.findIndex(node => node.getBoundingClientRect().top > innerHeight + 80));
+    expect(index, route).toBeGreaterThanOrEqual(0);
+    const samples = await headings.nth(index).evaluate(async node => {
+      const position = node.getBoundingClientRect().top + scrollY;
+      const states = [];
+      // Cross the former reveal threshold frame by frame, then revisit
+      // it in the other direction. Compare document position, not the
+      // viewport position that must change with normal scrolling.
+      for (const direction of [1, -1]) {
+        for (let frame = 0; frame <= 30; frame++) {
+          const progress = direction === 1 ? frame / 30 : 1 - frame / 30;
+          scrollTo({ top: position - innerHeight - 80 + (innerHeight / 2 + 80) * progress, behavior: 'instant' });
+          await new Promise(resolve => requestAnimationFrame(resolve));
+          const styles = getComputedStyle(node);
+          states.push({ position: node.getBoundingClientRect().top + scrollY, transform: styles.transform, clipPath: styles.clipPath, opacity: styles.opacity });
+        }
+      }
+      return { position, states };
+    });
+    for (const sample of samples.states) {
+      expect(Math.abs(sample.position - samples.position), route).toBeLessThanOrEqual(0.5);
+      expect(sample.transform, route).toBe('none');
+      expect(sample.clipPath, route).toBe('none');
+      expect(sample.opacity, route).toBe('1');
+    }
+    expect(await page.evaluate(() => (window as any).__headingStarts), route).toBe(0);
+  }
 });
 
 test('automatic SEDI progression starts with the stages in view, not just its title', async ({ page }) => {

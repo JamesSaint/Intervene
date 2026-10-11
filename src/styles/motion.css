@@ -1,6 +1,5 @@
-/* Motion follows reading order. Only the homepage masks text; all
-   other entrances move already readable headings and structural cues.
-   Moving reveals use transforms; decorative pulses use transform/opacity. */
+/* The homepage has a bounded opening. Section headings stay static
+   during scrolling; decorative pulses use transform/opacity. */
 .motion-line { display: block; overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.1em; }
 .motion-line > span { display: block; }
 @media (prefers-reduced-motion: no-preference) {
