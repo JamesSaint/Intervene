@@ -48,7 +48,7 @@ const RouteHeading = editorial ? 'h3' : 'span';
 ---
 
 <figure class:list={["offer-choice", { "offer-choice--editorial": editorial, "offer-choice--compact": compact }]} data-reveal="scene" aria-labelledby="offer-choice-heading">
-  <figcaption class="oc-caption">
+  <figcaption class="oc-caption" data-offer-view="offer_choice">
     <span class="label section-kicker">Where should we begin?</span>
     <H class="h2" id="offer-choice-heading">Two starting points.{!editorial && <em> Neither is a prerequisite for the other.</em>}</H>
     {editorial && <p class="oc-principle">Neither is a prerequisite for the other.</p>}
@@ -100,7 +100,7 @@ const RouteHeading = editorial ? 'h3' : 'span';
             </div>
           )}
         </dl>
-        <a href={href} class="link oc-link">
+        <a href={href} class="link oc-link" data-offer-select={o.slug}>
           {editorial ? (n === 'A' ? 'Explore the Review' : 'Explore the Assessment') : (n === 'A' ? 'Review sheet: scope, outputs, boundary and indicative fee' : 'Assessment sheet: scope, deliverables, boundary and indicative range')} <span aria-hidden="true">→</span>
         </a>
       </li>

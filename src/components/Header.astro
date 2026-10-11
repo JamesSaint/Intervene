@@ -14,7 +14,7 @@ const { current } = Astro.props;
     <nav class="quick-nav" aria-label="Primary">
       <a href="/services/" aria-current={current === 'services' ? 'page' : undefined}>Assessment options</a>
       <a href="/sample-report/" aria-current={current === 'sample-report' ? 'page' : undefined}>Sample verdict</a>
-      <a href="/contact/" class="quick-cta" aria-current={current === 'contact' ? 'page' : undefined}>Discuss your system</a>
+      <a data-primary-cta="discuss_system" href="/contact/" class="quick-cta" aria-current={current === 'contact' ? 'page' : undefined}>Discuss your system</a>
     </nav>
     <button
       type="button"

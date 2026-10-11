@@ -107,7 +107,7 @@ test.describe('contact form parity after CSS extraction', () => {
     const form = page.locator('form.form[data-contact]');
     await expect(form).toHaveAttribute('action', 'https://formspree.io/f/xvzwdyob');
     await expect(form).toHaveAttribute('method', 'POST');
-    await expect(form).toHaveAttribute('novalidate', '');
+    await expect(form).not.toHaveAttribute('novalidate', '');
   });
 
   test('the shared form styles do not leak into the cookie banner', async ({ page }) => {

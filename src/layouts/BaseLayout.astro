@@ -3,6 +3,7 @@ import Header from '../components/Header.astro';
 import TakeoverMenu from '../components/TakeoverMenu.astro';
 import Footer from '../components/Footer.astro';
 import ConsentBanner from '../components/ConsentBanner.astro';
+import Analytics from '../components/Analytics.astro';
 import { terms, termId, termUrl } from '../lib/terms';
 import { socialLinks } from '../lib/social';
 import { offers } from '../lib/offers';
@@ -100,8 +101,10 @@ const generatedBreadcrumbs = (() => {
   let path = '';
   segments.forEach((segment, index) => {
     path += `/${segment}`;
+    // /legal/ is a namespace, not a public page.
+    if (path === '/legal') return;
     const name = index === segments.length - 1 ? titleMain : routeNames[segment] ?? titleCase(segment);
-    crumbs.push({ name, item: `${path}/` });
+    crumbs.push({ name, item: normalisePath(path) });
   });
   return crumbs;
 })();
@@ -127,7 +130,6 @@ const interventionReadinessTerm = {
   description: 'The ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible.',
   inDefinedTermSet: { '@id': termSetId },
   subjectOf: { '@id': `${baseUrl}intervention-readiness/#webpage` },
-  hasPart: terms.filter((t) => t.hub).map((t) => ({ '@id': termId(baseUrl, t) })),
 };
 
 const agdaTerm = {
@@ -139,7 +141,7 @@ const agdaTerm = {
   description: terms.find((t) => t.slug === 'agda')!.definition,
   inDefinedTermSet: { '@id': termSetId },
   subjectOf: { '@id': `${baseUrl}agda/#webpage` },
-  creator: { '@id': orgId },
+  owner: { '@id': orgId },
   about: { '@id': interventionReadinessId },
 };
 
@@ -177,6 +179,16 @@ const personSchema = {
   ],
 };
 
+const serviceSchemas = offers.map((offer) => ({
+  '@type': 'Service',
+  '@id': `${baseUrl}services/#service-${offer.slug}`,
+  name: offer.name,
+  description: offer.schemaDescription,
+  url: `${baseUrl}services/#${offer.slug}`,
+  provider: { '@id': orgId },
+  serviceType: 'Intervention Readiness assessment',
+}));
+
 const orgSchema = {
   '@type': 'Organization',
   '@id': orgId,
@@ -203,7 +215,7 @@ const orgSchema = {
     '@type': 'Offer',
     name: o.name,
     description: o.schemaDescription,
-    itemOffered: { '@id': agdaId },
+    itemOffered: { '@id': `${baseUrl}services/#service-${o.slug}` },
     category: 'Intervention Readiness assessment',
     url: `${baseUrl}services/#${o.slug}`,
   })),
@@ -241,7 +253,7 @@ const defaultMainEntity = hubTerm
       : undefined;
 
 const pageSchema: Record<string, unknown> = {
-  '@type': pageType,
+  '@type': pageType === 'Article' ? ['Article', 'WebPage'] : pageType,
   '@id': pageId,
   url: canonical,
   name: titleMain,
@@ -258,6 +270,9 @@ const pageSchema: Record<string, unknown> = {
 };
 
 if (defaultMainEntity) pageSchema.mainEntity = defaultMainEntity;
+if (routePath === '/services/') {
+  pageSchema.mainEntity = serviceSchemas.map((service) => ({ '@id': service['@id'] }));
+}
 if (pageType === 'Article') {
   pageSchema.author = { '@id': personId };
   if (datePublished) pageSchema.datePublished = datePublished;
@@ -285,6 +300,7 @@ const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
     orgSchema,
+    ...serviceSchemas,
     personSchema,
     websiteSchema,
     termSetSchema,
@@ -351,31 +367,7 @@ const structuredData = {
 
     <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
-    <!-- Google tag (gtag.js) with Consent Mode v2 -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-LY85TZDG0K"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-
-      // Deny all storage until the visitor consents (UK PECR/GDPR)
-      gtag('consent', 'default', {
-        ad_storage: 'denied',
-        ad_user_data: 'denied',
-        ad_personalization: 'denied',
-        analytics_storage: 'denied',
-        wait_for_update: 500
-      });
-
-      // Honour a stored choice before the first pageview fires
-      try {
-        if (localStorage.getItem('intv-consent') === 'granted') {
-          gtag('consent', 'update', { analytics_storage: 'granted' });
-        }
-      } catch (e) {}
-
-      gtag('js', new Date());
-      gtag('config', 'G-LY85TZDG0K');
-    </script>
+    <Analytics />
 
     <slot name="head" />
   </head>
@@ -397,6 +389,8 @@ const structuredData = {
       initDisclosures();
       initPageNav();
       initAnchorSettle();
+      import { initCommercialAnalytics } from '../lib/commercial-analytics';
+      initCommercialAnalytics();
     </script>
   </body>
 </html>

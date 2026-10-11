@@ -1,8 +1,6 @@
 ---
-// Minimal, non-blocking cookie consent for Google Analytics (Consent Mode v2).
-// Consent defaults are set to `denied` in BaseLayout before gtag fires; this banner
-// only ever upgrades to `granted` on explicit Accept. Choice is stored in localStorage
-// (a preference, PECR-exempt), never a cookie. No modal, no content wall, no focus trap.
+// Basic consent: Analytics owns tag loading, withdrawal and the stored choice.
+// The banner retains its existing controls and non-blocking presentation.
 ---
 
 <div class="consent" role="region" aria-label="Cookie consent" hidden>
@@ -80,20 +78,11 @@
 
     private choose(value: string | null) {
       if (value !== 'granted' && value !== 'denied') return;
-      try { localStorage.setItem(KEY, value); } catch {}
-      const gtag = (window as Window & { gtag?: (...args: unknown[]) => void }).gtag;
-      gtag?.('consent', 'update', { analytics_storage: value });
-      if (value === 'denied') {
-        // Expire any GA cookies already set in a prior session.
-        document.cookie.split(';').forEach((c) => {
-          const name = c.split('=')[0].trim();
-          if (name === '_ga' || name.indexOf('_ga_') === 0) {
-            document.cookie = name + '=; Max-Age=0; path=/; domain=.' + location.hostname;
-            document.cookie = name + '=; Max-Age=0; path=/';
-          }
-        });
-      }
+      const analytics = (window as Window & {
+        interveneAnalytics?: { setConsent: (value: 'granted' | 'denied') => void };
+      }).interveneAnalytics;
       this.close();
+      analytics?.setConsent(value);
     }
   }
 

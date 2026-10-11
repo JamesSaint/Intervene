@@ -113,3 +113,47 @@ test.describe('contact form', () => {
     await expect(page.locator('.form-status')).toHaveAttribute('role', 'status');
   });
 });
+
+test('honeypot blocks submission', async ({ page }) => {
+  let requests = 0;
+  await page.route('**/formspree.io/**', (route) => { requests++; return route.fulfill({ status: 200, body: '{"ok":true}' }); });
+  await page.goto(ROUTE);
+  await fill(page);
+  await page.locator('input[name="_gotcha"]').evaluate((el: HTMLInputElement) => { el.value = 'spam'; });
+  await page.click('button[type="submit"]');
+  expect(requests).toBe(0);
+});
+
+test('invalid email and a network failure retain the enquiry', async ({ page }) => {
+  let requests = 0;
+  await page.route('**/formspree.io/**', (route) => { requests++; return route.abort(); });
+  await page.goto(ROUTE);
+  await fill(page);
+  await page.fill('#f-email', 'invalid');
+  await page.click('button[type="submit"]');
+  expect(requests).toBe(0);
+  await expect(page.locator('#f-email')).toBeFocused();
+  await page.fill('#f-email', 'test@example.com');
+  await page.click('button[type="submit"]');
+  await expect(page.locator('.form-status')).toHaveAttribute('data-state', 'err');
+  await expect(page.locator('#f-msg')).not.toHaveValue('');
+  await expect(page.locator('button[type="submit"]')).toBeEnabled();
+});
+
+test('a repeated submit cannot create concurrent requests', async ({ page }) => {
+  let requests = 0;
+  let release: (() => void) | undefined;
+  await page.route('**/formspree.io/**', async (route) => {
+    requests++;
+    await new Promise<void>((resolve) => { release = resolve; });
+    await route.fulfill({ status: 200, body: '{"ok":true}' });
+  });
+  await page.goto(ROUTE);
+  await fill(page);
+  await page.click('button[type="submit"]');
+  await expect.poll(() => requests).toBe(1);
+  await page.locator('form[data-contact]').evaluate((form) => form.dispatchEvent(new Event('submit', { cancelable: true })));
+  expect(requests).toBe(1);
+  release!();
+  await expect(page.locator('.form-status')).toHaveAttribute('data-state', 'ok');
+});
