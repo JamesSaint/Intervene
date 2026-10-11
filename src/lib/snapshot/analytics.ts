@@ -1,18 +1,4 @@
-/**
- * Consent-gated analytics for the Snapshot.
- *
- * Every call is a no-op unless the visitor has accepted analytics via
- * the existing consent banner, which stores `granted` under the
- * `intv-consent` key. Consent Mode v2 would already suppress storage,
- * but suppressing the event entirely is the stated requirement.
- *
- * What must never be passed through here: names, email addresses,
- * organisation names, complete answer sets, free text, or full result
- * payloads. The only result data permitted is `least_confident_area`
- * and `confidence_basis`, both categorical and non-identifying.
- */
-
-const CONSENT_KEY = 'intv-consent';
+/** Consent-gated site events. Never pass form values or identifying data. */
 
 type EventName =
   | 'readiness_page_viewed'
@@ -31,20 +17,21 @@ type EventName =
   | 'insight_article_clicked'
   // Site-wide enquiry funnel. Same consent gate, same PII prohibition.
   // `enquiry_submitted` fires only on a successful response from the form
-  // endpoint, never on the click, so it counts enquiries rather than
-  // intentions. No field value ever travels with these.
+  // endpoint, never on the click. This is endpoint acceptance, not
+  // confirmed inbox receipt. No field value ever travels with these.
   | 'sample_verdict_viewed'
   | 'enquiry_started'
-  | 'enquiry_submitted';
+  | 'enquiry_submitted'
+  | 'primary_cta_click'
+  | 'offer_view'
+  | 'offer_select';
 
 type EventParams = Record<string, string | number | boolean>;
 
-function hasConsent(): boolean {
-  try {
-    return localStorage.getItem(CONSENT_KEY) === 'granted';
-  } catch {
-    return false;
-  }
+export function hasConsent(): boolean {
+  return (window as Window & {
+    interveneAnalytics?: { hasConsent: () => boolean };
+  }).interveneAnalytics?.hasConsent() === true;
 }
 
 export function track(name: EventName, params: EventParams = {}): void {

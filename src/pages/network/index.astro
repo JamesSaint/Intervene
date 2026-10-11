@@ -117,16 +117,6 @@ const useful = [
   { k: 'Why it is relevant', v: 'Where Intervention Readiness bears on the work you already do.' },
 ];
 
-const schema = {
-  '@type': 'WebPage',
-  '@id': 'https://intervene.uk/network/#webpage',
-  name: 'Intervention Readiness Network',
-  inLanguage: 'en-GB',
-  about: { '@id': 'https://intervene.uk/intervention-readiness/#defined-term' },
-  publisher: { '@id': 'https://intervene.uk/#organization' },
-  description:
-    'A mechanism through which people with relevant professional judgement can put the Intervention Readiness question in front of organisations that should confront it.',
-};
 ---
 
 <BaseLayout
@@ -134,7 +124,6 @@ const schema = {
   description="Putting one question to the organisations that should face it: could they stop a consequential system in time, and prove it. Participation carries no fee."
   current="network"
   ogImage="/assets/og/og-network.png"
-  schema={schema}
 >
   <!-- 1. THE QUESTION -->
   <section class="hero">
@@ -283,7 +272,7 @@ const schema = {
             minutes. Nothing is signed and nothing is joined.
           </p>
           <div class="cta-row">
-            <a class="btn" href="/contact/">Talk to Intervene</a>
+            <a data-primary-cta="discuss_system" class="btn" href="/contact/">Talk to Intervene</a>
           </div>
           <p class="small muted start-note">
             A person replies within one to two working days. We do not

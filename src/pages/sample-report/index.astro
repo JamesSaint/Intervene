@@ -433,7 +433,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
             deliverable.
           </p>
           <div class="cta-row">
-            <a href="/contact/" class="btn">Discuss your system</a>
+            <a data-primary-cta="discuss_system" href="/contact/" class="btn">Discuss your system</a>
             <a href="/methodology/" class="btn-ghost">How <Agda /> works</a>
           </div>
         </div>
@@ -444,8 +444,15 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   <script>
     // Consent-gated, via the same no-op-without-consent track() the
     // Snapshot uses. Carries no parameters and no identity.
-    import { track } from '../../lib/snapshot/analytics.ts';
-    track('sample_verdict_viewed');
+    import { hasConsent, track } from '../../lib/snapshot/analytics.ts';
+    let viewed = false;
+    const recordView = () => {
+      if (viewed || !hasConsent()) return;
+      viewed = true;
+      track('sample_verdict_viewed');
+    };
+    recordView();
+    window.addEventListener('intervene:consent', recordView);
   </script>
 </BaseLayout>
 

@@ -1,4 +1,4 @@
-import { track } from './snapshot/analytics';
+import { hasConsent, track } from './snapshot/analytics';
 
 /**
  * Wire the contact form to Formspree (or any AJAX endpoint).
@@ -8,17 +8,18 @@ import { track } from './snapshot/analytics';
  * Two analytics events are emitted here, both through the existing
  * consent-gated `track()`. `enquiry_started` fires once, on the first
  * input, so an abandoned form is distinguishable from an unseen one.
- * `enquiry_submitted` fires only after the endpoint returns ok, because a
- * click is not an enquiry. Neither carries a field value: no name, no
- * email address, no organisation, no message text.
+ * `enquiry_submitted` fires only after the endpoint returns ok, but a
+ * successful response is not proof of notification or inbox delivery.
+ * Neither carries a field value: no name, no email address, no organisation, no message text.
  */
 export function initContactForm(root: Document | ParentNode = document): () => void {
   const form = root.querySelector<HTMLFormElement>('form[data-contact]');
   if (!form) return () => {};
 
+  let pending = false;
   let startedTracked = false;
   const onFirstInput = () => {
-    if (startedTracked) return;
+    if (startedTracked || !hasConsent()) return;
     startedTracked = true;
     track('enquiry_started');
   };
@@ -35,12 +36,14 @@ export function initContactForm(root: Document | ParentNode = document): () => v
 
   const onSubmit = async (event: Event) => {
     event.preventDefault();
+    if (pending) return;
 
     const honey = form.querySelector<HTMLInputElement>('input[name="_gotcha"]');
     if (honey && honey.value) return;
 
     if (!form.reportValidity()) return;
 
+    pending = true;
     if (submit) {
       submit.disabled = true;
       submit.dataset.label = submit.textContent ?? '';
@@ -68,6 +71,7 @@ export function initContactForm(root: Document | ParentNode = document): () => v
         'err'
       );
     } finally {
+      pending = false;
       if (submit) {
         submit.disabled = false;
         submit.textContent = submit.dataset.label ?? 'Send enquiry';

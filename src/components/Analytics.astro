@@ -1,0 +1,111 @@
+---
+// Runs in the head so a stored choice is applied before any page events.
+---
+<script is:inline>
+  (function () {
+    if (window.interveneAnalytics) return;
+    var KEY = 'intv-consent';
+    var ID = 'G-LY85TZDG0K';
+    var disabled = 'ga-disable-' + ID;
+    var granted = false;
+    var loaded = false;
+    var ready = false;
+    var pendingEvents = [];
+    var canonical = document.querySelector('link[rel="canonical"]').href;
+    window.dataLayer = window.dataLayer || [];
+    window[disabled] = true;
+
+    function command() { window.dataLayer.push(arguments); }
+    // Every site event uses this gate, including events queued while loading.
+    window.gtag = function () {
+      if (!granted) return;
+      if (loaded) command.apply(null, arguments);
+      else pendingEvents.push(arguments);
+    };
+
+    function removeCookies() {
+      var parts = location.hostname.split('.');
+      document.cookie.split(';').forEach(function (cookie) {
+        var name = cookie.split('=')[0].trim();
+        if (name !== '_ga' && name.indexOf('_ga_') !== 0) return;
+        document.cookie = name + '=; Max-Age=0; path=/';
+        // GA may have selected a parent domain, e.g. intervene.uk on www.
+        for (var i = 0; i < parts.length - 1; i++) {
+          document.cookie = name + '=; Max-Age=0; path=/; domain=.' + parts.slice(i).join('.');
+        }
+      });
+    }
+
+    function loadGoogle() {
+      if (!granted || loaded || !ready) return;
+      // Deferred page modules read functional referral/preview parameters first.
+      // Enhanced measurement can read location.search even with page_location set.
+      // Remove it before loading Google; preserve document anchors and history state.
+      try {
+        if (location.search) history.replaceState(history.state, '', location.pathname + location.hash);
+      } catch (e) { return; } // Fail closed if URL sanitisation is unavailable.
+      loaded = true;
+      command('consent', 'default', {
+        analytics_storage: 'denied', ad_storage: 'denied',
+        ad_user_data: 'denied', ad_personalization: 'denied'
+      });
+      command('consent', 'update', { analytics_storage: 'granted' });
+      command('js', new Date());
+      var referrer = '';
+      try {
+        var ref = new URL(document.referrer);
+        referrer = ref.origin + ref.pathname;
+      } catch (e) {}
+      // Query strings/fragments can contain personal data or referral codes.
+      command('config', ID, {
+        page_location: canonical, page_referrer: referrer,
+        allow_google_signals: false, allow_ad_personalization_signals: false
+      });
+      var script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID;
+      document.head.appendChild(script);
+      pendingEvents.forEach(function (args) { command.apply(null, args); });
+      pendingEvents.length = 0;
+    }
+
+    function apply(value) {
+      granted = value === 'granted';
+      window[disabled] = !granted;
+      if (!granted) {
+        pendingEvents.length = 0;
+        removeCookies();
+        try { sessionStorage.removeItem('intv-pending-cta'); } catch (e) {}
+        // Do not send a denied-consent update: an already loaded tag can ping.
+        // Reload after disabling to remove its timers/listeners and pending queue.
+        if (loaded) {
+          window.dataLayer.length = 0;
+          window.location.reload();
+        }
+        return;
+      }
+      loadGoogle();
+      window.dispatchEvent(new Event('intervene:consent'));
+    }
+
+    window.interveneAnalytics = {
+      hasConsent: function () { return granted; },
+      setConsent: function (value) {
+        if (value !== 'granted' && value !== 'denied') return;
+        try { localStorage.setItem(KEY, value); } catch (e) {}
+        apply(value);
+      }
+    };
+    window.addEventListener('storage', function (event) {
+      if (event.key === KEY || event.key === null) apply(event.newValue);
+    });
+    window.addEventListener('DOMContentLoaded', function () {
+      ready = true;
+      loadGoogle();
+      if (granted) window.dispatchEvent(new Event('intervene:consent'));
+    }, { once: true });
+    var stored = null;
+    try { stored = localStorage.getItem(KEY); } catch (e) {}
+    apply(stored);
+  })();
+</script>
