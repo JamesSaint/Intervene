@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Agda from '../../components/Agda.astro';
+import { signatureDocument, signatureFragment, signatureText } from '../../lib/email-signature';
+---
+
+<BaseLayout title="Email signature · Intervene" description="James Saint’s Intervene · AGDA® email signature, with light and dark previews and Apple Mail installation instructions." current="signature" noindex={true}>
+  <section class="hero">
+    <div class="wrap signature-heading">
+      <div>
+        <span class="label">Intervene · <Agda /></span>
+        <h1 class="h1">Email signature.</h1>
+        <p class="lede muted">James Saint. One signature, ready to copy.</p>
+      </div>
+      <div class="signature-actions">
+        <button class="btn" type="button" data-copy-signature disabled>Copy Signature</button>
+        <a class="arrow-link" href="/signature/email.html" target="_blank" rel="noopener">Open rendered signature <span aria-hidden="true">↗</span></a>
+        <p class="body-sm muted" data-copy-status role="status" aria-live="polite">Copy the signature, then paste it into Mail.</p>
+        <p class="body-sm muted">Copy includes both artwork variants to survive stripped styles. The previews show the adaptive HTML.</p>
+        <noscript><p>Open the rendered signature, select its contents and copy them into Mail.</p></noscript>
+      </div>
+    </div>
+  </section>
+
+  <section class="signature-previews" aria-label="Signature previews">
+    {(['light', 'dark'] as const).map(theme => (
+      <figure class={`signature-preview signature-preview-${theme}`}>
+        <figcaption><span class="label">{theme === 'light' ? 'White' : 'Charcoal'}</span><span>Transparent signature · {theme} preview</span></figcaption>
+        <div class="signature-preview-body">
+          <iframe title={`${theme === 'light' ? 'Light' : 'Dark'} signature preview`} data-signature-preview srcdoc={signatureDocument(theme)}></iframe>
+        </div>
+      </figure>
+    ))}
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="h2">Install in Apple Mail.</h2>
+      <div class="signature-instructions">
+        <div>
+          <h3 class="h3">macOS</h3>
+          <ol>
+            <li>Open this page in Safari and choose <strong>Copy Signature</strong>.</li>
+            <li>Open Mail → Settings → Signatures.</li>
+            <li>Create a signature. Deselect <strong>Always match my default message font</strong> to keep the supplied typography, then paste.</li>
+            <li>Assign the signature to the appropriate account and select it in <strong>Choose Signature</strong>.</li>
+            <li>Send a test email and check it on light and dark backgrounds.</li>
+          </ol>
+          <a class="arrow-link" href="https://support.apple.com/en-gb/guide/mail/-cpmlprefsig/mac">Apple’s signature settings guide ↗</a>
+        </div>
+        <div>
+          <h3 class="h3">iPhone</h3>
+          <ol>
+            <li>Open this page in Safari and choose <strong>Copy Signature</strong>, or copy the rendered signature from a received test email.</li>
+            <li>Open Settings → Apps → Mail → Signature.</li>
+            <li>Paste the signature into the appropriate account’s field.</li>
+            <li>Send a test email and check the text, links and images.</li>
+          </ol>
+          <p class="body-sm muted">iOS Mail may remove rich HTML formatting or images. Apple documents text-only signatures on iPhone. If the images do not survive pasting, use the complete text signature.</p>
+          <a class="arrow-link" href="https://support.apple.com/en-gb/guide/iphone/iph80dabb18b/ios">Apple’s iPhone Mail guide ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block tight signature-compatibility">
+    <div class="wrap">
+      <h2 class="h2">Before your first send.</h2>
+      <div class="signature-instructions">
+        <div>
+          <p class="body muted">The signature is transparent. Copy Signature uses a CSS-free fallback with essential inline formatting, both black and white artwork and text that inherits the message colour.</p>
+          <p class="body muted">One logo variant contrasts with a white or charcoal background. The unused variant can remain faintly visible on charcoal, and both can show on other backgrounds. Pasting and receiving clients may change colours, spacing or images.</p>
+          <p class="body muted">The standalone rendered signature also supports automatic light and dark artwork using the device’s appearance preference, where embedded email styles survive. Copying a manual selection may preserve only its visible logo variant.</p>
+        </div>
+        <div>
+          <p class="body muted">Recipients may block remote images. Fonts fall back to Helvetica or Arial where Montserrat is unavailable. The previews show the intended rendering; they do not verify Apple Mail’s handling of pasted HTML.</p>
+          <p class="body muted">This page maintains the source signature. Signatures already pasted into Mail do not update automatically: copy and paste again after a change.</p>
+          <details>
+            <summary>Complete text signature</summary>
+            <pre class="signature-plain">{signatureText}</pre>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+  <template data-signature-html set:html={signatureFragment}></template>
+  <script is:inline define:vars={{ signatureText }}>window.interveneSignatureText = signatureText;</script>
+</BaseLayout>
+
+<script>
+  import { copySignature, resizeSignaturePreviews } from '../../lib/signature-copy';
+  resizeSignaturePreviews();
+  const button = document.querySelector<HTMLButtonElement>('[data-copy-signature]');
+  if (button) {
+    button.disabled = false;
+    button.addEventListener('click', () => { void copySignature(button); });
+  }
+</script>
+
+<style>
+  .signature-heading { display:grid;grid-template-columns:1fr auto;align-items:end;gap:var(--space-6); }
+  .signature-actions { display:grid;justify-items:start;gap:var(--space-3); }
+  .signature-actions p { max-width:38ch; }
+  .signature-previews { width:100%;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-4); }
+  .signature-preview { margin:0;min-width:0; }
+  .signature-preview figcaption { display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-2);padding:var(--space-4) var(--gutter);font-size:var(--type-caption);line-height:1.6; }
+  .signature-preview-body { padding:0 var(--gutter); }
+  .signature-preview-light { background:#ffffff;color:#1a1a1a; }
+  .signature-preview-dark { background:#1a1a1a;color:#f0f0f0; }
+  .signature-preview iframe { display:block;width:100%;height:740px;border:0; }
+  .signature-instructions { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-6);margin-top:var(--space-5); }
+  .signature-instructions ol { padding-left:24px;line-height:1.75;margin:var(--space-4) 0; }
+  .signature-instructions li { margin-bottom:var(--space-2); }
+  .signature-instructions p + p { margin-top:var(--space-3); }
+  .signature-compatibility { border-top:1px solid var(--hair); }
+  .signature-plain { white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.7 var(--font-mono);margin-top:var(--space-4); }
+  details { margin-top:var(--space-4); } summary { cursor:pointer;min-height:44px; }
+  @media(max-width:900px) { .signature-heading,.signature-instructions { grid-template-columns:1fr; } .signature-previews { grid-template-columns:1fr; } }
+  @media(max-width:720px) { .signature-preview figcaption { padding-inline:var(--gutter-tight); } .signature-preview-body { padding-inline:var(--gutter-tight); } }
+  @media(max-width:560px) { .signature-preview iframe { height:1200px; } }
+</style>

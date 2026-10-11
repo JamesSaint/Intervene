@@ -3,7 +3,8 @@ import AxeBuilder from '@axe-core/playwright';
 import { readdirSync } from 'node:fs';
 
 const routes = readdirSync('dist', { recursive: true }).map(String)
-  .filter(path => path.endsWith('.html') && !path.startsWith('assets/') && path !== 'method/index.html')
+  // The email document intentionally has no website chrome or appearance script.
+  .filter(path => path.endsWith('.html') && !path.startsWith('assets/') && path !== 'method/index.html' && path !== 'signature/email.html')
   .map(path => path === 'index.html' ? '/' : `/${path.replace(/index\.html$/, '')}`);
 
 async function expectFavicon(page: Page, theme: string) {
@@ -21,8 +22,13 @@ async function choose(page: Page, preference: string) {
   }
 }
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, baseURL }) => {
   await page.addInitScript(() => localStorage.setItem('intv-consent', 'denied'));
+  // New email assets are verified against the local production build before deployment.
+  await page.route('https://intervene.uk/assets/brand/*.png', async route => {
+    const response = await page.request.get(`${baseURL}${new URL(route.request().url()).pathname}`);
+    await route.fulfill({ response });
+  });
 });
 
 for (const scheme of ['light', 'dark'] as const) {
