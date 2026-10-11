@@ -7,7 +7,7 @@ test.beforeEach(async ({ page, baseURL }) => {
   await page.addInitScript(() => localStorage.setItem('intv-consent', 'denied'));
   // New assets cannot be live before deployment. Resolve the exact production URLs
   // against this production build; do not replace URLs in the copied HTML.
-  await page.route('https://intervene.uk/assets/brand/*.png', async route => {
+  await page.route(/^https:\/\/intervene\.uk\/assets\/brand\/.*\.png(?:\?.*)?$/, async route => {
     const url = new URL(route.request().url());
     const response = await page.request.get(`${baseURL}${url.pathname}`);
     expect(response.status()).toBe(200);
@@ -20,8 +20,9 @@ test('previews and standalone email remain readable at desktop and phone widths'
   for (const theme of ['light', 'dark']) {
     const frame = page.frameLocator(`iframe[title="${theme === 'light' ? 'Light' : 'Dark'} signature preview"]`);
     await expect(frame.getByText('James Saint', { exact: true })).toBeVisible();
-    await expect(frame.locator(`.sig-logo-${theme === 'light' ? 'black' : 'white'}`).first()).toBeVisible();
-    await expect(frame.locator(`.sig-logo-${theme === 'light' ? 'white' : 'black'}`).first()).toBeHidden();
+    await expect(frame.locator('img')).toHaveCount(2);
+    await expect(frame.locator('img').first()).toBeVisible();
+    expect(await frame.locator('img').first().getAttribute('src')).toContain(`-${theme === 'light' ? 'black' : 'white'}-transparent.png`);
     for (const [name, wording] of Object.entries(signatureNotices)) {
       expect(await frame.locator(`[data-notice="${name}"]`).textContent()).toBe(wording);
     }
@@ -47,11 +48,12 @@ test('previews and standalone email remain readable at desktop and phone widths'
   expect(await page.locator('script').count()).toBe(0);
   for (const scheme of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme: scheme });
-    await expect(page.locator(`.sig-logo-${scheme === 'light' ? 'black' : 'white'}`).first()).toBeVisible();
-    await expect(page.locator(`.sig-logo-${scheme === 'light' ? 'white' : 'black'}`).first()).toBeHidden();
+    await expect(page.locator('img')).toHaveCount(2);
+    await expect.poll(() => page.locator('img').first().evaluate(image => (image as HTMLImageElement).currentSrc)).toContain(`-${scheme === 'light' ? 'black' : 'white'}-transparent.png`);
   }
   await page.locator('style').evaluateAll(styles => styles.forEach(style => style.remove()));
   for (const [background, colour] of [['#ffffff', '#1a1a1a'], ['#1a1a1a', '#f0f0f0']]) {
+    await page.emulateMedia({ colorScheme: background === '#ffffff' ? 'light' : 'dark' });
     await page.locator('body').evaluate((body, values) => {
       body.style.margin = '0'; body.style.background = values[0]; body.style.color = values[1];
     }, [background, colour]);
@@ -63,8 +65,8 @@ test('previews and standalone email remain readable at desktop and phone widths'
     expect(metrics.padding).toBe('24px 0px');
     expect(metrics.width).toBe(metrics.viewport);
     expect(metrics.overflow).toBe(false);
-    await expect(page.locator('.sig-logo-black').first()).toBeVisible();
-    await expect(page.locator('.sig-logo-white').first()).toBeVisible();
+    await expect(page.locator('img')).toHaveCount(2);
+    await expect.poll(() => page.locator('img').first().evaluate(image => (image as HTMLImageElement).currentSrc)).toContain(`-${background === '#ffffff' ? 'black' : 'white'}-transparent.png`);
     for (const [name, wording] of Object.entries(signatureNotices)) expect(await page.locator(`[data-notice="${name}"]`).textContent()).toBe(wording);
     await page.screenshot({ path: `.playwright/signature-review/without-css-${colour === '#1a1a1a' ? 'light' : 'dark'}-${testInfo.project.name}.png`, fullPage: true });
   }
@@ -89,11 +91,11 @@ test('Copy Signature writes both clipboard types and only the email fragment', a
   await page.locator('[contenteditable]').focus();
   await page.keyboard.press('ControlOrMeta+V');
   await expect(page.locator('[contenteditable] .sig-root')).toBeVisible();
-  // Pasting must retain both artworks: editors can discard variants hidden by CSS.
-  await expect(page.locator('[contenteditable] .sig-logo-black')).toHaveCount(2);
-  await expect(page.locator('[contenteditable] .sig-logo-white')).toHaveCount(2);
-  await expect(page.locator('[contenteditable] .sig-logo-white').first()).toBeVisible();
+  // Editor sanitisation must never leave duplicate black and white images.
+  await expect(page.locator('[contenteditable] img')).toHaveCount(2);
+  await expect(page.locator('[contenteditable] img').first()).toBeVisible();
   await expect(page.locator('[contenteditable] .sig-link').first()).toHaveCSS('color', 'rgb(107, 107, 107)');
+  await expect(page.locator('[contenteditable] .sig-link').first()).toHaveCSS('text-decoration-line', 'none');
   // Chromium's editor normalises NBSP to ordinary spaces during paste. Wording is unchanged.
   for (const [name, wording] of Object.entries(signatureNotices)) expect((await page.locator(`[data-notice="${name}"]`).textContent())?.replace(/\u00a0/g, ' ')).toBe(wording.replace(/\u00a0/g, ' '));
   // The pasted notices must keep using the available width after resizing.
@@ -106,6 +108,24 @@ test('Copy Signature writes both clipboard types and only the email fragment', a
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
   await page.screenshot({ path: `.playwright/signature-review/pasted-${test.info().project.name}.png`, fullPage: true });
+});
+
+test('blocked images and stripped picture sources keep one compact logo per brand', async ({ page }) => {
+  await page.route(/^https:\/\/intervene\.uk\/assets\/brand\/.*\.png(?:\?.*)?$/, route => route.abort());
+  await page.goto('/signature/email.html');
+  await page.locator('style, source').evaluateAll(elements => elements.forEach(element => element.remove()));
+  await expect(page.locator('img')).toHaveCount(2);
+  const dimensions = await page.locator('img').evaluateAll(images => images.map(image => {
+    const box = image.getBoundingClientRect();
+    return { width: box.width, height: box.height, src: image.getAttribute('src') };
+  }));
+  expect(dimensions[0].width).toBe(120);
+  expect(dimensions[0].height).toBeCloseTo(13.4, 1);
+  expect(dimensions[1].width).toBe(80);
+  expect(dimensions[1].height).toBeCloseTo(17.8667, 1);
+  for (const image of dimensions) expect(image.src).toContain('-black-transparent.png?v=');
+  for (const [name, wording] of Object.entries(signatureNotices)) expect(await page.locator(`[data-notice="${name}"]`).textContent()).toBe(wording);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
 test('fallback copies rich HTML and reports a blocked manual copy honestly', async ({ page }) => {
