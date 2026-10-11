@@ -2,6 +2,7 @@
 import Logo from './Logo.astro';
 import Hallmark from './Hallmark.astro';
 import LinkedInButton from './LinkedInButton.astro';
+import XButton from './XButton.astro';
 import { socialLinks, contactEmail } from '../lib/social';
 import Agda from './Agda.astro';
 const year = new Date().getFullYear();
@@ -15,6 +16,7 @@ const year = new Date().getFullYear();
       <a class="brand-email" href={`mailto:${contactEmail}`}>{contactEmail}</a>
       <div class="brand-social">
         <LinkedInButton href={socialLinks.interveneLinkedIn} label="Intervene Limited on LinkedIn" />
+        <XButton href={socialLinks.interveneX} label="Intervene on X" />
       </div>
       <div class="brand-hallmark"><Hallmark /></div>
     </div>
@@ -76,6 +78,7 @@ const year = new Date().getFullYear();
   .brand-social {
     display: flex;
     align-items: center;
+    gap: 8px;
   }
   .brand-line {
     font-family: var(--font-sans);
