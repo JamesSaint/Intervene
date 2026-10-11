@@ -70,7 +70,19 @@ import { signatureDocument, signatureFragment, signatureText } from '../../lib/e
             <li>If iOS changes the fonts or link colours, undo its formatting change immediately after pasting. In iPhone Mirroring, press <strong>Command-Z once</strong>, then check a new draft.</li>
             <li>Send a test email and check the text, links and images.</li>
           </ol>
-          <p class="body-sm muted">iOS Mail may remove rich HTML formatting or images. Apple documents text-only signatures on iPhone. If the images do not survive pasting, use the complete text signature.</p>
+          <p class="body-sm muted">On the tested iPhone, the installed signature switches in the composer, but Mail removes the document appearance settings from new saved messages. A correct draft preview therefore does not establish that a sent or received message will switch its canvas. Copying directly from Safari did not resolve this.</p>
+          <details>
+            <summary>Verified phone sending workaround</summary>
+            <p class="body-sm muted">A complete draft created on the Mac retained its appearance settings after editing and sending from the iPhone. Its sent and received copies switched correctly in both phone appearances on 11 October 2026.</p>
+            <ol>
+              <li>On the Mac, create a new message from the Intervene account and choose the directly installed <strong>Intervene Signature</strong>.</li>
+              <li>Save the complete message to that account’s Drafts mailbox.</li>
+              <li>Open that existing draft in iPhone Mail. Fill in the recipient and subject, and type your message above the signature.</li>
+              <li>Keep the signature in place, then send. Copying it into a new phone message removes the appearance settings again.</li>
+            </ol>
+            <p class="body-sm muted">Prepare a fresh complete draft for each message. This method preserves the styled signature but does not repair automatic insertion from iPhone Settings. A reusable phone-only template workflow has not been verified.</p>
+          </details>
+          <p class="body-sm muted">Apple documents text-only signatures on iPhone.</p>
           <a class="arrow-link" href="https://support.apple.com/en-gb/guide/iphone/iph80dabb18b/ios">Apple’s iPhone Mail guide ↗</a>
         </div>
       </div>
