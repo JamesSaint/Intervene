@@ -6,7 +6,7 @@
 import { test, expect } from '@playwright/test';
 
 const ROUTE = '/contact/';
-const ENDPOINT = 'https://formspree.io/f/xvzwdyob';
+const ENDPOINT = 'https://formspree.io/f/xaqrkrpo';
 
 async function fill(page: any) {
   await page.fill('#f-name', 'Test Person');
@@ -63,6 +63,8 @@ test.describe('contact form', () => {
       expect(body, name).toContain(`name="${name}"`);
     }
     expect(body).toMatch(/name="starting_point"\r?\n\r?\nreview/);
+    expect(body).toContain('Intervention Readiness Review');
+    expect(body).toContain('Intervene | New enquiry');
     expect(body).toMatch(/name="_gotcha"\r?\n\r?\n\r?\n/);
     await expect(page.locator('#f-name')).toHaveValue('');
     await expect(page.locator('form[data-contact] button[type="submit"]')).toHaveText('Send enquiry');
@@ -156,4 +158,35 @@ test('a repeated submit cannot create concurrent requests', async ({ page }) => 
   expect(requests).toBe(1);
   release!();
   await expect(page.locator('.form-status')).toHaveAttribute('data-state', 'ok');
+});
+
+for (const [selection, offering] of [
+  ['not-sure', null],
+  ['assessment', 'AGDA® Assessment'],
+] as const) {
+  test(`notification metadata preserves ${selection} selection`, async ({ page }) => {
+    let body = '';
+    await page.route('**/formspree.io/**', async (route) => {
+      body = route.request().postData() ?? '';
+      await route.fulfill({ status: 200, body: '{"ok":true}' });
+    });
+    await page.goto(ROUTE);
+    await fill(page);
+    await page.check(`input[name="starting_point"][value="${selection}"]`);
+    await page.click('button[type="submit"]');
+    await expect(page.locator('.form-status')).toHaveAttribute('data-state', 'ok');
+    expect(body).toContain(`name="starting_point"\r\n\r\n${selection}`);
+    expect(body).toContain('name="subject"\r\n\r\nIntervene | New enquiry');
+    if (offering) expect(body).toContain(`name="assessment_offering"\r\n\r\n${offering}`);
+    else expect(body).not.toContain('name="assessment_offering"');
+  });
+}
+
+test('the fixed notification subject is available without JavaScript', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto('http://127.0.0.1:' + (process.env.PW_PORT ?? '4321') + ROUTE);
+  await expect(page.locator('form[data-contact]')).toHaveAttribute('action', ENDPOINT);
+  await expect(page.locator('input[name="subject"]')).toHaveValue('Intervene | New enquiry');
+  await context.close();
 });

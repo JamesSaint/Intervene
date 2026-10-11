@@ -33,7 +33,7 @@
  * organisational detail.
  */
 
-/** The same endpoint as /contact/. Declared once, here. */
+/** The Snapshot endpoint, retained independently of the commercial contact form. */
 export const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xvzwdyob';
 
 /**
