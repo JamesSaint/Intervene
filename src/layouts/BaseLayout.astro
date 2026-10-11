@@ -331,16 +331,18 @@ const structuredData = {
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
+    <!-- Intervene R icon, brand kit v3.0 (assets/icons/favicon-intervene).
+         Parse icons before the appearance script resolves the browser preference. -->
+    <link rel="icon" href="/assets/images/favicons/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/assets/images/favicons/favicon-48x48.png" type="image/png" sizes="48x48" data-appearance-icon-fallback />
+    <link rel="icon" href="/assets/images/favicons/favicon.svg" type="image/svg+xml" sizes="any" data-appearance-icon />
+    <link rel="apple-touch-icon" href="/assets/images/favicons/apple-touch-icon.png" />
+    <link rel="manifest" href="/assets/images/favicons/site.webmanifest" />
     <script is:inline set:html={`(${initAppearance.toString()})();`} />
     <link rel="preload" href="/assets/fonts/montserrat-regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/assets/fonts/montserrat-semibold.woff2" as="font" type="font/woff2" crossorigin />
     {buildId && <meta name="intervene-build" content={buildId} />}
 
-    <!-- Intervene R icon, brand kit v3.0 (assets/icons/favicon-intervene) -->
-    <link rel="icon" href="/assets/images/favicons/favicon.ico" sizes="48x48" />
-    <link rel="icon" href="/assets/images/favicons/favicon.svg" type="image/svg+xml" data-appearance-icon />
-    <link rel="apple-touch-icon" href="/assets/images/favicons/apple-touch-icon.png" />
-    <link rel="manifest" href="/assets/images/favicons/site.webmanifest" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="Intervene LLM reference" />
 
     <meta property="og:type" content={ogType} />
