@@ -1,4 +1,6 @@
 ---
+import InterventionWindow from './InterventionWindow.astro';
+
 /** Public explanation only. The protected rubric is not reproduced here. */
 const stages = [
   { name: 'Detect', question: 'Can the organisation recognise when intervention is required?', evidence: 'Signals, monitoring records and evidence of how the need to act is recognised.', failure: 'A warning exists but does not become an actionable signal.', consequence: 'The available intervention window is spent before the response begins.' },
@@ -8,6 +10,7 @@ const stages = [
 ];
 ---
 <div class="sedi-explorer">
+  <InterventionWindow />
   <p class="sedi-instruction">Select a stage.</p>
   <ol role="list" aria-label="The SEDI intervention chain" data-reveal="stagger">
     {stages.map((stage, i) => (
@@ -54,8 +57,7 @@ const stages = [
   dl { margin: 0; padding-bottom: var(--space-4); display: grid; gap: 24px; }
   dt { color: var(--accent); font-family: var(--font-mono); font-size: var(--type-caption); line-height: 1.6; margin-bottom: 8px; }
   dd { margin: 0; color: var(--muted); font-size: var(--type-small); line-height: 1.7; }
-  li:last-child { border-top-color: var(--accent); }
-  li:last-child .sedi-name { color: var(--accent); }
+  li:has(details[open]) { border-top-color: var(--accent); }
   @media (max-width: 1100px) { ol { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 560px) {
     ol { grid-template-columns: 1fr; gap: 0; }

@@ -1,17 +1,221 @@
 /**
  * Lightweight interface behaviour: disclosures, current-section navigation
- * and font-aware anchor settling. All content is visible from first paint.
+ * and font-aware anchor settling. Evidence never waits for animation.
  */
+
+/** CSS minification may normalise 480ms to .48s. Keep either unit
+ * equivalent when using the shared CSS clock for Web Animations. */
+export function motionDuration(value: string, fallback: number): number {
+  const match = value.trim().match(/^(\d*\.?\d+)(ms|s)$/);
+  if (!match) return fallback;
+  const duration = Number(match[1]) * (match[2] === 's' ? 1000 : 1);
+  return Number.isFinite(duration) ? duration : fallback;
+}
 
 const REVEAL =
   'main .block > .wrap, main .block > .wrap-narrow, main .block > .wrap-reading, [data-reveal], .reveal';
 
-export function initReveal(root: Document | ParentNode = document): void {
-  // Preserve existing scene markers without gating or moving content.
-  root.querySelectorAll<HTMLElement>(REVEAL).forEach((node) => node.classList.add('in'));
+/** One preference gate, refreshed on history restoration as well as changes. */
+export function initMotion(): void {
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
-  preference.addEventListener('change', () => {
-    if (preference.matches) document.documentElement.removeAttribute('data-motion');
+  const sync = () => document.documentElement.toggleAttribute('data-motion', !preference.matches);
+  sync();
+  document.documentElement.setAttribute('data-motion-ready', '');
+  preference.addEventListener('change', sync);
+  window.addEventListener('pageshow', sync);
+}
+
+function motionEnabled(): boolean {
+  return document.documentElement.hasAttribute('data-motion')
+    && !matchMedia('(prefers-reduced-motion: reduce)').matches && !document.hidden;
+}
+
+/** Start after font layout and a painted frame, without hiding content while waiting. */
+function afterFontPaint(callback: () => void): void {
+  let timeout: number;
+  const bounded = new Promise<void>((resolve) => { timeout = window.setTimeout(resolve, 1200); });
+  const fonts = 'fonts' in document ? document.fonts.ready : Promise.resolve();
+  Promise.race([fonts, bounded]).then(() => {
+    window.clearTimeout(timeout);
+    requestAnimationFrame(() => requestAnimationFrame(callback));
+  });
+}
+
+export function initOpening(root: Document | ParentNode = document): void {
+  const hero = root.querySelector<HTMLElement>('.hero-home');
+  if (!hero) return;
+  const preference = matchMedia('(prefers-reduced-motion: reduce)');
+  let ready = false;
+  let played = false;
+  let suspended = false;
+  let timer: number | undefined;
+  const settle = () => {
+    if (hero.hasAttribute('data-enter')) played = true;
+    window.clearTimeout(timer);
+    hero.removeAttribute('data-enter');
+    hero.querySelectorAll<HTMLElement>('.motion-line > span, .hero-sub, .hero-actions, .hero-principle')
+      .forEach((node) => node.getAnimations().forEach((animation) => animation.cancel()));
+  };
+  const start = () => {
+    if (!ready || played || suspended || !motionEnabled()) return;
+    const headline = hero.querySelector<HTMLElement>('h1');
+    const bounds = headline?.getBoundingClientRect();
+    // A restored scroll position or an active reader must not be pulled
+    // back into an opening. The complete static heading remains available.
+    if (!bounds || bounds.bottom < 88 || bounds.top >= innerHeight || hero.contains(document.activeElement)) return;
+    hero.setAttribute('data-enter', '');
+    const styles = getComputedStyle(hero);
+    timer = window.setTimeout(settle, motionDuration(styles.getPropertyValue('--dur-enter'), 640)
+      + 4 * motionDuration(styles.getPropertyValue('--stagger'), 80) + 80);
+  };
+  afterFontPaint(() => { ready = true; start(); });
+  hero.addEventListener('animationend', (event) => {
+    if ((event.target as HTMLElement).matches('.hero-principle')) settle();
+  });
+  hero.addEventListener('focusin', () => { played = true; settle(); });
+  preference.addEventListener('change', () => { if (preference.matches) settle(); else start(); });
+  window.addEventListener('pagehide', () => { suspended = true; settle(); });
+  window.addEventListener('pageshow', () => { suspended = false; start(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) settle(); else start(); });
+  window.addEventListener('beforeprint', settle);
+}
+
+export function initReveal(root: Document | ParentNode = document): void {
+  root.querySelectorAll<HTMLElement>(REVEAL).forEach((node) => node.classList.add('in'));
+  const story = /^\/(?:$|agda\/$|methodology\/$|intervention-readiness\/$|about\/$)/.test(location.pathname);
+  if (!story || !('IntersectionObserver' in window)) return;
+  const preference = matchMedia('(prefers-reduced-motion: reduce)');
+  const seen = new WeakSet<Element>();
+  const headings = Array.from(root.querySelectorAll<HTMLElement>('main .block h2'));
+  const evidence = Array.from(root.querySelectorAll<HTMLElement>('.fc-exceeds .fc-node, .fc-result'));
+  const active = new Map<HTMLElement, Animation>();
+  const cues = new Map<HTMLElement, number>();
+  let ready = false;
+  let suspended = false;
+  const finish = () => {
+    active.forEach((animation) => animation.cancel()); active.clear();
+    cues.forEach((timer, node) => { window.clearTimeout(timer); node.classList.remove('is-emphasised'); }); cues.clear();
+  };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting || entry.intersectionRatio < 0.6 || !motionEnabled() || suspended) return;
+      const node = entry.target as HTMLElement;
+      observer.unobserve(node); seen.add(node);
+      if (typeof node.animate !== 'function') return;
+      const styles = getComputedStyle(node);
+      const distance = styles.getPropertyValue('--motion-distance').trim() || '20px';
+      const animation = node.animate([
+        { transform: `translateY(${distance})`, clipPath: 'inset(0 0 15% 0)' },
+        { transform: 'translateY(0)', clipPath: 'inset(-10% -2% -10% -2%)' },
+      ], {
+        duration: motionDuration(styles.getPropertyValue('--dur-reveal'), 560),
+        easing: styles.getPropertyValue('--ease-reveal').trim() || 'ease-out',
+      });
+      active.set(node, animation);
+      animation.finished.then(() => active.delete(node), () => active.delete(node));
+    });
+  }, { rootMargin: '-88px 0px -8% 0px', threshold: 0.6 });
+  const evidenceObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting || entry.intersectionRatio < 0.5 || !motionEnabled() || suspended) return;
+      const node = entry.target as HTMLElement;
+      evidenceObserver.unobserve(node); seen.add(node); node.classList.add('is-emphasised');
+      const styles = getComputedStyle(node);
+      const clear = () => { window.clearTimeout(cues.get(node)); cues.delete(node); node.classList.remove('is-emphasised'); };
+      node.addEventListener('animationend', clear, { once: true });
+      cues.set(node, window.setTimeout(clear, motionDuration(styles.getPropertyValue('--dur-reveal'), 560)
+        + motionDuration(styles.getPropertyValue('--dur-fast'), 160) + 80));
+    });
+  }, { rootMargin: '-88px 0px -8% 0px', threshold: 0.5 });
+  const arm = () => {
+    observer.disconnect(); evidenceObserver.disconnect();
+    if (!ready || suspended || !motionEnabled()) return;
+    headings.filter((node) => !seen.has(node)).forEach((node) => observer.observe(node));
+    evidence.filter((node) => !seen.has(node)).forEach((node) => evidenceObserver.observe(node));
+  };
+  afterFontPaint(() => { ready = true; arm(); });
+  preference.addEventListener('change', () => { finish(); arm(); });
+  window.addEventListener('pagehide', () => { suspended = true; finish(); arm(); });
+  window.addEventListener('pageshow', () => { suspended = false; requestAnimationFrame(arm); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) finish(); arm(); });
+  window.addEventListener('beforeprint', finish);
+  document.addEventListener('focusin', () => {
+    active.forEach((animation, node) => { if (node.contains(document.activeElement)) { animation.cancel(); active.delete(node); } });
+  });
+}
+
+/** Native comparison is immediate. Only the visible sequence owns autoplay. */
+export function initInterventionWindows(root: Document | ParentNode = document): void {
+  const preference = matchMedia('(prefers-reduced-motion: reduce)');
+  root.querySelectorAll<HTMLElement>('.intervention-window').forEach((instrument) => {
+    const replay = instrument.querySelector<HTMLButtonElement>('[data-window-replay]');
+    let timer: number | undefined;
+    let observer: IntersectionObserver | undefined;
+    let current: HTMLElement | null = null;
+    let completed = false;
+    let pending = false;
+    let suspended = false;
+    let width = innerWidth;
+    const selected = () => instrument.querySelector<HTMLElement>(`[data-window-view="${instrument.querySelector<HTMLInputElement>('input:checked')?.value}"]`);
+    const settle = (finished = false) => {
+      window.clearTimeout(timer);
+      current?.classList.remove('is-playing'); current = null;
+      if (finished) completed = true;
+    };
+    const play = () => {
+      settle();
+      if (!motionEnabled() || suspended) return;
+      const view = selected(); if (!view) return;
+      pending = false; current = view;
+      // Resolve the native selection and restart from the actual selected
+      // geometry, including rapid changes and repeated replay.
+      void view.offsetWidth; view.classList.add('is-playing');
+      const styles = getComputedStyle(instrument);
+      timer = window.setTimeout(() => settle(true), motionDuration(styles.getPropertyValue('--dur-trace'), 1300)
+        + motionDuration(styles.getPropertyValue('--dur-signal'), 360) + 80);
+    };
+    if ('IntersectionObserver' in window) {
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting && current) settle();
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.9 && !current && (pending || !completed)) play();
+        });
+      }, { rootMargin: '-88px 0px -5% 0px', threshold: [0, 0.9] });
+    }
+    const arm = () => {
+      observer?.disconnect();
+      if (replay) replay.hidden = !motionEnabled();
+      if (!motionEnabled() || suspended) return;
+      const sequence = selected()?.querySelector('.window-sequence');
+      if (sequence) observer?.observe(sequence);
+    };
+    const request = () => {
+      settle(); pending = true;
+      const sequence = selected()?.querySelector<HTMLElement>('.window-sequence');
+      const bounds = sequence?.getBoundingClientRect();
+      // Explicit replay should respond even when a short viewport shows
+      // only part of the sequence. Autoplay keeps its stricter threshold.
+      if (!observer || (bounds && bounds.bottom > 88 && bounds.top < innerHeight * 0.95)) play();
+      arm();
+    };
+    replay?.addEventListener('click', request);
+    instrument.querySelectorAll('input').forEach((radio) => radio.addEventListener('change', request));
+    instrument.addEventListener('animationend', (event) => {
+      const node = event.target as HTMLElement;
+      if (event.animationName.includes('window-stage') && current?.contains(node)
+        && node.matches('.window-stage-4 .window-node')) settle(true);
+    });
+    arm();
+    preference.addEventListener('change', () => { settle(); arm(); });
+    window.addEventListener('resize', () => {
+      // Browser chrome changes height during touch scrolling. Only a
+      // width change changes the horizontal/vertical sequence geometry.
+      if (innerWidth !== width) { width = innerWidth; settle(); arm(); }
+    }, { passive: true });
+    window.addEventListener('beforeprint', () => settle());
+    window.addEventListener('pagehide', () => { suspended = true; settle(); arm(); });
+    window.addEventListener('pageshow', () => { suspended = false; requestAnimationFrame(arm); });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) settle(); arm(); });
   });
 }
 
@@ -63,7 +267,7 @@ export function initDisclosures(root: Document | ParentNode = document): void {
       const current = body.animate(
         [{ height: `${height}px` }, { height: `${destination}px` }],
         {
-          duration: parseFloat(styles.getPropertyValue('--dur-expand')) || 220,
+          duration: motionDuration(styles.getPropertyValue('--dur-expand'), 220),
           easing: styles.getPropertyValue('--ease-out').trim() || 'ease-out',
         }
       );
@@ -79,7 +283,8 @@ export function initDisclosures(root: Document | ParentNode = document): void {
   });
 
   const finishAll = () => finishers.forEach((finish) => finish());
-  window.addEventListener('resize', finishAll, { passive: true });
+  let width = innerWidth;
+  window.addEventListener('resize', () => { if (innerWidth !== width) { width = innerWidth; finishAll(); } }, { passive: true });
   window.addEventListener('beforeprint', finishAll);
   window.addEventListener('pagehide', finishAll);
   preference.addEventListener('change', finishAll);

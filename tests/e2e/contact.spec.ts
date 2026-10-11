@@ -79,6 +79,8 @@ test.describe('contact form', () => {
     const status = page.locator('.form-status');
     await expect(status).toBeVisible();
     await expect(status).toHaveAttribute('data-state', 'err');
+    await expect(status).toContainText('Your details are still here');
+    await expect(status).toContainText('hello@intervene.uk');
     await expect(page.locator('form[data-contact] button[type="submit"]')).toBeEnabled();
     await expect(page.locator('#f-name')).toHaveValue('Test Person');
   });

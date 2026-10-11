@@ -55,6 +55,7 @@ const isCurrent = (href: string) => {
 </div>
 
 <script>
+  import { motionDuration } from '../lib/motion';
   const FOCUSABLE = 'a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])';
 
   class Takeover {
@@ -65,6 +66,7 @@ const isCurrent = (href: string) => {
     private inerted: HTMLElement[] = [];
     private previousOverflow = '';
     private closeTimer: number | undefined;
+    private enterTimer: number | undefined;
 
     constructor(el: HTMLElement) {
       this.el = el;
@@ -73,6 +75,13 @@ const isCurrent = (href: string) => {
       });
       el.querySelector<HTMLButtonElement>('[data-menu-close]')?.addEventListener('click', () => this.close());
       el.addEventListener('keydown', (e) => this.onKey(e));
+      el.addEventListener('focusin', (event) => {
+        (event.target as HTMLElement).closest('.takeover-body li')?.setAttribute('data-menu-settled', '');
+      });
+      window.addEventListener('pagehide', () => this.close(true, false));
+      matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (event) => {
+        if (event.matches) this.el.removeAttribute('data-menu-enter');
+      });
       el.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((a) => {
         a.addEventListener('click', () => this.close());
       });
@@ -81,6 +90,8 @@ const isCurrent = (href: string) => {
     private open(trigger: HTMLButtonElement) {
       if (this.isOpen) return;
       window.clearTimeout(this.closeTimer);
+      window.clearTimeout(this.enterTimer);
+      this.el.querySelectorAll('[data-menu-settled]').forEach((node) => node.removeAttribute('data-menu-settled'));
       this.isOpen = true;
       this.trigger = trigger;
       this.lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : trigger;
@@ -98,15 +109,26 @@ const isCurrent = (href: string) => {
       this.inerted.forEach((c) => { c.inert = true; });
       document.body.style.overflow = 'hidden';
 
+      // Establish the visible surface's closed state before changing
+      // opacity. Firefox otherwise coalesces unhide and open into one paint.
+      void this.el.offsetWidth;
       requestAnimationFrame(() => {
         if (!this.isOpen) return;
+        this.el.setAttribute('data-menu-enter', '');
         this.el.classList.add('open');
+        this.enterTimer = window.setTimeout(() => this.el.removeAttribute('data-menu-enter'),
+          motionDuration(getComputedStyle(this.el).getPropertyValue('--dur-reveal'), 560) + 160);
         this.el.querySelector<HTMLAnchorElement>('.takeover-body a[href]')?.focus();
       });
     }
 
-    private close() {
-      if (!this.isOpen) return;
+    private close(immediate = false, restoreFocus = true) {
+      window.clearTimeout(this.enterTimer);
+      this.el.removeAttribute('data-menu-enter');
+      if (!this.isOpen) {
+        if (immediate) { window.clearTimeout(this.closeTimer); this.el.hidden = true; }
+        return;
+      }
       this.isOpen = false;
       this.el.classList.remove('open');
       this.trigger?.setAttribute('aria-expanded', 'false');
@@ -114,13 +136,14 @@ const isCurrent = (href: string) => {
       this.inerted.forEach((c) => { c.inert = false; });
       this.inerted = [];
       document.body.style.overflow = this.previousOverflow;
-      this.lastFocused?.focus({ preventScroll: true });
+      if (restoreFocus) this.lastFocused?.focus({ preventScroll: true });
       this.el.setAttribute('aria-hidden', 'true');
 
-      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (immediate) { window.clearTimeout(this.closeTimer); this.el.hidden = true; return; }
+      const duration = motionDuration(getComputedStyle(this.el).getPropertyValue('--dur-menu'), 320);
       this.closeTimer = window.setTimeout(() => {
         if (!this.isOpen) this.el.hidden = true;
-      }, reduce ? 80 : 320);
+      }, duration);
     }
 
     private onKey(e: KeyboardEvent) {

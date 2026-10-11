@@ -63,9 +63,10 @@ const stages = [
 </figure>
 
 <style>
-  .finding-chain { margin: var(--gap-intro) 0 0; }
+  .finding-chain { margin: var(--gap-intro) 0 0; padding-top: var(--space-5); border-top: 1px solid var(--hair-strong); }
+  .fc-caption { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
   .fc-caption .h3 { font-size: var(--type-card); text-transform: none; letter-spacing: var(--tracking-heading); margin: 0; }
-  .fc-window { margin: var(--gap-item) 0 0; }
+  .fc-window { margin: 0; }
   .fc-window-label {
     display: inline-block; margin-right: 10px; font-size: var(--type-caption); letter-spacing: 0.04em;
     text-transform: uppercase; color: var(--accent);
@@ -88,7 +89,7 @@ const stages = [
      the text beside it says it in words. */
   .fc-exceeds .fc-node { background: var(--accent); }
   .fc-n { margin-top: 12px; font-size: var(--type-caption); letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); }
-  .fc-value { font-family: var(--font-mono); font-size: clamp(22px, 2.2vw, 28px); font-weight: 600; color: var(--ink); letter-spacing: 0; line-height: 1.1; }
+  .fc-value { font-family: var(--font-mono); font-size: clamp(22px, 2.4vw, 32px); font-weight: 600; color: var(--ink); letter-spacing: 0; line-height: 1.1; }
   .fc-rel { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: var(--type-caption); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
   .fc-mark { display: inline-block; width: 10px; height: 10px; border: 1px solid var(--muted); flex: none; }
   .fc-within .fc-mark { border-radius: 50%; }
@@ -108,6 +109,7 @@ const stages = [
   @media (max-width: 1100px) {
     .fc-stage { grid-row: auto; grid-template-rows: none; }
     .fc-stages { grid-template-rows: none; }
+    .fc-caption { grid-template-columns: 1fr; gap: var(--space-3); }
     .fc-rail { display: none; }
     .fc-stages { margin-top: var(--space-5); grid-template-columns: repeat(2, 1fr); gap: 32px; }
     .fc-stage { grid-template-columns: 13px 1fr; column-gap: 16px; align-items: start; }

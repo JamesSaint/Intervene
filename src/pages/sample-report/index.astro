@@ -478,7 +478,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   }
   .cover-grid {
     display: grid;
-    grid-template-columns: 1.3fr 1fr;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
     gap: var(--space-7);
     align-items: start;
   }
@@ -515,7 +515,8 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     gap: var(--space-3);
     padding: var(--card-pad);
     background: var(--paper-soft);
-    border: 1px solid var(--hair);
+    border: 0;
+    border-top: 1px solid var(--accent);
   }
   .env-label {
     color: var(--muted);
@@ -667,7 +668,7 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   .stage-value {
     font-family: var(--font-mono);
     font-weight: 400;
-    font-size: 22px;
+    font-size: clamp(22px, 2.4vw, 32px);
     color: var(--ink);
     margin-top: 4px;
   }
@@ -690,7 +691,8 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   .callout {
     margin: var(--gap-intro) 0 0;
     padding: var(--card-pad);
-    border: 1px solid var(--warn);
+    border: 0;
+    border-left: 2px solid var(--warn);
     background: var(--paper-soft);
   }
   .callout-label {
@@ -742,8 +744,8 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     font-family: var(--font-sans);
     font-weight: 600;
     font-size: clamp(32px, 6vw, 72px);
-    letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--warn);
+    letter-spacing: var(--tracking-heading); text-transform: none;
+    color: var(--ink);
     line-height: 1;
     margin-bottom: 12px;
   }

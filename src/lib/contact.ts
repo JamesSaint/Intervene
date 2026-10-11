@@ -1,4 +1,5 @@
 import { hasConsent, track } from './snapshot/analytics';
+import { contactEmail } from './social';
 
 /**
  * Wire the contact form to Formspree (or any AJAX endpoint).
@@ -73,7 +74,7 @@ export function initContactForm(root: Document | ParentNode = document): () => v
       );
     } catch (err) {
       setStatus(
-        'Submission failed. Try again, or use the contact form on a different network.',
+        `Submission failed. Your details are still here. Try again, or email ${contactEmail}.`,
         'err'
       );
     } finally {
