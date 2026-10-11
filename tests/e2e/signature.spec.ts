@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { signatureNotices, signatureText } from '../../src/lib/email-signature';
+import { signatureDocument, signatureFragment, signatureNotices, signatureText } from '../../src/lib/email-signature';
 
 test.beforeEach(async ({ page, baseURL }) => {
   await page.addInitScript(() => localStorage.setItem('intv-consent', 'denied'));
@@ -87,6 +87,8 @@ test('Copy Signature writes both clipboard types and only the email fragment', a
   expect(clipboard.html).toContain('class="sig-root"');
   expect(clipboard.html).not.toMatch(/<style|<script|<iframe|Copy Signature|Install in Apple Mail|data-theme=/);
   expect(clipboard.html).not.toMatch(/src="\//);
+  expect(clipboard.html).toContain('name="color-scheme" content="light dark"');
+  expect(clipboard.html).toContain('name="supported-color-schemes" content="light dark"');
   await page.setContent(`<html><body style="margin:0;background:#1a1a1a;color:#f0f0f0"><div contenteditable="true"></div></body></html>`);
   await page.locator('[contenteditable]').focus();
   await page.keyboard.press('ControlOrMeta+V');
@@ -94,7 +96,7 @@ test('Copy Signature writes both clipboard types and only the email fragment', a
   // Editor sanitisation must never leave duplicate black and white images.
   await expect(page.locator('[contenteditable] img')).toHaveCount(2);
   await expect(page.locator('[contenteditable] img').first()).toBeVisible();
-  await expect(page.locator('[contenteditable] .sig-link').first()).toHaveCSS('color', 'rgb(107, 107, 107)');
+  await expect(page.locator('[contenteditable] .sig-link').first()).toHaveCSS('color', 'rgb(201, 182, 148)');
   await expect(page.locator('[contenteditable] .sig-link').first()).toHaveCSS('text-decoration-line', 'none');
   // Chromium's editor normalises NBSP to ordinary spaces during paste. Wording is unchanged.
   for (const [name, wording] of Object.entries(signatureNotices)) expect((await page.locator(`[data-notice="${name}"]`).textContent())?.replace(/\u00a0/g, ' ')).toBe(wording.replace(/\u00a0/g, ' '));
@@ -108,6 +110,35 @@ test('Copy Signature writes both clipboard types and only the email fragment', a
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
   await page.screenshot({ path: `.playwright/signature-review/pasted-${test.info().project.name}.png`, fullPage: true });
+});
+
+test('copied HTML opts the host document into both appearances without embedded styles', async ({ page }, testInfo) => {
+  // The copied metadata opts the host canvas into both appearances. Text inherits
+  // its colour from that document, without requiring an embedded stylesheet.
+  await page.setContent(`<html><head></head><body>${signatureFragment}</body></html>`);
+  expect(await page.locator('style').count()).toBe(0);
+  await expect(page.locator('meta[name="color-scheme"]')).toHaveAttribute('content', 'light dark');
+  for (const scheme of ['light', 'dark'] as const) {
+    await page.emulateMedia({ colorScheme: scheme });
+    await expect(page.locator('.sig-root')).toHaveCSS('color', scheme === 'dark' ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)');
+    await expect(page.locator('.sig-link').first()).toHaveCSS('color', 'rgb(201, 182, 148)');
+    await expect(page.locator('[data-notice="environment"]')).toHaveCSS('color', scheme === 'dark' ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)');
+    await expect.poll(() => page.locator('img').first().evaluate(image => (image as HTMLImageElement).currentSrc)).toContain(`-${scheme === 'light' ? 'black' : 'white'}-transparent.png`);
+    await page.screenshot({ path: `.playwright/signature-review/copied-canvas-${scheme}-${testInfo.project.name}.png`, fullPage:true });
+  }
+});
+
+test('direct Mail HTML preserves appearance declarations without preview body styling', async ({ page }) => {
+  await page.setContent(signatureDocument());
+  await expect(page.locator('head meta[name="color-scheme"]')).toHaveAttribute('content', 'light dark');
+  await expect(page.locator('body meta[name="color-scheme"]')).toHaveAttribute('content', 'light dark');
+  expect(await page.locator('body').getAttribute('style')).toBeNull();
+  expect(await page.locator('style').allTextContents()).toEqual(expect.arrayContaining([':root{color-scheme:light dark;supported-color-schemes:light dark;}']));
+  for (const scheme of ['light', 'dark'] as const) {
+    await page.emulateMedia({ colorScheme:scheme });
+    await expect(page.locator('.sig-root')).toHaveCSS('color', scheme === 'dark' ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)');
+    await expect(page.locator('.sig-link').first()).toHaveCSS('color', 'rgb(201, 182, 148)');
+  }
 });
 
 test('blocked images and stripped picture sources keep one compact logo per brand', async ({ page }) => {

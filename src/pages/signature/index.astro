@@ -16,7 +16,7 @@ import { signatureDocument, signatureFragment, signatureText } from '../../lib/e
         <button class="btn" type="button" data-copy-signature disabled>Copy Signature</button>
         <a class="arrow-link" href="/signature/email.html" target="_blank" rel="noopener">Open rendered signature <span aria-hidden="true">↗</span></a>
         <p class="body-sm muted" data-copy-status role="status" aria-live="polite">Copy the signature, then paste it into Mail.</p>
-        <p class="body-sm muted">One logo per brand. Automatic dark artwork depends on the receiving app preserving the image source selection.</p>
+        <p class="body-sm muted">For automatic Light and Dark appearance in macOS Mail, use the direct HTML installation below. Pasting can remove the appearance settings.</p>
         <noscript><p>Open the rendered signature, select its contents and copy them into Mail.</p></noscript>
       </div>
     </div>
@@ -46,6 +46,19 @@ import { signatureDocument, signatureFragment, signatureText } from '../../lib/e
             <li>Assign the signature to the appropriate account and select it in <strong>Choose Signature</strong>.</li>
             <li>Send a test email and check it on light and dark backgrounds.</li>
           </ol>
+          <details>
+            <summary>Keep automatic Light and Dark appearance</summary>
+            <p class="body-sm muted">Mail can remove the appearance settings during paste. Direct HTML installation was verified in a received email on James’s Mac on 11 October 2026.</p>
+            <p><a class="arrow-link" href="/signature/email.html" download="intervene-mail-signature.html">Download Mail HTML ↓</a></p>
+            <ol>
+              <li>Create and assign the signature as above, then quit Mail.</li>
+              <li>Back up its <code>.mailsignature</code> file in <code>~/Library/Mail/V*/MailData/Signatures/</code>. Use <code>AllSignatures.plist</code> to identify the correct entry.</li>
+              <li>Replace the HTML after the file’s MIME headers with the downloaded source. Preserve the other headers and blank separator; set <code>Content-Transfer-Encoding: 8bit</code> when saving unencoded UTF-8 HTML.</li>
+              <li>Save, then select the file in Finder → Get Info and tick <strong>Locked</strong>. This prevents Mail rewriting the appearance settings.</li>
+              <li>Reopen Mail and check a new received test email in both appearances.</li>
+            </ol>
+            <p class="body-sm muted">To update a directly installed signature, quit Mail, unlock the file and repeat these steps.</p>
+          </details>
           <a class="arrow-link" href="https://support.apple.com/en-gb/guide/mail/-cpmlprefsig/mac">Apple’s signature settings guide ↗</a>
         </div>
         <div>
@@ -54,6 +67,7 @@ import { signatureDocument, signatureFragment, signatureText } from '../../lib/e
             <li>Open this page in Safari and choose <strong>Copy Signature</strong>, or copy the rendered signature from a received test email.</li>
             <li>Open Settings → Apps → Mail → Signature.</li>
             <li>Paste the signature into the appropriate account’s field.</li>
+            <li>If iOS changes the fonts or link colours, undo its formatting change immediately after pasting. In iPhone Mirroring, press <strong>Command-Z once</strong>, then check a new draft.</li>
             <li>Send a test email and check the text, links and images.</li>
           </ol>
           <p class="body-sm muted">iOS Mail may remove rich HTML formatting or images. Apple documents text-only signatures on iPhone. If the images do not survive pasting, use the complete text signature.</p>
@@ -68,13 +82,13 @@ import { signatureDocument, signatureFragment, signatureText } from '../../lib/e
       <h2 class="h2">Before your first send.</h2>
       <div class="signature-instructions">
         <div>
-          <p class="body muted">The signature is transparent, with essential formatting inline and one fixed-size image per brand. Text inherits the message colour.</p>
+          <p class="body muted">The signature is transparent, with essential formatting inline and one fixed-size image per brand. Body text inherits the message colour; contact links use the brand gold without underlines.</p>
           <p class="body muted">Apps that preserve the picture element can select the approved white artwork in dark mode. Apps that discard it retain a single black logo, which can lose contrast on dark backgrounds. Pasting and receiving clients may change colours, spacing or images.</p>
           <p class="body muted">The white and charcoal previews show the intended artwork for each background. They do not establish automatic switching after installation in an email app.</p>
         </div>
         <div>
           <p class="body muted">Recipients may block remote images. Fonts fall back to Helvetica or Arial where Montserrat is unavailable. The previews show the intended rendering; they do not verify Apple Mail’s handling of pasted HTML.</p>
-          <p class="body muted">This page maintains the source signature. Signatures already pasted into Mail do not update automatically: copy and paste again after a change.</p>
+          <p class="body muted">This page maintains the source signature. Installed signatures do not update automatically. Repeat your installation method after a change; directly installed signatures must be unlocked before updating.</p>
           <details>
             <summary>Complete text signature</summary>
             <pre class="signature-plain">{signatureText}</pre>
