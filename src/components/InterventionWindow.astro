@@ -54,9 +54,9 @@ const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
   input { position: absolute; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
   label > span { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 20px; border: 1px solid var(--control-border); font-size: var(--type-action); color: var(--muted); transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease); }
   label + label > span { border-left: 0; }
-  input:checked + span { color: var(--black); background: var(--accent); }
-  label:hover input:not(:checked) + span { color: var(--accent); }
-  input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 4px; }
+  input:checked + span { color: var(--black); background: var(--sedi-signal); }
+  label:hover input:not(:checked) + span { color: var(--accent-text); }
+  input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 4px; }
   .window-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 var(--space-4); margin-top: var(--space-2); }
   .window-meta .window-note { order: -1; margin: 0; }
   .window-replay { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin: 0; font-size: var(--type-action); }
@@ -72,8 +72,8 @@ const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
   .window-sequence { position: relative; margin-top: var(--space-6); padding: var(--space-6) 0 var(--space-5); }
   .window-sequence::before { content: ''; position: absolute; left: 0; right: 0; top: var(--space-6); height: 1px; background: var(--hair-strong); }
   .window-sequence::after { content: ''; position: absolute; left: 0; right: 22%; top: var(--space-6); height: 1px; background: var(--accent-soft); }
-  .window-trace { position: absolute; left: 6px; top: var(--space-6); width: 60%; height: 2px; background: var(--accent); transform-origin: left center; }
-  .window-trace::after { content: ''; position: absolute; right: -3px; top: -2px; width: 6px; height: 6px; background: var(--accent); }
+  .window-trace { position: absolute; left: 6px; top: var(--space-6); width: 60%; height: 2px; background: var(--sedi-signal); transform-origin: left center; }
+  .window-trace::after { content: ''; position: absolute; right: -3px; top: -2px; width: 6px; height: 6px; background: var(--sedi-signal); }
   [data-window-view='too-late'] .window-trace { width: calc(100% - 12px); background: var(--muted); }
   .window-view.is-playing .window-trace { animation: window-trace-x calc(var(--dur-trace) * 0.6) linear both; }
   .window-view.is-playing[data-window-view='too-late'] .window-trace { animation-duration: var(--dur-trace); }
@@ -92,14 +92,14 @@ const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
   .window-boundary > span { position: absolute; top: 0; right: 12px; width: max-content; color: var(--muted); font-family: var(--font-mono); font-size: var(--type-caption); }
   ol { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); list-style: none; margin: -6px 0 0; padding: 0; }
   .window-stage { min-width: 0; display: grid; justify-items: start; align-content: start; gap: var(--space-2); grid-column: span 2; }
-  .window-node { width: 13px; height: 13px; border: 1px solid var(--accent); border-radius: 50%; background: var(--paper); }
-  .window-stage-4 .window-node { background: var(--accent); }
+  .window-node { width: 13px; height: 13px; border: 1px solid var(--sedi-signal); border-radius: 50%; background: var(--paper); }
+  .window-stage-4 .window-node { background: var(--sedi-signal); }
   .window-index { margin: 0; font-size: var(--type-caption); color: var(--faint); }
   .window-name { font-size: var(--type-small); font-weight: 600; color: var(--ink); }
   [data-window-view='too-late'] .window-stage-4 { grid-column: 10; justify-items: end; }
   [data-window-view='too-late'] .window-stage-4 .window-node { background: var(--paper); border-radius: 0; border-color: var(--muted); }
   figcaption { display: grid; grid-template-columns: minmax(0, 0.3fr) minmax(0, 1fr); gap: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--hair); align-items: baseline; }
-  .window-outcome { color: var(--accent); font-size: var(--type-caption); }
+  .window-outcome { color: var(--accent-text); font-size: var(--type-caption); }
   figcaption p { margin: 0; max-width: var(--measure-body); color: var(--muted); font-size: var(--type-small); line-height: 1.65; }
   @media (max-width: 720px) {
     .window-head { align-items: start; flex-direction: column; }

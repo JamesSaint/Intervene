@@ -65,11 +65,11 @@ const { title, dek, href, kicker = 'Note' } = Astro.props;
     transition: transform var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
   }
   .insight-row:hover .insight-title,
-  .insight-row:focus-visible .insight-title { color: var(--accent); }
+  .insight-row:focus-visible .insight-title { color: var(--accent-text); }
   .insight-row:hover .insight-cue,
-  .insight-row:focus-visible .insight-cue { color: var(--accent); }
-  .insight-row:active :is(.insight-title, .insight-cue) { color: var(--accent-hover); }
-  .insight-row:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  .insight-row:focus-visible .insight-cue { color: var(--accent-text); }
+  .insight-row:active :is(.insight-title, .insight-cue) { color: var(--accent-text-hover); }
+  .insight-row:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
 
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     .insight-row:hover .insight-cue { transform: translateX(3px); }

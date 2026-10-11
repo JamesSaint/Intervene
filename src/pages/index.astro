@@ -142,21 +142,21 @@ const finding = {
   .situations, .method-block, .finding-block, .engage { border-bottom: 1px solid var(--hair); }
   .problem-questions { list-style: none; margin: 0; padding: 0; }
   .problem-questions li { display: grid; grid-template-columns: 40px minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-6); align-items: baseline; padding: var(--space-5) 0; border-top: 1px solid var(--hair-strong); }
-  .problem-index { color: var(--accent); font-size: var(--type-caption); }
+  .problem-index { color: var(--accent-text); font-size: var(--type-caption); }
   .problem-questions :is(h3, p) { margin: 0; }
   .assessment-identity { display: grid; gap: var(--space-5); justify-items: start; padding-top: 8px; }
   .assessment-identity :global(.agda-logo.logo) { width: 256px; }
   .assessment-intro .lede { font-size: var(--type-support); line-height: 1.65; margin-top: 24px; }
   .finding-block { background: var(--paper-soft); }
   .example-heading { border-top: 1px solid var(--hair-strong); padding-top: var(--space-5); }
-  .example-label { font-size: var(--type-caption); line-height: 1.6; color: var(--accent); }
+  .example-label { font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
   .example-heading .h3 { font-size: var(--type-finding); line-height: 1.2; margin: var(--space-3) 0; }
   .finding-example { border-block: 1px solid var(--hair-strong); margin-top: 32px; }
   .finding-example summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 24px 0; }
   .finding-example summary::-webkit-details-marker { display: none; }
-  .finding-example summary:is(:hover, :focus-visible) .example-title { color: var(--accent); }
-  .finding-example summary:active .example-title { color: var(--accent-hover); }
-  .finding-example summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+  .finding-example summary:is(:hover, :focus-visible) .example-title { color: var(--accent-text); }
+  .finding-example summary:active .example-title { color: var(--accent-text-hover); }
+  .finding-example summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 6px; }
   .example-title { transition: color var(--dur-fast) var(--ease); font-size: var(--type-body); line-height: 1.5; color: var(--ink); }
   .example-toggle { width: 20px; height: 20px; position: relative; flex: none; }
   .example-toggle::before, .example-toggle::after { content: ''; position: absolute; background: var(--accent); }
@@ -167,7 +167,7 @@ const finding = {
   .example-body { padding: 8px 0 32px; }
   .finding-scope, .finding-verdict { margin: 0; padding: 24px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
   .finding-verdict { margin-top: 24px; border-top: 1px solid var(--hair); }
-  .finding-scope dt, .finding-verdict dt { font-family: var(--font-mono); font-size: var(--type-caption); color: var(--accent); margin-bottom: 12px; }
+  .finding-scope dt, .finding-verdict dt { font-family: var(--font-mono); font-size: var(--type-caption); color: var(--accent-text); margin-bottom: 12px; }
   .finding-scope dd, .finding-verdict dd { margin: 0; font-size: var(--type-small); line-height: 1.7; color: var(--muted); }
   .evidence-notes { border-top: 1px solid var(--hair); margin-top: 32px; padding-top: 24px; }
   .evidence-notes > p { font-size: var(--type-small); line-height: 1.7; color: var(--muted); margin: 0; }

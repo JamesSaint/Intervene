@@ -19,16 +19,16 @@ const { items } = Astro.props;
   .reading-mobile { display: none; }
   ul { list-style: none; margin: 16px 0 0; padding: 0; }
   a { transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); display: flex; align-items: center; min-height: 44px; padding: 12px 0; border-bottom: 1px solid var(--hair); font-size: var(--type-small); line-height: 1.6; color: var(--muted); }
-  a:is(:hover, :focus-visible) { color: var(--accent); border-bottom-color: var(--accent); }
-  a:active { color: var(--accent-hover); }
-  a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  a:is(:hover, :focus-visible) { color: var(--accent-text); border-bottom-color: var(--accent); }
+  a:active { color: var(--accent-text-hover); }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
   @media (max-width: 880px) {
     .reading-index { position: static; }
     .reading-desktop { display: none; }
     .reading-mobile { display: block; border-block: 1px solid var(--hair-strong); }
     summary { cursor: pointer; list-style: none; min-height: 48px; padding: 16px 0; display: flex; justify-content: space-between; color: var(--ink); font-size: var(--type-small); }
     summary::-webkit-details-marker { display: none; }
-    summary:is(:hover, :focus-visible), summary > span { color: var(--accent); }
+    summary:is(:hover, :focus-visible), summary > span { color: var(--accent-text); }
     summary > span { transition: transform var(--dur-expand) var(--ease-out); }
     details[open]:not([data-disclosure-state='closed']) summary > span { transform: rotate(45deg); }
     ul { margin: 0 0 16px; }

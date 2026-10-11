@@ -21,7 +21,7 @@ const year = new Date().getFullYear();
       <div class="brand-hallmark"><Hallmark /></div>
     </div>
 
-    <nav class="primary-nav" aria-label="Footer">
+    <nav id="footer-nav" class="primary-nav" aria-label="Footer">
       <ul role="list">
         <li><a href="/intervention-readiness/">Intervention Readiness</a></li>
         <li><a href="/about/">Why it matters</a></li>
@@ -100,8 +100,8 @@ const year = new Date().getFullYear();
       border-color var(--dur-hover) var(--ease),
       color var(--dur-hover) var(--ease);
   }
-  .brand-email:is(:hover, :focus-visible) { border-color: var(--accent); color: var(--accent); }
-  .brand-email:active { color: var(--accent-hover); }
+  .brand-email:is(:hover, :focus-visible) { border-color: var(--accent); color: var(--accent-text); }
+  .brand-email:active { color: var(--accent-text-hover); }
   .brand-hallmark { margin-top: 8px; }
   .primary-nav ul {
     list-style: none;
@@ -128,8 +128,8 @@ const year = new Date().getFullYear();
       border-color var(--dur-hover) var(--ease),
       color var(--dur-hover) var(--ease);
   }
-  .primary-nav a:is(:hover, :focus-visible) { border-color: var(--accent); color: var(--accent); }
-  .primary-nav a:active { color: var(--accent-hover); }
+  .primary-nav a:is(:hover, :focus-visible) { border-color: var(--accent); color: var(--accent-text); }
+  .primary-nav a:active { color: var(--accent-text-hover); }
   /* Company facts remain in a full-width row below the navigation. */
   .meta {
     margin: 20px 0 0;
@@ -179,8 +179,8 @@ const year = new Date().getFullYear();
     padding: 0;
     cursor: pointer;
   }
-  .supporting-nav :is(a, button):is(:hover, :focus-visible) { color: var(--accent); }
-  .supporting-nav :is(a, button):active { color: var(--accent-hover); }
+  .supporting-nav :is(a, button):is(:hover, :focus-visible) { color: var(--accent-text); }
+  .supporting-nav :is(a, button):active { color: var(--accent-text-hover); }
 
   .trade-mark-notice {
     margin: 12px 0 0;

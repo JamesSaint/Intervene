@@ -58,7 +58,7 @@ input, textarea, select {
 /* Focus discipline */
 :focus { outline: none; }
 :focus-visible {
-  outline: 2px solid var(--bronze);
+  outline: 2px solid var(--focus);
   outline-offset: 3px;
 }
 

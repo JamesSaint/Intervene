@@ -9,6 +9,7 @@ const INK = 'rgb(240, 240, 240)';
 
 test.describe('contact form parity after CSS extraction', () => {
   test.beforeEach(async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'dark' });
     await page.goto('/contact/');
   });
 

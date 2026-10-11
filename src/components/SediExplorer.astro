@@ -42,7 +42,7 @@ const stages = [
   li { min-width: 0; border-top: 1px solid var(--hair-strong); }
   summary { list-style: none; cursor: pointer; padding: var(--space-4) 0; position: relative; display: grid; gap: var(--space-4); }
   summary::-webkit-details-marker { display: none; }
-  .sedi-index { display: flex; justify-content: space-between; color: var(--accent); font-size: var(--type-caption); padding-right: 32px; }
+  .sedi-index { display: flex; justify-content: space-between; color: var(--accent-text); font-size: var(--type-caption); padding-right: 32px; }
   .sedi-name { transition: color var(--dur-fast) var(--ease); font-size: var(--type-h3); font-weight: 600; letter-spacing: var(--tracking-heading); color: var(--ink); }
   .sedi-question { color: var(--muted); font-size: var(--type-body); line-height: 1.6; }
   .sedi-toggle { position: absolute; right: 0; top: var(--space-4); width: 18px; height: 18px; }
@@ -51,11 +51,11 @@ const stages = [
   .sedi-toggle::after { width: 1px; height: 18px; left: 8px; }
   .sedi-toggle::after { transition: transform var(--dur-expand) var(--ease-out); transform-origin: center; }
   details[open]:not([data-disclosure-state='closed']) .sedi-toggle::after { transform: scaleY(0); }
-  summary:is(:hover, :focus-visible) .sedi-name, details[open] .sedi-name { color: var(--accent); }
-  summary:active .sedi-name { color: var(--accent-hover); }
-  summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+  summary:is(:hover, :focus-visible) .sedi-name, details[open] .sedi-name { color: var(--accent-text); }
+  summary:active .sedi-name { color: var(--accent-text-hover); }
+  summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 6px; }
   dl { margin: 0; padding-bottom: var(--space-4); display: grid; gap: 24px; }
-  dt { color: var(--accent); font-family: var(--font-mono); font-size: var(--type-caption); line-height: 1.6; margin-bottom: 8px; }
+  dt { color: var(--accent-text); font-family: var(--font-mono); font-size: var(--type-caption); line-height: 1.6; margin-bottom: 8px; }
   dd { margin: 0; color: var(--muted); font-size: var(--type-small); line-height: 1.7; }
   li:has(details[open]) { border-top-color: var(--accent); }
   @media (max-width: 1100px) { ol { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

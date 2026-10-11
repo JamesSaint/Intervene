@@ -8,7 +8,7 @@
  */
 export const AGDA = 'AGDA®';
 
-export const AGDA_MARK = '<span class="agda-mark" role="img" aria-label="AGDA®"><span class="agda-text">AGDA</span><img class="agda-wordmark" src="/assets/brand/agda-small-white.svg" width="1106" height="247" alt="" aria-hidden="true" /><span class="agda-reg">®</span></span>';
+export const AGDA_MARK = '<span class="agda-mark" role="img" aria-label="AGDA®"><span class="agda-text">AGDA</span><img class="agda-wordmark brand-light" src="/assets/brand/agda-small-black.svg" width="1106" height="247" alt="" aria-hidden="true" /><img class="agda-wordmark brand-dark" src="/assets/brand/agda-small-white.svg" width="1106" height="247" alt="" aria-hidden="true" /><span class="agda-reg">®</span></span>';
 
 /** Sets every AGDA in a string as the mark. A trailing ® is absorbed. */
 export function markAgda(value: string): string {
