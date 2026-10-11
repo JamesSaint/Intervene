@@ -45,8 +45,8 @@ const isCurrent = (href: string) => {
   <nav class="takeover-body wrap" aria-labelledby="takeover-heading">
     <h2 id="takeover-heading" class="sr-only">Primary navigation</h2>
     <ul role="list">
-      {items.map((item, i) => (
-        <li style={`--i: ${i}`}>
+      {items.map((item) => (
+        <li>
           <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined} set:html={markAgda(item.label)}></a>
         </li>
       ))}
@@ -165,7 +165,7 @@ const isCurrent = (href: string) => {
     background: var(--paper);
     color: var(--ink);
     opacity: 0;
-    transition: opacity 320ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity var(--dur-menu) var(--ease);
     pointer-events: none;
     overflow-y: auto;
     display: flex;
@@ -235,16 +235,7 @@ const isCurrent = (href: string) => {
     padding: 8px 0;
     min-height: 48px;
     transition:
-      color 200ms cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 360ms cubic-bezier(0.4, 0, 0.2, 1),
-      transform 360ms cubic-bezier(0.4, 0, 0.2, 1);
-    opacity: 0;
-    transform: translateY(12px);
-    transition-delay: calc(80ms + var(--i) * 50ms);
-  }
-  .takeover.open .takeover-body a {
-    opacity: 1;
-    transform: none;
+      color var(--dur-fast) var(--ease);
   }
   .takeover-body a:hover,
   .takeover-body a:focus-visible { color: var(--accent); }
@@ -281,7 +272,4 @@ const isCurrent = (href: string) => {
     .takeover-body a { font-size: 32px; }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .takeover-body a { transition-delay: 0ms; transform: none; }
-  }
 </style>

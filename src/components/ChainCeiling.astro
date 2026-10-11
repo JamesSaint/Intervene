@@ -27,10 +27,10 @@ const ticks = [5, 4, 3, 2, 1, 0];
       </div>
 
       <div class="bars">
-        {bars.map((b, i) => (
+        {bars.map((b) => (
           <div
             class="col"
-            style={`--actual: ${(b.actual / MAX) * 100}%; --claim: ${b.claimed !== null ? (b.claimed / MAX) * 100 : 0}%; --delay: ${i * 110}ms`}
+            style={`--actual: ${(b.actual / MAX) * 100}%; --claim: ${b.claimed !== null ? (b.claimed / MAX) * 100 : 0}%`}
           >
             {b.claimed !== null && (
               <span class="ghost" aria-label={`Claimed ${b.claimed.toFixed(1)}`}>
@@ -191,32 +191,9 @@ const ticks = [5, 4, 3, 2, 1, 0];
     right: 0;
     text-align: center;
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: var(--type-caption);
     color: var(--ink);
   }
-
-  /* Draw once when motion is on: the claimed track rises first, then
-     the capped bar, then the labels. Stage by stage, left to right. */
-  html[data-motion] .ghost {
-    height: 0; opacity: 0;
-    transition: height 520ms var(--ease-draw), opacity var(--dur-reveal) var(--ease-out);
-    transition-delay: var(--delay);
-  }
-  html[data-motion] .bar {
-    height: 0;
-    transition: height var(--dur-draw) var(--ease-draw);
-    transition-delay: calc(var(--delay) + 160ms);
-  }
-  html[data-motion] .ghost-label,
-  html[data-motion] .score {
-    opacity: 0;
-    transition: opacity var(--dur-reveal) var(--ease-out);
-    transition-delay: calc(var(--delay) + 700ms);
-  }
-  html[data-motion] .ceiling.in .ghost { height: var(--claim); opacity: 1; }
-  html[data-motion] .ceiling.in .bar { height: var(--actual); }
-  html[data-motion] .ceiling.in .ghost-label,
-  html[data-motion] .ceiling.in .score { opacity: 1; }
 
   figcaption {
     margin-top: var(--space-6);
@@ -230,7 +207,7 @@ const ticks = [5, 4, 3, 2, 1, 0];
     .chart { height: 320px; gap: 16px; grid-template-columns: 24px 1fr; }
     .axis-y { font-size: var(--type-caption); }
     .ghost, .bar { left: 14%; right: 14%; }
-    .stage { font-size: 12px; bottom: -28px; }
+    .stage { font-size: var(--type-caption); bottom: -28px; }
     .ghost-label { font-size: var(--type-caption); top: -22px; }
     .claim-name { display: none; }
     .score { font-size: var(--type-caption); top: -22px; }

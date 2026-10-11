@@ -1,90 +1,18 @@
 /**
- * Motion runtime. Four jobs, all optional: the page reads fully with
- * this module absent.
- *
- * 1. Section entrances. Elements matching the reveal selector fade up
- *    once as they enter the viewport. The hidden state exists only
- *    while html[data-motion] is set (see BaseLayout), so nothing is
- *    hidden without scripts or under reduced motion.
- * 2. Disclosure expansion. Native <details> remains the fallback;
- *    optional body animation smooths opening and closing without
- *    delaying summary focus or leaving collapsed links focusable.
- * 3. On-this-page navigation. Marks the section currently in view.
- * 4. Anchor settling. A page opened at a fragment scrolls to it before
- *    the web font arrives; when the font swaps in, the content above
- *    changes height and the target drifts under the header. Once fonts
- *    are ready the target is scrolled to again, unless the reader has
- *    already moved.
+ * Lightweight interface behaviour: disclosures, current-section navigation
+ * and font-aware anchor settling. All content is visible from first paint.
  */
 
 const REVEAL =
   'main .block > .wrap, main .block > .wrap-narrow, main .block > .wrap-reading, [data-reveal], .reveal';
 
-export function initReveal(root: Document | ParentNode = document): () => void {
-  const html = document.documentElement;
-  const nodes = Array.from(root.querySelectorAll<HTMLElement>(REVEAL));
-  if (!nodes.length) return () => {};
-
-  const motion = html.hasAttribute('data-motion') && 'IntersectionObserver' in window;
-  if (!motion) {
-    nodes.forEach((n) => n.classList.add('in'));
-    return () => {};
-  }
-
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in');
-          io.unobserve(e.target);
-        }
-      });
-    },
-    // Fire a little before the element's top reaches the bottom edge,
-    // so the entrance is under way as the reader arrives, not after.
-    { rootMargin: '0px 0px -8% 0px', threshold: 0.01 }
-  );
-
-  nodes.forEach((n) => io.observe(n));
-
-  // Second opinion. If the observer misses an element (a browser quirk,
-  // a jump the observer has not caught up with), a scroll or resize
-  // sweep reveals anything whose top is inside the viewport.
-  let pending = new Set(nodes);
-  let raf = 0;
-  const sweep = () => {
-    raf = 0;
-    const limit = window.innerHeight * 1.05;
-    pending.forEach((n) => {
-      if (n.classList.contains('in')) { pending.delete(n); return; }
-      const r = n.getBoundingClientRect();
-      if (r.top < limit && r.bottom > 0) { n.classList.add('in'); io.unobserve(n); pending.delete(n); }
-    });
-    if (!pending.size) { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); }
-  };
-  const onScroll = () => { if (!raf) raf = requestAnimationFrame(sweep); };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll, { passive: true });
-  window.addEventListener('focusin', (e) => {
-    let group = (e.target as Element).closest(REVEAL);
-    while (group) {
-      if (!group.classList.contains('in')) { group.classList.add('in'); io.unobserve(group); pending.delete(group as HTMLElement); }
-      group = group.parentElement?.closest(REVEAL) ?? null;
-    }
+export function initReveal(root: Document | ParentNode = document): void {
+  // Preserve existing scene markers without gating or moving content.
+  root.querySelectorAll<HTMLElement>(REVEAL).forEach((node) => node.classList.add('in'));
+  const preference = matchMedia('(prefers-reduced-motion: reduce)');
+  preference.addEventListener('change', () => {
+    if (preference.matches) document.documentElement.removeAttribute('data-motion');
   });
-  sweep();
-
-  // Printing, and any other moment the page must be complete at once:
-  // drop the opt-in and every gated element takes its resting state.
-  const settle = () => {
-    html.removeAttribute('data-motion');
-    io.disconnect();
-  };
-  window.addEventListener('beforeprint', settle, { once: true });
-  const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
-  preference.addEventListener('change', () => { if (preference.matches) settle(); });
-
-  return () => io.disconnect();
 }
 
 export function initDisclosures(root: Document | ParentNode = document): void {
@@ -159,7 +87,7 @@ export function initDisclosures(root: Document | ParentNode = document): void {
 
 export function initPageNav(root: Document | ParentNode = document): () => void {
   const nav = root.querySelector<HTMLElement>('.page-nav');
-  if (!nav || !('IntersectionObserver' in window)) return () => {};
+  if (!nav) return () => {};
   const links = Array.from(nav.querySelectorAll<HTMLAnchorElement>('a[href^="#"]'));
   const targets = links
     .map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))))

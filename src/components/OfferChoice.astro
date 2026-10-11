@@ -139,69 +139,44 @@ const RouteHeading = editorial ? 'h3' : 'span';
   .oc-branch { position: absolute; top: 0; left: 50%; width: 1px; height: 40px; background: var(--hair-strong); }
   .oc-head { display: grid; justify-items: center; gap: 12px; text-align: center; }
   .oc-head .oc-node { margin-top: -7px; }
-  .oc-n { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
-  .oc-name { margin: 0; font-family: var(--font-sans); font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: 0.08em; text-transform: uppercase; }
+  .oc-n { font-size: var(--type-caption); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  .oc-name { margin: 0; font-family: var(--font-sans); font-size: var(--type-h3); font-weight: 600; color: var(--ink); letter-spacing: var(--tracking-heading); text-transform: none; }
 
   .oc-fields { margin: 8px 0 0; display: grid; gap: 0; border-top: 1px solid var(--hair-strong); }
   .oc-fields > div { display: grid; gap: 6px; padding: var(--space-3) 0; border-bottom: 1px solid var(--hair); }
-  .oc-fields dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
-  .oc-fields dd { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--ink); }
+  .oc-fields dt { font-family: var(--font-mono); font-size: var(--type-caption); letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+  .oc-fields dd { margin: 0; font-family: var(--font-sans); font-size: var(--type-small); line-height: 1.6; color: var(--ink); }
   .oc-fields dd.oc-price { font-family: var(--font-mono); font-size: 20px; font-weight: 400; letter-spacing: 0; }
   .oc-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
-  .oc-list > li { position: relative; padding-left: 18px; color: var(--muted); font-size: 15px; }
+  .oc-list > li { position: relative; padding-left: 18px; color: var(--muted); font-size: var(--type-small); }
   .oc-list > li::before { content: ''; position: absolute; left: 0; top: 11px; width: 8px; height: 1px; background: var(--accent); }
-  .oc-link { display: inline-block; font-size: 15px; }
+  .oc-link { display: inline-block; font-size: var(--type-small); }
   .oc-foot { margin: var(--gap-intro) 0 0; }
-
-  /* ---- Sequence. The stem draws down, the bar opens from the centre,
-     both branches draw together, both heads appear together. Neither
-     route leads; nothing about the order suggests one comes first. ---- */
-  html[data-motion] .oc-stem { transform: scaleY(0); transform-origin: top center; transition: transform 320ms var(--ease-draw) 80ms; }
-  html[data-motion] .oc-routes::before { transform: scaleX(0); transform-origin: center; transition: transform 360ms var(--ease-draw) 360ms; }
-  html[data-motion] .oc-branch { transform: scaleY(0); transform-origin: top center; transition: transform 280ms var(--ease-draw) 680ms; }
-  html[data-motion] .oc-head,
-  html[data-motion] .oc-fields,
-  html[data-motion] .oc-link,
-  html[data-motion] .oc-foot {
-    opacity: 0; transform: translateY(var(--move-reveal));
-    transition: opacity var(--dur-reveal) var(--ease-out) 900ms, transform var(--dur-reveal) var(--ease-out) 900ms;
-  }
-  html[data-motion] .oc-fields,
-  html[data-motion] .oc-link { transition-delay: 1040ms; }
-  html[data-motion] .oc-foot { transition-delay: 1120ms; }
-  html[data-motion] .offer-choice.in .oc-stem,
-  html[data-motion] .offer-choice.in .oc-branch { transform: scaleY(1); }
-  html[data-motion] .offer-choice.in .oc-routes::before { transform: scaleX(1); }
-  html[data-motion] .offer-choice.in .oc-head,
-  html[data-motion] .offer-choice.in .oc-fields,
-  html[data-motion] .offer-choice.in .oc-link,
-  html[data-motion] .offer-choice.in .oc-foot { opacity: 1; transform: none; }
 
   /* Homepage: two parallel editorial columns. The full offer sheets
      retain their existing diagram and share the same commercial data. */
-  .offer-choice--editorial .oc-caption { display: grid; grid-template-columns: 1fr 2fr; gap: 20px 48px; }
+  .offer-choice--editorial .oc-caption { display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-4) var(--space-6); }
   .offer-choice--editorial .oc-caption .label { grid-row: 1 / span 3; margin-top: 10px; align-self: start; }
   .offer-choice--editorial .oc-caption .h2 { font-size: var(--type-h2); line-height: 1.2; letter-spacing: var(--tracking-heading); text-transform: none; max-width: none; margin: 0; }
   .oc-principle { font-size: 20px; line-height: 1.5; color: var(--ink); margin: 0; }
-  .offer-choice--editorial .oc-lede { font-size: 17px; line-height: 1.7; margin: 0; }
+  .offer-choice--editorial .oc-lede { font-size: var(--type-body); line-height: 1.7; margin: 0; }
   .offer-choice--editorial .oc-root, .offer-choice--editorial .oc-branch,
   .offer-choice--editorial .oc-node, .offer-choice--editorial .oc-routes::before { display: none; }
-  .offer-choice--editorial .oc-routes { margin-top: 48px; gap: 0 48px; grid-template-rows: repeat(8, auto); }
+  .offer-choice--editorial .oc-routes { margin-top: var(--space-6); gap: 0 var(--space-6); grid-template-rows: repeat(8, auto); }
   .offer-choice--editorial .oc-route { border-top: 1px solid var(--hair-strong); padding-top: 24px; grid-row: span 8; grid-template-rows: subgrid; gap: 0; }
   .offer-choice--editorial .oc-head { justify-items: start; text-align: left; gap: 16px; padding-bottom: 28px; align-content: start; }
-  .offer-choice--editorial .oc-n { font-size: 12px; letter-spacing: 0; text-transform: none; }
+  .offer-choice--editorial .oc-n { font-size: var(--type-caption); letter-spacing: 0; text-transform: none; }
   .offer-choice--editorial .oc-name { font-size: var(--type-h3); line-height: 1.3; letter-spacing: var(--tracking-heading); text-transform: none; }
   .offer-choice--editorial .oc-fields { display: grid; grid-row: span 6; grid-template-rows: subgrid; margin: 0; border-top: 0; }
-  .offer-choice--editorial .oc-fields > div { gap: 12px; padding: 24px 0; align-content: start; }
-  .offer-choice--editorial .oc-fields dt { font-size: 12px; letter-spacing: 0; text-transform: none; color: var(--faint); }
-  .offer-choice--editorial .oc-fields dd { font-size: 17px; line-height: 1.7; }
+  .offer-choice--editorial .oc-fields > div { gap: 12px; padding: var(--space-4) 0; align-content: start; }
+  .offer-choice--editorial .oc-fields dt { font-size: var(--type-caption); letter-spacing: 0; text-transform: none; color: var(--faint); }
+  .offer-choice--editorial .oc-fields dd { font-size: var(--type-body); line-height: 1.7; }
   .offer-choice--editorial .oc-fields > div:nth-child(3) dd { font-size: 16px; color: var(--muted); }
   .offer-choice--editorial .oc-fields dd.oc-price { font-size: clamp(18px, 1.8vw, 24px); line-height: 1.5; }
   .offer-choice--editorial .oc-list { margin: 0; gap: 10px; }
-  .offer-choice--editorial .oc-list > li { font-size: 17px; line-height: 1.65; }
+  .offer-choice--editorial .oc-list > li { font-size: var(--type-body); line-height: 1.65; }
   .offer-choice--editorial .oc-link { font-size: 16px; padding: 12px 0; justify-self: start; margin-top: 16px; }
   .offer-choice--editorial .oc-foot { margin-top: 32px; font-size: 16px; line-height: 1.7; }
-  html[data-motion] .offer-choice--editorial :is(.oc-head, .oc-fields, .oc-link, .oc-foot) { opacity: 1; transform: none; transition: none; }
   .offer-choice--compact .oc-routes { grid-template-rows: repeat(3, auto); }
   .offer-choice--compact .oc-route { grid-row: span 3; }
   .offer-choice--compact .oc-fields { grid-row: span 1; }
@@ -218,7 +193,6 @@ const RouteHeading = editorial ? 'h3' : 'span';
     .offer-choice--editorial .oc-fields, .offer-choice--compact .oc-fields { grid-row: auto; grid-template-rows: none; }
     .offer-choice--editorial .oc-fields > div { padding: 20px 0; }
     .offer-choice--editorial .oc-fields dd, .offer-choice--editorial .oc-list > li { font-size: 16px; }
-    .offer-choice--editorial .oc-caption .label { font-size: 11px; }
   }
 
   @media (max-width: 720px) {
@@ -231,9 +205,5 @@ const RouteHeading = editorial ? 'h3' : 'span';
     .oc-head .oc-node { margin-top: 0; grid-row: 1 / span 2; }
     .oc-head .oc-n { grid-column: 2; }
     .oc-head .oc-name { grid-column: 2; }
-    /* No connectors on a phone, so the heads need no wait. */
-    html[data-motion] .oc-head { transition-delay: 0ms; }
-    html[data-motion] .oc-fields, html[data-motion] .oc-link { transition-delay: 120ms; }
-    html[data-motion] .oc-foot { transition-delay: 200ms; }
   }
 </style>

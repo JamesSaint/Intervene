@@ -1,6 +1,6 @@
 /**
  * The shared layout and motion system: content is complete without
- * scripts and under reduced motion, entrances play once, anchors clear
+ * scripts and under reduced motion, evidence never waits for scrolling, anchors clear
  * the sticky header, the offer sheets keep their material conditions
  * visible, and interface states are reachable from the keyboard.
  */
@@ -50,14 +50,20 @@ test.describe('motion opt-in', () => {
     await ctx.close();
   });
 
-  test('entrances play once and the hero is available immediately', async ({ page }) => {
+  test('content and evidence are visible before scrolling without an observer', async ({ page }) => {
     await page.goto('/');
-    // Opening motion keeps the hero opaque and its action available.
+    await page.addInitScript(() => { delete (window as any).IntersectionObserver; });
+    await page.goto('/');
+    const hidden = await page.locator(`${REVEAL_TARGETS}, .fc-stage, .fc-node, .oc-head, .oc-fields`).evaluateAll((els) => els.filter((el) => {
+      const style = getComputedStyle(el);
+      return style.opacity !== '1' || style.transform !== 'none';
+    }).length);
+    expect(hidden).toBe(0);
     const heroOpacity = await page.locator('.hero .display-xl').evaluate((e) => getComputedStyle(e).opacity);
     expect(heroOpacity).toBe('1');
     const cta = page.locator('.hero .btn');
     await expect(cta).toBeVisible();
-    // Scroll a section into view, then away, then back: it stays revealed.
+    // Scrolling cannot hide or animate content.
     const wrap = page.locator('.situations > .wrap');
     await wrap.scrollIntoViewIfNeeded();
     await expect(wrap).toHaveClass(/\bin\b/);
@@ -70,7 +76,7 @@ test.describe('motion opt-in', () => {
   });
 });
 
-test('keyboard focus reveals a group the observer has not reached', async ({ page }) => {
+test('keyboard focus reaches an already visible content group', async ({ page }) => {
   await page.goto('/services/');
   await page.waitForTimeout(200);
   const link = page.locator('#control a.link').first();

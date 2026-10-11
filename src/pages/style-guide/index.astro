@@ -31,7 +31,8 @@ const rhythm = [
 ];
 
 const widths = [
-  { k: '--max', v: '1440px', u: 'All page containers: text fills the available width of its section or grid column before wrapping.' },
+  { k: '--max', v: '1440px', u: 'Shared outer alignment for all page containers; grids define their own columns.' },
+  { k: '--measure-body / --measure-lede', v: '72ch / 64ch', u: 'Maximum line lengths for body copy and supporting statements.' },
   { k: '.reading-layout', v: '0.75fr / 1.75fr', u: 'Long articles and policies: section navigation beside the prose; a native disclosure above it on phones.' },
   { k: '--max-diagram', v: '1120px', u: 'Wide technical diagrams where required.' },
   { k: '--gutter / --gutter-tight', v: 'clamp(24px, 4vw, 64px) / 24px', u: 'Page gutter; phone gutter below 720px.' },
@@ -40,10 +41,8 @@ const widths = [
 const motion = [
   { k: '--dur-fast', v: '160ms', u: 'Hover, focus, active navigation.' },
   { k: '--dur-expand', v: '220ms', u: 'A disclosure opening or closing.' },
-  { k: '--dur-reveal', v: '380ms', u: 'A section entrance: fade with --move-reveal (10px) of travel, once.' },
-  { k: '--dur-draw', v: '700ms', u: 'One connector draw in a diagram. Stages follow at 140ms intervals.' },
-  { k: '--stagger', v: '60ms', u: 'Per item in a staggered grid, capped at eight.' },
-  { k: 'prefers-reduced-motion', v: 'all durations 0 to 80ms', u: 'Entrances and draws are skipped; the complete static state shows at once.' },
+  { k: '--dur-menu', v: '320ms', u: 'Opening and closing the navigation overlay.' },
+  { k: 'prefers-reduced-motion', v: 'all durations 0 to 80ms', u: 'Disclosures settle immediately; interface feedback takes no more than 80ms.' },
 ];
 ---
 
@@ -246,12 +245,11 @@ keyId              2026-05-02-d7e5468e</code></pre>
     <div class="wrap">
       <h2 class="h2">Motion.</h2>
       <p class="lede muted">
-        Three registers. Interface feedback, section entrances, and diagram
-        draws. Entrances run once when a section enters the viewport and only
-        when <span class="mono">html[data-motion]</span> is set, so a visitor
-        without scripts, or with reduced motion, sees the complete page.
+        Motion responds to deliberate interaction: controls, navigation and
+        disclosures. Headings, evidence and diagrams are visible immediately,
+        without scroll-triggered entrances.
       </p>
-      <p class="body muted">Page headings settle over 380 milliseconds while staying visible. SEDI stages and problem rows enter once in reading order. Native disclosures expand and collapse over 220 milliseconds, reverse smoothly on repeated input and settle immediately when focused content, resizing or a changed motion preference requires it. Directional link cues move three pixels on hover or keyboard focus.</p>
+      <p class="body muted">Native disclosures expand and collapse over 220 milliseconds, reverse smoothly on repeated input and settle immediately when focused content, resizing or a changed motion preference requires it. Directional link cues move three pixels on hover or keyboard focus. Reduced motion retains the complete layout and native disclosure behaviour.</p>
       <dl class="spec-list guide-list">
         {motion.map((r) => (
           <div><dt>{r.k}</dt><dd><span class="mono val">{r.v}</span> {r.u}</dd></div>
@@ -268,7 +266,7 @@ keyId              2026-05-02-d7e5468e</code></pre>
 
 <style>
   .guide-list { --spec-col: 260px; margin-top: var(--gap-intro); }
-  .guide-list .val { display: block; margin-bottom: 4px; color: var(--accent); font-size: 12px; }
+  .guide-list .val { display: block; margin-bottom: 4px; color: var(--accent); font-size: var(--type-caption); }
   .stack { display: grid; gap: var(--space-6); margin-top: var(--gap-intro); }
   .stack > div > .mono { display: block; margin-bottom: var(--space-2); }
   .stack .display-xl { font-size: var(--type-display); }
@@ -282,8 +280,8 @@ keyId              2026-05-02-d7e5468e</code></pre>
   .sw .mono { display: block; margin-top: var(--space-2); color: var(--muted); }
   .row { margin-top: var(--gap-intro); display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
   .guide-h3 { margin: var(--gap-sub) 0 var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--hair); }
-  .guide-h3 .mono { color: var(--accent); font-size: 12px; text-transform: none; letter-spacing: 0.04em; }
-  .guide-kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  .guide-h3 .mono { color: var(--accent); font-size: var(--type-caption); text-transform: none; letter-spacing: 0.04em; }
+  .guide-kicker { font-size: var(--type-caption); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
   .card-grid { grid-template-columns: repeat(2, 1fr); list-style: none; padding: 0; }
   @media (max-width: 720px) { .card-grid { grid-template-columns: 1fr; } }
 </style>

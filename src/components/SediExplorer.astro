@@ -35,14 +35,14 @@ const stages = [
 <style>
   .sedi-explorer { margin-top: var(--gap-intro); }
   .sedi-instruction, .sedi-caption { color: var(--muted); font-size: var(--type-small); line-height: 1.6; margin: 0; }
-  ol { list-style: none; margin: 24px 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
+  ol { list-style: none; margin: var(--space-4) 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-5); }
   li { min-width: 0; border-top: 1px solid var(--hair-strong); }
-  summary { list-style: none; cursor: pointer; padding: 20px 0; position: relative; display: grid; gap: 20px; }
+  summary { list-style: none; cursor: pointer; padding: var(--space-4) 0; position: relative; display: grid; gap: var(--space-4); }
   summary::-webkit-details-marker { display: none; }
   .sedi-index { display: flex; justify-content: space-between; color: var(--accent); font-size: var(--type-caption); padding-right: 32px; }
-  .sedi-name { transition: color var(--dur-fast) var(--ease); font-size: clamp(26px, 2.5vw, 36px); font-weight: 600; letter-spacing: var(--tracking-heading); color: var(--ink); }
+  .sedi-name { transition: color var(--dur-fast) var(--ease); font-size: var(--type-h3); font-weight: 600; letter-spacing: var(--tracking-heading); color: var(--ink); }
   .sedi-question { color: var(--muted); font-size: var(--type-body); line-height: 1.6; }
-  .sedi-toggle { position: absolute; right: 0; top: 21px; width: 18px; height: 18px; }
+  .sedi-toggle { position: absolute; right: 0; top: var(--space-4); width: 18px; height: 18px; }
   .sedi-toggle::before, .sedi-toggle::after { content: ''; position: absolute; background: var(--accent); }
   .sedi-toggle::before { height: 1px; width: 18px; top: 8px; }
   .sedi-toggle::after { width: 1px; height: 18px; left: 8px; }
@@ -51,17 +51,21 @@ const stages = [
   summary:is(:hover, :focus-visible) .sedi-name, details[open] .sedi-name { color: var(--accent); }
   summary:active .sedi-name { color: var(--accent-hover); }
   summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
-  dl { margin: 0; padding-bottom: 24px; display: grid; gap: 24px; }
+  dl { margin: 0; padding-bottom: var(--space-4); display: grid; gap: 24px; }
   dt { color: var(--accent); font-family: var(--font-mono); font-size: var(--type-caption); line-height: 1.6; margin-bottom: 8px; }
   dd { margin: 0; color: var(--muted); font-size: var(--type-small); line-height: 1.7; }
+  li:last-child { border-top-color: var(--accent); }
+  li:last-child .sedi-name { color: var(--accent); }
   @media (max-width: 1100px) { ol { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 560px) {
     ol { grid-template-columns: 1fr; gap: 0; }
     summary { grid-template-columns: 32px 1fr; gap: 12px; padding: 24px 32px 24px 0; }
     .sedi-index { padding: 0; grid-row: 1 / span 2; padding-top: 8px; }
-    .sedi-index > span { display: none; }
+    .sedi-index { position: relative; align-self: stretch; }
+    .sedi-index > span { position: absolute; left: 0; bottom: 0; transform: rotate(90deg); }
     .sedi-question { grid-column: 2; }
     .sedi-toggle { top: 33px; }
+    li:last-child { border-bottom: 1px solid var(--hair-strong); }
     dl { padding-left: 44px; }
   }
 </style>

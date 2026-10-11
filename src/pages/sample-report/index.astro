@@ -762,7 +762,8 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
     .verdict-row { grid-template-columns: 1fr 1fr; }
     .stage-grid { grid-template-columns: 1fr 1fr; }
     .viability { grid-template-columns: 1fr; gap: var(--space-5); }
-    .tbl thead { display: none; }
+    .tbl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .tbl thead :is(tr, th) { width: 1px; min-width: 0; padding: 0; font-size: 1px; overflow: hidden; }
     .tbl tbody tr { display: grid; gap: 4px; padding: 16px 0; border-bottom: 1px solid var(--hair); }
     .tbl tbody td { padding: 0; border: 0; }
     .tbl tbody td.cell-name { font-weight: 500; }

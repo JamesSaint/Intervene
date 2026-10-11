@@ -24,8 +24,8 @@ const MAX = 5;
         ))}
       </div>
 
-      {grades.map((g, i) => (
-        <div class="row" style={`--w: ${(g.weight / MAX) * 100}%; --delay: ${i * 90}ms`}>
+      {grades.map((g) => (
+        <div class="row" style={`--w: ${(g.weight / MAX) * 100}%`}>
           <span class="grade-label">{g.label}</span>
           <span class="track">
             <span class="bar"></span>
@@ -119,14 +119,6 @@ const MAX = 5;
     width: var(--w);
     background: var(--accent);
   }
-  /* Draw once when motion is on: bars grow to their weight in order. */
-  html[data-motion] .bar {
-    width: 0;
-    transition: width var(--dur-draw) var(--ease-draw);
-    transition-delay: var(--delay);
-  }
-  html[data-motion] .ev-cap.in .bar { width: var(--w); }
-
   .cap-text {
     font-family: var(--font-mono);
     font-size: var(--type-caption);
@@ -135,13 +127,6 @@ const MAX = 5;
     letter-spacing: 0.04em;
     white-space: nowrap;
   }
-  html[data-motion] .cap-text {
-    opacity: 0;
-    transition: opacity var(--dur-reveal) var(--ease-out);
-    transition-delay: calc(var(--delay) + 400ms);
-  }
-  html[data-motion] .ev-cap.in .cap-text { opacity: 1; }
-
   figcaption {
     margin-top: var(--space-5);
     font-family: var(--font-sans);
