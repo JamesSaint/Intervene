@@ -22,7 +22,7 @@ export const signatureCss = `
 .sig-root .sig-logo-white { display:none !important; }
 .sig-root { color:#1a1a1a !important; }
 .sig-root .sig-secondary { color:#4a4a4a !important; }
-.sig-root .sig-link { color:inherit !important; }
+.sig-root .sig-link { color:inherit !important; text-decoration:none !important; }
 .sig-root .sig-environment { color:#7a6c55 !important; }
 @media (prefers-color-scheme:dark) {
   .sig-root { color:#f0f0f0 !important; }
@@ -36,7 +36,7 @@ const logo = (tone: 'black' | 'white') => `<img class="sig-logo-${tone}" src="ht
 // Mail freezes imported table column widths. Normal blocks let this single-column
 // signature reflow when the compose window or recipient viewport changes.
 const row = (content: string, style: string, className = '') => `<div${className ? ` class="${className}"` : ''} style="padding:${style};color:inherit;">${content}</div>`;
-const link = (href: string, text: string) => `<a class="sig-link" href="${escapeHtml(href)}" style="color:#6b6b6b;text-decoration:underline;text-underline-offset:3px;">${escapeHtml(text)}</a>`;
+const link = (href: string, text: string) => `<a class="sig-link" href="${escapeHtml(href)}" style="color:#6b6b6b;text-decoration:none;">${escapeHtml(text)}</a>`;
 
 // Mail already supplies the message gutter. Extra horizontal padding would
 // indent the signature farther than the body text.
@@ -50,7 +50,7 @@ ${row('<span style="font-size:13px;line-height:20px;">Founder, Intervene Limited
 ${row(`<span style="font-size:13px;line-height:22px;">${link(`mailto:${contactEmail}`, contactEmail)} · ${link('https://intervene.uk/', 'intervene.uk')} · ${link(socialLinks.jamesSaintLinkedIn, 'LinkedIn')}</span>`, '0 0 20px')}
 <div class="sig-band" style="border-top:1px solid #c9b694;border-bottom:1px solid #c9b694;padding:12px 0;margin:0 0 16px;font-size:12px;line-height:20px;">
 <a href="https://intervene.uk/agda/" style="display:inline-block;color:inherit;text-decoration:none;">${markAgdaEmail('AGDA®')}</a><br>
-<span class="sig-secondary" style="color:inherit;">${signaturePositioning}</span>
+<span class="sig-secondary" style="display:inline-block;padding-top:2px;color:inherit;">${signaturePositioning}</span>
 </div>
 ${row(`<span style="font-size:11px;line-height:17px;">${escapeHtml(signatureCompany)}<br>${escapeHtml(signatureTrademark)}</span>`, '0 0 12px', 'sig-secondary')}
 ${Object.entries(signatureNotices).map(([name, notice]) => {
