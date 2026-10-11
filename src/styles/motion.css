@@ -1,12 +1,8 @@
-/* The homepage has a bounded opening. Section headings stay static
-   during scrolling; decorative pulses use transform/opacity. */
-.motion-line { display: block; overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.1em; }
+/* Headings render without clipping or transforms. Homepage support
+   has a bounded opening; decorative pulses use transform/opacity. */
+.motion-line { display: block; }
 .motion-line > span { display: block; }
 @media (prefers-reduced-motion: no-preference) {
-  html[data-motion] .hero-home[data-enter] .motion-line > span {
-    animation: headline-enter var(--dur-enter) var(--ease-reveal) backwards;
-  }
-  html[data-motion] .hero-home[data-enter] em.motion-line > span { animation-delay: var(--stagger); }
   html[data-motion] .hero-home[data-enter] .hero-sub {
     animation: support-enter var(--dur-enter) var(--ease-enter) calc(var(--stagger) * 2) backwards;
   }
@@ -16,7 +12,7 @@
   html[data-motion] .hero-home[data-enter] .hero-principle {
     animation: support-enter var(--dur-enter) var(--ease-enter) calc(var(--stagger) * 4) backwards;
   }
-  html[data-motion] .hero-home[data-enter]:focus-within :is(.motion-line > span, .hero-sub, .hero-actions, .hero-principle) {
+  html[data-motion] .hero-home[data-enter]:focus-within :is(.hero-sub, .hero-actions, .hero-principle) {
     animation: none;
   }
   .takeover[data-menu-enter] .takeover-body li { animation: nav-enter var(--dur-reveal) var(--ease-enter) backwards; }
@@ -45,11 +41,10 @@
   transition: text-decoration-color var(--dur-fast) var(--ease), text-underline-offset var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
 }
 :is(.link, .arrow-link):is(:hover, :focus-visible) { border-bottom-color: transparent; text-decoration-color: var(--accent); text-underline-offset: 3px; }
-@keyframes headline-enter { from { transform: translateY(45%); } to { transform: translateY(0); } }
 @keyframes support-enter { from { transform: translateY(var(--motion-distance)); } to { transform: translateY(0); } }
 @keyframes action-enter { from { transform: translateY(var(--motion-distance)); } to { transform: translateY(0); } }
 @keyframes nav-enter { from { transform: translateY(12px); } to { transform: translateY(0); } }
-@media print { .motion-line { overflow: visible; } *, *::before, *::after { animation: none !important; } }
+@media print { *, *::before, *::after { animation: none !important; } }
 
 /* Highlight the already stated constraint once. No interval is drawn or
    added to another: these are separate illustrative evidence facts. */

@@ -46,7 +46,7 @@ async function replay(page: Page) {
   });
 }
 
-test('opening waits for font layout, moves visibly, settles and never restarts on blur', async ({ page }) => {
+test('opening waits for font layout while the headline stays unclipped and fixed', async ({ page }) => {
   await prepare(page);
   await page.route('**/*.woff2', async route => {
     await new Promise(resolve => setTimeout(resolve, 450));
@@ -54,23 +54,27 @@ test('opening waits for font layout, moves visibly, settles and never restarts o
   });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   if (await page.evaluate(() => document.fonts.status === 'loading')) {
-    expect(await page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'headline-enter').length)).toBe(0);
-  }
-  await expect.poll(() => page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'headline-enter').length)).toBe(2);
-  const starts = await page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'headline-enter'));
-  for (const start of starts) {
-    expect(start.fonts).toBe('loaded');
-    expect(Number(start.transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,[^,]+,\s*([^)]+)\)/)?.[1])).toBeGreaterThan(3);
+    expect(await page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'support-enter').length)).toBe(0);
   }
   await expect.poll(() => page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'support-enter').length)).toBe(2);
-  expect(await page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'support-enter').every((s: any) => s.opacity === '1'))).toBe(true);
+  const starts = await page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'support-enter'));
+  expect(starts.every((start: any) => start.fonts === 'loaded' && start.opacity === '1')).toBe(true);
+  const headline = page.locator('#home-question');
+  const before = await headline.boundingBox();
+  const lines = page.locator('.motion-line, .motion-line > span');
+  expect(await lines.evaluateAll(nodes => nodes.every(node => {
+    const style = getComputedStyle(node);
+    return style.transform === 'none' && style.overflow === 'visible' && style.clipPath === 'none';
+  }))).toBe(true);
+  expect(await headline.evaluate(node => node.getAnimations({ subtree: true }).length)).toBe(0);
   const hero = page.locator('.hero-home');
   await expect.poll(() => hero.evaluate(node => node.getAnimations({ subtree: true }).filter(a => a.playState === 'running').length)).toBe(0);
+  expect(await headline.boundingBox()).toEqual(before);
   await page.locator('.hero-home [data-primary-cta]').focus();
   await page.locator('[data-menu-trigger]').focus();
   await page.waitForTimeout(200);
-  expect(await page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'headline-enter').length)).toBe(2);
-  expect(await page.locator('.motion-line > span').first().evaluate(node => getComputedStyle(node).transform)).toBe('none');
+  expect(await page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'support-enter').length)).toBe(2);
+  expect(await headline.boundingBox()).toEqual(before);
 });
 
 test('story headings stay fixed in the document during scrolling and repeated entry', async ({ page }) => {

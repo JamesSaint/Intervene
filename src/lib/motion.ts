@@ -53,7 +53,7 @@ export function initOpening(root: Document | ParentNode = document): void {
     if (hero.hasAttribute('data-enter')) played = true;
     window.clearTimeout(timer);
     hero.removeAttribute('data-enter');
-    hero.querySelectorAll<HTMLElement>('.motion-line > span, .hero-sub, .hero-actions, .hero-principle')
+    hero.querySelectorAll<HTMLElement>('.hero-sub, .hero-actions, .hero-principle')
       .forEach((node) => node.getAnimations().forEach((animation) => animation.cancel()));
   };
   const start = () => {
