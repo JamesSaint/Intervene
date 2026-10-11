@@ -5,7 +5,7 @@ import baseConfig from './playwright.config';
 // same built preview and server behaviour as the complete site suite.
 export default defineConfig({
   ...baseConfig,
-  testMatch: 'motion-reliability.spec.ts',
+  testMatch: ['motion-reliability.spec.ts', 'motion-language.spec.ts', 'motion-enhancements.spec.ts'],
   workers: 3,
   use: {
     ...baseConfig.use,
@@ -18,6 +18,10 @@ export default defineConfig({
         browserName,
         viewport: { width, height: width === 390 ? 844 : 1000 },
         hasTouch: width === 390,
+        // A narrow desktop viewport does not reproduce mobile Safari's
+        // viewport behaviour. Firefox does not support mobile emulation.
+        isMobile: width === 390 && browserName !== 'firefox',
+        deviceScaleFactor: width === 390 ? 3 : 1,
       },
     }))
   ),

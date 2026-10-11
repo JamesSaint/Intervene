@@ -104,9 +104,11 @@ export function initReveal(root: Document | ParentNode = document): void {
       if (typeof node.animate !== 'function') return;
       const styles = getComputedStyle(node);
       const distance = styles.getPropertyValue('--motion-distance').trim() || '20px';
+      // Keep the reveal on the compositor. An animated clip-path can
+      // stutter alongside touch scrolling in Safari. Text stays readable.
       const animation = node.animate([
-        { transform: `translateY(${distance})`, clipPath: 'inset(0 0 15% 0)' },
-        { transform: 'translateY(0)', clipPath: 'inset(-10% -2% -10% -2%)' },
+        { transform: `translateY(${distance})` },
+        { transform: 'translateY(0)' },
       ], {
         duration: motionDuration(styles.getPropertyValue('--dur-reveal'), 560),
         easing: styles.getPropertyValue('--ease-reveal').trim() || 'ease-out',

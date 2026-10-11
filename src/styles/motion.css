@@ -1,5 +1,6 @@
 /* Motion follows reading order. Only the homepage masks text; all
-   other entrances move already readable headings and structural cues. */
+   other entrances move already readable headings and structural cues.
+   Moving reveals use transforms; decorative pulses use transform/opacity. */
 .motion-line { display: block; overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.1em; }
 .motion-line > span { display: block; }
 @media (prefers-reduced-motion: no-preference) {
@@ -53,9 +54,11 @@
 
 /* Highlight the already stated constraint once. No interval is drawn or
    added to another: these are separate illustrative evidence facts. */
+.finding-chain .fc-exceeds .fc-node { position: relative; }
+.finding-chain .fc-exceeds .fc-node::after { content: ''; position: absolute; inset: -6px; border: 6px solid var(--accent-soft); border-radius: inherit; opacity: 0; pointer-events: none; }
 @media (prefers-reduced-motion: no-preference) {
-  .finding-chain .fc-exceeds .fc-node.is-emphasised { animation: evidence-focus calc(var(--dur-reveal) + var(--dur-fast)) var(--ease-enter); }
+  .finding-chain .fc-exceeds .fc-node.is-emphasised::after { animation: evidence-focus calc(var(--dur-reveal) + var(--dur-fast)) var(--ease-enter); }
   .finding-chain .fc-result.is-emphasised { animation: evidence-rule calc(var(--dur-reveal) + var(--dur-fast)) var(--ease-enter); }
 }
-@keyframes evidence-focus { 0%, 100% { box-shadow: 0 0 0 0 transparent; } 40% { box-shadow: 0 0 0 6px var(--accent-soft); } }
+@keyframes evidence-focus { 0%, 100% { transform: scale(0.5); opacity: 0; } 40% { transform: scale(1); opacity: 1; } }
 @keyframes evidence-rule { 0%, 100% { border-left-color: var(--accent); } 40% { border-left-color: var(--ink); } }

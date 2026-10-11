@@ -77,7 +77,7 @@ const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
   [data-window-view='too-late'] .window-trace { width: calc(100% - 12px); background: var(--muted); }
   .window-view.is-playing .window-trace { animation: window-trace-x calc(var(--dur-trace) * 0.6) linear both; }
   .window-view.is-playing[data-window-view='too-late'] .window-trace { animation-duration: var(--dur-trace); }
-  .window-view.is-playing .window-node { animation: window-stage var(--dur-signal) var(--ease-enter) both; animation-delay: calc(var(--dur-trace) * var(--stage-time)); }
+  .window-view.is-playing .window-node::after { animation: window-stage var(--dur-signal) var(--ease-enter) both; animation-delay: calc(var(--dur-trace) * var(--stage-time)); }
   .window-stage-1 { --stage-time: 0; }
   .window-stage-2 { --stage-time: 0.2; }
   .window-stage-3 { --stage-time: 0.4; }
@@ -86,13 +86,16 @@ const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
   .window-view.is-playing[data-window-view='too-late'] .window-boundary { animation: window-deadline var(--dur-reveal) var(--ease-enter) both; animation-delay: calc(var(--dur-trace) * 0.78); }
   @keyframes window-trace-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   @keyframes window-trace-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-  @keyframes window-stage { 0% { box-shadow: 0 0 0 0 var(--accent-soft); } 45% { box-shadow: 0 0 0 6px var(--accent-soft); } 100% { box-shadow: 0 0 0 10px transparent; } }
+  @keyframes window-stage { 0% { transform: scale(1); opacity: 0; } 45% { transform: scale(1.9); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
   @keyframes window-deadline { 0%, 100% { border-color: var(--control-border); } 40% { border-color: var(--ink); } }
   .window-boundary { position: absolute; left: 78%; top: 0; bottom: 0; width: 1px; border-left: 1px dashed var(--control-border); }
   .window-boundary > span { position: absolute; top: 0; right: 12px; width: max-content; color: var(--muted); font-family: var(--font-mono); font-size: var(--type-caption); }
   ol { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); list-style: none; margin: -6px 0 0; padding: 0; }
   .window-stage { min-width: 0; display: grid; justify-items: start; align-content: start; gap: var(--space-2); grid-column: span 2; }
-  .window-node { width: 13px; height: 13px; border: 1px solid var(--sedi-signal); border-radius: 50%; background: var(--paper); }
+  /* Animate a separate halo so the node and trace stay fixed. Scaling
+     and fading avoids repainting a growing shadow on every frame. */
+  .window-node::after { content: ''; position: absolute; inset: -1px; border: 1px solid var(--accent-soft); border-radius: inherit; opacity: 0; pointer-events: none; }
+  .window-node { position: relative; width: 13px; height: 13px; border: 1px solid var(--sedi-signal); border-radius: 50%; background: var(--paper); }
   .window-stage-4 .window-node { background: var(--sedi-signal); }
   .window-index { margin: 0; font-size: var(--type-caption); color: var(--faint); }
   .window-name { font-size: var(--type-small); font-weight: 600; color: var(--ink); }
