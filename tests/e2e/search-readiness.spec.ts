@@ -8,7 +8,8 @@ function htmlFiles(dir: string): string[] {
     return entry.isDirectory() ? htmlFiles(path) : entry.name.endsWith('.html') ? [path] : [];
   });
 }
-const paths = htmlFiles('dist').map((file) => '/' + relative('dist', file).replace(/index\.html$/, ''));
+// The independently tested email document is an export, not a site page.
+const paths = htmlFiles('dist').map((file) => '/' + relative('dist', file).replace(/index\.html$/, '')).filter(path => path !== '/signature/email.html');
 
 test('rendered pages, canonicals, metadata and entity references agree with the sitemap', async ({ browser, baseURL, request }) => {
   // Content and all important navigation remain available without JavaScript.

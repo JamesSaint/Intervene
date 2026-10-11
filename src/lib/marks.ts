@@ -14,3 +14,10 @@ export const AGDA_MARK = '<span class="agda-mark" role="img" aria-label="AGDA®"
 export function markAgda(value: string): string {
   return value.replace(/AGDA®?/g, AGDA_MARK);
 }
+
+/** Email-safe rendition of the same mark. Both approved PNGs survive CSS stripping. */
+export function markAgdaEmail(value: string): string {
+  const artwork = (tone: 'black' | 'white') => `<img class="sig-logo-${tone}" src="https://intervene.uk/assets/brand/agda-wordmark-no-reg-${tone}-transparent.png" width="80" height="18" alt="AGDA" style="display:inline-block;width:80px;height:auto;vertical-align:middle;border:0;${tone === 'white' ? 'margin-left:12px;' : ''}" />`;
+  const mark = `<span class="sig-agda" style="display:inline-block;white-space:nowrap;">${artwork('black')} ${artwork('white')}<span class="agda-reg" style="color:#c9b694;font-size:9px;vertical-align:top;">®</span></span>`;
+  return value.replace(/AGDA®?/g, mark);
+}

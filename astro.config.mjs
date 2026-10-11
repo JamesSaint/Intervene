@@ -19,6 +19,7 @@ export default defineConfig({
       // stays live and carries a notice; it is simply not advertised.
       filter: (page) =>
         !page.includes('/style-guide/') &&
+        !page.includes('/signature/') &&
         !page.includes('/method/') &&
         !page.includes('/legal/') &&
         !page.includes('/readiness-snapshot/'),
