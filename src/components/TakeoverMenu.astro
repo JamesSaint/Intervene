@@ -266,8 +266,14 @@ const isCurrent = (href: string) => {
   .takeover-body a:hover,
   .takeover-body a:focus-visible { color: var(--accent-text); }
   .takeover-body a:active { color: var(--accent-text-hover); }
-  /* Focus is the ring as well as the colour, never the colour alone. */
-  .takeover-body a:focus-visible { outline: 2px solid var(--focus); outline-offset: 6px; }
+  /* An underline keeps keyboard focus visible without enclosing the link. */
+  .takeover-body a:focus-visible {
+    outline: none;
+    text-decoration: underline;
+    text-decoration-color: var(--focus);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.15em;
+  }
   /* Active route: a bronze rule without shifting the link text. */
   .takeover-body a[aria-current='page']::before {
     content: '';

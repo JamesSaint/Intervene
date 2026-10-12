@@ -197,12 +197,16 @@ test.describe('contact form parity after CSS extraction', () => {
     await expect(page.locator('.consent-copy a')).toHaveAttribute('href', '/legal/privacy/');
   });
 
-  test('inputs now show a visible focus ring, which they did not before', async ({ page }) => {
+  test('field focus adds a visible underline without a surrounding box', async ({ page }) => {
     const input = page.locator('#f-name');
+    const unfocusedShadow = await input.evaluate((el) => getComputedStyle(el).boxShadow);
     await input.focus();
-    const outlineWidth = await input.evaluate(
-      (el) => getComputedStyle(el).outlineWidth,
-    );
-    expect(outlineWidth).not.toBe('0px');
+    const focused = await input.evaluate((el) => {
+      const style = getComputedStyle(el);
+      return { outline: style.outlineStyle, shadow: style.boxShadow };
+    });
+    expect(focused.outline).toBe('none');
+    expect(focused.shadow).not.toBe('none');
+    expect(focused.shadow).not.toBe(unfocusedShadow);
   });
 });
