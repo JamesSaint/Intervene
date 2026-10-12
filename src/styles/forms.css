@@ -4,10 +4,9 @@
    duplicate it. Same treatment throughout: hairline underlines,
    no radius, mono labels, 44px minimum targets.
 
-   Focus indication is a visible ring, not a colour change alone.
-   The contact page previously replaced the outline with a border
-   colour shift, which fails WCAG 2.4.7 for anyone who cannot
-   distinguish the two golds.
+   Text fields use a thicker underline for focus, so the indicator
+   changes shape as well as colour without enclosing the field.
+   Choice controls retain their compact focus outlines.
    ============================================================ */
 
 .form {
@@ -60,9 +59,9 @@
 .field input:focus-visible,
 .field textarea:focus-visible,
 .field select:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 3px;
-  border-bottom-color: var(--control-active);
+  outline: none;
+  border-bottom-color: var(--focus);
+  box-shadow: 0 2px 0 var(--focus);
 }
 
 .field textarea {
