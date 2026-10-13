@@ -41,45 +41,6 @@ function afterFontPaint(callback: () => void): void {
   });
 }
 
-export function initOpening(root: Document | ParentNode = document): void {
-  const hero = root.querySelector<HTMLElement>('.hero-home');
-  if (!hero) return;
-  const preference = matchMedia('(prefers-reduced-motion: reduce)');
-  let ready = false;
-  let played = false;
-  let suspended = false;
-  let timer: number | undefined;
-  const settle = () => {
-    if (hero.hasAttribute('data-enter')) played = true;
-    window.clearTimeout(timer);
-    hero.removeAttribute('data-enter');
-    hero.querySelectorAll<HTMLElement>('.hero-sub, .hero-actions, .hero-principle')
-      .forEach((node) => node.getAnimations().forEach((animation) => animation.cancel()));
-  };
-  const start = () => {
-    if (!ready || played || suspended || !motionEnabled()) return;
-    const headline = hero.querySelector<HTMLElement>('h1');
-    const bounds = headline?.getBoundingClientRect();
-    // A restored scroll position or an active reader must not be pulled
-    // back into an opening. The complete static heading remains available.
-    if (!bounds || bounds.bottom < 88 || bounds.top >= innerHeight || hero.contains(document.activeElement)) return;
-    hero.setAttribute('data-enter', '');
-    const styles = getComputedStyle(hero);
-    timer = window.setTimeout(settle, motionDuration(styles.getPropertyValue('--dur-enter'), 640)
-      + 4 * motionDuration(styles.getPropertyValue('--stagger'), 80) + 80);
-  };
-  afterFontPaint(() => { ready = true; start(); });
-  hero.addEventListener('animationend', (event) => {
-    if ((event.target as HTMLElement).matches('.hero-principle')) settle();
-  });
-  hero.addEventListener('focusin', () => { played = true; settle(); });
-  preference.addEventListener('change', () => { if (preference.matches) settle(); else start(); });
-  window.addEventListener('pagehide', () => { suspended = true; settle(); });
-  window.addEventListener('pageshow', () => { suspended = false; start(); });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) settle(); else start(); });
-  window.addEventListener('beforeprint', settle);
-}
-
 /** Headings retain their document position throughout scrolling. Only
  * decorative evidence cues are observed; text never moves on entry. */
 export function initReveal(root: Document | ParentNode = document): void {

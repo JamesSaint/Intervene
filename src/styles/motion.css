@@ -1,20 +1,8 @@
-/* Headings render without clipping or transforms. Homepage support
-   has a bounded opening; decorative pulses use transform/opacity. */
+/* Page content stays in place from first paint. Decorative evidence
+   cues and deliberate interactions retain their bounded motion. */
 .motion-line { display: block; }
 .motion-line > span { display: block; }
 @media (prefers-reduced-motion: no-preference) {
-  html[data-motion] .hero-home[data-enter] .hero-sub {
-    animation: support-enter var(--dur-enter) var(--ease-enter) calc(var(--stagger) * 2) backwards;
-  }
-  html[data-motion] .hero-home[data-enter] .hero-actions {
-    animation: action-enter var(--dur-enter) var(--ease-enter) calc(var(--stagger) * 3) backwards;
-  }
-  html[data-motion] .hero-home[data-enter] .hero-principle {
-    animation: support-enter var(--dur-enter) var(--ease-enter) calc(var(--stagger) * 4) backwards;
-  }
-  html[data-motion] .hero-home[data-enter]:focus-within :is(.hero-sub, .hero-actions, .hero-principle) {
-    animation: none;
-  }
   .takeover[data-menu-enter] .takeover-body li { animation: nav-enter var(--dur-reveal) var(--ease-enter) backwards; }
   .takeover[data-menu-enter] .takeover-body li:nth-child(2) { animation-delay: 25ms; }
   .takeover[data-menu-enter] .takeover-body li:nth-child(3) { animation-delay: 50ms; }
@@ -41,8 +29,6 @@
   transition: text-decoration-color var(--dur-fast) var(--ease), text-underline-offset var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
 }
 :is(.link, .arrow-link):is(:hover, :focus-visible) { border-bottom-color: transparent; text-decoration-color: var(--accent); text-underline-offset: 3px; }
-@keyframes support-enter { from { transform: translateY(var(--motion-distance)); } to { transform: translateY(0); } }
-@keyframes action-enter { from { transform: translateY(var(--motion-distance)); } to { transform: translateY(0); } }
 @keyframes nav-enter { from { transform: translateY(12px); } to { transform: translateY(0); } }
 @media print { *, *::before, *::after { animation: none !important; } }
 

@@ -59,12 +59,12 @@ test('rapid comparison and replay settle on the requested outcome', async ({ pag
   await expect(instrument.getByRole('radio', { name: 'Too late', exact: true })).toBeChecked();
 });
 
-test('opening links can receive focus during the entrance without waiting for motion', async ({ page }) => {
+test('homepage links receive focus without moving the surrounding content', async ({ page }) => {
   await ready(page);
   const action = page.locator('.hero-home [data-primary-cta]');
   await action.focus();
   await expect(action).toBeFocused();
-  // Focus feedback may still transition; only the opening must settle.
+  // Focus feedback may transition, while page content stays still.
   const moving = await page.locator('.motion-line > span, .hero-home .hero-sub, .hero-home .hero-actions, .hero-home .hero-principle').evaluateAll((nodes) => nodes.flatMap(node => node.getAnimations()).filter(animation => animation.playState === 'running').length);
   expect(moving).toBe(0);
   await expect(action).toBeVisible();

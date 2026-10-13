@@ -46,34 +46,55 @@ async function replay(page: Page) {
   });
 }
 
-test('opening waits for font layout while the headline stays unclipped and fixed', async ({ page }) => {
+test('homepage content stays visible and still throughout a slow font load', async ({ page }) => {
   await prepare(page);
+  // Exceed the old 1.2-second opening timeout to exercise a cold mobile load.
   await page.route('**/*.woff2', async route => {
-    await new Promise(resolve => setTimeout(resolve, 450));
+    await new Promise(resolve => setTimeout(resolve, 1500));
     await route.continue();
   });
+  await page.addInitScript(() => {
+    (window as any).__heroFrames = [];
+    document.addEventListener('DOMContentLoaded', () => {
+      const started = performance.now();
+      const sample = () => {
+        const nodes = document.querySelectorAll('.motion-line, .motion-line > span, .hero-sub, .hero-actions, .hero-principle');
+        if (nodes.length) (window as any).__heroFrames.push({
+          fonts: document.fonts.status,
+          positions: Array.from(nodes).map(node => {
+            const box = node.getBoundingClientRect();
+            return { top: box.top + scrollY, height: box.height };
+          }),
+          still: Array.from(nodes).every(node => {
+            const style = getComputedStyle(node);
+            return style.transform === 'none' && style.opacity === '1'
+              && style.clipPath === 'none' && style.visibility === 'visible'
+              && node.getAnimations().length === 0;
+          }),
+        });
+        if (performance.now() - started < 2500) requestAnimationFrame(sample);
+      };
+      sample();
+    });
+  });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  if (await page.evaluate(() => document.fonts.status === 'loading')) {
-    expect(await page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'support-enter').length)).toBe(0);
-  }
-  await expect.poll(() => page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'support-enter').length)).toBe(2);
-  const starts = await page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'support-enter'));
-  expect(starts.every((start: any) => start.fonts === 'loaded' && start.opacity === '1')).toBe(true);
+  await page.evaluate(() => document.fonts.ready);
+  await expect.poll(() => page.evaluate(() => (window as any).__heroFrames.some((frame: any) => frame.fonts === 'loaded'))).toBe(true);
+  await page.waitForTimeout(900);
+  const frames = await page.evaluate(() => (window as any).__heroFrames);
+  expect(frames.some((frame: any) => frame.fonts === 'loading')).toBe(true);
+  expect(frames.every((frame: any) => frame.still)).toBe(true);
+  const initial = frames[0].positions;
+  const largestShift = Math.max(...frames.flatMap((frame: any) => frame.positions.flatMap((box: any, index: number) => [
+    Math.abs(box.top - initial[index].top), Math.abs(box.height - initial[index].height),
+  ])));
+  expect(largestShift).toBeLessThanOrEqual(0.5);
+  expect(await page.evaluate(() => (window as any).__starts.filter((start: any) => /support-enter|action-enter/.test(start.name)).length)).toBe(0);
   const headline = page.locator('#home-question');
   const before = await headline.boundingBox();
-  const lines = page.locator('.motion-line, .motion-line > span');
-  expect(await lines.evaluateAll(nodes => nodes.every(node => {
-    const style = getComputedStyle(node);
-    return style.transform === 'none' && style.overflow === 'visible' && style.clipPath === 'none';
-  }))).toBe(true);
-  expect(await headline.evaluate(node => node.getAnimations({ subtree: true }).length)).toBe(0);
-  const hero = page.locator('.hero-home');
-  await expect.poll(() => hero.evaluate(node => node.getAnimations({ subtree: true }).filter(a => a.playState === 'running').length)).toBe(0);
-  expect(await headline.boundingBox()).toEqual(before);
   await page.locator('.hero-home [data-primary-cta]').focus();
+  await expect(page.locator('.hero-home [data-primary-cta]')).toBeFocused();
   await page.locator('[data-menu-trigger]').focus();
-  await page.waitForTimeout(200);
-  expect(await page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'support-enter').length)).toBe(2);
   expect(await headline.boundingBox()).toEqual(before);
 });
 
