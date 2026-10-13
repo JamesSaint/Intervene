@@ -284,6 +284,34 @@ test('desktop headings fill their container and only wrap when the next word can
 });
 
 
+test('text uses its available column width across page layouts', async ({ page, isMobile }) => {
+  const routes = ['/', '/about/', '/agda/', '/services/', '/methodology/', '/intervention-readiness/',
+    '/intervention-readiness/halt-authority/', '/intervention-readiness/vs-audit/', '/verify/',
+    '/contact/', '/sectors/', '/network/', '/insights/coincidence-is-not-a-margin/', '/legal/privacy/'];
+  for (const width of isMobile ? [320, 393] : [1024, 1440, 1920]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of routes) {
+      await page.goto(route);
+      await page.evaluate(() => document.fonts.ready);
+      const capped = await page.locator('main .lede, main .body, main .reading-content, main .hero-sub').evaluateAll(nodes => nodes.flatMap(node => {
+        const element = node as HTMLElement;
+        const actual = element.getBoundingClientRect().width;
+        if (!actual) return [];
+        const original = element.getAttribute('style');
+        // Resolve the width offered by the actual grid or block, rather than
+        // mistaking a sibling's column for unused space in this one.
+        element.style.maxWidth = 'none';
+        const available = element.getBoundingClientRect().width;
+        if (original === null) element.removeAttribute('style');
+        else element.setAttribute('style', original);
+        return available - actual > 1 ? [{ className: element.className, actual, available }] : [];
+      }));
+      expect(capped, `${route} at ${width}px`).toEqual([]);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), `${route} at ${width}px`).toBe(false);
+    }
+  }
+});
+
 test('both homepage questions share sentence case and normal heading spacing', async ({ page }) => {
   await page.goto('/');
   const reference = await page.locator('.situations .h2').evaluate((el) => {

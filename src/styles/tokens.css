@@ -23,8 +23,9 @@
   --type-caption: 13px;
   --type-action: 14px;
   --type-finding: clamp(28px, 3.1vw, 44px);
-  --measure-body: 66ch;
-  --measure-lede: 58ch;
+  /* Text fills its layout column; no second character-count cap. */
+  --measure-body: 100%;
+  --measure-lede: 100%;
   --tracking-heading: -0.025em;
 
   /* Approved brand kit v3.0.0: semantic appearance colours. */
