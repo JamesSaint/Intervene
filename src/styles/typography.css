@@ -29,6 +29,8 @@
   font-weight: inherit;
 }
 :where(.lede, .body, .body-sm, main p, main li) { text-wrap: wrap; }
+/* Long inline paths and identifiers wrap only when the column requires it. */
+:where(main p, main li) code { overflow-wrap: anywhere; }
 .lede { max-width: var(--measure-lede); font-family: var(--font-sans); font-size: var(--type-support); line-height: 1.65; font-weight: 400; color: var(--muted); }
 .body { max-width: var(--measure-body); font-family: var(--font-sans); font-size: var(--type-body); line-height: 1.7; font-weight: 400; color: var(--muted); }
 .body-sm { font-family: var(--font-sans); font-size: var(--type-small); line-height: 1.65; }
