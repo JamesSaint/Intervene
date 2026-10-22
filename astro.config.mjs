@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import cspIntegration from './scripts/csp-integration.mjs';
 
 export default defineConfig({
   site: 'https://intervene.uk',
@@ -24,5 +25,7 @@ export default defineConfig({
         !page.includes('/legal/') &&
         !page.includes('/readiness-snapshot/'),
     }),
+    // Meta CSP and referrer policy, computed from the built pages.
+    cspIntegration(),
   ],
 });
