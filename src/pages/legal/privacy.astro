@@ -6,7 +6,7 @@ import LegalLayout from '../../layouts/LegalLayout.astro';
   title="Privacy · Intervene"
   description="Privacy policy for the Intervene Limited website."
   heading="Privacy policy."
-  updated="August 2026 (v4)"
+  updated="23 October 2026 (v5)"
   current="legal"
 >
   <h2>1. Who we are</h2>
@@ -33,20 +33,28 @@ import LegalLayout from '../../layouts/LegalLayout.astro';
     how pages are used. Analytics runs only after you accept via the cookie
     notice. Until then, and if you decline, no analytics cookies are set and
     no analytics data is collected. When enabled, Google Analytics records
-    usage data such as pages viewed, approximate location derived from a
-    truncated IP address, and device and browser type. We use no advertising
+    usage data such as pages viewed, approximate location and device and
+    browser type. Your browser's request to Google necessarily includes your
+    IP address. According to Google's documentation, Google Analytics 4 uses
+    it to derive approximate location and does not log or store it. We use no advertising
     trackers and do not profile visitors for marketing. Beyond Google
-    Analytics and the Google Fonts CDN, which serves typeface files, this
-    site uses no third-party scripts. You can change your choice at any time
+    Analytics, this site uses no third-party scripts, and typeface files are
+    served from this site. You can change your choice at any time
     via "Cookies" in the footer.
   </p>
   <p>
-    Two things are stored in your own browser regardless of that choice,
+    Three things are stored in your own browser regardless of that choice,
     because the site cannot do what you have asked without them. Your accept
-    or decline is stored so the notice does not ask again on every page, and
-    if you use the Snapshot your answers are held in the tab so your
-    progress survives a refresh. Neither is used to track you. Your accept or
-    decline is never sent anywhere. Your Snapshot answers stay in the tab
+    or decline is stored so the notice does not ask again on every page. Your
+    appearance preference (light, dark or system), if you change it, is
+    stored under the name <span class="mono">intervene:appearance</span> so
+    the site displays as you chose. If you use the Snapshot, your answers are
+    held in the tab so your progress survives a refresh. None is used to
+    track you. If you decline, nothing is sent to Google. If you accept, the
+    site tells Google Analytics that analytics storage is granted and that
+    advertising storage, advertising data and advertising personalisation
+    are denied, and that setting accompanies the analytics requests Google
+    receives. Your Snapshot answers stay in the tab
     unless you choose to submit them to the Intervention Readiness Index,
     described in section 5, and closing the tab discards them.
   </p>
@@ -60,8 +68,9 @@ import LegalLayout from '../../layouts/LegalLayout.astro';
   <h2>3. How we use it</h2>
   <p>
     Personal data is used solely to respond to the enquiry and to determine
-    whether an engagement is appropriate. It is not used for marketing, not
-    shared with third parties, and not retained beyond what is necessary to
+    whether an engagement is appropriate. It is not used for marketing, is
+    not disclosed to anyone other than the service providers named in
+    section 4 that carry it to us, and is not retained beyond what is necessary to
     handle the enquiry or to comply with the engagement-related
     record-keeping obligations of an active or recently concluded contract.
   </p>
@@ -74,8 +83,9 @@ import LegalLayout from '../../layouts/LegalLayout.astro';
     described in section 5, are relayed the same way. Formspree is
     established in the United States, so submitting any of these transfers
     what was entered to the United States. Formspree's
-    processing is governed by its own data processing terms. No other
-    third-party processor receives form submissions.
+    processing is governed by its own data processing terms. Apart from our
+    email host, described below, no other third-party processor receives form
+    submissions.
   </p>
   <p>
     Each of these is sent from your own browser, so the request exposes your
@@ -87,7 +97,19 @@ import LegalLayout from '../../layouts/LegalLayout.astro';
     terms, which we do not restate here.
   </p>
   <p>
-    The site itself is static and is hosted on GitHub Pages (GitHub, Inc.).
+    Formspree delivers each submission by email to a mailbox on our email
+    service, which is hosted by GoDaddy. Submissions are therefore also
+    stored in that mailbox. We have not confirmed where GoDaddy stores
+    mailbox data, and Formspree and GoDaddy may use sub-processors of their
+    own, which we do not control. The retention periods in section 5 apply to
+    the copies we control. Formspree and GoDaddy also keep submissions on
+    their own systems for periods set by their terms and our account
+    settings, which we have not independently verified, so this notice states
+    no period for those copies.
+  </p>
+  <p>
+    The site itself is static and is hosted on GitHub Pages (GitHub, Inc.),
+    which serves pages through a third-party content delivery network.
     Serving a page involves GitHub receiving your request, including your IP
     address, in the ordinary course of delivering the site. We do not have
     access to those server logs and we do not use them.
@@ -176,7 +198,8 @@ import LegalLayout from '../../layouts/LegalLayout.astro';
     retained for trend analysis. A note that a Snapshot was completed on a
     referral link carries a link code and none of the visitor's answers, and is
     deleted twelve months after the arrangement with the person who sent that
-    link ends.
+    link ends. Copies held by Formspree and our email host are covered in
+    section 4.
   </p>
   <p>
     <strong>Lawful basis.</strong> Where you asked us to contact you or to

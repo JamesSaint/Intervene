@@ -15,7 +15,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "content-check": "node scripts/content-check.mjs",
-    "check-version-supported": "node scripts/check-version-supported.mjs"
+    "check-version-supported": "node scripts/check-version-supported.mjs",
+    "check-private-paths": "node scripts/check-private-paths.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",

@@ -1,0 +1,4 @@
+Contact: https://intervene.uk/contact/
+Expires: 2027-10-23T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://intervene.uk/.well-known/security.txt

@@ -4,15 +4,20 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 22
           cache: npm
@@ -29,6 +34,15 @@ jobs:
             git diff public/question-manifest.json
             exit 1
           fi
+
+      - name: No private paths are tracked
+        run: npm run check-private-paths
+
+      # Reported, not enforced: the Astro 4 toolchain carries known advisories
+      # that need a major upgrade, which is deferred to a separate change.
+      - name: Dependency audit (advisory)
+        continue-on-error: true
+        run: npm audit --audit-level=high
 
       - name: Snapshot content checks
         run: npm run content-check
