@@ -6,7 +6,7 @@ import Agda from '../../components/Agda.astro';
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xaqrkrpo';
 
 const info: { k: string; v: string; href?: string }[] = [
-  { k: 'Confidentiality', v: 'All correspondence is private and off record unless explicitly agreed otherwise. NDA available before substantive discussion.' },
+  { k: 'Confidentiality', v: 'We handle enquiries discreetly and use them only to respond to you. They are not used for marketing. An NDA is available before substantive discussion. The form is relayed by a third-party service, so keep a first message to the system and the question, and leave out anything that is itself sensitive.' },
   { k: 'Response window', v: 'You receive a direct response within one to two working days. We do not auto-reply.' },
   { k: 'Email',           v: contactEmail, href: `mailto:${contactEmail}` },
   { k: 'No obligation',   v: 'An initial conversation is brief and creates no engagement. We will say if we are not the right fit.' },
@@ -113,7 +113,8 @@ const info: { k: string; v: string; href?: string }[] = [
 
             <div class="submit-row">
               <p class="small muted">
-                Held in strict confidence. Read the
+                Handled discreetly. Relayed by Formspree (United States) to our
+                email service. Read the
                 <a href="/legal/privacy/" class="link">privacy notice</a>.
               </p>
               <button type="submit" class="btn">Send enquiry</button>
