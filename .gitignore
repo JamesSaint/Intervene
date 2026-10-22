@@ -1,6 +1,7 @@
 # Internal strategy and corporate documents. Never publish.
 # This repo is public and auto-deploys to GitHub Pages on push to main.
 internal/
+security-audit/
 
 # Local tooling
 .claude/
