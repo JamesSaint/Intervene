@@ -35,6 +35,9 @@ jobs:
             exit 1
           fi
 
+      - name: No private paths are tracked
+        run: npm run check-private-paths
+
       # Reported, not enforced: the Astro 4 toolchain carries known advisories
       # that need a major upgrade, which is deferred to a separate change.
       - name: Dependency audit (advisory)
