@@ -78,7 +78,13 @@ for (const scheme of ['light', 'dark'] as const) {
     // The email signature artwork uses absolute https://intervene.uk URLs, which email clients need.
     // The meta CSP allows them only as 'self', i.e. on the real origin; the local preview origin is
     // different, so that one img-src report is expected here and nowhere else.
-    const expectedLocalOnly = (text: string) => /img-src|load the image/i.test(text) && text.includes('https://intervene.uk/assets/');
+    const expectedLocalOnly = (text: string) => {
+      if (!/img-src|load the image/i.test(text)) return false;
+      const raw = /https:\/\/[^\s"')]+/.exec(text)?.[0];
+      if (!raw) return false;
+      const url = new URL(raw);
+      return url.origin === 'https://intervene.uk' && url.pathname.startsWith('/assets/');
+    };
     page.on('console', message => { if (message.type() === 'error' && !expectedLocalOnly(message.text())) errors.push(message.text()); });
     page.on('response', response => { if (response.status() >= 400 && !response.url().includes('googletagmanager')) errors.push(response.url()); });
     for (const route of routes) {
