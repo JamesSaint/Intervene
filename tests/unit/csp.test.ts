@@ -59,6 +59,8 @@ describe('meta CSP', () => {
       `<script>${body}</SCRIPT>`,
       `<script data-x="a>b">${body}</script\n>`,
       `<SCRIPT type='text/javascript'>${body}</script>`,
+      `<script>${body}</script\t\n bar>`,
+      `<script>${body}</script/>`,
     ]) {
       expect(inlineScriptHashes(page(markup)), markup).toEqual([sha(body)]);
     }
