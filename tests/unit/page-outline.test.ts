@@ -32,4 +32,10 @@ describe('build-time reading navigation', () => {
       expect(item.label, heading).not.toMatch(/[<>]/);
     }
   });
+  it('does not let nested fragments reassemble a tag after tags are stripped', () => {
+    for (const heading of ['<<b>script>alert(1)<</b>/script>', '<<i><b>img src=x onerror=alert(1)>']) {
+      const [item] = pageOutline(`<h2>${heading}</h2>`).items;
+      expect(item.label, heading).not.toMatch(/[<>]/);
+    }
+  });
 });
