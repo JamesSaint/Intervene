@@ -22,8 +22,10 @@ jobs:
           node-version: 22
           cache: npm
 
+      # Lifecycle scripts are skipped: nothing in the build needs them, and
+      # they are the usual way a compromised dependency runs code in CI.
       - name: Install
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Question manifest is current
         run: |
