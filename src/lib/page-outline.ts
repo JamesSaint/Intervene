@@ -1,6 +1,15 @@
 /** Add navigable headings to trusted, rendered repository content at build time. */
 export interface OutlineItem { href: string; label: string }
-const plainText = (html: string) => html.replace(/<[^>]*>/g, '').replace(/&(?:amp|lt|gt|quot|apos|nbsp);|&#(?:x[0-9a-f]+|[0-9]+);/gi, (entity) => {
+// Repeat until stable so nested fragments such as "<<b>script>" cannot reassemble a tag.
+const stripTags = (html: string) => {
+  let out = html;
+  for (let previous = ''; previous !== out; ) {
+    previous = out;
+    out = out.replace(/<[^>]*>/g, '');
+  }
+  return out;
+};
+const plainText = (html: string) => stripTags(html).replace(/&(?:amp|lt|gt|quot|apos|nbsp);|&#(?:x[0-9a-f]+|[0-9]+);/gi, (entity) => {
   const named: Record<string, string> = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&apos;': "'", '&nbsp;': ' ' };
   if (named[entity]) return named[entity];
   return String.fromCodePoint(entity[2].toLowerCase() === 'x' ? parseInt(entity.slice(3), 16) : parseInt(entity.slice(2), 10));
