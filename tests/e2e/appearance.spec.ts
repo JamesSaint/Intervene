@@ -75,7 +75,11 @@ for (const scheme of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
-    page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+    // The email signature artwork uses absolute https://intervene.uk URLs, which email clients need.
+    // The meta CSP allows them only as 'self', i.e. on the real origin; the local preview origin is
+    // different, so that one img-src report is expected here and nowhere else.
+    const expectedLocalOnly = (text: string) => /img-src|load the image/i.test(text) && text.includes('https://intervene.uk/assets/');
+    page.on('console', message => { if (message.type() === 'error' && !expectedLocalOnly(message.text())) errors.push(message.text()); });
     page.on('response', response => { if (response.status() >= 400 && !response.url().includes('googletagmanager')) errors.push(response.url()); });
     for (const route of routes) {
       await page.goto(route); await page.evaluate(() => document.fonts.ready);

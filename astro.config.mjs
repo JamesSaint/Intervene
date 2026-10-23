@@ -9,6 +9,10 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  // Astro 7 defaults to JSX whitespace rules, which drop the space at line
+  // breaks between text and inline elements ("the intervention chain" becomes
+  // "theintervention chain"). `true` is the lossless mode that keeps Astro 4 output.
+  compressHTML: true,
   devToolbar: {
     enabled: false,
   },
