@@ -271,7 +271,7 @@ test.describe('privacy and AGDA protection', () => {
     const events: string[] = [];
     page.on('request', (request) => {
       const url = request.url();
-      if (!url.includes('google-analytics.com')) return;
+      if (!/(^|\.)google-analytics\.com$/.test(new URL(url).hostname)) return;
       const match = url.match(/[?&]en=([^&]+)/);
       if (match) events.push(decodeURIComponent(match[1]));
     });
