@@ -60,4 +60,13 @@ describe('legal copy matches the third parties the site contacts', () => {
     expect(contact).toMatch(/Formspree/);
     expect(contact).toMatch(/discreetly/);
   });
+
+  it('terms do not promise that correspondence will never be shared', () => {
+    const terms = readFileSync(join(root, 'src/pages/legal/terms.astro'), 'utf8');
+    expect(terms).not.toMatch(/will not be\s+shared/i);
+    expect(terms).toMatch(/service\s+providers/);
+    expect(terms).toMatch(/law,\s+a\s+court\s+or\s+a\s+regulator/);
+    expect(terms).toMatch(/cannot\s+guarantee/);
+    expect(terms).toMatch(/\/legal\/privacy\//);
+  });
 });
