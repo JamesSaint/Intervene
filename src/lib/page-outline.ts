@@ -4,7 +4,8 @@ const plainText = (html: string) => html.replace(/<[^>]*>/g, '').replace(/&(?:am
   const named: Record<string, string> = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&apos;': "'", '&nbsp;': ' ' };
   if (named[entity]) return named[entity];
   return String.fromCodePoint(entity[2].toLowerCase() === 'x' ? parseInt(entity.slice(3), 16) : parseInt(entity.slice(2), 10));
-}).replace(/\s+/g, ' ').trim();
+// Labels are rendered with set:html, so decoded angle brackets must not become markup.
+}).replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\s+/g, ' ').trim();
 
 export function pageOutline(source: string): { html: string; items: OutlineItem[] } {
   const used = new Set(Array.from(source.matchAll(/\bid="([^"]+)"/g), (match) => match[1]));

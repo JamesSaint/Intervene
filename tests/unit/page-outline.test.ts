@@ -20,4 +20,16 @@ describe('build-time reading navigation', () => {
   it('does not confuse a data attribute with a heading anchor', () => {
     expect(pageOutline('<h2 data-id="example">Terms</h2>').items).toEqual([{ href: '#terms', label: 'Terms' }]);
   });
+  it('never turns entity-encoded markup in a heading into live markup in the label', () => {
+    // Labels are rendered with set:html, so decoded angle brackets must stay escaped.
+    for (const heading of [
+      '&lt;script&gt;alert(1)&lt;/script&gt;',
+      '&#60;img src=x onerror=alert(1)&#62;',
+      '&#x3C;svg onload=alert(1)&#x3E;',
+      'A &amp;lt;b&amp;gt; sequence',
+    ]) {
+      const [item] = pageOutline(`<h2>${heading}</h2>`).items;
+      expect(item.label, heading).not.toMatch(/[<>]/);
+    }
+  });
 });
