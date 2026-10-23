@@ -25,7 +25,8 @@ export default defineConfig({
     { name: 'mobile', use: { ...devices['Pixel 5'] } },
   ],
   webServer: {
-    command: `npm run build && npm run preview -- --host ${HOST} --port ${PORT}`,
+    // Astro 7's preview detaches; the wrapper keeps it in the foreground for Playwright.
+    command: `npm run build && node scripts/preview-foreground.mjs --host ${HOST} --port ${PORT}`,
     url: `http://${HOST}:${PORT}/readiness-snapshot/`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

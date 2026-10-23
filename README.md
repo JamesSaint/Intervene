@@ -18,7 +18,7 @@ Canonical site: `https://intervene.uk/`
 | Layer | Choice |
 | --- | --- |
 | Framework | [Astro](https://astro.build) 4.x, `output: 'static'`, `trailingSlash: 'always'` |
-| Runtime | Node.js 22 in GitHub Actions |
+| Runtime | Node.js 24.22.1 and npm 11.19.1, pinned in `.nvmrc` and `package.json` `engines`; `.npmrc` sets `engine-strict` so the wrong versions fail fast. CI reads `.nvmrc`. Use `nvm use` before `npm ci`. |
 | Type | Montserrat for interface and editorial copy, IBM Plex Mono for proof marks and technical fragments |
 | Theme | Dark advisory surface, warm text hierarchy, muted gold accent, restrained verdict colours |
 | Forms | [Formspree](https://formspree.io) contact endpoint |
@@ -120,7 +120,7 @@ The dev server runs at `http://localhost:4321/`. Production is served from the c
 
 ```bash
 npm run build          # builds the static site to ./dist
-npm run preview        # serves the built site locally
+npm run preview        # serves the built site locally (Astro 7 runs it in the background: `npx astro preview stop`)
 npm test               # unit tests (vitest)
 npm run test:e2e       # browser tests (playwright)
 npm run content-check  # Snapshot copy and vocabulary checks
@@ -131,7 +131,7 @@ npm run typecheck      # astro check. Advisory only, see below
 
 Generation is deterministic: the manifest is a pure function of `src/lib/snapshot/questions.ts`, carries no timestamp, and is byte-identical on any day, machine or time zone. CI regenerates it and fails on any diff, so nothing may be added to it that varies on its own. `tests/unit/question-manifest.test.ts` holds that invariant, and `git log public/question-manifest.json` is the provenance record.
 
-`npm run typecheck` reports 59 pre-existing errors in `TakeoverMenu.astro`, `FilmPlayer.astro`, `ConsentBanner.astro` and `BaseLayout.astro`. They predate the Snapshot work and are not fixed by it, so typecheck runs advisory in CI rather than blocking. Clear them before making it a gate.
+`npm run typecheck` currently reports 0 errors (the 59 earlier errors no longer exist). It still runs advisory in CI; make it blocking when convenient.
 
 ## Deployment
 

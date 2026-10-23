@@ -16,11 +16,19 @@ describe('GitHub workflow safety', () => {
     for (const u of uses) expect(u, `${f}: ${u}`).toMatch(/^[\w.-]+\/[\w./-]+@[0-9a-f]{40}$/);
   });
 
-  it.each(files)('%s: no privileged pull-request trigger and no expression injection', (f) => {
+  it.each(files)('%s: no privileged pull-request trigger and no expression inside run scripts', (f) => {
     const text = read(f);
     expect(text).not.toMatch(/pull_request_target|workflow_run/);
-    const runBlocks = text.split('\n').filter((l) => /^\s+run:/.test(l) || /\$\{\{/.test(l));
-    for (const l of runBlocks) expect(l, `${f}: ${l.trim()}`).not.toMatch(/\$\{\{\s*(github\.(event|head_ref)|inputs|env)\b/);
+    // Values reach scripts through env, never by interpolating ${{ }} into the shell.
+    const lines = text.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      const m = /^(\s*)(?:-\s*)?run:\s*(.*)$/.exec(lines[i]);
+      if (!m) continue;
+      const indent = m[1].length;
+      const block = [m[2]];
+      for (let j = i + 1; j < lines.length && (lines[j].trim() === '' || lines[j].search(/\S/) > indent); j++) block.push(lines[j]);
+      expect(block.join('\n'), `${f}: run block at line ${i + 1}`).not.toContain('${{');
+    }
   });
 
   it.each(files)('%s: default token is read-only and checkout does not persist credentials', (f) => {
@@ -32,10 +40,26 @@ describe('GitHub workflow safety', () => {
     expect(text).not.toMatch(/secrets\./);
   });
 
-  it.each(files)('%s: dependencies install without lifecycle scripts', (f) => {
+  it.each(files)('%s: dependencies, where installed, install without lifecycle scripts', (f) => {
     const text = read(f);
-    expect(text).not.toMatch(/npm ci(?! --ignore-scripts)/);
-    expect(text).toMatch(/npm ci --ignore-scripts/);
+    expect(text).not.toMatch(/run:\s*npm (ci|install|i)\b(?![^\n]*--ignore-scripts)/);
+  });
+
+  it.each(files)('%s: uses a pinned runner image and the pinned Node from .nvmrc', (f) => {
+    const text = read(f);
+    expect(text).not.toMatch(/runs-on:\s*\S*-latest/);
+    expect(text).toMatch(/runs-on:\s*ubuntu-\d+\.\d+/);
+    if (/setup-node@/.test(text)) {
+      expect(text).toMatch(/node-version-file: \.nvmrc/);
+      expect(text).not.toMatch(/node-version:\s*\d/);
+    }
+  });
+
+  it('the monitor can only write issues and read workflow runs', () => {
+    const monitor = read('monitor.yml');
+    expect(monitor).toMatch(/permissions:\n      contents: read\n      issues: write\n      actions: read/);
+    expect(monitor).not.toMatch(/pages: write|id-token: write|contents: write|pull-requests: write/);
+    expect(monitor).toMatch(/schedule:\n\s+- cron:/);
   });
 
   it('only the deploy job can write Pages or mint an OIDC token', () => {

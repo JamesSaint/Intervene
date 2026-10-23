@@ -1,0 +1,92 @@
+name: Site monitor
+
+# Hourly read-only checks of https://intervene.uk. On failure it opens (or
+# updates) one GitHub issue labelled site-monitor, which notifies the repository
+# owner; when every check passes again it comments and closes that issue.
+# Nothing here submits a form or writes to the site.
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+    inputs:
+      simulate_failure:
+        description: Add a synthetic failure to prove the alert route (opens a test issue)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-monitor
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      SIMULATE: ${{ inputs.simulate_failure && 'true' || 'false' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .nvmrc
+
+      - name: Run checks
+        id: checks
+        run: |
+          flags="--json"
+          if [ "$SIMULATE" = "true" ]; then flags="$flags --simulate-failure"; fi
+          set +e
+          node scripts/monitor-site.mjs $flags > result.json
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          cat result.json
+
+      - name: Report to an issue
+        if: always()
+        run: |
+          label="site-monitor"
+          title="Site monitor: checks failing"
+          if [ "$SIMULATE" = "true" ]; then label="site-monitor-test"; title="[TEST] Site monitor alert route"; fi
+          gh label create "$label" --color B60205 --description "Automated availability monitor" 2>/dev/null || true
+          existing=$(gh issue list --label "$label" --state open --json number --jq '.[0].number // empty')
+          if [ ! -s result.json ]; then
+            body="The monitor produced no result. See run $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID."
+            failed=1
+          else
+            body=$(node -e '
+              const r = JSON.parse(require("fs").readFileSync("result.json", "utf8"));
+              const bad = r.results.filter((x) => !x.ok);
+              const lines = r.results.map((x) => `- ${x.ok ? "ok" : "FAIL"} ${x.name}: ${x.detail}`);
+              console.log(`Checked ${r.checkedAt}\n\n${lines.join("\n")}`);
+              process.exitCode = bad.length ? 3 : 0;
+            ') && failed=0 || failed=1
+          fi
+          body="$body"$'\n\n'"Run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          if [ "$failed" = "1" ]; then
+            if [ -n "$existing" ]; then
+              gh issue edit "$existing" --body "$body"
+            else
+              gh issue create --title "$title" --label "$label" --body "$body"
+            fi
+          elif [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "All checks pass again. $body"
+            gh issue close "$existing"
+          fi
+
+      - name: Fail the run if any check failed
+        if: steps.checks.outputs.status != '0'
+        run: exit 1
