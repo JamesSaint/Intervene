@@ -272,7 +272,13 @@ export function initPageNav(root: Document | ParentNode = document): () => void 
 
 export function initAnchorSettle(): void {
   if (!location.hash || !('fonts' in document)) return;
-  const id = decodeURIComponent(location.hash.slice(1));
+  let id: string;
+  try {
+    id = decodeURIComponent(location.hash.slice(1));
+  } catch {
+    // A malformed escape in the address bar must not stop the scripts after this one.
+    return;
+  }
   const target = document.getElementById(id);
   if (!target) return;
   // Any deliberate movement cancels the correction: wheel, touch, a key,
