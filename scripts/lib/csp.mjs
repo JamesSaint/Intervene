@@ -15,7 +15,9 @@
 
 import { createHash } from 'node:crypto';
 
-const SCRIPT_RE = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
+// Attributes may contain a quoted ">". Browsers also accept an end tag with
+// whitespace or ignored attributes (</script >, </script foo>).
+const SCRIPT_RE = /<script\b((?:[^>"']|"[^"]*"|'[^']*')*)>([\s\S]*?)<\/script(?:[\s/](?:[^>"']|"[^"]*"|'[^']*')*)?>/gi;
 const EXECUTABLE_TYPES = new Set(['', 'text/javascript', 'application/javascript', 'module']);
 
 export const REFERRER_META = '<meta name="referrer" content="strict-origin-when-cross-origin">';

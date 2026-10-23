@@ -51,4 +51,23 @@ describe('meta CSP', () => {
   it('leaves fragments without a head untouched', () => {
     expect(injectCsp('<p>fragment</p>')).toBe('<p>fragment</p>');
   });
+
+  it('recognises end tags with whitespace or capitals and attributes containing ">"', () => {
+    const body = 'window.q = 1';
+    for (const markup of [
+      `<script>${body}</script >`,
+      `<script>${body}</SCRIPT>`,
+      `<script data-x="a>b">${body}</script\n>`,
+      `<SCRIPT type='text/javascript'>${body}</script>`,
+      `<script>${body}</script\t\n bar>`,
+      `<script>${body}</script/>`,
+    ]) {
+      expect(inlineScriptHashes(page(markup)), markup).toEqual([sha(body)]);
+    }
+  });
+
+  it('does not let one script swallow the next when end tags vary', () => {
+    const html = page('<script>var a=1</script ><script>var b=2</script>');
+    expect(inlineScriptHashes(html)).toEqual([sha('var a=1'), sha('var b=2')].sort());
+  });
 });
