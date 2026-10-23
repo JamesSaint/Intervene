@@ -367,23 +367,31 @@ test.describe('privacy and AGDA protection', () => {
 
   test('ships no ordering values, thresholds or bands to the browser', async ({ page }) => {
     await page.goto(ROUTE);
-    const scripts = await page.evaluate(async () => {
+    const bodies = await page.evaluate(async () => {
       const urls = Array.from(document.querySelectorAll('script[src]')).map(
         (s) => (s as HTMLScriptElement).src,
       );
-      const bodies = await Promise.all(
-        urls
-          .filter((u) => u.includes('/_astro/'))
-          .map((u) => fetch(u).then((r) => r.text())),
+      return Promise.all(
+        urls.filter((u) => u.includes('/_astro/')).map((u) => fetch(u).then((r) => r.text())),
       );
-      return bodies.join('\n');
     });
+    expect(bodies.length).toBeGreaterThan(0);
+    const all = bodies.join('\n');
 
-    for (const term of ['RESPONSE_ORDER_VALUE', 'chainCeiling', 'threshold', 'areaValue']) {
-      expect(scripts.toLowerCase(), `bundle contains "${term}"`).not.toContain(
-        term.toLowerCase(),
-      );
+    for (const term of ['RESPONSE_ORDER_VALUE', 'chainCeiling', 'areaValue']) {
+      expect(all.toLowerCase(), `bundle contains "${term}"`).not.toContain(term.toLowerCase());
     }
+
+    // "threshold" is also the name of an IntersectionObserver option used by the
+    // site-wide motion code, which Astro 7 shares with every page. That key, with a
+    // numeric or array value, is the only permitted use anywhere in the scripts...
+    const withoutObserverOptions = all.replace(/\bthreshold\s*:\s*(\[[\d.,\s]*\]|[\d.]+)/gi, '');
+    expect(withoutObserverOptions.toLowerCase(), 'bundle contains "threshold"').not.toMatch(/threshold/);
+
+    // ...and the code that handles the Snapshot's answers must not contain the word at all.
+    const snapshotCode = bodies.filter((b) => /question_set_version|formspree\.io\/f\/xvzwdyob/.test(b));
+    expect(snapshotCode.length, 'Snapshot bundle located').toBeGreaterThan(0);
+    for (const body of snapshotCode) expect(body.toLowerCase()).not.toContain('threshold');
   });
 
   test('the Index form is live, and sends nothing until asked', async ({ page }) => {
