@@ -164,6 +164,7 @@ test('a repeated submit cannot create concurrent requests', async ({ page }) => 
 
 for (const [selection, offering] of [
   ['not-sure', null],
+  ['check', 'Authority Check'],
   ['assessment', 'AGDA® Assessment'],
 ] as const) {
   test(`notification metadata preserves ${selection} selection`, async ({ page }) => {

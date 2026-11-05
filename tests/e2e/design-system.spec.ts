@@ -136,7 +136,7 @@ test.describe('anchors and page navigation', () => {
 test.describe('offer sheets', () => {
   test('keep prices, indicative status, the Review exclusion and access qualifications visible', async ({ page }) => {
     await page.goto('/services/');
-    for (const slug of ['review', 'assessment']) {
+    for (const slug of ['check', 'review', 'assessment']) {
       const sheet = page.locator(`#${slug}`);
       await expect(sheet.locator('.price')).toBeVisible();
       await expect(sheet.locator('.price-flag')).toContainText('The proposal confirms the fee');
@@ -159,15 +159,16 @@ test.describe('offer sheets', () => {
     await expect(details.locator('.disclosure-body')).toContainText('legal opinion');
   });
 
-  test('rows of the two sheets sit level on desktop', async ({ page, isMobile }) => {
+  test('rows of the three sheets sit level on desktop', async ({ page, isMobile }) => {
     test.skip(isMobile, 'sheets stack on a phone');
     await page.goto('/services/');
     const tops = await page.evaluate(() => {
       const rows = (id: string) => Array.from(document.querySelectorAll<HTMLElement>(`#${id} > *`)).map((r) => Math.round(r.getBoundingClientRect().top));
-      return { a: rows('review'), b: rows('assessment') };
+      return { a: rows('review'), b: rows('assessment'), c: rows('check') };
     });
     expect(tops.a.length).toBe(8);
     expect(tops.a).toEqual(tops.b);
+    expect(tops.a).toEqual(tops.c);
   });
 });
 

@@ -23,13 +23,14 @@ describe('llms.txt mirrors the offers', () => {
     expect(llms).toContain(PRICE_QUALIFIER);
     expect(llms).toContain(FEE_BASIS);
     expect(llms).toContain(AVAILABILITY);
-    expect(llms).toContain('A Review is not required first');
+    expect(llms).toContain('Neither the Authority Check nor a Review is required first');
     expect(llms).not.toMatch(/available now|accepted now|immediately available/i);
   });
 
   it('qualifies the four-week figure as an estimated duration once an engagement begins', () => {
-    expect(offers[1].timing).toMatch(/^Once an engagement begins/);
-    expect(offers[1].timing).toMatch(/estimated/);
+    const a = offers.find((o) => o.slug === 'assessment')!;
+    expect(a.timing).toMatch(/^Once an engagement begins/);
+    expect(a.timing).toMatch(/estimated/);
   });
 
   it('mirrors the records note and the issuance requirement', () => {
@@ -40,6 +41,14 @@ describe('llms.txt mirrors the offers', () => {
 
   it('states that the Review does not include the verdict', () => {
     expect(llms.toLowerCase()).toContain('does not include the agda® verdict');
+  });
+
+  it('states the Authority Check claim limits', () => {
+    expect(llms).toContain('not an AGDA® verdict, SEDI result or score');
+    expect(llms).toContain('carries no attestation');
+    expect(llms).toContain('prepared without independent review');
+    expect(llms).toContain('one test at one time');
+    expect(llms).not.toMatch(/credit/i);
   });
 
   it('carries the canonical AGDA® definition verbatim', () => {
@@ -63,24 +72,44 @@ describe('the shared FAQ answers whether a Review is required first', () => {
     const q = offerFaqs.find((f) => /Review first/.test(f.question))!;
     expect(q.answer).toMatch(/^No\./);
     expect(q.answer).toMatch(/discuss a full AGDA® Assessment directly/);
+    expect(q.answer).not.toMatch(/credit/i);
   });
 });
 
 describe('offers are internally consistent', () => {
-  it('has exactly two current engagements', () => {
-    expect(offers.map((o) => o.slug)).toEqual(['review', 'assessment']);
+  const by = (slug: string) => offers.find((o) => o.slug === slug)!;
+
+  it('has exactly three current engagements, in ladder order', () => {
+    expect(offers.map((o) => o.slug)).toEqual(['check', 'review', 'assessment']);
+  });
+
+  it('carries the agreed indicative prices and no retired range', () => {
+    expect(by('check').price).toBe('£12,500 fixed + VAT');
+    expect(by('review').price).toMatch(/£25,000 \+ VAT/);
+    expect(by('assessment').price).toMatch(/£75,000 \+ VAT/);
+    for (const o of offers) expect(o.price).not.toMatch(/20,000|35,000|95,000| to /);
+  });
+
+  it('the Authority Check states its limits and promises no fee credit', () => {
+    const c = by('check');
+    expect(c.exclusion).toMatch(/not an AGDA® verdict, SEDI result or score, and carries no attestation/);
+    expect(c.exclusion).toMatch(/without independent review/);
+    expect(c.exclusion).toMatch(/one test at one time/);
+    expect(c.exclusion).toMatch(/not a finding about the organisation/);
+    const all = JSON.stringify(offers) + JSON.stringify(offerFaqs);
+    expect(all).not.toMatch(/credit|ongoing reachability|signed report|independently reviewed/i);
   });
 
   it('the Review says what it does not include', () => {
-    expect(offers[0].exclusion).toMatch(/does not include the AGDA® verdict/);
+    expect(by('review').exclusion).toMatch(/does not include the AGDA® verdict/);
   });
 
   it('the Assessment lists the evidence register as a deliverable', () => {
-    expect(offers[1].receive.join(' ')).toMatch(/evidence register/);
+    expect(by('assessment').receive.join(' ')).toMatch(/evidence register/);
   });
 
   it('signed records are not listed as a deliverable; the note states the condition', () => {
-    expect(offers[1].receive.find((r) => /Signed SEDI/.test(r))).toBeUndefined();
+    expect(by('assessment').receive.find((r) => /Signed SEDI/.test(r))).toBeUndefined();
     expect(RECORDS_NOTE).toMatch(/not a standard deliverable/);
     expect(RECORDS_NOTE).toMatch(/approved output-access arrangement/);
   });

@@ -1,13 +1,21 @@
-// Single source of truth for the two current engagements. The homepage,
+// Single source of truth for the three current engagements. The homepage,
 // /services/, the shared FAQ on /agda/ and /services/, and the Offer nodes
 // in BaseLayout all read from here. public/llms.txt mirrors the names,
 // ranges and the Review exclusion by hand; tests/unit/offers-parity.test.ts
 // checks that the mirror has not drifted.
 //
-// Prices are indicative ranges from the 14 September 2026 commercial
-// strategy (§15, §16). They are published with the qualifier below by a
-// decision taken on 15 September 2026. They are not stable enough for
-// structured data, so the Offer nodes carry names and descriptions only.
+// Prices are indicative, from the 14 September 2026 commercial strategy
+// (§15, §16) as restated in the AGDA offer architecture of 5 November 2026
+// (Authority Check as the entry offer). They are published with the
+// qualifier below by a decision taken on 15 September 2026. They are not
+// stable enough for structured data, so the Offer nodes carry names and
+// descriptions only.
+//
+// Claims held for the Authority Check (offer architecture, "The Authority
+// Check"): it is not an AGDA verdict, SEDI result or score and carries no
+// attestation; the live call-out is one test at one time; no Check fee
+// credit against a Review is promised (the rule is not decided); the
+// finding is prepared without independent review.
 //
 // Deliverable wording. The evidence register is a strategy-confirmed
 // full-assessment output (§8) and stays in the package. Signed SEDI
@@ -17,11 +25,17 @@
 // a deliverable is platform-generated.
 
 export interface Offer {
-  slug: 'review' | 'assessment';
+  slug: 'check' | 'review' | 'assessment';
   name: string;
+  /** The one question this engagement answers about the named system. */
+  question: string;
+  /** Schema.org serviceType. The Check is not an assessment. */
+  serviceType: string;
   short: string;
   purpose: string;
   scope: string[];
+  /** One line for the "Evidence examined" row on the homepage. */
+  examined: string;
   receive: string[];
   exclusion: string;
   /** One line for the homepage card; the full exclusion is on /services/. */
@@ -41,7 +55,7 @@ export interface Offer {
 export const PRICE_QUALIFIER =
   'Initial pricing remains subject to market validation.';
 
-/* What moves a quoted fee above its starting price. Shown once beneath the two
+/* What moves a quoted fee above its starting price. Shown once beneath the three
    sheets on /services/ and mirrored in llms.txt. Additional systems,
    pathways, scenarios and implementation work are separately scoped;
    that boundary lives in each offer's exclusion row, not here. */
@@ -57,53 +71,96 @@ export const AVAILABILITY =
 
 export const offers: Offer[] = [
   {
+    slug: 'check',
+    name: 'Authority Check',
+    question: 'Can anyone stop this system?',
+    serviceType: 'Intervention authority check',
+    short: 'A one-page finding on who can halt one named system, whether they can decide alone, how they are reached out of hours and where the halt takes effect.',
+    purpose:
+      'A narrow entry engagement that answers one question about one named system: can anyone stop it? It is not an AGDA® verdict, SEDI result or score, and it carries no attestation.',
+    scope: [
+      'One named system.',
+      'Who may halt it, and under which delegation.',
+      'Whether they can decide alone or need a quorum.',
+      'How they are reached out of hours, tested once with a live call-out run under a protocol agreed with you beforehand.',
+      'Where the halt takes effect: in the running system, or through another team or a vendor.',
+    ],
+    examined: 'The delegation, the quorum rule, the out-of-hours route and the halt mechanism, tested once with a live call-out.',
+    receive: [
+      'A one-page finding on authority, reachability and the halt mechanism.',
+      'The gaps found.',
+      'When the live call-out was run and what it showed, stated as one test at one time.',
+    ],
+    exclusion:
+      'The Authority Check is not an AGDA® verdict, SEDI result or score, and carries no attestation. The finding is prepared without independent review. The live call-out is one test at one time and does not show that anyone can be reached on any other occasion. A finding about one system is not a finding about the organisation. It is a distinct, narrower engagement, not a discounted Review.',
+    exclusionShort: 'Not an AGDA® verdict, SEDI result or score, and no attestation. Prepared without independent review.',
+    decision: 'Whether anyone can stop this system, who that is, and where the gaps lie in their authority, their reachability and the halt mechanism.',
+    retain: 'The one-page finding stands on its own: who may halt the system, whether they can decide alone, how they were reached and where the halt takes effect, with the gaps found. It is a finding about this system only.',
+    suitable: 'You want a bounded answer on whether anyone can stop one named system before looking at the evidence behind every step of its intervention chain.',
+    timing: 'Scope, access and timing are agreed in the proposal. The live call-out is run once, at a time agreed in the protocol.',
+    price: '£12,500 fixed + VAT',
+    priceNote: 'Indicative fee',
+    schemaDescription:
+      'A narrow check of one named system that establishes who may halt it, whether they can decide alone, how they are reached out of hours and where the halt takes effect. Not an AGDA® verdict, SEDI result or score, and carries no attestation.',
+  },
+  {
     slug: 'review',
     name: 'Intervention Readiness Review',
-    short: 'A documented executive view of where one system could fail to be stopped in time, what evidence you hold and what a full assessment would need to examine.',
+    question: 'Could you prove it?',
+    serviceType: 'Intervention Readiness assessment',
+    short: 'A documented executive view of what you could evidence for each step of the intervention chain on one system, the timings in your own records and whether a full assessment is warranted.',
     purpose:
-      'A focused entry engagement to determine whether a selected system presents a material intervention question and whether a full AGDA® Assessment is justified.',
+      'A preliminary engagement for one named system. It includes everything in the Authority Check and adds evidence for all four steps of the intervention chain, a review of your own records for real timings, and the inputs needed to set the intervention window. It establishes whether a full AGDA® Assessment is warranted.',
     scope: [
-      'One proposed system.',
+      'Everything in the Authority Check.',
+      'Evidence for Detect, Escalate, Decide and Intervene, each graded by the strongest evidence held: Assumed, Policy, Drill, Production or Stress-tested.',
+      'Review of your own records for real timings.',
+      'Identification of the inputs needed to set the intervention window.',
       'Limited stakeholder access.',
-      'Preliminary intervention-chain mapping.',
-      'Review of the evidence you already hold.',
-      'A material hypothesis and an assessment recommendation.',
     ],
+    examined: 'Evidence for all four steps, graded, and your own records reviewed for real timings.',
     receive: [
-      'A concise executive review stating what needs to be assessed and why it matters.',
-      'The evidence and access position: what exists, what is missing and who would need to take part.',
+      'The Authority Check finding.',
+      'A gap register: the evidence held for each step, graded, and what is missing.',
       'A recommendation on whether a full AGDA® Assessment is warranted, and the proposed scope if it is.',
     ],
-    exclusion: 'The Review does not include the AGDA® verdict, the SEDI findings or signed SEDI result records. It is not a discounted AGDA® Assessment.',
+    exclusion: 'The Review does not include the AGDA® verdict, the window set from your records, the end-to-end timing result or signed SEDI result records. It is not a discounted AGDA® Assessment.',
     exclusionShort: 'The Review does not include the AGDA® verdict. It is not a discounted AGDA® Assessment.',
-    decision: 'Whether the selected system carries a material intervention question, and what you would need to assess, and to have access to, before relying on the answer.',
-    retain: 'The executive review stands on its own: a stated intervention question for the system, the preliminary chain, the evidence you hold and the gaps, and a scoped recommendation. It supports prioritisation and budget decisions whether or not a full Assessment follows.',
-    suitable: 'The system is newly identified, the evidence position is unclear, or you need a documented basis for deciding whether this one system warrants a full Assessment. If the system, pathway and scenario are already defined and evidence access is available, discuss a full Assessment directly.',
+    decision: 'Whether you could prove that this system can be stopped, step by step, and whether a full AGDA® Assessment is warranted.',
+    retain: 'The gap register and recommendation stand on their own: what you can evidence for each step today, what the records show about real timings and where the gaps are. They support prioritisation and budget decisions whether or not a full Assessment follows.',
+    suitable: 'You need to know what you could evidence for one system, not only who could stop it, or you need a documented basis for deciding whether it warrants a full Assessment. If the system, pathway and scenario are already defined and evidence access is available, discuss a full Assessment directly.',
     timing: 'Scope, access and timing are agreed in the proposal.',
     price: 'From £25,000 + VAT',
     priceNote: 'Indicative fee',
     schemaDescription:
-      'A focused review of one proposed system to establish the intervention question, the evidence position and whether a full AGDA® Assessment is warranted. Does not include the AGDA® verdict.',
+      'A preliminary review of one named system that includes the Authority Check and adds graded evidence for all four steps of the intervention chain, a review of the client\'s own records for real timings and the inputs needed to set the intervention window. Does not include the AGDA® verdict.',
   },
   {
     slug: 'assessment',
     name: 'AGDA® Assessment',
+    question: 'Can you stop it in time?',
+    serviceType: 'Intervention Readiness assessment',
     short: 'A formal assessment of one consequential AI-enabled system through a defined decision or action pathway and a specified intervention scenario.',
     purpose:
-      'A formal assessment of Intervention Readiness for one named consequential AI-enabled system, examined through a defined decision or action pathway and a specified intervention scenario.',
+      'A formal assessment of Intervention Readiness for one named consequential AI-enabled system, examined through a defined decision or action pathway and a specified intervention scenario. It includes everything in the Review and sets the intervention window from your own records.',
     scope: [
+      'Everything in the Review.',
       'One named AI-enabled system and its operating version.',
       'One defined consequential decision or action pathway.',
       'One specified intervention scenario and trigger.',
       'Relevant business, risk and technology stakeholders.',
       'Structured interviews, walkthroughs and review of relevant evidence.',
     ],
+    examined: 'Structured interviews, walkthroughs and the relevant evidence, against a window set from your own records.',
     receive: [
       'The defined scope: system, pathway, scenario, boundaries, dates and material assumptions.',
+      'The intervention window, set from your own records, with its basis.',
       'An evidence register with provenance and material gaps.',
-      'SEDI findings and an analysis of the intervention chain.',
-      'An Intervention Readiness verdict, its confidence basis and material limitations.',
-      'An executive interpretation, priority findings and practical remediation priorities.',
+      'Best and worst-case timings for each step and the end-to-end result against the window.',
+      'A sensitivity test with the window 25% shorter and 25% longer.',
+      'SEDI findings and an analysis of the intervention chain, naming the weak link.',
+      'An Intervention Readiness verdict (Before impact, At risk or After impact), its confidence basis and material limitations.',
+      'Remediation priorities, and a report written for the board and, if you choose, your supervisor.',
     ],
     exclusion:
       'Additional systems, pathways or scenarios, enterprise-wide inventory, governance redesign, legal opinion, full regulatory compliance assessment, model validation, penetration or cybersecurity testing, software development, implementation and remediation delivery are separately scoped. It is not regulatory certification.',
@@ -133,8 +190,10 @@ export const RECORDS_NOTE =
 export const SELF_APPROVAL =
   "Issuance requires approval separate from the assessor's own judgement.";
 
-export const review = offers[0];
-export const assessment = offers[1];
+const bySlug = (slug: Offer['slug']): Offer => offers.find((o) => o.slug === slug)!;
+export const check = bySlug('check');
+export const review = bySlug('review');
+export const assessment = bySlug('assessment');
 
 // Four activities of a full assessment, without weeks. The strategy's
 // week-by-week structure is recovered only to Week 1; the proposal sets
@@ -162,14 +221,29 @@ export const activities = [
 // and /services/, so the schema answers are identical to the copy.
 export const offerFaqs = [
   {
-    question: 'Is the Intervention Readiness Review a full AGDA® Assessment?',
+    question: 'What is the Authority Check?',
     answer:
-      'No. The Review is a standalone executive review of one system: the intervention question, the preliminary chain, the evidence you hold and the gaps, and a scoped recommendation. It supports prioritisation and budget decisions on its own. It does not include the AGDA® verdict, the SEDI findings or signed SEDI result records.',
+      'A narrow entry engagement that asks one question of one named system: can anyone stop it? It establishes who may halt the system and under which delegation, whether they can decide alone or need a quorum, how they are reached out of hours, and where the halt takes effect. It delivers a one-page finding and the gaps found.',
   },
   {
-    question: 'Do we need a Review first?',
+    question: 'Is the Authority Check an AGDA® verdict?',
     answer:
-      'No. If the system, intervention question and assessment scope are sufficiently clear, and relevant evidence access is available, we can discuss a full AGDA® Assessment directly. The Review is a separate preliminary engagement for organisations that need to establish those foundations.',
+      'No. The Authority Check is not an AGDA® verdict, SEDI result or score, and it carries no attestation. The finding is prepared without independent review and applies to the one named system only.',
+  },
+  {
+    question: 'Does the live call-out show the right person can always be reached?',
+    answer:
+      'No. The live call-out is one test, run once under a protocol agreed with you beforehand. The finding states when it was run and what it showed. It does not establish that anyone can be reached on any other occasion.',
+  },
+  {
+    question: 'Is the Intervention Readiness Review a full AGDA® Assessment?',
+    answer:
+      'No. The Review includes everything in the Authority Check and adds evidence for all four steps of the intervention chain, a review of your own records for real timings, and the inputs needed to set the intervention window. It delivers a gap register and a recommendation on whether a full Assessment is warranted. It does not include the AGDA® verdict, and it is not a discounted AGDA® Assessment.',
+  },
+  {
+    question: 'Do we need an Authority Check or a Review first?',
+    answer:
+      'No. Each engagement includes the one before it, and none is a prerequisite. If the system, intervention question and assessment scope are sufficiently clear, and relevant evidence access is available, we can discuss a full AGDA® Assessment directly. The Authority Check and the Review are separate, narrower engagements for organisations that need to establish those foundations.',
   },
   {
     question: 'Can a client challenge the conclusion?',
