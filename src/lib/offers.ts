@@ -41,7 +41,7 @@ export interface Offer {
 export const PRICE_QUALIFIER =
   'Initial pricing remains subject to market validation.';
 
-/* What moves a quoted fee within its range. Shown once beneath the two
+/* What moves a quoted fee above its starting price. Shown once beneath the two
    sheets on /services/ and mirrored in llms.txt. Additional systems,
    pathways, scenarios and implementation work are separately scoped;
    that boundary lives in each offer's exclusion row, not here. */
@@ -80,7 +80,7 @@ export const offers: Offer[] = [
     retain: 'The executive review stands on its own: a stated intervention question for the system, the preliminary chain, the evidence you hold and the gaps, and a scoped recommendation. It supports prioritisation and budget decisions whether or not a full Assessment follows.',
     suitable: 'The system is newly identified, the evidence position is unclear, or you need a documented basis for deciding whether this one system warrants a full Assessment. If the system, pathway and scenario are already defined and evidence access is available, discuss a full Assessment directly.',
     timing: 'Scope, access and timing are agreed in the proposal.',
-    price: '£20,000 to £35,000 + VAT',
+    price: 'From £20,000 + VAT',
     priceNote: 'Indicative fee',
     schemaDescription:
       'A focused review of one proposed system to establish the intervention question, the evidence position and whether a full AGDA® Assessment is warranted. Does not include the AGDA® verdict.',
@@ -112,8 +112,8 @@ export const offers: Offer[] = [
     retain: 'The full package: scope record, evidence register, SEDI findings, the verdict with its confidence basis and limitations, executive interpretation and remediation priorities.',
     suitable: 'The system, pathway and scenario are defined, the stakeholders and evidence are accessible, and the decision cannot wait for a preliminary review.',
     timing: 'Once an engagement begins, a standard assessment is estimated to run over approximately four weeks, subject to scope, stakeholder access and evidence readiness. The proposal sets the detailed timetable.',
-    price: '£75,000 to £95,000 + VAT',
-    priceNote: 'Indicative initial range',
+    price: 'From £75,000 + VAT',
+    priceNote: 'Indicative initial fee',
     schemaDescription:
       'A formal assessment of Intervention Readiness for one named consequential AI-enabled system, examined through a defined decision or action pathway and a specified intervention scenario. Produces an Intervention Readiness verdict with its evidence basis.',
   },

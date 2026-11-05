@@ -13,7 +13,7 @@ const llms = readFileSync('public/llms.txt', 'utf8');
 
 describe('llms.txt mirrors the offers', () => {
   for (const o of offers) {
-    it(`names ${o.name} with its range`, () => {
+    it(`names ${o.name} with its price`, () => {
       expect(llms).toContain(o.name);
       expect(llms).toContain(o.price);
     });
