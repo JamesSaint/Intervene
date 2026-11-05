@@ -31,7 +31,7 @@ const excluded = [
 
 const pageNav = [
   { href: '#begin', label: 'Where to begin' },
-  { href: '#engagements', label: 'The two engagements' },
+  { href: '#engagements', label: 'The three engagements' },
   { href: '#scope', label: 'Included and excluded' },
   { href: '#how-it-runs', label: 'How it runs' },
   { href: '#who', label: 'Who takes part' },
@@ -50,7 +50,7 @@ const useCases = [
 
 <BaseLayout
   title="Assessment Options and Indicative Pricing · Intervene"
-  description="Choose an Intervention Readiness Review or a full AGDA® Assessment. Scope, evidence access, deliverables and indicative fees are agreed before work begins."
+  description="Three questions about one named system: an Authority Check, an Intervention Readiness Review or a full AGDA® Assessment. Scope, evidence access, deliverables and indicative fees are agreed before work begins."
   current="services"
   ogImage="/assets/og/og-services.png"
   faqs={offerFaqs}
@@ -58,8 +58,8 @@ const useCases = [
   <!-- HERO -->
   <section class="hero">
     <div class="wrap">
-      <h1 class="h1">Two ways to begin. <em>One named system.</em></h1>
-      <p class="lede muted">A Review establishes the intervention question and evidence position. A full <Agda /> Assessment examines the defined system, pathway and scenario. Either can be the starting point.</p>
+      <h1 class="h1">Three questions. <em>One named system.</em></h1>
+      <p class="lede muted">An Authority Check asks whether anyone can stop it. A Review asks whether you could prove it. A full <Agda /> Assessment asks whether you can stop it in time, and is the only one that returns a verdict.</p>
       <div class="hero-cta">
         <a data-primary-cta="discuss_system" href="/contact/" class="btn">Discuss your system</a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
@@ -76,25 +76,26 @@ const useCases = [
     </div>
   </section>
 
-  <!-- THE TWO OFFERS. Spec sheets, from src/lib/offers.ts. Labels sit
-       above their content, and each row of the two sheets shares a grid
+  <!-- THE THREE OFFERS. Spec sheets, from src/lib/offers.ts. Labels sit
+       above their content, and each row of the three sheets shares a grid
        row, so equivalent information sits level across the pair. Three
        tiers: what it is and costs; what it decides and returns; the
        scope, boundary and timing behind that. -->
   <section class="block start-here" id="engagements">
     <div class="wrap">
       <span class="label section-kicker">Current engagements</span>
-      <h2 class="h2" data-offer-view="engagements">The two engagements <em>in full.</em></h2>
+      <h2 class="h2" data-offer-view="engagements">The three engagements <em>in full.</em></h2>
       <p class="lede muted">
-        Fees are indicative ranges. {PRICE_QUALIFIER}
+        Fees are indicative. {PRICE_QUALIFIER}
       </p>
 
       <div class="offers">
         {offers.map((o) => (
           <article class="offer" id={o.slug} aria-labelledby={`offer-${o.slug}-name`}>
             <header class="sheet-head">
-              <span class="mono offer-kicker">{o.slug === 'review' ? 'Route A · Preliminary engagement' : 'Route B · Full assessment'}</span>
+              <span class="mono offer-kicker">{({ check: 'Route A · Entry point', review: 'Route B · Preliminary engagement', assessment: 'Route C · Full assessment' })[o.slug]}</span>
               <h3 class="h3 offer-name" id={`offer-${o.slug}-name`} set:html={markAgda(o.name)} />
+              <p class="offer-question">{o.question}</p>
               <p class="offer-purpose" set:html={markAgda(o.purpose)} />
             </header>
 
@@ -116,7 +117,7 @@ const useCases = [
             </div>
 
             <div class="sheet-row">
-              <h4 class="sheet-label">{o.slug === 'review' ? 'What you receive' : 'Full-assessment deliverables'}</h4>
+              <h4 class="sheet-label">{o.slug === 'assessment' ? 'Full-assessment deliverables' : 'What you receive'}</h4>
               <ul class="dash-list" role="list">
                 {o.receive.map((x) => <li set:html={markAgda(x)} />)}
               </ul>
@@ -136,8 +137,8 @@ const useCases = [
             </div>
 
             <div class="sheet-row sheet-row-detail">
-              <h4 class="sheet-label">{o.slug === 'review' ? 'Not included' : 'Separately scoped'}</h4>
-              {o.slug === 'review' ? (
+              <h4 class="sheet-label">{o.slug === 'assessment' ? 'Separately scoped' : 'Not included'}</h4>
+              {o.slug !== 'assessment' ? (
                 <p set:html={markAgda(o.exclusion)} />
               ) : (
                 <>
@@ -354,8 +355,8 @@ const useCases = [
         </h2>
         <div class="close-cta">
           <p class="body muted">
-            We can then establish whether a Review or a full assessment is the
-            appropriate next step, and confirm delivery arrangements and a
+            We can then establish whether an Authority Check, a Review or a
+            full assessment is the appropriate next step, and confirm delivery arrangements and a
             start date in the proposal. Review the sample verdict first if you
             want to see the shape of a finding.
           </p>
@@ -370,7 +371,7 @@ const useCases = [
 </BaseLayout>
 
 <style>
-  /* /services/ is the dense-page reference: two spec sheets, a scope
+  /* /services/ is the dense-page reference: three spec sheets, a scope
      boundary, a four-step sequence, three grids and a FAQ. Everything
      here composes from the shared scale; the sheet is the one component
      that is particular to this page. */
@@ -383,10 +384,10 @@ const useCases = [
   .offers {
     margin: var(--gap-intro) 0 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: clamp(40px, 6vw, 80px);
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: clamp(32px, 4vw, 56px);
   }
-  /* Subgrid keeps the eight rows of the two sheets level. Browsers
+  /* Subgrid keeps the eight rows of the three sheets level. Browsers
      without it fall back to independent sheets. */
   .offer { display: grid; align-content: start; min-width: 0; }
   @supports (grid-template-rows: subgrid) {
@@ -395,7 +396,8 @@ const useCases = [
 
   .sheet-head { display: grid; gap: var(--gap-item); align-content: start; padding-bottom: var(--space-4); }
   .offer-kicker { font-size: var(--type-caption); letter-spacing: 0; text-transform: none; color: var(--accent-text); }
-  .offer-name { margin: 0; font-size: clamp(24px, 2.2vw, 30px); }
+  .offer-name { margin: 0; font-size: clamp(22px, 2vw, 28px); }
+  .offer-question { margin: 0; font-family: var(--font-sans); font-size: 18px; line-height: 1.4; color: var(--ink); }
   .offer-purpose { margin: 4px 0 0; font-family: var(--font-sans); font-size: 17px; line-height: 1.6; color: var(--muted); }
 
   .sheet-label {
@@ -463,11 +465,13 @@ const useCases = [
   .seq-step p { margin: 0; font-size: 16px; }
   .seq-foot { margin-top: var(--space-5); }
   /* ----- Responsive ----- */
-  @media (max-width: 880px) {
+  @media (max-width: 1080px) {
     .offers { grid-template-columns: 1fr; row-gap: var(--space-7); }
     @supports (grid-template-rows: subgrid) {
       .offer { grid-template-rows: auto; grid-row: auto; }
     }
+  }
+  @media (max-width: 880px) {
     .scope-grid { grid-template-columns: 1fr; gap: var(--space-5); }
     .seq-rail { display: none; }
     .seq { grid-template-columns: 1fr; gap: 28px; }

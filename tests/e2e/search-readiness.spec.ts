@@ -69,7 +69,7 @@ test('rendered pages, canonicals, metadata and entity references agree with the 
     expect(org['@id']).toBe('https://intervene.uk/#organization');
     expect(org.legalName).toBe('Intervene Limited');
     const services = graph.filter((node) => node['@type'] === 'Service');
-    expect(services.map((node) => node.name)).toEqual(['Intervention Readiness Review', 'AGDA® Assessment']);
+    expect(services.map((node) => node.name)).toEqual(['Authority Check', 'Intervention Readiness Review', 'AGDA® Assessment']);
     for (const offer of org.makesOffer) {
       expect(services.find((service) => service['@id'] === offer.itemOffered['@id'])?.name).toBe(offer.name);
     }

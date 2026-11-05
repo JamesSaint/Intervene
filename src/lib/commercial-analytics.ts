@@ -17,7 +17,7 @@ export function initCommercialAnalytics(): void {
       }
     }
   } catch { /* No pending event or unavailable storage/referrer. */ }
-  const offerIds = ['review', 'assessment'];
+  const offerIds = ['check', 'review', 'assessment'];
   document.addEventListener('click', (event) => {
     const link = (event.target as Element).closest<HTMLAnchorElement>('a');
     if (!link) return;
