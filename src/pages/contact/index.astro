@@ -16,7 +16,7 @@ const info: { k: string; v: string; href?: string }[] = [
 
 <BaseLayout
   title="Book a Conversation · Intervene"
-  description="Discuss a consequential system, its intervention question and whether an Intervention Readiness Review or full AGDA® Assessment is the right next step."
+  description="Discuss a consequential system, its intervention question and whether an Authority Check, an Intervention Readiness Review or a full AGDA® Assessment is the right next step."
   current="contact"
   ogImage="/assets/og/og-contact.png"
   pageType="ContactPage"
@@ -88,6 +88,11 @@ const info: { k: string; v: string; href?: string }[] = [
                   <input type="radio" name="starting_point" value="not-sure" checked />
                   <span class="choice-marker" aria-hidden="true"></span>
                   <span class="choice-label">Not sure yet</span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="starting_point" value="check" />
+                  <span class="choice-marker" aria-hidden="true"></span>
+                  <span class="choice-label">Authority Check</span>
                 </label>
                 <label class="choice">
                   <input type="radio" name="starting_point" value="review" />

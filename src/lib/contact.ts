@@ -55,7 +55,9 @@ export function initContactForm(root: Document | ParentNode = document): () => v
     try {
       const data = new FormData(form);
       const startingPoint = data.get('starting_point');
-      if (startingPoint === 'review') {
+      if (startingPoint === 'check') {
+        data.set('assessment_offering', 'Authority Check');
+      } else if (startingPoint === 'review') {
         data.set('assessment_offering', 'Intervention Readiness Review');
       } else if (startingPoint === 'assessment') {
         data.set('assessment_offering', 'AGDA® Assessment');
