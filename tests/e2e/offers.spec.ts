@@ -1,5 +1,5 @@
 /**
- * The two current engagements, everywhere they appear.
+ * The three current engagements, everywhere they appear.
  *
  * src/lib/offers.ts is the single source. These tests read the built
  * pages and the JSON-LD and check that names, ranges, the Review's
@@ -23,7 +23,7 @@ async function jsonLd(page: Page): Promise<any> {
 
 for (const route of ['/', '/services/']) {
   test.describe(`offers on ${route}`, () => {
-    test('both offers, ranges and the qualifier are visible', async ({ page }) => {
+    test('all three offers, prices and the qualifier are visible', async ({ page }) => {
       await page.goto(route);
       const text = await bodyText(page);
       for (const o of offers) {
@@ -35,10 +35,11 @@ for (const route of ['/', '/services/']) {
       expect(text).not.toMatch(/available now|accepted now|immediately available/i);
     });
 
-    test('the Review says it does not include the verdict', async ({ page }) => {
+    test('the Review and the Authority Check say they carry no verdict', async ({ page }) => {
       await page.goto(route);
       const text = await bodyText(page);
       expect(text).toMatch(/does not include the AGDA® verdict/);
+      expect(text).toMatch(/not an AGDA® verdict/i);
     });
 
     test('carries no retired offer', async ({ page }) => {
@@ -50,12 +51,12 @@ for (const route of ['/', '/services/']) {
 }
 
 test.describe('structured data', () => {
-  test('Organization carries two named Offer nodes on every page', async ({ page }) => {
+  test('Organization carries three named Offer nodes on every page', async ({ page }) => {
     await page.goto('/agda/');
     const graph = (await jsonLd(page))['@graph'];
     const org = graph.find((n: any) => n['@type'] === 'Organization');
     expect(org.makesOffer.map((o: any) => o.name)).toEqual(offers.map((o) => o.name));
-    const review = org.makesOffer.find((o: any) => o.name === offers[0].name);
+    const review = org.makesOffer.find((o: any) => o.name === 'Intervention Readiness Review');
     expect(review.description).toMatch(/Does not include the AGDA® verdict/);
     for (const o of org.makesOffer) expect(o.priceSpecification).toBeUndefined();
   });
@@ -120,7 +121,7 @@ test.describe('buyer journey pass', () => {
     expect(chain).toMatch(/not to scale and not added together/);
     // The fork never makes the Review compulsory or predictive.
     const fork = await page.locator('.offer-choice').innerText();
-    expect(fork).toMatch(/Neither is a prerequisite/);
+    expect(fork).toMatch(/none is a prerequisite/);
     expect(fork).toMatch(/does not commit you to one or determine its verdict/);
     expect(fork).not.toMatch(/confirms nothing|predicts nothing/);
     const finding = await page.locator('.finding-block').innerText();
@@ -135,7 +136,7 @@ test.describe('buyer journey pass', () => {
     for (const route of ['/', '/services/']) {
       await page.goto(route);
       const text = await page.locator('main').innerText();
-      expect(text, route).toMatch(/material intervention question/);
+      expect(text, route).toMatch(/could you prove it/i);
       expect(text, route).toMatch(/does not include the AGDA® verdict/);
     }
     await page.goto('/services/');

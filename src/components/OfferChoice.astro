@@ -1,8 +1,9 @@
 ---
 /**
- * "Where should we begin?" Two legitimate starting points, drawn in the
- * methodology page's SEDI language: a rail, numbered nodes, bold labels.
- * Neither route is a prerequisite for the other; choosing one confirms
+ * "Where should we begin?" Three questions about one named system, drawn in
+ * the methodology page's SEDI language: a rail, numbered nodes, bold labels.
+ * Each route includes the one before it and none is a prerequisite for a
+ * later one; choosing one confirms
  * nothing about availability or acceptance. Content reads from
  * src/lib/offers.ts so the diagram cannot drift from the offer sheets.
  *
@@ -12,33 +13,44 @@
  * and a link to each sheet (used above the full sheets on /services/,
  * which carry scope, outputs, boundaries and prices).
  */
-import { offers } from '../lib/offers';
+import { check, review, assessment } from '../lib/offers';
 import { markAgda } from '../lib/marks';
+import Agda from './Agda.astro';
 
 interface Props { compact?: boolean; headingLevel?: 'h2' | 'h3'; editorial?: boolean }
 const { compact = false, headingLevel = 'h3', editorial = false } = Astro.props;
-const [review, assessment] = offers;
 
 const routes = [
   {
-    o: review,
+    o: check,
     n: 'A',
+    kicker: 'Entry point',
+    whenShort: 'You need a bounded answer on whether anyone can stop one named system.',
+    when: 'You need a bounded answer on whether anyone can stop one named system, before examining the evidence behind each step of its intervention chain.',
+    output: 'A one-page finding on authority, reachability and the halt mechanism, with the gaps found.',
+    receive: ['One-page finding', 'The gaps found', 'The live call-out, stated as one test at one time'],
+    boundary: 'Not an AGDA® verdict, SEDI result or score, and no attestation. Prepared without independent review. A finding about this system only.',
+    href: '/services/#check',
+  },
+  {
+    o: review,
+    n: 'B',
     kicker: 'Preliminary',
-    whenShort: 'You need to establish the material intervention question for one system, or clarify its scope and evidence position.',
-    when: 'You need to establish whether this one system carries a material intervention question, and the proposed scope or evidence position needs clarifying before a full assessment is scoped.',
-    output: 'An executive review of the question, the preliminary chain, the evidence position and a scoped recommendation.',
-    receive: ['Executive review: what to assess and why', 'Evidence and access position', 'Scoped recommendation'],
-    boundary: 'Preliminary chain mapping only. The Review does not include the AGDA® verdict, the SEDI findings or signed SEDI result records.',
+    whenShort: 'You need to know what you could evidence for one system, and whether a full assessment is warranted.',
+    when: 'You need to know what you could evidence for this one system, step by step, and the evidence position needs clarifying before a full assessment is scoped.',
+    output: 'The Authority Check finding, a gap register across the four steps and a recommendation on whether a full assessment is warranted.',
+    receive: ['The Authority Check finding', 'Gap register: evidence graded for each step', 'Recommendation on a full assessment'],
+    boundary: 'The Review does not include the AGDA® verdict, the window set from your records or signed SEDI result records.',
     href: '/services/#review',
   },
   {
     o: assessment,
-    n: 'B',
+    n: 'C',
     kicker: 'Full assessment',
     whenShort: 'The system, pathway and scenario are defined, and relevant evidence access is available.',
     when: 'The named system, pathway and scenario are defined and relevant evidence access is available.',
     output: 'The full assessment package: an Intervention Readiness verdict with its basis and limitations, and what has to change before the organisation relies on the pathway.',
-    receive: ['Evidence register with provenance and gaps', 'SEDI findings and chain analysis', 'Verdict, confidence basis, limitations', 'Executive interpretation and remediation priorities'],
+    receive: ['Window set from your records; evidence register', 'Best and worst-case timings and a 25% sensitivity test', 'Verdict, confidence basis, limitations, weak link', 'Remediation priorities and a board report'],
     boundary: 'One system, one pathway, one scenario. Connected systems are scoped separately.',
     href: '/services/#assessment',
   },
@@ -50,8 +62,8 @@ const RouteHeading = editorial ? 'h3' : 'span';
 <figure class:list={["offer-choice", { "offer-choice--editorial": editorial, "offer-choice--compact": compact }]} data-reveal="scene" aria-labelledby="offer-choice-heading">
   <figcaption class="oc-caption" data-offer-view="offer_choice">
     <span class="label section-kicker">Where should we begin?</span>
-    <H class="h2" id="offer-choice-heading">Two starting points.{!editorial && <em> Neither is a prerequisite for the other.</em>}</H>
-    {editorial && <p class="oc-principle">Neither is a prerequisite for the other.</p>}
+    <H class="h2" id="offer-choice-heading">Three questions.{!editorial && <em> One named system. Neither is a prerequisite for the other.</em>}</H>
+    {editorial && <p class="oc-principle">One named system. Each engagement includes the one before it, and none is a prerequisite.</p>}
     <p class="body muted oc-lede">Choose by the intervention question and available evidence.</p>
   </figcaption>
 
@@ -68,6 +80,7 @@ const RouteHeading = editorial ? 'h3' : 'span';
           <span class="node oc-node" aria-hidden="true"></span>
           <span class="mono oc-n">Route {n} · {kicker}</span>
           <RouteHeading class="oc-name" set:html={markAgda(o.name)} />
+          <span class="oc-q">{o.question}</span>
         </div>
         <dl class="oc-fields">
           <div>
@@ -75,7 +88,7 @@ const RouteHeading = editorial ? 'h3' : 'span';
             <dd>{editorial ? whenShort : when}</dd>
           </div>
           {editorial && !compact && <div><dt>Question and decision</dt><dd set:html={markAgda(o.decision)} /></div>}
-          {editorial && !compact && <div><dt>Evidence examined</dt><dd>{o.slug === 'review' ? o.scope[3] : o.scope[4]}</dd></div>}
+          {editorial && !compact && <div><dt>Evidence examined</dt><dd>{o.examined}</dd></div>}
           {!compact && (
             <div>
               <dt>What you receive</dt>
@@ -101,14 +114,14 @@ const RouteHeading = editorial ? 'h3' : 'span';
           )}
         </dl>
         <a href={href} class="link oc-link" data-offer-select={o.slug}>
-          {editorial ? (n === 'A' ? 'Explore the Review' : 'Explore the Assessment') : (n === 'A' ? 'Review sheet: scope, outputs, boundary and indicative fee' : 'Assessment sheet: scope, deliverables, boundary and indicative range')} <span aria-hidden="true">→</span>
+          {editorial ? `Explore the ${o.slug === 'check' ? 'Authority Check' : o.slug === 'review' ? 'Review' : 'Assessment'}` : `${o.slug === 'check' ? 'Authority Check' : o.slug === 'review' ? 'Review' : 'Assessment'} sheet: scope, outputs, boundary and indicative fee`} <span aria-hidden="true">→</span>
         </a>
       </li>
     ))}
   </ol>
 
   <p class="body muted oc-foot">
-    A Review may recommend a
+    The Authority Check is not an <Agda /> verdict. A Review may recommend a
     full Assessment but does not commit you to one or determine its verdict.
     {compact
       ? 'Scope, availability and delivery arrangements are confirmed before an engagement is accepted.'
@@ -128,12 +141,12 @@ const RouteHeading = editorial ? 'h3' : 'span';
   .oc-stem { position: absolute; top: 13px; bottom: 0; left: 50%; width: 1px; background: var(--hair-strong); }
   .oc-routes {
     list-style: none; margin: 0; padding: 0;
-    display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px);
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(32px, 5vw, 72px);
     position: relative;
   }
   /* Horizontal bar joining the two branch tops. */
   .oc-routes::before {
-    content: ''; position: absolute; top: 0; left: 25%; right: 25%; height: 1px; background: var(--hair-strong);
+    content: ''; position: absolute; top: 0; left: 16.67%; right: 16.67%; height: 1px; background: var(--hair-strong);
   }
   .oc-route { position: relative; padding-top: 40px; display: grid; gap: 20px; align-content: start; min-width: 0; }
   .oc-branch { position: absolute; top: 0; left: 50%; width: 1px; height: 40px; background: var(--hair-strong); }
@@ -142,6 +155,7 @@ const RouteHeading = editorial ? 'h3' : 'span';
   .oc-n { font-size: var(--type-caption); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-text); }
   .oc-name { margin: 0; font-family: var(--font-sans); font-size: var(--type-h3); font-weight: 600; color: var(--ink); letter-spacing: var(--tracking-heading); text-transform: none; }
 
+  .oc-q { font-family: var(--font-sans); font-size: var(--type-small); line-height: 1.5; color: var(--muted); }
   .oc-fields { margin: 8px 0 0; display: grid; gap: 0; border-top: 1px solid var(--hair-strong); }
   .oc-fields > div { display: grid; gap: 6px; padding: var(--space-3) 0; border-bottom: 1px solid var(--hair); }
   .oc-fields dt { font-family: var(--font-mono); font-size: var(--type-caption); letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
@@ -162,7 +176,8 @@ const RouteHeading = editorial ? 'h3' : 'span';
   .offer-choice--editorial .oc-lede { font-size: var(--type-body); line-height: 1.7; margin: 0; }
   .offer-choice--editorial .oc-root, .offer-choice--editorial .oc-branch,
   .offer-choice--editorial .oc-node, .offer-choice--editorial .oc-routes::before { display: none; }
-  .offer-choice--editorial .oc-routes { margin-top: var(--space-6); gap: 0 var(--space-6); grid-template-rows: repeat(8, auto); }
+  .offer-choice--editorial .oc-q { font-size: var(--type-body); color: var(--ink); }
+  .offer-choice--editorial .oc-routes { margin-top: var(--space-6); gap: 0 var(--space-5); grid-template-rows: repeat(8, auto); }
   .offer-choice--editorial .oc-route { border-top: 1px solid var(--hair-strong); padding-top: 24px; grid-row: span 8; grid-template-rows: subgrid; gap: 0; }
   .offer-choice--editorial .oc-head { justify-items: start; text-align: left; gap: 16px; padding-bottom: 28px; align-content: start; }
   .offer-choice--editorial .oc-n { font-size: var(--type-caption); letter-spacing: 0; text-transform: none; }
@@ -185,7 +200,7 @@ const RouteHeading = editorial ? 'h3' : 'span';
     .offer-choice--editorial .oc-caption .label { grid-row: auto; margin-top: 0; }
     .offer-choice--editorial .oc-routes { gap: 0 32px; }
   }
-  @media (max-width: 720px) {
+  @media (max-width: 1080px) {
     .offer-choice--editorial .oc-routes, .offer-choice--compact .oc-routes { grid-template-rows: none; gap: 40px; margin-top: 32px; }
     .offer-choice--editorial .oc-route, .offer-choice--compact .oc-route { grid-row: auto; grid-template-rows: none; }
     .offer-choice--editorial .oc-head { grid-template-columns: 1fr; padding-bottom: 8px; }
@@ -195,7 +210,7 @@ const RouteHeading = editorial ? 'h3' : 'span';
     .offer-choice--editorial .oc-fields dd, .offer-choice--editorial .oc-list > li { font-size: 16px; }
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 1080px) {
     .oc-root { display: none; }
     .oc-routes { grid-template-columns: 1fr; gap: var(--space-6); }
     .oc-routes::before { display: none; }

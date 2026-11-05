@@ -188,7 +188,7 @@ const serviceSchemas = offers.map((offer) => ({
   description: offer.schemaDescription,
   url: `${baseUrl}services/#${offer.slug}`,
   provider: { '@id': orgId },
-  serviceType: 'Intervention Readiness assessment',
+  serviceType: offer.serviceType,
 }));
 
 const orgSchema = {
@@ -211,14 +211,14 @@ const orgSchema = {
     'reversibility window',
     'Intervention Readiness assessment',
   ],
-  // Two current engagements, names and descriptions only. Indicative price
+  // Three current engagements, names and descriptions only. Indicative price
   // ranges are published in copy, not in structured data.
   makesOffer: offers.map((o) => ({
     '@type': 'Offer',
     name: o.name,
     description: o.schemaDescription,
     itemOffered: { '@id': `${baseUrl}services/#service-${o.slug}` },
-    category: 'Intervention Readiness assessment',
+    category: o.serviceType,
     url: `${baseUrl}services/#${o.slug}`,
   })),
 };

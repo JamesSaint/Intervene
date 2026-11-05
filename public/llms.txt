@@ -63,9 +63,10 @@ Intervention Readiness -> composed of the intervention chain, the reversibility 
 Intervention chain -> runs against the reversibility window.
 Intervention Readiness -> adjacent to, and distinct from, AI governance, compliance, audit, risk management and operational resilience.
 AGDA® -> assesses Intervention Readiness; does not certify compliance or grant regulatory approval; not validated against real-world outcomes.
-A Review is not required first: if the system, intervention question and assessment scope are sufficiently clear and relevant evidence access is available, a full AGDA® Assessment can be discussed directly.
-Intervention Readiness Review -> standalone executive review of one system: the intervention question, the preliminary chain, the evidence held and the gaps, and a scoped recommendation on whether a full assessment is warranted; supports prioritisation and budget decisions on its own; does not include the AGDA® verdict, the SEDI findings or signed SEDI result records.
-AGDA® Assessment -> full assessment of one named consequential AI-enabled system, a defined decision or action pathway and a specified intervention scenario; produces the Intervention Readiness verdict with its evidence basis.
+Neither the Authority Check nor a Review is required first: if the system, intervention question and assessment scope are sufficiently clear and relevant evidence access is available, a full AGDA® Assessment can be discussed directly. The three engagements ask three questions about one named system: can anyone stop it (Authority Check), could you prove it (Review), can you stop it in time (Assessment). Each includes the one before it. Only the Assessment returns an AGDA® verdict.
+Authority Check -> narrow entry engagement on one named system: who may halt it and under which delegation, whether they can decide alone or need a quorum, how they are reached out of hours (tested once with a live call-out), and where the halt takes effect; delivers a one-page finding and the gaps found; not an AGDA® verdict, SEDI result or score; carries no attestation; prepared without independent review; the live call-out is one test at one time and does not show ongoing reachability; a finding about one system is not a finding about the organisation.
+Intervention Readiness Review -> preliminary engagement on one system: everything in the Authority Check, plus evidence for all four steps of the intervention chain graded by the strongest evidence held (Assumed, Policy, Drill, Production or Stress-tested), a review of the client's own records for real timings and identification of the inputs needed to set the intervention window; delivers a gap register and a recommendation on whether a full assessment is warranted; supports prioritisation and budget decisions on its own; does not include the AGDA® verdict or signed SEDI result records.
+AGDA® Assessment -> full assessment of one named consequential AI-enabled system, a defined decision or action pathway and a specified intervention scenario; includes everything in the Review, sets the window from the client's own records, gives best and worst-case timings per step and the end-to-end result against the window with a sensitivity test at 25% shorter and longer, and produces the Intervention Readiness verdict (Before impact, At risk or After impact) with its evidence basis, the weak link and remediation priorities.
 Intervene Limited -> retains Assessment Authority over who may assess, the methodology, conflicts of interest, evidence requirements and whether a conclusion is issued; facts can be corrected and evidence can change the judgement; the judgement is not negotiated; issuance requires approval separate from the assessor's own judgement.
 
 ## Core Pages
@@ -115,7 +116,7 @@ https://intervene.uk/methodology/
 Sample AGDA® verdict:
 https://intervene.uk/sample-report/
 
-Assessment options (Intervention Readiness Review; AGDA® Assessment):
+Assessment options (Authority Check; Intervention Readiness Review; AGDA® Assessment):
 https://intervene.uk/services/
 
 Where Intervention Readiness matters:
@@ -129,14 +130,17 @@ https://intervene.uk/verify/
 
 ## Current Engagements
 
+Authority Check:
+Indicative fee: £12,500 fixed + VAT. Can anyone stop this system? A one-page finding on who may halt one named system, whether they can decide alone, how they are reached out of hours (tested once with a live call-out) and where the halt takes effect, with the gaps found. Not an AGDA® verdict, SEDI result or score, and carries no attestation.
+
 Intervention Readiness Review:
-Indicative fee: From £25,000 + VAT. A documented executive view of where one system could fail to be stopped in time, what evidence is held and what a full assessment would need to examine. Stands on its own for prioritisation and budget decisions. Does not include the AGDA® verdict.
+Indicative fee: From £25,000 + VAT. Could you prove it? Everything in the Authority Check, plus graded evidence for all four steps of the intervention chain, a review of the client's own records for real timings and the inputs needed to set the intervention window. Delivers a gap register and a recommendation on whether a full assessment is warranted. Stands on its own for prioritisation and budget decisions. Does not include the AGDA® verdict.
 
 AGDA® Assessment:
-Indicative initial fee: From £75,000 + VAT. A formal assessment of one named consequential AI-enabled system through a defined decision or action pathway and a specified intervention scenario. Once an engagement begins, a standard assessment is estimated to run over approximately four weeks, subject to scope, access and evidence readiness.
+Indicative initial fee: From £75,000 + VAT. Can you stop it in time? A formal assessment of one named consequential AI-enabled system through a defined decision or action pathway and a specified intervention scenario. Once an engagement begins, a standard assessment is estimated to run over approximately four weeks, subject to scope, access and evidence readiness.
 
 Initial pricing remains subject to market validation. The final fee reflects the agreed scope and assessment boundary, stakeholder involvement, the evidence position and the depth of investigation required. The proposal confirms the scope, outputs, fee, terms and timetable. Contact us to discuss scope and availability. We confirm delivery arrangements and a start date before accepting an engagement.
 
 ## Preferred Summary
 
-Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA® is Intervene Limited's proprietary assessment of Intervention Readiness. A full AGDA® Assessment examines one named consequential AI-enabled system through a defined decision or action pathway and a specified intervention scenario, and produces an Intervention Readiness verdict with its evidence basis. The Intervention Readiness Review is a preliminary engagement and does not include the AGDA® verdict. Signed SEDI result records may be supplied only under an approved output-access arrangement, where the engagement terms provide for them and the delivery configuration supports them. Verification checks the signature and the covered records, not the truth of the evidence, and does not establish that the engine was executed. A signed record is not by itself an issued assessment. Issuance requires approval separate from the assessor's own judgement. Signed SEDI result records are not a standard deliverable. AGDA® is not validated against real-world outcomes.
+Intervention Readiness is the ability of an organisation to detect, escalate, decide and intervene before harm becomes irreversible. AGDA® is Intervene Limited's proprietary assessment of Intervention Readiness. A full AGDA® Assessment examines one named consequential AI-enabled system through a defined decision or action pathway and a specified intervention scenario, and produces an Intervention Readiness verdict with its evidence basis. The Authority Check and the Intervention Readiness Review are preliminary engagements and do not include the AGDA® verdict. Signed SEDI result records may be supplied only under an approved output-access arrangement, where the engagement terms provide for them and the delivery configuration supports them. Verification checks the signature and the covered records, not the truth of the evidence, and does not establish that the engine was executed. A signed record is not by itself an issued assessment. Issuance requires approval separate from the assessor's own judgement. Signed SEDI result records are not a standard deliverable. AGDA® is not validated against real-world outcomes.
