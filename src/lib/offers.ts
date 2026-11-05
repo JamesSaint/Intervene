@@ -80,7 +80,7 @@ export const offers: Offer[] = [
     retain: 'The executive review stands on its own: a stated intervention question for the system, the preliminary chain, the evidence you hold and the gaps, and a scoped recommendation. It supports prioritisation and budget decisions whether or not a full Assessment follows.',
     suitable: 'The system is newly identified, the evidence position is unclear, or you need a documented basis for deciding whether this one system warrants a full Assessment. If the system, pathway and scenario are already defined and evidence access is available, discuss a full Assessment directly.',
     timing: 'Scope, access and timing are agreed in the proposal.',
-    price: 'From £20,000 + VAT',
+    price: 'From £25,000 + VAT',
     priceNote: 'Indicative fee',
     schemaDescription:
       'A focused review of one proposed system to establish the intervention question, the evidence position and whether a full AGDA® Assessment is warranted. Does not include the AGDA® verdict.',
