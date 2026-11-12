@@ -7,6 +7,8 @@
  * the figure describes no organisation. Everything is present at first
  * paint; only the two traces draw.
  */
+interface Props { /** Surface the figure sits on, so hollow nodes match it. */ surface?: string }
+const { surface = 'var(--paper-deep)' } = Astro.props;
 const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
 const rows = [
   { key: 'paper', label: 'On paper', at: [0, 15, 30, 45] },
@@ -16,7 +18,7 @@ const BOUNDARY = 70;
 ---
 <figure
   class="hero-window"
-  style={`--hw-b:${BOUNDARY}%`}
+  style={`--hw-b:${BOUNDARY}%;--hw-surface:${surface}`}
   aria-label="Conceptual illustration. On paper, detect, escalate, decide and intervene complete before the intervention window closes. Under pressure, the same chain reaches intervention after the window has closed."
 >
   <div class="hw-head" aria-hidden="true">
@@ -51,16 +53,16 @@ const BOUNDARY = 70;
   .hw-head .hw-track { height: 24px; }
   .hw-close { position: absolute; right: calc(100% - var(--hw-b) + 10px); bottom: 4px; font-family: var(--font-mono); font-size: 12px; line-height: 1.4; color: var(--ink); white-space: nowrap; }
   /* The rail, then the closed region drawn over it from the boundary on. */
-  .hw-row .hw-track::before { content: ''; position: absolute; left: 0; right: 0; top: 26px; height: 1px; background: var(--hair-strong); }
+  .hw-row .hw-track::before { content: ''; position: absolute; z-index: 1; left: 0; right: 0; top: 26px; height: 1px; background: var(--hair-strong); }
   .hw-row .hw-track::after {
     content: ''; position: absolute; top: 0; bottom: 0; left: var(--hw-b); right: -7px;
     border-left: 1px dashed var(--control-border);
     background: repeating-linear-gradient(135deg, var(--hair) 0 1px, transparent 1px 11px);
   }
-  .hw-trace { position: absolute; z-index: 1; left: 0; top: 25px; height: 3px; width: var(--hw-end); background: var(--ink); transform-origin: left center; }
+  .hw-trace { position: absolute; z-index: 2; left: 0; top: 25px; height: 3px; width: var(--hw-end); background: var(--ink); transform-origin: left center; }
   .hw-pressure .hw-trace { background: linear-gradient(to right, var(--ink) 0 var(--hw-cut), var(--warn) var(--hw-cut) 100%); }
-  .hw-stage { position: absolute; z-index: 2; left: var(--hw-x); top: 20px; display: grid; justify-items: start; gap: 10px; }
-  .hw-node { width: 13px; height: 13px; border: 1px solid var(--ink); border-radius: 50%; background: var(--paper-deep); }
+  .hw-stage { position: absolute; z-index: 3; left: var(--hw-x); top: 20px; display: grid; justify-items: start; gap: 10px; }
+  .hw-node { width: 13px; height: 13px; border: 1px solid var(--ink); border-radius: 50%; background: var(--hw-surface); }
   .hw-stage:last-child .hw-node { background: var(--ink); }
   .hw-pressure .hw-stage:last-child .hw-node { border-radius: 0; border-color: var(--warn); background: var(--warn); }
   .hw-name { font-family: var(--font-mono); font-size: 12px; line-height: 1.4; color: var(--muted); white-space: nowrap; }

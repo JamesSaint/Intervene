@@ -7,6 +7,7 @@ import { assessment, offerFaqs, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/of
 import AgdaLogo from '../../components/AgdaLogo.astro';
 import Agda from '../../components/Agda.astro';
 import PageNav from '../../components/PageNav.astro';
+import SediExplorer from '../../components/SediExplorer.astro';
 
 const pageNav = [
   { href: '#scope', label: 'Scope and evidence' },
@@ -135,6 +136,9 @@ const faqs = [
       <div class="verdict-stage">
         <VerdictBlock />
       </div>
+      <div class="verdict-chain">
+        <SediExplorer window={false} />
+      </div>
     </div>
   </section>
 
@@ -225,12 +229,14 @@ const faqs = [
   .verdict-intro { display: grid; gap: var(--space-4); justify-items: start; align-content: start; }
   .verdict-intro :is(.h2, .lede, .arrow-link) { margin: 0; }
   .verdict-stage { margin-top: var(--gap-intro); display: flex; justify-content: flex-start; }
+  .verdict-chain { margin-top: var(--space-5); }
   @media (min-width: 1100px) {
     .product-hero > .wrap { display: grid; grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.65fr); gap: 0 var(--space-7); }
     .product-hero .product-identity { grid-row: 1 / span 4; padding-top: 8px; }
     .product-hero :is(.label, .h1, .lede, .hero-cta) { grid-column: 2; }
     #verdict > .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: var(--space-4) var(--space-7); align-items: start; }
     #verdict .verdict-stage { grid-column: 2; grid-row: 1; margin: 0; }
+    #verdict .verdict-chain { grid-column: 1 / -1; }
     #verdict :is(.h2, .lede, .arrow-link) { grid-column: 1; margin: 0; }
     #verdict .arrow-link { justify-self: start; align-self: start; }
   }
