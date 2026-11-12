@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageNav from '../../components/PageNav.astro';
 import { markAgda } from '../../lib/marks';
 import Agda from '../../components/Agda.astro';
+import { cover, systemSpecs, controls, stages, gates, evidence } from '../../lib/sample-report';
 
 const pageNav = [
   { href: '#system', label: 'The system' },
@@ -17,56 +18,6 @@ const pageNav = [
   { href: '#limits', label: 'Limits' },
 ];
 
-const cover = [
-  { k: 'System',    v: 'CRED-MOD-04 · Retail Credit Decisioning' },
-  { k: 'Scenario',  v: 'Macro shock · model drift' },
-  { k: 'Sample',    v: 'Constructed example · not a client report' },
-  { k: 'Issued',    v: 'No. Not an issued assessment' },
-  { k: 'Signed',    v: 'No. Illustrative metadata only' },
-];
-
-const systemSpecs = [
-  { k: 'System ID',            v: 'CRED-MOD-04',                       u: 'Retail Credit Decisioning' },
-  { k: 'Materiality',          v: 'Tier 1',                            u: 'internal taxonomy' },
-  { k: 'Decision authority',   v: 'Approve / decline / refer',         u: 'no human override on auto-decline' },
-  { k: 'Volume',               v: '~18,000 / day',                     u: 'UK personal lending' },
-  { k: 'Trigger scenario',     v: 'Macro shock + model drift',         u: 'simultaneous' },
-  { k: 'Intervention window',  v: '~6 hours',                          u: 'illustrative scenario assumption; operational basis not substantiated' },
-];
-
-const controls = [
-  { code: 'C-01', name: 'Real-time decision logging',         assessment: 'Production-grade. Timing telemetry from a 2024 outage post-mortem. Detection capability strong; surface latency under 90s.',                rag: 'green', terminal: 'GREEN' },
-  { code: 'C-02', name: 'Drift monitoring (PSI / KS)',        assessment: 'Operational in production. Threshold tuning not re-validated since model retrain in 2025-Q3. Confidence constrained under evidence review.',  rag: 'amber', terminal: 'AMBER' },
-  { code: 'C-03', name: 'Escalation to MRC',                  assessment: 'Documented in policy. One tabletop in 2024-Q4. Has not run live. Authority pathway terminates at a forum that meets monthly.',     rag: 'red',   terminal: 'RED'   },
-  { code: 'C-04', name: 'Halt authority',                     assessment: 'Three named approvers. None authorised to halt unilaterally. Quorum required. No on-call rota. Weekend gap.',                       rag: 'red',   terminal: 'RED'   },
-  { code: 'C-05', name: 'Manual override on auto-decline',    assessment: 'Designed-out. No human-in-the-loop on the high-volume decline path. Reversibility limited to next-day reprocessing.',                rag: 'red',   terminal: 'RED'   },
-  { code: 'C-06', name: 'Audit trail',                        assessment: 'Immutable, hashed, retained 7 years. Decision rationale captured per inference. Auditable to regulator standard.',                   rag: 'amber', terminal: 'AMBER' },
-];
-
-const stages = [
-  { stage: 'Detect',       value: '~12 min',       detail: 'to detect drift above threshold. A further ~38 min for the signal to reach a first responder is recorded separately.', status: 'pass', verdict: 'PRESENT' },
-  { stage: 'Escalate',     value: '4 to 96 hours', detail: 'to reach an authority holder. Availability and routing can consume or exceed the window.', status: 'fail', verdict: 'CAN EXCEED WINDOW' },
-  { stage: 'Decide',       value: '≥ 7 days',      detail: 'to obtain the required quorum. No out-of-cycle route. This alone exceeds the assumed window.', status: 'fail', verdict: 'EXCEEDS WINDOW' },
-  { stage: 'Intervene',    value: '~6 min',        detail: 'to propagate a halt if instructed. No in-window reversal on the auto-decline path.', status: 'fail', verdict: 'NO TIMELY AUTHORITY' },
-];
-
-const gates = [
-  { id: 'G-01', desc: 'Drift signal generation latency',          measured: '~12 min',           rag: 'green', verdict: 'PASS' },
-  { id: 'G-02', desc: 'Signal surfaces to first responder',       measured: '~38 min',           rag: 'amber', verdict: 'MARGIN' },
-  { id: 'G-03', desc: 'First responder reaches authority holder', measured: 'variable · 4 to 96h', rag: 'red',   verdict: 'FAIL' },
-  { id: 'G-04', desc: 'Authority holder reaches quorum',          measured: '≥ 7 days',          rag: 'red',   verdict: 'FAIL' },
-  { id: 'G-05', desc: 'Quorum decision recorded',                 measured: 'monthly cadence',   rag: 'red',   verdict: 'FAIL' },
-  { id: 'G-06', desc: 'Halt instruction propagated to system',    measured: '~6 min (if instructed)', rag: 'green', verdict: 'PASS' },
-];
-
-const evidence = [
-  { id: 'E-12', desc: '"On-call halt authority exists." Stated in interview, no document.', type: 'Verbal',      open: 'A claim requiring corroboration. It does not establish available authority.' },
-  { id: 'E-08', desc: 'MRC charter naming halt authority.',                                  type: 'Document',    open: 'Documented allocation of authority. It does not establish that the required quorum can be reached in time.' },
-  { id: 'E-04', desc: 'Tabletop exercise minutes, 2024-Q4.',                                 type: 'Exercise',    open: 'Evidence of the described exercise only. Not a live event.' },
-  { id: 'E-02', desc: 'Production drift monitoring runtime logs (12 months).',               type: 'Operational', open: 'A source for detection timing, subject to coverage, provenance and scenario relevance.' },
-  { id: 'E-01', desc: '2024 outage post-mortem with timing telemetry.',                      type: 'Incident',    open: 'A source for performance under those conditions. Transfer to the present scenario needs justification.' },
-  { id: 'E-06', desc: 'Hashed audit log sample, regulator-format export.',                   type: 'Record',      open: 'Evidence of recorded activity. It does not establish regulatory acceptance or the integrity of every operational record.' },
-];
 ---
 
 <BaseLayout

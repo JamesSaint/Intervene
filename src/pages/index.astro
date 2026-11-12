@@ -1,25 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { PRICE_QUALIFIER, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../lib/offers';
-import FindingChain from '../components/FindingChain.astro';
-import OfferChoice from '../components/OfferChoice.astro';
+import IntegrityNote from '../components/IntegrityNote.astro';
+import AssessmentArtefact from '../components/AssessmentArtefact.astro';
+import OfferLadder from '../components/OfferLadder.astro';
 import AgdaLogo from '../components/AgdaLogo.astro';
 import Agda from '../components/Agda.astro';
 import SediExplorer from '../components/SediExplorer.astro';
-import IntegrityNote from '../components/IntegrityNote.astro';
+import HeroWindow from '../components/HeroWindow.astro';
+import WindowLab from '../components/WindowLab.astro';
 
 const questions = [
   { h: 'Who can actually stop it?', p: 'Not who owns the risk. Who has the authority to intervene?' },
   { h: 'Will they know in time?', p: 'Does actionable information reach the right people before the intervention window closes?' },
   { h: 'What happens when they act?', p: 'Does intervention work under actual operating conditions?' },
 ];
-// The existing constructed sample. No client evidence or issued conclusion.
-const finding = {
-  system: 'CRED-MOD-04, a retail credit decisioning model. Automated approve, decline or refer decisions; the question concerns the auto-decline pathway.',
-  scenario: 'A macro shock coincides with model drift and creates a need to stop or redirect the affected pathway.',
-  decision: 'Whether the auto-decline pathway can keep operating under its present authority arrangements, and what has to change before the organisation relies on it: who may authorise a halt, how that person is reached out of hours, and how the route is exercised before it is needed.',
-  limits: 'One pathway and one scenario. Nothing here is a conclusion about any institution, other systems or legal conformity.',
-};
 ---
 <BaseLayout
   title="Intervention Readiness · Intervene"
@@ -40,68 +35,47 @@ const finding = {
           <p class="hero-note">One named system. One defined pathway. One intervention scenario.</p>
         </div>
       </div>
+      <HeroWindow />
       <p class="hero-principle">Governance is an input. <span>Intervention capability is the outcome.</span></p>
     </div>
   </section>
 
   <section class="block situations" aria-labelledby="home-problem">
     <div class="wrap">
-      <div class="section-heading">
-        <span class="label section-kicker">The problem</span>
+      <div class="lab-heading">
         <h2 class="h2" id="home-problem">Responsibilities are documented. Can the people act?</h2>
+        <p class="body muted">Every stage of a response spends time. Change any of them and see whether the intervention still lands before the window closes.</p>
       </div>
-      <ol class="problem-questions" role="list" data-reveal="stagger">
-        {questions.map((q, i) => (
-          <li><span class="mono problem-index" aria-hidden="true">0{i + 1}</span><h3 class="h3">{q.h}</h3><p class="body muted">{q.p}</p></li>
+      <WindowLab />
+      <ul class="problem-questions" role="list">
+        {questions.map((q) => (
+          <li><h3 class="h3">{q.h}</h3><p class="body muted">{q.p}</p></li>
         ))}
-      </ol>
+      </ul>
     </div>
   </section>
 
   <section class="block method-block" aria-labelledby="home-method">
     <div class="wrap">
       <div class="assessment-intro">
-        <div class="assessment-identity"><AgdaLogo /><span class="label">The method</span></div>
+        <div class="assessment-identity"><AgdaLogo /></div>
         <div>
           <h2 class="h2" id="home-method">Assess the ability to intervene.</h2>
           <p class="lede muted"><Agda /> assesses whether organisations can detect, escalate, decide and intervene when consequential systems require human intervention.</p>
         </div>
       </div>
-      <SediExplorer />
+      <SediExplorer window={false} />
       <nav class="related-links" aria-label="Explore the method"><a href="/methodology/" class="link">The methodology and its limits <span aria-hidden="true">→</span></a></nav>
     </div>
   </section>
 
   <section class="block finding-block" aria-labelledby="home-evidence">
     <div class="wrap">
-      <div class="section-heading">
-        <span class="label section-kicker">The evidence</span>
-        <div>
-          <h2 class="h2" id="home-evidence">A verdict. Supported by evidence.</h2>
-          <p class="body muted">A full <Agda /> Assessment returns a verdict, evidence register, SEDI findings and executive interpretation. The Authority Check and the Review do not produce a verdict.</p>
-        </div>
+      <div class="lab-heading">
+        <h2 class="h2" id="home-evidence">A verdict. Supported by evidence.</h2>
+        <p class="body muted">A full <Agda /> Assessment returns a verdict, evidence register, SEDI findings and executive interpretation. The Authority Check and the Review do not produce a verdict.</p>
       </div>
-      <div class="example-heading">
-        <span class="mono example-label">Constructed illustration</span>
-        <h3 class="h3">Detection works. Authority does not.</h3>
-        <p class="body muted">Can the auto-decline pathway stop within an assumed six-hour window? No client data; not an issued assessment or a verified outcome.</p>
-      </div>
-      <FindingChain />
-      <details class="finding-example" data-disclosure>
-        <summary><span class="example-title">Inspect the scope, decision and limitations</span><span class="example-toggle" aria-hidden="true"></span></summary>
-        <div data-disclosure-body>
-          <div class="example-body">
-            <dl class="finding-scope">
-              <div><dt>System</dt><dd>{finding.system}</dd></div>
-              <div><dt>Scenario</dt><dd>{finding.scenario}</dd></div>
-            </dl>
-            <dl class="finding-verdict">
-              <div><dt>Decision the finding supports</dt><dd>{finding.decision}</dd></div>
-              <div><dt>Assumptions and limits</dt><dd>{finding.limits}</dd></div>
-            </dl>
-          </div>
-        </div>
-      </details>
+      <AssessmentArtefact />
       <nav class="related-links" aria-label="Inspect the assessment output"><a href="/sample-report/" class="btn-ghost">View sample verdict</a><a href="/agda/#verdict" class="link">The three verdict states <span aria-hidden="true">→</span></a></nav>
       <div class="evidence-notes">
         <p>{SELF_APPROVAL} {RECORDS_NOTE} <a href="/verify/" class="link">What verification establishes</a>.</p>
@@ -112,7 +86,7 @@ const finding = {
 
   <section class="block engage" id="offers">
     <div class="wrap">
-      <OfferChoice headingLevel="h2" editorial />
+      <OfferLadder headingLevel="h2" />
       <p class="engage-terms">{PRICE_QUALIFIER} The proposal confirms scope, outputs, fee, terms and timetable. {AVAILABILITY} <a href="/services/" class="link">Scope, fees and how an engagement runs</a>.</p>
     </div>
   </section>
@@ -138,37 +112,17 @@ const finding = {
   .hero-principle { display: flex; flex-wrap: wrap; gap: 0 var(--space-2); border-top: 1px solid var(--hair); padding-top: var(--space-4); margin: var(--gap-intro) 0 0; color: var(--faint); font-size: var(--type-small); line-height: 1.6; }
   .hero-principle span { color: var(--ink); }
   .section-heading, .assessment-intro { display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-6); align-items: start; margin-bottom: var(--space-6); }
-  .section-heading .label { margin-top: 10px; }
   .situations, .method-block, .finding-block, .engage { border-bottom: 1px solid var(--hair); }
-  .problem-questions { list-style: none; margin: 0; padding: 0; }
-  .problem-questions li { display: grid; grid-template-columns: 40px minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-6); align-items: baseline; padding: var(--space-5) 0; border-top: 1px solid var(--hair-strong); }
-  .problem-index { color: var(--accent-text); font-size: var(--type-caption); }
+  .lab-heading { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); align-items: end; margin-bottom: var(--space-6); }
+  .lab-heading .body { margin: 0; }
+  .problem-questions { list-style: none; margin: var(--space-7) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); }
+  .problem-questions li { display: grid; gap: var(--space-2); align-content: start; padding-top: var(--space-4); border-top: 1px solid var(--hair-strong); }
+  .problem-questions .h3 { font-size: var(--type-card); }
   .problem-questions :is(h3, p) { margin: 0; }
   .assessment-identity { display: grid; gap: var(--space-5); justify-items: start; padding-top: 8px; }
   .assessment-identity :global(.agda-logo.logo) { width: 256px; }
   .assessment-intro .lede { font-size: var(--type-support); line-height: 1.65; margin-top: 24px; }
   .finding-block { background: var(--paper-soft); }
-  .example-heading { border-top: 1px solid var(--hair-strong); padding-top: var(--space-5); }
-  .example-label { font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
-  .example-heading .h3 { font-size: var(--type-finding); line-height: 1.2; margin: var(--space-3) 0; }
-  .finding-example { border-block: 1px solid var(--hair-strong); margin-top: 32px; }
-  .finding-example summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 24px 0; }
-  .finding-example summary::-webkit-details-marker { display: none; }
-  .finding-example summary:is(:hover, :focus-visible) .example-title { color: var(--accent-text); }
-  .finding-example summary:active .example-title { color: var(--accent-text-hover); }
-  .finding-example summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 6px; }
-  .example-title { transition: color var(--dur-fast) var(--ease); font-size: var(--type-body); line-height: 1.5; color: var(--ink); }
-  .example-toggle { width: 20px; height: 20px; position: relative; flex: none; }
-  .example-toggle::before, .example-toggle::after { content: ''; position: absolute; background: var(--accent); }
-  .example-toggle::before { width: 18px; height: 1px; top: 9px; left: 1px; }
-  .example-toggle::after { height: 18px; width: 1px; top: 1px; left: 9px; }
-  .example-toggle::after { transition: transform var(--dur-expand) var(--ease-out); transform-origin: center; }
-  .finding-example[open]:not([data-disclosure-state='closed']) .example-toggle::after { transform: scaleY(0); }
-  .example-body { padding: 8px 0 32px; }
-  .finding-scope, .finding-verdict { margin: 0; padding: 24px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-  .finding-verdict { margin-top: 24px; border-top: 1px solid var(--hair); }
-  .finding-scope dt, .finding-verdict dt { font-family: var(--font-mono); font-size: var(--type-caption); color: var(--accent-text); margin-bottom: 12px; }
-  .finding-scope dd, .finding-verdict dd { margin: 0; font-size: var(--type-small); line-height: 1.7; color: var(--muted); }
   .evidence-notes { border-top: 1px solid var(--hair); margin-top: 32px; padding-top: 24px; }
   .evidence-notes > p { font-size: var(--type-small); line-height: 1.7; color: var(--muted); margin: 0; }
   .engage-terms { margin: 32px 0 0; padding-top: 24px; border-top: 1px solid var(--hair); font-size: var(--type-small); line-height: 1.7; color: var(--muted); }
@@ -177,17 +131,15 @@ const finding = {
   .close-action { display: grid; justify-items: start; gap: 24px; }
   .close-line { font-size: var(--type-support); line-height: 1.65; color: var(--muted); margin: 0; }
   @media (max-height: 760px) and (min-width: 881px) { .hero { padding-top: 40px; } .hero .display-xl { font-size: clamp(44px, 6.6vw, 92px); } .hero-intro { margin-top: 28px; } }
-  @media (max-width: 1100px) { .hero-intro { gap: 40px; } .section-heading, .assessment-intro { grid-template-columns: 1fr 1.8fr; gap: var(--space-5); } .assessment-identity :global(.agda-logo.logo) { width: 224px; } .problem-questions li { gap: 24px; } }
+  @media (max-width: 1100px) { .hero-intro { gap: 40px; } .section-heading, .assessment-intro { grid-template-columns: 1fr 1.8fr; gap: var(--space-5); } .assessment-identity :global(.agda-logo.logo) { width: 224px; } }
   @media (max-width: 960px) {
     .hero-intro { grid-template-columns: 1fr; gap: 24px; }
     .hero-cta { flex-direction: row; align-items: center; gap: 16px 24px; }
     .hero-note { margin-top: 16px; }
     .section-heading, .assessment-intro, .close-wrap { grid-template-columns: 1fr; gap: 24px; }
-    .section-heading .label { margin-top: 0; }
     .assessment-identity { padding-top: 0; }
-    .problem-questions li { grid-template-columns: 32px 1fr; gap: 12px 24px; }
-    .problem-index { grid-row: span 2; padding-top: 8px; }
-    .problem-questions p { grid-column: 2; }
+    .lab-heading { grid-template-columns: 1fr; margin-bottom: var(--space-5); }
+    .problem-questions { grid-template-columns: 1fr; margin-top: var(--space-6); }
     .close-wrap { gap: var(--space-5); }
   }
   @media (max-width: 560px) {
@@ -200,8 +152,5 @@ const finding = {
     .hero-principle { display: block; margin-top: 32px; font-size: var(--type-small); }
     .hero-principle span { display: block; }
     .section-heading { margin-bottom: 32px; }
-    .problem-questions li { grid-template-columns: 24px 1fr; column-gap: 16px; }
-    .problem-questions .h3 { font-size: var(--type-card); }
-    .finding-scope, .finding-verdict { grid-template-columns: 1fr; gap: 24px; }
   }
 </style>

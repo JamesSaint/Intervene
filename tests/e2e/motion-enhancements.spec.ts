@@ -10,7 +10,6 @@ async function prepare(page: Page, route: string) {
 
 for (const [route, selector] of [
   ['/', '.sedi-explorer details'],
-  ['/', '.finding-example'],
   ['/services/', 'details.disclosure'],
   ['/style-guide/', 'details.disclosure'],
 ]) {

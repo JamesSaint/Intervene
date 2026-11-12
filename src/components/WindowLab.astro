@@ -1,0 +1,384 @@
+---
+/**
+ * The intervention window as a working model: four sequential stages spend
+ * time against one window, and the visitor can change any of them.
+ *
+ * Illustrative only. Units are relative, the model is not the AGDA® engine
+ * and its outcome is not a verdict; the note under the plot says so and is
+ * always visible. The first paint is rendered here from the same model the
+ * script uses, so the figure reads correctly without JavaScript.
+ */
+import {
+  AXIS, STAGES, STAGE_MIN, STAGE_MAX, WINDOWS, PRESETS, DEFAULT_PRESET,
+  OUTCOME_LABEL, evaluate, describe,
+} from '../lib/window-model';
+
+interface Props { id?: string }
+const { id = 'window-lab' } = Astro.props;
+
+const what = [
+  'Recognise the need to act',
+  'Reach decision authority',
+  'Make the decision',
+  'Put it into effect',
+];
+const preset = PRESETS.find((p) => p.key === DEFAULT_PRESET)!;
+const result = evaluate(preset.durations, WINDOWS.set);
+const windows = [
+  { key: 'shorter', label: '25% shorter' },
+  { key: 'set', label: 'As set' },
+  { key: 'longer', label: '25% longer' },
+];
+---
+<div
+  class="window-lab"
+  id={id}
+  data-window-lab
+  data-outcome={result.outcome}
+  style={`--wl-axis:${AXIS};--wl-w:${WINDOWS.set};--wl-p:${AXIS}`}
+>
+  <fieldset class="wl-presets">
+    <legend>Choose a scenario</legend>
+    {PRESETS.map((p) => (
+      <label>
+        <input type="radio" name={`${id}-preset`} value={p.key} checked={p.key === preset.key} />
+        <span>{p.label}</span>
+      </label>
+    ))}
+  </fieldset>
+  <p class="wl-scenario" data-wl-scenario>{preset.text}</p>
+
+  <figure class="wl-figure" aria-labelledby={`${id}-result`} aria-describedby={`${id}-note`}>
+    <div class="wl-row wl-axis" aria-hidden="true">
+      <span class="wl-ctl"></span>
+      <span class="wl-track">
+        <span class="wl-mark wl-mark-start">Signal</span>
+        <span class="wl-mark wl-mark-close">Window closes</span>
+        <span class="wl-mark wl-mark-after">Irreversible</span>
+      </span>
+    </div>
+    <ol class="wl-rows" role="list">
+      {STAGES.map((stage, i) => (
+        <li class="wl-row" data-wl-row style={`--wl-s:${result.starts[i]};--wl-d:${preset.durations[i]}`}>
+          <div class="wl-ctl">
+            <label class="wl-name" for={`${id}-${i}`}>{stage}</label>
+            <span class="wl-what">{what[i]}</span>
+            <input
+              class="wl-range"
+              type="range"
+              id={`${id}-${i}`}
+              min={STAGE_MIN}
+              max={STAGE_MAX}
+              step="1"
+              value={preset.durations[i]}
+              aria-label={`${stage}: time taken`}
+              aria-valuetext={`${preset.durations[i]} of ${STAGE_MAX}`}
+              data-wl-stage={i}
+            />
+          </div>
+          <div class="wl-track" aria-hidden="true">
+            <span class="wl-bar"></span>
+            <span class="wl-node"></span>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <figcaption class="wl-readout">
+      <p class="wl-result" id={`${id}-result`} aria-live="polite">
+        <strong class="wl-outcome" data-wl-outcome><span class="wl-dot" aria-hidden="true"></span><span data-wl-label>{OUTCOME_LABEL[result.outcome]}</span></strong>
+        <span class="wl-text" data-wl-text>{describe(result)}</span>
+      </p>
+      <p class="wl-status" data-wl-status aria-hidden="true"></p>
+      <button class="wl-replay link" type="button" data-wl-replay hidden>Run the scenario <span aria-hidden="true">↻</span></button>
+    </figcaption>
+  </figure>
+
+  <div class="wl-foot">
+    <fieldset class="wl-window">
+      <legend>Test the window</legend>
+      {windows.map((w) => (
+        <label>
+          <input type="radio" name={`${id}-window`} value={w.key} checked={w.key === 'set'} />
+          <span>{w.label}</span>
+        </label>
+      ))}
+    </fieldset>
+    <p class="wl-note" id={`${id}-note`}>
+      Illustrative model. Relative units, not measured durations, and not an
+      assessment result. An assessment sets the window from your own records.
+    </p>
+  </div>
+</div>
+
+<style>
+  @property --wl-w { syntax: '<number>'; inherits: true; initial-value: 12; }
+  @property --wl-s { syntax: '<number>'; inherits: true; initial-value: 0; }
+  @property --wl-d { syntax: '<number>'; inherits: true; initial-value: 1; }
+
+  .window-lab {
+    --wl-ctl: 248px;
+    --wl-gap: var(--space-5);
+    --wl-zone: var(--hair);
+    transition: --wl-w var(--dur-expand) var(--ease-out);
+  }
+
+  fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  legend { padding: 0; margin-bottom: var(--space-2); font-family: var(--font-mono); font-size: var(--type-caption); color: var(--faint); }
+  fieldset label { position: relative; cursor: pointer; }
+  fieldset input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+  fieldset label > span {
+    display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 16px;
+    border: 1px solid var(--hair-strong); font-size: var(--type-action); line-height: 1.3; color: var(--muted);
+    transition: color var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+  }
+  fieldset input:checked + span { color: var(--paper); background: var(--ink); border-color: var(--ink); }
+  fieldset label:hover input:not(:checked) + span { color: var(--ink); border-color: var(--control-active); }
+  fieldset input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+  .wl-presets { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+  .wl-presets legend { float: left; width: 100%; }
+  .wl-scenario { margin: var(--space-4) 0 0; min-height: 2lh; font-size: var(--type-support); line-height: 1.5; color: var(--ink); max-width: 46ch; }
+
+  .wl-figure { margin: var(--space-5) 0 0; }
+  .wl-rows { list-style: none; margin: 0; padding: 0; }
+  .wl-row { display: grid; grid-template-columns: var(--wl-ctl) minmax(0, 1fr); gap: 0 var(--wl-gap); align-items: stretch; }
+  .wl-rows .wl-row { border-top: 1px solid var(--hair); transition: --wl-s var(--dur-expand) var(--ease-out), --wl-d var(--dur-expand) var(--ease-out); }
+  .wl-rows .wl-row:last-child { border-bottom: 1px solid var(--hair-strong); }
+  .wl-rows .wl-row:first-child { border-top-color: var(--hair-strong); }
+
+  .wl-ctl { display: grid; grid-template-columns: 1fr; gap: 2px; align-content: center; padding: var(--space-3) 0 var(--space-1); min-width: 0; }
+  .wl-name { font-size: var(--type-card); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.25; color: var(--ink); }
+  .wl-what { font-size: var(--type-action); line-height: 1.5; color: var(--muted); }
+
+  /* The whole 44px band is the target; the drawn track is a hairline. */
+  .wl-range { display: none; appearance: none; -webkit-appearance: none; width: 100%; max-width: 200px; height: 44px; margin: -4px 0 0; padding: 0; background: transparent; cursor: ew-resize; }
+  .window-lab[data-ready] .wl-range { display: block; }
+  .wl-range::-webkit-slider-runnable-track { height: 1px; background: var(--control-border); }
+  .wl-range::-moz-range-track { height: 1px; background: var(--control-border); }
+  .wl-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; margin-top: -9px; border-radius: 50%; border: 1px solid var(--ink); background: var(--paper); transition: background-color var(--dur-fast) var(--ease); }
+  .wl-range::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--ink); background: var(--paper); }
+  .wl-range:is(:hover, :active)::-webkit-slider-thumb { background: var(--ink); }
+  .wl-range:is(:hover, :active)::-moz-range-thumb { background: var(--ink); }
+  .wl-range:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  /* Each track draws its own slice of the closed region, so the rows read
+     as one continuous zone on wide screens and stand alone when stacked. */
+  .wl-track { position: relative; min-height: 28px; }
+  .wl-track::after {
+    content: ''; position: absolute; top: 0; bottom: 0; right: 0;
+    left: calc(var(--wl-w) / var(--wl-axis) * 100%);
+    border-left: 1px dashed var(--control-border);
+    background: repeating-linear-gradient(135deg, var(--wl-zone) 0 1px, transparent 1px 11px);
+    pointer-events: none;
+  }
+  /* A stage starts where the one before it ended. */
+  .wl-rows .wl-row + .wl-row .wl-track::before {
+    content: ''; position: absolute; top: -1px; height: calc(50% + 1px); width: 1px;
+    left: calc(var(--wl-s) / var(--wl-axis) * 100%);
+    background: var(--hair-strong);
+    opacity: clamp(0, calc((var(--wl-p) - var(--wl-s)) * 100 + 1), 1);
+  }
+  .wl-bar {
+    position: absolute; z-index: 1; top: calc(50% - 5px); height: 10px;
+    left: calc(var(--wl-s) / var(--wl-axis) * 100%);
+    width: calc(var(--wl-d) / var(--wl-axis) * 100%);
+    --wl-cut: clamp(0%, calc((var(--wl-w) - var(--wl-s)) / var(--wl-d) * 100%), 100%);
+    background: linear-gradient(to right, var(--ink) 0 var(--wl-cut), var(--warn) var(--wl-cut) 100%);
+    clip-path: inset(0 calc((1 - clamp(0, calc((var(--wl-p) - var(--wl-s)) / var(--wl-d)), 1)) * 100%) 0 0);
+  }
+  .wl-node {
+    position: absolute; z-index: 2; top: calc(50% - 6.5px); width: 13px; height: 13px; margin-left: -6.5px;
+    left: calc((var(--wl-s) + var(--wl-d)) / var(--wl-axis) * 100%);
+    border: 1px solid var(--ink); border-radius: 50%; background: var(--paper);
+    opacity: clamp(0, calc((var(--wl-p) - var(--wl-s) - var(--wl-d)) * 100 + 1), 1);
+  }
+  /* The last node is the intervention itself: filled when it lands in
+     time, a square when it lands after the window (the site's late mark). */
+  .wl-row:last-child .wl-node { background: var(--ink); }
+  .window-lab[data-outcome='too-late'] .wl-row:last-child .wl-node { border-radius: 0; border-color: var(--warn); background: var(--warn); }
+
+  .wl-axis .wl-track { min-height: 32px; }
+  .wl-axis .wl-track::after { background: none; border-left: 0; }
+  .wl-mark { position: absolute; bottom: 8px; font-family: var(--font-mono); font-size: 12px; line-height: 1.4; color: var(--faint); white-space: nowrap; }
+  .wl-mark-start { left: 0; }
+  .wl-mark-close { right: calc(100% - var(--wl-w) / var(--wl-axis) * 100% + 10px); color: var(--ink); }
+  .wl-mark-after { left: calc(var(--wl-w) / var(--wl-axis) * 100% + 10px); }
+  /* "Signal" gives way when a short window brings the boundary label over it. */
+  .window-lab[data-window='shorter'] .wl-mark-start { visibility: hidden; }
+
+  .wl-readout { display: grid; grid-template-columns: var(--wl-ctl) minmax(0, 1fr) auto; gap: var(--space-2) var(--wl-gap); align-items: baseline; padding-top: var(--space-4); min-height: calc(var(--space-4) + 3lh); }
+  .wl-result { display: contents; }
+  .wl-outcome { display: inline-flex; align-items: center; gap: 12px; font-size: var(--type-h3); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.2; color: var(--ink); }
+  .wl-dot { width: 12px; height: 12px; flex: none; background: var(--pass); border-radius: 50%; }
+  [data-outcome='narrow'] .wl-dot { background: var(--hold); }
+  [data-outcome='too-late'] .wl-dot { background: var(--warn); border-radius: 0; }
+  .wl-text { margin: 0; font-size: var(--type-body); line-height: 1.6; color: var(--muted); }
+  .wl-status { display: none; margin: 0; grid-column: 1 / 3; font-size: var(--type-h3); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.2; color: var(--faint); }
+  .window-lab[data-playing] .wl-status { display: block; }
+  .window-lab[data-playing] .wl-result > * { display: none; }
+  .wl-replay { grid-column: 3; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: var(--type-action); white-space: nowrap; }
+  .wl-replay[hidden] { display: none; }
+
+  .wl-foot { display: grid; grid-template-columns: var(--wl-ctl) minmax(0, 1fr); gap: var(--space-4) var(--wl-gap); align-items: end; margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--hair); }
+  .wl-window { display: none; }
+  .window-lab[data-ready] .wl-window { display: flex; flex-wrap: wrap; }
+  .wl-window legend { float: left; width: 100%; }
+  .wl-window label { flex: 1 1 0; }
+  .wl-window label + label > span { border-left: 0; }
+  .wl-window label > span { padding: 8px 6px; font-size: 13px; white-space: nowrap; }
+  .wl-note { grid-column: 2; margin: 0; font-size: var(--type-caption); line-height: 1.65; color: var(--faint); max-width: 64ch; }
+  /* Without the script the figure is a fixed illustration of one scenario. */
+  .window-lab:not([data-ready]) .wl-presets { display: none; }
+
+  @media (max-width: 960px) {
+    .window-lab { --wl-ctl: 184px; --wl-gap: var(--space-4); }
+    .wl-readout { grid-template-columns: minmax(0, 1fr) auto; }
+    .wl-outcome, .wl-text { grid-column: 1 / -1; }
+    .wl-status { grid-column: 1 / -1; }
+    .wl-replay { grid-column: 1 / -1; justify-self: start; }
+    .wl-foot { grid-template-columns: 1fr; }
+    .wl-note { grid-column: 1; }
+    .wl-window { max-width: 360px; }
+  }
+  @media (max-width: 640px) {
+    .wl-row { grid-template-columns: minmax(0, 1fr); }
+    .wl-axis .wl-ctl { display: none; }
+    .wl-ctl { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 var(--space-3); align-items: center; padding: var(--space-3) 0 0; }
+    .wl-name { font-size: 18px; }
+    .wl-what { grid-column: 1; grid-row: 2; font-size: 13px; }
+    .wl-range { grid-column: 2; grid-row: 1 / span 2; max-width: none; justify-self: end; }
+    .wl-track { min-height: 36px; }
+    .wl-rows .wl-row + .wl-row .wl-track::before { display: none; }
+    .wl-presets label > span { padding: 8px 12px; font-size: 13px; }
+    .wl-scenario { min-height: 3lh; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .window-lab, .wl-rows .wl-row { transition: none; }
+  }
+  @media print {
+    .wl-presets, .wl-range, .wl-replay, .wl-window { display: none !important; }
+  }
+</style>
+
+<script>
+  import {
+    AXIS, STAGES, WINDOWS, PRESETS, CUSTOM_TEXT, OUTCOME_LABEL, evaluate, describe,
+    type WindowKey,
+  } from '../lib/window-model';
+
+  const PROGRESS = ['Detecting', 'Escalating', 'Deciding', 'Intervening'];
+  /** Milliseconds of playback for one unit of the model. */
+  const UNIT_MS = 230;
+
+  function motionEnabled(): boolean {
+    return document.documentElement.hasAttribute('data-motion')
+      && !matchMedia('(prefers-reduced-motion: reduce)').matches && !document.hidden;
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-window-lab]').forEach((lab) => {
+    const rows = Array.from(lab.querySelectorAll<HTMLElement>('[data-wl-row]'));
+    const ranges = Array.from(lab.querySelectorAll<HTMLInputElement>('[data-wl-stage]'));
+    const presets = Array.from(lab.querySelectorAll<HTMLInputElement>('.wl-presets input'));
+    const windows = Array.from(lab.querySelectorAll<HTMLInputElement>('.wl-window input'));
+    const scenario = lab.querySelector<HTMLElement>('[data-wl-scenario]')!;
+    const label = lab.querySelector<HTMLElement>('[data-wl-label]')!;
+    const text = lab.querySelector<HTMLElement>('[data-wl-text]')!;
+    const status = lab.querySelector<HTMLElement>('[data-wl-status]')!;
+    const replay = lab.querySelector<HTMLButtonElement>('[data-wl-replay]')!;
+    let frame = 0;
+    let played = false;
+
+    const durations = () => ranges.map((r) => Number(r.value));
+    const windowKey = () => (windows.find((w) => w.checked)?.value ?? 'set') as WindowKey;
+    const current = () => evaluate(durations(), WINDOWS[windowKey()]);
+
+    const stop = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      lab.removeAttribute('data-playing');
+      lab.style.setProperty('--wl-p', String(AXIS));
+    };
+
+    const render = () => {
+      const d = durations();
+      const result = current();
+      rows.forEach((row, i) => {
+        row.style.setProperty('--wl-s', String(result.starts[i]));
+        row.style.setProperty('--wl-d', String(d[i]));
+        ranges[i].setAttribute('aria-valuetext', `${d[i]} of ${ranges[i].max}`);
+      });
+      lab.style.setProperty('--wl-w', String(WINDOWS[windowKey()]));
+      lab.dataset.window = windowKey();
+      lab.dataset.outcome = result.outcome;
+      const next = describe(result);
+      // Write only on change, so the live region announces a new outcome once.
+      if (label.textContent !== OUTCOME_LABEL[result.outcome]) label.textContent = OUTCOME_LABEL[result.outcome];
+      if (text.textContent !== next) text.textContent = next;
+      return result;
+    };
+
+    const play = () => {
+      stop();
+      const result = render();
+      played = true;
+      if (!motionEnabled()) return;
+      const d = durations();
+      const end = Math.min(AXIS, Math.max(result.total, WINDOWS[windowKey()]) + 1);
+      const began = performance.now();
+      lab.setAttribute('data-playing', '');
+      // The outcome is withheld while time runs: the closed region stays
+      // neutral until the playhead has actually crossed the boundary.
+      lab.dataset.outcome = 'in-time';
+      const tick = (now: number) => {
+        const p = Math.min(end, (now - began) / UNIT_MS);
+        lab.style.setProperty('--wl-p', p.toFixed(3));
+        const stage = d.findIndex((x, i) => p < result.starts[i] + x);
+        status.textContent = stage === -1 ? '' : `${PROGRESS[stage]}…`;
+        if (p >= WINDOWS[windowKey()] && result.outcome === 'too-late') lab.dataset.outcome = 'too-late';
+        if (p < end) { frame = requestAnimationFrame(tick); return; }
+        stop();
+        lab.dataset.outcome = result.outcome;
+      };
+      frame = requestAnimationFrame(tick);
+    };
+
+    presets.forEach((radio) => radio.addEventListener('change', () => {
+      const preset = PRESETS.find((p) => p.key === radio.value);
+      if (!preset) return;
+      preset.durations.forEach((value, i) => { ranges[i].value = String(value); });
+      scenario.textContent = preset.text;
+      play();
+    }));
+    ranges.forEach((range) => range.addEventListener('input', () => {
+      stop();
+      presets.forEach((radio) => { radio.checked = false; });
+      scenario.textContent = CUSTOM_TEXT;
+      render();
+    }));
+    windows.forEach((radio) => radio.addEventListener('change', () => { stop(); render(); }));
+    replay.addEventListener('click', play);
+
+    const sync = () => { replay.hidden = !motionEnabled(); };
+    lab.setAttribute('data-ready', '');
+    render();
+    sync();
+    matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', () => { stop(); render(); sync(); });
+    document.addEventListener('visibilitychange', () => { if (document.hidden && frame) { stop(); render(); } });
+    window.addEventListener('pageshow', sync);
+    window.addEventListener('beforeprint', () => { stop(); render(); });
+
+    // One unprompted run, the first time most of the figure is on screen.
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting || entry.intersectionRatio < 0.6 || played) return;
+          observer.disconnect();
+          sync();
+          play();
+        });
+      }, { threshold: 0.6 });
+      const figure = lab.querySelector('.wl-figure');
+      if (figure) observer.observe(figure);
+    }
+  });
+</script>

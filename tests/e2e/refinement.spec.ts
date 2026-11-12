@@ -13,8 +13,9 @@ test('homepage follows six stages and exposes the finding before any interaction
   await expect(page.locator('.hero-sub')).toContainText('assessment examines');
   await expect(page.locator('.hero-sub [role="img"]')).toHaveAttribute('aria-label', 'AGDA®');
   await expect(page.locator('.finding-chain')).toBeVisible();
-  await expect(page.locator('.finding-example')).not.toHaveAttribute('open', '');
-  await expect(page.locator('.oc-fields')).toHaveCount(2);
+  await expect(page.locator('.artefact [role="tab"][aria-selected="true"]')).toHaveText('SEDI findings');
+  // Three engagements since the Authority Check became the entry offer.
+  await expect(page.locator('.oc-fields')).toHaveCount(3);
   for (const fields of await page.locator('.oc-fields').all()) {
     await expect(fields).toContainText('Question and decision');
     await expect(fields).toContainText('Evidence examined');
