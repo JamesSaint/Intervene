@@ -89,7 +89,7 @@ test('the scenario plays through time when motion is allowed, and settles on the
   await page.goto('/');
   const lab = page.locator('.window-lab');
   await lab.locator('.wl-figure').scrollIntoViewIfNeeded();
-  const replay = lab.getByRole('button', { name: 'Run the scenario' });
+  const replay = lab.getByRole('button', { name: 'Replay the scenario' });
   await expect(replay).toBeVisible();
   await replay.click();
   await expect(lab).toHaveAttribute('data-playing', '');
@@ -180,8 +180,12 @@ test('the homepage instruments do not overflow at any supported width', async ({
 test('opening a SEDI stage closes the others and marks every later stage as waiting on it', async ({ page }) => {
   await open(page);
   const stages = page.locator('.sedi-explorer details');
+  // Detect is open on arrival: every later stage already reads as waiting.
+  await expect(stages.nth(0)).toHaveAttribute('open', '');
+  await expect(page.locator('.sedi-explorer .sedi-wait:visible')).toHaveText(['Waits on Detect', 'Waits on Escalate', 'Waits on Decide']);
   await stages.nth(1).locator('summary').click();
   await expect(stages.nth(1)).toHaveAttribute('open', '');
+  await expect(stages.nth(0)).not.toHaveAttribute('open');
   await expect(page.locator('.sedi-explorer .sedi-wait:visible')).toHaveText(['Waits on Escalate', 'Waits on Decide']);
   await stages.nth(2).locator('summary').click();
   await expect(stages.nth(2)).toHaveAttribute('open', '');
@@ -195,4 +199,75 @@ test('opening a SEDI stage closes the others and marks every later stage as wait
     }));
     expect(widths.detail).toBeGreaterThan(widths.chain * 0.95);
   }
+});
+
+test('at 1440 by 900 the whole model and its outcome are in the opening view', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'A desktop composition.');
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await open(page);
+  const lab = page.locator('.window-lab');
+  for (const part of ['.wl-presets', '.wl-rows .wl-row:last-child .wl-track', '.wl-outcome', '.wl-text']) {
+    const box = (await lab.locator(part).boundingBox())!;
+    expect(box.y, part).toBeGreaterThan(0);
+    expect(box.y + box.height, part).toBeLessThanOrEqual(900);
+  }
+  // The headline keeps its place above the model, and the primary action is beside it.
+  const headline = (await page.locator('#home-question').boundingBox())!;
+  expect(headline.y + headline.height).toBeLessThan((await lab.boundingBox())!.y);
+  await expect(page.locator('.hero-home [data-primary-cta]')).toBeInViewport();
+});
+
+test('the model plays on arrival without scrolling, offers a replay, and moves nothing on the page', async ({ page, isMobile }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('intv-consent', 'denied');
+    (window as any).__shift = 0;
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries() as any[]) if (!entry.hadRecentInput) (window as any).__shift += entry.value;
+    }).observe({ type: 'layout-shift', buffered: true });
+  });
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  const lab = page.locator('.window-lab');
+  // On a phone the headline fills the opening view, so the model waits
+  // until it is on screen; it shows its result throughout either way.
+  if (isMobile) {
+    await expect(lab.locator('[data-wl-label]')).toHaveText('Too late');
+    await lab.locator('.wl-figure').scrollIntoViewIfNeeded();
+  } else {
+    expect(await page.evaluate(() => scrollY)).toBe(0);
+  }
+  await expect(lab).toHaveAttribute('data-playing', '', { timeout: 4000 });
+  await expect(lab.locator('[data-wl-status]')).toHaveText(/Detecting|Escalating|Deciding|Intervening/);
+  await expect(lab).not.toHaveAttribute('data-playing', '', { timeout: 8000 });
+  await expect(lab.locator('[data-wl-label]')).toHaveText('Too late');
+  const replay = lab.getByRole('button', { name: 'Replay the scenario' });
+  await expect(replay).toBeVisible();
+  // Desktop keeps the control in the opening view; a phone scrolls a short way back to it.
+  if (!isMobile) await expect(replay).toBeInViewport();
+  await replay.click();
+  await expect(lab).toHaveAttribute('data-playing', '');
+  await expect(lab).not.toHaveAttribute('data-playing', '', { timeout: 8000 });
+  expect(await page.evaluate(() => (window as any).__shift)).toBeLessThan(0.01);
+});
+
+test('with reduced motion the model shows its result at once and never plays', async ({ page }) => {
+  await open(page);
+  const lab = page.locator('.window-lab');
+  await page.waitForTimeout(1600);
+  await expect(lab).not.toHaveAttribute('data-playing', '');
+  await expect(lab.locator('[data-wl-label]')).toHaveText('Too late');
+  await expect(lab.getByRole('button', { name: 'Replay the scenario' })).toBeHidden();
+  await expect(lab.locator('.wl-hint')).toHaveText('Move a stage to change the outcome');
+});
+
+test('each engagement leads with its question and states its fee beside it', async ({ page }) => {
+  await open(page);
+  const heads = page.locator('.offer-ladder .ol-head');
+  for (let i = 0; i < offers.length; i++) {
+    await expect(heads.nth(i).locator('.ol-q')).toHaveText(offers[i].question);
+    await expect(heads.nth(i).locator('.ol-price')).toHaveText(offers[i].price);
+    await expect(heads.nth(i).locator('.ol-price-note')).toHaveText(offers[i].priceNote);
+  }
+  // Each fee appears once per engagement, not repeated lower in the column.
+  for (const o of offers) await expect(page.locator('.offer-ladder').getByText(o.price, { exact: true })).toHaveCount(1);
 });

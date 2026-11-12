@@ -92,6 +92,29 @@ The dark instrument and closing band use the site's existing dark palette,
 scoped to those two elements. They are the same in light and dark
 appearance. No token was added or changed.
 
+## Third pass, on review decisions
+
+1. **The dark instrument and closing band stay**, as two contained elements
+   inside the light theme. They do not set the site's appearance.
+2. **The SEDI chain opens on Detect.** The dependency is drawn before any
+   interaction: every later stage reads as waiting. This is the shared
+   component, so `/agda/`, `/methodology/` and `/style-guide/` open on Detect
+   too. Tests that assumed a closed first stage now use the second.
+3. **The model is in the opening view.** From 1100px the headline and its
+   support sit side by side, and inside the instrument the model sits on the
+   left with the scenario, outcome and window test beside it. At 1440 by 900
+   the scenarios, all four stages and the stated outcome are visible without
+   scrolling; a test holds that.
+4. **Playback starts on arrival**, not on scroll, wherever the model is on
+   screen. On a phone the headline fills the opening view, so it starts when
+   the model is reached. "Replay the scenario" sits in the instrument's top
+   bar and "Move a stage to change the outcome" labels the sliders. With
+   reduced motion nothing plays and the result is shown at once.
+5. **The three engagements are one framed comparison.** Each column leads
+   with the question it answers, then the name and the fee; what it includes
+   runs down a rail, as the stages of the chain do. No animation was added.
+   Fees moved from the foot of each column to its head and are stated once.
+
 ## Published wording that changed
 
 Prices, offer names, boundaries, the price qualifier, the availability
@@ -103,7 +126,8 @@ statement, legal pages and every verification claim are unchanged.
   caption "Conceptual illustration. Positions show order, not measured
   durations."
 - Scenario model: six preset names; "The chain, end to end"; "Signal",
-  "Window closes", "Irreversible"; "Run the scenario"; the outcome sentences;
+  "Window closes", "Irreversible"; "Replay the scenario"; "Move a stage to
+  change the outcome"; the outcome sentences;
   and the note
   "Illustrative model. Relative units, not measured durations, and not an
   assessment result. An assessment sets the window from your own records."
@@ -113,6 +137,8 @@ statement, legal pages and every verification claim are unchanged.
   - Escalate: "An actionable signal from Detect."
   - Decide: "The signal reaching a person with authority to act."
   - Intervene: "An authorised decision, and a mechanism that takes effect."
+- SEDI instruction, now "Select a stage to see what it depends on and what
+  waits on it."
 - SEDI stages, shown only on stages after the open one: "Waits on Detect",
   "Waits on Escalate", "Waits on Decide".
 - Artefact record strip: "Intervention Readiness verdict · CRED-MOD-04" and

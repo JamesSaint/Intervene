@@ -9,7 +9,8 @@ async function prepare(page: Page, route: string) {
 }
 
 for (const [route, selector] of [
-  ['/', '.sedi-explorer details'],
+  // Detect is open by default; the second stage starts closed.
+  ['/', '.sedi-explorer li:nth-child(2) details'],
   ['/services/', 'details.disclosure'],
   ['/style-guide/', 'details.disclosure'],
 ]) {
@@ -32,7 +33,7 @@ for (const [route, selector] of [
 
 test('repeated disclosure input reverses from the visible height and leaves the requested state', async ({ page }) => {
   await prepare(page, '/methodology/');
-  const details = page.locator('.sedi-explorer details').first();
+  const details = page.locator('.sedi-explorer details').nth(1);
   await details.scrollIntoViewIfNeeded();
   const result = await details.evaluate(async (el) => {
     const summary = el.querySelector('summary')!;
@@ -58,7 +59,7 @@ test('repeated disclosure input reverses from the visible height and leaves the 
 
 test('a changed reduced-motion preference settles moving disclosures and reveals all content', async ({ page }) => {
   await prepare(page, '/methodology/');
-  const details = page.locator('.sedi-explorer details').first();
+  const details = page.locator('.sedi-explorer details').nth(1);
   await details.locator('summary').click();
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(page.locator('html')).not.toHaveAttribute('data-motion');

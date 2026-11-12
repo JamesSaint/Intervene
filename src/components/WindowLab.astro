@@ -47,73 +47,80 @@ const windows = [
         </label>
       ))}
     </fieldset>
-    <button class="wl-replay" type="button" data-wl-replay hidden><span class="wl-play" aria-hidden="true"></span>Run the scenario</button>
+    <button class="wl-replay" type="button" data-wl-replay hidden><span class="wl-play" aria-hidden="true"></span>Replay the scenario</button>
   </div>
-  <p class="wl-scenario" data-wl-scenario>{preset.text}</p>
 
-  <figure class="wl-figure" aria-labelledby={`${id}-result`} aria-describedby={`${id}-note`}>
-    <div class="wl-row wl-axis" aria-hidden="true">
-      <span class="wl-ctl"></span>
-      <span class="wl-track">
-        <span class="wl-mark wl-mark-start">Signal</span>
-        <span class="wl-mark wl-mark-close">Window closes</span>
-        <span class="wl-mark wl-mark-after">Irreversible</span>
-        <span class="wl-head"></span>
-      </span>
-    </div>
-    <div class="wl-row wl-sum" aria-hidden="true">
-      <span class="wl-ctl"><span class="wl-sum-label">The chain, end to end</span></span>
-      <span class="wl-track">
-        {STAGES.map((_, i) => (
-          <span class="wl-seg" data-wl-seg style={`--wl-s:${result.starts[i]};--wl-d:${preset.durations[i]}`}></span>
+  <div class="wl-main">
+    <figure class="wl-figure" aria-labelledby={`${id}-result`} aria-describedby={`${id}-note`}>
+      <div class="wl-row wl-axis" aria-hidden="true">
+        <span class="wl-ctl"><span class="wl-hint">Move a stage to change the outcome</span></span>
+        <span class="wl-track">
+          <span class="wl-mark wl-mark-start">Signal</span>
+          <span class="wl-mark wl-mark-close">Window closes</span>
+          <span class="wl-mark wl-mark-after">Irreversible</span>
+          <span class="wl-head"></span>
+        </span>
+      </div>
+      <div class="wl-row wl-sum" aria-hidden="true">
+        <span class="wl-ctl"><span class="wl-sum-label">The chain, end to end</span></span>
+        <span class="wl-track">
+          {STAGES.map((_, i) => (
+            <span class="wl-seg" data-wl-seg style={`--wl-s:${result.starts[i]};--wl-d:${preset.durations[i]}`}></span>
+          ))}
+          <span class="wl-head"></span>
+        </span>
+      </div>
+      <ol class="wl-rows" role="list">
+        {STAGES.map((stage, i) => (
+          <li class="wl-row" data-wl-row style={`--wl-s:${result.starts[i]};--wl-d:${preset.durations[i]}`}>
+            <div class="wl-ctl">
+              <label class="wl-name" for={`${id}-${i}`}>{stage}</label>
+              <span class="wl-what">{what[i]}</span>
+              <input
+                class="wl-range"
+                type="range"
+                id={`${id}-${i}`}
+                min={STAGE_MIN}
+                max={STAGE_MAX}
+                step="1"
+                value={preset.durations[i]}
+                aria-label={`${stage}: time taken`}
+                aria-valuetext={`${preset.durations[i]} of ${STAGE_MAX}`}
+                data-wl-stage={i}
+              />
+            </div>
+            <div class="wl-track" aria-hidden="true">
+              <span class="wl-bar"></span>
+              <span class="wl-node"></span>
+              <span class="wl-head"></span>
+            </div>
+          </li>
         ))}
-        <span class="wl-head"></span>
-      </span>
+      </ol>
+    </figure>
+
+    <div class="wl-side">
+      <p class="wl-scenario" data-wl-scenario>{preset.text}</p>
+      <div class="wl-verdict">
+        <p class="wl-result" id={`${id}-result`} aria-live="polite">
+          <strong class="wl-outcome" data-wl-outcome><span class="wl-dot" aria-hidden="true"></span><span data-wl-label>{OUTCOME_LABEL[result.outcome]}</span></strong>
+          <span class="wl-text" data-wl-text>{describe(result)}</span>
+        </p>
+        <p class="wl-status" data-wl-status aria-hidden="true"></p>
+      </div>
+      <div class="wl-actions">
+        <fieldset class="wl-window">
+          <legend>Test the window</legend>
+          {windows.map((w) => (
+            <label>
+              <input type="radio" name={`${id}-window`} value={w.key} checked={w.key === 'set'} />
+              <span>{w.label}</span>
+            </label>
+          ))}
+        </fieldset>
+      </div>
     </div>
-    <ol class="wl-rows" role="list">
-      {STAGES.map((stage, i) => (
-        <li class="wl-row" data-wl-row style={`--wl-s:${result.starts[i]};--wl-d:${preset.durations[i]}`}>
-          <div class="wl-ctl">
-            <label class="wl-name" for={`${id}-${i}`}>{stage}</label>
-            <span class="wl-what">{what[i]}</span>
-            <input
-              class="wl-range"
-              type="range"
-              id={`${id}-${i}`}
-              min={STAGE_MIN}
-              max={STAGE_MAX}
-              step="1"
-              value={preset.durations[i]}
-              aria-label={`${stage}: time taken`}
-              aria-valuetext={`${preset.durations[i]} of ${STAGE_MAX}`}
-              data-wl-stage={i}
-            />
-          </div>
-          <div class="wl-track" aria-hidden="true">
-            <span class="wl-bar"></span>
-            <span class="wl-node"></span>
-            <span class="wl-head"></span>
-          </div>
-        </li>
-      ))}
-    </ol>
-    <figcaption class="wl-readout">
-      <p class="wl-result" id={`${id}-result`} aria-live="polite">
-        <strong class="wl-outcome" data-wl-outcome><span class="wl-dot" aria-hidden="true"></span><span data-wl-label>{OUTCOME_LABEL[result.outcome]}</span></strong>
-        <span class="wl-text" data-wl-text>{describe(result)}</span>
-      </p>
-      <p class="wl-status" data-wl-status aria-hidden="true"></p>
-      <fieldset class="wl-window">
-        <legend>Test the window</legend>
-        {windows.map((w) => (
-          <label>
-            <input type="radio" name={`${id}-window`} value={w.key} checked={w.key === 'set'} />
-            <span>{w.label}</span>
-          </label>
-        ))}
-      </fieldset>
-    </figcaption>
-  </figure>
+  </div>
 
   <p class="wl-note" id={`${id}-note`}>
     Illustrative model. Relative units, not measured durations, and not an
@@ -145,13 +152,13 @@ const windows = [
     --hold: #c9b694;
     --pass: #8aaa91;
     --signal: #c9b694;
-    --wl-ctl: 232px;
+    --wl-ctl: 316px;
     --wl-gap: var(--space-5);
-    --wl-pad: clamp(20px, 3vw, 44px);
+    --wl-pad: clamp(20px, 2.6vw, 40px);
     color-scheme: dark;
     background: var(--paper);
     color: var(--ink);
-    padding: var(--wl-pad);
+    padding: var(--space-2) var(--wl-pad) var(--wl-pad);
     transition: --wl-w var(--dur-expand) var(--ease-out);
   }
   :global(:root[data-theme='dark']) .window-lab { --paper: #141414; border: 1px solid rgba(201, 182, 148, 0.18); }
@@ -165,7 +172,7 @@ const windows = [
   fieldset input { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
   fieldset input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 3px; }
 
-  .wl-bar-top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); border-bottom: 1px solid var(--hair-strong); }
+  .wl-bar-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); border-bottom: 1px solid var(--hair-strong); }
   /* Equal cells, so the number of rows never depends on which font has loaded. */
   .wl-presets { flex: 1; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0 var(--space-4); }
   .wl-presets label > span {
@@ -176,16 +183,26 @@ const windows = [
   .wl-presets input:checked + span { color: var(--ink); }
   .wl-presets input:checked + span::after { transform: scaleX(1); }
   .wl-presets label:hover span { color: var(--ink); }
-  .wl-replay { flex: none; display: inline-flex; align-items: center; gap: 10px; height: 56px; padding: 0 0 0 var(--space-3); white-space: nowrap; font-size: var(--type-action); font-weight: 600; color: var(--ink); }
+  /* The model on the left, what it says on the right. */
+  .wl-main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 288px); gap: var(--space-5) var(--space-6); align-items: stretch; margin-top: var(--space-2); }
+  .wl-side { display: flex; flex-direction: column; gap: var(--space-4); padding-top: var(--space-5); min-width: 0; }
+  .wl-scenario { margin: 0; min-height: 4lh; font-size: var(--type-support); line-height: 1.45; color: var(--muted); }
+  .wl-hint { font-family: var(--font-mono); font-size: 12px; line-height: 1.4; color: var(--faint); align-self: end; padding-bottom: 14px; }
+
+  .wl-actions { display: grid; gap: var(--space-4); margin-top: auto; }
+  .wl-replay {
+    flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 44px; padding: 0 var(--space-3);
+    border: 1px solid var(--signal); font-size: var(--type-action); font-weight: 600; letter-spacing: 0.02em; color: var(--ink); white-space: nowrap;
+    transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  }
+  .wl-replay:is(:hover, :focus-visible) { background: var(--signal); color: #000; }
+  .wl-replay:is(:hover, :focus-visible) .wl-play { border-left-color: #000; }
   /* Hidden when motion is off, but still holding its place. */
   .wl-replay[hidden] { display: inline-flex; visibility: hidden; }
   .wl-replay:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
-  .wl-play { width: 0; height: 0; border-style: solid; border-width: 5px 0 5px 8px; border-color: transparent transparent transparent var(--signal); transition: transform var(--dur-fast) var(--ease-out); }
-  .wl-replay:hover .wl-play { transform: translateX(2px); }
+  .wl-play { width: 0; height: 0; border-style: solid; border-width: 5px 0 5px 8px; border-color: transparent transparent transparent var(--signal); }
 
-  .wl-scenario { margin: var(--space-5) 0 0; min-height: 3lh; max-width: 30ch; font-size: clamp(22px, 2.5vw, 34px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.22; color: var(--ink); }
-
-  .wl-figure { margin: var(--space-5) 0 0; }
+  .wl-figure { margin: 0; }
   .wl-rows { list-style: none; margin: 0; padding: 0; }
   .wl-row { display: grid; grid-template-columns: var(--wl-ctl) minmax(0, 1fr); gap: 0 var(--wl-gap); align-items: stretch; }
   .wl-rows .wl-row, .wl-sum { border-top: 1px solid var(--hair); }
@@ -193,14 +210,17 @@ const windows = [
   .wl-rows .wl-row:last-child { border-bottom: 1px solid var(--hair-strong); }
   .wl-sum { border-top-color: var(--hair-strong); }
 
-  .wl-ctl { display: grid; grid-template-columns: 1fr; gap: 2px; align-content: center; padding: var(--space-3) 0 var(--space-1); min-width: 0; }
+  .wl-ctl { display: grid; grid-template-columns: minmax(0, 1fr) 112px; gap: 0 var(--space-3); align-content: center; align-items: center; padding: 10px 0; min-width: 0; }
+  .wl-name, .wl-what, .wl-hint, .wl-sum-label { grid-column: 1; }
+  .wl-range { grid-column: 2; grid-row: 1 / span 2; }
+  .wl-hint, .wl-sum-label { grid-column: 1 / -1; }
   .wl-name { font-size: var(--type-card); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.25; color: var(--ink); }
   .wl-what { font-size: var(--type-action); line-height: 1.5; color: var(--muted); }
-  .wl-sum .wl-ctl { padding: var(--space-3) 0; }
+  .wl-sum .wl-ctl { padding: var(--space-2) 0; }
   .wl-sum-label { font-size: var(--type-action); line-height: 1.5; color: var(--muted); }
 
   /* The whole 44px band is the target; the drawn track is a hairline. */
-  .wl-range { display: block; visibility: hidden; appearance: none; -webkit-appearance: none; width: 100%; max-width: 184px; height: 44px; margin: -4px 0 0; padding: 0; background: transparent; cursor: ew-resize; }
+  .wl-range { display: block; visibility: hidden; appearance: none; -webkit-appearance: none; width: 100%; height: 44px; margin: 0; padding: 0; background: transparent; cursor: ew-resize; }
   .window-lab[data-ready] .wl-range { visibility: visible; }
   .wl-range::-webkit-slider-runnable-track { height: 1px; background: var(--control-border); }
   .wl-range::-moz-range-track { height: 1px; background: var(--control-border); }
@@ -241,7 +261,7 @@ const windows = [
   .wl-bar { top: calc(50% - 6px); height: 12px; }
   /* End to end: the four stages on one line, a hairline apart. */
   .wl-seg { top: calc(50% - 10px); height: 20px; box-shadow: inset -2px 0 0 var(--paper); transition: --wl-s var(--dur-expand) var(--ease-out), --wl-d var(--dur-expand) var(--ease-out); }
-  .wl-sum .wl-track { min-height: 56px; }
+  .wl-sum .wl-track { min-height: 48px; }
   .wl-node {
     position: absolute; z-index: 2; top: calc(50% - 7.5px); width: 15px; height: 15px; margin-left: -7.5px;
     left: calc((var(--wl-s) + var(--wl-d)) / var(--wl-axis) * 100%);
@@ -268,28 +288,28 @@ const windows = [
   /* "Signal" gives way when a short window brings the boundary label over it. */
   .window-lab[data-window='shorter'] .wl-mark-start { visibility: hidden; }
 
-  /* Playback status takes the result's own cell, so nothing below moves. */
-  .wl-readout { display: grid; grid-template-columns: var(--wl-ctl) minmax(0, 1fr) auto; gap: var(--space-3) var(--wl-gap); align-items: center; padding-top: var(--space-5); }
-  .wl-outcome { grid-column: 1; grid-row: 1; }
-  .wl-text { grid-column: 2; grid-row: 1; min-height: 3lh; display: flex; align-items: center; }
-  .wl-result { display: contents; }
-  .wl-outcome { display: inline-flex; align-items: center; gap: 14px; font-size: clamp(26px, 2.8vw, 40px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.1; color: var(--ink); white-space: nowrap; }
+  /* Playback status takes the result's own cell, so nothing moves. */
+  .wl-verdict { display: grid; }
+  .wl-result, .wl-status { grid-area: 1 / 1; margin: 0; }
+  .wl-result { display: grid; gap: var(--space-2); align-content: start; }
+  .wl-outcome { display: inline-flex; align-items: center; gap: 14px; font-size: clamp(30px, 3vw, 44px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.1; color: var(--ink); white-space: nowrap; }
   .wl-dot { width: 14px; height: 14px; flex: none; background: var(--pass); border-radius: 50%; }
   [data-outcome='narrow'] .wl-dot { background: var(--hold); }
   [data-outcome='too-late'] .wl-dot { background: var(--warn); border-radius: 0; }
-  .wl-text { margin: 0; max-width: 56ch; font-size: var(--type-body); line-height: 1.6; color: var(--muted); }
-  .wl-status { visibility: hidden; margin: 0; grid-column: 1 / 3; grid-row: 1; font-size: clamp(26px, 2.8vw, 40px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.1; color: var(--faint); }
+  .wl-text { min-height: 5lh; font-size: var(--type-small); line-height: 1.6; color: var(--muted); }
+  .wl-status { visibility: hidden; font-size: clamp(30px, 3vw, 44px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.1; color: var(--faint); }
   .window-lab[data-playing] .wl-status { visibility: visible; }
-  .window-lab[data-playing] .wl-result > * { visibility: hidden; }
+  .window-lab[data-playing] .wl-result { visibility: hidden; }
 
-  .wl-window { display: flex; flex-wrap: wrap; visibility: hidden; grid-column: 3; grid-row: 1; }
+  .wl-window { display: flex; flex-wrap: wrap; visibility: hidden; }
+  .wl-window label { flex: 1 1 0; }
   .window-lab[data-ready] .wl-window { visibility: visible; }
   .wl-window legend { position: static; float: left; width: 100%; height: auto; margin-bottom: 8px; clip-path: none; font-family: var(--font-mono); font-size: 12px; line-height: 1.4; color: var(--faint); }
   .wl-window label + label > span { border-left: 0; }
-  .wl-window label > span { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 14px; border: 1px solid var(--hair-strong); font-size: 13px; line-height: 1.3; color: var(--muted); white-space: nowrap; transition: color var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
+  .wl-window label > span { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 6px; border: 1px solid var(--hair-strong); font-size: 13px; line-height: 1.3; color: var(--muted); white-space: nowrap; transition: color var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
   .wl-window input:checked + span { color: var(--paper); background: var(--ink); border-color: var(--ink); }
   .wl-window label:hover input:not(:checked) + span { color: var(--ink); }
-  .wl-note { margin: var(--space-5) 0 0; padding-top: var(--space-3); border-top: 1px solid var(--hair); font-size: var(--type-caption); line-height: 1.65; color: var(--faint); }
+  .wl-note { margin: var(--space-4) 0 0; padding-top: var(--space-3); border-top: 1px solid var(--hair); font-size: var(--type-caption); line-height: 1.65; color: var(--faint); }
   /* Controls hold their space from first paint and appear when the script
      is ready, so nothing below the instrument moves as the page loads.
      With scripting off, the noscript rules below remove them and the figure
@@ -297,34 +317,34 @@ const windows = [
   .window-lab:not([data-ready]) .wl-presets { visibility: hidden; }
 
   @media (max-width: 1100px) {
-    .window-lab { --wl-ctl: 184px; --wl-gap: var(--space-4); }
+    /* Stacked: what goes wrong, then the model, then what it says. */
+    .window-lab { --wl-ctl: 264px; --wl-gap: var(--space-4); }
     .wl-presets { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .wl-readout { grid-template-columns: minmax(0, 1fr); align-items: start; }
-    .wl-outcome, .wl-status { grid-column: 1; grid-row: 1; }
-    .wl-text { grid-column: 1; grid-row: 2; align-items: flex-start; }
-    .wl-window { grid-column: 1; grid-row: 3; justify-self: start; }
+    .wl-main { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+    .wl-side { display: contents; }
+    .wl-scenario { order: -1; min-height: 2lh; margin-top: var(--space-4); color: var(--ink); }
+    .wl-text { min-height: 3lh; }
+    .wl-actions { max-width: 360px; }
   }
   @media (max-width: 720px) {
     /* The panel runs edge to edge so the tracks keep their width. */
-    .window-lab { margin-inline: calc(-1 * var(--gutter-tight)); padding: var(--space-4) var(--gutter-tight) var(--space-5); border-inline: 0 !important; }
+    .window-lab { margin-inline: calc(-1 * var(--gutter-tight)); padding: var(--space-2) var(--gutter-tight) var(--space-5); border-inline: 0 !important; }
     .wl-row { grid-template-columns: minmax(0, 1fr); }
     .wl-axis .wl-ctl { display: none; }
-    .wl-ctl { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 var(--space-3); align-items: center; padding: var(--space-3) 0 0; }
+    .wl-ctl { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: var(--space-3) 0 0; }
     .wl-sum .wl-ctl { padding: var(--space-2) 0 0; }
     .wl-sum .wl-track { min-height: 40px; }
     .wl-name { font-size: 18px; }
-    .wl-what { grid-column: 1; grid-row: 2; font-size: 13px; }
-    .wl-range { grid-column: 2; grid-row: 1 / span 2; max-width: none; justify-self: end; }
+    .wl-what { font-size: 13px; }
     .wl-track { min-height: 36px; }
     .wl-rows .wl-row + .wl-row .wl-track::before { display: none; }
-    .wl-bar-top { display: block; }
     .wl-presets { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-3); }
     .wl-presets label > span { height: 48px; font-size: 13px; }
-    .wl-replay { height: 48px; padding: 0; }
-    .wl-scenario { min-height: 4lh; margin-top: var(--space-3); }
+    .wl-bar-top { display: grid; gap: 0; padding-bottom: var(--space-3); }
+    .wl-replay { justify-self: start; }
+    .wl-scenario { min-height: 4lh; }
     .wl-text { min-height: 5lh; }
-    .wl-window label { flex: 1 1 0; }
-    .wl-window { justify-self: stretch; }
+    .wl-actions { max-width: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     .window-lab, .wl-rows .wl-row, .wl-seg { transition: none; }
@@ -445,18 +465,18 @@ const windows = [
     window.addEventListener('pageshow', sync);
     window.addEventListener('beforeprint', () => { stop(); render(); });
 
-    // One unprompted run, the first time most of the figure is on screen.
-    if ('IntersectionObserver' in window) {
+    // One unprompted run. The model sits in the opening view, so it starts
+    // as the page settles; if it is off screen it waits until it is seen.
+    const first = () => { if (!played) { sync(); play(); } };
+    const figure = lab.querySelector('.wl-figure');
+    if (figure && 'IntersectionObserver' in window) {
       const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting || entry.intersectionRatio < 0.6 || played) return;
-          observer.disconnect();
-          sync();
-          play();
-        });
-      }, { threshold: 0.6 });
-      const figure = lab.querySelector('.wl-figure');
-      if (figure) observer.observe(figure);
+        if (!entries.some((entry) => entry.isIntersecting && entry.intersectionRatio >= 0.4) || played) return;
+        observer.disconnect();
+        const fonts = 'fonts' in document ? document.fonts.ready : Promise.resolve();
+        Promise.race([fonts, new Promise((resolve) => window.setTimeout(resolve, 900))]).then(() => window.setTimeout(first, 350));
+      }, { threshold: 0.4 });
+      observer.observe(figure);
     }
   });
 </script>
