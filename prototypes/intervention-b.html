@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Prototype B · The dial · Intervene</title>
+<link rel="stylesheet" href="proto.css">
+<style>
+  .hero { background: var(--paper-deep); padding: 28px 0 48px; overflow: hidden; }
+  .hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 600px); gap: 32px 64px; align-items: center; }
+  .label { font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-text); }
+  .copy { display: grid; gap: 24px; align-content: center; }
+  .copy .display { font-size: clamp(40px, 5.6vw, 84px); }
+  .actions { display: flex; gap: 24px; align-items: center; }
+
+  /* One object: a clock face whose single revolution is the window. */
+  .dial { position: relative; aspect-ratio: 1; width: 100%; max-width: 600px; justify-self: end; }
+  .dial svg { display: block; width: 100%; height: 100%; }
+  .disc { fill: #0a0a0a; }
+  .tick { stroke: rgba(240,240,240,.3); stroke-width: 1; }
+  .tick.major { stroke: rgba(240,240,240,.7); stroke-width: 1.5; }
+  .ring { fill: none; stroke: rgba(240,240,240,.16); stroke-width: 34; }
+  .lap { fill: none; stroke: rgba(224,118,106,.14); stroke-width: 22; }
+  .arc { fill: none; stroke: #f0f0f0; stroke-width: 34; transition: opacity .3s; }
+  .over { fill: none; stroke: #e0766a; stroke-width: 22; transition: opacity .3s; }
+  .dial[data-focus] .arc, .dial[data-focus] .over { opacity: .28; }
+  .dial[data-focus] .is-focus { opacity: 1; }
+  .close-mark { fill: #f0f0f0; }
+  .dial[data-closed] .close-mark { fill: #e0766a; }
+  .hand { fill: #c9b694; opacity: 0; }
+  .dial[data-playing] .hand { opacity: 1; }
+  .centre { position: absolute; inset: 27%; display: grid; place-content: center; text-align: center; gap: 8px; color: #f0f0f0; }
+  .centre .mono { color: #8e8b87; font-size: 12px; }
+  .centre .word { font-size: clamp(30px, 4.4vw, 60px); font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
+  .dial[data-closed][data-done] .word { color: #e0766a; }
+  .centre .caption { font-size: clamp(13px, 1.1vw, 15px); line-height: 1.4; color: #c8c6c4; min-height: 4.2em; }
+  .top-label { position: absolute; left: 50%; top: -26px; transform: translateX(-50%); font-family: var(--mono); font-size: 12px; color: var(--ink); white-space: nowrap; }
+  .dial[data-closed] .top-label { color: var(--warn); }
+  .dial { margin-top: 26px; }
+
+  /* The stages, in the order they run round the face. */
+  .legend { list-style: none; margin: 8px 0 0; padding: 0; border-bottom: 1px solid var(--hair-strong); }
+  .legend li { display: grid; grid-template-columns: 112px minmax(0, 1fr) auto; gap: 16px; align-items: center; min-height: 48px; border-top: 1px solid var(--hair-strong); cursor: default; }
+  .legend b { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; }
+  .legend i { display: block; height: 8px; background: var(--ink); width: calc(var(--share) * 100%); min-width: 4px; }
+  .legend li.is-late i { background: var(--warn); }
+  .legend span { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+  .legend li.is-late span { color: var(--warn); }
+  .controls { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; }
+  .controls select { font: inherit; font-size: 15px; height: 44px; padding: 0 12px; border: 1px solid var(--faint); background: var(--paper); color: var(--ink); max-width: 100%; }
+  .replay { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px; border: 1px solid var(--ink); font-size: 14px; font-weight: 600; }
+  .replay::before { content: ''; border-style: solid; border-width: 5px 0 5px 8px; border-color: transparent transparent transparent var(--ink); }
+  .note { font-size: 13px; line-height: 1.6; color: var(--faint); }
+
+  @media (max-width: 1000px) {
+    .hero .wrap { grid-template-columns: 1fr; }
+    .dial { justify-self: center; grid-row: 2; }
+    .copy { display: contents; }
+    .copy > * { grid-column: 1; }
+    .copy .head { grid-row: 1; display: grid; gap: 16px; }
+    .actions { flex-direction: column; align-items: stretch; } .btn { justify-content: center; }
+    .legend li { grid-template-columns: 96px minmax(0, 1fr) auto; }
+  }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="wrap"><img src="/public/assets/brand/intervene-wordmark-black-transparent.png" alt="Intervene"><nav><span>Assessment options</span><span>Sample verdict</span><span class="cta">Discuss your system</span></nav></div></header>
+
+<section class="hero"><div class="wrap">
+  <div class="copy">
+    <div class="head">
+      <span class="label">Intervention Readiness</span>
+      <h1 class="display">Can you stop it in time?</h1>
+      <p class="sub">Intervene’s AGDA® assessment examines whether your organisation can act before harm from an AI-enabled system becomes irreversible.</p>
+    </div>
+    <ol class="legend" id="legend"></ol>
+    <div class="controls">
+      <select id="scenario" aria-label="Scenario"></select>
+      <button class="replay" id="replay" type="button">Replay</button>
+    </div>
+    <p class="note">Illustrative model. One revolution is the intervention window. Relative units, not measured durations, and not an assessment result.</p>
+    <div class="actions"><a class="btn" href="#">Discuss your system</a><a class="link" href="#">Explore AGDA® →</a></div>
+  </div>
+
+  <div class="dial" id="dial" role="img" aria-label="Illustrative dial: the four stages of a response run clockwise round a face whose single revolution is the intervention window.">
+    <svg viewBox="0 0 600 600" aria-hidden="true">
+      <circle class="disc" cx="300" cy="300" r="298" />
+      <g id="ticks"></g>
+      <g transform="rotate(-90 300 300)">
+        <circle class="ring" cx="300" cy="300" r="226" />
+        <circle class="lap" cx="300" cy="300" r="186" />
+        <g id="arcs"></g>
+      </g>
+      <path class="close-mark" d="M300 62 l-8 -14 h16 z" />
+      <circle class="hand" id="hand" cx="300" cy="46" r="6" />
+    </svg>
+    <span class="top-label" id="top-label">Window closes</span>
+    <div class="centre" aria-live="polite">
+      <span class="mono" id="scn"></span>
+      <span class="word" id="word"></span>
+      <span class="caption" id="caption"></span>
+    </div>
+  </div>
+</div></section>
+
+<p class="proto-tag">Prototype B · The dial · <a href="index.html">all prototypes</a></p>
+
+<script type="module">
+  import { STAGES, PRESETS, WINDOW, evaluate, LABEL, reduced } from './model.js';
+  const NS = 'http://www.w3.org/2000/svg';
+  const dial = document.getElementById('dial'), arcsG = document.getElementById('arcs');
+  const word = document.getElementById('word'), caption = document.getElementById('caption');
+  const GENERIC = ['The need to act is recognised.', 'The signal is passed towards decision authority.', 'An accountable decision is made.', 'The action is put into effect.'];
+  const GAP = 0.09;
+
+  const ticks = document.getElementById('ticks');
+  for (let i = 0; i < 48; i++) {
+    const l = document.createElementNS(NS, 'line'); const major = i % 4 === 0;
+    l.setAttribute('x1', 300); l.setAttribute('x2', 300); l.setAttribute('y1', major ? 18 : 24); l.setAttribute('y2', 34);
+    l.setAttribute('transform', `rotate(${i * 7.5} 300 300)`); l.setAttribute('class', major ? 'tick major' : 'tick'); ticks.append(l);
+  }
+  const mk = (cls, r) => { const c = document.createElementNS(NS, 'circle'); c.setAttribute('cx', 300); c.setAttribute('cy', 300); c.setAttribute('r', r); c.setAttribute('pathLength', WINDOW); c.setAttribute('class', cls); arcsG.append(c); return c; };
+  const arcs = STAGES.map(() => ({ main: mk('arc', 226), over: mk('over', 186) }));
+
+  const legend = document.getElementById('legend');
+  const rows = STAGES.map((name, i) => {
+    const li = document.createElement('li'); li.innerHTML = `<b>${name}</b><i></i><span></span>`; legend.append(li);
+    li.addEventListener('mouseenter', () => focus(i)); li.addEventListener('mouseleave', () => focus(null));
+    return li;
+  });
+  const select = document.getElementById('scenario');
+  PRESETS.forEach((p, i) => { const o = document.createElement('option'); o.value = i; o.textContent = p.label; select.append(o); });
+
+  let preset = PRESETS[0], d = [...preset.d], result = evaluate(d), frame = 0;
+  const focus = (i) => {
+    if (i === null) { delete dial.dataset.focus; } else { dial.dataset.focus = i; }
+    arcs.forEach((a, k) => { a.main.classList.toggle('is-focus', k === i); a.over.classList.toggle('is-focus', k === i); });
+    rows.forEach((r, k) => { r.style.opacity = i === null || k === i ? 1 : 0.45; });
+  };
+  const seg = (el, from, to) => {
+    const len = Math.max(0, to - from - GAP);
+    el.setAttribute('stroke-dasharray', `${len} ${WINDOW * 4}`); el.setAttribute('stroke-dashoffset', -from);
+    el.style.visibility = len > 0 ? 'visible' : 'hidden';
+  };
+  function draw(p) {
+    d.forEach((x, i) => {
+      const s = result.starts[i], e = Math.min(s + x, Math.max(s, p));
+      seg(arcs[i].main, s, Math.min(e, WINDOW));
+      seg(arcs[i].over, Math.max(s, WINDOW) - WINDOW, Math.max(e, WINDOW) - WINDOW);
+    });
+    document.getElementById('hand').setAttribute('transform', `rotate(${(p / WINDOW) * 360} 300 300)`);
+  }
+  function legendState() {
+    const max = Math.max(...d);
+    rows.forEach((li, i) => {
+      const s = result.starts[i], late = s + d[i] > WINDOW;
+      li.style.setProperty('--share', d[i] / max);
+      li.classList.toggle('is-late', late);
+      li.querySelector('span').textContent = late ? (s >= WINDOW ? 'After the window' : 'Window closes here') : 'Within the window';
+    });
+  }
+  const longest = () => d.indexOf(Math.max(...d));
+  function settle() {
+    cancelAnimationFrame(frame); dial.removeAttribute('data-playing'); dial.setAttribute('data-done', ''); focus(null);
+    draw(result.total);
+    dial.toggleAttribute('data-closed', result.outcome === 'too-late');
+    word.textContent = LABEL[result.outcome];
+    caption.textContent = result.outcome === 'too-late' ? `The window closed during ${STAGES[result.closesDuring]}. Every stage ran.`
+      : result.outcome === 'narrow' ? 'In time, but not if the window were 25% shorter.' : 'Intervention took effect before the window closed.';
+    document.getElementById('top-label').textContent = result.outcome === 'too-late' ? 'Window closed' : 'Window closes';
+  }
+  function play() {
+    result = evaluate(d); legendState();
+    document.getElementById('scn').textContent = preset.label;
+    if (reduced()) { settle(); return; }
+    cancelAnimationFrame(frame); dial.setAttribute('data-playing', ''); dial.removeAttribute('data-done'); dial.removeAttribute('data-closed');
+    document.getElementById('top-label').textContent = 'Window closes';
+    const end = result.total + 0.4, began = performance.now();
+    const tick = (now) => {
+      const t = Math.min(end, (now - began) / 420);
+      draw(t);
+      const i = d.findIndex((x, k) => t < result.starts[k] + x);
+      if (i > -1 && word.textContent !== STAGES[i]) { word.textContent = STAGES[i]; caption.textContent = i === longest() ? preset.text : GENERIC[i]; focus(i); }
+      if (t >= WINDOW && result.total > WINDOW) { dial.setAttribute('data-closed', ''); document.getElementById('top-label').textContent = 'Window closed'; }
+      if (t < end) frame = requestAnimationFrame(tick); else settle();
+    };
+    frame = requestAnimationFrame(tick);
+  }
+  select.addEventListener('change', () => { preset = PRESETS[Number(select.value)]; d = [...preset.d]; play(); });
+  document.getElementById('replay').addEventListener('click', play);
+  result = evaluate(d); legendState(); document.getElementById('scn').textContent = preset.label; settle();
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => setTimeout(play, 500));
+</script>
+</body>
+</html>
