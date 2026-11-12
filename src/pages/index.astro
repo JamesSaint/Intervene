@@ -139,6 +139,19 @@ const questions = [
   .close-q { color: var(--ink); font-size: var(--type-display); line-height: 1.02; letter-spacing: var(--tracking-heading); text-transform: none; margin: 0; }
   .close-action { display: grid; justify-items: start; gap: 24px; }
   .close-line { font-size: var(--type-support); line-height: 1.65; color: var(--muted); margin: 0; }
+  /* Wide screens: the question and its support sit side by side, so the
+     model below them is in the opening view. */
+  @media (min-width: 1100px) {
+    .hero { padding-top: var(--space-5); }
+    .hero-home > .wrap { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); column-gap: var(--space-7); align-items: end; }
+    .hero-home > .wrap > :global(*) { grid-column: 1 / -1; }
+    .hero-link { justify-self: start; margin-bottom: 0; }
+    .hero-home > .wrap > .display-xl { grid-column: 1; font-size: clamp(64px, 6.4vw, 94px); margin-top: var(--space-1); }
+    .hero-home > .wrap > .hero-intro { grid-column: 2; grid-template-columns: 1fr; gap: var(--space-4); margin: 0; padding-bottom: 6px; }
+    .hero-sub { font-size: 18px; line-height: 1.55; }
+    .hero-note { margin-top: var(--space-3); }
+    .hero :global(.window-lab) { margin-top: var(--space-5); }
+  }
   @media (max-height: 760px) and (min-width: 881px) { .hero { padding-top: 40px; } .hero .display-xl { font-size: clamp(44px, 6.6vw, 92px); } .hero-intro { margin-top: 28px; } }
   @media (max-width: 1100px) { .hero-intro { gap: 40px; } .section-heading, .assessment-intro { grid-template-columns: 1fr 1.8fr; gap: var(--space-5); } .assessment-identity :global(.agda-logo.logo) { width: 224px; } }
   @media (max-width: 960px) {

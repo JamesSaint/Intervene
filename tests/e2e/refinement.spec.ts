@@ -29,8 +29,10 @@ for (const route of ['/', '/methodology/']) {
     await page.goto(route);
     const stages = page.locator('.sedi-explorer details');
     await expect(stages).toHaveCount(4);
+    // Detect is open from the start, so the dependency reads before any input.
+    await expect(stages.first()).toHaveAttribute('open', '');
     for (const stage of await stages.all()) {
-      await stage.locator('summary').click();
+      if ((await stage.getAttribute('open')) === null) await stage.locator('summary').click();
       await expect(stage).toHaveAttribute('open', '');
       await expect(stage.locator('dl')).toContainText('Evidence examined');
       await expect(stage.locator('dl')).toContainText('Possible failure');
@@ -43,7 +45,8 @@ for (const route of ['/', '/methodology/']) {
 test('SEDI stage disclosures expose content from keyboard focus', async ({ page }) => {
   await page.goto('/');
   await dismissConsent(page);
-  const first = page.locator('.sedi-explorer details').first();
+  // The second stage starts closed; Detect is open by default.
+  const first = page.locator('.sedi-explorer details').nth(1);
   await first.locator('summary').focus();
   // Traverse back to the native summary after the pointer-based consent choice.
   await page.keyboard.press('Tab');

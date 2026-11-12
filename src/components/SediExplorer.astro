@@ -14,6 +14,8 @@ interface Props { window?: boolean }
 const { window: showWindow = true } = Astro.props;
 // One stage open at a time, natively: the open stage's detail runs the full
 // width of the chain, and the stages after it are drawn as waiting on it.
+// Detect is open from the start, so the dependency is visible before any
+// interaction; every stage remains one click or key press away.
 const group = 'sedi-chain';
 
 const stages = [
@@ -25,11 +27,11 @@ const stages = [
 ---
 <div class="sedi-explorer">
   {showWindow && <InterventionWindow />}
-  <p class="sedi-instruction">Select a stage.</p>
+  <p class="sedi-instruction">Select a stage to see what it depends on and what waits on it.</p>
   <ol role="list" aria-label="The SEDI intervention chain" data-reveal="stagger">
     {stages.map((stage, i) => (
       <li>
-        <details data-disclosure name={group}>
+        <details data-disclosure name={group} open={i === 0}>
           <summary>
             <span class="sedi-node" aria-hidden="true"></span>
             <span class="sedi-name">{stage.name}</span>
