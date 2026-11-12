@@ -13,8 +13,9 @@ async function open(page: Page) {
   await expect(page.locator('.window-lab')).toHaveAttribute('data-ready', '');
 }
 
-test('the hero figure is labelled as conceptual and puts late intervention beyond the boundary', async ({ page }) => {
-  await open(page);
+test('the on-paper and under-pressure figure is labelled as conceptual and puts late intervention beyond the boundary', async ({ page }) => {
+  // The figure lives on the pillar page; the homepage hero carries the model itself.
+  await page.goto('/intervention-readiness/');
   const figure = page.locator('.hero-window');
   await expect(figure).toContainText('Conceptual illustration. Positions show order, not measured durations.');
   await expect(figure).toHaveAttribute('aria-label', /On paper.*Under pressure/);
@@ -28,9 +29,9 @@ test('the hero figure is labelled as conceptual and puts late intervention beyon
   expect(edges.pressure).toBeGreaterThan(edges.zone);
 });
 
-test('the scenario model opens on a failure and states that it is illustrative', async ({ page }) => {
+test('the scenario model sits in the hero, opens on a failure and states that it is illustrative', async ({ page }) => {
   await open(page);
-  const lab = page.locator('.window-lab');
+  const lab = page.locator('.hero-home .window-lab');
   await expect(lab).toHaveAttribute('data-outcome', 'too-late');
   await expect(lab.locator('[data-wl-label]')).toHaveText('Too late');
   await expect(lab.locator('.wl-note')).toBeVisible();
@@ -168,10 +169,30 @@ test('the homepage instruments do not overflow at any supported width', async ({
     await page.setViewportSize({ width, height: 900 });
     // Layout settles a frame after the resize, as it does on the existing pages.
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth), { message: `${width}px` }).toBeLessThanOrEqual(0);
-    const clipped = await page.locator('.wl-mark, .hw-close, .ol-name, .af-tabs button').evaluateAll((els) => els.filter((el) => {
+    const clipped = await page.locator('.wl-mark, .wl-presets span, .ol-name, .af-tabs button, .af-stamp').evaluateAll((els) => els.filter((el) => {
       const b = el.getBoundingClientRect();
       return b.width > 0 && (b.left < -1 || b.right > innerWidth + 1);
     }).length);
     expect(clipped, `${width}px`).toBe(0);
+  }
+});
+
+test('opening a SEDI stage closes the others and marks every later stage as waiting on it', async ({ page }) => {
+  await open(page);
+  const stages = page.locator('.sedi-explorer details');
+  await stages.nth(1).locator('summary').click();
+  await expect(stages.nth(1)).toHaveAttribute('open', '');
+  await expect(page.locator('.sedi-explorer .sedi-wait:visible')).toHaveText(['Waits on Escalate', 'Waits on Decide']);
+  await stages.nth(2).locator('summary').click();
+  await expect(stages.nth(2)).toHaveAttribute('open', '');
+  await expect(stages.nth(1)).not.toHaveAttribute('open');
+  await expect(page.locator('.sedi-explorer .sedi-wait:visible')).toHaveText(['Waits on Decide']);
+  // The open stage's detail is not confined to its own column on wide screens.
+  if ((page.viewportSize()?.width ?? 0) > 1100) {
+    const widths = await page.locator('.sedi-explorer').evaluate((el) => ({
+      chain: el.querySelector('ol')!.getBoundingClientRect().width,
+      detail: el.querySelector('details[open] dl')!.getBoundingClientRect().width,
+    }));
+    expect(widths.detail).toBeGreaterThan(widths.chain * 0.95);
   }
 });
