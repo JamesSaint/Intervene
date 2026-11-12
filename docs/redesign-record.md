@@ -24,10 +24,10 @@ heading carries the section.
 
 | Component | Where | Purpose |
 |---|---|---|
-| `HeroWindow` | `/`, `/intervention-readiness/` | The proposition as one figure: the same chain on paper and under pressure, against one window. |
-| `WindowLab` + `lib/window-model.ts` | `/` | The scenario model. Six presets, a slider per stage, and the window tested 25% shorter and longer. |
-| `SediExplorer` (revised) | `/`, `/agda/`, `/methodology/`, `/style-guide/` | The four stages on one continuous rail; each opens in place and now states what it depends on. |
-| `AssessmentArtefact` + `lib/sample-report.ts` | `/` | The constructed sample as an explorable output: scope, evidence register, SEDI findings, conclusion, verification. |
+| `WindowLab` + `lib/window-model.ts` | `/` hero | The scenario model as a dark instrument under the headline. Six presets, a slider per stage, the chain end to end on one line, a playhead, and the window tested 25% shorter and longer. |
+| `HeroWindow` | `/intervention-readiness/` | The same chain on paper and under pressure, against one window. |
+| `SediExplorer` (revised) | `/`, `/agda/`, `/methodology/`, `/style-guide/` | The four stages on one rail. One opens at a time; its detail runs the width of the chain, and every later stage is drawn as waiting on it. |
+| `AssessmentArtefact` + `lib/sample-report.ts` | `/` | The constructed sample as a report: a record strip carrying its status, a contents rail and a reading pane. |
 | `OfferLadder` | `/` | The three engagements as one comparison, read across. |
 
 ## Decisions worth knowing
@@ -58,6 +58,40 @@ heading carries the section.
    stylesheets was tried for Lighthouse and reverted: two or three points
    for more than double the HTML.
 
+## Second pass, after review against the references
+
+The first pass organised the content; it did not have enough presence. Set
+beside Linear, Vercel, Stripe, Palantir and Anduril, four weaknesses stood
+out, and each was addressed on the homepage only.
+
+1. **No dominant object.** Each reference puts one large, object-like
+   demonstration directly under the headline. The scenario model moved into
+   the hero as a dark instrument and replaced the thin two-row figure there.
+2. **The model read as a chart with form controls.** It gained a time axis
+   with ticks, the whole chain on one line above the stage rows, a playhead
+   that crosses every row, a closed region that takes the warning tint only
+   when the chain runs into it, and a large stated outcome.
+3. **The SEDI stages were prose in four columns.** Opening a stage now shows
+   the dependency itself: the rail is solid up to it, and every later stage
+   is dashed, dimmed and labelled as waiting.
+4. **The artefact was a row of tabs.** It is now one bounded report whose
+   record strip states "Constructed illustration · Not issued · Not signed"
+   in every state.
+
+Also: two-tone headings (the second clause in a quieter tone), and the page
+closes on the question, at display size, on the instrument's dark surface.
+
+Three faults were caught by the existing motion tests during this pass and
+fixed: the instrument's controls appearing after load moved the content
+below it; playback changed the readout's height; and preset tabs could wrap
+differently before and after the web font loaded. Controls now hold their
+space from first paint, playback status shares the result's cell, and the
+tabs sit in equal cells.
+
+The dark instrument and closing band use the site's existing dark palette,
+scoped to those two elements. They are the same in light and dark
+appearance. No token was added or changed.
+
 ## Published wording that changed
 
 Prices, offer names, boundaries, the price qualifier, the availability
@@ -65,11 +99,12 @@ statement, legal pages and every verification claim are unchanged.
 
 **Added**
 
-- Hero figure: "On paper", "Under pressure", "Window closes", and the caption
-  "Conceptual illustration. Positions show order, not measured durations."
-- Scenario model: the introduction "Every stage of a response spends time.
-  Change any of them and see whether the intervention still lands before the
-  window closes."; six preset names; the outcome sentences; and the note
+- Pillar-page figure: "On paper", "Under pressure", "Window closes", and the
+  caption "Conceptual illustration. Positions show order, not measured
+  durations."
+- Scenario model: six preset names; "The chain, end to end"; "Signal",
+  "Window closes", "Irreversible"; "Run the scenario"; the outcome sentences;
+  and the note
   "Illustrative model. Relative units, not measured durations, and not an
   assessment result. An assessment sets the window from your own records."
   Four preset descriptions reuse the existing stage-failure sentences.
@@ -78,6 +113,10 @@ statement, legal pages and every verification claim are unchanged.
   - Escalate: "An actionable signal from Detect."
   - Decide: "The signal reaching a person with authority to act."
   - Intervene: "An authorised decision, and a mechanism that takes effect."
+- SEDI stages, shown only on stages after the open one: "Waits on Detect",
+  "Waits on Escalate", "Waits on Decide".
+- Artefact record strip: "Intervention Readiness verdict · CRED-MOD-04" and
+  "Not issued · Not signed", both restating the sample report's cover.
 - Homepage artefact, brought across from `/sample-report/`: the system
   specification, the evidence register, the illustrative conclusion
   ("After impact", marked illustrative, not issued, not signed), the four
