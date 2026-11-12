@@ -102,11 +102,17 @@ test.describe('navigation', () => {
 test.describe('buyer journey pass', () => {
   test('homepage carries no attestation specimen and one constructed finding', async ({ page }) => {
     await page.goto('/');
-    const example = page.locator('.finding-example');
-    await expect(example).not.toHaveAttribute('open', '');
-    await example.locator('summary').focus();
-    await page.keyboard.press('Enter');
-    await expect(example).toHaveAttribute('open', '');
+    // The constructed finding is the artefact's opening part; scope and
+    // limits are one keyboard step away and never replace the status line.
+    const artefact = page.locator('.artefact');
+    await expect(page.locator('.finding-chain')).toBeVisible();
+    await expect(artefact.locator('.af-status')).toBeVisible();
+    await artefact.getByRole('tab', { name: 'SEDI findings' }).focus();
+    await page.keyboard.press('Home');
+    await expect(artefact.getByRole('tab', { name: 'Scope' })).toHaveAttribute('aria-selected', 'true');
+    await expect(artefact.locator('#af-scope')).toContainText('One pathway and one scenario');
+    await expect(artefact.locator('.af-status')).toBeVisible();
+    await artefact.getByRole('tab', { name: 'SEDI findings' }).click();
     await expect(page.locator('.finding-chain')).toBeVisible();
     const text = await page.locator('main').innerText();
     expect(text).not.toMatch(/engineHash|manifestHash|keyId|scoredAt/);
@@ -126,9 +132,6 @@ test.describe('buyer journey pass', () => {
     expect(fork).not.toMatch(/confirms nothing|predicts nothing/);
     const finding = await page.locator('.finding-block').innerText();
     expect(finding).not.toMatch(/£|\/ 5|108k|EXPOSED/);
-    await example.locator('summary').focus();
-    await page.keyboard.press('Enter');
-    await expect(example.locator('.example-body')).toBeHidden();
     await expect(page.locator('.finding-chain')).toBeVisible();
   });
 

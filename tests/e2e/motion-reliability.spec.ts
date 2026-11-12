@@ -1,5 +1,9 @@
 import { test, expect, type Page } from '@playwright/test';
 
+// The conceptual window instrument is on the methodology page; the homepage
+// carries the scenario model (tests/e2e/homepage-instruments.spec.ts).
+const WINDOW_ROUTE = '/methodology/';
+
 async function prepare(page: Page, reducedMotion: 'reduce' | 'no-preference' = 'no-preference') {
   await page.emulateMedia({ reducedMotion });
   await page.addInitScript(() => {
@@ -142,7 +146,7 @@ test('story headings stay fixed in the document during scrolling and repeated en
 });
 
 test('automatic SEDI progression starts with the stages in view, not just its title', async ({ page }) => {
-  await prepare(page); await page.goto('/'); await page.evaluate(() => document.fonts.ready);
+  await prepare(page); await page.goto(WINDOW_ROUTE); await page.evaluate(() => document.fonts.ready);
   const instrument = page.locator('.intervention-window');
   await instrument.evaluate(node => window.scrollTo({ top: node.getBoundingClientRect().top + scrollY - innerHeight + 120, behavior: 'instant' }));
   await page.waitForTimeout(250);
@@ -157,7 +161,7 @@ test('automatic SEDI progression starts with the stages in view, not just its ti
 });
 
 test('height-only viewport changes preserve the running trace', async ({ page }) => {
-  await prepare(page); await page.goto('/');
+  await prepare(page); await page.goto(WINDOW_ROUTE);
   await page.locator('input[value="too-late"]').evaluate((radio: HTMLInputElement) => radio.click());
   await replay(page); await page.waitForTimeout(100);
   const initial = await trace(page);
@@ -176,7 +180,7 @@ test('height-only viewport changes preserve the running trace', async ({ page })
 
 for (const initial of ['reduce', 'no-preference'] as const) {
   test(`motion recovers after preference changes from ${initial}`, async ({ page }) => {
-    await prepare(page, initial); await page.goto('/');
+    await prepare(page, initial); await page.goto(WINDOW_ROUTE);
     if (initial === 'no-preference') { await replay(page); await page.emulateMedia({ reducedMotion: 'reduce' }); }
     await expect(page.locator('[data-window-replay]')).toBeHidden();
     await page.emulateMedia({ reducedMotion: 'no-preference' });
@@ -190,7 +194,7 @@ for (const initial of ['reduce', 'no-preference'] as const) {
 }
 
 test('an interrupted automatic trace restarts on return after rapid scrolling', async ({ page }) => {
-  await prepare(page); await page.goto('/'); await showSequence(page); await page.waitForTimeout(180);
+  await prepare(page); await page.goto(WINDOW_ROUTE); await showSequence(page); await page.waitForTimeout(180);
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' })); await page.waitForTimeout(150);
   await showSequence(page);
   await expect.poll(() => page.evaluate(() => (window as any).__starts.filter((s: any) => s.name.includes('window-trace')).length)).toBe(2);
@@ -230,7 +234,7 @@ test('navigation fades on repeated opens and keyboard focus does not restart a l
 });
 
 test('real browser history retains a usable selected outcome and replay', async ({ page }) => {
-  await prepare(page); await page.goto('/');
+  await prepare(page); await page.goto(WINDOW_ROUTE);
   await page.locator('input[value="too-late"]').evaluate((radio: HTMLInputElement) => radio.click());
   await replay(page); await page.waitForTimeout(200);
   await page.goto('/services/'); await page.goBack(); await page.evaluate(() => document.fonts.ready);
@@ -245,7 +249,7 @@ test('real browser history retains a usable selected outcome and replay', async 
 });
 
 test('persisted lifecycle cleanup preserves content, preference recovery and unfinished observation', async ({ page }) => {
-  await prepare(page); await page.goto('/'); await showSequence(page); await page.waitForTimeout(120);
+  await prepare(page); await page.goto(WINDOW_ROUTE); await showSequence(page); await page.waitForTimeout(120);
   await page.evaluate(() => dispatchEvent(new PageTransitionEvent('pagehide', { persisted: true })));
   await expect.poll(() => page.locator('.window-view:visible').evaluate(node => node.getAnimations({ subtree: true }).filter(a => a.playState === 'running').length)).toBe(0);
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -264,7 +268,7 @@ test('persisted lifecycle cleanup preserves content, preference recovery and unf
 
 test('touch comparison and replay visibly progress without hover', async ({ page, hasTouch }) => {
   test.skip(!hasTouch, 'Touch gestures require a touch browser context.');
-  await prepare(page); await page.goto('/');
+  await prepare(page); await page.goto(WINDOW_ROUTE);
   await page.locator('.intervention-window').evaluate(node => window.scrollTo({ top: node.getBoundingClientRect().top + scrollY - 100, behavior: 'instant' }));
   await page.evaluate(() => { (window as any).__pointerTypes = []; document.addEventListener('pointerdown', event => (window as any).__pointerTypes.push(event.pointerType)); });
   await page.getByRole('radio', { name: 'Too late', exact: true }).tap();
@@ -280,7 +284,7 @@ test('touch comparison and replay visibly progress without hover', async ({ page
 
 
 test('manual replay visibly advances when only part of the sequence is on screen', async ({ page }) => {
-  await prepare(page); await page.goto('/'); await page.evaluate(() => document.fonts.ready);
+  await prepare(page); await page.goto(WINDOW_ROUTE); await page.evaluate(() => document.fonts.ready);
   await page.locator('.window-view:visible .window-sequence').evaluate(node => {
     scrollTo({ top: node.getBoundingClientRect().top + scrollY - innerHeight + 120, behavior: 'instant' });
   });
@@ -296,7 +300,7 @@ test('manual replay visibly advances when only part of the sequence is on screen
 
 
 test('stage pulses grow and fade without moving their node or leaving a halo', async ({ page }) => {
-  await prepare(page); await page.goto('/'); await replay(page);
+  await prepare(page); await page.goto(WINDOW_ROUTE); await replay(page);
   const samples = await page.locator('.window-view:visible .window-stage-1 .window-node').evaluate(async node => {
     const animation = node.getAnimations({ subtree: true }).find(a => (a as CSSAnimation).animationName === 'window-stage')!;
     await animation.ready;

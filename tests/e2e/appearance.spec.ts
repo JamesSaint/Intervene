@@ -126,6 +126,9 @@ for (const scheme of ['light', 'dark'] as const) {
     expect(await page.evaluate(() => getComputedStyle(document.documentElement).colorScheme)).toBe(scheme);
     await expect(page.locator('.no-script-menu')).toHaveAttribute('href', '#footer-nav');
     await expect(page.locator('.appearance-header')).toBeHidden();
+    await expect(page.locator('.window-lab .wl-figure')).toBeVisible();
+    await expect(page.locator('.sedi-explorer details')).toHaveCount(4);
+    await page.goto('/methodology/');
     await expect(page.locator('.window-view').first()).toBeVisible();
     await page.goto('/contact/');
     await expect(page.locator('form[data-contact]')).toHaveAttribute('method', 'POST');
@@ -196,9 +199,10 @@ test('appearance changes preserve opening and SEDI timelines, selected outcome a
     (window as any).__headlineStarts = 0;
     document.addEventListener('animationstart', event => { if (event.animationName === 'headline-enter') (window as any).__headlineStarts++; });
   });
-  await page.goto('/'); await page.evaluate(() => document.fonts.ready); await page.waitForTimeout(1200);
+  // The conceptual window instrument is on the methodology page.
+  await page.goto('/methodology/'); await page.evaluate(() => document.fonts.ready); await page.waitForTimeout(1200);
   const starts = await page.evaluate(() => (window as any).__headlineStarts);
-  const before = await page.locator('.hero-home').boundingBox();
+  const before = await page.locator('main .hero').boundingBox();
   // A live OS change exercises the same appearance update without opening
   // navigation, which would itself scroll the running instrument off screen.
   await page.locator('.window-view:visible .window-sequence').evaluate(node => scrollTo({ top: node.getBoundingClientRect().top + scrollY - 120, behavior: 'instant' }));
@@ -208,7 +212,7 @@ test('appearance changes preserve opening and SEDI timelines, selected outcome a
   const afterTime = await page.locator('.window-view:visible .window-trace').evaluate(node => node.getAnimations()[0]?.currentTime);
   expect(Number(afterTime)).toBeGreaterThan(Number(beforeTime));
   expect(await page.evaluate(() => (window as any).__headlineStarts)).toBe(starts);
-  const after = await page.locator('.hero-home').boundingBox();
+  const after = await page.locator('main .hero').boundingBox();
   expect(after!.width).toBeCloseTo(before!.width, 2); expect(after!.height).toBeCloseTo(before!.height, 2);
   await expect(page.getByRole('radio', { name: 'In time', exact: true })).toBeChecked();
 });
