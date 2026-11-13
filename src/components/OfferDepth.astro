@@ -48,7 +48,7 @@ const routes = [
             {levels.map((level, i) => (
               <li class:list={['od-level', i <= depth ? 'is-on' : 'is-off']}>
                 <span class="od-level-title">{level.title}<span class="od-sr">{i <= depth ? ': examined. ' : ': not examined.'}</span></span>
-                {i <= depth && <span class="od-level-body">{level.body}</span>}
+                {i <= depth ? <span class="od-level-body">{level.body}</span> : <span class="od-level-body" aria-hidden="true">Not examined</span>}
               </li>
             ))}
           </ol>
@@ -97,12 +97,14 @@ const routes = [
 
   /* Depth: three blocks on one line, filled as far as the engagement goes.
      The same grammar as the response in the opening scene. */
-  .od-depth { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; }
-  .od-level { display: grid; gap: 6px; align-content: start; min-height: 148px; padding: var(--space-3); }
-  .od-level.is-on { background: var(--ink); color: var(--paper); }
-  .od-level.is-off { border: 1px dashed var(--hair-strong); background: repeating-linear-gradient(135deg, var(--hair) 0 1px, transparent 1px 11px); color: var(--faint); }
+  .od-depth { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
+  .od-level { display: grid; gap: 6px; align-content: start; min-height: 132px; padding: var(--space-3); }
+  /* Examined: a solid rule and ink. Not examined: a dashed rule, and it says so. */
+  .od-level { border-top: 3px solid var(--ink); background: var(--paper-soft); color: var(--ink); }
+  .od-level.is-off { border-top: 1px dashed var(--hair-strong); background: transparent; color: var(--faint); padding-top: calc(var(--space-3) + 2px); }
   .od-level-title { font-size: 16px; font-weight: 600; line-height: 1.3; }
-  .od-level-body { font-size: var(--type-action); line-height: 1.5; opacity: 0.82; }
+  .od-level-body { font-size: var(--type-action); line-height: 1.5; color: var(--muted); }
+  .od-level.is-off .od-level-body { color: var(--faint); }
   .od-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
   .od-fee { display: grid; gap: 2px; align-content: start; justify-items: start; }
@@ -149,6 +151,6 @@ const routes = [
     .od-level { padding: 12px var(--space-3); }
     .od-level.is-off { min-height: 0; padding-block: 8px; }
     .od-level.is-off .od-level-title { font-size: 13px; font-weight: 400; }
-    .od-level.is-off .od-sr { position: static; width: auto; height: auto; clip-path: none; }
+    .od-level.is-off { display: flex; justify-content: space-between; gap: var(--space-3); }
   }
 </style>

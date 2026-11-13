@@ -351,6 +351,7 @@ test.describe('three engagements', () => {
     }
     // Depth is stated in words as well as by fill.
     await expect(routes.nth(0).locator('.od-level').nth(2)).toContainText('Timing and verdict: not examined.');
+    await expect(routes.nth(0).locator('.od-level').nth(2).locator('.od-level-body')).toHaveText('Not examined');
     await expect(routes.nth(2).locator('.od-level').nth(2)).toContainText('Timing and verdict: examined.');
     for (const o of offers) await expect(page.locator('.offer-depth').getByText(o.price, { exact: true })).toHaveCount(1);
     await expect(page.locator('.offer-depth')).toContainText('none is a prerequisite');
