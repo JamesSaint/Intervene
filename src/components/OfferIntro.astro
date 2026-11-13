@@ -1,8 +1,10 @@
 ---
 /**
  * The three engagements, introduced: the question each answers, its scope
- * and its fee. Each includes the one before it, which the nested frames
- * show; none is a prerequisite, which the caption says. Boundaries are on
+ * and its fee. They are three separate commercial options. The nested
+ * frames show scope only: a wider engagement's work covers the narrower
+ * one's. They do not show a purchasing sequence, and every frame says in
+ * words that it is commissioned on its own. Boundaries are on
  * the page at all times. The full comparison opens beneath.
  *
  * Everything reads from src/lib/offers.ts: question, name, the one-sentence
@@ -23,7 +25,7 @@ const shorts = ['Authority Check', 'Review', 'Assessment'];
 <figure class="offer-choice offer-intro" aria-labelledby="offer-choice-heading">
   <figcaption class="oi-caption" data-offer-view="offer_choice">
     <H class="h2" id="offer-choice-heading">Three questions. <em>One named system.</em></H>
-    <p class="oi-principle">Each engagement includes the one before it, and none is a prerequisite.</p>
+    <p class="oi-principle">Three separate engagements. Each can be commissioned on its own: each includes the one before it, and none is a prerequisite.</p>
   </figcaption>
 
   <ol class="oi-routes" role="list">
@@ -33,7 +35,8 @@ const shorts = ['Authority Check', 'Review', 'Assessment'];
         <p class="oi-q">{o.question}</p>
         <h3 class="oi-name" set:html={markAgda(o.name)} />
         <p class="oi-scope" set:html={markAgda(o.short)} />
-        {i > 0 && <p class="oi-includes"><span aria-hidden="true">+</span> {o.scope[0]}</p>}
+        <p class="oi-includes">{i > 0 ? <Fragment><span aria-hidden="true">+</span> Scope includes: {o.scope[0].replace('Everything in', 'everything in')}</Fragment> : 'The narrowest scope of the three.'}</p>
+        <p class="oi-alone mono">Commissioned on its own</p>
         <p class="oi-fee">
           <span class="mono oi-fee-note">{o.priceNote}</span>
           <span class="oi-price">{o.price}</span>
@@ -66,8 +69,8 @@ const shorts = ['Authority Check', 'Review', 'Assessment'];
 
   /* Nested frames: the Review's frame holds the Authority Check, and the
      Assessment's holds both. Inclusion is drawn, not listed. */
-  .oi-routes { --oi-step: 16px; --oi-pad: clamp(20px, 2.2vw, 32px); list-style: none; margin: var(--space-7) 0 0; padding: calc(var(--oi-step) * 2) 0 calc(var(--oi-step) * 2) calc(var(--oi-step) * 2); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(8, auto); isolation: isolate; }
-  .oi-route { position: relative; display: grid; grid-row: span 8; grid-template-rows: subgrid; row-gap: 0; min-width: 0; padding: var(--oi-pad); }
+  .oi-routes { --oi-step: 16px; --oi-pad: clamp(20px, 2.2vw, 32px); list-style: none; margin: var(--space-7) 0 0; padding: calc(var(--oi-step) * 2) 0 calc(var(--oi-step) * 2) calc(var(--oi-step) * 2); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(9, auto); isolation: isolate; }
+  .oi-route { position: relative; display: grid; grid-row: span 9; grid-template-rows: subgrid; row-gap: 0; min-width: 0; padding: var(--oi-pad); }
   .oi-route::before { content: ''; position: absolute; border: 1px solid var(--hair-strong); pointer-events: none; }
   .oi-route:nth-child(1)::before { inset: 0; z-index: -1; background: var(--paper); border-color: var(--ink); }
   .oi-route:nth-child(2)::before { inset: calc(-1 * var(--oi-step)) 0 calc(-1 * var(--oi-step)) calc(-100% - var(--oi-step)); z-index: -2; background: var(--paper-soft); }
@@ -79,6 +82,7 @@ const shorts = ['Authority Check', 'Review', 'Assessment'];
   .oi-scope { margin: var(--space-2) 0 0; font-size: var(--type-small); line-height: 1.6; color: var(--muted); }
   .oi-includes { margin: var(--space-3) 0 0; font-size: var(--type-action); font-weight: 600; line-height: 1.5; color: var(--ink); }
   .oi-includes span { color: var(--accent-text); }
+  .oi-alone { margin: var(--space-2) 0 0; font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
   .oi-fee { display: grid; gap: 2px; margin: var(--space-5) 0 0; padding-top: var(--space-3); border-top: 1px solid var(--hair-strong); }
   .oi-fee-note { font-size: var(--type-caption); line-height: 1.6; color: var(--faint); }
   .oi-price { font-family: var(--font-mono); font-size: clamp(20px, 2vw, 28px); line-height: 1.3; color: var(--ink); }

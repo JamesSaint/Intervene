@@ -5,6 +5,7 @@ import PageNav from '../../components/PageNav.astro';
 import { markAgda } from '../../lib/marks';
 import Agda from '../../components/Agda.astro';
 import { cover, systemSpecs, controls, stages, gates, evidence } from '../../lib/sample-report';
+import EvidenceTrace from '../../components/EvidenceTrace.astro';
 
 const pageNav = [
   { href: '#system', label: 'The system' },
@@ -169,6 +170,8 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
         window, and the quorum that authority requires takes at least seven
         days.
       </p>
+
+      <div class="report-trace"><EvidenceTrace /></div>
 
       <dl class="verdict-row">
         <div><dt>Finding</dt><dd>Structural constraint</dd></div>
@@ -408,6 +411,8 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
 </BaseLayout>
 
 <style>
+  .report-trace { margin-top: var(--gap-intro); }
+
   /* Reference document: a cover, then numbered sections of tables,
      registers and one callout. Type is a step smaller than the
      commercial pages; the reader is here to read closely. */

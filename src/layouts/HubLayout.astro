@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import ChainPosition from '../components/ChainPosition.astro';
 import { markAgda } from '../lib/marks';
 import { terms } from '../lib/terms';
 import Agda from '../components/Agda.astro';
@@ -14,6 +15,8 @@ interface Related {
   ghost?: boolean;
 }
 interface Props {
+  /** Where the term sits in the intervention chain, where the methodology places it in one. */
+  position?: { at: 'detect' | 'escalate' | 'decide' | 'intervene' | 'chain' | 'window'; caption: string };
   termSlug: string;     // pulls the canonical definition from lib/terms.ts
   title: string;        // ends "· Intervene"
   description: string;
@@ -26,7 +29,7 @@ interface Props {
   faqs: Faq[];
 }
 
-const { termSlug, title, description, ogImage, label, h1, lede, agda, related, faqs } =
+const { position, termSlug, title, description, ogImage, label, h1, lede, agda, related, faqs } =
   Astro.props as Props;
 
 const term = terms.find((t) => t.slug === termSlug)!;
@@ -58,6 +61,7 @@ const term = terms.find((t) => t.slug === termSlug)!;
         <span class="box-label">Defined term</span>
         <p>{term.definition}</p>
       </aside>
+      {position && <ChainPosition at={position.at} caption={position.caption} />}
     </div>
   </section>
 

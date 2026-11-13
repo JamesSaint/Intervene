@@ -1,0 +1,38 @@
+---
+/**
+ * Where a topic sits in the intervention chain: the four stages on one rail
+ * with the relevant part picked out. Orientation only; it states no finding.
+ * `at` is a stage, the whole chain, or the window the chain runs against.
+ */
+interface Props { at: 'detect' | 'escalate' | 'decide' | 'intervene' | 'chain' | 'window'; caption: string }
+const { at, caption } = Astro.props;
+const stages = ['Detect', 'Escalate', 'Decide', 'Intervene'];
+const on = (name: string) => at === 'chain' || at === name.toLowerCase();
+---
+<figure class:list={['chain-position', `at-${at}`]} aria-label={caption}>
+  <ol role="list" aria-hidden="true">
+    {stages.map((name) => (
+      <li class:list={[{ 'is-on': on(name) }]}><span class="cp-node"></span><span class="cp-name">{name}</span></li>
+    ))}
+    <li class:list={['cp-window', { 'is-on': at === 'window' }]}><span class="cp-bound"></span><span class="cp-name">Window closes</span></li>
+  </ol>
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .chain-position { margin: var(--space-6) 0 0; }
+  ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) auto; border-top: 1px solid var(--hair-strong); }
+  li { position: relative; display: grid; gap: var(--space-2); padding: var(--space-3) var(--space-3) 0 0; min-width: 0; }
+  .cp-node { position: absolute; left: 0; top: -8px; width: 15px; height: 15px; border: 1px solid var(--hair-strong); border-radius: 50%; background: var(--paper); box-sizing: border-box; }
+  .cp-name { font-size: clamp(15px, 1.8vw, 24px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.2; color: var(--faint); }
+  li.is-on .cp-node { background: var(--ink); border-color: var(--ink); }
+  li.is-on .cp-name { color: var(--ink); }
+  li.is-on::before { content: ''; position: absolute; left: 0; right: 0; top: -2px; height: 3px; background: var(--ink); }
+  .cp-window { padding-right: 0; padding-left: var(--space-3); }
+  .cp-bound { position: absolute; left: 0; top: -14px; height: 28px; border-left: 1px dashed var(--control-border); }
+  .cp-window .cp-name { font-family: var(--font-mono); font-size: 12px; font-weight: 400; letter-spacing: 0; white-space: nowrap; }
+  .cp-window.is-on .cp-bound { border-left: 3px solid var(--ink); }
+  .cp-window.is-on::before { display: none; }
+  figcaption { margin-top: var(--space-4); font-size: var(--type-caption); line-height: 1.65; color: var(--faint); }
+  @media (max-width: 560px) { li { padding-right: var(--space-1); } .cp-window .cp-name { font-size: 11px; white-space: normal; max-width: 6ch; } }
+</style>

@@ -97,8 +97,8 @@ const audiences = [
         envelope commits to the following, and to nothing else.
       </p>
       <div class="coverage-grid">
-        <div><h3 class="col-label">Covered by the signature</h3><ul class="dash-list" role="list">{covered.map((x) => <li>{x}</li>)}</ul></div>
-        <div><h3 class="col-label">Not covered by the signature</h3><ul class="dash-list" role="list">{notCovered.map((x) => <li>{x}</li>)}</ul></div>
+        <div><h3 class="col-label">Covered by the signature</h3><ul class="mark-list" role="list">{covered.map((x) => <li>{x}</li>)}</ul></div>
+        <div><h3 class="col-label">Not covered by the signature</h3><ul class="mark-list is-no" role="list">{notCovered.map((x) => <li>{x}</li>)}</ul></div>
       </div>
       <p class="body muted note">
         Read a report header alongside the signed input and output. The
@@ -262,7 +262,7 @@ const audiences = [
         is a separate activity.
       </p>
       <span class="col-label">Not established by verification</span>
-      <ul class="dash-list" role="list">
+      <ul class="mark-list is-no" role="list">
         {notEstablished.map((x) => <li set:html={markAgda(x)} />)}
       </ul>
       <p class="body muted note">

@@ -389,8 +389,13 @@ test('the engagements are introduced by question, scope and fee, with boundaries
     await expect(route.locator('.oi-link')).toHaveAttribute('href', `/services/#${offers[i].slug}`);
   }
   // Inclusion is stated in the engagement's own words, and the full comparison starts closed.
-  await expect(routes.nth(1).locator('.oi-includes')).toContainText('Everything in the Authority Check.');
-  await expect(routes.nth(2).locator('.oi-includes')).toContainText('Everything in the Review.');
+  // The frames show scope, not a purchasing sequence: every one says it stands alone.
+  await expect(routes.locator('.oi-alone')).toHaveText(['Commissioned on its own', 'Commissioned on its own', 'Commissioned on its own']);
+  await expect(page.locator('.oi-principle')).toContainText('Three separate engagements. Each can be commissioned on its own');
+  await expect(routes.nth(1).locator('.oi-includes')).toContainText('Scope includes: everything in the Authority Check.');
+  await expect(routes.nth(2).locator('.oi-includes')).toContainText('Scope includes: everything in the Review.');
+  const intro = await page.locator('.offer-intro').innerText();
+  expect(intro).not.toMatch(/first|then|next step|upgrade|must|required before|progress to/i);
   await expect(page.locator('.offer-intro')).toContainText('none is a prerequisite');
   const compare = page.locator('.oi-compare');
   await expect(compare).not.toHaveAttribute('open');
@@ -471,6 +476,13 @@ test('the series circuit shows one open condition stopping a response the docume
   await expect(cells.nth(2)).toHaveClass(/is-dead/);
   await expect(cells.locator('.sc-state')).toHaveText(['Holds', 'Open under pressure', 'Holds, but nothing reaches it']);
   await expect(circuit.locator('figcaption')).toContainText('Illustration. The three conditions are in series');
+  // It is labelled as an illustration before it is read, and claims no observed result.
+  await expect(circuit.locator('.sc-status')).toContainText('Illustration');
+  await expect(circuit.locator('.sc-status')).toContainText('not a finding about any organisation');
+  await expect(circuit.locator('figcaption')).toContainText('an example, not an observed result');
+  const status = (await circuit.locator('.sc-status').boundingBox())!;
+  const chain = (await circuit.locator('.sc-chain').boundingBox())!;
+  expect(status.y + status.height).toBeLessThanOrEqual(chain.y);
   await expect(page.locator('.situations .dial-reading')).toHaveCount(0);
 });
 
