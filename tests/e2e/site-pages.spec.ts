@@ -91,6 +91,10 @@ test('sample report: the trace leads the finding and keeps the sample\'s status 
   await expect(trace.locator('.et-stage')).toHaveCount(4);
   await expect(trace.locator('.et-record')).toHaveCount(6);
   await expect(trace).toContainText('not to scale and not added together');
+  // The six-minute figure and the homepage's "Not assessed" are the same measure, said the same way.
+  await expect(page.locator('#stages')).toContainText('assumed by the source to propagate a halt if instructed. No duration is assessed for this stage.');
+  await expect(trace.locator('.et-row').nth(3)).toContainText('Not assessed');
+  await expect(trace.locator('.et-row').nth(3)).toContainText('The source assumes about six minutes to propagate a halt if instructed; no duration is assessed here');
   // The page's own tables remain beneath it.
   await expect(page.locator('#gates .tbl tbody tr')).toHaveCount(6);
   await expect(page.locator('#register .tbl tbody tr')).toHaveCount(6);
@@ -125,4 +129,58 @@ test('two-tone headings keep their weight and stay readable in both appearances'
     expect(tone.style, scheme).toBe('normal');
     expect(tone.contrast, scheme).toBeGreaterThanOrEqual(4.5);
   }
+});
+
+test('verify: the signature boundary is drawn as a solid frame, with what lies outside it on a broken edge', async ({ page }) => {
+  await page.goto('/verify/');
+  for (const id of ['#coverage', '#establishes']) {
+    const edges = await page.locator(`${id} .boundary > div`).evaluateAll((els) => els.map((el) => [el.className, getComputedStyle(el).borderBottomStyle, getComputedStyle(el).borderBottomWidth]));
+    expect(edges, id).toEqual([['boundary-in', 'solid', '2px'], ['boundary-out', 'dashed', '1px']]);
+  }
+  // Integrity is inside the frame; truth, completeness and validity are outside it.
+  await expect(page.locator('#establishes .boundary-in')).toContainText('neither has changed since signing');
+  await expect(page.locator('#establishes .boundary-in')).toContainText('It does not independently establish that the engine was executed');
+  const outside = page.locator('#establishes .boundary-out');
+  await expect(outside.locator('li')).toHaveCount(7);
+  await expect(outside).toContainText('That the underlying evidence is true or complete.');
+  await expect(outside).toContainText('That intervention will work in a future event.');
+});
+
+test('sectors: each sector pairs what is expected with where it can fail, and marks the two differently', async ({ page }) => {
+  await page.goto('/sectors/');
+  const sectors = page.locator('section.sector');
+  await expect(sectors).toHaveCount(4);
+  for (let i = 0; i < 4; i += 1) {
+    const sector = sectors.nth(i);
+    await expect(sector.locator('.sector-label')).toHaveText(['What is expected', 'Where it can fail']);
+    const lines = await sector.locator('.sector-cell').evaluateAll((els) => els.map((el) => getComputedStyle(el).borderTopStyle));
+    expect(lines).toEqual(['solid', 'dashed']);
+    expect(await sector.locator('.sector-regimes li').count()).toBeGreaterThan(1);
+  }
+  // The regimes are the page's own, split into tags; none is added.
+  await expect(sectors.nth(0).locator('.sector-regimes li')).toHaveText(['PRA', 'FCA', 'SS1/23', 'SMCR']);
+  await expect(sectors.nth(1).locator('.sector-regimes li')).toHaveText(['EU AI Act', 'Article 14']);
+  await expect(sectors.nth(2).locator('.is-gap')).not.toContainText('AGDA');
+});
+
+test('about: sector tiers are marked by how firm they are, and the practice line ends at the finding', async ({ page, isMobile }) => {
+  await page.goto('/about/');
+  const tiers = await page.locator('.sector-group').evaluateAll((els) => els.map((el) => [el.querySelector('.col-label')!.textContent, getComputedStyle(el).borderTopStyle, getComputedStyle(el).borderTopWidth]));
+  expect(tiers).toEqual([['Primary', 'solid', '2px'], ['By invitation', 'solid', '1px'], ['Not currently served', 'dashed', '1px']]);
+  const last = page.locator('.not-list > li').last();
+  await expect(last.locator('.h3')).toHaveText('Stops at the finding.');
+  const closed = await last.evaluate((el) => [getComputedStyle(el).borderRightWidth, getComputedStyle(el).borderBottomWidth]);
+  expect(closed).toEqual(isMobile ? ['0px', '2px'] : ['2px', '0px']);
+});
+
+test('sample report: a four-step reading path leads from the conclusion to its qualifications', async ({ page }) => {
+  await page.goto('/sample-report/');
+  const steps = page.locator('.read-path a');
+  await expect(steps.locator('.rp-step')).toHaveText(['Conclusion', 'Findings', 'Evidence', 'Qualifications']);
+  expect(await steps.evaluateAll((els) => els.map((el) => el.getAttribute('href')))).toEqual(['#conclusion', '#authority', '#register', '#limits']);
+  for (const href of ['#conclusion', '#authority', '#register', '#limits']) await expect(page.locator(href)).toHaveCount(1);
+  await steps.nth(3).click();
+  await expect(page.locator('#limits h2')).toBeInViewport();
+  // The cover keeps the sample's status above the path.
+  await expect(page.locator('.cover .provenance-note')).toContainText('It has not been run as an assessment, is not issued and is not signed.');
 });

@@ -90,17 +90,20 @@ const audiences = [
 
   <!-- THE BUNDLE -->
   <section class="block" id="coverage">
-    <div class="wrap-narrow">
+    <div class="wrap">
       <h2 class="h2">Coverage.</h2>
       <p class="lede muted">
         The Ed25519 signature is over the canonical attestation envelope. The
         envelope commits to the following, and to nothing else.
       </p>
-      <div class="coverage-grid">
-        <div><h3 class="col-label">Covered by the signature</h3><ul class="mark-list" role="list">{covered.map((x) => <li>{x}</li>)}</ul></div>
-        <div><h3 class="col-label">Not covered by the signature</h3><ul class="mark-list is-no" role="list">{notCovered.map((x) => <li>{x}</li>)}</ul></div>
+      <!-- The boundary, drawn. A solid frame holds what the signature
+           commits to. What sits outside it is on open ground with a broken
+           edge. Both lists are the specification's; the drawing adds none. -->
+      <div class="coverage-grid boundary">
+        <div class="boundary-in"><h3 class="col-label">Covered by the signature</h3><ul class="mark-list" role="list">{covered.map((x) => <li>{x}</li>)}</ul></div>
+        <div class="boundary-out"><h3 class="col-label">Not covered by the signature</h3><ul class="mark-list is-no" role="list">{notCovered.map((x) => <li>{x}</li>)}</ul></div>
       </div>
-      <p class="body muted note">
+      <p class="body muted note boundary-note">
         Read a report header alongside the signed input and output. The
         header is not proof that the displayed name was cryptographically
         committed.
@@ -251,21 +254,28 @@ const audiences = [
 
   <!-- POSITION -->
   <section class="block" id="establishes">
-    <div class="wrap-narrow">
+    <div class="wrap">
       <h2 class="h2">What a successful check establishes. <em>And what it does not.</em></h2>
-      <p class="body">
-        A successful check establishes that the input and output records
-        match the signed commitments associated with the stated engine
-        version, and that neither has changed since signing. It does not
-        independently establish that the engine was executed or that its
-        computation was correct; that would require an engine replay, which
-        is a separate activity.
-      </p>
-      <span class="col-label">Not established by verification</span>
-      <ul class="mark-list is-no" role="list">
-        {notEstablished.map((x) => <li set:html={markAgda(x)} />)}
-      </ul>
-      <p class="body muted note">
+      <div class="coverage-grid boundary establishes">
+        <div class="boundary-in">
+          <h3 class="col-label">Established by a successful check</h3>
+          <p class="body">
+            A successful check establishes that the input and output records
+            match the signed commitments associated with the stated engine
+            version, and that neither has changed since signing. It does not
+            independently establish that the engine was executed or that its
+            computation was correct; that would require an engine replay, which
+            is a separate activity.
+          </p>
+        </div>
+        <div class="boundary-out">
+          <h3 class="col-label">Not established by verification</h3>
+          <ul class="mark-list is-no" role="list">
+            {notEstablished.map((x) => <li set:html={markAgda(x)} />)}
+          </ul>
+        </div>
+      </div>
+      <p class="body muted note boundary-note">
         A signature check and an engine replay are separate activities.
         Signature verification does not rerun the assessment engine.
         Repeatable computation is a separate property: with fixed inputs and
@@ -310,9 +320,19 @@ const audiences = [
   .fields dt { font-family: var(--font-mono); text-transform: none; letter-spacing: 0.04em; font-size: 12px; }
   .note { margin-top: var(--space-4); }
   .col-label { margin-top: var(--gap-intro); }
-  .coverage-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-7); }
-  .coverage-grid .col-label { font-size: var(--type-caption); }
-  @media (max-width: 880px) { .coverage-grid { grid-template-columns: 1fr; gap: 0; } }
+  .coverage-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; margin-top: var(--gap-intro); align-items: stretch; }
+  .coverage-grid .col-label { display: block; margin: 0 0 var(--space-3); font-size: var(--type-caption); }
+  /* Inside the frame: committed by the signature. Outside: open ground,
+     closed only by a broken edge. */
+  .boundary-in { padding: var(--space-5); border: 2px solid var(--ink); background: var(--paper); }
+  .boundary-out { padding: var(--space-5); border: 1px dashed var(--hair-strong); border-left: 0; background: var(--paper-soft); }
+  .boundary .body { margin: 0; }
+  .boundary .mark-list { margin: 0; }
+  @media (max-width: 880px) {
+    .coverage-grid { grid-template-columns: 1fr; }
+    .boundary-in, .boundary-out { padding: var(--space-4); }
+    .boundary-out { border: 1px dashed var(--hair-strong); border-top: 0; }
+  }
 
   .lede + .code-caption { margin-top: var(--gap-intro); }
 </style>

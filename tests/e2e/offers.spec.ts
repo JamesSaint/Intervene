@@ -140,10 +140,20 @@ test.describe('buyer journey pass', () => {
       expect(text, route).toMatch(/does not include the AGDA® verdict/);
     }
     await page.goto('/services/');
-    // The compact fork above the sheets carries no prices or deliverables.
-    const compact = await page.locator('.choose .offer-choice').innerText();
-    expect(compact).not.toMatch(/£|What you receive|Boundary/);
-    expect(compact).toMatch(/Appropriate when/i);
+    // The three engagements open the page at a glance: question, fee and
+    // boundary for each, the statement that none is a prerequisite, and a
+    // link to each full sheet. The sheets carry the deliverables.
+    const intro = page.locator('.choose .offer-choice');
+    const glance = await intro.innerText();
+    expect(glance).toMatch(/none is a prerequisite/);
+    expect(glance).toMatch(/does not commit you to one or determine its verdict/);
+    expect(glance).not.toMatch(/What you receive/);
+    await expect(intro.locator('.oi-route')).toHaveCount(3);
+    await expect(intro.locator('.oi-alone')).toHaveText(['Commissioned on its own', 'Commissioned on its own', 'Commissioned on its own']);
+    const sheetPrices = await page.locator('#engagements .offer .price').allInnerTexts();
+    expect(await intro.locator('.oi-price').allInnerTexts()).toEqual(sheetPrices);
+    expect(await intro.locator('.oi-link').evaluateAll((els) => els.map((el) => el.getAttribute('href')))).toEqual(['/services/#check', '/services/#review', '/services/#assessment']);
+    await expect(intro.locator('.oi-compare')).toHaveCount(0);
     const review = await page.locator('#review').innerText();
     expect(review).toMatch(/What it decides/i);
     expect(review).toMatch(/What you keep/i);

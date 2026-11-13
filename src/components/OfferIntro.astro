@@ -16,15 +16,22 @@ import { markAgda } from '../lib/marks';
 import Agda from './Agda.astro';
 import OfferLadder from './OfferLadder.astro';
 
-interface Props { headingLevel?: 'h2' | 'h3' }
-const { headingLevel: H = 'h2' } = Astro.props;
+interface Props {
+  headingLevel?: 'h2' | 'h3';
+  /** The heading's two halves. /services/ already carries the default as its h1. */
+  lead?: string;
+  tail?: string;
+  /** The full comparison beneath. Off where the page prints the three sheets in full. */
+  compare?: boolean;
+}
+const { headingLevel: H = 'h2', lead = 'Three questions.', tail = 'One named system.', compare = true } = Astro.props;
 
 const kickers = ['Entry point', 'Preliminary', 'Full assessment'];
 const shorts = ['Authority Check', 'Review', 'Assessment'];
 ---
 <figure class="offer-choice offer-intro" aria-labelledby="offer-choice-heading">
   <figcaption class="oi-caption" data-offer-view="offer_choice">
-    <H class="h2" id="offer-choice-heading">Three questions. <em>One named system.</em></H>
+    <H class="h2" id="offer-choice-heading">{lead} <em>{tail}</em></H>
     <p class="oi-principle">Three separate engagements. Each can be commissioned on its own: each includes the one before it, and none is a prerequisite.</p>
   </figcaption>
 
@@ -52,12 +59,12 @@ const shorts = ['Authority Check', 'Review', 'Assessment'];
     full Assessment but does not commit you to one or determine its verdict.
   </p>
 
-  <details class="oi-compare" data-disclosure>
+  {compare && <details class="oi-compare" data-disclosure>
     <summary><span>Compare the three engagements in full</span><span class="oi-compare-hint mono">What each establishes, examines and excludes</span></summary>
     <div data-disclosure-body>
       <OfferLadder bare />
     </div>
-  </details>
+  </details>}
 </figure>
 
 <style>

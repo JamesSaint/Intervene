@@ -51,17 +51,29 @@ const sectors = [
   </section>
 
   <PageNav items={sectors.map((sector) => ({ href: `#${sector.id}`, label: sector.name }))} />
+  <!-- Each sector is drawn the same way: what the regime expects, on a
+       solid line, and where that expectation can fail to become an
+       intervention, on a broken one. The two sentences are the page's own;
+       the drawing adds no claim about any sector. -->
   {sectors.map((s) => (
     <section class="block sector" id={s.id}>
       <div class="wrap">
         <div class="sector-grid">
           <div class="sector-lead">
-            <span class="label">{s.pressure}</span>
             <h2 class="h2">{s.name}</h2>
+            <ul class="sector-regimes mono" role="list" aria-label="Regimes and duties">
+              {s.pressure.split(' · ').map((r) => <li>{r}</li>)}
+            </ul>
           </div>
-          <div class="sector-body">
-            <p class="body">{s.pressureText}</p>
-            <p class="body muted" set:html={markAgda(s.failure)}></p>
+          <div class="sector-pair">
+            <div class="sector-cell is-expected">
+              <h3 class="sector-label mono">What is expected</h3>
+              <p class="sector-text">{s.pressureText}</p>
+            </div>
+            <div class="sector-cell is-gap">
+              <h3 class="sector-label mono">Where it can fail</h3>
+              <p class="sector-text" set:html={markAgda(s.failure)}></p>
+            </div>
           </div>
         </div>
       </div>
@@ -99,12 +111,27 @@ const sectors = [
     gap: var(--space-7);
     align-items: start;
   }
-  .sector-lead .label { margin-bottom: var(--space-3); }
+  .sector-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+  .sector-lead { display: grid; gap: var(--space-4); align-content: start; }
+  .sector-lead .h2 { margin: 0; font-size: clamp(30px, 3.4vw, 52px); }
+  .sector-regimes { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .sector-regimes li { padding: 4px 10px; border: 1px solid var(--hair-strong); font-size: var(--type-caption); line-height: 1.6; color: var(--muted); }
 
-  .sector-body { display: grid; gap: var(--space-3); padding-top: 6px; }
-  .sector-body .body { margin: 0; }
+  /* The pair. A solid line carries the expectation; the line over the gap
+     is broken, the site's mark for something not established. */
+  .sector-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 var(--space-6); }
+  .sector-cell { display: grid; gap: var(--space-3); align-content: start; padding-top: var(--space-4); border-top: 2px solid var(--ink); }
+  .sector-cell.is-gap { border-top-style: dashed; border-top-color: var(--accent); }
+  .sector-label { margin: 0; font-size: var(--type-caption); font-weight: 400; letter-spacing: 0; line-height: 1.6; color: var(--muted); }
+  .is-gap .sector-label { color: var(--accent-text); }
+  .sector-text { margin: 0; font-size: var(--type-body); line-height: 1.65; color: var(--muted); }
+  .is-expected .sector-text { color: var(--ink); }
+  .is-gap .sector-text { color: var(--ink); }
 
-  @media (max-width: 880px) {
-    .sector-grid { grid-template-columns: 1fr; gap: var(--space-4); }
+  @media (max-width: 1080px) {
+    .sector-grid { grid-template-columns: 1fr; gap: var(--space-5); }
+  }
+  @media (max-width: 640px) {
+    .sector-pair { grid-template-columns: 1fr; gap: var(--space-5) 0; }
   }
 </style>

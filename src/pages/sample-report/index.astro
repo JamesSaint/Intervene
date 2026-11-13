@@ -56,7 +56,17 @@ const pageNav = [
             Nothing on this page is evidence about anyone.
           </p>
 
-          <nav class="related-links" aria-label="Inspect the constructed report"><a class="link" href="#controls">Evidence</a><a class="link" href="#authority">Finding</a><a class="link" href="#decision">Decision</a><a class="link" href="#limits">Limitations</a></nav>
+          <!-- A reading path through the report, shortest first: the
+               conclusion, the findings behind it, the evidence behind those,
+               and what the example does not establish. Navigation only. -->
+          <nav class="read-path" aria-label="Read the constructed report in four steps">
+            <ol role="list">
+              <li><a href="#conclusion"><span class="rp-step">Conclusion</span><span class="rp-what">The state the example reports</span></a></li>
+              <li><a href="#authority"><span class="rp-step">Findings</span><span class="rp-what">Where the chain breaks, stage by stage</span></a></li>
+              <li><a href="#register"><span class="rp-step">Evidence</span><span class="rp-what">Each record, and what it leaves open</span></a></li>
+              <li><a href="#limits"><span class="rp-step">Qualifications</span><span class="rp-what">What the example does not establish</span></a></li>
+            </ol>
+          </nav>
           <dl class="cover-meta">
             {cover.map((c) => (
               <div>
@@ -412,6 +422,22 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
 
 <style>
   .report-trace { margin-top: var(--gap-intro); }
+
+  /* The reading path: four linked steps on one line, joined by a rule. */
+  .read-path { margin-top: var(--space-5); }
+  .read-path ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 2px solid var(--ink); }
+  .read-path li { position: relative; }
+  .read-path li + li::before { content: '→'; position: absolute; left: -22px; top: 14px; font-family: var(--font-mono); font-size: 14px; color: var(--faint); }
+  .read-path a { display: grid; gap: 4px; align-content: start; min-height: 44px; padding: var(--space-3) var(--space-4) var(--space-3) 0; text-decoration: none; color: var(--ink); }
+  .rp-step { font-size: var(--type-small); font-weight: 600; text-decoration: underline; text-decoration-color: var(--hair-strong); text-underline-offset: 4px; }
+  .rp-what { font-size: var(--type-action); line-height: 1.45; color: var(--muted); }
+  .read-path a:is(:hover, :focus-visible) .rp-step { color: var(--accent-text); text-decoration-color: currentColor; }
+  .read-path a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  @media (max-width: 720px) {
+    .read-path ol { grid-template-columns: 1fr; border-top: 0; border-left: 2px solid var(--ink); }
+    .read-path a { padding: var(--space-2) 0 var(--space-2) var(--space-4); }
+    .read-path li + li::before { display: none; }
+  }
 
   /* Reference document: a cover, then numbered sections of tables,
      registers and one callout. Type is a step smaller than the
