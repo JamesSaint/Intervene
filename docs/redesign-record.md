@@ -24,16 +24,16 @@ heading carries the section.
 
 | Component | Where | Purpose |
 |---|---|---|
-| `WindowRace` + `lib/window-model.ts` + `lib/race-geometry.ts` | `/` hero | The opening scene. A response and a window on one time axis; the stage in progress at display size; diagnostics in a drawer beneath. |
-| `HeroWindow` | `/` problem section, `/intervention-readiness/` | The same chain on paper and under pressure, against one window. |
-| `SediExplorer` (revised) | `/`, `/agda/`, `/methodology/`, `/style-guide/` | The four stages on one rail, open on Detect. One opens at a time; every later stage is drawn as waiting on it. |
+| `WindowDial` + `DialFace` + `lib/window-model.ts` + `lib/dial-geometry.ts` | `/` hero | The opening instrument. One turn of the dial is the window; the four stages run round it; time past the window runs on an inner ring. |
+| `DialReading` | `/` problem section | Two fixed readings of the same dial: the chain on paper and under pressure. |
+| `SediExplorer` (revised) | `/`, `/agda/`, `/methodology/`, `/style-guide/` | The four stages on one rail, open on Detect; every later stage is drawn as waiting. |
 | `EvidenceTrace` + `lib/sample-report.ts` | `/` | The constructed sample as a trace: records, stage findings, conclusion. |
-| `OfferDepth` | `/` | The three engagements as three depths of examination. |
+| `OfferLadder` | `/` | The three engagements as one framed comparison, each led by its question and fee. |
+| `HeroWindow` | `/intervention-readiness/` | The linear on-paper and under-pressure figure. |
 
-Retired, and in the branch history: `WindowLab`, `AssessmentArtefact`,
-`OfferLadder`, `FindingChain`, and a dial that was started and withdrawn
-before it was committed. The four standalone sketches remain in
-`prototypes/`, outside the build.
+Retired, and in the branch history: `WindowLab`, `WindowRace`,
+`AssessmentArtefact`, `OfferDepth`, `FindingChain`. The four standalone
+sketches remain in `prototypes/`, outside the build.
 
 ## Decisions worth knowing
 
@@ -206,6 +206,61 @@ before the window closes."; "Time available"; "Time taken"; "Signal";
 "Irreversible"); "Read from left to right. Each record supports a finding
 about one stage, and the four findings lead to the conclusion."; "What each
 stage takes, against a window of about six hours"; "Not examined".
+
+## Sixth pass: the dial
+
+Prototype B, the dial, was the direction selected in the brief. The fourth
+and fifth passes built the horizontal timeline instead, following a later
+one-line instruction; that was reversed on review and the dial restored.
+
+**The time model.** One turn of the outer ring is the intervention window,
+and angle is linear in time. Time starts at twelve o'clock and runs
+clockwise, so twelve o'clock is both the signal and, one turn later, the
+moment the window closes. Time does not reset there: anything after it is
+drawn on a separate inner ring at the same rate. A chain that ends exactly
+on the boundary ends at twelve o'clock on the outer ring, draws nothing on
+the inner one and is not too late, which is the scenario model's own rule.
+The inner ring holds one further window; a longer chain is clamped there and
+the "Beyond the window" figure still reports the true amount. Stated and
+tested in `lib/dial-geometry.ts` and `tests/unit/dial-geometry.test.ts`.
+
+**What the dial distinguishes.** Time available is the whole outer ring.
+Time consumed is the part drawn. Time remaining is the part left faint.
+Time beyond the window is the inner ring. The same quantities are stated as
+percentages of the window, never as durations. Major ticks are units of the
+model, so the scale is redrawn when the window is tested shorter or longer.
+
+**Stages.** Each name is set along its own arc. Pending, active and
+completed are shown on the arc and in words in the list beside it; a stage
+is completed only once its whole duration has elapsed. Picking a stage in
+the list picks out its arc.
+
+**Composition around the dial.** The problem section sets two readings of
+the same dial side by side. The linear figure it replaced stays on the
+pillar page. The engagement section went back to the framed comparison of
+the third pass, at the owner's request. Each section ends with one line, in
+the form of the visitor's next question, that leads to the next section;
+the engagement section ends in the contact action.
+
+**A decision that reverses an existing rule on one page.** On a phone the
+homepage now runs question, one action, dial, stage list, then the
+supporting copy. An existing test required supporting copy before the
+action on every hero; the homepage is now excepted from it.
+
+**Faults caught by tests in this pass, and fixed.** Stage text was dimmed
+to half strength while the dial played, which failed contrast. At the
+slider maximum against the shortest window, a stage can start more than a
+full window late and has no arc; placing its name crashed. Both have tests.
+
+New wording in this pass: "Window closes" and "Window closed" above the
+dial; the centre lines "Window closed during …", "Inside the window" and
+"Inside the window, narrowly"; stage states "Pending", "Active",
+"Completed", "Window closes here", "After the window"; "Adjust the model";
+the dial's note ("One turn of the dial is the intervention window; time past
+it runs on the inner ring."); the readings' titles "On paper" and "Under
+pressure" with their figures; the readings' note; and the three next-step
+lines "How is that assessed?", "What does an assessment produce?" and
+"Which engagement fits your system?".
 
 ## Published wording that changed
 

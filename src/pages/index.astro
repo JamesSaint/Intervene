@@ -3,13 +3,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { PRICE_QUALIFIER, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../lib/offers';
 import IntegrityNote from '../components/IntegrityNote.astro';
 import EvidenceTrace from '../components/EvidenceTrace.astro';
-import OfferDepth from '../components/OfferDepth.astro';
-import HeroWindow from '../components/HeroWindow.astro';
+import OfferLadder from '../components/OfferLadder.astro';
 import AgdaLogo from '../components/AgdaLogo.astro';
 import Agda from '../components/Agda.astro';
 import SediExplorer from '../components/SediExplorer.astro';
-import WindowRace from '../components/WindowRace.astro';
+import WindowDial from '../components/WindowDial.astro';
+import DialReading from '../components/DialReading.astro';
+import { PRESETS, WINDOWS } from '../lib/window-model';
 
+// Two readings of the same dial: the chain as documented, and the opening scenario.
+const onPaper = PRESETS.find((p) => p.key === 'holds')!.durations;
+const underPressure = PRESETS.find((p) => p.key === 'reach')!.durations;
 const questions = [
   { h: 'Who can actually stop it?', p: 'Not who owns the risk. Who has the authority to intervene?' },
   { h: 'Will they know in time?', p: 'Does actionable information reach the right people before the intervention window closes?' },
@@ -22,21 +26,24 @@ const questions = [
   current="home"
 >
   <section class="hero hero-home" aria-labelledby="home-question">
-    <div class="wrap hero-copy">
-      <a class="label hero-link" href="/intervention-readiness/">Intervention Readiness</a>
-      <h1 class="display-xl" id="home-question"><span class="motion-line"><span>Can you stop it </span></span><em class="motion-line"><span>in time?</span></em></h1>
-      <div class="hero-intro">
-        <p class="hero-sub">Intervene’s <Agda /> assessment examines whether your organisation can act before harm from an AI-enabled system becomes irreversible.</p>
-        <div class="hero-actions">
+    <div class="wrap">
+      <WindowDial>
+        <Fragment slot="head">
+          <a class="label hero-link" href="/intervention-readiness/">Intervention Readiness</a>
+          <h1 class="display-xl" id="home-question"><span class="motion-line"><span>Can you stop it </span></span><em class="motion-line"><span>in time?</span></em></h1>
+        </Fragment>
+        <Fragment slot="support">
+          <p class="hero-sub">Intervene’s <Agda /> assessment examines whether your organisation can act before harm from an AI-enabled system becomes irreversible.</p>
+          <p class="hero-note">One named system. One defined pathway. One intervention scenario.</p>
+        </Fragment>
+        <div slot="cta" class="hero-actions">
           <div class="hero-cta">
             <a data-primary-cta="discuss_system" href="/contact/" class="btn">Discuss your system</a>
             <a href="/agda/" class="link hero-secondary">Explore <Agda /> <span aria-hidden="true">→</span></a>
           </div>
-          <p class="hero-note">One named system. One defined pathway. One intervention scenario.</p>
         </div>
-      </div>
+      </WindowDial>
     </div>
-    <WindowRace />
   </section>
 
   <section class="block situations" aria-labelledby="home-problem">
@@ -45,12 +52,17 @@ const questions = [
         <h2 class="h2 problem-heading" id="home-problem">Responsibilities are documented. <em>Can the people act?</em></h2>
         <p class="hero-principle">Governance is an input. <span>Intervention capability is the outcome.</span></p>
       </div>
-      <HeroWindow surface="var(--paper)" />
+      <div class="readings">
+        <DialReading uid="reading-paper" title="On paper" durations={onPaper} window={WINDOWS.set} />
+        <DialReading uid="reading-pressure" title="Under pressure" durations={underPressure} window={WINDOWS.set} />
+        <p class="readings-note">The same four stages against the same window. Conceptual illustration in the model's relative units, not measured durations.</p>
+      </div>
       <ul class="problem-questions" role="list">
         {questions.map((q) => (
           <li><h3 class="h3">{q.h}</h3><p class="body muted">{q.p}</p></li>
         ))}
       </ul>
+      <a class="step-link" href="#home-method">How is that assessed? <span aria-hidden="true">↓</span></a>
     </div>
   </section>
 
@@ -65,6 +77,7 @@ const questions = [
       </div>
       <SediExplorer window={false} />
       <nav class="related-links" aria-label="Explore the method"><a href="/methodology/" class="link">The methodology and its limits <span aria-hidden="true">→</span></a></nav>
+      <a class="step-link" href="#home-evidence">What does an assessment produce? <span aria-hidden="true">↓</span></a>
     </div>
   </section>
 
@@ -80,13 +93,15 @@ const questions = [
         <p>{SELF_APPROVAL} {RECORDS_NOTE} <a href="/verify/" class="link">What verification establishes</a>.</p>
         <IntegrityNote />
       </div>
+      <a class="step-link" href="#offers">Which engagement fits your system? <span aria-hidden="true">↓</span></a>
     </div>
   </section>
 
   <section class="block engage" id="offers">
     <div class="wrap">
-      <OfferDepth headingLevel="h2" />
+      <OfferLadder headingLevel="h2" />
       <p class="engage-terms">{PRICE_QUALIFIER} The proposal confirms scope, outputs, fee, terms and timetable. {AVAILABILITY} <a href="/services/" class="link">Scope, fees and how an engagement runs</a>.</p>
+      <p class="engage-action"><a data-primary-cta="discuss_system" href="/contact/" class="btn">Discuss your system <span aria-hidden="true">→</span></a></p>
     </div>
   </section>
 
@@ -98,12 +113,10 @@ const questions = [
   </section>
 </BaseLayout>
 <style>
-  .hero { background: var(--paper-deep); padding: var(--hero-top) 0 0; }
-  .hero-copy { padding-bottom: var(--space-5); }
+  .hero { background: var(--paper-deep); padding: var(--hero-top) 0 var(--space-5); }
   .hero-link { display: inline-flex; align-items: center; min-height: 44px; }
   .hero .display-xl { font-size: var(--type-display); line-height: 1.02; margin: var(--space-3) 0 0; }
   .hero .display-xl em { display: block; }
-  .hero-intro { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-7); margin-top: var(--gap-intro); }
   .hero-sub { max-width: 100%; margin: 0; font-size: var(--type-support); line-height: 1.6; color: var(--muted); }
   .hero-actions { padding-top: 4px; }
   .hero-cta { margin: 0; align-items: center; gap: var(--space-4); }
@@ -112,7 +125,9 @@ const questions = [
   .problem-top { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); align-items: end; }
   .hero-principle { margin: 0; padding-bottom: 6px; color: var(--faint); font-size: var(--type-support); line-height: 1.5; }
   .hero-principle span { display: block; color: var(--ink); }
-  .situations :global(.hero-window) { margin-top: var(--space-6); }
+  /* Two readings at scale, with the note set between them and the questions. */
+  .readings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5) clamp(32px, 8vw, 128px); margin-top: var(--space-7); padding: 0 clamp(0px, 5vw, 80px); }
+  .readings-note { grid-column: 1 / -1; margin: 0; font-size: var(--type-caption); line-height: 1.65; color: var(--faint); }
   .evidence-heading { font-size: clamp(32px, 4.4vw, 64px); line-height: 1.04; }
   .evidence-heading em { display: block; }
   .section-heading, .assessment-intro { display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-6); align-items: start; margin-bottom: var(--space-6); }
@@ -122,9 +137,10 @@ const questions = [
   .h2 em { color: var(--faint); }
   .problem-heading { font-size: clamp(32px, 4.4vw, 64px); line-height: 1.04; }
   .problem-heading em { display: block; }
-  .problem-questions { list-style: none; margin: var(--space-6) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); }
-  .problem-questions li { display: grid; gap: var(--space-2); align-content: start; padding-top: var(--space-4); border-top: 1px solid var(--hair-strong); }
-  .problem-questions .h3 { font-size: var(--type-card); }
+  /* The three questions, set as statements rather than as columns. */
+  .problem-questions { list-style: none; margin: var(--space-7) 0 0; padding: 0; border-bottom: 1px solid var(--hair-strong); }
+  .problem-questions li { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--space-2) var(--space-7); align-items: baseline; padding: var(--space-4) 0; border-top: 1px solid var(--hair-strong); }
+  .problem-questions .h3 { font-size: clamp(26px, 3vw, 44px); line-height: 1.1; }
   .problem-questions :is(h3, p) { margin: 0; }
   .assessment-identity { display: grid; gap: var(--space-5); justify-items: start; padding-top: 8px; }
   .assessment-identity :global(.agda-logo.logo) { width: 256px; }
@@ -132,6 +148,13 @@ const questions = [
   .finding-block { background: var(--paper-soft); }
   .evidence-notes { border-top: 1px solid var(--hair); margin-top: 32px; padding-top: 24px; }
   .evidence-notes > p { font-size: var(--type-small); line-height: 1.7; color: var(--muted); margin: 0; }
+  /* One line at the foot of each section, phrased as the visitor's next question. */
+  .step-link { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-4); margin-top: var(--space-7); padding-top: var(--space-4); border-top: 1px solid var(--hair-strong); font-size: clamp(22px, 2.4vw, 34px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.2; color: var(--ink); transition: color var(--dur-fast) var(--ease); }
+  .step-link:is(:hover, :focus-visible) { color: var(--accent-text); }
+  .step-link:focus-visible { outline: 2px solid var(--focus); outline-offset: 6px; }
+  .step-link span { transition: transform var(--dur-fast) var(--ease-out); }
+  .step-link:hover span { transform: translateY(3px); }
+  .engage-action { margin: var(--space-5) 0 0; }
   .engage-terms { margin: 32px 0 0; padding-top: 24px; border-top: 1px solid var(--hair); font-size: var(--type-small); line-height: 1.7; color: var(--muted); }
   /* The page ends where it began, on the question, on the instrument's
      dark surface. The palette is the site's dark palette, scoped here. */
@@ -148,14 +171,11 @@ const questions = [
   .close-q { color: var(--ink); font-size: var(--type-display); line-height: 1.02; letter-spacing: var(--tracking-heading); text-transform: none; margin: 0; }
   .close-action { display: grid; justify-items: start; gap: 24px; }
   .close-line { font-size: var(--type-support); line-height: 1.65; color: var(--muted); margin: 0; }
-  /* Wide screens: the question and its support sit side by side, so the
-     scene below them is in the opening view. */
+  /* Wide screens: the dial takes the right of the opening view; the question keeps the left. */
   @media (min-width: 1100px) {
     .hero { padding-top: var(--space-4); }
-    .hero-copy { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); column-gap: var(--space-7); align-items: end; padding-bottom: var(--space-4); }
-    .hero-link { grid-column: 1 / -1; justify-self: start; margin-bottom: 0; }
-    .hero-copy > .display-xl { grid-column: 1; font-size: clamp(64px, 6.4vw, 94px); margin-top: 0; }
-    .hero-copy > .hero-intro { grid-column: 2; grid-template-columns: 1fr; gap: var(--space-3); margin: 0; padding-bottom: 6px; }
+    .hero.hero-home .display-xl { font-size: clamp(48px, 4.9vw, 72px); margin-top: 0; }
+    .hero-link { margin-bottom: 0; }
     .hero-sub { font-size: 18px; line-height: 1.55; }
     .hero-note { margin-top: var(--space-2); }
   }
@@ -171,7 +191,9 @@ const questions = [
     /* One line each at every phone width, in the fallback font and the loaded one. */
     .hero-principle { font-size: clamp(14px, 4.1vw, 18px); white-space: nowrap; }
     .problem-top { margin-bottom: 0; }
-    .problem-questions { grid-template-columns: 1fr; margin-top: var(--space-6); }
+    .problem-questions { margin-top: var(--space-6); }
+    .problem-questions li { grid-template-columns: 1fr; }
+    .readings { padding: 0; gap: var(--space-4) var(--space-3); margin-top: var(--space-5); }
     .close-wrap { gap: var(--space-5); }
   }
   @media (max-width: 560px) {

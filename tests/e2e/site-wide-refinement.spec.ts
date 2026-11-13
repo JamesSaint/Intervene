@@ -30,7 +30,9 @@ for (const width of [320, 375, 430, 768, 1024, 1440, 1920]) {
 
 test('mobile heroes retain supporting copy before their actions', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  for (const route of ['/', '/services/', '/agda/']) {
+  // The homepage is the exception by decision: on a phone the question, one
+  // action and the dial come first, and the supporting copy follows the dial.
+  for (const route of ['/services/', '/agda/']) {
     await page.goto(route);
     const copy = page.locator('.hero-sub, .hero > .wrap > .lede').first();
     const actions = page.locator('.hero-cta').first();
