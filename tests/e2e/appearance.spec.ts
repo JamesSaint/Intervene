@@ -126,7 +126,7 @@ for (const scheme of ['light', 'dark'] as const) {
     expect(await page.evaluate(() => getComputedStyle(document.documentElement).colorScheme)).toBe(scheme);
     await expect(page.locator('.no-script-menu')).toHaveAttribute('href', '#footer-nav');
     await expect(page.locator('.appearance-header')).toBeHidden();
-    await expect(page.locator('.window-lab .wl-figure')).toBeVisible();
+    await expect(page.locator('.window-race .wr-figure')).toBeVisible();
     await expect(page.locator('.sedi-explorer details')).toHaveCount(4);
     await page.goto('/methodology/');
     await expect(page.locator('.window-view').first()).toBeVisible();

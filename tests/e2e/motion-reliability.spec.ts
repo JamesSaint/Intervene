@@ -202,20 +202,8 @@ test('an interrupted automatic trace restarts on return after rapid scrolling', 
   expect(await trace(page)).toBeGreaterThan(early + 10);
 });
 
-test('evidence cues animate their own visible targets rather than an offscreen figure', async ({ page }) => {
-  await prepare(page); await page.goto('/'); await page.evaluate(() => document.fonts.ready);
-  const node = page.locator('.fc-exceeds .fc-node');
-  await node.evaluate(n => window.scrollTo({ top: n.getBoundingClientRect().top + scrollY - innerHeight - 50, behavior: 'instant' }));
-  await page.waitForTimeout(200);
-  expect(await page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'evidence-focus').length)).toBe(0);
-  await node.evaluate(n => window.scrollTo({ top: n.getBoundingClientRect().top + scrollY - 180, behavior: 'instant' }));
-  await expect.poll(() => page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'evidence-focus').length)).toBe(1);
-  const event = await page.evaluate(() => (window as any).__starts.find((s: any) => s.name === 'evidence-focus'));
-  expect(event.top).toBeGreaterThan(88); expect(event.bottom).toBeLessThan(event.viewport);
-  const result = page.locator('.fc-result'); await result.scrollIntoViewIfNeeded();
-  await expect.poll(() => page.evaluate(() => (window as any).__starts.filter((s: any) => s.name === 'evidence-rule').length)).toBe(1);
-  expect(await page.locator('.fc-value').evaluateAll(nodes => nodes.every(node => getComputedStyle(node).opacity === '1' && getComputedStyle(node).transform === 'none'))).toBe(true);
-});
+// The one-off evidence cue belonged to the retired finding diagram. The
+// evidence trace that replaced it is static and needs no motion test.
 
 test('navigation fades on repeated opens and keyboard focus does not restart a link entrance', async ({ page }) => {
   await prepare(page); await page.goto('/services/');

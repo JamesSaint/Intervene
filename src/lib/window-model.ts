@@ -86,3 +86,11 @@ export const PRESETS: Preset[] = [
 
 export const DEFAULT_PRESET = 'reach';
 export const CUSTOM_TEXT = 'Your own scenario. Move any stage to see where the window closes.';
+
+/** What each stage does, in the methodology's own words for the four steps. */
+export const STAGE_ACTIONS = [
+  'Recognise the need to act',
+  'Reach decision authority',
+  'Make the decision',
+  'Put it into effect',
+] as const;

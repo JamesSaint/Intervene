@@ -12,13 +12,18 @@ test('homepage follows six stages and exposes the finding before any interaction
   await expect(page.locator('.hero-sub')).toContainText('Intervene’s');
   await expect(page.locator('.hero-sub')).toContainText('assessment examines');
   await expect(page.locator('.hero-sub [role="img"]')).toHaveAttribute('aria-label', 'AGDA®');
-  await expect(page.locator('.finding-chain')).toBeVisible();
-  await expect(page.locator('.artefact [role="tab"][aria-selected="true"]')).toHaveText('SEDI findings');
+  // The finding is on the page before any interaction: four stage findings
+  // and the illustrative conclusion they lead to.
+  await expect(page.locator('.evidence-trace .et-stage')).toHaveCount(4);
+  await expect(page.locator('.evidence-trace .et-state')).toBeVisible();
   // Three engagements since the Authority Check became the entry offer.
+  // Scope and deliverables sit one step down, in a native disclosure.
   await expect(page.locator('.oc-fields')).toHaveCount(3);
-  for (const fields of await page.locator('.oc-fields').all()) {
-    await expect(fields).toContainText('Question and decision');
-    await expect(fields).toContainText('Evidence examined');
+  for (const more of await page.locator('.od-more').all()) {
+    await more.locator('summary').click();
+    await expect(more.locator('.oc-fields')).toContainText('Question and decision');
+    await expect(more.locator('.oc-fields')).toContainText('Evidence examined');
+    await expect(more.locator('.oc-fields')).toContainText('What you receive');
   }
 });
 
