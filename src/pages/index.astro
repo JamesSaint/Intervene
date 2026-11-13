@@ -3,17 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { PRICE_QUALIFIER, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../lib/offers';
 import IntegrityNote from '../components/IntegrityNote.astro';
 import EvidenceTrace from '../components/EvidenceTrace.astro';
-import OfferLadder from '../components/OfferLadder.astro';
+import OfferIntro from '../components/OfferIntro.astro';
 import AgdaLogo from '../components/AgdaLogo.astro';
 import Agda from '../components/Agda.astro';
 import SediExplorer from '../components/SediExplorer.astro';
 import WindowDial from '../components/WindowDial.astro';
-import DialReading from '../components/DialReading.astro';
-import { PRESETS, WINDOWS } from '../lib/window-model';
+import SeriesCircuit from '../components/SeriesCircuit.astro';
 
-// Two readings of the same dial: the chain as documented, and the opening scenario.
-const onPaper = PRESETS.find((p) => p.key === 'holds')!.durations;
-const underPressure = PRESETS.find((p) => p.key === 'reach')!.durations;
 const questions = [
   { h: 'Who can actually stop it?', p: 'Not who owns the risk. Who has the authority to intervene?' },
   { h: 'Will they know in time?', p: 'Does actionable information reach the right people before the intervention window closes?' },
@@ -30,7 +26,7 @@ const questions = [
       <WindowDial>
         <Fragment slot="head">
           <a class="label hero-link" href="/intervention-readiness/">Intervention Readiness</a>
-          <h1 class="display-xl" id="home-question"><span class="motion-line"><span>Can you stop it </span></span><em class="motion-line"><span>in time?</span></em></h1>
+          <h1 class="display-xl" id="home-question"><span class="motion-line"><span>Can you </span></span><span class="motion-line"><span>stop it </span></span><em class="motion-line"><span>in time?</span></em></h1>
         </Fragment>
         <Fragment slot="support">
           <p class="hero-sub">Intervene’s <Agda /> assessment examines whether your organisation can act before harm from an AI-enabled system becomes irreversible.</p>
@@ -50,18 +46,9 @@ const questions = [
     <div class="wrap">
       <div class="problem-top">
         <h2 class="h2 problem-heading" id="home-problem">Responsibilities are documented. <em>Can the people act?</em></h2>
-        <p class="hero-principle">Governance is an input. <span>Intervention capability is the outcome.</span></p>
+        <p class="problem-principle">Governance is an input. <span>Intervention capability is the outcome.</span></p>
       </div>
-      <div class="readings">
-        <DialReading uid="reading-paper" title="On paper" durations={onPaper} window={WINDOWS.set} />
-        <DialReading uid="reading-pressure" title="Under pressure" durations={underPressure} window={WINDOWS.set} />
-        <p class="readings-note">The same four stages against the same window. Conceptual illustration in the model's relative units, not measured durations.</p>
-      </div>
-      <ul class="problem-questions" role="list">
-        {questions.map((q) => (
-          <li><h3 class="h3">{q.h}</h3><p class="body muted">{q.p}</p></li>
-        ))}
-      </ul>
+      <SeriesCircuit questions={questions} />
       <a class="step-link" href="#home-method">How is that assessed? <span aria-hidden="true">↓</span></a>
     </div>
   </section>
@@ -99,7 +86,7 @@ const questions = [
 
   <section class="block engage" id="offers">
     <div class="wrap">
-      <OfferLadder headingLevel="h2" />
+      <OfferIntro headingLevel="h2" />
       <p class="engage-terms">{PRICE_QUALIFIER} The proposal confirms scope, outputs, fee, terms and timetable. {AVAILABILITY} <a href="/services/" class="link">Scope, fees and how an engagement runs</a>.</p>
       <p class="engage-action"><a data-primary-cta="discuss_system" href="/contact/" class="btn">Discuss your system <span aria-hidden="true">→</span></a></p>
     </div>
@@ -117,17 +104,16 @@ const questions = [
   .hero-link { display: inline-flex; align-items: center; min-height: 44px; }
   .hero .display-xl { font-size: var(--type-display); line-height: 1.02; margin: var(--space-3) 0 0; }
   .hero .display-xl em { display: block; }
+  /* Below the wide layout the first two lines run together, as before. */
+  @media (max-width: 1099px) { .hero-home .display-xl > span.motion-line, .hero-home .display-xl > span.motion-line > span { display: inline-block; } .hero-home .display-xl > span.motion-line:first-child { margin-right: 0.24em; } }
   .hero-sub { max-width: 100%; margin: 0; font-size: var(--type-support); line-height: 1.6; color: var(--muted); }
   .hero-actions { padding-top: 4px; }
   .hero-cta { margin: 0; align-items: center; gap: var(--space-4); }
   .hero-secondary { display: inline-flex; align-items: center; gap: 8px; font-size: var(--type-small); line-height: 1.5; min-height: 44px; }
   .hero-note { font-family: var(--font-mono); font-size: var(--type-caption); line-height: 1.65; color: var(--faint); margin: var(--space-4) 0 0; }
   .problem-top { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); align-items: end; }
-  .hero-principle { margin: 0; padding-bottom: 6px; color: var(--faint); font-size: var(--type-support); line-height: 1.5; }
-  .hero-principle span { display: block; color: var(--ink); }
-  /* Two readings at scale, with the note set between them and the questions. */
-  .readings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5) clamp(32px, 8vw, 128px); margin-top: var(--space-7); padding: 0 clamp(0px, 5vw, 80px); }
-  .readings-note { grid-column: 1 / -1; margin: 0; font-size: var(--type-caption); line-height: 1.65; color: var(--faint); }
+  .problem-principle { margin: 0; padding-bottom: 6px; color: var(--faint); font-size: var(--type-support); line-height: 1.5; }
+  .problem-principle span { display: block; color: var(--ink); }
   .evidence-heading { font-size: clamp(32px, 4.4vw, 64px); line-height: 1.04; }
   .evidence-heading em { display: block; }
   .section-heading, .assessment-intro { display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-6); align-items: start; margin-bottom: var(--space-6); }
@@ -137,11 +123,6 @@ const questions = [
   .h2 em { color: var(--faint); }
   .problem-heading { font-size: clamp(32px, 4.4vw, 64px); line-height: 1.04; }
   .problem-heading em { display: block; }
-  /* The three questions, set as statements rather than as columns. */
-  .problem-questions { list-style: none; margin: var(--space-7) 0 0; padding: 0; border-bottom: 1px solid var(--hair-strong); }
-  .problem-questions li { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--space-2) var(--space-7); align-items: baseline; padding: var(--space-4) 0; border-top: 1px solid var(--hair-strong); }
-  .problem-questions .h3 { font-size: clamp(26px, 3vw, 44px); line-height: 1.1; }
-  .problem-questions :is(h3, p) { margin: 0; }
   .assessment-identity { display: grid; gap: var(--space-5); justify-items: start; padding-top: 8px; }
   .assessment-identity :global(.agda-logo.logo) { width: 256px; }
   .assessment-intro .lede { font-size: var(--type-support); line-height: 1.65; margin-top: 24px; }
@@ -174,12 +155,16 @@ const questions = [
   /* Wide screens: the dial takes the right of the opening view; the question keeps the left. */
   @media (min-width: 1100px) {
     .hero { padding-top: var(--space-4); }
-    .hero.hero-home .display-xl { font-size: clamp(48px, 4.9vw, 72px); margin-top: 0; }
+    /* Three short lines at display size: the question carries the left of the view. */
+    .hero.hero-home .display-xl { font-size: clamp(76px, 7.6vw, 112px); line-height: 0.96; margin-top: 0; }
+    .hero.hero-home .hero-sub { max-width: none; }
     .hero-link { margin-bottom: 0; }
     .hero-sub { font-size: 18px; line-height: 1.55; }
     .hero-note { margin-top: var(--space-2); }
   }
   @media (max-height: 760px) and (min-width: 881px) { .hero { padding-top: 40px; } .hero .display-xl { font-size: clamp(44px, 6.6vw, 92px); } .hero-intro { margin-top: 28px; } }
+  /* Short, wide windows: the question steps down so the first action still clears the foot of the view. */
+  @media (max-height: 760px) and (min-width: 1100px) { .hero.hero-home .display-xl { font-size: clamp(56px, 5.4vw, 76px); } }
   @media (max-width: 1100px) { .hero-intro { gap: 40px; } .section-heading, .assessment-intro { grid-template-columns: 1fr 1.8fr; gap: var(--space-5); } .assessment-identity :global(.agda-logo.logo) { width: 224px; } }
   @media (max-width: 960px) {
     .hero-intro { grid-template-columns: 1fr; gap: 24px; }
@@ -188,12 +173,7 @@ const questions = [
     .section-heading, .assessment-intro, .close-wrap { grid-template-columns: 1fr; gap: 24px; }
     .assessment-identity { padding-top: 0; }
     .lab-heading, .problem-top { grid-template-columns: 1fr; margin-bottom: var(--space-5); }
-    /* One line each at every phone width, in the fallback font and the loaded one. */
-    .hero-principle { font-size: clamp(14px, 4.1vw, 18px); white-space: nowrap; }
     .problem-top { margin-bottom: 0; }
-    .problem-questions { margin-top: var(--space-6); }
-    .problem-questions li { grid-template-columns: 1fr; }
-    .readings { padding: 0; gap: var(--space-4) var(--space-3); margin-top: var(--space-5); }
     .close-wrap { gap: var(--space-5); }
   }
   @media (max-width: 560px) {

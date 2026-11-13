@@ -19,10 +19,10 @@ const { window: showWindow = true } = Astro.props;
 const group = 'sedi-chain';
 
 const stages = [
-  { name: 'Detect', depends: 'Starts the chain. Every later stage begins after it.', question: 'Can the organisation recognise when intervention is required?', evidence: 'Signals, monitoring records and evidence of how the need to act is recognised.', failure: 'A warning exists but does not become an actionable signal.', consequence: 'The available intervention window is spent before the response begins.' },
-  { name: 'Escalate', depends: 'An actionable signal from Detect.', question: 'Can the right people be informed in time?', evidence: 'Escalation routes, contact arrangements and records of reaching decision authority.', failure: 'The signal reaches someone who cannot authorise action.', consequence: 'Reaching the person with authority may consume the remaining time.' },
-  { name: 'Decide', depends: 'The signal reaching a person with authority to act.', question: 'Can accountable decision-makers determine what action is necessary?', evidence: 'Decision records, halt authority and arrangements for decisions under pressure.', failure: 'A decision depends on a quorum or approval route that cannot operate in time.', consequence: 'Detection and escalation cannot compensate for unavailable decision authority.' },
-  { name: 'Intervene', depends: 'An authorised decision, and a mechanism that takes effect.', question: 'Can the organisation execute an effective intervention?', evidence: 'Intervention procedures and records of exercises or action taking effect.', failure: 'An authorised action does not take effect under the relevant operating conditions.', consequence: 'The response must take effect before the consequence becomes irreversible.' },
+  { name: 'Detect', needs: 'Starts the chain', depends: 'Starts the chain. Every later stage begins after it.', question: 'Can the organisation recognise when intervention is required?', evidence: 'Signals, monitoring records and evidence of how the need to act is recognised.', failure: 'A warning exists but does not become an actionable signal.', consequence: 'The available intervention window is spent before the response begins.' },
+  { name: 'Escalate', needs: 'Needs an actionable signal', depends: 'An actionable signal from Detect.', question: 'Can the right people be informed in time?', evidence: 'Escalation routes, contact arrangements and records of reaching decision authority.', failure: 'The signal reaches someone who cannot authorise action.', consequence: 'Reaching the person with authority may consume the remaining time.' },
+  { name: 'Decide', needs: 'Needs the signal to reach someone with authority', depends: 'The signal reaching a person with authority to act.', question: 'Can accountable decision-makers determine what action is necessary?', evidence: 'Decision records, halt authority and arrangements for decisions under pressure.', failure: 'A decision depends on a quorum or approval route that cannot operate in time.', consequence: 'Detection and escalation cannot compensate for unavailable decision authority.' },
+  { name: 'Intervene', needs: 'Needs an authorised decision and a working mechanism', depends: 'An authorised decision, and a mechanism that takes effect.', question: 'Can the organisation execute an effective intervention?', evidence: 'Intervention procedures and records of exercises or action taking effect.', failure: 'An authorised action does not take effect under the relevant operating conditions.', consequence: 'The response must take effect before the consequence becomes irreversible.' },
 ];
 ---
 <div class="sedi-explorer">
@@ -35,6 +35,7 @@ const stages = [
           <summary>
             <span class="sedi-node" aria-hidden="true"></span>
             <span class="sedi-name">{stage.name}</span>
+            <span class="sedi-needs">{stage.needs}</span>
             <span class="sedi-question">{stage.question}</span>
             {i > 0 && <span class="sedi-wait mono">Waits on {stages[i - 1].name}</span>}
             <span class="sedi-toggle" aria-hidden="true"></span>
@@ -73,11 +74,16 @@ const stages = [
   li:has(details[open]:not([data-disclosure-state='closed']))::before { transform: scaleX(1); background: var(--sedi-signal); }
   li:has(details[open]) ~ li { border-top-style: dashed; }
   li:has(details[open]) ~ li .sedi-node { border-style: dashed; background: var(--paper); }
-  li:has(details[open]) ~ li :is(.sedi-name, .sedi-question) { color: var(--faint); }
+  li:has(details[open]) ~ li :is(.sedi-name, .sedi-question, .sedi-needs) { color: var(--faint); }
+  /* The rail has a direction: each stage hands on to the next. */
+  li:not(:last-child)::after { content: ''; position: absolute; right: 10px; top: -5px; width: 8px; height: 8px; border-top: 1px solid var(--ink); border-right: 1px solid var(--ink); transform: rotate(45deg); }
   .sedi-wait { display: none; font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
   li:has(details[open]) ~ li .sedi-wait { display: block; }
-  .sedi-name { transition: color var(--dur-fast) var(--ease); font-size: var(--type-h3); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.2; color: var(--ink); }
-  .sedi-question { transition: color var(--dur-fast) var(--ease); color: var(--muted); font-size: var(--type-body); line-height: 1.6; }
+  .sedi-name { transition: color var(--dur-fast) var(--ease); font-size: clamp(28px, 3.2vw, 46px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.05; color: var(--ink); }
+  /* What each stage needs from the one before it, stated on the chain itself. */
+  .sedi-needs { font-size: var(--type-body); font-weight: 600; line-height: 1.4; color: var(--ink); }
+  li + li .sedi-needs::before { content: '← '; color: var(--accent-text); }
+  .sedi-question { transition: color var(--dur-fast) var(--ease); color: var(--muted); font-size: var(--type-small); line-height: 1.6; }
   .sedi-toggle { position: absolute; right: var(--space-5); top: calc(var(--space-5) + 8px); width: 18px; height: 18px; }
   li:last-child .sedi-toggle { right: 0; }
   .sedi-toggle::before, .sedi-toggle::after { content: ''; position: absolute; background: var(--ink); }
@@ -95,7 +101,7 @@ const stages = [
      width of the chain, four facets across. Summaries share one height so
      the detail always starts below every stage. */
   @media (min-width: 1101px) {
-    summary { min-height: 232px; }
+    summary { min-height: 288px; }
     [data-disclosure-body] { width: 400%; }
     li:nth-child(2) [data-disclosure-body] { margin-left: -100%; }
     li:nth-child(3) [data-disclosure-body] { margin-left: -200%; }
@@ -114,6 +120,10 @@ const stages = [
     li:has(details[open]) ~ li { border-left-style: dashed; }
     .sedi-toggle { right: 0; }
     li::before { left: -2px; right: auto; top: 0; bottom: 0; width: 3px; height: auto; transform: scaleY(0); transform-origin: center top; }
+    li:not(:last-child)::after { right: auto; left: -5px; top: auto; bottom: 6px; transform: rotate(135deg); }
+    .sedi-question { display: none; }
+    details[open] .sedi-question { display: block; }
+    li + li .sedi-needs::before { content: '↑ '; }
     li:has(details[open]:not([data-disclosure-state='closed']))::before { transform: scaleY(1); }
     .sedi-node { left: calc(-1 * var(--space-4) - 7px); top: calc(var(--space-4) + 6px); }
     summary { padding: var(--space-4) 32px var(--space-3) 0; gap: var(--space-1); }

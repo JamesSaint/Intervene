@@ -85,15 +85,21 @@ describe('intervention dial geometry', () => {
     expect(stageStates(d)).toEqual(['completed', 'completed', 'completed', 'completed']);
   });
 
-  it('sets each stage name along the longer part of its own arc', () => {
+  it('sets each stage name along the part of its arc that lies inside the window', () => {
     const places = labelPlacements([1, 6, 4, 2], 12);
     expect(places.map((p) => p.ring)).toEqual(['window', 'window', 'window', 'window']);
     close(places[1].at, 4 / 12);
-    // Intervene is split evenly by the boundary; a stage mostly beyond it is named on the inner ring.
-    expect(labelPlacements([2, 6, 3, 6], 12)[3].ring).toBe('beyond');
+    // Intervene is split by the boundary: it is named on its part inside the window.
+    close(places[3].at, 11.5 / 12);
+    // A stage wholly beyond the window is not named on the dial.
+    const late = labelPlacements([6, 6, 3, 2], 12);
+    expect(late[2].ring).toBe('beyond');
+    expect(fitsLabel(STAGES[2], late[2])).toBe(false);
     for (const preset of PRESETS) for (const window of Object.values(WINDOWS)) {
-      labelPlacements(preset.durations, window).forEach((p, i) => { expect(p.span).toBeGreaterThan(0); expect(typeof fitsLabel(STAGES[i], p)).toBe('boolean'); });
+      labelPlacements(preset.durations, window).forEach((p) => expect(p.span).toBeGreaterThan(0));
     }
+    // Every stage of the opening scenario carries its name.
+    expect(places.map((p, i) => fitsLabel(STAGES[i], p))).toEqual([true, true, true, true]);
   });
 
   it('gives a stage no name on the dial when it starts past what the inner ring can show', () => {

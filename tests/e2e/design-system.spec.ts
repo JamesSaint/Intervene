@@ -40,10 +40,10 @@ test.describe('motion opt-in', () => {
     const state = await page.evaluate(() => {
       const node = document.querySelector<HTMLElement>('.et-row.is-decisive .et-stage')!;
       const stages = Array.from(document.querySelectorAll<HTMLElement>('.et-row'));
-      // Wide screens give the decisive block a heavy rule; the narrow rail fills its mark instead.
+      // Wide screens fill the decisive block; the narrow rail fills its mark instead.
       const wide = innerWidth > 960;
       return {
-        filled: wide ? getComputedStyle(node).borderTopColor : getComputedStyle(node, '::before').backgroundColor,
+        filled: wide ? getComputedStyle(node).backgroundColor : getComputedStyle(node, '::before').backgroundColor,
         opaque: stages.length === 4 && stages.every((s) => getComputedStyle(s).opacity === '1'),
       };
     });
@@ -181,7 +181,7 @@ test.describe('interface feedback', () => {
     await btn.focus();
     const ring = await btn.evaluate((e) => getComputedStyle(e).outlineStyle);
     expect(ring).toBe('solid');
-    const cursor = await page.locator('.problem-questions li').first().evaluate((e) => getComputedStyle(e).cursor);
+    const cursor = await page.locator('.series-circuit .sc-cell').first().evaluate((e) => getComputedStyle(e).cursor);
     expect(cursor).toBe('auto');
   });
 

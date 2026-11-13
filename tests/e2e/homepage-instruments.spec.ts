@@ -264,7 +264,10 @@ test.describe('the dial', () => {
     expect(face.y + face.height).toBeLessThanOrEqual(900);
     expect(face.width).toBeGreaterThanOrEqual(600);
     const headline = (await page.locator('#home-question').boundingBox())!;
-    expect(face.width * face.height).toBeGreaterThan(headline.width * headline.height * 3);
+    // The question is set at display size, and the dial is still the larger of the two.
+    expect(headline.height).toBeGreaterThan(280);
+    expect(face.width).toBeGreaterThan(headline.width);
+    expect(face.height).toBeGreaterThan(headline.height * 1.6);
     for (const part of ['#home-question', '.hero-home [data-primary-cta]', '.wd-stages', '.wd-meter']) {
       await expect(page.locator(part), part).toBeInViewport({ ratio: 1 });
     }
@@ -310,7 +313,10 @@ test('without JavaScript the dial is a fixed reading and the whole trace is on t
   await expect(trace.locator('.et-record')).toHaveCount(6);
   await trace.locator('.et-record summary').first().click();
   await expect(trace.locator('.et-record').first()).toContainText('What it supports, and what remains open');
-  await expect(page.locator('.offer-ladder')).toContainText('none is a prerequisite');
+  await expect(page.locator('.offer-intro')).toContainText('none is a prerequisite');
+  await expect(page.locator('.oi-route')).toHaveCount(3);
+  await page.locator('.oi-compare summary').click();
+  await expect(page.locator('.offer-ladder .ol-route').first()).toBeVisible();
   await context.close();
 });
 
@@ -369,8 +375,34 @@ test.describe('evidence trace', () => {
   });
 });
 
-test('the offer comparison includes each earlier engagement and gives every list its own labels', async ({ page }) => {
+test('the engagements are introduced by question, scope and fee, with boundaries on the page', async ({ page }) => {
   await open(page);
+  const routes = page.locator('.offer-intro .oi-route');
+  await expect(routes).toHaveCount(offers.length);
+  for (let i = 0; i < offers.length; i++) {
+    const route = routes.nth(i);
+    await expect(route.locator('.oi-q')).toHaveText(offers[i].question);
+    await expect(route.locator('.oi-name')).toContainText(offers[i].name.replace('AGDA® ', ''));
+    await expect(route.locator('.oi-price')).toHaveText(offers[i].price);
+    await expect(route.locator('.oi-fee-note')).toHaveText(offers[i].priceNote);
+    await expect(route.locator('.oi-boundary')).toBeVisible();
+    await expect(route.locator('.oi-link')).toHaveAttribute('href', `/services/#${offers[i].slug}`);
+  }
+  // Inclusion is stated in the engagement's own words, and the full comparison starts closed.
+  await expect(routes.nth(1).locator('.oi-includes')).toContainText('Everything in the Authority Check.');
+  await expect(routes.nth(2).locator('.oi-includes')).toContainText('Everything in the Review.');
+  await expect(page.locator('.offer-intro')).toContainText('none is a prerequisite');
+  const compare = page.locator('.oi-compare');
+  await expect(compare).not.toHaveAttribute('open');
+  await expect(compare.locator('.ol-route').first()).toBeHidden();
+  await compare.locator('summary').focus();
+  await page.keyboard.press('Enter');
+  await expect(compare.locator('.ol-route').first()).toBeVisible();
+});
+
+test('the full comparison includes each earlier engagement and gives every list its own labels', async ({ page }) => {
+  await open(page);
+  await page.locator('.oi-compare summary').click();
   const routes = page.locator('.offer-ladder .ol-route');
   await expect(routes).toHaveCount(offers.length);
   const included = await routes.evaluateAll((els) => els.map((el) => el.querySelectorAll('.ol-cap.is-on').length));
@@ -387,8 +419,9 @@ test('the offer comparison includes each earlier engagement and gives every list
   await expect(routes.nth(2).locator('.ol-cap').nth(6)).toContainText(': included');
 });
 
-test('each engagement leads with its question and states its fee beside it', async ({ page }) => {
+test('in the full comparison each engagement leads with its question and states its fee beside it', async ({ page }) => {
   await open(page);
+  await page.locator('.oi-compare summary').click();
   const heads = page.locator('.offer-ladder .ol-head');
   for (let i = 0; i < offers.length; i++) {
     await expect(heads.nth(i).locator('.ol-q')).toHaveText(offers[i].question);
@@ -397,6 +430,7 @@ test('each engagement leads with its question and states its fee beside it', asy
   }
   // Each fee appears once per engagement, not repeated lower in the column.
   for (const o of offers) await expect(page.locator('.offer-ladder').getByText(o.price, { exact: true })).toHaveCount(1);
+  for (const o of offers) await expect(page.locator('.oi-routes').getByText(o.price, { exact: true })).toHaveCount(1);
 });
 
 test('opening a SEDI stage closes the others and marks every later stage as waiting on it', async ({ page }) => {
@@ -404,6 +438,9 @@ test('opening a SEDI stage closes the others and marks every later stage as wait
   const stages = page.locator('.sedi-explorer details');
   // Detect is open on arrival: every later stage already reads as waiting.
   await expect(stages.nth(0)).toHaveAttribute('open', '');
+  // What each stage needs from the one before is on the chain without any interaction.
+  await expect(page.locator('.sedi-explorer .sedi-needs')).toHaveText(['Starts the chain', 'Needs an actionable signal', 'Needs the signal to reach someone with authority', 'Needs an authorised decision and a working mechanism']);
+  for (const needs of await page.locator('.sedi-explorer .sedi-needs').all()) await expect(needs).toBeVisible();
   await expect(page.locator('.sedi-explorer .sedi-wait:visible')).toHaveText(['Waits on Detect', 'Waits on Escalate', 'Waits on Decide']);
   await stages.nth(1).locator('summary').click();
   await expect(stages.nth(1)).toHaveAttribute('open', '');
@@ -421,20 +458,20 @@ test('opening a SEDI stage closes the others and marks every later stage as wait
   }
 });
 
-test('the two readings set the documented chain beside the one under pressure, on the same dial', async ({ page }) => {
+test('the series circuit shows one open condition stopping a response the documents describe as covered', async ({ page }) => {
   await open(page);
-  const readings = page.locator('.situations .dial-reading');
-  await expect(readings).toHaveCount(2);
-  await expect(readings.nth(0)).toHaveAttribute('data-outcome', 'in-time');
-  await expect(readings.nth(1)).toHaveAttribute('data-outcome', 'too-late');
-  await expect(readings.nth(0).getByRole('img')).toHaveAccessibleName(/On paper: In time\./);
-  await expect(readings.nth(1).getByRole('img')).toHaveAccessibleName(/Under pressure: Too late\. The window closes during Intervene\./);
-  await expect(readings.nth(0).locator('figcaption')).toContainText('67% of the window used');
-  await expect(readings.nth(1).locator('figcaption')).toContainText('100% of the window used, 8% beyond it');
-  await expect(page.locator('.readings-note')).toContainText("Conceptual illustration in the model's relative units, not measured durations.");
-  // Only the reading under pressure draws anything on the inner ring.
-  const inner = await readings.evaluateAll((els) => els.map((el) => Array.from(el.querySelectorAll('.df-arc-beyond')).some((arc) => parseFloat(arc.getAttribute('stroke-dasharray')!) > 0)));
-  expect(inner).toEqual([false, true]);
+  const circuit = page.locator('.situations .series-circuit');
+  const cells = circuit.locator('.sc-cell');
+  await expect(cells).toHaveCount(3);
+  // Each condition pairs a documented control with the question that decides it.
+  await expect(cells.locator('.sc-paper')).toHaveText([/On paper\s*Monitoring is documented\./, /On paper\s*A risk owner is named\./, /On paper\s*A halt procedure is written\./]);
+  await expect(cells.locator('.sc-q')).toHaveText(['Will they know in time?', 'Who can actually stop it?', 'What happens when they act?']);
+  // Authority is the open condition; what follows it is drawn as carrying nothing.
+  await expect(cells.nth(1)).toHaveClass(/is-open/);
+  await expect(cells.nth(2)).toHaveClass(/is-dead/);
+  await expect(cells.locator('.sc-state')).toHaveText(['Holds', 'Open under pressure', 'Holds, but nothing reaches it']);
+  await expect(circuit.locator('figcaption')).toContainText('Illustration. The three conditions are in series');
+  await expect(page.locator('.situations .dial-reading')).toHaveCount(0);
 });
 
 test('the homepage does not overflow at any supported width', async ({ page }) => {
@@ -443,7 +480,7 @@ test('the homepage does not overflow at any supported width', async ({ page }) =
     await page.setViewportSize({ width, height: 900 });
     // Layout settles a frame after the resize, as it does on the existing pages.
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth), { message: `${width}px` }).toBeLessThanOrEqual(0);
-    const clipped = await page.locator('.wd-face, .wd-select, .wd-meter, .dial-reading, .et-state, .et-stamp, .ol-q, .ol-price, .step-link').evaluateAll((els) => els.filter((el) => {
+    const clipped = await page.locator('.wd-face, .wd-select, .wd-meter, .dial-reading, .et-state, .et-stamp, .oi-q, .oi-price, .sc-q, .step-link').evaluateAll((els) => els.filter((el) => {
       const b = el.getBoundingClientRect();
       return b.width > 0 && (b.left < -1 || b.right > innerWidth + 1);
     }).map((el) => el.className));

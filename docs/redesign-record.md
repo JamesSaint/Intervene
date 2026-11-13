@@ -24,16 +24,16 @@ heading carries the section.
 
 | Component | Where | Purpose |
 |---|---|---|
-| `WindowDial` + `DialFace` + `lib/window-model.ts` + `lib/dial-geometry.ts` | `/` hero | The opening instrument. One turn of the dial is the window; the four stages run round it; time past the window runs on an inner ring. |
-| `DialReading` | `/` problem section | Two fixed readings of the same dial: the chain on paper and under pressure. |
-| `SediExplorer` (revised) | `/`, `/agda/`, `/methodology/`, `/style-guide/` | The four stages on one rail, open on Detect; every later stage is drawn as waiting. |
+| `WindowDial` + `DialFace` + `lib/window-model.ts` + `lib/dial-geometry.ts` | `/` hero | The opening instrument. One turn of the dial is the window; the four stages run round it; time past the window runs on a narrow inner ring. |
+| `SeriesCircuit` | `/` problem section | Three conditions in series between a signal and an intervention, one of them open. |
+| `SediExplorer` (revised) | `/`, `/agda/`, `/methodology/`, `/style-guide/` | The four stages on one rail, each stating what it needs from the one before; open on Detect. |
 | `EvidenceTrace` + `lib/sample-report.ts` | `/` | The constructed sample as a trace: records, stage findings, conclusion. |
-| `OfferLadder` | `/` | The three engagements as one framed comparison, each led by its question and fee. |
+| `OfferIntro` + `OfferLadder` | `/` | The three engagements in nested frames, by question, scope and fee, with the full comparison as a disclosure beneath. |
 | `HeroWindow` | `/intervention-readiness/` | The linear on-paper and under-pressure figure. |
 
 Retired, and in the branch history: `WindowLab`, `WindowRace`,
-`AssessmentArtefact`, `OfferDepth`, `FindingChain`. The four standalone
-sketches remain in `prototypes/`, outside the build.
+`AssessmentArtefact`, `OfferDepth`, `DialReading`, `FindingChain`. The four
+standalone sketches remain in `prototypes/`, outside the build.
 
 ## Decisions worth knowing
 
@@ -261,6 +261,43 @@ it runs on the inner ring."); the readings' titles "On paper" and "Under
 pressure" with their figures; the readings' note; and the three next-step
 lines "How is that assessed?", "What does an assessment produce?" and
 "Which engagement fits your system?".
+
+## Seventh pass: refinement with the dial approved
+
+- **Hero.** The question is set on three lines at display size and holds the
+  left of the view; the dial holds the right. The stage list and the three
+  figures moved out of the left column into a console row beneath both.
+  The site's heading tracking is kept, as an existing test requires.
+- **Dial weights.** The window ring is the wide one (30 units at radius 238
+  of 300). The overrun ring is narrow and sits close inside it (12 units at
+  radius 204), so time beyond the window reads as an overrun of the same
+  track and not as a second dial. Stage names are set on the window ring
+  only. Geometry and tests are otherwise unchanged.
+- **Problem section.** The two extra dials were replaced by a series
+  circuit: three conditions between a signal and an intervention, each
+  pairing a documented control with the question that decides it, with
+  authority drawn open and everything after it carrying nothing.
+- **SEDI.** Each stage now states on the chain what it needs from the one
+  before, at heading weight, with an arrowhead on each hand-off. The detail
+  behind each stage is unchanged.
+- **Evidence.** Larger headline, larger stage values and conclusion, and
+  the decisive stage is the one filled block.
+- **Engagements.** Three nested frames introduce them by question, scope
+  and fee; the Review's frame holds the Authority Check and the
+  Assessment's holds both. The full comparison table is a disclosure
+  beneath, unchanged.
+- **Phone.** Stage states sit two by two under the dial; the circuit runs
+  down a rail; SEDI questions and stage notes wait behind their stage; the
+  engagement frames widen down the page.
+
+New wording in this pass: "On paper" with "Monitoring is documented.",
+"A risk owner is named." and "A halt procedure is written."; the states
+"Holds", "Open under pressure" and "Holds, but nothing reaches it";
+"Signal" and "Intervention not reached"; the circuit's caption; the four
+SEDI lines "Starts the chain", "Needs an actionable signal", "Needs the
+signal to reach someone with authority" and "Needs an authorised decision
+and a working mechanism"; the heading "Three questions. One named system.";
+and "Compare the three engagements in full".
 
 ## Published wording that changed
 

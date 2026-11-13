@@ -105,8 +105,10 @@ export interface LabelPlacement {
 }
 
 /**
- * Where each stage's name is set along its own arc. A stage split by the
- * boundary carries its name on whichever part is longer.
+ * Where each stage's name is set along its own arc. Names are set on the
+ * outer ring only, which is wide enough to carry them: a stage with any part
+ * inside the window is named on that part. A stage wholly beyond the window
+ * has no name on the dial; the stage list beside it carries the name.
  */
 export function labelPlacements(durations: readonly number[], window: number): LabelPlacement[] {
   const arcs = dialArcs(durations, window);
@@ -116,12 +118,16 @@ export function labelPlacements(durations: readonly number[], window: number): L
     // ring can show. It has no arc, so its name is not set on the dial; the
     // stage list and the figures still account for it.
     if (!parts.length) return { ring: 'beyond', at: 1, span: 0 };
-    const best = parts.reduce((a, b) => (b.to - b.from > a.to - a.from ? b : a), parts[0]);
+    const best = parts.find((a) => a.ring === 'window') ?? parts[0];
     return { ring: best.ring, at: (best.from + best.to) / 2, span: best.to - best.from };
   });
 }
 
 /** Radii of the two rings in the dial's 600-unit drawing, and the room a name needs. */
-export const RADIUS: Record<Ring, number> = { window: 226, beyond: 178 };
+/* The outer ring is the wide one: it is the window. The inner ring is
+   narrow and close inside it, so time beyond the window reads as an
+   overrun of the same track, not as a second dial. */
+export const RADIUS: Record<Ring, number> = { window: 238, beyond: 204 };
+export const STROKE: Record<Ring, number> = { window: 30, beyond: 12 };
 export const fitsLabel = (name: string, placement: LabelPlacement): boolean =>
-  placement.span * 2 * Math.PI * RADIUS[placement.ring] >= name.length * (placement.ring === 'window' ? 9.4 : 8) + 14;
+  placement.ring === 'window' && placement.span * 2 * Math.PI * RADIUS.window >= name.length * 9 + 14;

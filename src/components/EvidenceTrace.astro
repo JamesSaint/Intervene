@@ -118,9 +118,10 @@ const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...recor
   .et-flags { font-size: var(--type-caption); line-height: 1.6; color: var(--faint); }
 
   .et-title { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--space-3) var(--space-7); align-items: end; padding: var(--space-5) 0 0; }
-  .et-title .h3 { margin: 0; font-size: var(--type-finding); line-height: 1.15; }
+  .et-title .h3 { margin: 0; font-size: clamp(34px, 4.6vw, 68px); line-height: 1.02; letter-spacing: -0.03em; }
+  .et-title .h3 em { display: block; }
   .et-title .h3 em { color: var(--faint); }
-  .et-title .body { margin: 0; font-size: var(--type-small); }
+  .et-title .body { margin: 0; font-size: var(--type-body); }
   /* Read right to left on a wide screen: conclusion, findings, records. */
   .et-map { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr); column-gap: var(--et-gap); margin-top: var(--space-5); }
   .et-how { grid-column: 1 / -1; grid-row: 1; margin: 0 0 var(--space-4); max-width: 62ch; font-size: var(--type-body); line-height: 1.6; color: var(--muted); }
@@ -131,14 +132,16 @@ const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...recor
   .et-row { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); column-gap: var(--et-gap); align-items: stretch; }
   .et-records { grid-column: 1; grid-row: 1; list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); align-content: center; }
   .et-stage { grid-column: 2; grid-row: 1; position: relative; display: grid; gap: 2px; align-content: center; padding: var(--space-3) var(--space-4); border: 1px solid var(--hair-strong); background: var(--paper); }
-  .et-stage-name { font-size: 15px; font-weight: 600; line-height: 1.4; color: var(--ink); }
-  .et-stage-value { font-family: var(--font-mono); font-size: clamp(20px, 2.1vw, 30px); font-weight: 600; line-height: 1.15; color: var(--ink); }
+  .et-stage-name { font-size: 17px; font-weight: 600; line-height: 1.4; color: var(--ink); }
+  .et-stage-value { font-family: var(--font-mono); font-size: clamp(22px, 2.6vw, 38px); font-weight: 600; line-height: 1.1; color: var(--ink); }
   .et-stage-rel { font-size: 12px; line-height: 1.5; color: var(--faint); }
   .et-stage-note { margin-top: 6px; font-size: var(--type-action); line-height: 1.5; color: var(--muted); }
-  /* The decisive stage is drawn with a heavy rule, as are its lines. */
-  .et-row.is-decisive { --et-line: var(--ink); --et-weight: 2px; }
-  .et-row.is-decisive .et-stage { border: 2px solid var(--ink); }
-  .et-row.is-decisive .et-stage-rel { color: var(--warn); }
+  /* The decisive stage is the one filled block on the page's light surface;
+     its lines to the conclusion are drawn heavy. */
+  .et-row.is-decisive { --et-line: var(--ink); --et-weight: 3px; }
+  .et-row.is-decisive .et-stage { background: var(--ink); border-color: var(--ink); }
+  .et-row.is-decisive :is(.et-stage-name, .et-stage-value, .et-stage-note) { color: var(--paper); }
+  .et-row.is-decisive .et-stage-rel { color: var(--paper); opacity: 0.78; }
   .et-row.is-empty .et-stage { border-style: dashed; background: transparent; }
   .et-row.is-empty .et-stage-value { color: var(--faint); }
 
@@ -172,11 +175,11 @@ const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...recor
   .et-none { display: flex; align-items: center; min-height: 54px; padding: 0 16px; border: 1px dashed var(--hair-strong); font-size: var(--type-action); line-height: 1.5; color: var(--faint); }
 
   /* The conclusion: where every line ends. */
-  .et-conclusion { grid-column: 2; grid-row: 3; display: grid; gap: var(--space-4); align-content: start; padding: clamp(20px, 2.2vw, 32px); background: var(--paper); border: 2px solid var(--ink); }
+  .et-conclusion { grid-column: 2; grid-row: 3; display: grid; gap: var(--space-4); align-content: space-between; padding: clamp(20px, 2.4vw, 36px); background: var(--paper); border: 3px solid var(--ink); }
   .et-conclusion .et-k { color: var(--faint); }
-  .et-state { display: flex; align-items: center; gap: 14px; margin: 0; font-size: clamp(30px, 3.2vw, 46px); font-weight: 600; letter-spacing: -0.03em; line-height: 0.98; color: var(--ink); }
+  .et-state { display: flex; align-items: center; gap: 16px; margin: 0; font-size: clamp(40px, 4.4vw, 66px); font-weight: 600; letter-spacing: -0.03em; line-height: 0.98; color: var(--ink); }
   .et-state::before { content: ''; width: 0.3em; height: 0.3em; flex: none; background: var(--warn); }
-  .et-body { margin: 0; font-size: var(--type-small); line-height: 1.6; color: var(--muted); }
+  .et-body { margin: 0; font-size: var(--type-body); line-height: 1.6; color: var(--muted); }
   .et-body strong { font-weight: 600; color: var(--ink); }
   .et-decision { padding-top: var(--space-3); border-top: 1px solid var(--hair-strong); }
   .et-decision p { margin: 0; font-size: clamp(17px, 1.35vw, 20px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.3; color: var(--ink); }
@@ -207,7 +210,12 @@ const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...recor
     .et-stage-name { font-size: 18px; letter-spacing: var(--tracking-heading); }
     .et-stage-value { grid-column: 2; grid-row: 1; font-size: 17px; text-align: right; align-self: baseline; }
     .et-stage-rel, .et-stage-note { grid-column: 1 / -1; }
-    .et-row.is-decisive .et-stage { border: 0; }
+    .et-row.is-decisive .et-stage { border: 0; background: transparent; }
+    .et-row.is-decisive :is(.et-stage-name, .et-stage-value) { color: var(--ink); }
+    .et-row.is-decisive .et-stage-note { color: var(--muted); }
+    .et-row.is-decisive .et-stage-rel { color: var(--warn); opacity: 1; }
+    /* Records wait behind each finding on a narrow screen. */
+    .et-stage-note { display: none; }
     .et-row.is-decisive .et-stage::before { background: var(--ink); border-radius: 0; }
     .et-row.is-empty .et-stage::before { border-style: dashed; }
     .et-records { grid-column: 1; grid-row: 2; }
