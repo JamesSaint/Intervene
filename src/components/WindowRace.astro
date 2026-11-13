@@ -270,7 +270,10 @@ const THIN = 0.1;
   @media (max-width: 720px) {
     .window-race { --wr-label: 0px; }
     .wr-wrap { gap: var(--space-3); padding-top: var(--space-3); }
-    .wr-top { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+    /* The scenario stays above the telling; playback moves below the bars,
+       so the outcome and the bars come sooner. */
+    .wr-top { display: contents; }
+    .wr-select { order: 0; } .wr-telling { order: 1; } .wr-figure { order: 2; } .wr-playback { order: 3; } .wr-foot { order: 4; }
     .wr-select select { width: 100%; }
     .wr-playback { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .wr-btn { min-width: 0; }

@@ -20,15 +20,20 @@ IBM Plex Mono carry everything. Gold remains a structural signal only.
 Section kickers and stage numbering were removed from the homepage: the
 heading carries the section.
 
-## What was built
+## What is on the homepage now
 
 | Component | Where | Purpose |
 |---|---|---|
-| `WindowLab` + `lib/window-model.ts` | `/` hero | The scenario model as a dark instrument under the headline. Six presets, a slider per stage, the chain end to end on one line, a playhead, and the window tested 25% shorter and longer. |
-| `HeroWindow` | `/intervention-readiness/` | The same chain on paper and under pressure, against one window. |
-| `SediExplorer` (revised) | `/`, `/agda/`, `/methodology/`, `/style-guide/` | The four stages on one rail. One opens at a time; its detail runs the width of the chain, and every later stage is drawn as waiting on it. |
-| `AssessmentArtefact` + `lib/sample-report.ts` | `/` | The constructed sample as a report: a record strip carrying its status, a contents rail and a reading pane. |
-| `OfferLadder` | `/` | The three engagements as one comparison, read across. |
+| `WindowRace` + `lib/window-model.ts` + `lib/race-geometry.ts` | `/` hero | The opening scene. A response and a window on one time axis; the stage in progress at display size; diagnostics in a drawer beneath. |
+| `HeroWindow` | `/` problem section, `/intervention-readiness/` | The same chain on paper and under pressure, against one window. |
+| `SediExplorer` (revised) | `/`, `/agda/`, `/methodology/`, `/style-guide/` | The four stages on one rail, open on Detect. One opens at a time; every later stage is drawn as waiting on it. |
+| `EvidenceTrace` + `lib/sample-report.ts` | `/` | The constructed sample as a trace: records, stage findings, conclusion. |
+| `OfferDepth` | `/` | The three engagements as three depths of examination. |
+
+Retired, and in the branch history: `WindowLab`, `AssessmentArtefact`,
+`OfferLadder`, `FindingChain`, and a dial that was started and withdrawn
+before it was committed. The four standalone sketches remain in
+`prototypes/`, outside the build.
 
 ## Decisions worth knowing
 
@@ -115,12 +120,100 @@ appearance. No token was added or changed.
    runs down a rail, as the stages of the chain do. No animation was added.
    Fees moved from the foot of each column to its head and are stated once.
 
+## Fourth pass: the race and the trace
+
+Direction, as decided: prototype A (the race) for the intervention
+experience and prototype C (the trace) for the evidence.
+
+**The time model.** One straight axis, linear in time. The window and the
+response share it, so the boundary is one line through both. Time does not
+stop or reset at the boundary; the response continues past it into the
+region marked irreversible. A chain that ends exactly on the boundary ends
+exactly at the mark and is not too late, which is the scenario model's own
+rule (only total greater than window is too late). The statement and its
+tests are in `lib/race-geometry.ts` and `tests/unit/race-geometry.test.ts`.
+
+**What the scene distinguishes.** Time available is the window bar. Time
+consumed is the dark part behind the present moment. Time remaining is the
+lit part ahead of it. Time beyond the window is the red part of the
+response. The same four quantities are stated as percentages of the window,
+never as durations.
+
+**Stage states.** Pending is a dashed outline, active is the stage filling,
+completed is filled. A stage is marked completed only when its whole
+duration has elapsed, not when its animation ends; a unit test holds that.
+
+**Playback.** One run on arrival when the stage name is in view, then
+nothing by itself. Pause, resume and replay are in the scene. While time
+runs the outcome is withheld and the window is shown closed only once time
+has reached the boundary. With reduced motion nothing plays and the result
+is shown at once.
+
+**Telling apart from diagnostics.** The scene shows the scenario, the stage,
+the bars and the outcome. Stage timings and the window test are in a
+drawer, "Open the diagnostic model".
+
+**Evidence links.** A record is tied to a stage only where the sample
+supports it, and the supporting wording is quoted beside the record:
+
+| Record | Tied to | Basis in the sample |
+|---|---|---|
+| E-02 | Detect | Its register entry calls it "a source for detection timing". |
+| E-01 | Detect | Control C-01 cites "timing telemetry from a 2024 outage post-mortem" for detection. |
+| E-04 | Escalate | Control C-03, escalation to MRC, cites "one tabletop in 2024-Q4". |
+| E-08 | Decide | Its register entry names the quorum; Decide is the time to obtain it. |
+| E-12 | none | It concerns halt authority (C-04); the sample ties it to no single stage. |
+| E-06 | none | It concerns the audit trail (C-06), not a stage timing. |
+
+These are readings of a constructed example, not assessment findings, and
+the first four should be confirmed before publication. Intervals stay as
+text; the "not to scale and not added together" footnote is unchanged.
+
+**Two existing tests caught real faults** during this pass, both fixed: the
+sentence "not an issued assessment or a verified outcome" had dropped off
+the page, and a screen-reader-only sentence was measuring outside the
+viewport.
+
+**Unresolved question for the methodology owner.** The homepage finding
+gives Intervene as "Not assessed", while `/sample-report/` gives about six
+minutes for the same stage. Both predate this work and both are preserved.
+
 ## Published wording that changed
 
 Prices, offer names, boundaries, the price qualifier, the availability
 statement, legal pages and every verification claim are unchanged.
 
-**Added**
+**Added in the fourth pass**
+
+- Scene: "Illustrative scenario", "Window", "Response", "Window open",
+  "Irreversible", "Now", "Pause", "Resume", "Replay", "Window consumed",
+  "Remaining", "Beyond the window", "Open the diagnostic model", "Stage
+  timings and the window test", "Your own timings". While a stage runs it is
+  captioned with the methodology's own phrase for it ("Recognise the need to
+  act", "Reach decision authority", "Make the decision", "Put it into
+  effect").
+- Evidence: the heading "A verdict. Traced to its evidence."; "Records
+  examined"; "Stage findings, each against a window of about six hours";
+  "No record examined. No duration is assessed for this stage."; "Records
+  the sample ties to no single stage"; "What it supports, and what remains
+  open"; "Why it is tied to …"; and the six basis sentences in the table
+  above.
+- Engagements: the heading "Three questions. Three depths of examination.";
+  three level names and descriptions restating `lib/offers.ts` ("Authority",
+  "Evidence", "Timing and verdict"); "Scope and what you receive".
+
+**Removed from the homepage in the fourth pass** (still published elsewhere
+or in history)
+
+- The earlier instrument's preset tabs, "The chain, end to end", "Signal",
+  "Window closes", "Move a stage to change the outcome".
+- The artefact's scope table, remediation priorities and the list of what a
+  signature check establishes. They remain on `/sample-report/` and
+  `/verify/`.
+- The eight-row engagement comparison. Each engagement's deliverables now
+  open beneath it, taken from `lib/offers.ts` unchanged.
+
+**Added earlier**
 
 - Pillar-page figure: "On paper", "Under pressure", "Window closes", and the
   caption "Conceptual illustration. Positions show order, not measured
