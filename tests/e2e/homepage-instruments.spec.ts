@@ -69,8 +69,11 @@ test.describe('the dial', () => {
     const dial = page.locator('.window-dial');
     const figure = dial.locator('.wd-figure');
     await expect(figure).toHaveAttribute('role', 'img');
-    await expect(figure).toHaveAccessibleName(/Illustrative scenario, Authority out of reach: Too late\. The window closes during Intervene\./);
+    // The figure is named once; its reading is one live sentence in the page, so the outcome is announced once.
+    await expect(figure).toHaveAccessibleName('Intervention dial. Its reading is given in the sentence that follows the stage list.');
     await expect(figure).toHaveAccessibleDescription(/Relative units, not measured durations/);
+    await expect(dial.locator('.wd-result')).toHaveText(/Illustrative scenario, Authority out of reach: Too late\. The window closes during Intervene\./);
+    expect(await dial.evaluate((el) => (el.textContent!.match(/The window closes during Intervene/g) ?? []).length)).toBe(1);
     await expect(dial.locator('.wd-result')).toHaveAttribute('aria-live', 'polite');
     // Stage states are words, not only marks and colour.
     await expect(dial.locator('[data-wd-state]')).toHaveText(['Completed', 'Completed', 'Completed', 'Window closes here']);
@@ -346,6 +349,13 @@ test.describe('evidence trace', () => {
     const linked = rows.nth(0).locator('.et-record').first();
     await linked.locator('summary').click();
     await expect(linked).toContainText('a source for detection timing');
+    // Two links are stated by the register; two are matches by description and are marked as such.
+    const support = await page.locator('.evidence-trace .et-rows .et-record').evaluateAll((els) => els.map((el) => [el.querySelector('.et-id')!.textContent, el.classList.contains('is-matched')]));
+    expect(support).toEqual([['E-02', false], ['E-01', true], ['E-04', true], ['E-08', false]]);
+    await expect(page.locator('.evidence-trace .et-record.is-matched .et-type')).toHaveText([/matched by description/, /matched by description/]);
+    const matched = rows.nth(1).locator('.et-record');
+    await matched.locator('summary').click();
+    await expect(matched).toContainText('It does not cite this record by its identifier.');
   });
 
   test('opens each record from the keyboard', async ({ page }) => {

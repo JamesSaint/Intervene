@@ -176,7 +176,7 @@ const role = [
         most urgent; some we deliberately do not serve.
       </p>
 
-      <div class="sector-group">
+      <div class="sector-group is-primary">
         <span class="col-label">Primary</span>
         <ul class="feature-grid sectors" role="list" style="--cols: 3">
           {sectorsPrimary.map((s) => (
@@ -188,7 +188,7 @@ const role = [
         </ul>
       </div>
 
-      <div class="sector-group">
+      <div class="sector-group is-invite">
         <span class="col-label">By invitation</span>
         <ul class="feature-grid sectors" role="list" style="--cols: 2">
           {sectorsInvite.map((s) => (
@@ -221,6 +221,8 @@ const role = [
         <a href="/agda/" class="link">what <Agda /> is not</a>.
       </p>
 
+      <!-- Four statements in the order the work runs, on one line that ends
+           where the practice ends: at the finding. -->
       <ul class="feature-grid not-list" role="list" style="--cols: 4" data-reveal="stagger">
         {role.map((n) => (
           <li>
@@ -288,7 +290,7 @@ const role = [
     font-size: var(--type-caption);
   }
   .bio .body { margin: 0; }
-  .bio .q { font-style: italic; color: var(--ink); }
+  .bio .q { margin: var(--space-2) 0 var(--space-3); font-size: clamp(24px, 2.3vw, 34px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.2; color: var(--ink); text-wrap: balance; }
 
   /* Aside quote */
   .aside {
@@ -299,18 +301,28 @@ const role = [
   }
 
   /* Sectors */
-  .sector-group { margin-top: var(--gap-sub); }
+  /* Three tiers on one grid: the tier's name on the left, who is in it on
+     the right. The line above each says how firm the tier is: solid for
+     the primary focus, a hairline for invitation, broken for not served. */
+  .sector-group { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 4fr); gap: var(--space-4) var(--space-6); align-items: start; padding-top: var(--space-4); border-top: 1px solid var(--hair-strong); }
+  .sector-group + .sector-group { margin-top: var(--space-6); }
   .sector-group:first-of-type { margin-top: var(--gap-intro); }
-  .sectors { margin-top: var(--space-4); padding-top: 0; border-top: 0; }
-  .not-served .col-label { margin-bottom: var(--space-3); }
+  .sector-group.is-primary { border-top: 2px solid var(--ink); }
+  .sector-group.not-served { border-top-style: dashed; }
+  .sector-group .col-label { margin: 0; padding: 0; border: 0; }
+  .sectors { margin-top: 0; padding-top: 0; border-top: 0; }
   .not-text { margin: 0; }
 
-  /* What Intervene does */
-  .not-list { gap: var(--space-5) var(--space-6); }
+  /* What Intervene does: one line, closed at its end. */
+  .not-list { gap: var(--space-5) 0; padding-top: 0; border-top: 0; }
+  .not-list > li { padding: var(--space-4) var(--space-5) 0 0; border-top: 2px solid var(--ink); }
+  .not-list > li:last-child { padding-right: var(--space-4); border-right: 2px solid var(--ink); }
 
   .close-cta .btn { justify-self: start; }
 
   @media (max-width: 880px) {
+    .sector-group { grid-template-columns: 1fr; }
+    .not-list > li:last-child { border-right: 0; padding-right: 0; border-bottom: 2px solid var(--ink); padding-bottom: var(--space-4); }
     .founder { grid-template-columns: 1fr; gap: var(--space-6); }
     .portrait { max-width: 360px; }
   }

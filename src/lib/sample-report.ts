@@ -36,7 +36,7 @@ export const stages = [
   { stage: 'Detect',       value: '~12 min',       detail: 'to detect drift above threshold. A further ~38 min for the signal to reach a first responder is recorded separately.', status: 'pass', verdict: 'PRESENT' },
   { stage: 'Escalate',     value: '4 to 96 hours', detail: 'to reach an authority holder. Availability and routing can consume or exceed the window.', status: 'fail', verdict: 'CAN EXCEED WINDOW' },
   { stage: 'Decide',       value: '≥ 7 days',      detail: 'to obtain the required quorum. No out-of-cycle route. This alone exceeds the assumed window.', status: 'fail', verdict: 'EXCEEDS WINDOW' },
-  { stage: 'Intervene',    value: '~6 min',        detail: 'to propagate a halt if instructed. No in-window reversal on the auto-decline path.', status: 'fail', verdict: 'NO TIMELY AUTHORITY' },
+  { stage: 'Intervene',    value: '~6 min',        detail: 'assumed by the source to propagate a halt if instructed. No duration is assessed for this stage. No in-window reversal on the auto-decline path.', status: 'fail', verdict: 'NO TIMELY AUTHORITY' },
 ];
 
 export const gates = [
@@ -103,20 +103,27 @@ export const DECISIVE_CONSTRAINT =
 export const FINDING_FOOTNOTE =
   'Constructed illustration: no client result, issued assessment or verified outcome. Intervals are separate illustrative facts, not to scale and not added together. Their endpoints and any overlap are not established; no total response time is computed.';
 
-/* Which stage a record bears on. Only links the sample itself supports are
-   drawn, and `basis` quotes the wording that supports each one. Where the
-   sample ties a record to a control but not to a single stage, `stage` is
-   null and the record is shown unattached, with the reason. These are
-   readings of a constructed example, not assessment findings. */
-export interface RecordLink { id: string; stage: FindingStage['key'] | null; basis: string }
+/* Which stage a record bears on, checked against the sample's own register
+   and control descriptions, which are the only source: the sample carries no
+   record-to-stage table.
+
+   `support` says how far the sample itself goes:
+     'stated'   the record's own register entry names the stage's subject;
+     'matched'  a control describes a record of the same kind and date, but
+                does not cite this record by its identifier. Shown as a
+                match, with a dashed line, never as an established link.
+   Where the sample ties a record to no single stage, `stage` is null and the
+   record is shown unattached, with the reason. These are readings of a
+   constructed example, not assessment findings. */
+export interface RecordLink { id: string; stage: FindingStage['key'] | null; support: 'stated' | 'matched' | 'none'; basis: string }
 
 export const recordLinks: RecordLink[] = [
-  { id: 'E-02', stage: 'detect', basis: 'The register describes it as "a source for detection timing".' },
-  { id: 'E-01', stage: 'detect', basis: 'Control C-01 cites "timing telemetry from a 2024 outage post-mortem" for detection capability.' },
-  { id: 'E-04', stage: 'escalate', basis: 'Control C-03, escalation to MRC, cites "one tabletop in 2024-Q4".' },
-  { id: 'E-08', stage: 'decide', basis: 'The register says it "does not establish that the required quorum can be reached in time"; Decide is the time to obtain that quorum.' },
-  { id: 'E-12', stage: null, basis: 'It concerns halt authority (control C-04). The sample does not tie it to a single stage.' },
-  { id: 'E-06', stage: null, basis: 'It concerns the audit trail (control C-06), not a stage timing.' },
+  { id: 'E-02', stage: 'detect', support: 'stated', basis: 'The register describes it as "a source for detection timing".' },
+  { id: 'E-01', stage: 'detect', support: 'matched', basis: 'Control C-01 cites "timing telemetry from a 2024 outage post-mortem" for detection capability. It does not cite this record by its identifier.' },
+  { id: 'E-04', stage: 'escalate', support: 'matched', basis: 'Control C-03, escalation to MRC, cites "one tabletop in 2024-Q4". It does not cite this record by its identifier.' },
+  { id: 'E-08', stage: 'decide', support: 'stated', basis: 'The register says it "does not establish that the required quorum can be reached in time"; Decide is the time to obtain that quorum.' },
+  { id: 'E-12', stage: null, support: 'none', basis: 'It concerns halt authority (control C-04). The sample does not tie it to a single stage.' },
+  { id: 'E-06', stage: null, support: 'none', basis: 'It concerns the audit trail (control C-06), not a stage timing.' },
 ];
 
 export const ILLUSTRATIVE_CONCLUSION = {

@@ -12,7 +12,9 @@
  * are not the verdict states. The note saying so is always visible.
  *
  * Slots place the page's own opening copy inside the instrument's layout so
- * the order can differ by screen: `head`, `support` and `cta`. The first
+ * the order can differ by screen: `head`, `support` and `cta`. The dial is
+ * named once as a figure and its reading is one live sentence in the page
+ * flow, so a screen reader meets the outcome once, not twice. The first
  * paint is the finished default scenario, rendered here, so the dial reads
  * without JavaScript and with motion off.
  */
@@ -45,7 +47,7 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
   <div class="wd-cta"><slot name="cta" /></div>
 
   <div class="wd-face">
-    <div class="wd-figure" role="img" aria-labelledby={`${id}-result`} aria-describedby={`${id}-note`}>
+    <div class="wd-figure" role="img" aria-label="Intervention dial. Its reading is given in the sentence that follows the stage list." aria-describedby={`${id}-note`}>
       <DialFace durations={preset.durations} window={window} uid={id} live />
       <span class="wd-top" data-wd-top>{result.outcome === 'too-late' ? 'Window closed' : 'Window closes'}</span>
       <div class="wd-centre">

@@ -20,7 +20,7 @@ import {
 const record = (id: string) => evidence.find((e) => e.id === id)!;
 const rows = findingStages.map((stage) => ({
   stage,
-  records: recordLinks.filter((l) => l.stage === stage.key).map((l) => ({ ...record(l.id), basis: l.basis })),
+  records: recordLinks.filter((l) => l.stage === stage.key).map((l) => ({ ...record(l.id), basis: l.basis, support: l.support })),
 }));
 const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...record(l.id), basis: l.basis }));
 ---
@@ -50,7 +50,7 @@ const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...recor
       <p class="et-fine">Illustrative, not issued, not signed. A full assessment returns one of three states: Before impact, At risk or After impact.</p>
     </div>
 
-    <p class="et-how">Read from left to right. Each record supports a finding about one stage, and the four findings lead to the conclusion.</p>
+    <p class="et-how">Read from left to right. Each record supports a finding about one stage, and the four findings lead to the conclusion. A solid line is a link the register states; a dashed line is a match by description.</p>
     <div class="et-heads" aria-hidden="true">
       <span class="et-heads-pair"><span>Records examined</span><span>What each stage takes, against a window of {WINDOW_LABEL}</span></span>
       <span>Conclusion</span>
@@ -68,11 +68,11 @@ const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...recor
           <ul class="et-records" role="list" aria-label={`Records bearing on ${stage.name}`}>
             {records.map((r) => (
               <li>
-                <details class="et-record">
-                  <summary><span class="et-id mono">{r.id}</span><span class="et-type mono">{r.type}</span><span class="et-desc">{r.desc}</span></summary>
+                <details class:list={['et-record', `is-${r.support}`]}>
+                  <summary><span class="et-id mono">{r.id}</span><span class="et-type mono">{r.type}{r.support === 'matched' && <span class="et-match"> · matched by description</span>}</span><span class="et-desc">{r.desc}</span></summary>
                   <dl>
                     <div><dt>What it supports, and what remains open</dt><dd>{r.open}</dd></div>
-                    <div><dt>Why it is tied to {stage.name}</dt><dd>{r.basis}</dd></div>
+                    <div><dt>{r.support === 'matched' ? `Why it is matched to ${stage.name}` : `Why it is tied to ${stage.name}`}</dt><dd>{r.basis}</dd></div>
                   </dl>
                 </details>
               </li>
@@ -158,6 +158,9 @@ const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...recor
   .et-row.is-empty :is(.et-stage::before, .et-records > li::after) { border-style: dashed; }
   .et-record::after { top: 26px; }
   .et-none::after, .et-row.is-empty .et-stage::after { border-top-style: dashed; }
+  /* A record matched by description, not cited by identifier, is joined by a dashed line and says so. */
+  .et-record.is-matched::after { border-top-style: dashed; }
+  .et-match { color: var(--accent-text); }
 
   .et-record { background: var(--paper); border: 1px solid var(--hair); transition: border-color var(--dur-fast) var(--ease); }
   .et-record summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 48px minmax(0, 1fr) 16px; gap: 0 var(--space-2); align-items: start; padding: 14px 14px 14px 16px; }

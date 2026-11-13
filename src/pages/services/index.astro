@@ -3,7 +3,7 @@ import IntegrityNote from '../../components/IntegrityNote.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { markAgda } from '../../lib/marks';
 import { offers, activities, offerFaqs, buyingGroup, PRICE_QUALIFIER, FEE_BASIS, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
-import OfferChoice from '../../components/OfferChoice.astro';
+import OfferIntro from '../../components/OfferIntro.astro';
 import PageNav from '../../components/PageNav.astro';
 import Agda from '../../components/Agda.astro';
 
@@ -69,10 +69,12 @@ const useCases = [
 
   <PageNav items={pageNav} />
 
-  <!-- WHERE TO BEGIN. Compact shared comparison; the sheets below carry the detail. -->
+  <!-- WHERE TO BEGIN. The three engagements at a glance: question, scope,
+       fee and boundary, each linking to its sheet below. The frames show
+       scope, not a purchasing order. -->
   <section class="block choose" id="begin">
     <div class="wrap">
-      <OfferChoice compact headingLevel="h2" editorial />
+      <OfferIntro headingLevel="h2" lead="Where to begin." tail="Any of the three." compare={false} />
     </div>
   </section>
 

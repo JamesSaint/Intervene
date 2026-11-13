@@ -371,6 +371,107 @@ sentence of its caption; "Specimen" and "The format of a verdict, drawn with
 illustrative timings. Not a result."; "{discipline} asks" and "Intervention
 Readiness asks"; and the three chain-position captions.
 
+## Ninth pass: design excellence review
+
+A completion pass. The approved direction is unchanged: the dial, the hero
+composition, the monochrome identity, the circuit, the SEDI hand-off, the
+evidence trace and the three independent engagements.
+
+### Improvement register
+
+Ranked by visitor importance, weakness before this pass and likely benefit.
+"Done" means built, inspected at 1440, 768, 390 and 320 pixels in light and
+dark, and covered by a test.
+
+| # | Page | Weakness found | Change | Status |
+|---|------|----------------|--------|--------|
+| 1 | `/services/` | The commercial page opened with a compact fork that showed no fee and no boundary; a buyer had to read three long sheets to compare. | Opens with the framed three-engagement introduction: question, scope, fee, boundary and "Commissioned on its own" for each, linking to its sheet. The sheets, scope, sequence and FAQ are unchanged. | Done |
+| 2 | Site-wide performance | Mobile Lighthouse 86 to 87. Two preloaded fonts of about 100 kB each delayed the headline. | Fonts subset (see below). Mobile 97, desktop 100. | Done |
+| 3 | `/verify/` | The distinction that matters most, integrity against truth, was two plain lists in a reading column. | The boundary is drawn: a solid frame holds what the signature commits to and what a successful check establishes; what lies outside sits on open ground with a broken edge. Same lists, same words. | Done |
+| 4 | `/sample-report/` | A long reference document with no stated order of reading. | A four-step reading path on the cover: conclusion, findings, evidence, qualifications. All sections and tables remain. | Done |
+| 5 | `/sectors/` | Four identical text rows; nothing sector-specific was visible. | Each sector pairs "What is expected" on a solid line with "Where it can fail" on a broken one, with its regimes as tags. Both sentences are the page's existing ones. | Done |
+| 6 | `/about/` | The founding statement was set as an italic aside; sector tiers and the practice statements were undifferentiated grids. | The statement leads the narrative at display size. Sector tiers are marked by firmness: solid, hairline, broken. The four practice statements sit on one line that closes at "Stops at the finding." | Done |
+| 7 | Homepage evidence trace | Two of four record-to-stage links rested on a match by description, drawn the same as stated links. | Graded and marked (see below). | Done |
+| 8 | Homepage and sample report | "Not assessed" on one page, "~6 min" on the other, for the same stage. | Reconciled from the repository history (see below). | Done |
+| 9 | Dial | The outcome sentence was announced twice to a screen reader. | The figure has a fixed name; the outcome is one live sentence. | Done |
+| 10 | `/services/` on a phone | Three full sheets, the scope lists and nine questions make a very long page. | Not changed. Collapsing sheet rows would hide exclusions that the claims tests, rightly, require to be visible. Needs a decision on which rows may be folded. | Open |
+| 11 | Comparison pages | Already lead with the two core questions drawn side by side (eighth pass). | Reviewed, no change. A stronger visual would need claims about other disciplines that the pages do not make. | Reviewed |
+| 12 | Insights, glossary, legal, contact, network | Editorial pages on the shared type system. | Reviewed, no change in this pass. | Open |
+
+### The "Not assessed" and six-minute figures
+
+Source: commit `b1228fe` (16 September 2026, "Acceptance pass: fourth stage
+not assessed"). That commit set the homepage Intervene stage to "Not
+assessed", carried "the source's six-minute propagation assumption" in the
+note, and recorded that "no stage failure is implied". The sample report was
+not updated in the same commit and kept "~6 min ... to propagate a halt if
+instructed". Both figures therefore describe the same thing: the time the
+source assumes a halt takes to propagate, if one is instructed. Nothing in
+`internal/` says more. The sample report's Intervene row now says "assumed by
+the source to propagate a halt if instructed. No duration is assessed for
+this stage." No explanation has been added beyond what that commit records.
+
+### Evidence-to-stage links
+
+The sample has no record-to-stage table, so each link was checked against
+the register and the control descriptions.
+
+- E-02 to Detect: stated. Its register entry calls it "a source for
+  detection timing".
+- E-08 to Decide: stated. Its register entry concerns whether "the required
+  quorum can be reached in time", which is what Decide measures.
+- E-01 to Detect and E-04 to Escalate: matched, not stated. Controls C-01
+  and C-03 describe a record of the same kind and date but cite no
+  identifier. These two are now drawn with a dashed line, tagged "matched by
+  description", and each says "It does not cite this record by its
+  identifier."
+- E-12 and E-06 stay unattached. Intervene has no record.
+
+`tests/unit/evidence-links.test.ts` holds each grade to the wording that
+supports it.
+
+### Fonts
+
+The seven woff2 files were subset to Basic Latin, Latin-1, Latin Extended-A
+and the punctuation, arrows and symbols the site uses: 549 kB to 218 kB in
+total, and the two preloaded files from 198 kB to 71 kB. The complete
+originals are in the history at commit `6418902`. `scripts/subset-fonts.py`
+reproduces the subsets and fails unless every check passes.
+
+Verified: of the 103 distinct characters in the built site, every one the
+originals could draw is still drawn (three, ↻ ♲ ✓, were never in Montserrat
+and fall back as before); advance widths, vertical metrics and outlines are
+identical for every kept glyph; kerning and all applicable layout features
+are kept. Sixteen full-page screenshots (eight pages, two widths) are
+pixel-identical before and after. A first attempt that dropped glyph names
+rendered differently below 20 pixels on macOS and was rejected; names are
+kept. Text typed into the contact form in a script outside these ranges will
+use the system font.
+
+Stylesheet inlining was assessed in the seventh pass (two to three points
+for a 2.5 times larger document) and is not adopted; with the lighter fonts
+it is not needed.
+
+### Verification at the end of this pass
+
+- 222 unit tests; 543 Chromium browser tests (9 skipped); 189 Firefox and
+  WebKit tests (6 skipped); type check, content check and private-path
+  check clean.
+- Lighthouse, homepage: mobile 97 on three runs (LCP 2.4 s, CLS 0), desktop
+  100. `/services/` mobile 98. Accessibility, best practices and SEO 100.
+- axe, WCAG 2.2 AA, 33 routes, two themes, two widths: 128 of 132 clean. The
+  four are one page, `/signature/`, whose embedded email-signature preview
+  has link colours below contrast. That page was not changed on this branch.
+- No horizontal overflow, console error or failed request on the reworked
+  pages at 1440, 768, 390 and 320 pixels in either theme.
+
+### Not done, stated plainly
+
+- No VoiceOver or other screen-reader session was run. The accessible-name
+  and live-region behaviour is tested through the accessibility tree only.
+- No physical device was used. Phone results are emulated viewports in
+  Chromium and WebKit.
+
 ## Published wording that changed
 
 Prices, offer names, boundaries, the price qualifier, the availability
@@ -448,6 +549,30 @@ or in history)
 - Per offer: the "Appropriate when" line, the "What you receive" list (now the
   comparison rows) and "Choose by the intervention question and available
   evidence."
+
+Ninth pass:
+
+- `/services/`: the opening section is headed "Where to begin. Any of the
+  three." and now shows each engagement's fee and boundary. The compact
+  fork's "Appropriate when" lines are gone from that section; each sheet
+  keeps "Start here when".
+- `/sectors/`: two labels added per sector, "What is expected" and "Where it
+  can fail". The sentences beneath them are unchanged.
+- `/verify/`: one label added, "Established by a successful check".
+- `/sample-report/`: the cover links "Evidence, Finding, Decision,
+  Limitations" are replaced by the reading path "Conclusion, Findings,
+  Evidence, Qualifications" with a line under each. The Intervene row reads
+  "assumed by the source to propagate a halt if instructed. No duration is
+  assessed for this stage."
+- Evidence trace: "matched by description" on E-01 and E-04; "It does not
+  cite this record by its identifier."; "A solid line is a link the register
+  states; a dashed line is a match by description."
+- Dial: the figure's accessible name is "Intervention dial. Its reading is
+  given in the sentence that follows the stage list."
+
+No price, scope, deliverable, exclusion, methodology statement or
+verification claim was changed.
+
 
 ## Regression checklist
 
