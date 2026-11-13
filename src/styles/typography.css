@@ -28,6 +28,11 @@
   font-style: normal;
   font-weight: inherit;
 }
+/* Two-tone headings: the second clause of a heading is set in the quieter
+   tone, at the same weight. The site's one typographic flourish. */
+:is(.h1, .h2) > :is(em, .em) { color: var(--faint); }
+.h1 { line-height: 1.02; }
+.h2 { line-height: 1.06; }
 :where(.lede, .body, .body-sm, main p, main li) { text-wrap: wrap; }
 /* Long inline paths and identifiers wrap only when the column requires it. */
 :where(main p, main li) code { overflow-wrap: anywhere; }

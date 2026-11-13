@@ -31,6 +31,8 @@ const { title, description, ogImage, other, verdict, whatOther, rows, relate, ag
   Astro.props as Props;
 
 const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.definition;
+// The row that states each discipline's question leads the page as a figure.
+const core = rows.find((r) => r.aspect === 'Core question');
 ---
 
 <BaseLayout
@@ -52,6 +54,23 @@ const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.def
       <p class="lede muted" set:html={markAgda(verdict)} />
     </div>
   </section>
+
+  {core && (
+    <section class="block tight two-questions" aria-label="The question each asks">
+      <div class="wrap">
+        <div class="tq-pair">
+          <div class="tq-side">
+            <span class="mono">{other} asks</span>
+            <p set:html={markAgda(core.other)} />
+          </div>
+          <div class="tq-side tq-ir">
+            <span class="mono">Intervention Readiness asks</span>
+            <p set:html={markAgda(core.ir)} />
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="block definition">
     <div class="wrap">
@@ -125,6 +144,21 @@ const irDefinition = terms.find((t) => t.slug === 'intervention-readiness')!.def
 </BaseLayout>
 
 <style>
+  /* Two questions at the same size: the adjacent discipline's in the quiet tone, this one's in ink. */
+  .two-questions { border-bottom: 1px solid var(--hair); }
+  .tq-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tq-side { display: grid; gap: var(--space-3); align-content: start; padding: var(--space-4) var(--space-6) var(--space-4) 0; border-top: 1px solid var(--hair-strong); }
+  .tq-side .mono { font-size: var(--type-caption); line-height: 1.6; color: var(--faint); }
+  .tq-side p { margin: 0; font-size: clamp(24px, 3.2vw, 46px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.08; color: var(--faint); }
+  .tq-ir { padding-left: var(--space-6); padding-right: 0; border-top: 3px solid var(--ink); border-left: 1px solid var(--hair-strong); }
+  .tq-ir .mono { color: var(--accent-text); }
+  .tq-ir p { color: var(--ink); }
+  @media (max-width: 720px) {
+    .tq-pair { grid-template-columns: minmax(0, 1fr); }
+    .tq-side { padding-right: 0; }
+    .tq-ir { padding-left: 0; border-left: 0; }
+  }
+
   /* Comparison page: hero, what the adjacent discipline does beside the
      category definition, a three-column table, two prose sections, FAQ. */
 

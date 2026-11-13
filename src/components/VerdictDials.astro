@@ -1,0 +1,63 @@
+---
+/**
+ * The three verdict states as three readings of the dial: a specimen of the
+ * verdict format, not a result. Each reading uses fixed illustrative timings
+ * from the scenario model so the shape of each state can be seen; the state
+ * names and descriptions are AGDA®'s own, unchanged. Only a full AGDA®
+ * Assessment returns a verdict.
+ */
+import Agda from './Agda.astro';
+import DialFace from './DialFace.astro';
+import { PRESETS, WINDOWS } from '../lib/window-model';
+
+const timings = (key: string) => PRESETS.find((p) => p.key === key)!.durations;
+const states = [
+  { state: 'open', name: 'Before impact', line: 'Intervention completes in time. The window stays open.', durations: timings('holds') },
+  { state: 'narrowing', name: 'At risk', line: 'Completes within a margin ordinary pressure can erode.', durations: timings('margin') },
+  { state: 'closed', name: 'After impact', line: 'Intervention lands too late. The window has closed.', durations: timings('reach') },
+];
+---
+<figure
+  class="verdict-dials"
+  aria-label="AGDA® Intervention Readiness verdict. A specimen of the verdict format, not a result. A full AGDA® Assessment returns one of three states: before impact, at risk, or after impact. The Authority Check and the Intervention Readiness Review do not produce a verdict."
+>
+  <p class="vd-status"><span class="mono">Specimen</span><span>The format of a verdict, drawn with illustrative timings. Not a result.</span></p>
+  <ol class="vd-states" role="list">
+    {states.map((s) => (
+      <li class="vd-state" data-state={s.state}>
+        <div class="vd-face" aria-hidden="true"><DialFace durations={s.durations} window={WINDOWS.set} uid={`verdict-${s.state}`} /></div>
+        <h3 class="vd-name"><span class="vd-dot" aria-hidden="true"></span>{s.name}</h3>
+        <p class="vd-line">{s.line}</p>
+      </li>
+    ))}
+  </ol>
+  <figcaption class="vd-caption">
+    A full <Agda /> Assessment returns one of these three states. The
+    Authority Check and the Intervention Readiness Review do not produce a
+    verdict. A specimen of the verdict format, not a result.
+  </figcaption>
+</figure>
+
+<style>
+  .verdict-dials { margin: 0; width: 100%; }
+  .vd-status { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-3); margin: 0 0 var(--space-5); font-size: var(--type-action); line-height: 1.5; color: var(--muted); }
+  .vd-status .mono { padding: 4px 10px; border: 1px solid var(--accent-text); font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
+  .vd-states { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5) clamp(20px, 4vw, 64px); }
+  .vd-state { display: grid; gap: var(--space-2); align-content: start; min-width: 0; }
+  .vd-face { width: 100%; aspect-ratio: 1; margin-bottom: var(--space-3); }
+  .vd-name { display: flex; align-items: center; gap: 12px; margin: 0; padding-top: var(--space-3); border-top: 1px solid var(--hair-strong); font-size: clamp(20px, 2.2vw, 30px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.15; color: var(--ink); }
+  .vd-dot { width: 12px; height: 12px; flex: none; }
+  .vd-state[data-state='open'] .vd-dot { background: var(--pass); }
+  .vd-state[data-state='narrowing'] .vd-dot { background: var(--hold); }
+  .vd-state[data-state='closed'] .vd-dot { background: var(--warn); }
+  .vd-line { margin: 0; font-size: var(--type-small); line-height: 1.6; color: var(--muted); }
+  .vd-caption { margin: var(--space-5) 0 0; font-size: var(--type-small); line-height: 1.65; color: var(--muted); }
+  /* Narrow: each state is a row, its dial beside its name. */
+  @media (max-width: 720px) {
+    .vd-states { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+    .vd-state { grid-template-columns: 112px minmax(0, 1fr); column-gap: var(--space-4); align-items: center; padding-top: var(--space-4); border-top: 1px solid var(--hair-strong); }
+    .vd-face { grid-row: 1 / span 2; margin: 0; }
+    .vd-name { padding-top: 0; border-top: 0; align-self: end; }
+    .vd-line { align-self: start; }
+  }
+</style>

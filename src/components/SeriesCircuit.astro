@@ -22,6 +22,7 @@ const conditions = [
 const firstOpen = conditions.findIndex((c) => c.open);
 ---
 <figure class="series-circuit" aria-labelledby="circuit-caption">
+  <p class="sc-status"><span class="mono">Illustration</span><span>A general argument, not a finding about any organisation. Which condition fails, if any, is what an assessment examines.</span></p>
   <ol class="sc-chain" role="list">
     <li class="sc-end sc-start" aria-hidden="true"><span class="sc-terminal"></span><span class="sc-end-label">Signal</span></li>
     {conditions.map((c, i) => (
@@ -45,12 +46,15 @@ const firstOpen = conditions.findIndex((c) => c.open);
   </ol>
   <figcaption id="circuit-caption">
     Illustration. The three conditions are in series: a response reaches the
-    system only if every one of them holds at the moment it is needed.
+    system only if every one of them holds at the moment it is needed. The
+    open condition shown here is an example, not an observed result.
   </figcaption>
 </figure>
 
 <style>
   .series-circuit { --sc-y: 36px; margin: var(--space-7) 0 0; }
+  .sc-status { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-3); margin: 0 0 var(--space-6); font-size: var(--type-action); line-height: 1.5; color: var(--muted); }
+  .sc-status .mono { padding: 4px 10px; border: 1px solid var(--accent-text); font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
   .sc-chain { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: auto repeat(3, minmax(0, 1fr)) auto; grid-template-rows: auto 48px auto auto auto; column-gap: 0; }
   .sc-cell { display: grid; grid-row: 1 / -1; grid-template-rows: subgrid; min-width: 0; }
   .sc-paper { margin: 0; padding: 0 var(--space-5) var(--space-4) 0; display: grid; gap: 4px; align-content: end; font-size: var(--type-support); line-height: 1.35; color: var(--ink); }

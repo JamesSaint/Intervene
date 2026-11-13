@@ -299,6 +299,78 @@ signal to reach someone with authority" and "Needs an authorised decision
 and a working mechanism"; the heading "Three questions. One named system.";
 and "Compare the three engagements in full".
 
+## Eighth pass: site-wide
+
+The homepage was approved as the foundation. This pass carries its system
+to the other 33 pages without repeating its components on each.
+
+**Two conditions set before the pass, both met.**
+
+- *Engagement frames.* The nested frames show scope only. The caption now
+  reads "Three separate engagements. Each can be commissioned on its own",
+  every frame carries "Commissioned on its own", and inclusion is phrased as
+  scope ("Scope includes: everything in the Review."). A test fails if the
+  section acquires language of sequence or upgrade.
+- *Circuit.* It is labelled "Illustration" above the figure, before it is
+  read, with "A general argument, not a finding about any organisation", and
+  its caption ends "The open condition shown here is an example, not an
+  observed result."
+
+**The shared layer** (`tokens.css`, `typography.css`, `global.css`), which
+reaches every page:
+
+- Larger heading scale: h1 to 88px and h2 to 60px at their upper bounds.
+- Two-tone headings: the `<em>` clause of an h1 or h2 is set in the quieter
+  tone at the same weight. The markup already existed on most pages.
+- Opening composition: where a hero is a heading and a lede, the heading
+  holds the left and the lede sits low on the right from 1100px.
+- `.step-link` and `.mark-list` as shared patterns.
+
+**Page treatments, one per purpose.**
+
+| Page | Treatment |
+|---|---|
+| `/agda/` | The three verdict states as three readings of the dial, marked as a specimen of the format and not a result. The SEDI chain follows. |
+| `/intervention-readiness/vs-*` (5) | The two core questions, side by side at heading size, taken word for word from each page's own comparison table. |
+| `/intervention-readiness/halt-authority/`, `/intervention-chain/`, `/reversibility-window/` | A four-stage rail showing where the term sits in the chain. `/human-oversight/` has none, because the methodology places it at no single stage. |
+| `/sample-report/` | The evidence trace leads "The chain breaks at authority"; every existing table remains beneath. |
+| `/verify/` | Covered, not covered and not established are marked with solid and dashed marks as well as in words. |
+| `/methodology/`, `/style-guide/` | The revised SEDI chain. |
+| `/intervention-readiness/` | The linear on-paper and under-pressure figure, from an earlier pass. |
+| All others | The shared layer only: `/services/`, `/sectors/`, `/about/`, `/contact/`, `/glossary/`, `/insights/` and its three notes, `/network/`, `/readiness-snapshot/`, the three legal pages, `/signature/`, `/category-map/`, `/human-oversight/`, `/method/`, 404. |
+
+No content, price, limitation, verification claim or legal text was
+changed on any of these pages. The verdict-state names and descriptions on
+`/agda/` are the previous component's, unchanged.
+
+**A test changed in principle.** "Desktop headings fill their container" now
+allows the heading to fill the left column of the two-column opening.
+
+**Performance, investigated.** Mobile Lighthouse is 86 to 87; desktop is 99.
+The largest paint is the headline, and its render is held back about 3.2
+seconds on the simulated slow connection by two preloaded Montserrat files
+of about 100 kB each and three render-blocking stylesheets. The fonts are
+not subset. Subsetting the two preloaded weights to the characters the site
+uses is the fix most likely to clear 90; it was not done here because it
+replaces brand font files and needs a tool that is not installed. Inlining
+stylesheets was tried earlier and gained two or three points for double the
+HTML. The new components add no blocking time and no layout shift.
+
+**Screen reader.** No screen reader was run. The accessibility tree of the
+dial, circuit, SEDI chain, trace and engagements was read out and reviewed
+instead: names, roles, order and states are coherent, and the dial's figure
+is named by its outcome sentence. Two things a listener will notice: the
+dial's outcome sentence is reached twice (as the figure's name and as the
+paragraph that names it), and decorative arrows are excluded from speech
+only in browsers that support alternative text on generated content.
+
+New wording in this pass: "Three separate engagements. Each can be
+commissioned on its own"; "Commissioned on its own"; "The narrowest scope of
+the three."; "Scope includes: …"; the circuit's status line and the last
+sentence of its caption; "Specimen" and "The format of a verdict, drawn with
+illustrative timings. Not a result."; "{discipline} asks" and "Intervention
+Readiness asks"; and the three chain-position captions.
+
 ## Published wording that changed
 
 Prices, offer names, boundaries, the price qualifier, the availability

@@ -1,7 +1,7 @@
 ---
 import IntegrityNote from '../../components/IntegrityNote.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import VerdictBlock from '../../components/VerdictBlock.astro';
+import VerdictDials from '../../components/VerdictDials.astro';
 import { markAgda } from '../../lib/marks';
 import { assessment, offerFaqs, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
 import AgdaLogo from '../../components/AgdaLogo.astro';
@@ -134,7 +134,7 @@ const faqs = [
         <a href="/methodology/" class="arrow-link">How <Agda /> works <span aria-hidden="true">→</span></a>
       </div>
       <div class="verdict-stage">
-        <VerdictBlock />
+        <VerdictDials />
       </div>
       <div class="verdict-chain">
         <SediExplorer window={false} />
@@ -234,11 +234,9 @@ const faqs = [
     .product-hero > .wrap { display: grid; grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.65fr); gap: 0 var(--space-7); }
     .product-hero .product-identity { grid-row: 1 / span 4; padding-top: 8px; }
     .product-hero :is(.label, .h1, .lede, .hero-cta) { grid-column: 2; }
-    #verdict > .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: var(--space-4) var(--space-7); align-items: start; }
-    #verdict .verdict-stage { grid-column: 2; grid-row: 1; margin: 0; }
-    #verdict .verdict-chain { grid-column: 1 / -1; }
-    #verdict :is(.h2, .lede, .arrow-link) { grid-column: 1; margin: 0; }
-    #verdict .arrow-link { justify-self: start; align-self: start; }
+    /* The heading and its sentence sit side by side; the three states run the full width beneath. */
+    #verdict .verdict-intro { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: var(--space-7); align-items: end; }
+    #verdict .verdict-intro .arrow-link { grid-column: 2; }
   }
 
   .deliver {

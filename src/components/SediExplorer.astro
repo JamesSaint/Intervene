@@ -82,7 +82,8 @@ const stages = [
   .sedi-name { transition: color var(--dur-fast) var(--ease); font-size: clamp(28px, 3.2vw, 46px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.05; color: var(--ink); }
   /* What each stage needs from the one before it, stated on the chain itself. */
   .sedi-needs { font-size: var(--type-body); font-weight: 600; line-height: 1.4; color: var(--ink); }
-  li + li .sedi-needs::before { content: '← '; color: var(--accent-text); }
+  /* The arrow is a visual cue; the alternative text keeps it out of what is read aloud. */
+  li + li .sedi-needs::before { content: '← '; content: '← ' / ''; color: var(--accent-text); }
   .sedi-question { transition: color var(--dur-fast) var(--ease); color: var(--muted); font-size: var(--type-small); line-height: 1.6; }
   .sedi-toggle { position: absolute; right: var(--space-5); top: calc(var(--space-5) + 8px); width: 18px; height: 18px; }
   li:last-child .sedi-toggle { right: 0; }
@@ -123,7 +124,7 @@ const stages = [
     li:not(:last-child)::after { right: auto; left: -5px; top: auto; bottom: 6px; transform: rotate(135deg); }
     .sedi-question { display: none; }
     details[open] .sedi-question { display: block; }
-    li + li .sedi-needs::before { content: '↑ '; }
+    li + li .sedi-needs::before { content: '↑ '; content: '↑ ' / ''; }
     li:has(details[open]:not([data-disclosure-state='closed']))::before { transform: scaleY(1); }
     .sedi-node { left: calc(-1 * var(--space-4) - 7px); top: calc(var(--space-4) + 6px); }
     summary { padding: var(--space-4) 32px var(--space-3) 0; gap: var(--space-1); }

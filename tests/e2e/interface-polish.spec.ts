@@ -275,7 +275,10 @@ test('desktop headings fill their container and only wrap when the next word can
           const space = parseFloat(getComputedStyle(heading).fontSize) * 0.3;
           return word.top > previous.top + 2 && word.width + space < bounds.right - previous.right - 2;
         });
-        return { width: bounds.width, available, earlyBreaks };
+        // On wide screens the hero sets the heading in the left of a two-column
+        // opening, as the homepage does; below that it takes the full width.
+        const split = getComputedStyle(parent).display === 'grid';
+        return { width: bounds.width, available: split ? parseFloat(getComputedStyle(parent).gridTemplateColumns) : available, earlyBreaks };
       });
       expect(layout.width, `${route} at ${width}px`).toBeCloseTo(layout.available, 0);
       expect(layout.earlyBreaks, `${route} at ${width}px`).toEqual([]);

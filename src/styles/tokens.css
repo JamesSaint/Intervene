@@ -13,8 +13,8 @@
 
   /* Editorial hierarchy shared by the homepage and reference pages. */
   --type-display: clamp(36px, 8vw, 112px);
-  --type-h1: clamp(32px, 5vw, 72px);
-  --type-h2: clamp(30px, 3.3vw, 48px);
+  --type-h1: clamp(34px, 6vw, 88px);
+  --type-h2: clamp(30px, 4.2vw, 60px);
   --type-h3: clamp(22px, 2.2vw, 30px);
   --type-card: clamp(22px, 1.9vw, 26px);
   --type-body: 17px;

@@ -129,12 +129,6 @@ const questions = [
   .finding-block { background: var(--paper-soft); }
   .evidence-notes { border-top: 1px solid var(--hair); margin-top: 32px; padding-top: 24px; }
   .evidence-notes > p { font-size: var(--type-small); line-height: 1.7; color: var(--muted); margin: 0; }
-  /* One line at the foot of each section, phrased as the visitor's next question. */
-  .step-link { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-4); margin-top: var(--space-7); padding-top: var(--space-4); border-top: 1px solid var(--hair-strong); font-size: clamp(22px, 2.4vw, 34px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.2; color: var(--ink); transition: color var(--dur-fast) var(--ease); }
-  .step-link:is(:hover, :focus-visible) { color: var(--accent-text); }
-  .step-link:focus-visible { outline: 2px solid var(--focus); outline-offset: 6px; }
-  .step-link span { transition: transform var(--dur-fast) var(--ease-out); }
-  .step-link:hover span { transform: translateY(3px); }
   .engage-action { margin: var(--space-5) 0 0; }
   .engage-terms { margin: 32px 0 0; padding-top: 24px; border-top: 1px solid var(--hair); font-size: var(--type-small); line-height: 1.7; color: var(--muted); }
   /* The page ends where it began, on the question, on the instrument's
