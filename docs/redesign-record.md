@@ -472,6 +472,131 @@ it is not needed.
 - No physical device was used. Phone results are emulated viewports in
   Chromium and WebKit.
 
+## Tenth pass: one scenario, carried
+
+The brief for this pass asked for a visible step in design quality, not
+another refinement. The approved direction is unchanged. Nothing replaces the
+dial.
+
+### Audit: the five opportunities, ranked
+
+| # | Opportunity | Visitor importance | Weakness before | Gain in understanding | Commercial relevance | Complexity | Status |
+|---|-------------|--------------------|-----------------|-----------------------|----------------------|------------|--------|
+| 1 | The homepage instruments did not know about each other. The dial showed a scenario; the SEDI chain beneath it started again from nothing. | High | High | High | Medium | Medium | Done |
+| 2 | The evidence trace required reading every record before its point was clear. | High | Medium | High | High | Medium | Done |
+| 3 | The engagements were compared by reading three columns of prose or opening a table. | High | Medium | Medium | High | Low | Done |
+| 4 | The dial could be watched and configured but not questioned: a stage could not be asked what it cost. | High | Medium | Medium | Low | Low | Done |
+| 5 | Page-level identity for AGDA, methodology, comparison and insights pages. | Medium | Medium | Medium | Medium | High | Not done in this pass |
+
+### Creative architecture
+
+One idea connects the instruments: the intervention window is a single
+quantity, set once on the dial, and everything further down the page is read
+against it.
+
+- The dial sets the scenario and the window.
+- The SEDI chain shows the same scenario as dependency: what each stage
+  needs, its share of the window, and the point at which the window closes.
+- The evidence trace shows what an assessment would hold behind such a
+  finding. It is the constructed sample and is not driven by the dial: the
+  model is illustrative, the sample is a fixed document, and joining them
+  would imply the sample changes with a slider.
+- The engagements show how far each one goes into that same chain.
+
+The shared marks: a solid bar or line is time used or a thing established; a
+broken line is something not established; the warm red is only ever the
+window closing or time beyond it; a ring marks what a question rests on.
+
+### What was built
+
+**The scenario is carried into the SEDI chain** (`src/lib/scenario-chain.ts`,
+`SediExplorer.astro` with `scenario`). The dial announces each settled
+scenario (`intervene:scenario`); the chain redraws from the same model. Each
+stage carries a bar whose length is its share of the window, the stage's
+state (Inside the window, Window closes here, After the window) and, where
+the window closes part-way through a stage, the bar changes colour at that
+point and the boundary is marked on it. The line above the chain names the
+scenario and repeats the dial's own outcome sentence. The first paint is the
+default scenario, rendered on the server. Other pages that use the chain
+(`/agda/`, `/methodology/`) carry no scenario, because they have no dial.
+These are interface states of the illustrative model, labelled
+"illustrative", and are not assessment states or verdicts.
+
+Each failing preset is paired with one stage by wording, not inference: the
+preset's sentence is that stage's "Possible failure" sentence, word for word
+(tested).
+
+**An executive reading of the evidence** (`EvidenceTrace.astro`). Four
+questions sit above the trace: what was examined, what the example
+establishes, what remains uncertain, why the conclusion follows. Each answer
+is assembled from the sample's own values and counts, so it cannot say more
+than the trace. Pressing a question rings the stages and records its answer
+rests on; uncertain items take a broken ring. Nothing is hidden or dimmed.
+The same component serves `/sample-report/`.
+
+**Depth of examination on each engagement** (`OfferIntro.astro`). A
+five-segment gauge: authority to halt, evidence for each step, timings in
+your records, a window set from your records, the verdict. The Check covers
+one, the Review three, the Assessment five. Each item is taken from the
+engagement's published `examined` line, and the Review's published exclusion
+names the last two as outside it. "Commissioned on its own" stays on every
+frame. Shown on `/` and `/services/`.
+
+**The dial can be questioned.** Pointing at or pressing a stage, on the list
+or on the ring itself, reads that stage's share of the window in the centre.
+The stage under the pointer is found from its angle and ring through the
+geometry that draws the arcs, because a browser's hit test does not follow a
+dashed stroke.
+
+### Motion
+
+No library was added. The rules already in `tokens.css` are the system:
+state changes 160 ms, disclosures 220 ms, a value changing size (a share
+bar) 360 ms, each on the standard ease; reduced motion cuts all of these to
+80 ms or none and the dial shows its result at once. Only the dial plays
+time, once, and never loops. Nothing introduced in this pass changes the
+height of the page when it changes state (tested for the chain).
+
+### Signature page
+
+The page's own contrast failure is fixed: the caption label on the white
+preview now takes a colour that reads on white in either site appearance.
+Three flags remain inside the light preview: the email signature's bronze
+links (`#c9b694`) on white. That is the emailed artefact itself, not the
+page, and three existing tests assert that colour in both appearances
+because a pasted signature carries one inline colour and no stylesheet.
+Changing it changes the signature that is sent, so it is left for a decision.
+
+### Verification
+
+- 228 unit tests; 557 Chromium browser tests (9 skipped); 210 Firefox and
+  WebKit tests (6 skipped); type check, content check and private-path check
+  clean. No test was removed or loosened.
+- Lighthouse, homepage: mobile 96 on two runs (LCP 2.5 s, CLS 0), desktop
+  100. Accessibility, best practices and SEO 100.
+- axe, WCAG 2.2 AA, 33 routes, two themes, two widths, with disclosures
+  open, a lens pressed and a dial stage picked: 128 of 132 clean; the four
+  are the email signature links described above.
+- No horizontal overflow, console error or failed request on `/`,
+  `/services/`, `/sample-report/`, `/agda/`, `/methodology/` and
+  `/signature/` at 1440, 768, 390 and 320 pixels in either theme.
+
+### What remains imperfect
+
+- The link between the dial and the chain is only visible to someone who
+  scrolls back and forth, or changes the scenario and then scrolls. On one
+  screen the two are never seen together.
+- The AGDA, methodology, comparison and insights pages did not receive
+  purpose-built treatments in this pass.
+- The chain's "Waits on" labels (dependency) and its window states (time)
+  are two vocabularies on one component. They are both true, but a reader
+  has to hold both.
+- Below 1100 pixels the boundary on the chain loses its label and relies on
+  the stage's own line.
+- `/services/` on a phone is still long.
+- No screen-reader session and no physical device. Results are from the
+  accessibility tree and emulated viewports.
+
 ## Published wording that changed
 
 Prices, offer names, boundaries, the price qualifier, the availability
@@ -573,6 +698,26 @@ Ninth pass:
 No price, scope, deliverable, exclusion, methodology statement or
 verification claim was changed.
 
+
+Tenth pass:
+
+- SEDI chain on the homepage: "Carried from the dial · illustrative"; the
+  scenario's label, its sentence and the dial's outcome sentence; per stage
+  "N% of the window" and one of "Inside the window", "Window closes here",
+  "After the window"; "Window closes" on the boundary.
+- Evidence trace: "Executive reading · select a question to mark its answer
+  on the trace"; the four questions "What was examined", "What the example
+  establishes", "What remains uncertain", "Why the conclusion follows", with
+  answers assembled from the sample's existing values; "Marked on the trace
+  below: ...".
+- Engagements: "Depth of examination"; "Covers ..." and "Outside it: ..."
+  built from "authority to halt, evidence for each step, timings in your
+  records, a window set from your records, the verdict".
+- Dial centre, when a stage is picked: the stage name and "N% of the
+  window".
+
+No price, scope, deliverable, exclusion, methodology statement or
+verification claim was changed.
 
 ## Regression checklist
 

@@ -1,5 +1,7 @@
 ---
 import InterventionWindow from './InterventionWindow.astro';
+import { PRESETS, DEFAULT_PRESET, WINDOWS, evaluate, describe } from '../lib/window-model';
+import { scenarioChain } from '../lib/scenario-chain';
 
 /**
  * The SEDI chain as four connected stages on one rail. Each stage opens in
@@ -9,9 +11,19 @@ import InterventionWindow from './InterventionWindow.astro';
  * Public explanation only. The protected rubric is not reproduced here.
  * `window` adds the conceptual two-outcome comparison above the chain; the
  * homepage omits it because the scenario model there covers the same ground.
+ *
+ * `scenario` carries the dial's illustrative scenario into the chain: each
+ * stage shows its share of the window and where the window closes, and the
+ * line above the chain names the scenario. It follows the dial when the
+ * visitor changes it (the `intervene:scenario` event). The first paint is
+ * the default scenario, rendered here, so it reads without script. These
+ * are interface states of the illustrative model, not assessment states.
  */
-interface Props { window?: boolean }
-const { window: showWindow = true } = Astro.props;
+interface Props { window?: boolean; scenario?: boolean }
+const { window: showWindow = true, scenario = false } = Astro.props;
+const preset = PRESETS.find((p) => p.key === DEFAULT_PRESET)!;
+const result = evaluate(preset.durations, WINDOWS.set);
+const chain = scenarioChain(preset.durations, WINDOWS.set);
 // One stage open at a time, natively: the open stage's detail runs the full
 // width of the chain, and the stages after it are drawn as waiting on it.
 // Detect is open from the start, so the dependency is visible before any
@@ -27,13 +39,26 @@ const stages = [
 ---
 <div class="sedi-explorer">
   {showWindow && <InterventionWindow />}
+  {scenario && (
+    <div class="sedi-carry" data-sedi-carry>
+      <span class="sedi-carry-k mono">Carried from the dial · illustrative</span>
+      <p class="sedi-carry-line"><strong data-sedi-label>{preset.label}.</strong> <span data-sedi-text>{preset.text}</span> <span data-sedi-out>{describe(result)}</span></p>
+    </div>
+  )}
   <p class="sedi-instruction">Select a stage to see what it depends on and what waits on it.</p>
-  <ol role="list" aria-label="The SEDI intervention chain" data-reveal="stagger">
+  <ol role="list" aria-label="The SEDI intervention chain" data-reveal="stagger" data-sedi-chain={scenario ? '' : undefined}>
     {stages.map((stage, i) => (
-      <li>
+      <li data-sedi-stage={scenario ? chain[i].state : undefined} data-sedi-longest={scenario && chain[i].longest ? '' : undefined} style={scenario ? `--share: ${chain[i].share}; --at: ${chain[i].boundary ?? 1}` : undefined}>
         <details data-disclosure name={group} open={i === 0}>
           <summary>
             <span class="sedi-node" aria-hidden="true"></span>
+            {scenario && (
+              <span class="sedi-scn">
+                <span class="sedi-share" aria-hidden="true"><span class="sedi-fill"></span><span class="sedi-boundary"><span class="mono">Window closes</span></span></span>
+                <span class="sedi-share-text mono"><span data-sedi-pct>{chain[i].percent}</span> of the window</span>
+                <span class="sedi-state mono" data-sedi-state>{chain[i].text}</span>
+              </span>
+            )}
             <span class="sedi-name">{stage.name}</span>
             <span class="sedi-needs">{stage.needs}</span>
             <span class="sedi-question">{stage.question}</span>
@@ -101,8 +126,32 @@ const stages = [
   /* Wide screens: the open stage's detail leaves its column and runs the
      width of the chain, four facets across. Summaries share one height so
      the detail always starts below every stage. */
+  /* The dial's scenario, carried into the chain. */
+  .sedi-carry { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); gap: var(--space-2) var(--space-6); align-items: baseline; padding: var(--space-4) 0; margin-bottom: var(--space-4); border-block: 1px solid var(--hair-strong); }
+  .sedi-carry-k { font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
+  .sedi-carry-line { margin: 0; min-height: 2lh; font-size: var(--type-support); line-height: 1.5; color: var(--muted); }
+  .sedi-carry-line strong { color: var(--ink); font-weight: 600; }
+  .sedi-scn { display: grid; gap: 6px; }
+  /* One bar per stage: its length is the stage's share of the window. Where
+     the window closes part-way through a stage, the bar changes colour at
+     that point and the boundary is marked on it. */
+  .sedi-share { position: relative; display: block; height: 12px; background: var(--hair); }
+  .sedi-fill { display: block; height: 100%; width: calc(min(var(--share), 1) * 100%); background: var(--ink); transition: width var(--dur-signal) var(--ease-out); }
+  li[data-sedi-stage='closes'] .sedi-fill { background: linear-gradient(to right, var(--ink) calc(var(--at) * 100%), var(--warn) calc(var(--at) * 100%)); }
+  li[data-sedi-stage='after'] .sedi-fill { background: var(--warn); }
+  .sedi-share-text { font-size: var(--type-caption); line-height: 1.6; color: var(--muted); }
+  .sedi-state { font-size: var(--type-caption); line-height: 1.6; color: var(--muted); min-height: 1lh; }
+  li[data-sedi-stage='closes'] .sedi-state, li[data-sedi-stage='after'] .sedi-state { color: var(--warn); }
+  li[data-sedi-longest] .sedi-share-text { color: var(--ink); font-weight: 600; }
+  /* Where the window closes, marked on the chain at the point in the stage it falls. */
+  .sedi-boundary { display: none; position: absolute; left: calc(min(var(--share), 1) * var(--at) * 100%); top: -52px; bottom: -6px; border-left: 2px solid var(--warn); pointer-events: none; }
+  .sedi-boundary > span { position: absolute; left: 8px; top: -6px; white-space: nowrap; font-size: var(--type-caption); line-height: 1.6; color: var(--warn); background: var(--paper); padding: 0 6px 0 0; }
+  li[data-sedi-stage='closes'] .sedi-boundary { display: block; }
+  ol[data-sedi-chain] { margin-top: var(--space-7); }
+  ol[data-sedi-chain] summary { padding-top: var(--space-4); }
   @media (min-width: 1101px) {
     summary { min-height: 288px; }
+    ol[data-sedi-chain] summary { min-height: 372px; }
     [data-disclosure-body] { width: 400%; }
     li:nth-child(2) [data-disclosure-body] { margin-left: -100%; }
     li:nth-child(3) [data-disclosure-body] { margin-left: -200%; }
@@ -115,7 +164,19 @@ const stages = [
     ol { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--space-4); }
     li:nth-child(2n) .sedi-toggle { right: 0; }
   }
+  @media (max-width: 1100px) {
+    .sedi-carry { grid-template-columns: 1fr; }
+    .sedi-carry-line { min-height: 4lh; }
+  }
   @media (max-width: 560px) {
+  }
+  /* Below the wide layout the stage's own line says where the window closes; the mark stays on the bar. */
+  @media (max-width: 1100px) {
+    .sedi-boundary { top: -4px; bottom: -4px; }
+    .sedi-boundary > span { display: none; }
+  }
+  @media (max-width: 560px) {
+    ol[data-sedi-chain] { margin-top: var(--space-5); }
     ol { grid-template-columns: 1fr; row-gap: 0; }
     li { border-top: 0; border-left: 1px solid var(--hair-strong); padding-left: var(--space-4); }
     li:has(details[open]) ~ li { border-left-style: dashed; }
@@ -132,3 +193,36 @@ const stages = [
     dl { padding-bottom: var(--space-4); }
   }
 </style>
+
+<script>
+  import { PRESETS, CUSTOM_TEXT, evaluate, describe } from '../lib/window-model';
+  import { scenarioChain } from '../lib/scenario-chain';
+
+  // The chain follows the dial. The dial announces each settled scenario;
+  // this redraws shares, states and the boundary from the same model. The
+  // dial's own live sentence carries the outcome to a screen reader, so
+  // nothing here is announced a second time.
+  interface Scenario { key: string; label: string; durations: number[]; window: number }
+  const set = (el: Element | null, value: string) => { if (el && el.textContent !== value) el.textContent = value; };
+
+  document.addEventListener('intervene:scenario', (event) => {
+    const { key, label, durations, window } = (event as CustomEvent<Scenario>).detail;
+    const chain = scenarioChain(durations, window);
+    const result = evaluate(durations, window);
+    document.querySelectorAll<HTMLElement>('[data-sedi-chain]').forEach((list) => {
+      const root = list.closest('.sedi-explorer')!;
+      set(root.querySelector('[data-sedi-label]'), `${label}.`);
+      set(root.querySelector('[data-sedi-text]'), PRESETS.find((p) => p.key === key)?.text ?? CUSTOM_TEXT);
+      set(root.querySelector('[data-sedi-out]'), describe(result));
+      list.querySelectorAll<HTMLElement>(':scope > li').forEach((item, i) => {
+        const stage = chain[i];
+        item.dataset.sediStage = stage.state;
+        item.toggleAttribute('data-sedi-longest', stage.longest);
+        item.style.setProperty('--share', String(stage.share));
+        item.style.setProperty('--at', String(stage.boundary ?? 1));
+        set(item.querySelector('[data-sedi-pct]'), stage.percent);
+        set(item.querySelector('[data-sedi-state]'), stage.text);
+      });
+    });
+  });
+</script>

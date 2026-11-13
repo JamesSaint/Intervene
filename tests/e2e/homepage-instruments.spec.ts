@@ -57,6 +57,8 @@ test.describe('the dial', () => {
     await expect(dial).toHaveAttribute('data-outcome', 'too-late');
     await expect(dial.locator('[data-wd-word]')).toHaveText('Too late');
     await expect(dial.locator('[data-wd-caption]')).toHaveText('Window closed during Intervene');
+    await expect(dial).not.toHaveAttribute('data-reading');
+    await expect.poll(() => dial.locator('[data-wd-word]').evaluate((el) => getComputedStyle(el).color)).toBe('rgb(224, 118, 106)');
     await expect(dial.locator('.wd-note')).toBeVisible();
     await expect(dial.locator('.wd-note')).toContainText('One turn of the dial is the intervention window; time past it runs on the inner ring.');
     await expect(dial.locator('.wd-note')).toContainText('Relative units, not measured durations, and not an assessment result.');
@@ -522,4 +524,162 @@ test('each section hands the visitor to the next, ending in one action', async (
   await expect(page).toHaveURL(/#home-method$/);
   await expect(page.locator('#home-method')).toBeInViewport();
   await expect(page.locator('#offers .engage-action .btn')).toHaveAttribute('href', '/contact/');
+});
+
+test.describe('one scenario, carried down the page', () => {
+  const chain = (page: import('@playwright/test').Page) => page.locator('.sedi-explorer [data-sedi-chain] > li');
+  const read = (page: import('@playwright/test').Page) => chain(page).evaluateAll((items) => items.map((li) => ({
+    state: (li as HTMLElement).dataset.sediStage,
+    text: li.querySelector('[data-sedi-state]')!.textContent,
+    percent: li.querySelector('[data-sedi-pct]')!.textContent,
+    longest: li.hasAttribute('data-sedi-longest'),
+  })));
+
+  test('the SEDI chain opens on the dial\'s default scenario, and says it is carried from the dial', async ({ page }) => {
+    await open(page);
+    const carry = page.locator('.sedi-carry');
+    await expect(carry).toContainText('Carried from the dial · illustrative');
+    await expect(carry).toContainText('Authority out of reach. The signal reaches someone who cannot authorise action. The window closes during Intervene.');
+    expect(await read(page)).toEqual([
+      { state: 'completed', text: 'Inside the window', percent: '8%', longest: false },
+      { state: 'completed', text: 'Inside the window', percent: '50%', longest: true },
+      { state: 'completed', text: 'Inside the window', percent: '33%', longest: false },
+      { state: 'closes', text: 'Window closes here', percent: '17%', longest: false },
+    ]);
+    // The outcome sentence is the dial's own, word for word.
+    const dialText = await page.locator('.window-dial [data-wd-text]').textContent();
+    await expect(page.locator('[data-sedi-out]')).toHaveText(dialText!);
+  });
+
+  test('changing the dial changes the chain: scenario, shares, states and where the window closes', async ({ page }) => {
+    await open(page);
+    const before = await page.locator('.sedi-explorer').evaluate((el) => el.getBoundingClientRect().height);
+    await page.locator('[data-wd-preset]').selectOption('holds');
+    await expect(page.locator('[data-sedi-label]')).toHaveText('The chain holds.');
+    await expect.poll(() => read(page)).toEqual([0, 1, 2, 3].map(() => ({ state: 'completed', text: 'Inside the window', percent: '17%', longest: false })));
+    await expect(page.locator('.sedi-boundary:visible')).toHaveCount(0);
+    await expect(page.locator('[data-sedi-out]')).toHaveText('Intervention takes effect before the window closes.');
+
+    // A shorter window closes during Decide, half-way through it, and Intervene falls after it.
+    await page.locator('[data-wd-preset]').selectOption('reach');
+    await page.locator('[data-wd-diag] summary').click();
+    await page.locator('.wd-window input[value="shorter"]').check();
+    await expect.poll(async () => (await read(page)).map((s) => s.state)).toEqual(['completed', 'completed', 'closes', 'after']);
+    expect((await read(page)).map((s) => s.text)).toEqual(['Inside the window', 'Inside the window', 'Window closes here', 'After the window']);
+    const decide = chain(page).nth(2);
+    await expect.poll(() => decide.evaluate((li) => {
+      const bar = li.querySelector('.sedi-share')!.getBoundingClientRect();
+      const fill = li.querySelector('.sedi-fill')!.getBoundingClientRect();
+      const mark = li.querySelector('.sedi-boundary')!.getBoundingClientRect();
+      // Decide is 4 of a window of 9, and the window closes 2 units into it.
+      return [Math.round((fill.width / bar.width) * 100), Math.round(((mark.left - bar.left) / fill.width) * 100)];
+    })).toEqual([44, 50]);
+    // The chain never changes height as the scenario changes.
+    const after = await page.locator('.sedi-explorer').evaluate((el) => el.getBoundingClientRect().height);
+    expect(Math.abs(after - before)).toBeLessThanOrEqual(1);
+  });
+
+  test('the chain reads as the default scenario without JavaScript, and other pages carry no scenario', async ({ browser }) => {
+    const context = await browser.newContext({ javaScriptEnabled: false });
+    const page = await context.newPage();
+    await page.goto('/');
+    await expect(page.locator('.sedi-carry')).toContainText('Authority out of reach.');
+    await expect(page.locator('.sedi-explorer [data-sedi-state]')).toHaveText(['Inside the window', 'Inside the window', 'Inside the window', 'Window closes here']);
+    await page.goto('/agda/');
+    await expect(page.locator('.sedi-explorer')).toHaveCount(1);
+    await expect(page.locator('.sedi-carry, .sedi-scn')).toHaveCount(0);
+    await context.close();
+  });
+
+  test('picking a stage on the dial reads its share of the window in the centre', async ({ page, isMobile }) => {
+    await open(page);
+    const dial = page.locator('.window-dial');
+    await expect(dial.locator('[data-wd-word]')).toHaveText('Too late');
+    await dial.locator('[data-wd-stage="1"]').click();
+    await expect(dial.locator('[data-wd-word]')).toHaveText('Escalate');
+    await expect(dial.locator('[data-wd-caption]')).toHaveText('50% of the window');
+    await expect(dial.locator('[data-wd-stage="1"]')).toHaveAttribute('aria-pressed', 'true');
+    // A stage name in the centre is never coloured as an outcome.
+    await expect(dial).toHaveAttribute('data-reading', '');
+    await expect.poll(() => dial.locator('[data-wd-word]').evaluate((el) => getComputedStyle(el).color)).not.toBe('rgb(224, 118, 106)');
+    await dial.locator('[data-wd-stage="1"]').click();
+    await expect(dial.locator('[data-wd-word]')).toHaveText('Too late');
+    await expect(dial.locator('[data-wd-caption]')).toHaveText('Window closed during Intervene');
+    if (!isMobile) {
+      // The arc itself can be pressed.
+      await page.evaluate(() => window.scrollTo(0, 0));
+      const box = await dial.locator('.dial-face').boundingBox();
+      // Escalate runs from 1/12 to 7/12 of the turn; a quarter turn (three o'clock) is inside it.
+      await page.mouse.click(box!.x + box!.width / 2 + (238 / 600) * box!.width, box!.y + box!.height / 2);
+      await expect(dial.locator('[data-wd-word]')).toHaveText('Escalate');
+      await expect(dial.locator('[data-wd-stage="1"]')).toHaveAttribute('aria-pressed', 'true');
+    }
+  });
+});
+
+test.describe('the executive reading of the evidence', () => {
+  test('answers four questions from the trace\'s own data', async ({ page }) => {
+    await open(page);
+    const lenses = page.locator('.evidence-trace .et-lens');
+    await expect(lenses.locator('.et-lens-q')).toHaveText(['What was examined', 'What the example establishes', 'What remains uncertain', 'Why the conclusion follows']);
+    await expect(lenses.nth(0).locator('.et-lens-a')).toHaveText('Auto-decline pathway, macro shock with model drift. Six records and four stages, against an assumed window of about six hours.');
+    await expect(lenses.nth(1).locator('.et-lens-a')).toHaveText('Detect, ~12 min: within the window. Decide, ≥ 7 days: exceeds the window on its own.');
+    await expect(lenses.nth(2).locator('.et-lens-a')).toHaveText('Escalate, 4 to 96 hours: may consume or exceed the window. Intervene: not assessed. Two records are matched by description only; two tie to no single stage.');
+    await expect(lenses.nth(3).locator('.et-lens-a')).toContainText('Authority, not detection.');
+    // The status of the sample stays above it.
+    await expect(page.locator('.evidence-trace .et-status')).toBeVisible();
+  });
+
+  test('pressing a question marks what it rests on, hides nothing, and clears on a second press', async ({ page, browserName }) => {
+    await open(page);
+    const trace = page.locator('.evidence-trace');
+    const marked = () => trace.locator('.is-marked').evaluateAll((els) => els.map((el) => el.querySelector('.et-id, .et-stage-name')?.textContent ?? el.className.split(' ')[0]).sort());
+    const visibleBefore = await trace.locator('.et-record, .et-stage, .et-conclusion').evaluateAll((els) => els.filter((el) => (el as HTMLElement).offsetParent !== null).length);
+
+    await trace.locator('[data-et-lens="established"]').click();
+    await expect(trace.locator('[data-et-lens="established"]')).toHaveAttribute('aria-pressed', 'true');
+    expect(await marked()).toEqual(['Decide', 'Detect', 'E-02', 'E-08']);
+    await expect(trace.locator('[data-et-status]')).toHaveText('Marked on the trace below: 2 stages, 2 records.');
+
+    await trace.locator('[data-et-lens="open"]').click();
+    await expect(trace.locator('[data-et-lens="established"]')).toHaveAttribute('aria-pressed', 'false');
+    expect(await marked()).toEqual(['E-01', 'E-04', 'E-06', 'E-12', 'Escalate', 'Intervene', 'et-none']);
+    await expect(trace.locator('[data-et-status]')).toHaveText('Marked on the trace below: 2 stages, 4 records, one stage with no record.');
+    // Uncertain parts are ringed with a broken line; established ones with a solid one.
+    expect(await trace.locator('.is-marked').first().evaluate((el) => getComputedStyle(el).outlineStyle)).toBe('dashed');
+
+    await trace.locator('[data-et-lens="why"]').click();
+    expect(await marked()).toEqual(['Decide', 'et-conclusion', 'et-constraint']);
+    await trace.locator('[data-et-lens="examined"]').click();
+    await expect(trace.locator('.et-record.is-marked')).toHaveCount(6);
+
+    const visibleAfter = await trace.locator('.et-record, .et-stage, .et-conclusion').evaluateAll((els) => els.filter((el) => (el as HTMLElement).offsetParent !== null).length);
+    expect(visibleAfter).toBe(visibleBefore);
+    await trace.locator('[data-et-lens="examined"]').click();
+    await expect(trace.locator('.is-marked')).toHaveCount(0);
+    await expect(trace.locator('[data-et-status]')).toHaveText('');
+    // Keyboard: each question is a button reached in order.
+    await trace.locator('[data-et-lens="examined"]').focus();
+    // Safari moves between buttons with Option+Tab unless full keyboard access is on.
+    await page.keyboard.press(browserName === 'webkit' ? 'Alt+Tab' : 'Tab');
+    await expect(trace.locator('[data-et-lens="established"]')).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(trace.locator('[data-et-lens="established"]')).toHaveAttribute('aria-pressed', 'true');
+  });
+});
+
+test('each engagement shows how deep it examines, from its own published scope', async ({ page }) => {
+  for (const route of ['/', '/services/']) {
+    await page.goto(route);
+    const routes = page.locator('.oi-route');
+    expect(await routes.evaluateAll((els) => els.map((el) => el.querySelectorAll('.oi-gauge .is-in').length)), route).toEqual([1, 3, 5]);
+    expect(await routes.evaluateAll((els) => els.map((el) => el.querySelectorAll('.oi-gauge > span').length)), route).toEqual([5, 5, 5]);
+    await expect(routes.locator('.oi-depth-text')).toHaveText([
+      'Covers authority to halt. Outside it: evidence for each step, timings in your records, a window set from your records and the verdict.',
+      'Covers authority to halt, evidence for each step and timings in your records. Outside it: a window set from your records and the verdict.',
+      'Covers authority to halt, evidence for each step, timings in your records, a window set from your records and the verdict.',
+    ]);
+    // Depth is not an order of purchase: every engagement still says it is commissioned on its own.
+    await expect(routes.locator('.oi-alone')).toHaveText(['Commissioned on its own', 'Commissioned on its own', 'Commissioned on its own']);
+  }
 });

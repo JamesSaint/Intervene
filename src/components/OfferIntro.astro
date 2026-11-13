@@ -28,6 +28,17 @@ const { headingLevel: H = 'h2', lead = 'Three questions.', tail = 'One named sys
 
 const kickers = ['Entry point', 'Preliminary', 'Full assessment'];
 const shorts = ['Authority Check', 'Review', 'Assessment'];
+
+/* Depth of examination: five things an engagement may examine, in the order
+   the three engagements add them. Each is taken from src/lib/offers.ts: the
+   Check's `examined` line (authority), the Review's (evidence for each step,
+   timings in your records) and the Assessment's (a window set from your own
+   records, and the verdict only it returns). The Review's exclusion names
+   the last two as outside it. `reach` is how many each engagement covers.
+   This shows scope, not an order of purchase. */
+const depth = ['authority to halt', 'evidence for each step', 'timings in your records', 'a window set from your records', 'the verdict'];
+const reach = [1, 3, 5];
+const sentence = (items: string[]) => items.length > 1 ? `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}` : items[0];
 ---
 <figure class="offer-choice offer-intro" aria-labelledby="offer-choice-heading">
   <figcaption class="oi-caption" data-offer-view="offer_choice">
@@ -42,6 +53,11 @@ const shorts = ['Authority Check', 'Review', 'Assessment'];
         <p class="oi-q">{o.question}</p>
         <h3 class="oi-name" set:html={markAgda(o.name)} />
         <p class="oi-scope" set:html={markAgda(o.short)} />
+        <div class="oi-depth">
+          <span class="mono oi-depth-k">Depth of examination</span>
+          <span class="oi-gauge" aria-hidden="true">{depth.map((_, d) => <span class:list={{ 'is-in': d < reach[i] }}></span>)}</span>
+          <p class="oi-depth-text"><span class="oi-depth-in">Covers {sentence(depth.slice(0, reach[i]))}.</span>{reach[i] < depth.length && <span class="oi-depth-out"> Outside it: {sentence(depth.slice(reach[i]))}.</span>}</p>
+        </div>
         <p class="oi-includes">{i > 0 ? <Fragment><span aria-hidden="true">+</span> Scope includes: {o.scope[0].replace('Everything in', 'everything in')}</Fragment> : 'The narrowest scope of the three.'}</p>
         <p class="oi-alone mono">Commissioned on its own</p>
         <p class="oi-fee">
@@ -76,8 +92,8 @@ const shorts = ['Authority Check', 'Review', 'Assessment'];
 
   /* Nested frames: the Review's frame holds the Authority Check, and the
      Assessment's holds both. Inclusion is drawn, not listed. */
-  .oi-routes { --oi-step: 16px; --oi-pad: clamp(20px, 2.2vw, 32px); list-style: none; margin: var(--space-7) 0 0; padding: calc(var(--oi-step) * 2) 0 calc(var(--oi-step) * 2) calc(var(--oi-step) * 2); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(9, auto); isolation: isolate; }
-  .oi-route { position: relative; display: grid; grid-row: span 9; grid-template-rows: subgrid; row-gap: 0; min-width: 0; padding: var(--oi-pad); }
+  .oi-routes { --oi-step: 16px; --oi-pad: clamp(20px, 2.2vw, 32px); list-style: none; margin: var(--space-7) 0 0; padding: calc(var(--oi-step) * 2) 0 calc(var(--oi-step) * 2) calc(var(--oi-step) * 2); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(10, auto); isolation: isolate; }
+  .oi-route { position: relative; display: grid; grid-row: span 10; grid-template-rows: subgrid; row-gap: 0; min-width: 0; padding: var(--oi-pad); }
   .oi-route::before { content: ''; position: absolute; border: 1px solid var(--hair-strong); pointer-events: none; }
   .oi-route:nth-child(1)::before { inset: 0; z-index: -1; background: var(--paper); border-color: var(--ink); }
   .oi-route:nth-child(2)::before { inset: calc(-1 * var(--oi-step)) 0 calc(-1 * var(--oi-step)) calc(-100% - var(--oi-step)); z-index: -2; background: var(--paper-soft); }
@@ -87,6 +103,14 @@ const shorts = ['Authority Check', 'Review', 'Assessment'];
   .oi-q { margin: var(--space-3) 0 0; font-size: clamp(28px, 3vw, 46px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.05; color: var(--ink); }
   .oi-name { margin: var(--space-3) 0 0; font-size: var(--type-body); font-weight: 600; letter-spacing: 0; line-height: 1.4; color: var(--ink); }
   .oi-scope { margin: var(--space-2) 0 0; font-size: var(--type-small); line-height: 1.6; color: var(--muted); }
+  /* Depth of examination: five segments, filled as far as the engagement goes. */
+  .oi-depth { display: grid; gap: 8px; align-content: start; margin: var(--space-4) 0 0; }
+  .oi-depth-k { font-size: var(--type-caption); line-height: 1.6; color: var(--faint); }
+  .oi-gauge { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px; }
+  .oi-gauge > span { height: 12px; border: 1px dashed var(--control-border); box-sizing: border-box; }
+  .oi-gauge > span.is-in { border: 0; background: var(--ink); }
+  .oi-depth-text { margin: 0; font-size: var(--type-action); line-height: 1.5; color: var(--ink); }
+  .oi-depth-out { color: var(--muted); }
   .oi-includes { margin: var(--space-3) 0 0; font-size: var(--type-action); font-weight: 600; line-height: 1.5; color: var(--ink); }
   .oi-includes span { color: var(--accent-text); }
   .oi-alone { margin: var(--space-2) 0 0; font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
