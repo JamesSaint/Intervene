@@ -1,0 +1,218 @@
+---
+/**
+ * What a full assessment produces, drawn as a trace: a conclusion, the stage
+ * findings it rests on, and the records each finding rests on. Every line is
+ * a dependency, and a stage with no record is drawn as an empty socket.
+ *
+ * Everything is the constructed sample's own (src/lib/sample-report.ts).
+ * A record is tied to a stage only where the sample supports it, and the
+ * supporting wording is quoted; records the sample ties to no single stage
+ * are listed apart, with the reason. The status strip is always visible.
+ *
+ * Connectors are CSS, so the figure needs no script. Each record is a native
+ * disclosure holding what it supports and what remains open.
+ */
+import {
+  evidence, findingStages, recordLinks, ILLUSTRATIVE_CONCLUSION, SAMPLE_SCOPE, WINDOW_LABEL,
+  DECISIVE_CONSTRAINT, DECISION_QUESTION, FINDING_FOOTNOTE, SAMPLE_LIMITS,
+} from '../lib/sample-report';
+
+const record = (id: string) => evidence.find((e) => e.id === id)!;
+const rows = findingStages.map((stage) => ({
+  stage,
+  records: recordLinks.filter((l) => l.stage === stage.key).map((l) => ({ ...record(l.id), basis: l.basis })),
+}));
+const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...record(l.id), basis: l.basis }));
+---
+<div class="evidence-trace" data-evidence-trace>
+  <div class="et-strip">
+    <span class="et-ref mono">Intervention Readiness verdict · {SAMPLE_SCOPE[0]}</span>
+    <span class="et-stamp">
+      <span class="et-status mono">Constructed illustration</span>
+      <span class="et-flags mono">Not issued · Not signed · No client data</span>
+    </span>
+  </div>
+
+  <div class="et-title">
+    <h3 class="h3">Detection works. <em>Authority does not.</em></h3>
+    <p class="body muted">Can the auto-decline pathway stop within an assumed six-hour window? No client data; not an issued assessment or a verified outcome.</p>
+  </div>
+
+  <div class="et-map">
+    <div class="et-conclusion">
+      <span class="et-k mono">Illustrative conclusion</span>
+      <p class="et-state">{ILLUSTRATIVE_CONCLUSION.state}</p>
+      <p class="et-body"><strong>{ILLUSTRATIVE_CONCLUSION.lead}</strong> {ILLUSTRATIVE_CONCLUSION.body}</p>
+      <div class="et-decision">
+        <span class="et-k mono">Decision the finding supports</span>
+        <p>{DECISION_QUESTION}</p>
+      </div>
+      <p class="et-fine">Illustrative, not issued, not signed. A full assessment returns one of three states: Before impact, At risk or After impact.</p>
+    </div>
+
+    <div class="et-heads" aria-hidden="true">
+      <span class="mono">Records examined</span>
+      <span class="mono">Stage findings, each against a window of {WINDOW_LABEL}</span>
+    </div>
+
+    <ol class="et-rows" role="list" aria-label="Stage findings and the records each rests on">
+      {rows.map(({ stage, records }) => (
+        <li class:list={['et-row', `is-${stage.rel}`, { 'is-decisive': stage.rel === 'exceeds', 'is-empty': records.length === 0 }]}>
+          <div class="et-stage">
+            <span class="et-stage-name">{stage.name}</span>
+            <span class="et-stage-value">{stage.value}</span>
+            <span class="et-stage-rel mono">{stage.relText}</span>
+            <span class="et-stage-note">{stage.note}</span>
+          </div>
+          <ul class="et-records" role="list" aria-label={`Records bearing on ${stage.name}`}>
+            {records.map((r) => (
+              <li>
+                <details class="et-record">
+                  <summary><span class="et-id mono">{r.id}</span><span class="et-type mono">{r.type}</span><span class="et-desc">{r.desc}</span></summary>
+                  <dl>
+                    <div><dt>What it supports, and what remains open</dt><dd>{r.open}</dd></div>
+                    <div><dt>Why it is tied to {stage.name}</dt><dd>{r.basis}</dd></div>
+                  </dl>
+                </details>
+              </li>
+            ))}
+            {records.length === 0 && <li class="et-none">No record examined. No duration is assessed for this stage.</li>}
+          </ul>
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  <div class="et-loose">
+    <span class="et-k mono">Records the sample ties to no single stage</span>
+    <ul role="list">
+      {loose.map((r) => (
+        <li>
+          <details class="et-record">
+            <summary><span class="et-id mono">{r.id}</span><span class="et-type mono">{r.type}</span><span class="et-desc">{r.desc}</span></summary>
+            <dl>
+              <div><dt>What it supports, and what remains open</dt><dd>{r.open}</dd></div>
+              <div><dt>Why it is not tied to a stage</dt><dd>{r.basis}</dd></div>
+            </dl>
+          </details>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="et-notes">
+    <p class="et-constraint"><span class="et-k mono">Decisive constraint in this example</span>{DECISIVE_CONSTRAINT}</p>
+    <p class="et-foot">{FINDING_FOOTNOTE} {SAMPLE_LIMITS}</p>
+  </div>
+</div>
+
+<style>
+  .evidence-trace { --et-gap: clamp(40px, 6vw, 96px); --et-line: var(--hair-strong); }
+  .et-k { display: block; margin-bottom: var(--space-2); font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
+
+  .et-strip { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-2) var(--space-5); padding-bottom: var(--space-3); border-bottom: 1px solid var(--hair-strong); }
+  .et-ref { font-size: var(--type-caption); line-height: 1.6; color: var(--ink); }
+  .et-stamp { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+  .et-status { padding: 4px 10px; border: 1px solid var(--accent-text); font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
+  .et-flags { font-size: var(--type-caption); line-height: 1.6; color: var(--faint); }
+
+  .et-title { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--space-3) var(--space-7); align-items: end; padding: var(--space-5) 0 0; }
+  .et-title .h3 { margin: 0; font-size: var(--type-finding); line-height: 1.15; }
+  .et-title .h3 em { color: var(--faint); }
+  .et-title .body { margin: 0; font-size: var(--type-small); }
+  /* Read right to left on a wide screen: conclusion, findings, records. */
+  .et-map { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr); column-gap: var(--et-gap); margin-top: var(--space-5); }
+  .et-heads { grid-column: 1; grid-row: 1; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); column-gap: var(--et-gap); padding-bottom: var(--space-3); }
+  .et-heads .mono { font-size: var(--type-caption); line-height: 1.5; color: var(--faint); }
+  .et-rows { grid-column: 1; grid-row: 2; list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+  .et-row { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); column-gap: var(--et-gap); align-items: stretch; }
+  .et-records { grid-column: 1; grid-row: 1; list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); align-content: center; }
+  .et-stage { grid-column: 2; grid-row: 1; position: relative; display: grid; gap: 2px; align-content: center; padding: var(--space-3) var(--space-4); border: 1px solid var(--hair-strong); background: var(--paper); }
+  .et-stage-name { font-size: 15px; font-weight: 600; line-height: 1.4; color: var(--ink); }
+  .et-stage-value { font-family: var(--font-mono); font-size: clamp(20px, 2.1vw, 30px); font-weight: 600; line-height: 1.15; color: var(--ink); }
+  .et-stage-rel { font-size: 12px; line-height: 1.5; color: var(--faint); }
+  .et-stage-note { margin-top: 6px; font-size: var(--type-action); line-height: 1.5; color: var(--muted); }
+  /* The decisive stage is the one filled block; its lines are drawn heavy. */
+  .et-row.is-decisive { --et-line: var(--ink); --et-weight: 3px; }
+  .et-row.is-decisive .et-stage { background: var(--ink); border-color: var(--ink); }
+  .et-row.is-decisive :is(.et-stage-name, .et-stage-value) { color: var(--paper); }
+  .et-row.is-decisive :is(.et-stage-rel, .et-stage-note) { color: var(--paper); opacity: 0.74; }
+  .et-row.is-empty .et-stage { border-style: dashed; background: transparent; }
+  .et-row.is-empty .et-stage-value { color: var(--faint); }
+
+  /* Connectors. A stage reaches the conclusion; each record reaches its stage. */
+  .et-stage::after, .et-record::after, .et-none::after {
+    content: ''; position: absolute; top: 50%; left: 100%; width: var(--et-gap); height: 0; border-top: var(--et-weight, 1px) solid var(--et-line); margin-top: calc(var(--et-weight, 1px) / -2);
+  }
+  .et-record, .et-none { position: relative; }
+  .et-record::after { top: 26px; }
+  .et-none::after, .et-row.is-empty .et-stage::after { border-top-style: dashed; }
+
+  .et-record { background: var(--paper); border: 1px solid var(--hair); transition: border-color var(--dur-fast) var(--ease); }
+  .et-record summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 48px minmax(0, 1fr) 16px; gap: 0 var(--space-2); align-items: start; padding: 14px 14px 14px 16px; }
+  .et-record summary::-webkit-details-marker { display: none; }
+  .et-record summary::after { content: ''; grid-column: 3; grid-row: 1; width: 9px; height: 9px; margin-top: 4px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); transform: rotate(45deg); transition: transform var(--dur-fast) var(--ease-out); }
+  .et-record[open] summary::after { transform: translateY(4px) rotate(-135deg); }
+  .et-id { grid-row: 1 / span 2; font-size: var(--type-caption); line-height: 1.7; color: var(--ink); }
+  .et-type { grid-column: 2; font-size: 12px; line-height: 1.7; color: var(--faint); }
+  .et-desc { grid-column: 2 / 4; font-size: var(--type-action); line-height: 1.5; color: var(--ink); }
+  .et-record:is(:hover, :focus-within, [open]) { border-color: var(--ink); }
+  .et-record summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .et-record dl { margin: 0; padding: 0 16px 14px 76px; display: grid; gap: var(--space-2); }
+  .et-record dt { font-family: var(--font-mono); font-size: 12px; line-height: 1.5; color: var(--faint); }
+  .et-record dd { margin: 2px 0 0; font-size: var(--type-action); line-height: 1.55; color: var(--muted); }
+  .et-none { display: flex; align-items: center; min-height: 54px; padding: 0 16px; border: 1px dashed var(--hair-strong); font-size: var(--type-action); line-height: 1.5; color: var(--faint); }
+
+  /* The conclusion: the one dark block, in both appearances. */
+  .et-conclusion {
+    --paper: #0a0a0a; --ink: #f0f0f0; --muted: #c8c6c4; --faint: #8e8b87; --hair-strong: rgba(240, 240, 240, 0.28); --accent-text: #c9b694; --warn: #e0766a;
+    grid-column: 2; grid-row: 1 / span 2; display: grid; gap: var(--space-4); align-content: space-between; padding: clamp(24px, 2.6vw, 36px); background: var(--paper); color: var(--ink);
+  }
+  :global(:root[data-theme='dark']) .et-conclusion { --paper: #1c1c1c; }
+  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme])) .et-conclusion { --paper: #1c1c1c; } }
+  .et-conclusion .et-k { color: var(--faint); }
+  .et-state { display: flex; align-items: center; gap: 16px; margin: 0; font-size: clamp(36px, 4.2vw, 64px); font-weight: 600; letter-spacing: -0.03em; line-height: 0.98; color: var(--ink); }
+  .et-state::before { content: ''; width: 0.3em; height: 0.3em; flex: none; background: var(--warn); }
+  .et-body { margin: 0; font-size: var(--type-small); line-height: 1.6; color: var(--muted); }
+  .et-body strong { font-weight: 600; color: var(--ink); }
+  .et-decision { padding-top: var(--space-3); border-top: 1px solid var(--hair-strong); }
+  .et-decision p { margin: 0; font-size: clamp(18px, 1.5vw, 22px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.3; color: var(--ink); }
+  .et-fine { margin: 0; font-size: var(--type-caption); line-height: 1.6; color: var(--faint); }
+
+  .et-loose { margin-top: var(--space-5); padding-top: var(--space-3); border-top: 1px solid var(--hair); }
+  .et-loose ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2) var(--space-4); align-items: start; }
+  .et-loose .et-record { border-style: dashed; }
+  .et-loose .et-record::after { display: none; }
+  .et-notes { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--hair-strong); }
+  .et-constraint { margin: 0; font-size: var(--type-body); line-height: 1.6; color: var(--ink); }
+  .et-foot { margin: 0; font-size: var(--type-small); line-height: 1.65; color: var(--faint); }
+
+  /* Narrow: the same dependency read downwards on one rail. The conclusion
+     comes first; each finding follows with its records beneath it. */
+  @media (max-width: 960px) {
+    .et-title { grid-template-columns: minmax(0, 1fr); }
+    .et-map { grid-template-columns: minmax(0, 1fr); margin-top: var(--space-4); }
+    .et-heads { display: none; }
+    .et-conclusion { grid-column: 1; grid-row: 1; }
+    .et-rows { grid-row: 2; gap: 0; margin-left: 7px; padding-top: var(--space-5); border-left: 1px solid var(--hair-strong); }
+    .et-rows::before { content: 'Because'; margin: calc(-1 * var(--space-4)) 0 var(--space-2) var(--space-4); font-family: var(--font-mono); font-size: 12px; color: var(--faint); }
+    .et-row { grid-template-columns: minmax(0, 1fr); padding: 0 0 var(--space-4) var(--space-4); }
+    .et-stage { grid-column: 1; grid-row: 1; grid-template-columns: minmax(0, 1fr) auto; gap: 2px var(--space-3); padding: 0 0 var(--space-2); border: 0; background: transparent; }
+    .et-stage::before { content: ''; position: absolute; left: calc(-1 * var(--space-4) - 8px); top: 3px; width: 15px; height: 15px; border: 1px solid var(--ink); border-radius: 50%; background: var(--paper-soft); box-sizing: border-box; }
+    .et-stage::after, .et-record::after, .et-none::after { display: none; }
+    .et-stage-name { font-size: 18px; letter-spacing: var(--tracking-heading); }
+    .et-stage-value { grid-column: 2; grid-row: 1; font-size: 17px; text-align: right; align-self: baseline; }
+    .et-stage-rel, .et-stage-note { grid-column: 1 / -1; }
+    .et-row.is-decisive .et-stage { background: transparent; }
+    .et-row.is-decisive :is(.et-stage-name, .et-stage-value) { color: var(--ink); }
+    .et-row.is-decisive .et-stage-rel { color: var(--warn); opacity: 1; }
+    .et-row.is-decisive .et-stage-note { color: var(--muted); opacity: 1; }
+    .et-row.is-decisive .et-stage::before { background: var(--ink); border-radius: 0; }
+    .et-row.is-empty .et-stage::before { border-style: dashed; }
+    .et-records { grid-column: 1; grid-row: 2; }
+    .et-record dl { padding-left: 16px; }
+    .et-loose ul, .et-notes { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (prefers-reduced-motion: reduce) { .et-record, .et-record summary::after { transition: none; } }
+  @media print { .et-record > dl { display: grid !important; } }
+</style>

@@ -1,0 +1,154 @@
+---
+/**
+ * The three engagements as three depths of examination of one named system.
+ *
+ * Each engagement answers its own question and includes the examination
+ * behind the question before it, which the filled blocks show; none is a
+ * prerequisite, which the caption says. Fees and boundaries are on the page
+ * at all times. Scope and deliverables open beneath each engagement.
+ *
+ * Names, questions, decisions, evidence, deliverables and fees read from
+ * src/lib/offers.ts. The three level descriptions restate that file's scope
+ * and must be re-checked against it on any change there.
+ */
+import { check, review, assessment } from '../lib/offers';
+import { markAgda } from '../lib/marks';
+import Agda from './Agda.astro';
+
+interface Props { headingLevel?: 'h2' | 'h3' }
+const { headingLevel: H = 'h2' } = Astro.props;
+
+const levels = [
+  { title: 'Authority', body: 'Who may halt it, whether they can decide alone, how they are reached and where the halt takes effect.' },
+  { title: 'Evidence', body: 'Evidence for all four steps, graded, and your own records reviewed for real timings.' },
+  { title: 'Timing and verdict', body: 'The window set from your records, timings against it, and an Intervention Readiness verdict.' },
+];
+const routes = [
+  { o: check, kicker: 'Entry point', short: 'Authority Check', boundary: 'Not an AGDA® verdict, SEDI result or score, and no attestation. Prepared without independent review. A finding about this system only.', href: '/services/#check' },
+  { o: review, kicker: 'Preliminary', short: 'Review', boundary: 'The Review does not include the AGDA® verdict, the window set from your records or signed SEDI result records.', href: '/services/#review' },
+  { o: assessment, kicker: 'Full assessment', short: 'Assessment', boundary: 'One system, one pathway, one scenario. Connected systems are scoped separately.', href: '/services/#assessment' },
+];
+---
+<figure class="offer-choice offer-depth" aria-labelledby="offer-choice-heading">
+  <figcaption class="od-caption" data-offer-view="offer_choice">
+    <H class="h2" id="offer-choice-heading">Three questions. <em>Three depths of examination.</em></H>
+    <p class="od-principle">One named system. Each engagement includes the one before it, and none is a prerequisite.</p>
+  </figcaption>
+
+  <ol class="od-routes" role="list">
+    {routes.map(({ o, kicker, short, boundary, href }, depth) => (
+      <li class="od-route oc-route">
+        <div class="od-main">
+          <div class="od-ask oc-head">
+            <span class="mono od-kicker">{kicker}</span>
+            <p class="od-q oc-q">{o.question}</p>
+            <h3 class="od-name oc-name" set:html={markAgda(o.name)} />
+          </div>
+          <ol class="od-depth" role="list" aria-label={`${o.name}: what is examined`}>
+            {levels.map((level, i) => (
+              <li class:list={['od-level', i <= depth ? 'is-on' : 'is-off']}>
+                <span class="od-level-title">{level.title}<span class="od-sr">{i <= depth ? ': examined. ' : ': not examined.'}</span></span>
+                {i <= depth && <span class="od-level-body">{level.body}</span>}
+              </li>
+            ))}
+          </ol>
+          <div class="od-fee">
+            <span class="od-fee-note mono">{o.priceNote}</span>
+            <span class="od-price oc-price">{o.price}</span>
+            <a href={href} class="link od-link oc-link" data-offer-select={o.slug}>Explore the {short} <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <p class="od-boundary"><span class="mono">Boundary</span><span set:html={markAgda(boundary)} /></p>
+        <details class="od-more" data-disclosure>
+          <summary>Scope and what you receive</summary>
+          <div data-disclosure-body>
+            <dl class="od-fields oc-fields">
+              <div><dt>Question and decision</dt><dd set:html={markAgda(o.decision)} /></div>
+              <div><dt>Evidence examined</dt><dd>{o.examined}</dd></div>
+              <div><dt>What you receive</dt><dd><ul role="list">{o.receive.map((r) => <li set:html={markAgda(r)} />)}</ul></dd></div>
+            </dl>
+          </div>
+        </details>
+      </li>
+    ))}
+  </ol>
+
+  <p class="body muted od-note">
+    The Authority Check is not an <Agda /> verdict. A Review may recommend a
+    full Assessment but does not commit you to one or determine its verdict.
+  </p>
+</figure>
+
+<style>
+  .offer-depth { margin: 0; }
+  .od-caption { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); align-items: end; }
+  .od-caption .h2 { margin: 0; font-size: clamp(32px, 4.4vw, 64px); line-height: 1.04; }
+  .od-caption .h2 em { display: block; color: var(--faint); }
+  .od-principle { margin: 0; font-size: var(--type-support); line-height: 1.5; color: var(--muted); }
+
+  .od-routes { list-style: none; margin: var(--space-6) 0 0; padding: 0; border-bottom: 1px solid var(--hair-strong); }
+  .od-route { padding: var(--space-5) 0 var(--space-3); border-top: 1px solid var(--hair-strong); }
+  .od-main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr) minmax(0, 0.86fr); gap: var(--space-4) var(--space-5); align-items: stretch; }
+
+  .od-ask { display: grid; gap: var(--space-2); align-content: start; }
+  .od-kicker { font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
+  .od-q { margin: 0; font-size: clamp(26px, 2.7vw, 40px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.08; color: var(--ink); }
+  .od-name { margin: var(--space-1) 0 0; font-size: var(--type-small); font-weight: 600; letter-spacing: 0; line-height: 1.4; color: var(--muted); }
+
+  /* Depth: three blocks on one line, filled as far as the engagement goes.
+     The same grammar as the response in the opening scene. */
+  .od-depth { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; }
+  .od-level { display: grid; gap: 6px; align-content: start; min-height: 148px; padding: var(--space-3); }
+  .od-level.is-on { background: var(--ink); color: var(--paper); }
+  .od-level.is-off { border: 1px dashed var(--hair-strong); background: repeating-linear-gradient(135deg, var(--hair) 0 1px, transparent 1px 11px); color: var(--faint); }
+  .od-level-title { font-size: 16px; font-weight: 600; line-height: 1.3; }
+  .od-level-body { font-size: var(--type-action); line-height: 1.5; opacity: 0.82; }
+  .od-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  .od-fee { display: grid; gap: 2px; align-content: start; justify-items: start; }
+  .od-fee-note { font-size: var(--type-caption); line-height: 1.6; color: var(--faint); }
+  .od-price { font-family: var(--font-mono); font-size: clamp(16px, 1.3vw, 19px); line-height: 1.4; color: var(--ink); white-space: nowrap; }
+  .od-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: auto; font-size: var(--type-small); font-weight: 600; }
+
+  .od-boundary { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.66fr); gap: var(--space-1) var(--space-5); margin: var(--space-4) 0 0; font-size: var(--type-action); line-height: 1.55; color: var(--muted); }
+  .od-boundary .mono { font-size: var(--type-caption); line-height: 1.8; color: var(--faint); }
+
+  .od-more { margin-top: var(--space-2); }
+  .od-more summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 12px; min-height: 44px; font-size: var(--type-action); font-weight: 600; color: var(--ink); }
+  .od-more summary::-webkit-details-marker { display: none; }
+  .od-more summary::before { content: ''; width: 9px; height: 9px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); transform: translateY(-3px) rotate(45deg); transition: transform var(--dur-fast) var(--ease-out); }
+  .od-more[open]:not([data-disclosure-state='closed']) summary::before { transform: translateY(2px) rotate(-135deg); }
+  .od-more summary:is(:hover, :focus-visible) { color: var(--accent-text); }
+  .od-more summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+  .od-fields { margin: 0; padding: var(--space-2) 0 var(--space-3); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3) var(--space-6); }
+  .od-fields > div { padding-top: var(--space-3); border-top: 1px solid var(--hair); }
+  .od-fields dt { margin-bottom: 6px; font-family: var(--font-mono); font-size: var(--type-caption); line-height: 1.6; color: var(--faint); }
+  .od-fields dd { margin: 0; font-size: var(--type-action); line-height: 1.6; color: var(--muted); }
+  .od-fields ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .od-fields li { position: relative; padding-left: 18px; }
+  .od-fields li::before { content: ''; position: absolute; left: 0; top: 11px; width: 8px; height: 1px; background: var(--ink); }
+  .od-note { margin: var(--space-5) 0 0; font-size: var(--type-small); line-height: 1.7; }
+
+  @media (max-width: 1080px) {
+    .od-caption { grid-template-columns: minmax(0, 1fr); }
+    .od-main { grid-template-columns: minmax(0, 1fr) minmax(0, 0.6fr); }
+    .od-depth { grid-column: 1 / -1; grid-row: 2; }
+    .od-fee { grid-column: 2; grid-row: 1; justify-items: end; text-align: right; }
+    .od-link { margin-top: var(--space-1); }
+    .od-level { min-height: 0; }
+    .od-boundary { grid-template-columns: minmax(0, 1fr); }
+    .od-fields { grid-template-columns: minmax(0, 1fr); }
+  }
+  /* Phone: the question and the fee, then depth as a short vertical stack.
+     Levels an engagement does not reach collapse to one line each. */
+  @media (max-width: 640px) {
+    .od-route { padding-top: var(--space-4); }
+    .od-main { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
+    .od-fee { grid-column: 1; grid-row: auto; justify-items: start; text-align: left; order: 3; }
+    .od-depth { grid-row: auto; grid-template-columns: minmax(0, 1fr); order: 2; }
+    .od-level { padding: 12px var(--space-3); }
+    .od-level.is-off { min-height: 0; padding-block: 8px; }
+    .od-level.is-off .od-level-title { font-size: 13px; font-weight: 400; }
+    .od-level.is-off .od-sr { position: static; width: auto; height: auto; clip-path: none; }
+  }
+</style>

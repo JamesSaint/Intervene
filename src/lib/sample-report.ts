@@ -70,3 +70,59 @@ export const PRIORITIES_NOTE =
   'These are proposed priorities for the scenario. They do not claim that remediation has been implemented or that it will produce a favourable reassessment.';
 export const SAMPLE_LIMITS =
   'One pathway and one scenario. Nothing here is a conclusion about any institution, other systems or legal conformity.';
+
+/* ------------------------------------------------------------------
+   The homepage finding, as data. Values and wording are the constructed
+   sample's own, as previously drawn by FindingChain. Intervals are stated as
+   text, not drawn to scale, and nothing is added to anything else.
+   ------------------------------------------------------------------ */
+
+/** The window is a scenario assumption: "about six hours". */
+export const WINDOW_LABEL = 'about six hours';
+
+export interface FindingStage {
+  key: 'detect' | 'escalate' | 'decide' | 'intervene';
+  name: string;
+  value: string;
+  /** How the stage stands against the window on its own. */
+  rel: 'within' | 'may' | 'exceeds' | 'after';
+  relText: string;
+  note: string;
+}
+
+export const findingStages: FindingStage[] = [
+  { key: 'detect', name: 'Detect', value: '~12 min', rel: 'within', relText: 'Within the window', note: 'Drift identified above threshold.' },
+  { key: 'escalate', name: 'Escalate', value: '4 to 96 hours', rel: 'may', relText: 'May consume or exceed the window', note: 'To reach a person with authority to halt.' },
+  { key: 'decide', name: 'Decide', value: '≥ 7 days', rel: 'exceeds', relText: 'Exceeds the window on its own', note: 'To obtain the quorum that person needs. No out-of-cycle route.' },
+  { key: 'intervene', name: 'Intervene', value: 'Not assessed', rel: 'after', relText: 'Preceding delay already exceeds the window', note: 'The source assumes about six minutes to propagate a halt if instructed; no duration is assessed here, and decisions already made are reprocessed next day.' },
+];
+
+export const DECISIVE_CONSTRAINT =
+  'Authority, not detection. The route to a person with authority may itself exceed the window, and the quorum that person needs exceeds it on its own. Faster detection cannot change that. Naming this constraint does not show that the other stages are adequate.';
+
+export const FINDING_FOOTNOTE =
+  'Constructed illustration: no client result, issued assessment or verified outcome. Intervals are separate illustrative facts, not to scale and not added together. Their endpoints and any overlap are not established; no total response time is computed.';
+
+/* Which stage a record bears on. Only links the sample itself supports are
+   drawn, and `basis` quotes the wording that supports each one. Where the
+   sample ties a record to a control but not to a single stage, `stage` is
+   null and the record is shown unattached, with the reason. These are
+   readings of a constructed example, not assessment findings. */
+export interface RecordLink { id: string; stage: FindingStage['key'] | null; basis: string }
+
+export const recordLinks: RecordLink[] = [
+  { id: 'E-02', stage: 'detect', basis: 'The register describes it as "a source for detection timing".' },
+  { id: 'E-01', stage: 'detect', basis: 'Control C-01 cites "timing telemetry from a 2024 outage post-mortem" for detection capability.' },
+  { id: 'E-04', stage: 'escalate', basis: 'Control C-03, escalation to MRC, cites "one tabletop in 2024-Q4".' },
+  { id: 'E-08', stage: 'decide', basis: 'The register says it "does not establish that the required quorum can be reached in time"; Decide is the time to obtain that quorum.' },
+  { id: 'E-12', stage: null, basis: 'It concerns halt authority (control C-04). The sample does not tie it to a single stage.' },
+  { id: 'E-06', stage: null, basis: 'It concerns the audit trail (control C-06), not a stage timing.' },
+];
+
+export const ILLUSTRATIVE_CONCLUSION = {
+  state: 'After impact',
+  lead: 'Authority, not detection.',
+  body: 'The required route to an authorised intervention cannot complete within the assumed six-hour window. Faster detection cannot by itself resolve that constraint.',
+};
+
+export const SAMPLE_SCOPE = ['CRED-MOD-04', 'Retail credit decisioning', 'Auto-decline pathway', 'Macro shock with model drift'];

@@ -2,12 +2,13 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { PRICE_QUALIFIER, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../lib/offers';
 import IntegrityNote from '../components/IntegrityNote.astro';
-import AssessmentArtefact from '../components/AssessmentArtefact.astro';
-import OfferLadder from '../components/OfferLadder.astro';
+import EvidenceTrace from '../components/EvidenceTrace.astro';
+import OfferDepth from '../components/OfferDepth.astro';
+import HeroWindow from '../components/HeroWindow.astro';
 import AgdaLogo from '../components/AgdaLogo.astro';
 import Agda from '../components/Agda.astro';
 import SediExplorer from '../components/SediExplorer.astro';
-import WindowLab from '../components/WindowLab.astro';
+import WindowRace from '../components/WindowRace.astro';
 
 const questions = [
   { h: 'Who can actually stop it?', p: 'Not who owns the risk. Who has the authority to intervene?' },
@@ -21,7 +22,7 @@ const questions = [
   current="home"
 >
   <section class="hero hero-home" aria-labelledby="home-question">
-    <div class="wrap">
+    <div class="wrap hero-copy">
       <a class="label hero-link" href="/intervention-readiness/">Intervention Readiness</a>
       <h1 class="display-xl" id="home-question"><span class="motion-line"><span>Can you stop it </span></span><em class="motion-line"><span>in time?</span></em></h1>
       <div class="hero-intro">
@@ -34,14 +35,17 @@ const questions = [
           <p class="hero-note">One named system. One defined pathway. One intervention scenario.</p>
         </div>
       </div>
-      <WindowLab />
-      <p class="hero-principle">Governance is an input. <span>Intervention capability is the outcome.</span></p>
     </div>
+    <WindowRace />
   </section>
 
   <section class="block situations" aria-labelledby="home-problem">
     <div class="wrap">
-      <h2 class="h2 problem-heading" id="home-problem">Responsibilities are documented. <em>Can the people act?</em></h2>
+      <div class="problem-top">
+        <h2 class="h2 problem-heading" id="home-problem">Responsibilities are documented. <em>Can the people act?</em></h2>
+        <p class="hero-principle">Governance is an input. <span>Intervention capability is the outcome.</span></p>
+      </div>
+      <HeroWindow surface="var(--paper)" />
       <ul class="problem-questions" role="list">
         {questions.map((q) => (
           <li><h3 class="h3">{q.h}</h3><p class="body muted">{q.p}</p></li>
@@ -67,10 +71,10 @@ const questions = [
   <section class="block finding-block" aria-labelledby="home-evidence">
     <div class="wrap">
       <div class="lab-heading">
-        <h2 class="h2" id="home-evidence">A verdict. Supported by evidence.</h2>
+        <h2 class="h2 evidence-heading" id="home-evidence">A verdict. <em>Traced to its evidence.</em></h2>
         <p class="body muted">A full <Agda /> Assessment returns a verdict, evidence register, SEDI findings and executive interpretation. The Authority Check and the Review do not produce a verdict.</p>
       </div>
-      <AssessmentArtefact />
+      <EvidenceTrace />
       <nav class="related-links" aria-label="Inspect the assessment output"><a href="/sample-report/" class="btn-ghost">View sample verdict</a><a href="/agda/#verdict" class="link">The three verdict states <span aria-hidden="true">→</span></a></nav>
       <div class="evidence-notes">
         <p>{SELF_APPROVAL} {RECORDS_NOTE} <a href="/verify/" class="link">What verification establishes</a>.</p>
@@ -81,7 +85,7 @@ const questions = [
 
   <section class="block engage" id="offers">
     <div class="wrap">
-      <OfferLadder headingLevel="h2" />
+      <OfferDepth headingLevel="h2" />
       <p class="engage-terms">{PRICE_QUALIFIER} The proposal confirms scope, outputs, fee, terms and timetable. {AVAILABILITY} <a href="/services/" class="link">Scope, fees and how an engagement runs</a>.</p>
     </div>
   </section>
@@ -94,7 +98,8 @@ const questions = [
   </section>
 </BaseLayout>
 <style>
-  .hero { background: var(--paper-deep); padding: var(--hero-top) 0 var(--hero-bottom); }
+  .hero { background: var(--paper-deep); padding: var(--hero-top) 0 0; border-bottom: 0; }
+  .hero-copy { padding-bottom: var(--space-5); }
   .hero-link { display: inline-flex; align-items: center; min-height: 44px; }
   .hero .display-xl { font-size: var(--type-display); line-height: 1.02; margin: var(--space-3) 0 0; }
   .hero .display-xl em { display: block; }
@@ -104,15 +109,19 @@ const questions = [
   .hero-cta { margin: 0; align-items: center; gap: var(--space-4); }
   .hero-secondary { display: inline-flex; align-items: center; gap: 8px; font-size: var(--type-small); line-height: 1.5; min-height: 44px; }
   .hero-note { font-family: var(--font-mono); font-size: var(--type-caption); line-height: 1.65; color: var(--faint); margin: var(--space-4) 0 0; }
-  .hero-principle { display: flex; flex-wrap: wrap; gap: 0 var(--space-2); border-top: 1px solid var(--hair); padding-top: var(--space-4); margin: var(--gap-intro) 0 0; color: var(--faint); font-size: var(--type-small); line-height: 1.6; }
-  .hero-principle span { color: var(--ink); }
+  .problem-top { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); align-items: end; }
+  .hero-principle { margin: 0; padding-bottom: 6px; color: var(--faint); font-size: var(--type-support); line-height: 1.5; }
+  .hero-principle span { display: block; color: var(--ink); }
+  .situations :global(.hero-window) { margin-top: var(--space-6); }
+  .evidence-heading { font-size: clamp(32px, 4.4vw, 64px); line-height: 1.04; }
+  .evidence-heading em { display: block; }
   .section-heading, .assessment-intro { display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-6); align-items: start; margin-bottom: var(--space-6); }
   .situations, .method-block, .finding-block, .engage { border-bottom: 1px solid var(--hair); }
   .lab-heading { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); align-items: end; margin-bottom: var(--space-6); }
   .lab-heading .body { margin: 0; }
   .h2 em { color: var(--faint); }
-  .problem-heading { max-width: 18ch; }
-  .hero :global(.window-lab) { margin-top: var(--gap-intro); }
+  .problem-heading { font-size: clamp(32px, 4.4vw, 64px); line-height: 1.04; }
+  .problem-heading em { display: block; }
   .problem-questions { list-style: none; margin: var(--space-6) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); }
   .problem-questions li { display: grid; gap: var(--space-2); align-content: start; padding-top: var(--space-4); border-top: 1px solid var(--hair-strong); }
   .problem-questions .h3 { font-size: var(--type-card); }
@@ -140,17 +149,15 @@ const questions = [
   .close-action { display: grid; justify-items: start; gap: 24px; }
   .close-line { font-size: var(--type-support); line-height: 1.65; color: var(--muted); margin: 0; }
   /* Wide screens: the question and its support sit side by side, so the
-     model below them is in the opening view. */
+     scene below them is in the opening view. */
   @media (min-width: 1100px) {
-    .hero { padding-top: var(--space-5); }
-    .hero-home > .wrap { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); column-gap: var(--space-7); align-items: end; }
-    .hero-home > .wrap > :global(*) { grid-column: 1 / -1; }
-    .hero-link { justify-self: start; margin-bottom: 0; }
-    .hero-home > .wrap > .display-xl { grid-column: 1; font-size: clamp(64px, 6.4vw, 94px); margin-top: var(--space-1); }
-    .hero-home > .wrap > .hero-intro { grid-column: 2; grid-template-columns: 1fr; gap: var(--space-4); margin: 0; padding-bottom: 6px; }
+    .hero { padding-top: var(--space-4); }
+    .hero-copy { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); column-gap: var(--space-7); align-items: end; padding-bottom: var(--space-4); }
+    .hero-link { grid-column: 1 / -1; justify-self: start; margin-bottom: 0; }
+    .hero-copy > .display-xl { grid-column: 1; font-size: clamp(64px, 6.4vw, 94px); margin-top: 0; }
+    .hero-copy > .hero-intro { grid-column: 2; grid-template-columns: 1fr; gap: var(--space-3); margin: 0; padding-bottom: 6px; }
     .hero-sub { font-size: 18px; line-height: 1.55; }
-    .hero-note { margin-top: var(--space-3); }
-    .hero :global(.window-lab) { margin-top: var(--space-5); }
+    .hero-note { margin-top: var(--space-2); }
   }
   @media (max-height: 760px) and (min-width: 881px) { .hero { padding-top: 40px; } .hero .display-xl { font-size: clamp(44px, 6.6vw, 92px); } .hero-intro { margin-top: 28px; } }
   @media (max-width: 1100px) { .hero-intro { gap: 40px; } .section-heading, .assessment-intro { grid-template-columns: 1fr 1.8fr; gap: var(--space-5); } .assessment-identity :global(.agda-logo.logo) { width: 224px; } }
@@ -160,7 +167,10 @@ const questions = [
     .hero-note { margin-top: 16px; }
     .section-heading, .assessment-intro, .close-wrap { grid-template-columns: 1fr; gap: 24px; }
     .assessment-identity { padding-top: 0; }
-    .lab-heading { grid-template-columns: 1fr; margin-bottom: var(--space-5); }
+    .lab-heading, .problem-top { grid-template-columns: 1fr; margin-bottom: var(--space-5); }
+    /* One line each at every phone width, in the fallback font and the loaded one. */
+    .hero-principle { font-size: clamp(14px, 4.1vw, 18px); white-space: nowrap; }
+    .problem-top { margin-bottom: 0; }
     .problem-questions { grid-template-columns: 1fr; margin-top: var(--space-6); }
     .close-wrap { gap: var(--space-5); }
   }
@@ -171,8 +181,6 @@ const questions = [
     .hero-cta { flex-direction: column; align-items: stretch; gap: 12px; }
     .hero-secondary { align-self: flex-start; }
     .hero-sub { font-size: 18px; }
-    .hero-principle { display: block; margin-top: 32px; font-size: var(--type-small); }
-    .hero-principle span { display: block; }
     .section-heading { margin-bottom: 32px; }
   }
 </style>

@@ -102,18 +102,16 @@ test.describe('navigation', () => {
 test.describe('buyer journey pass', () => {
   test('homepage carries no attestation specimen and one constructed finding', async ({ page }) => {
     await page.goto('/');
-    // The constructed finding is the artefact's opening part; scope and
-    // limits are one keyboard step away and never replace the status line.
-    const artefact = page.locator('.artefact');
-    await expect(page.locator('.finding-chain')).toBeVisible();
-    await expect(artefact.locator('.af-status')).toBeVisible();
-    await artefact.getByRole('tab', { name: 'SEDI findings' }).focus();
-    await page.keyboard.press('Home');
-    await expect(artefact.getByRole('tab', { name: 'Scope' })).toHaveAttribute('aria-selected', 'true');
-    await expect(artefact.locator('#af-scope')).toContainText('One pathway and one scenario');
-    await expect(artefact.locator('.af-status')).toBeVisible();
-    await artefact.getByRole('tab', { name: 'SEDI findings' }).click();
-    await expect(page.locator('.finding-chain')).toBeVisible();
+    // The constructed finding is drawn as a trace. Its status is on the page
+    // in every state, and opening a record never replaces it.
+    const trace = page.locator('.evidence-trace');
+    await expect(trace.locator('.et-status')).toHaveText('Constructed illustration');
+    const record = trace.locator('.et-record').first();
+    await record.locator('summary').focus();
+    await page.keyboard.press('Enter');
+    await expect(record).toHaveAttribute('open', '');
+    await expect(record).toContainText('What it supports, and what remains open');
+    await expect(trace.locator('.et-status')).toBeVisible();
     const text = await page.locator('main').innerText();
     expect(text).not.toMatch(/engineHash|manifestHash|keyId|scoredAt/);
     expect(text).toMatch(/constructed illustration/i);
@@ -121,7 +119,7 @@ test.describe('buyer journey pass', () => {
     expect(text).toMatch(/≥ 7 days|at least seven days/);
     expect(text).toMatch(/not an issued assessment or a verified outcome/);
     // The fourth stage carries no assessed duration in the illustration.
-    const chain = await page.locator('.finding-chain').innerText();
+    const chain = await trace.innerText();
     expect(chain).toMatch(/Not assessed/);
     expect(chain).not.toMatch(/Cannot recover/);
     expect(chain).toMatch(/not to scale and not added together/);
@@ -132,7 +130,6 @@ test.describe('buyer journey pass', () => {
     expect(fork).not.toMatch(/confirms nothing|predicts nothing/);
     const finding = await page.locator('.finding-block').innerText();
     expect(finding).not.toMatch(/£|\/ 5|108k|EXPOSED/);
-    await expect(page.locator('.finding-chain')).toBeVisible();
   });
 
   test('the Review states its own decision and what the client keeps', async ({ page }) => {
