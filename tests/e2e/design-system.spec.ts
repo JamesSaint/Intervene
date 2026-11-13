@@ -56,7 +56,7 @@ test.describe('motion opt-in', () => {
     await page.goto('/');
     await page.addInitScript(() => { delete (window as any).IntersectionObserver; });
     await page.goto('/');
-    const hidden = await page.locator(`${REVEAL_TARGETS}, .et-row, .et-stage, .oc-head, .od-depth`).evaluateAll((els) => els.filter((el) => {
+    const hidden = await page.locator(`${REVEAL_TARGETS}, .et-row, .et-stage, .oc-head, .oc-fields`).evaluateAll((els) => els.filter((el) => {
       const style = getComputedStyle(el);
       return style.opacity !== '1' || style.transform !== 'none';
     }).length);

@@ -7,137 +7,189 @@
 import { test, expect, type Page } from '@playwright/test';
 import { offers } from '../../src/lib/offers';
 import { PRESETS, WINDOWS, evaluate, describe as describeResult, OUTCOME_LABEL } from '../../src/lib/window-model';
-import { boundary, segments, progress, percent } from '../../src/lib/race-geometry';
+import { dialArcs, progress, percent } from '../../src/lib/dial-geometry';
 
 async function open(page: Page) {
   await page.addInitScript(() => localStorage.setItem('intv-consent', 'denied'));
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
-  await expect(page.locator('.window-race')).toHaveAttribute('data-ready', '');
+  await expect(page.locator('.window-dial')).toHaveAttribute('data-ready', '');
 }
 const openDiagnostics = async (page: Page) => {
-  const diag = page.locator('.wr-diag');
+  const diag = page.locator('.wd-diag');
   if ((await diag.getAttribute('open')) === null) await diag.locator('summary').click();
   await expect(diag).toHaveAttribute('open', '');
 };
-/** What the scene has actually drawn, read back from the page. */
-const drawn = (page: Page) => page.locator('.window-race').evaluate((el) => {
-  const vertical = innerWidth <= 720;
-  const track = el.querySelector('[data-wr-track="response"]')!.getBoundingClientRect();
-  const size = vertical ? track.height : track.width;
-  const origin = vertical ? track.top : track.left;
-  const zone = el.querySelector('[data-wr-track="response"] .wr-after')!.getBoundingClientRect();
-  const segs = Array.from(el.querySelectorAll('[data-wr-seg]')).map((seg) => {
-    const box = seg.getBoundingClientRect();
-    const start = (vertical ? box.top : box.left) - origin;
-    return { start: start / size, end: (start + (vertical ? box.height : box.width)) / size };
+/** What the dial has actually drawn, read back from the page as turns. */
+const drawn = (page: Page) => page.locator('.window-dial').evaluate((el) => {
+  const read = (sel: string) => Array.from(el.querySelectorAll(sel)).map((arc) => {
+    const length = parseFloat(arc.getAttribute('stroke-dasharray')!.split(' ')[0]);
+    const from = -parseFloat(arc.getAttribute('stroke-dashoffset')!);
+    return { from, to: from + length, drawn: length > 0 };
   });
-  return { boundary: ((vertical ? zone.top : zone.left) - origin) / size, segs };
+  return { window: read('[data-df-arc]'), beyond: read('[data-df-beyond]'), ticks: el.querySelectorAll('[data-df-ticks] line.is-major').length };
 });
+/** The same arcs from the geometry, with the small gap the drawing leaves between stages. */
+const expected = (durations: readonly number[], window: number) => {
+  const arcs = dialArcs(durations, window);
+  const pick = (ring: 'window' | 'beyond') => durations.map((_, stage) => arcs.find((a) => a.stage === stage && a.ring === ring));
+  return { window: pick('window'), beyond: pick('beyond') };
+};
+async function expectDrawn(page: Page, durations: readonly number[], window: number, message: string) {
+  const want = expected(durations, window);
+  const got = await drawn(page);
+  for (const ring of ['window', 'beyond'] as const) {
+    want[ring].forEach((arc, i) => {
+      expect(got[ring][i].drawn, `${message} ${ring} stage ${i} drawn`).toBe(!!arc && arc.to - arc.from > 0.006);
+      if (!arc || arc.to - arc.from <= 0.006) return;
+      expect(got[ring][i].from, `${message} ${ring} stage ${i} from`).toBeCloseTo(arc.from, 4);
+      expect(got[ring][i].to, `${message} ${ring} stage ${i} to`).toBeCloseTo(arc.to - 0.006, 4);
+    });
+  }
+  // One major tick for each unit of the window being tested.
+  expect(got.ticks, `${message} ticks`).toBe(window);
+}
 
-test.describe('opening scene', () => {
-  test('sits in the hero, opens on a failure and states that it is illustrative', async ({ page }) => {
+test.describe('the dial', () => {
+  test('is the opening object, opens on a failure and states that it is illustrative', async ({ page }) => {
     await open(page);
-    const race = page.locator('.hero-home .window-race');
-    await expect(race).toHaveAttribute('data-outcome', 'too-late');
-    await expect(race.locator('[data-wr-word]')).toHaveText('Too late');
-    await expect(race.locator('.wr-note')).toBeVisible();
-    await expect(race.locator('.wr-note')).toContainText('Illustrative model. Relative units, not measured durations, and not an assessment result.');
-    const text = await race.innerText();
+    const dial = page.locator('.hero-home .window-dial');
+    await expect(dial).toHaveAttribute('data-outcome', 'too-late');
+    await expect(dial.locator('[data-wd-word]')).toHaveText('Too late');
+    await expect(dial.locator('[data-wd-caption]')).toHaveText('Window closed during Intervene');
+    await expect(dial.locator('.wd-note')).toBeVisible();
+    await expect(dial.locator('.wd-note')).toContainText('One turn of the dial is the intervention window; time past it runs on the inner ring.');
+    await expect(dial.locator('.wd-note')).toContainText('Relative units, not measured durations, and not an assessment result.');
+    const text = await dial.innerText();
     expect(text).not.toMatch(/Before impact|At risk|After impact|verdict/);
   });
 
-  test('gives the figure a text equivalent that names the scenario, the outcome and where the window closed', async ({ page }) => {
+  test('has a text equivalent that names the scenario, the outcome and where the window closed', async ({ page }) => {
     await open(page);
-    const race = page.locator('.window-race');
-    const figure = race.getByRole('img');
+    const dial = page.locator('.window-dial');
+    const figure = dial.locator('.wd-figure');
+    await expect(figure).toHaveAttribute('role', 'img');
     await expect(figure).toHaveAccessibleName(/Illustrative scenario, Authority out of reach: Too late\. The window closes during Intervene\./);
     await expect(figure).toHaveAccessibleDescription(/Relative units, not measured durations/);
-    // The large word and caption are presentation; assistive technology reads the sentence once.
-    await expect(race.locator('.wr-telling')).toHaveAttribute('aria-hidden', 'true');
-    await expect(race.locator('.wr-result')).toHaveAttribute('aria-live', 'polite');
+    await expect(dial.locator('.wd-result')).toHaveAttribute('aria-live', 'polite');
+    // Stage states are words, not only marks and colour.
+    await expect(dial.locator('[data-wd-state]')).toHaveText(['Completed', 'Completed', 'Completed', 'Window closes here']);
+    await expect(dial.locator('[data-wd-consumed]')).toHaveText('100%');
+    await expect(dial.locator('[data-wd-remaining]')).toHaveText('0%');
+    await expect(dial.locator('[data-wd-beyond-value]')).toHaveText('8%');
   });
 
-  test('draws the stages and the boundary where the model puts them, for every scenario', async ({ page }) => {
+  test('draws every scenario exactly where the model and the geometry put it', async ({ page }) => {
     await open(page);
-    const race = page.locator('.window-race');
+    const dial = page.locator('.window-dial');
     for (const preset of PRESETS) {
-      await race.locator('[data-wr-preset]').selectOption(preset.key);
+      await dial.locator('[data-wd-preset]').selectOption(preset.key);
       const result = evaluate(preset.durations, WINDOWS.set);
-      await expect(race).toHaveAttribute('data-outcome', result.outcome);
-      await expect(race.locator('[data-wr-word]')).toHaveText(OUTCOME_LABEL[result.outcome]);
-      await expect(race.locator('[data-wr-caption]')).toHaveText(describeResult(result));
-      const want = segments(preset.durations, WINDOWS.set);
-      // With reduced motion the site settles every property change over 80ms; read once it has.
-      await expect.poll(async () => (await drawn(page)).segs[0].end, { message: preset.key }).toBeCloseTo(want[0].length, 2);
-      await expect.poll(async () => (await drawn(page)).segs[3].end, { message: preset.key }).toBeCloseTo(want[3].start + want[3].length, 2);
-      const got = await drawn(page);
-      expect(got.boundary, preset.key).toBeCloseTo(boundary(preset.durations, WINDOWS.set), 2);
-      got.segs.forEach((seg, i) => {
-        expect(seg.start, `${preset.key} stage ${i} start`).toBeCloseTo(want[i].start, 2);
-        expect(seg.end, `${preset.key} stage ${i} end`).toBeCloseTo(want[i].start + want[i].length, 2);
-      });
-      // The response reaches past the boundary exactly when the model says it is too late.
-      expect(got.segs[3].end > got.boundary + 0.002, preset.key).toBe(result.outcome === 'too-late');
+      await expect(dial).toHaveAttribute('data-outcome', result.outcome);
+      await expect(dial.locator('[data-wd-word]')).toHaveText(OUTCOME_LABEL[result.outcome]);
+      await expect(dial.locator('[data-wd-text]')).toHaveText(describeResult(result));
+      await expectDrawn(page, preset.durations, WINDOWS.set, preset.key);
+      // The inner ring carries an arc exactly when the model says it is too late.
+      expect((await drawn(page)).beyond.some((arc) => arc.drawn), preset.key).toBe(result.outcome === 'too-late');
       const meter = progress(preset.durations, WINDOWS.set);
-      await expect(race.locator('[data-wr-consumed]')).toHaveText(percent(meter.consumed));
-      await expect(race.locator('[data-wr-remaining]')).toHaveText(percent(meter.remaining));
-      await expect(race.locator('[data-wr-beyond]')).toHaveText(percent(meter.beyond));
+      await expect(dial.locator('[data-wd-consumed]')).toHaveText(percent(meter.consumed));
+      await expect(dial.locator('[data-wd-remaining]')).toHaveText(percent(meter.remaining));
+      await expect(dial.locator('[data-wd-beyond-value]')).toHaveText(percent(meter.beyond));
     }
   });
 
   test('keeps the diagnostics apart, and stage timings change the outcome from the keyboard', async ({ page }) => {
     await open(page);
-    const race = page.locator('.window-race');
-    await expect(race.locator('.wr-diag')).not.toHaveAttribute('open');
-    await expect(race.getByRole('slider').first()).toBeHidden();
-    await race.locator('[data-wr-preset]').selectOption('holds');
-    await expect(race).toHaveAttribute('data-outcome', 'in-time');
-    await expect(race.locator('[data-wr-remaining]')).toHaveText('33%');
+    const dial = page.locator('.window-dial');
+    await expect(dial.locator('.wd-diag')).not.toHaveAttribute('open');
+    await expect(dial.getByRole('slider').first()).toBeHidden();
+    await dial.locator('[data-wd-preset]').selectOption('holds');
+    await expect(dial).toHaveAttribute('data-outcome', 'in-time');
+    await expect(dial.locator('[data-wd-remaining]')).toHaveText('33%');
 
-    await race.locator('.wr-diag summary').focus();
+    await dial.locator('.wd-diag summary').focus();
     await page.keyboard.press('Enter');
-    await expect(race.locator('.wr-diag')).toHaveAttribute('open', '');
-    const decide = race.getByRole('slider', { name: 'Decide: time taken' });
+    await expect(dial.locator('.wd-diag')).toHaveAttribute('open', '');
+    const decide = dial.getByRole('slider', { name: 'Decide: time taken' });
     await decide.focus();
     for (let i = 0; i < 4; i++) await page.keyboard.press('ArrowRight');
     await expect(decide).toHaveValue('6');
     await expect(decide).toHaveAttribute('aria-valuetext', '6 of 6');
-    // Twelve units against a twelve-unit window: exactly on the boundary is not too late.
-    await expect(race).toHaveAttribute('data-outcome', 'narrow');
-    await expect(race.locator('[data-wr-consumed]')).toHaveText('100%');
-    await expect(race.locator('[data-wr-beyond]')).toHaveText('0%');
-    await expect(race.locator('[data-wr-caption]')).toContainText('Decide takes the largest share of the time.');
-    await expect(race.locator('[data-wr-preset]')).toHaveValue('custom');
-    await expect.poll(async () => { const got = await drawn(page); return got.segs[3].end - got.boundary; }).toBeCloseTo(0, 2);
+    // Twelve units against a twelve-unit window: exactly on the boundary is not too late,
+    // and the last arc ends at twelve o'clock with nothing on the inner ring.
+    await expect(dial).toHaveAttribute('data-outcome', 'narrow');
+    await expect(dial.locator('[data-wd-consumed]')).toHaveText('100%');
+    await expect(dial.locator('[data-wd-beyond-value]')).toHaveText('0%');
+    await expect(dial.locator('[data-wd-text]')).toContainText('Decide takes the largest share of the time.');
+    await expect(dial.locator('[data-wd-preset]')).toHaveValue('custom');
+    await expectDrawn(page, [2, 2, 6, 2], WINDOWS.set, 'on the boundary');
+    const edge = await drawn(page);
+    expect(edge.window[3].to).toBeCloseTo(1 - 0.006, 4);
+    expect(edge.beyond.some((arc) => arc.drawn)).toBe(false);
 
-    // One more unit on any stage carries the chain past the boundary.
-    await race.getByRole('slider', { name: 'Detect: time taken' }).focus();
+    // One more unit on any stage carries the chain past the boundary, onto the inner ring.
+    await dial.getByRole('slider', { name: 'Detect: time taken' }).focus();
     await page.keyboard.press('ArrowRight');
-    await expect(race).toHaveAttribute('data-outcome', 'too-late');
-    await expect(race.locator('[data-wr-beyond]')).toHaveText('8%');
+    await expect(dial).toHaveAttribute('data-outcome', 'too-late');
+    await expect(dial.locator('[data-wd-beyond-value]')).toHaveText('8%');
+    await expectDrawn(page, [3, 2, 6, 2], WINDOWS.set, 'one unit over');
     await page.keyboard.press('ArrowLeft');
-    await expect(race).toHaveAttribute('data-outcome', 'narrow');
-    // Returning to a named scenario's timings names it again.
+    await expect(dial).toHaveAttribute('data-outcome', 'narrow');
     for (let i = 0; i < 4; i++) { await decide.focus(); await page.keyboard.press('ArrowLeft'); }
-    await expect(race.locator('[data-wr-preset]')).toHaveValue('holds');
+    await expect(dial.locator('[data-wd-preset]')).toHaveValue('holds');
   });
 
-  test('tests the window a quarter shorter and longer, and moves the boundary to match', async ({ page }) => {
+  test('tests the window a quarter shorter and longer, and rescales the dial to match', async ({ page }) => {
     await open(page);
-    const race = page.locator('.window-race');
+    const dial = page.locator('.window-dial');
     await openDiagnostics(page);
     const d = PRESETS.find((p) => p.key === 'margin')!.durations;
-    await race.locator('[data-wr-preset]').selectOption('margin');
-    await expect(race).toHaveAttribute('data-outcome', 'narrow');
+    await dial.locator('[data-wd-preset]').selectOption('margin');
+    await expect(dial).toHaveAttribute('data-outcome', 'narrow');
     for (const [name, key] of [['25% shorter', 'shorter'], ['25% longer', 'longer'], ['As set', 'set']] as const) {
-      await race.getByRole('radio', { name }).check();
+      await dial.getByRole('radio', { name }).check();
       const result = evaluate(d, WINDOWS[key]);
-      await expect(race).toHaveAttribute('data-outcome', result.outcome);
-      await expect(race.locator('[data-wr-caption]')).toHaveText(describeResult(result));
-      await expect.poll(async () => (await drawn(page)).boundary, { message: key }).toBeCloseTo(boundary(d, WINDOWS[key]), 2);
-      await expect(race.locator('[data-wr-consumed]')).toHaveText(percent(progress(d, WINDOWS[key]).consumed));
+      await expect(dial).toHaveAttribute('data-outcome', result.outcome);
+      await expect(dial.locator('[data-wd-text]')).toHaveText(describeResult(result));
+      await expectDrawn(page, d, WINDOWS[key], key);
+      await expect(dial.locator('[data-wd-consumed]')).toHaveText(percent(progress(d, WINDOWS[key]).consumed));
     }
+  });
+
+  test('holds at the limits of the sliders, where the inner ring fills and the figure keeps counting', async ({ page }) => {
+    await open(page);
+    const dial = page.locator('.window-dial');
+    await openDiagnostics(page);
+    for (const name of ['Detect', 'Escalate', 'Decide', 'Intervene']) {
+      await dial.getByRole('slider', { name: `${name}: time taken` }).focus();
+      await page.keyboard.press('End');
+    }
+    await dial.getByRole('radio', { name: '25% shorter' }).check();
+    await expect(dial).toHaveAttribute('data-outcome', 'too-late');
+    await expect(dial.locator('[data-wd-beyond-value]')).toHaveText('167%');
+    await expectDrawn(page, [6, 6, 6, 6], WINDOWS.shorter, 'maximum');
+    for (const name of ['Detect', 'Escalate', 'Decide', 'Intervene']) {
+      await dial.getByRole('slider', { name: `${name}: time taken` }).focus();
+      await page.keyboard.press('Home');
+    }
+    await dial.getByRole('radio', { name: '25% longer' }).check();
+    await expect(dial).toHaveAttribute('data-outcome', 'in-time');
+    await expect(dial.locator('[data-wd-consumed]')).toHaveText('27%');
+    await expectDrawn(page, [1, 1, 1, 1], WINDOWS.longer, 'minimum');
+  });
+
+  test('picks out a stage on the dial from its row in the list, by pointer or keyboard', async ({ page }) => {
+    await open(page);
+    const dial = page.locator('.window-dial');
+    const escalate = dial.locator('[data-wd-stage="1"]');
+    await escalate.focus();
+    await page.keyboard.press('Enter');
+    await expect(escalate).toHaveAttribute('aria-pressed', 'true');
+    await expect(dial).toHaveAttribute('data-focus', '1');
+    await expect(dial.locator('[data-df-arc].is-focus')).toHaveCount(1);
+    await page.keyboard.press('Enter');
+    await expect(escalate).toHaveAttribute('aria-pressed', 'false');
+    await expect(dial).not.toHaveAttribute('data-focus');
   });
 
   test('plays on arrival, can be paused, resumed and replayed, and moves nothing on the page', async ({ page, isMobile }) => {
@@ -150,131 +202,115 @@ test.describe('opening scene', () => {
     });
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await page.goto('/');
-    const race = page.locator('.window-race');
-    // On a phone the headline fills the opening view, so the scene waits
-    // until it is on screen; it shows its result throughout either way.
-    if (isMobile) {
-      await expect(race.locator('[data-wr-word]')).toHaveText('Too late');
-      await race.locator('.wr-telling').scrollIntoViewIfNeeded();
-    } else {
-      expect(await page.evaluate(() => scrollY)).toBe(0);
-    }
-    await expect(race).toHaveAttribute('data-playing', '', { timeout: 4000 });
-    // While time runs, the stage in progress is named and the outcome is withheld.
-    await expect(race.locator('[data-wr-word]')).toHaveText(/Detect|Escalate|Decide|Intervene/);
-    await expect(race).toHaveAttribute('data-outcome', 'in-time');
-    await expect(race).not.toHaveAttribute('data-closed', '');
+    const dial = page.locator('.window-dial');
+    await dial.locator('.wd-face').scrollIntoViewIfNeeded();
+    await expect(dial).toHaveAttribute('data-playing', '', { timeout: 4000 });
+    // While time runs, the stage in progress is named, later stages are pending and the outcome is withheld.
+    await expect(dial.locator('[data-wd-word]')).toHaveText(/Detect|Escalate|Decide|Intervene/);
+    await expect(dial).toHaveAttribute('data-outcome', 'in-time');
+    await expect(dial).not.toHaveAttribute('data-closed', '');
+    await expect(dial.locator('[data-wd-state]').last()).toHaveText('Pending');
 
-    const toggle = race.locator('[data-wr-toggle]');
+    const toggle = dial.locator('[data-wd-toggle]');
     await expect(toggle).toHaveText('Pause');
     await toggle.click();
     await expect(toggle).toHaveText('Resume');
-    const held = await race.evaluate((el) => getComputedStyle(el).getPropertyValue('--wr-p'));
+    const held = JSON.stringify(await drawn(page));
     await page.waitForTimeout(300);
-    expect(await race.evaluate((el) => getComputedStyle(el).getPropertyValue('--wr-p'))).toBe(held);
+    expect(JSON.stringify(await drawn(page))).toBe(held);
+    // Paused part-way: the window reads closed only if no time remains.
+    const state = await dial.evaluate((el) => ({ closed: el.hasAttribute('data-closed'), remaining: el.querySelector('[data-wd-remaining]')!.textContent }));
+    expect(state.closed && state.remaining !== '0%').toBe(false);
     await toggle.click();
     await expect(toggle).toHaveText('Pause');
 
-    await expect(race).not.toHaveAttribute('data-playing', '', { timeout: 10000 });
-    // A stage is shown complete only once its time has fully elapsed, and the outcome stays.
-    await expect(race.locator('[data-wr-seg][data-state="completed"]')).toHaveCount(4);
-    await expect(race.locator('[data-wr-word]')).toHaveText('Too late');
-    await expect(race).toHaveAttribute('data-closed', '');
+    await expect(dial).not.toHaveAttribute('data-playing', '', { timeout: 12000 });
+    // A stage reads complete only once its time has fully elapsed, and the outcome stays.
+    await expect(dial.locator('[data-wd-stage][data-state="completed"]')).toHaveCount(4);
+    await expect(dial.locator('[data-wd-word]')).toHaveText('Too late');
+    await expect(dial).toHaveAttribute('data-closed', '');
     await expect(toggle).toBeHidden();
+    await expectDrawn(page, PRESETS.find((p) => p.key === 'reach')!.durations, WINDOWS.set, 'after playback');
 
-    const replay = race.getByRole('button', { name: 'Replay' });
+    const replay = dial.locator(isMobile ? '.wd-bar [data-wd-replay]' : '.wd-face-replay');
     await expect(replay).toBeVisible();
-    if (!isMobile) await expect(replay).toBeInViewport();
     await replay.click();
-    await expect(race).toHaveAttribute('data-playing', '');
-    await expect(race.locator('[data-wr-seg][data-state="pending"]').first()).toBeVisible();
-    await expect(race).not.toHaveAttribute('data-playing', '', { timeout: 10000 });
+    await expect(dial).toHaveAttribute('data-playing', '');
+    await expect(dial).not.toHaveAttribute('data-playing', '', { timeout: 12000 });
     expect(await page.evaluate(() => (window as any).__shift)).toBeLessThan(0.01);
     // It ran once on arrival and once on request; it does not start again by itself.
     await page.waitForTimeout(1200);
-    await expect(race).not.toHaveAttribute('data-playing', '');
-  });
-
-  test('shows the window as closed only once time has reached the boundary', async ({ page }) => {
-    await page.addInitScript(() => localStorage.setItem('intv-consent', 'denied'));
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.goto('/');
-    const race = page.locator('.window-race');
-    await race.locator('.wr-telling').scrollIntoViewIfNeeded();
-    await expect(race).toHaveAttribute('data-playing', '', { timeout: 4000 });
-    await race.locator('[data-wr-toggle]').click();
-    const state = await race.evaluate((el) => ({ closed: el.hasAttribute('data-closed'), remaining: el.querySelector('[data-wr-remaining]')!.textContent }));
-    expect(state.closed).toBe(state.remaining === '0%');
-    await race.locator('[data-wr-toggle]').click();
-    await expect(race).toHaveAttribute('data-closed', '', { timeout: 10000 });
-    await expect(race.locator('[data-wr-remaining]')).toHaveText('0%');
+    await expect(dial).not.toHaveAttribute('data-playing', '');
   });
 
   test('with reduced motion it shows its result at once and offers no playback', async ({ page }) => {
     await open(page);
-    const race = page.locator('.window-race');
+    const dial = page.locator('.window-dial');
     await page.waitForTimeout(1600);
-    await expect(race).not.toHaveAttribute('data-playing', '');
-    await expect(race.locator('[data-wr-word]')).toHaveText('Too late');
-    await expect(race.getByRole('button', { name: 'Replay' })).toBeHidden();
-    await race.locator('[data-wr-preset]').selectOption('holds');
-    await expect(race).not.toHaveAttribute('data-playing', '');
-    await expect(race.locator('[data-wr-word]')).toHaveText('In time');
+    await expect(dial).not.toHaveAttribute('data-playing', '');
+    await expect(dial.locator('[data-wd-word]')).toHaveText('Too late');
+    await expect(dial.locator('[data-wd-replay]').first()).toBeHidden();
+    await dial.locator('[data-wd-preset]').selectOption('holds');
+    await expect(dial).not.toHaveAttribute('data-playing', '');
+    await expect(dial.locator('[data-wd-word]')).toHaveText('In time');
   });
 
-  test('at 1440 by 900 the question and the whole scene are in the opening view', async ({ page, isMobile }) => {
+  test('at 1440 by 900 the question and the whole dial are in the opening view, and the dial is the larger', async ({ page, isMobile }) => {
     test.skip(isMobile, 'A desktop composition.');
     await page.setViewportSize({ width: 1440, height: 900 });
     await open(page);
-    const race = page.locator('.window-race');
-    for (const part of ['.wr-word', '.wr-caption', '[data-wr-track="window"]', '[data-wr-track="response"]', '.wr-meter']) {
-      const box = (await race.locator(part).boundingBox())!;
-      expect(box.y, part).toBeGreaterThan(0);
-      expect(box.y + box.height, part).toBeLessThanOrEqual(900);
-    }
+    const face = (await page.locator('.wd-face').boundingBox())!;
+    expect(face.y).toBeGreaterThan(0);
+    expect(face.y + face.height).toBeLessThanOrEqual(900);
+    expect(face.width).toBeGreaterThanOrEqual(600);
     const headline = (await page.locator('#home-question').boundingBox())!;
-    expect(headline.y + headline.height).toBeLessThan((await race.boundingBox())!.y);
-    await expect(page.locator('.hero-home [data-primary-cta]')).toBeInViewport();
+    expect(face.width * face.height).toBeGreaterThan(headline.width * headline.height * 3);
+    for (const part of ['#home-question', '.hero-home [data-primary-cta]', '.wd-stages', '.wd-meter']) {
+      await expect(page.locator(part), part).toBeInViewport({ ratio: 1 });
+    }
   });
 
-  test('on a phone time runs downwards and every stage carries its own name', async ({ page, isMobile }) => {
+  test('on a phone the dial keeps its full width, with the stage list beneath it as the key', async ({ page, isMobile }) => {
     test.skip(!isMobile, 'A phone composition.');
     await open(page);
-    const race = page.locator('.window-race');
-    const boxes = await race.locator('[data-wr-seg]').evaluateAll((els) => els.map((el) => {
-      const box = el.getBoundingClientRect();
-      const name = el.querySelector('.wr-ghost')!.getBoundingClientRect();
-      return { top: box.top, bottom: box.bottom, width: box.width, nameInside: name.left >= box.left && name.right <= box.right + 1 };
-    }));
-    boxes.slice(1).forEach((box, i) => expect(box.top).toBeGreaterThanOrEqual(boxes[i].bottom - 1));
-    for (const box of boxes) { expect(box.width).toBeGreaterThan(200); expect(box.nameInside).toBe(true); }
-    // Touch reaches the controls without hover.
-    await race.locator('.wr-diag summary').tap();
-    await expect(race.locator('.wr-diag')).toHaveAttribute('open', '');
-    const targets = await race.locator('.wr-diag input, .wr-top select, .wr-top button').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height));
+    const dial = page.locator('.window-dial');
+    const box = await dial.evaluate((el) => {
+      const top = (sel: string) => el.querySelector(sel)!.getBoundingClientRect();
+      return { face: top('.wd-face'), stages: top('.wd-stages'), support: top('.wd-support'), bar: top('.wd-bar'), head: top('.wd-head'), view: innerWidth };
+    });
+    expect(box.face.width).toBeGreaterThan(box.view * 0.85);
+    expect(box.head.bottom).toBeLessThanOrEqual(box.face.top);
+    expect(box.face.bottom).toBeLessThanOrEqual(box.stages.top);
+    expect(box.stages.bottom).toBeLessThanOrEqual(box.support.top);
+    expect(box.support.bottom).toBeLessThanOrEqual(box.bar.top);
+    // Touch reaches every control without hover.
+    await dial.locator('[data-wd-stage="2"]').tap();
+    await expect(dial).toHaveAttribute('data-focus', '2');
+    await dial.locator('.wd-diag summary').tap();
+    await expect(dial.locator('.wd-diag')).toHaveAttribute('open', '');
+    const targets = await dial.locator('.wd-diag input, .wd-bar select, .wd-bar button, .wd-stage').evaluateAll((els) => els.filter((el) => (el as HTMLElement).offsetParent).map((el) => el.getBoundingClientRect().height));
     for (const height of targets) expect(height).toBeGreaterThanOrEqual(44);
   });
 });
 
-test('without JavaScript the scene is a fixed illustration and the whole trace is on the page', async ({ browser }) => {
+test('without JavaScript the dial is a fixed reading and the whole trace is on the page', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, reducedMotion: 'reduce' });
   const page = await context.newPage();
   await page.goto('/');
-  const race = page.locator('.window-race');
-  await expect(race.locator('.wr-figure')).toBeVisible();
-  await expect(race.locator('[data-wr-word]')).toHaveText('Too late');
-  await expect(race.locator('[data-wr-seg]')).toHaveCount(4);
-  await expect(race.locator('.wr-note')).toBeVisible();
-  await expect(race.locator('.wr-top')).toBeHidden();
-  await expect(race.locator('.wr-diag')).toBeHidden();
+  const dial = page.locator('.window-dial');
+  await expect(dial.locator('.wd-figure')).toBeVisible();
+  await expect(dial.locator('[data-wd-word]')).toHaveText('Too late');
+  await expect(dial.locator('[data-df-arc]')).toHaveCount(4);
+  await expect(dial.locator('[data-wd-state]')).toHaveText(['Completed', 'Completed', 'Completed', 'Window closes here']);
+  await expect(dial.locator('.wd-note')).toBeVisible();
+  await expect(dial.locator('.wd-bar')).toBeHidden();
+  await expect(dial.locator('.wd-face-replay')).toBeHidden();
   const trace = page.locator('.evidence-trace');
   await expect(trace.locator('.et-stage')).toHaveCount(4);
   await expect(trace.locator('.et-record')).toHaveCount(6);
   await trace.locator('.et-record summary').first().click();
   await expect(trace.locator('.et-record').first()).toContainText('What it supports, and what remains open');
-  await expect(page.locator('.offer-depth')).toContainText('none is a prerequisite');
-  await page.locator('.od-more summary').first().click();
-  await expect(page.locator('.od-more').first()).toContainText('What you receive');
+  await expect(page.locator('.offer-ladder')).toContainText('none is a prerequisite');
   await context.close();
 });
 
@@ -333,39 +369,34 @@ test.describe('evidence trace', () => {
   });
 });
 
-test.describe('three engagements', () => {
-  test('each leads with its question, shows how far it examines, and states its fee and boundary', async ({ page }) => {
-    await open(page);
-    const routes = page.locator('.offer-depth .od-route');
-    await expect(routes).toHaveCount(offers.length);
-    expect(await routes.evaluateAll((els) => els.map((el) => el.querySelectorAll('.od-level.is-on').length))).toEqual([1, 2, 3]);
-    for (let i = 0; i < offers.length; i++) {
-      const route = routes.nth(i);
-      await expect(route.locator('.od-q')).toHaveText(offers[i].question);
-      await expect(route.locator('.od-name')).toContainText(offers[i].name.replace('AGDA® ', ''));
-      await expect(route.locator('.od-price')).toHaveText(offers[i].price);
-      await expect(route.locator('.od-fee-note')).toHaveText(offers[i].priceNote);
-      await expect(route.locator('.od-boundary')).toBeVisible();
-      await expect(route.locator('.od-link')).toHaveAttribute('href', `/services/#${offers[i].slug}`);
-      await expect(route.locator('.od-level')).toHaveCount(3);
-    }
-    // Depth is stated in words as well as by fill.
-    await expect(routes.nth(0).locator('.od-level').nth(2)).toContainText('Timing and verdict: not examined.');
-    await expect(routes.nth(0).locator('.od-level').nth(2).locator('.od-level-body')).toHaveText('Not examined');
-    await expect(routes.nth(2).locator('.od-level').nth(2)).toContainText('Timing and verdict: examined.');
-    for (const o of offers) await expect(page.locator('.offer-depth').getByText(o.price, { exact: true })).toHaveCount(1);
-    await expect(page.locator('.offer-depth')).toContainText('none is a prerequisite');
-  });
+test('the offer comparison includes each earlier engagement and gives every list its own labels', async ({ page }) => {
+  await open(page);
+  const routes = page.locator('.offer-ladder .ol-route');
+  await expect(routes).toHaveCount(offers.length);
+  const included = await routes.evaluateAll((els) => els.map((el) => el.querySelectorAll('.ol-cap.is-on').length));
+  expect(included).toEqual([2, 4, 8]);
+  for (let i = 0; i < offers.length; i++) {
+    const route = routes.nth(i);
+    await expect(route.locator('.ol-cap')).toHaveCount(8);
+    await expect(route).toContainText(offers[i].price);
+    await expect(route.locator('.ol-link')).toHaveAttribute('href', `/services/#${offers[i].slug}`);
+    // The label is in the accessibility tree even where the table hides it visually.
+    await expect(route.getByRole('list').first()).toContainText('Intervention Readiness verdict, with its basis and limitations');
+  }
+  await expect(routes.nth(0).locator('.ol-cap').nth(6)).toContainText('not included');
+  await expect(routes.nth(2).locator('.ol-cap').nth(6)).toContainText(': included');
+});
 
-  test('scope and deliverables open beneath each engagement from the keyboard', async ({ page }) => {
-    await open(page);
-    const more = page.locator('.od-more').nth(2);
-    await expect(more.locator('.od-fields')).toBeHidden();
-    await more.locator('summary').focus();
-    await page.keyboard.press('Enter');
-    await expect(more.locator('.od-fields')).toBeVisible();
-    for (const item of offers[2].receive) await expect(more.locator('.od-fields')).toContainText(item.replace('AGDA® ', ''));
-  });
+test('each engagement leads with its question and states its fee beside it', async ({ page }) => {
+  await open(page);
+  const heads = page.locator('.offer-ladder .ol-head');
+  for (let i = 0; i < offers.length; i++) {
+    await expect(heads.nth(i).locator('.ol-q')).toHaveText(offers[i].question);
+    await expect(heads.nth(i).locator('.ol-price')).toHaveText(offers[i].price);
+    await expect(heads.nth(i).locator('.ol-price-note')).toHaveText(offers[i].priceNote);
+  }
+  // Each fee appears once per engagement, not repeated lower in the column.
+  for (const o of offers) await expect(page.locator('.offer-ladder').getByText(o.price, { exact: true })).toHaveCount(1);
 });
 
 test('opening a SEDI stage closes the others and marks every later stage as waiting on it', async ({ page }) => {
@@ -390,19 +421,20 @@ test('opening a SEDI stage closes the others and marks every later stage as wait
   }
 });
 
-test('the on-paper and under-pressure figure is labelled as conceptual and puts late intervention beyond the boundary', async ({ page }) => {
+test('the two readings set the documented chain beside the one under pressure, on the same dial', async ({ page }) => {
   await open(page);
-  const figure = page.locator('.situations .hero-window');
-  await expect(figure).toContainText('Conceptual illustration. Positions show order, not measured durations.');
-  await expect(figure).toHaveAttribute('aria-label', /On paper.*Under pressure/);
-  const edges = await figure.evaluate((el) => {
-    const track = el.querySelector('.hw-pressure .hw-track')!;
-    const zone = parseFloat(getComputedStyle(track, '::after').left) + track.getBoundingClientRect().left;
-    const last = (row: string) => el.querySelector(`${row} .hw-stage:last-child .hw-node`)!.getBoundingClientRect();
-    return { zone, paper: last('.hw-paper').right, pressure: last('.hw-pressure').left };
-  });
-  expect(edges.paper).toBeLessThan(edges.zone);
-  expect(edges.pressure).toBeGreaterThan(edges.zone);
+  const readings = page.locator('.situations .dial-reading');
+  await expect(readings).toHaveCount(2);
+  await expect(readings.nth(0)).toHaveAttribute('data-outcome', 'in-time');
+  await expect(readings.nth(1)).toHaveAttribute('data-outcome', 'too-late');
+  await expect(readings.nth(0).getByRole('img')).toHaveAccessibleName(/On paper: In time\./);
+  await expect(readings.nth(1).getByRole('img')).toHaveAccessibleName(/Under pressure: Too late\. The window closes during Intervene\./);
+  await expect(readings.nth(0).locator('figcaption')).toContainText('67% of the window used');
+  await expect(readings.nth(1).locator('figcaption')).toContainText('100% of the window used, 8% beyond it');
+  await expect(page.locator('.readings-note')).toContainText("Conceptual illustration in the model's relative units, not measured durations.");
+  // Only the reading under pressure draws anything on the inner ring.
+  const inner = await readings.evaluateAll((els) => els.map((el) => Array.from(el.querySelectorAll('.df-arc-beyond')).some((arc) => parseFloat(arc.getAttribute('stroke-dasharray')!) > 0)));
+  expect(inner).toEqual([false, true]);
 });
 
 test('the homepage does not overflow at any supported width', async ({ page }) => {
@@ -411,10 +443,24 @@ test('the homepage does not overflow at any supported width', async ({ page }) =
     await page.setViewportSize({ width, height: 900 });
     // Layout settles a frame after the resize, as it does on the existing pages.
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth), { message: `${width}px` }).toBeLessThanOrEqual(0);
-    const clipped = await page.locator('.wr-word, .wr-select, .wr-meter, .et-state, .et-stamp, .od-q, .od-price').evaluateAll((els) => els.filter((el) => {
+    const clipped = await page.locator('.wd-face, .wd-select, .wd-meter, .dial-reading, .et-state, .et-stamp, .ol-q, .ol-price, .step-link').evaluateAll((els) => els.filter((el) => {
       const b = el.getBoundingClientRect();
       return b.width > 0 && (b.left < -1 || b.right > innerWidth + 1);
     }).map((el) => el.className));
     expect(clipped, `${width}px`).toEqual([]);
   }
+});
+
+test('each section hands the visitor to the next, ending in one action', async ({ page }) => {
+  await open(page);
+  const steps = page.locator('main .step-link');
+  await expect(steps).toHaveText([/How is that assessed\?/, /What does an assessment produce\?/, /Which engagement fits your system\?/]);
+  for (const href of await steps.evaluateAll((els) => els.map((el) => el.getAttribute('href')!))) {
+    await expect(page.locator(href)).toHaveCount(1);
+  }
+  await steps.first().focus();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/#home-method$/);
+  await expect(page.locator('#home-method')).toBeInViewport();
+  await expect(page.locator('#offers .engage-action .btn')).toHaveAttribute('href', '/contact/');
 });
