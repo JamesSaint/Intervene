@@ -184,3 +184,113 @@ test('sample report: a four-step reading path leads from the conclusion to its q
   // The cover keeps the sample's status above the path.
   await expect(page.locator('.cover .provenance-note')).toContainText('It has not been run as an assessment, is not issued and is not signed.');
 });
+
+test('AGDA: one figure shows how a conclusion is reached, and draws no result', async ({ page }) => {
+  await page.goto('/agda/');
+  const model = page.locator('#model .assessment-model');
+  await expect(model.locator('.am-k')).toHaveText(['Scope', 'Evidence', 'Intervention chain', 'Conclusion']);
+  // The available time is set in scope and is what the chain is read against.
+  await expect(model.locator('.am-list .am-time')).toHaveText('The available time');
+  await expect(model.locator('.am-rail .am-node')).toHaveText(['Detect', 'Escalate', 'Decide', 'Intervene']);
+  await expect(model.locator('.am-rail .am-edge')).toHaveText('Available time');
+  await expect(model.locator('.am-thread')).toHaveText('The available time agreed in scope is what the chain is read against.');
+  // All three states are listed; none is selected.
+  await expect(model.locator('.am-states li')).toHaveText(['Before impact', 'At risk', 'After impact']);
+  await expect(model.locator('[aria-current], [aria-selected="true"], .is-selected')).toHaveCount(0);
+  await expect(model).toContainText("Issuance requires approval separate from the assessor's own judgement.");
+  await expect(model.locator('figcaption')).toHaveText('The conclusion applies to the assessed conditions. It does not extend automatically to every pathway, future event or system in the organisation.');
+  // Each part links to the section that carries it.
+  for (const href of await model.locator('.am-k').evaluateAll((els) => els.map((el) => el.getAttribute('href')!))) await expect(page.locator(href)).toHaveCount(1);
+  // The page still carries its verdict specimen and its boundaries.
+  await expect(page.locator('#verdict .verdict-dials')).toHaveCount(1);
+  await expect(page.locator('main')).toContainText('AGDA® is not validated against real-world outcomes.');
+});
+
+test('methodology: four layers are kept apart, each linked to its detail, and marked as diagrams', async ({ page }) => {
+  await page.goto('/methodology/');
+  const layers = page.locator('#layers .method-layers');
+  await expect(layers.locator('h3')).toHaveText(['Operational dependencies', 'Timing', 'Evidence', 'Conclusion']);
+  await expect(layers.locator('li').nth(1)).toContainText('The stages run against the available time, which is set in scope.');
+  await expect(layers.locator('li').nth(2)).toContainText('Confidence cannot outrun the evidence.');
+  await expect(layers.locator('li').nth(3)).toContainText('Intervene remains responsible for evidence interpretation and the final conclusion.');
+  await expect(layers.locator('figcaption')).toHaveText('Diagrams of the method, not measurements. The underlying rubric and protected implementation remain Intervene IP.');
+  const hrefs = await layers.locator('li > a').evaluateAll((els) => els.map((el) => el.getAttribute('href')!));
+  expect(hrefs).toEqual(['#chain', '#scope', '#evidence', '#chain']);
+  for (const href of hrefs) await expect(page.locator(href)).toHaveCount(1);
+  // The diagrams are decoration for a reader of the text: hidden from assistive technology.
+  expect(await layers.locator('svg').evaluateAll((els) => els.every((el) => el.getAttribute('aria-hidden') === 'true'))).toBe(true);
+  // The evidence kinds are drawn in the order the page's own ladder gives them.
+  await expect(layers.locator('li').nth(2).locator('svg text')).toHaveText(['Policy', 'Drill', 'Production', 'Stress']);
+  // The detailed sections remain.
+  for (const id of ['#scope', '#chain', '#dimensions', '#evidence', '#ceiling', '#positions', '#records', '#basis']) await expect(page.locator(id)).toHaveCount(1);
+});
+
+for (const slug of ['vs-audit', 'vs-ai-governance', 'vs-compliance', 'vs-operational-resilience', 'vs-risk-management']) {
+  test(`${slug}: the comparison is drawn as two sides of one spine and stays a table`, async ({ page, isMobile }) => {
+    await page.goto(`/intervention-readiness/${slug}/`);
+    const table = page.locator('table.split-ledger');
+    // It is still a table to assistive technology: one header row, and a row header and two cells per row.
+    await expect(table).toHaveRole('table');
+    await expect(table.getByRole('columnheader')).toHaveCount(3);
+    const rows = table.locator('tbody tr');
+    expect(await rows.count()).toBe(5);
+    await expect(table.getByRole('rowheader')).toHaveCount(5);
+    await expect(table.getByRole('cell')).toHaveCount(10);
+    if (!isMobile) {
+      // The adjacent discipline sits left of the spine, the aspect on it, Intervention Readiness right of it.
+      const order = await rows.first().evaluate((tr) => Array.from(tr.children).map((c) => Math.round(c.getBoundingClientRect().left)));
+      expect(order[1]).toBeLessThan(order[0]);
+      expect(order[0]).toBeLessThan(order[2]);
+      // The two sides are weighted differently, and no claim is added: the cells are the page's own rows.
+      const weights = await rows.first().locator('td').evaluateAll((els) => els.map((el) => getComputedStyle(el).fontWeight));
+      expect(weights).toEqual(['400', '600']);
+    } else {
+      // On a phone each cell names its column, because the header row is not on screen.
+      const labels = await rows.first().locator('td').evaluateAll((els) => els.map((el) => getComputedStyle(el, '::before').content));
+      expect(labels[1]).toBe('"Intervention Readiness"');
+      expect(labels[0]).not.toBe('none');
+    }
+  });
+}
+
+test('insights: the latest note leads, earlier notes follow in date order, and the list has one source', async ({ page }) => {
+  await page.goto('/insights/');
+  const lead = page.locator('.note-lead');
+  await expect(lead).toHaveAttribute('href', '/insights/accountability-theatre/');
+  await expect(lead.locator('.note-meta')).toHaveText('Latest · 28 May 2026');
+  await expect(lead.locator('time')).toHaveAttribute('datetime', '2026-05-28');
+  await expect(page.locator('.insights-list .insight-meta')).toHaveText(['14 May 2026', '30 April 2026']);
+  expect(await page.locator('.insights-list a').evaluateAll((els) => els.map((el) => el.getAttribute('href')))).toEqual(['/insights/coincidence-is-not-a-margin/', '/insights/the-thirty-six-hour-window/']);
+  // Headings descend in order: one h1, then h2s.
+  await expect(page.locator('main h1')).toHaveCount(1);
+  // Every note's own page carries the title and date the index gives it.
+  for (const [slug, date] of [['accountability-theatre', '28 May 2026'], ['coincidence-is-not-a-margin', '14 May 2026'], ['the-thirty-six-hour-window', '30 April 2026']]) {
+    await page.goto(`/insights/${slug}/`);
+    await expect(page.locator('.insight-header time')).toHaveText(date);
+    await expect(page.locator('.insight-header .meta')).toContainText(/\d+ minute read/);
+  }
+});
+
+test('a note leads on to the notes either side of it, and adds no animation or diagram', async ({ page }) => {
+  await page.goto('/insights/coincidence-is-not-a-margin/');
+  const nav = page.locator('.note-nav');
+  await expect(nav.locator('.note-nav-link')).toHaveCount(2);
+  await expect(nav.locator('.note-nav-link').nth(0)).toHaveAttribute('href', '/insights/accountability-theatre/');
+  await expect(nav.locator('.note-nav-link').nth(0)).toContainText('Later note · 28 May 2026');
+  await expect(nav.locator('.note-nav-link').nth(1)).toHaveAttribute('href', '/insights/the-thirty-six-hour-window/');
+  await expect(nav.locator('.note-nav-link').nth(1)).toContainText('Earlier note · 30 April 2026');
+  await expect(nav.locator('.note-nav-all')).toHaveAttribute('href', '/insights/');
+  // The newest note has only an earlier one; the oldest only a later one.
+  await page.goto('/insights/accountability-theatre/');
+  await expect(page.locator('.note-nav .note-nav-link')).toHaveCount(1);
+  await expect(page.locator('.note-nav .note-nav-link')).toContainText('Earlier note');
+  await page.goto('/insights/the-thirty-six-hour-window/');
+  await expect(page.locator('.note-nav .note-nav-link')).toContainText('Later note');
+  // Reading pages carry no figure, canvas, video or running animation.
+  await expect(page.locator('article svg, article canvas, article video, article figure')).toHaveCount(0);
+  expect(await page.evaluate(() => document.getAnimations().filter((a) => a.playState === 'running').length)).toBe(0);
+  // Body text is set in the ink colour, at a readable measure.
+  const prose = await page.locator('.prose > p').nth(1).evaluate((el) => ({ size: parseFloat(getComputedStyle(el).fontSize), chars: el.getBoundingClientRect().width / (parseFloat(getComputedStyle(el).fontSize) * 0.5) }));
+  expect(prose.size).toBeGreaterThanOrEqual(18);
+  expect(prose.chars).toBeLessThan(95);
+});

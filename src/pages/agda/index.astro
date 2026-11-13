@@ -8,8 +8,10 @@ import AgdaLogo from '../../components/AgdaLogo.astro';
 import Agda from '../../components/Agda.astro';
 import PageNav from '../../components/PageNav.astro';
 import SediExplorer from '../../components/SediExplorer.astro';
+import AssessmentModel from '../../components/AssessmentModel.astro';
 
 const pageNav = [
+  { href: '#model', label: 'How a conclusion is reached' },
   { href: '#scope', label: 'Scope and evidence' },
   { href: '#verdict', label: 'Verdict states' },
   { href: '#deliverables', label: 'What you receive' },
@@ -62,6 +64,16 @@ const faqs = [
   </section>
 
   <PageNav items={pageNav} />
+
+  <!-- THE MODEL. One figure for the whole assessment: scope, evidence, the
+       chain against the available time, and the conclusion. The sections
+       beneath take each part in turn. -->
+  <section class="block model-block" id="model">
+    <div class="wrap">
+      <h2 class="h2">How a conclusion <em>is reached.</em></h2>
+      <AssessmentModel />
+    </div>
+  </section>
 
   <section class="block" id="scope">
     <div class="wrap">
