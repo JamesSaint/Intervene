@@ -433,7 +433,7 @@ supports it.
 ### Fonts
 
 The seven woff2 files were subset to Basic Latin, Latin-1, Latin Extended-A
-and the punctuation, arrows and symbols the site uses: 549 kB to 218 kB in
+and the punctuation, arrows and symbols the site uses: 549 kB to 208 kB in
 total, and the two preloaded files from 198 kB to 71 kB. The complete
 originals are in the history at commit `6418902`. `scripts/subset-fonts.py`
 reproduces the subsets and fails unless every check passes.
