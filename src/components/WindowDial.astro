@@ -150,7 +150,7 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
   .wd-centre { position: absolute; inset: 25% 26% 36%; display: grid; align-content: center; justify-items: center; gap: 8px; text-align: center; color: var(--wd-ink); }
   .wd-scn { font-family: var(--font-mono); font-size: clamp(10px, 1.9vw, 12px); line-height: 1.4; color: var(--wd-faint); min-height: 2.8em; display: flex; align-items: flex-end; }
   .wd-word { font-size: clamp(28px, 8vw, 68px); font-weight: 600; letter-spacing: -0.03em; line-height: 1; white-space: nowrap; }
-  .window-dial[data-closed]:not([data-playing]) .wd-word { color: var(--wd-warn); }
+  .window-dial[data-closed]:not([data-playing]):not([data-reading]) .wd-word { color: var(--wd-warn); }
   .wd-caption { font-size: clamp(12px, 2.6vw, 15px); line-height: 1.35; color: var(--wd-muted); min-height: 2.7em; max-width: 17ch; }
 
   /* The console under the opening: the four stages across, each with its
@@ -269,7 +269,7 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
     STAGES, STAGE_ACTIONS, WINDOWS, PRESETS, OUTCOME_LABEL, evaluate, describe,
     type WindowKey,
   } from '../lib/window-model';
-  import { dialArcs, dash, stageStates, endsBeyond, progress, handPosition, labelPlacements, fitsLabel, percent, RADIUS } from '../lib/dial-geometry';
+  import { dialArcs, dash, stageStates, endsBeyond, progress, handPosition, labelPlacements, fitsLabel, percent, RADIUS, STROKE } from '../lib/dial-geometry';
 
   const NS = 'http://www.w3.org/2000/svg';
   /** Milliseconds of playback for one unit of the model. */
@@ -305,6 +305,8 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
     let last = 0;
     let played = false;
     let focused: number | null = null;
+    /** The stage currently picked out, by hover or by a press. */
+    let shown: number | null = null;
 
     const durations = () => ranges.map((r) => Number(r.value));
     const windowKey = () => (windows.find((w) => w.checked)?.value ?? 'set') as WindowKey;
@@ -372,10 +374,7 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
       set($('[data-wd-top]'), closed ? 'Window closed' : 'Window closes');
       set($('[data-wd-scn]'), label());
       if (playing && active > -1) { set(word, STAGES[active]); set(caption, STAGE_ACTIONS[active]); }
-      else if (!playing) {
-        set(word, OUTCOME_LABEL[result.outcome]);
-        set(caption, result.outcome === 'too-late' ? `Window closed during ${STAGES[result.closesDuring ?? 3]}` : result.outcome === 'narrow' ? 'Inside the window, narrowly' : 'Inside the window');
-      }
+      else if (!playing) centre(shown);
       const at = handPosition(d, w, elapsed);
       const angle = at.turn * 2 * Math.PI;
       hand.setAttribute('cx', (300 + RADIUS[at.ring] * Math.sin(angle)).toFixed(2));
@@ -386,7 +385,20 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
       else highlight(focused);
     }
 
+    /** The centre reads the outcome, or the share of the window one picked stage takes. */
+    function centre(index: number | null) {
+      const d = durations();
+      const w = win();
+      const result = evaluate(d, w);
+      dial.toggleAttribute('data-reading', index !== null);
+      if (index !== null) { set(word, STAGES[index]); set(caption, `${percent(d[index] / w)} of the window`); return; }
+      set(word, OUTCOME_LABEL[result.outcome]);
+      set(caption, result.outcome === 'too-late' ? `Window closed during ${STAGES[result.closesDuring ?? 3]}` : result.outcome === 'narrow' ? 'Inside the window, narrowly' : 'Inside the window');
+    }
+
     function highlight(index: number | null) {
+      shown = index;
+      if (!Number.isFinite(elapsed)) centre(index);
       if (index === null) delete dial.dataset.focus; else dial.dataset.focus = String(index);
       [outer, inner, names, stages].forEach((group) => group.forEach((el, i) => el.classList.toggle('is-focus', i === index)));
       stages.forEach((button, i) => button.setAttribute('aria-pressed', String(focused === i)));
@@ -413,6 +425,8 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
     function settle() {
       cancelAnimationFrame(frame); frame = 0; elapsed = Infinity;
       drawTicks(); draw(); announce(); sync();
+      // The settled scenario, for anything further down the page that reads the same model.
+      document.dispatchEvent(new CustomEvent('intervene:scenario', { detail: { key: select.value, label: label(), durations: durations(), window: win() } }));
     }
     function run() {
       const end = durations().reduce((a, b) => a + b, 0) + 0.35;
@@ -427,7 +441,7 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
       sync();
     }
     function play() {
-      cancelAnimationFrame(frame); frame = 0; played = true; focused = null;
+      cancelAnimationFrame(frame); frame = 0; played = true; focused = null; shown = null;
       if (!motionEnabled()) { settle(); return; }
       drawTicks(); announce();
       elapsed = 0; draw(); run();
@@ -457,6 +471,35 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
       button.addEventListener('pointerenter', (event) => { if (event.pointerType === 'mouse' && !Number.isFinite(elapsed) && focused === null) highlight(i); });
       button.addEventListener('pointerleave', (event) => { if (event.pointerType === 'mouse' && !Number.isFinite(elapsed) && focused === null) highlight(null); });
     });
+
+    // The dial answers to the pointer as the list does: hover previews a
+    // stage, a click holds it. The stage is found from the pointer's angle
+    // and ring through the same geometry that draws the arcs, because a
+    // browser's own hit test does not follow a dashed stroke.
+    function stageAt(event: PointerEvent | MouseEvent): number | null {
+      const box = face.getBoundingClientRect();
+      const x = ((event.clientX - box.left) / box.width) * 600 - 300;
+      const y = ((event.clientY - box.top) / box.height) * 600 - 300;
+      const radius = Math.hypot(x, y);
+      const ring = Math.abs(radius - RADIUS.window) <= STROKE.window / 2 ? 'window' : Math.abs(radius - RADIUS.beyond) <= STROKE.beyond / 2 + 4 ? 'beyond' : null;
+      if (!ring) return null;
+      const turn = (Math.atan2(x, -y) / (2 * Math.PI) + 1) % 1;
+      const hit = dialArcs(durations(), win()).find((arc) => arc.ring === ring && turn >= arc.from && turn <= arc.to);
+      return hit ? hit.stage : null;
+    }
+    face.addEventListener('click', (event) => {
+      if (Number.isFinite(elapsed)) return;
+      const i = stageAt(event);
+      if (i === null) return;
+      focused = focused === i ? null : i; highlight(focused);
+    });
+    face.addEventListener('pointermove', (event) => {
+      if (event.pointerType !== 'mouse' || Number.isFinite(elapsed)) return;
+      const i = stageAt(event);
+      face.style.cursor = i === null ? '' : 'pointer';
+      if (focused === null && i !== shown) highlight(i);
+    });
+    face.addEventListener('pointerleave', () => { face.style.cursor = ''; if (focused === null && shown !== null && !Number.isFinite(elapsed)) highlight(null); });
 
     dial.setAttribute('data-ready', '');
     settle();

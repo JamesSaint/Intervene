@@ -23,6 +23,21 @@ const rows = findingStages.map((stage) => ({
   records: recordLinks.filter((l) => l.stage === stage.key).map((l) => ({ ...record(l.id), basis: l.basis, support: l.support })),
 }));
 const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...record(l.id), basis: l.basis }));
+
+/* The executive reading: four questions answered from the same data the
+   trace draws, so the summary cannot say more than the trace does. Each
+   answer is assembled from the sample's own values and counts; pressing one
+   marks the parts of the trace it rests on (`marks` is a selector list). */
+const words = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight'];
+const stageBy = (rel: string) => findingStages.filter((s) => s.rel === rel);
+const say = (s: (typeof findingStages)[number]) => `${s.name}, ${s.value}: ${s.relText.charAt(0).toLowerCase()}${s.relText.slice(1)}.`;
+const matched = recordLinks.filter((l) => l.support === 'matched').length;
+const lenses = [
+  { key: 'examined', q: 'What was examined', a: `${SAMPLE_SCOPE[2]}, ${SAMPLE_SCOPE[3].charAt(0).toLowerCase()}${SAMPLE_SCOPE[3].slice(1)}. ${words[evidence.length]} records and four stages, against an assumed window of ${WINDOW_LABEL}.`, marks: '.et-record' },
+  { key: 'established', q: 'What the example establishes', a: [...stageBy('within'), ...stageBy('exceeds')].map(say).join(' '), marks: '.et-row.is-within .et-stage, .et-row.is-exceeds .et-stage, .et-rows .et-record.is-stated' },
+  { key: 'open', q: 'What remains uncertain', a: `${stageBy('may').map(say).join(' ')} ${stageBy('after').map((s) => `${s.name}: ${s.value.toLowerCase()}.`).join(' ')} ${words[matched]} records are matched by description only; ${words[loose.length].toLowerCase()} tie to no single stage.`, marks: '.et-row.is-may .et-stage, .et-row.is-after .et-stage, .et-record.is-matched, .et-loose .et-record, .et-none' },
+  { key: 'why', q: 'Why the conclusion follows', a: `${ILLUSTRATIVE_CONCLUSION.lead} ${ILLUSTRATIVE_CONCLUSION.body}`, marks: '.et-row.is-decisive .et-stage, .et-conclusion, .et-constraint' },
+];
 ---
 <div class="evidence-trace" data-evidence-trace>
   <div class="et-strip">
@@ -37,6 +52,22 @@ const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...recor
     <h3 class="h3">Detection works. <em>Authority does not.</em></h3>
     <p class="body muted">Can the auto-decline pathway stop within an assumed six-hour window? No client data; not an issued assessment or a verified outcome.</p>
   </div>
+
+  <div class="et-exec" data-et-exec>
+    <p class="et-k mono et-exec-k">Executive reading<span class="et-exec-hint"> · select a question to mark its answer on the trace</span></p>
+    <ul class="et-lenses" role="list">
+      {lenses.map((l) => (
+        <li>
+          <button type="button" class="et-lens" data-et-lens={l.key} data-et-marks={l.marks} aria-pressed="false">
+            <span class="et-lens-q">{l.q}</span>
+            <span class="et-lens-a">{l.a}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+    <p class="et-lens-status mono" data-et-status aria-live="polite"></p>
+  </div>
+  <noscript><style is:inline>{'.et-exec-hint, .et-lens-status { display: none; } .et-lens { cursor: default; }'}</style></noscript>
 
   <div class="et-map">
     <div class="et-conclusion">
@@ -122,6 +153,27 @@ const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...recor
   .et-title .h3 em { display: block; }
   .et-title .h3 em { color: var(--faint); }
   .et-title .body { margin: 0; font-size: var(--type-body); }
+  /* The executive reading: four answers on one line. A pressed question is
+     filled, and what it rests on is ringed on the trace beneath. */
+  .et-exec { margin-top: var(--space-5); }
+  .et-exec-k { margin-bottom: var(--space-3); }
+  .et-exec-hint { color: var(--faint); }
+  .et-lenses { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--hair-strong); background: var(--paper); }
+  .et-lenses > li + li { border-left: 1px solid var(--hair-strong); }
+  .et-lens { appearance: none; display: grid; gap: var(--space-2); align-content: start; width: 100%; height: 100%; min-height: 44px; padding: var(--space-4); border: 0; background: transparent; font: inherit; text-align: left; color: var(--ink); cursor: pointer; transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+  .et-lens-q { display: flex; align-items: baseline; gap: 10px; font-size: var(--type-body); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.3; }
+  .et-lens-q::before { content: ''; flex: none; width: 10px; height: 10px; border: 1px solid currentColor; transform: translateY(-1px); transition: background-color var(--dur-fast) var(--ease); }
+  .et-lens-a { font-size: var(--type-action); line-height: 1.55; color: var(--muted); transition: color var(--dur-fast) var(--ease); }
+  .et-lens:hover { background: var(--paper-soft); }
+  .et-lens:focus-visible { outline: 2px solid var(--focus); outline-offset: -4px; }
+  .et-lens[aria-pressed='true'] { background: var(--ink); color: var(--paper); }
+  .et-lens[aria-pressed='true'] .et-lens-a { color: var(--paper); }
+  .et-lens[aria-pressed='true'] .et-lens-q::before { background: currentColor; }
+  .et-lens-status { margin: var(--space-2) 0 0; min-height: 1lh; font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
+  /* What a pressed question rests on. A ring, never a dimming of the rest. */
+  :global(.evidence-trace .is-marked) { outline: 2px solid var(--ink); outline-offset: 4px; }
+  :global(.evidence-trace[data-lens='open'] .is-marked) { outline-style: dashed; outline-color: var(--accent-text); }
+
   /* Read right to left on a wide screen: conclusion, findings, records. */
   .et-map { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr); column-gap: var(--et-gap); margin-top: var(--space-5); }
   .et-how { grid-column: 1 / -1; grid-row: 1; margin: 0 0 var(--space-4); max-width: 62ch; font-size: var(--type-body); line-height: 1.6; color: var(--muted); }
@@ -198,6 +250,16 @@ const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...recor
 
   /* Narrow: the same dependency read downwards on one rail. The conclusion
      comes first; each finding follows with its records beneath it. */
+  @media (max-width: 1100px) {
+    .et-lenses { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .et-lenses > li:nth-child(3) { border-left: 0; }
+    .et-lenses > li:nth-child(n + 3) { border-top: 1px solid var(--hair-strong); }
+  }
+  @media (max-width: 560px) {
+    .et-lenses { grid-template-columns: minmax(0, 1fr); }
+    .et-lenses > li + li { border-left: 0; border-top: 1px solid var(--hair-strong); }
+    .et-lens { padding: var(--space-3) var(--space-4); }
+  }
   @media (max-width: 960px) {
     .et-title { grid-template-columns: minmax(0, 1fr); }
     .et-map { grid-template-columns: minmax(0, 1fr); margin-top: var(--space-4); }
@@ -228,3 +290,26 @@ const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...recor
   @media (prefers-reduced-motion: reduce) { .et-record, .et-record summary::after { transition: none; } }
   @media print { .et-record > dl { display: grid !important; } }
 </style>
+
+<script>
+  // Pressing a question marks what its answer rests on. One question at a
+  // time; pressing it again clears the marks. Nothing is hidden or dimmed.
+  document.querySelectorAll<HTMLElement>('[data-evidence-trace]').forEach((trace) => {
+    const lenses = [...trace.querySelectorAll<HTMLButtonElement>('[data-et-lens]')];
+    const status = trace.querySelector<HTMLElement>('[data-et-status]');
+    const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
+    function apply(active: HTMLButtonElement | null) {
+      trace.querySelectorAll('.is-marked').forEach((el) => el.classList.remove('is-marked'));
+      lenses.forEach((lens) => lens.setAttribute('aria-pressed', String(lens === active)));
+      if (!active) { delete trace.dataset.lens; if (status) status.textContent = ''; return; }
+      trace.dataset.lens = active.dataset.etLens;
+      const marked = [...trace.querySelectorAll<HTMLElement>(active.dataset.etMarks!)];
+      marked.forEach((el) => el.classList.add('is-marked'));
+      const stages = marked.filter((el) => el.classList.contains('et-stage')).length;
+      const records = marked.filter((el) => el.classList.contains('et-record')).length;
+      const parts = [stages && plural(stages, 'stage'), records && plural(records, 'record'), marked.some((el) => el.classList.contains('et-none')) && 'one stage with no record', marked.some((el) => el.classList.contains('et-conclusion')) && 'the conclusion'].filter(Boolean);
+      if (status) status.textContent = `Marked on the trace below: ${parts.join(', ')}.`;
+    }
+    lenses.forEach((lens) => lens.addEventListener('click', () => apply(lens.getAttribute('aria-pressed') === 'true' ? null : lens)));
+  });
+</script>
