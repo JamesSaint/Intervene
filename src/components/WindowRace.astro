@@ -64,22 +64,26 @@ const THIN = 0.1;
       </div>
     </div>
 
+    <p class="wr-premise">A response has four stages. It has to finish before the window closes.</p>
+
     <div class="wr-telling" aria-hidden="true">
-      <p class="wr-word" data-wr-word>{OUTCOME_LABEL[result.outcome]}</p>
+      <p class="wr-word"><span class="wr-dot"></span><span data-wr-word>{OUTCOME_LABEL[result.outcome]}</span></p>
       <p class="wr-caption" data-wr-caption>{describe(result)}</p>
     </div>
 
     <figure class="wr-figure" role="img" aria-labelledby={`${id}-result`} aria-describedby={`${id}-note`}>
       <div class="wr-bars" aria-hidden="true">
         <div class="wr-row">
-          <span class="wr-row-label">Window</span>
+          <span class="wr-row-label">Time available</span>
           <div class="wr-track" data-wr-track="window">
-            <div class="wr-window"><span class="wr-window-label" data-wr-window-label>{result.outcome === 'too-late' ? '' : 'Window open'}</span></div>
-            <div class="wr-after"><span>Irreversible</span></div>
+            <span class="wr-mark wr-mark-start">Signal</span>
+            <span class="wr-mark wr-mark-close">Window closes</span>
+            <div class="wr-window"><span class="wr-window-label" data-wr-window-label>{meter.remaining > 0 ? 'Window open' : 'Window used up'}</span></div>
+            <div class="wr-after"><span>Too late to prevent harm</span></div>
           </div>
         </div>
         <div class="wr-row">
-          <span class="wr-row-label">Response</span>
+          <span class="wr-row-label">Time taken</span>
           <div class="wr-track" data-wr-track="response">
             <div class="wr-after"></div>
             {STAGES.map((stage, i) => (
@@ -135,21 +139,18 @@ const THIN = 0.1;
   </details>
 </div>
 
-<noscript><style is:inline>.wr-top, .wr-diag { display: none !important; }</style></noscript>
+<noscript><style is:inline>.wr-top, .wr-diag { display: none !important; } .wr-premise { margin: 0 !important; }</style></noscript>
 
 <style>
-  /* One dark surface in both appearances. Its palette is the site's dark
-     palette, scoped here; nothing outside the scene changes. */
+  /* The scene sits on the page's own surface, in the page's own tokens.
+     Ink carries the response; the warning colour marks only the part of it
+     that falls after the window. */
   .window-race {
-    --paper: #0a0a0a; --ink: #f0f0f0; --muted: #c8c6c4; --faint: #8e8b87;
-    --hair: rgba(240, 240, 240, 0.12); --hair-strong: rgba(240, 240, 240, 0.3); --control-border: rgba(240, 240, 240, 0.44);
-    --warn: #e0766a; --signal: #c9b694; --focus: #c9b694;
-    --wr-label: 104px; --wr-gap: var(--space-4); --wr-bar: 64px;
-    color-scheme: dark; background: var(--paper); color: var(--ink); overflow: hidden;
+    --signal: var(--sedi-signal);
+    --wr-label: 128px; --wr-gap: var(--space-4); --wr-bar: 56px;
+    border-top: 1px solid var(--hair-strong); overflow: hidden;
   }
-  :global(:root[data-theme='dark']) .window-race { --paper: #141414; }
-  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme])) .window-race { --paper: #141414; } }
-  .wr-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); padding-top: var(--space-4); padding-bottom: var(--space-4); }
+  .wr-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); padding-top: var(--space-3); padding-bottom: var(--space-4); }
 
   .wr-top { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); visibility: hidden; }
   .window-race[data-ready] .wr-top { visibility: visible; }
@@ -157,69 +158,79 @@ const THIN = 0.1;
   .wr-select > span { position: absolute; left: 0; top: 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.4; color: var(--faint); pointer-events: none; }
   .wr-select select { appearance: none; -webkit-appearance: none; height: 48px; padding: 20px 28px 2px 0; border: 0; border-bottom: 1px solid var(--hair-strong); border-radius: 0; font: inherit; font-size: 16px; font-weight: 600; color: var(--ink); cursor: pointer;
     background: transparent linear-gradient(45deg, transparent 50%, var(--ink) 50%) no-repeat right 8px bottom 14px / 6px 6px; }
-  .wr-select select option { color: #1a1a1a; background: #fff; }
   .wr-select select:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
   .wr-playback { display: flex; gap: var(--space-2); }
   .wr-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 44px; min-width: 96px; padding: 0 var(--space-3); border: 1px solid var(--hair-strong); font-size: var(--type-action); font-weight: 600; letter-spacing: 0.02em; color: var(--ink); transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
   /* Hidden when there is nothing to pause or motion is off, but still holding its place. */
   .wr-btn[hidden] { display: inline-flex; visibility: hidden; }
   .wr-btn:is(:hover, :focus-visible) { border-color: var(--ink); }
-  .wr-btn-primary { border-color: var(--signal); }
-  .wr-btn-primary:is(:hover, :focus-visible) { background: var(--signal); border-color: var(--signal); color: #000; }
+  .wr-btn-primary { border-color: var(--ink); }
+  .wr-btn-primary:is(:hover, :focus-visible) { background: var(--ink); border-color: var(--ink); color: var(--paper); }
   .wr-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
   .wr-play { width: 0; height: 0; border-style: solid; border-width: 5px 0 5px 8px; border-color: transparent transparent transparent currentColor; }
-  .wr-btn-primary .wr-play { border-left-color: var(--signal); }
-  .wr-btn-primary:is(:hover, :focus-visible) .wr-play { border-left-color: #000; }
 
-  /* The telling: what is happening now, at the size of the headline. */
-  .wr-telling { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--space-3) var(--space-7); align-items: end; }
-  .wr-word { margin: 0; font-size: clamp(56px, 9.2vw, 136px); font-weight: 600; letter-spacing: -0.035em; line-height: 0.92; white-space: nowrap; color: var(--ink); }
-  .window-race[data-closed]:not([data-playing]) .wr-word { color: var(--warn); }
+  .wr-premise { margin: 0; font-size: var(--type-support); line-height: 1.4; color: var(--ink); }
+  /* Wide: the premise sits on the scenario's own line, between it and the playback controls. */
+  @media (min-width: 1001px) {
+    .wr-premise { display: flex; align-items: center; min-height: 48px; margin: calc(-48px - var(--space-4)) 232px 0 300px; }
+  }
+  /* The telling: the stage that is running, then the outcome, in a sentence. */
+  .wr-telling { display: grid; grid-template-columns: var(--wr-label) minmax(0, auto) minmax(0, 1fr); gap: var(--space-2) var(--wr-gap); align-items: center; padding-top: var(--space-2); border-top: 1px solid var(--hair); }
+  .wr-word { grid-column: 2; display: inline-flex; align-items: center; gap: 14px; min-width: 6.4em; margin: 0; font-size: clamp(30px, 3.2vw, 46px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.1; white-space: nowrap; color: var(--ink); }
+  .wr-dot { width: 14px; height: 14px; flex: none; border-radius: 50%; background: var(--pass); }
+  .window-race[data-outcome='narrow'] .wr-dot { background: var(--hold); }
+  .window-race[data-outcome='too-late'] .wr-dot { background: var(--warn); border-radius: 0; }
+  .window-race[data-playing] .wr-dot { background: var(--signal); border-radius: 50%; }
   /* Room for the longest sentence the model can return, so the scene keeps one height. */
-  .wr-caption { margin: 0; padding-bottom: 8px; min-height: calc(5lh + 8px); display: flex; align-items: flex-end; max-width: 46ch; font-size: clamp(17px, 1.4vw, 20px); line-height: 1.35; color: var(--muted); }
+  .wr-caption { grid-column: 3; margin: 0; min-height: 3lh; display: flex; align-items: center; max-width: 62ch; font-size: var(--type-body); line-height: 1.5; color: var(--muted); }
 
   /* The bars. Both tracks are the same axis, so the boundary is one line. */
   .wr-figure { margin: 0; }
-  .wr-bars { position: relative; display: grid; gap: 28px; padding-top: 4px; }
+  .wr-bars { position: relative; display: grid; gap: 28px; padding-top: 24px; }
   .wr-row { display: grid; grid-template-columns: var(--wr-label) minmax(0, 1fr); gap: var(--wr-gap); align-items: center; }
-  .wr-row-label { font-family: var(--font-mono); font-size: 13px; line-height: 1.4; color: var(--faint); }
+  .wr-row-label { font-size: var(--type-action); font-weight: 600; line-height: 1.3; color: var(--ink); }
+  .wr-mark { position: absolute; top: -24px; font-family: var(--font-mono); font-size: 12px; line-height: 1.4; color: var(--faint); white-space: nowrap; }
+  .wr-mark-start { left: 0; }
+  .wr-mark-close { right: calc(100% - var(--wr-w) * 100% + 8px); color: var(--ink); }
   .wr-track { position: relative; height: var(--wr-bar); }
   .wr-after {
     position: absolute; top: 0; bottom: 0; left: calc(var(--wr-w) * 100%); right: calc(-1 * var(--gutter));
     border-left: 1px dashed var(--control-border);
     background: repeating-linear-gradient(135deg, var(--hair) 0 1px, transparent 1px 11px);
     display: flex; align-items: center; padding-left: var(--space-3);
-    font-family: var(--font-mono); font-size: 13px; color: var(--faint);
+    font-family: var(--font-mono); font-size: 12px; color: var(--faint);
     transition: background-color var(--dur-signal) var(--ease), color var(--dur-signal) var(--ease);
   }
-  .window-race[data-closed] .wr-after { background-color: color-mix(in srgb, var(--warn) 15%, transparent); border-left: 1px solid var(--warn); color: var(--warn); }
-  /* The window: lit ahead of the present moment, spent behind it. */
+  .window-race[data-closed] .wr-after { background-color: color-mix(in srgb, var(--warn) 7%, transparent); border-left: 1px solid var(--warn); color: var(--warn); }
+  /* Time available: clear while it is still open, hatched once it is spent. */
   .wr-window {
-    position: absolute; inset: 0 auto 0 0; width: calc(var(--wr-w) * 100%); border: 1px solid var(--hair-strong);
+    position: absolute; inset: 0 auto 0 0; width: calc(var(--wr-w) * 100%); border: 1px solid var(--ink);
     --wr-spent: calc(min(var(--wr-p), var(--wr-w)) / var(--wr-w) * 100%);
-    background: linear-gradient(to right, transparent 0 var(--wr-spent), var(--ink) var(--wr-spent) 100%);
+    background: repeating-linear-gradient(135deg, var(--hair-strong) 0 1px, transparent 1px 9px) left / var(--wr-spent) 100% no-repeat, var(--paper);
   }
-  .wr-window-label { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 17px; font-weight: 600; color: #fff; mix-blend-mode: difference; white-space: nowrap; }
+  /* The label sits at the open end, which is the last part to be spent. */
+  .wr-window-label { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); padding: 2px 8px; background: var(--paper); font-size: var(--type-action); font-weight: 600; color: var(--ink); white-space: nowrap; }
+  .wr-window-label:empty { display: none; }
   /* A stage: an outline until it runs, then filled as far as time has reached. */
   .wr-seg { position: absolute; top: 0; bottom: 0; left: calc(var(--wr-s) * 100%); width: calc(var(--wr-d) * 100%); }
   .wr-seg::before { content: ''; position: absolute; inset: 0 2px 0 0; border: 1px solid var(--hair-strong); }
   .wr-seg[data-state='pending']::before { border-style: dashed; }
-  .wr-ghost, .wr-fill > span { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 17px; font-weight: 600; white-space: nowrap; }
+  .wr-ghost, .wr-fill > span { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 16px; font-weight: 600; white-space: nowrap; }
   .wr-ghost { color: var(--muted); }
   .wr-fill {
-    position: absolute; inset: 0 2px 0 0; overflow: hidden; color: #0a0a0a;
+    position: absolute; inset: 0 2px 0 0; overflow: hidden; color: var(--paper);
     background: linear-gradient(to right, var(--ink) 0 calc(var(--wr-in) * 100%), var(--warn) calc(var(--wr-in) * 100%) 100%);
     clip-path: inset(0 calc((1 - clamp(0, calc((var(--wr-p) - var(--wr-s)) / var(--wr-d)), 1)) * 100%) 0 0);
   }
   /* A stage too narrow for its name carries it above the bar instead. */
   .wr-seg.is-thin .wr-fill > span { display: none; }
   .wr-seg.is-thin .wr-ghost { left: 0; top: -22px; transform: none; font-family: var(--font-mono); font-size: 12px; font-weight: 400; color: var(--faint); }
-  .wr-now { position: absolute; top: -10px; bottom: -10px; width: 1px; background: var(--signal); opacity: 0;
+  .wr-now { position: absolute; top: 20px; bottom: -6px; width: 2px; margin-left: -1px; background: var(--signal); opacity: 0;
     left: calc(var(--wr-label) + var(--wr-gap) + (100% - var(--wr-label) - var(--wr-gap)) * var(--wr-p)); }
   .window-race[data-playing] .wr-now { opacity: 1; }
-  .wr-now span { position: absolute; top: -18px; left: -13px; font-family: var(--font-mono); font-size: 12px; line-height: 1; color: var(--signal); }
+  .wr-now span { position: absolute; bottom: -16px; left: -13px; font-family: var(--font-mono); font-size: 12px; line-height: 1; color: var(--accent-text); }
 
-  .wr-foot { display: grid; grid-template-columns: var(--wr-label) minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--space-3) var(--wr-gap); align-items: end; padding-top: var(--space-2); }
+  .wr-foot { display: grid; grid-template-columns: var(--wr-label) minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--space-3) var(--wr-gap); align-items: end; padding-top: var(--space-3); }
   .wr-meter { grid-column: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); margin: 0; }
   .wr-meter dt { font-family: var(--font-mono); font-size: 12px; line-height: 1.4; color: var(--faint); }
   .wr-meter dd { margin: 2px 0 0; font-family: var(--font-mono); font-size: 22px; line-height: 1.2; color: var(--ink); }
@@ -255,11 +266,13 @@ const THIN = 0.1;
   .wr-window-test label > span { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 4px; border: 1px solid var(--hair-strong); font-size: 13px; line-height: 1.3; color: var(--muted); white-space: nowrap; }
   .wr-window-test label + label > span { border-left: 0; }
   .wr-window-test input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .wr-diag { background: var(--paper); }
   .wr-window-test input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 3px; }
 
   @media (max-width: 1000px) {
-    .wr-telling { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
-    .wr-caption { padding: 0; min-height: 4lh; align-items: flex-start; max-width: none; }
+    .wr-telling { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+    .wr-word, .wr-caption { grid-column: 1; }
+    .wr-caption { min-height: 3lh; align-items: flex-start; max-width: none; }
     .wr-foot { grid-template-columns: minmax(0, 1fr); }
     .wr-meter { grid-column: 1; }
     .wr-diag-body { grid-template-columns: minmax(0, 1fr); }
@@ -277,17 +290,20 @@ const THIN = 0.1;
     .wr-select select { width: 100%; }
     .wr-playback { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .wr-btn { min-width: 0; }
-    .wr-word { font-size: clamp(44px, 14vw, 60px); }
-    .wr-caption { font-size: 16px; min-height: 6lh; }
-    .wr-bars { grid-template-columns: 56px minmax(0, 1fr); gap: var(--space-2); height: 380px; padding-top: 0; }
+    .wr-premise { font-size: 17px; }
+    .wr-word { font-size: 30px; }
+    .wr-caption { font-size: 16px; min-height: 5lh; }
+    .wr-bars { grid-template-columns: 76px minmax(0, 1fr); gap: var(--space-2); height: 360px; padding-top: 0; }
+    .wr-row-label { font-size: 13px; }
+    .wr-mark { display: none; }
     .wr-row { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); gap: 6px; align-items: stretch; }
     .wr-track { height: auto; }
     .wr-after { top: calc(var(--wr-w) * 100%); bottom: 0; left: 0; right: calc(-1 * var(--gutter-tight)); border-left: 0; border-top: 1px dashed var(--control-border); align-items: flex-end; justify-content: flex-end; padding: 0 var(--gutter-tight) 8px 0; }
     .window-race[data-closed] .wr-after { border-left: 0; border-top: 1px solid var(--warn); }
     .wr-row:first-child .wr-after { right: calc(-1 * var(--space-2)); }
     .wr-row:first-child .wr-after span { display: none; }
-    .wr-window { inset: 0 0 auto 0; width: auto; height: calc(var(--wr-w) * 100%); background: linear-gradient(to bottom, transparent 0 var(--wr-spent), var(--ink) var(--wr-spent) 100%); }
-    .wr-window-label { display: none; }
+    .wr-window { inset: 0 0 auto 0; width: auto; height: calc(var(--wr-w) * 100%); background: repeating-linear-gradient(135deg, var(--hair-strong) 0 1px, transparent 1px 7px) top / 100% var(--wr-spent) no-repeat, var(--paper); }
+    .wr-window-label { left: 4px; top: 6px; transform: none; padding: 1px 4px; font-size: 11px; white-space: normal; max-width: calc(100% - 8px); }
     .wr-seg { left: 0; right: 0; width: auto; top: calc(var(--wr-s) * 100%); bottom: auto; height: calc(var(--wr-d) * 100%); }
     .wr-seg::before { inset: 0 0 2px 0; }
     .wr-ghost, .wr-fill > span { left: 12px; top: 8px; transform: none; font-size: 16px; }
@@ -297,8 +313,8 @@ const THIN = 0.1;
     .wr-seg.is-thin .wr-fill > span { display: block; }
     .wr-seg.is-thin :is(.wr-ghost, .wr-fill > span) { left: 12px; top: 2px; font-family: var(--font-sans); font-size: 13px; font-weight: 600; }
     .wr-seg.is-thin .wr-ghost { color: var(--muted); }
-    .wr-now { left: 0; right: 0; width: auto; height: 1px; bottom: auto; top: calc(27px + (100% - 27px) * var(--wr-p)); }
-    .wr-now span { top: -16px; left: auto; right: 0; }
+    .wr-now { left: 0; right: 0; width: auto; height: 2px; margin: -1px 0 0; bottom: auto; top: calc(23px + (100% - 23px) * var(--wr-p)); }
+    .wr-now span { bottom: auto; top: -15px; left: auto; right: 0; }
     .wr-meter dd { font-size: 20px; }
     .wr-diag-summary { min-height: 56px; }
     .wr-diag-hint { display: none; }
@@ -368,7 +384,7 @@ const THIN = 0.1;
       // The window is shown closed only once time has actually reached the boundary.
       const closed = result.outcome === 'too-late' && (!playing || elapsed >= w);
       race.toggleAttribute('data-closed', closed);
-      set($('[data-wr-window-label]'), meter.remaining > 0 ? 'Window open' : '');
+      set($('[data-wr-window-label]'), meter.remaining > 0 ? 'Window open' : 'Window used up');
       const active = states.indexOf('active');
       if (playing && active > -1) { set(word, STAGES[active]); set(caption, STAGE_ACTIONS[active]); }
       else if (!playing) { set(word, OUTCOME_LABEL[result.outcome]); set(caption, describe(result)); }

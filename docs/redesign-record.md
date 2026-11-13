@@ -178,6 +178,35 @@ viewport.
 gives Intervene as "Not assessed", while `/sample-report/` gives about six
 minutes for the same stage. Both predate this work and both are preserved.
 
+## Fifth pass: lighter and plainer
+
+The fourth pass was rejected as too heavy and not clear enough in three
+places: the opening scene, the evidence trace and the engagements.
+
+- **Scene.** It left its dark full-bleed surface for the page's own, in the
+  page's own tokens, so it follows light and dark appearance like everything
+  else. The outcome dropped from display size to heading size, in ink, with
+  a small mark carrying the state. Red is now only the part of the response
+  that falls after the window. The bars are labelled for what they are,
+  "Time available" and "Time taken", with "Signal" and "Window closes" on the
+  axis, and one sentence states the premise.
+- **Trace.** The dark conclusion block and the black decisive stage became
+  outlined sheets with a heavier rule. A sentence says how to read it, the
+  three columns are headed, and arrowheads give the direction of support.
+- **Engagements.** The black blocks became pale cells with a solid top rule
+  where a level is examined and a dashed one, reading "Not examined", where
+  it is not.
+
+The dark closing band is unchanged. Layout, model, tests and evidence links
+are unchanged.
+
+New wording in this pass: "A response has four stages. It has to finish
+before the window closes."; "Time available"; "Time taken"; "Signal";
+"Window closes"; "Window used up"; "Too late to prevent harm" (replacing
+"Irreversible"); "Read from left to right. Each record supports a finding
+about one stage, and the four findings lead to the conclusion."; "What each
+stage takes, against a window of about six hours"; "Not examined".
+
 ## Published wording that changed
 
 Prices, offer names, boundaries, the price qualifier, the availability

@@ -40,10 +40,10 @@ test.describe('motion opt-in', () => {
     const state = await page.evaluate(() => {
       const node = document.querySelector<HTMLElement>('.et-row.is-decisive .et-stage')!;
       const stages = Array.from(document.querySelectorAll<HTMLElement>('.et-row'));
-      // Wide screens fill the block; the narrow rail fills the stage's mark instead.
+      // Wide screens give the decisive block a heavy rule; the narrow rail fills its mark instead.
       const wide = innerWidth > 960;
       return {
-        filled: getComputedStyle(node, wide ? null : '::before').backgroundColor,
+        filled: wide ? getComputedStyle(node).borderTopColor : getComputedStyle(node, '::before').backgroundColor,
         opaque: stages.length === 4 && stages.every((s) => getComputedStyle(s).opacity === '1'),
       };
     });
