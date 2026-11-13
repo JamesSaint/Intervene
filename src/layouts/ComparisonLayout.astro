@@ -90,20 +90,24 @@ const core = rows.find((r) => r.aspect === 'Core question');
   <section class="block">
     <div class="wrap">
       <h2 class="h2">What each answers.</h2>
-      <table class="table-compare">
-        <thead>
-          <tr>
-            <th scope="col">Question</th>
-            <th scope="col" set:html={markAgda(other)} />
-            <th scope="col">Intervention Readiness</th>
+      <!-- The same rows, drawn as two sides of one spine: the adjacent
+           discipline on the left, Intervention Readiness on the right, and
+           what is being compared on the line between them. Table roles are
+           stated because the rows are laid out as a grid. -->
+      <table class="table-compare split-ledger" role="table">
+        <thead role="rowgroup">
+          <tr role="row">
+            <th scope="col" role="columnheader"><span class="sl-sr">Question</span></th>
+            <th scope="col" role="columnheader" set:html={markAgda(other)} />
+            <th scope="col" role="columnheader">Intervention Readiness</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody role="rowgroup">
           {rows.map((r) => (
-            <tr>
-              <th scope="row" set:html={markAgda(r.aspect)} />
-              <td data-col={other} set:html={markAgda(r.other)} />
-              <td data-col="Intervention Readiness" set:html={markAgda(r.ir)} />
+            <tr role="row">
+              <th scope="row" role="rowheader"><span set:html={markAgda(r.aspect)} /></th>
+              <td role="cell" data-col={other} set:html={markAgda(r.other)} />
+              <td role="cell" data-col="Intervention Readiness" set:html={markAgda(r.ir)} />
             </tr>
           ))}
         </tbody>
@@ -157,6 +161,28 @@ const core = rows.find((r) => r.aspect === 'Core question');
     .tq-pair { grid-template-columns: minmax(0, 1fr); }
     .tq-side { padding-right: 0; }
     .tq-ir { padding-left: 0; border-left: 0; }
+  }
+
+  /* The split ledger. Wide screens only; below 761px the shared stacked
+     table takes over, with each cell labelled by its column. */
+  .sl-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  @media (min-width: 761px) {
+    .split-ledger, .split-ledger :is(thead, tbody) { display: block; }
+    .split-ledger tr { display: grid; grid-template-columns: minmax(0, 1fr) clamp(150px, 16vw, 220px) minmax(0, 1fr); align-items: stretch; }
+    .split-ledger :is(th, td) { display: block; width: auto; border: 0; padding: var(--space-4) 0; }
+    .split-ledger tr > :nth-child(1) { grid-column: 2; grid-row: 1; position: relative; display: grid; place-items: start center; padding-inline: var(--space-3); text-align: center; }
+    /* The spine runs through every row; what is compared sits on it. */
+    .split-ledger tr > :nth-child(1)::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; border-left: 1px solid var(--hair-strong); }
+    .split-ledger tbody th span { position: relative; padding: 5px 10px; border: 1px solid var(--hair-strong); background: var(--paper); font-family: var(--font-mono); font-size: var(--type-caption); font-weight: 400; line-height: 1.5; color: var(--muted); }
+    .split-ledger tr > :nth-child(2) { grid-column: 1; grid-row: 1; padding-right: var(--space-5); text-align: right; color: var(--muted); border-top: 1px solid var(--hair); }
+    .split-ledger tr > :nth-child(3) { grid-column: 3; grid-row: 1; padding-left: var(--space-5); color: var(--ink); border-top: 1px solid var(--ink); }
+    .split-ledger tbody td { font-size: clamp(17px, 1.5vw, 21px); line-height: 1.45; text-wrap: balance; }
+    .split-ledger tbody td:last-child { font-weight: 600; letter-spacing: var(--tracking-heading); }
+    .split-ledger thead th { border: 0; padding-block: var(--space-3); }
+    .split-ledger thead tr > :nth-child(2) { border-top: 1px solid var(--hair-strong); color: var(--faint); }
+    .split-ledger thead tr > :nth-child(3) { border-top: 3px solid var(--ink); color: var(--accent-text); }
+    .split-ledger thead tr > :nth-child(1)::before { top: 50%; }
+    .split-ledger tbody tr:last-child > :nth-child(1)::before { bottom: 50%; }
   }
 
   /* Comparison page: hero, what the adjacent discipline does beside the

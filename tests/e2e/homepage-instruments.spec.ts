@@ -557,8 +557,17 @@ test.describe('one scenario, carried down the page', () => {
     await page.locator('[data-wd-preset]').selectOption('holds');
     await expect(page.locator('[data-sedi-label]')).toHaveText('The chain holds.');
     await expect.poll(() => read(page)).toEqual([0, 1, 2, 3].map(() => ({ state: 'completed', text: 'Inside the window', percent: '17%', longest: false })));
-    await expect(page.locator('.sedi-boundary:visible')).toHaveCount(0);
+    // The window closes at the right-hand end of every track, and the last stage ends two thirds of the way to it.
+    await expect.poll(() => chain(page).evaluateAll((items) => items.map((li) => {
+      const bar = li.querySelector('.sedi-share')!.getBoundingClientRect();
+      const mark = li.querySelector('.sedi-boundary')!.getBoundingClientRect();
+      const fill = li.querySelector('.sedi-fill')!.getBoundingClientRect();
+      return [Math.round(((mark.left - bar.left) / bar.width) * 100), Math.round(((fill.right - bar.left) / bar.width) * 100)];
+    }))).toEqual([[100, 17], [100, 33], [100, 50], [100, 67]]);
     await expect(page.locator('[data-sedi-out]')).toHaveText('Intervention takes effect before the window closes.');
+    // In time: the chain is 67% of the window, a third of it remains, nothing lies beyond.
+    await expect(page.locator('.sedi-totals')).toHaveText(/Whole chain\s*67% of the window\s*Window remaining\s*33%\s*Beyond the window\s*0%/);
+    await expect(page.locator('.sedi-end-text')).toHaveText(['Complete at 17% elapsed', 'Complete at 33% elapsed', 'Complete at 50% elapsed', 'Complete at 67% elapsed']);
 
     // A shorter window closes during Decide, half-way through it, and Intervene falls after it.
     await page.locator('[data-wd-preset]').selectOption('reach');
@@ -566,14 +575,29 @@ test.describe('one scenario, carried down the page', () => {
     await page.locator('.wd-window input[value="shorter"]').check();
     await expect.poll(async () => (await read(page)).map((s) => s.state)).toEqual(['completed', 'completed', 'closes', 'after']);
     expect((await read(page)).map((s) => s.text)).toEqual(['Inside the window', 'Inside the window', 'Window closes here', 'After the window']);
-    const decide = chain(page).nth(2);
-    await expect.poll(() => decide.evaluate((li) => {
+    // Every track is on one scale: the whole chain, 13 units, because it is longer than the window of 9.
+    const geometry = () => chain(page).evaluateAll((items) => items.map((li) => {
       const bar = li.querySelector('.sedi-share')!.getBoundingClientRect();
       const fill = li.querySelector('.sedi-fill')!.getBoundingClientRect();
       const mark = li.querySelector('.sedi-boundary')!.getBoundingClientRect();
-      // Decide is 4 of a window of 9, and the window closes 2 units into it.
-      return [Math.round((fill.width / bar.width) * 100), Math.round(((mark.left - bar.left) / fill.width) * 100)];
-    })).toEqual([44, 50]);
+      const at = (x: number) => Math.round(((x - bar.left) / bar.width) * 130) / 10;
+      return { starts: at(fill.left), ends: at(fill.right), window: at(mark.left) };
+    }));
+    // Detect 1, Escalate 6, Decide 4, Intervene 2: each bar starts where the last ended, and the window closes at 9 on every track.
+    await expect.poll(geometry).toEqual([
+      { starts: 0, ends: 1, window: 9 },
+      { starts: 1, ends: 7, window: 9 },
+      { starts: 7, ends: 11, window: 9 },
+      { starts: 11, ends: 13, window: 9 },
+    ]);
+    // Duration and elapsed time are stated separately, and elapsed time above 100% is stated as it is.
+    await expect(page.locator('.sedi-share-text')).toHaveText(['Takes 11% of the window', 'Takes 67% of the window', 'Takes 44% of the window', 'Takes 22% of the window']);
+    await expect(page.locator('.sedi-end-text')).toHaveText(['Complete at 11% elapsed', 'Complete at 78% elapsed', 'Complete at 122% elapsed', 'Complete at 144% elapsed']);
+    await expect(page.locator('.sedi-totals')).toHaveText(/Whole chain\s*144% of the window\s*Window remaining\s*0%\s*Beyond the window\s*44%/);
+    // The dial's own meter agrees: all of the window is used, and 44% lies beyond it.
+    await expect(page.locator('[data-wd-consumed]')).toHaveText('100%');
+    await expect(page.locator('[data-wd-remaining]')).toHaveText('0%');
+    await expect(page.locator('[data-wd-beyond-value]')).toHaveText('44%');
     // The chain never changes height as the scenario changes.
     const after = await page.locator('.sedi-explorer').evaluate((el) => el.getBoundingClientRect().height);
     expect(Math.abs(after - before)).toBeLessThanOrEqual(1);
@@ -597,7 +621,7 @@ test.describe('one scenario, carried down the page', () => {
     await expect(dial.locator('[data-wd-word]')).toHaveText('Too late');
     await dial.locator('[data-wd-stage="1"]').click();
     await expect(dial.locator('[data-wd-word]')).toHaveText('Escalate');
-    await expect(dial.locator('[data-wd-caption]')).toHaveText('50% of the window');
+    await expect(dial.locator('[data-wd-caption]')).toHaveText('Takes 50% of the window');
     await expect(dial.locator('[data-wd-stage="1"]')).toHaveAttribute('aria-pressed', 'true');
     // A stage name in the centre is never coloured as an outcome.
     await expect(dial).toHaveAttribute('data-reading', '');
@@ -682,4 +706,77 @@ test('each engagement shows how deep it examines, from its own published scope',
     // Depth is not an order of purchase: every engagement still says it is commissioned on its own.
     await expect(routes.locator('.oi-alone')).toHaveText(['Commissioned on its own', 'Commissioned on its own', 'Commissioned on its own']);
   }
+});
+
+test.describe('the scenario can be read and set from the chain', () => {
+  test('the chain names the dial as its source, links back to it, and the dial links down to the chain', async ({ page }) => {
+    await open(page);
+    await expect(page.locator('.sedi-carry-k')).toHaveText('Carried from the dial · illustrative');
+    await expect(page.locator('.sedi-back')).toHaveAttribute('href', '#window-dial');
+    await expect(page.locator('#window-dial')).toHaveCount(1);
+    await expect(page.locator('.wd-follow')).toHaveAttribute('href', '#home-method');
+    await expect(page.locator('.wd-follow')).toContainText('This scenario is carried into the chain below');
+    await expect(page.locator('.sedi-key')).toHaveText('Each bar is one stage on the same scale. Its length is how long the stage takes; its right end is the time elapsed when the stage completes. The line is where the window closes.');
+  });
+
+  test('choosing a scenario on the chain sets the dial, and the two never disagree', async ({ page }) => {
+    await open(page);
+    const pick = page.locator('[data-sedi-preset]');
+    await expect(pick).toHaveValue('reach');
+    await pick.selectOption('halt');
+    // The dial takes it: its select, its outcome sentence and its meter.
+    await expect(page.locator('[data-wd-preset]')).toHaveValue('halt');
+    await expect(page.locator('.window-dial [data-wd-scn]')).toHaveText('Halt lands late');
+    await expect(page.locator('[data-sedi-label]')).toHaveText('Halt lands late.');
+    const dialText = await page.locator('.window-dial [data-wd-text]').textContent();
+    await expect(page.locator('[data-sedi-out]')).toHaveText(dialText!);
+    await expect(page.locator('[data-sedi-beyond]')).toHaveText(await page.locator('[data-wd-beyond-value]').innerText());
+    // And the other way: the dial changes, the chain's control follows.
+    await page.locator('[data-wd-preset]').selectOption('margin');
+    await expect(pick).toHaveValue('margin');
+    // Timings set by hand on the dial are named as such on the chain.
+    await page.locator('[data-wd-diag] summary').click();
+    await page.locator('[data-wd-range="0"]').fill('5');
+    await expect(pick).toHaveValue('custom');
+    await expect(page.locator('[data-sedi-label]')).toHaveText('Your own timings.');
+  });
+
+  test('the chain control is keyboard operable and is withheld without JavaScript', async ({ page, browser }) => {
+    await open(page);
+    await page.locator('[data-sedi-preset]').focus();
+    await page.locator('[data-sedi-preset]').selectOption('holds');
+    await expect(page.locator('[data-wd-preset]')).toHaveValue('holds');
+    const context = await browser.newContext({ javaScriptEnabled: false });
+    const plain = await context.newPage();
+    await plain.goto('/');
+    await expect(plain.locator('.sedi-pick')).toBeHidden();
+    await expect(plain.locator('.sedi-end-text')).toHaveText(['Complete at 8% elapsed', 'Complete at 58% elapsed', 'Complete at 92% elapsed', 'Complete at 108% elapsed']);
+    await context.close();
+  });
+});
+
+test('the evidence lens offers a way to the first marked item, and marks the lines that leave it', async ({ page }) => {
+  await open(page);
+  const trace = page.locator('.evidence-trace');
+  await expect(trace.locator('[data-et-jump]')).toBeHidden();
+  await trace.locator('[data-et-lens="why"]').click();
+  const jump = trace.locator('[data-et-jump]');
+  await expect(jump).toBeVisible();
+  await jump.click();
+  await expect(trace.locator('.is-marked').first()).toBeInViewport();
+  // A marked finding is ringed at three pixels, and its connector is drawn at the same weight.
+  const ring = await trace.locator('.et-stage.is-marked').first().evaluate((el) => [getComputedStyle(el).outlineWidth, getComputedStyle(el, '::after').borderTopWidth]);
+  expect(ring).toEqual(['3px', '3px']);
+  await trace.locator('[data-et-lens="why"]').click();
+  await expect(jump).toBeHidden();
+});
+
+test('without JavaScript the evidence questions are still answered, and offer no control that does nothing', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto('/');
+  await expect(page.locator('.et-lens-a').first()).toBeVisible();
+  await expect(page.locator('.et-exec-hint')).toBeHidden();
+  await expect(page.locator('.et-lens-foot')).toBeHidden();
+  await context.close();
 });

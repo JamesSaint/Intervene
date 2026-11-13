@@ -597,6 +597,145 @@ Changing it changes the signature that is sent, so it is left for a decision.
 - No screen-reader session and no physical device. Results are from the
   accessibility tree and emulated viewports.
 
+## Eleventh pass: completing the fifth objective
+
+The tenth pass left one objective undone: purpose-built treatments for the
+AGDA, methodology, comparison and insights pages. This pass does that, and
+answers five points raised on the tenth.
+
+### Page treatments
+
+| Page | Before | Now | Judgement |
+|------|--------|-----|-----------|
+| `/agda/` | Three text subsections, then the verdict specimen. Nothing showed how scope, evidence, the chain and the conclusion relate. | `AssessmentModel.astro`: one figure, "How a conclusion is reached". Scope, evidence, the chain read against the available time, and one of three states. The available time is marked in the accent where it is set and again where the chain meets it. No stage is marked as failing and no state is selected. | Improves understanding and hierarchy. Not interactive beyond its links, by choice: it is a statement of dependence, not a model to operate. |
+| `/methodology/` | A long technical page with no executive entry. | `MethodLayers.astro`: "Four layers, kept apart". Operational dependencies, timing, evidence and conclusion, each with a small diagram, the page's own statement and a link to its section. Captioned "Diagrams of the method, not measurements." | Gives an executive reading without removing any detail. |
+| Five comparison pages | The two core questions, then a three-column table. | The same table drawn as a split ledger on wide screens: the adjacent discipline to the left of a spine, Intervention Readiness to the right, the thing compared on the spine. Explicit table roles keep it a table to assistive technology. Below 761 pixels the existing labelled stack is unchanged. | Presentation only. No cell was added, removed or reworded, so no difference is manufactured. |
+| `/insights/` and three notes | A flat list; articles in grey body text with no way to the next note. | The index leads with the latest note at headline scale and lists the earlier ones by date. Notes take a larger headline and standfirst, body text in the ink colour, a larger opening paragraph, pull quotes at display weight, a reading time, and links to the notes either side. One source for titles, dates and order (`src/lib/insights.ts`). | Editorial only. No diagram, animation or interaction was added to a reading page (tested). |
+
+### The dial and the chain
+
+The chain now names its source and can set it. Its header reads "Carried
+from the dial · illustrative", carries a scenario control and a link back to
+the dial; the dial carries a link down, "This scenario is carried into the
+chain below". Choosing a scenario on the chain asks the dial to take it, so
+there is one scenario on the page and the dial owns it. The dial is not
+duplicated and nothing is sticky.
+
+### Timing semantics
+
+Five quantities are now kept apart, in the model
+(`src/lib/scenario-chain.ts`), on screen and in the text a screen reader
+meets:
+
+| Quantity | Where | Wording |
+|----------|-------|---------|
+| Stage duration | Each stage; dial centre when a stage is picked | "Takes 50% of the window" |
+| Cumulative elapsed time | Each stage | "Complete at 58% elapsed" |
+| Available window | The line on every track; one turn of the dial | "Window closes" |
+| Remaining time | Chain header; dial meter | "Window remaining 0%" |
+| Time beyond the window | Chain header; dial meter | "Beyond the window 8%" |
+
+Each stage's track is on one scale: the window, or the whole chain when it
+runs longer. The pale part is time already elapsed, the solid part is the
+stage, and the line is where the window closes, at the same place on every
+track. Only the part of a stage that falls after the line is drawn in the
+warning colour. Percentages above 100% are stated as they are: with the
+shortest window the default scenario reads "Complete at 122% elapsed" and
+"144% elapsed", "Whole chain 144% of the window", "Beyond the window 44%".
+The worst case the controls allow, 24 units against 9, reads 267%. The
+scenario engine is unchanged and remains the only source of outcomes; the
+chain's totals are tested against the dial's meter for every preset and
+window.
+
+A defect from the tenth pass is corrected here: the chain's bar then showed
+only duration, so the point at which a stage completed could not be read
+from it.
+
+### Evidence interaction
+
+Reviewed in the browser. A pressed question was easy to miss on a long
+trace, and on a phone its marks were below the fold. Now: the ring is three
+pixels, the connector leaving a marked finding or record is drawn at the
+same weight so the path can be followed, the ring settles into place once,
+and "Show the first on the trace" takes the reader to the first mark. The
+page never scrolls unasked. No relationship was added: the marks are the
+same selectors as before.
+
+Also corrected: two no-script rules (this one and the chain's scenario
+control) had been emitted with literal braces and did nothing. Without
+JavaScript the controls that need it are now withheld, and the answers
+remain.
+
+### Email signature contrast
+
+The bronze link colour is unchanged, as instructed. What fails, exactly:
+three links in the light preview on `/signature/` (the email address and two
+site links), bronze `#c9b694` on white, 1.98:1 against a requirement of
+4.5:1. Nothing else on the page fails.
+`tests/e2e/signature-contrast.spec.ts` asserts that these three, and only
+these, fail, so the limitation is recorded and cannot widen unnoticed. No
+existing test was changed.
+
+Measured against representative canvases (chosen values, not sampled from
+the clients themselves):
+
+| Canvas | Current bronze `#c9b694` | Darker bronze `#7a6c55` | Inherited text, bronze underline |
+|--------|--------------------------|-------------------------|----------------------------------|
+| White `#ffffff` | 1.98:1 fails | 5.12:1 | 17.40:1 |
+| Gmail light `#f6f8fc` | 1.86:1 fails | 4.81:1 | 16.37:1 |
+| Outlook light `#faf9f8` | 1.88:1 fails | 4.87:1 | 16.55:1 |
+| Apple Mail dark `#1e1e1e` | 8.42:1 | 3.26:1 fails | 14.63:1 |
+| Gmail dark `#202124` | 8.13:1 | 3.15:1 fails | 14.13:1 |
+| Outlook dark `#292929` | 7.34:1 | 2.84:1 fails | 12.77:1 |
+
+No single link colour can meet 4.5:1 on both white and a dark canvas; the
+two ranges do not overlap (tested). A pasted signature carries one inline
+colour and no stylesheet, so it cannot switch. The alternative that keeps
+the brand and passes everywhere is to let link text inherit the message's
+text colour and carry the bronze as an underline. It has not been applied.
+It changes the appearance of sent email and needs a decision.
+
+### Verification
+
+- 232 unit tests; 591 Chromium browser tests (9 skipped); 252 Firefox and
+  WebKit tests (6 skipped); type check, content check and private-path
+  check clean. No test was removed or loosened. Three assertions were
+  rewritten because what they measured changed with the timing model, each
+  to a stricter statement.
+- Lighthouse mobile: homepage 96, `/agda/` 98, `/methodology/` 98, a note
+  99, a comparison page 98; homepage desktop 100. Accessibility, best
+  practices and SEO 100 on each.
+- axe, WCAG 2.2 AA, 33 routes, two themes, two widths, with interactive
+  states active: 128 of 132 clean; the four are the signature links above.
+- No horizontal overflow, console error or failed request on twelve pages
+  at 1440, 768, 390 and 320 pixels in either theme.
+- Keyboard: the chain's scenario control, the evidence questions and the
+  jump are tested from the keyboard. Reduced motion: tested for the dial and
+  the lens ring. No JavaScript: tested for the chain and the evidence
+  questions.
+
+### Not done
+
+- VoiceOver: no session was run. It cannot be driven from this environment.
+  Screen-reader behaviour is tested through roles, names and live regions
+  only.
+- No physical device. Phone results are emulated viewports in Chromium and
+  WebKit.
+
+### What remains weak
+
+- The chain header is now long on a phone: label, control, link, sentence,
+  three totals and a key before the first stage.
+- The AGDA figure and the methodology figure cover overlapping ground. They
+  are drawn differently and serve different pages, but a reader of both sees
+  the same four ideas twice.
+- The comparison ledger is one treatment for five pages. Each page does not
+  have its own picture of its own distinction.
+- The chain still carries two vocabularies, "Waits on" and the window
+  states.
+- `/services/` on a phone is still long.
+- Reading time is an estimate at 230 words a minute.
+
 ## Published wording that changed
 
 Prices, offer names, boundaries, the price qualifier, the availability
@@ -718,6 +857,31 @@ Tenth pass:
 
 No price, scope, deliverable, exclusion, methodology statement or
 verification claim was changed.
+
+Eleventh pass:
+
+- `/agda/`: new section "How a conclusion is reached." with the labels
+  Scope, Evidence, Intervention chain, Conclusion; "Four stages, read
+  against the available time."; "The available time agreed in scope is what
+  the chain is read against."; "The conclusion applies to the assessed
+  conditions." The remaining statements are the page's own.
+- `/methodology/`: new section "Four layers, kept apart." with the layer
+  names Operational dependencies, Timing, Evidence, Conclusion; "The stages
+  run against the available time, which is set in scope."; "Diagrams of the
+  method, not measurements."
+- SEDI chain: "Takes N% of the window" (was "N% of the window"); "Complete
+  at N% elapsed"; "Whole chain", "Window remaining", "Beyond the window";
+  the key sentence beginning "Each bar is one stage on the same scale";
+  "Scenario"; "Shown on the dial".
+- Dial: "This scenario is carried into the chain below"; centre caption
+  "Takes N% of the window".
+- Evidence trace: "Show the first on the trace".
+- Insights: "Latest", "Earlier notes", "Read the note", "N minute read",
+  "Later note", "Earlier note", "All notes". Card kickers show the note's
+  date in place of "Note".
+
+No price, scope, deliverable, exclusion, methodology statement or
+verification claim was changed. No comparison cell was changed.
 
 ## Regression checklist
 

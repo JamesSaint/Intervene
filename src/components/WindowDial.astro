@@ -25,8 +25,8 @@ import {
 import { endsBeyond, progress, percent } from '../lib/dial-geometry';
 import DialFace from './DialFace.astro';
 
-interface Props { id?: string }
-const { id = 'window-dial' } = Astro.props;
+interface Props { id?: string; /** Where on the page this scenario is read next, if anywhere. */ follow?: string }
+const { id = 'window-dial', follow } = Astro.props;
 
 const preset = PRESETS.find((p) => p.key === DEFAULT_PRESET)!;
 const window = WINDOWS.set;
@@ -109,6 +109,7 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
         </fieldset>
       </div>
     </details>
+    {follow && <a class="wd-follow" href={follow}>This scenario is carried into the chain below <span aria-hidden="true">↓</span></a>}
   </div>
 
   <p class="wd-note" id={`${id}-note`}>
@@ -222,6 +223,8 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
   .wd-window label + label > span { border-left: 0; }
   .wd-window input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--paper); }
   .wd-window input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 3px; }
+  .wd-follow { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-left: auto; font-size: var(--type-action); font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-color: var(--hair-strong); text-underline-offset: 4px; }
+  .wd-follow:is(:hover, :focus-visible) { color: var(--accent-text); }
   .wd-note { margin: 0; font-size: var(--type-caption); line-height: 1.65; color: var(--faint); max-width: 104ch; }
 
   /* Wide: the question on the left at full weight, the dial on the right,
@@ -391,7 +394,7 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
       const w = win();
       const result = evaluate(d, w);
       dial.toggleAttribute('data-reading', index !== null);
-      if (index !== null) { set(word, STAGES[index]); set(caption, `${percent(d[index] / w)} of the window`); return; }
+      if (index !== null) { set(word, STAGES[index]); set(caption, `Takes ${percent(d[index] / w)} of the window`); return; }
       set(word, OUTCOME_LABEL[result.outcome]);
       set(caption, result.outcome === 'too-late' ? `Window closed during ${STAGES[result.closesDuring ?? 3]}` : result.outcome === 'narrow' ? 'Inside the window, narrowly' : 'Inside the window');
     }
@@ -446,6 +449,19 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
       drawTicks(); announce();
       elapsed = 0; draw(); run();
     }
+
+    // Another instrument on the page may ask for a scenario by key. The dial
+    // takes it without replaying, since it may be off screen, and announces
+    // the settled result as usual.
+    document.addEventListener('intervene:scenario-set', (event) => {
+      const preset = PRESETS.find((p) => p.key === (event as CustomEvent<{ key: string }>).detail.key);
+      if (!preset) return;
+      select.value = preset.key;
+      select.querySelector<HTMLOptionElement>('option[value="custom"]')!.hidden = true;
+      preset.durations.forEach((value, i) => { ranges[i].value = String(value); ranges[i].setAttribute('aria-valuetext', `${value} of ${ranges[i].max}`); });
+      focused = null; shown = null; played = true;
+      settle();
+    });
 
     select.addEventListener('change', () => {
       const preset = PRESETS.find((p) => p.key === select.value);

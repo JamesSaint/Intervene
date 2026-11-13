@@ -2,26 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import InsightCard from '../../components/InsightCard.astro';
 
-const insights = [
-  {
-    kicker: 'Note',
-    title: 'Accountability theatre: the named SMF without halt authority',
-    dek: 'A designated executive who cannot stop the system is a name on a chart, not a control. AGDA® measures the pairing.',
-    href: '/insights/accountability-theatre/',
-  },
-  {
-    kicker: 'Note',
-    title: 'Coincidence is not a margin',
-    dek: 'An absence of incidents does not show that controls work. Quiet is not the same as safe.',
-    href: '/insights/coincidence-is-not-a-margin/',
-  },
-  {
-    kicker: 'Note',
-    title: 'The 36-hour window, and why the board hears last',
-    dek: 'Authority travels upward through people who cannot act. By the time it reaches the board, the cheap intervention has passed.',
-    href: '/insights/the-thirty-six-hour-window/',
-  },
-];
+import { insights, insightHref, insightDate } from '../../lib/insights';
+import { markAgda } from '../../lib/marks';
+
+// Newest first. The latest note leads the page; the rest follow as an index.
+const [lead, ...rest] = insights;
 ---
 
 <BaseLayout
@@ -43,11 +28,18 @@ const insights = [
     </div>
   </section>
 
-  <section class="block">
+  <section class="block notes">
     <div class="wrap">
+      <a class="note-lead" href={insightHref(lead)}>
+        <span class="note-meta mono">Latest · <time datetime={lead.date}>{insightDate(lead.date)}</time></span>
+        <h2 class="note-lead-title" set:html={markAgda(lead.title)} />
+        <p class="note-lead-dek" set:html={markAgda(lead.dek)} />
+        <span class="note-read">Read the note <span aria-hidden="true">→</span></span>
+      </a>
+      <h2 class="notes-earlier mono">Earlier notes</h2>
       <ul class="insights-list" role="list">
-        {insights.map((a) => (
-          <li><InsightCard title={a.title} dek={a.dek} href={a.href} kicker={a.kicker} /></li>
+        {rest.map((a) => (
+          <li><InsightCard title={a.title} dek={a.dek} href={insightHref(a)} kicker={insightDate(a.date)} /></li>
         ))}
       </ul>
     </div>
@@ -56,3 +48,22 @@ const insights = [
     <div class="wrap section-intro"><h2 class="h2">Recognise the pattern?</h2><div><p class="body muted">Inspect the evidence format, or put the intervention question in front of the accountable person.</p><nav class="related-links" aria-label="Next steps"><a href="/sample-report/" class="link">View sample verdict</a><a href="/network/" class="link">Intervention Readiness Network</a></nav></div></div>
   </section>
 </BaseLayout>
+
+<style>
+  /* An editorial front: the latest note at headline scale across the page,
+     the earlier notes as a dated index beneath. */
+  .notes { padding-top: var(--space-6); }
+  .note-lead { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--space-3) var(--space-7); align-items: end; padding: var(--space-5) 0 var(--space-6); border-top: 3px solid var(--ink); color: var(--ink); }
+  .note-meta { grid-column: 1 / -1; font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
+  .note-lead-title { grid-column: 1; margin: 0; font-size: clamp(32px, 4.6vw, 68px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.04; text-wrap: balance; transition: color var(--dur-fast) var(--ease); }
+  .note-lead-dek { grid-column: 2; margin: 0; padding-bottom: 6px; font-size: var(--type-support); line-height: 1.55; color: var(--muted); }
+  .note-read { grid-column: 2; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: var(--type-small); font-weight: 600; text-decoration: underline; text-decoration-color: var(--hair-strong); text-underline-offset: 4px; }
+  .note-lead:is(:hover, :focus-visible) :is(.note-lead-title, .note-read) { color: var(--accent-text); }
+  .note-lead:focus-visible { outline: 2px solid var(--focus); outline-offset: 6px; }
+  .notes-earlier { margin: var(--space-6) 0 var(--space-3); font-size: var(--type-caption); font-weight: 400; letter-spacing: 0; line-height: 1.6; color: var(--muted); }
+  .insights-list { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--hair-strong); }
+  @media (max-width: 880px) {
+    .note-lead { grid-template-columns: minmax(0, 1fr); }
+    .note-lead-dek, .note-read { grid-column: 1; }
+  }
+</style>

@@ -65,9 +65,9 @@ const lenses = [
         </li>
       ))}
     </ul>
-    <p class="et-lens-status mono" data-et-status aria-live="polite"></p>
+    <p class="et-lens-foot"><span class="et-lens-status mono" data-et-status aria-live="polite"></span><button type="button" class="et-jump" data-et-jump hidden>Show the first on the trace <span aria-hidden="true">↓</span></button></p>
   </div>
-  <noscript><style is:inline>{'.et-exec-hint, .et-lens-status { display: none; } .et-lens { cursor: default; }'}</style></noscript>
+  <noscript><style is:inline>.et-exec-hint, .et-lens-foot { display: none !important; } .et-lens { cursor: default !important; }</style></noscript>
 
   <div class="et-map">
     <div class="et-conclusion">
@@ -169,10 +169,20 @@ const lenses = [
   .et-lens[aria-pressed='true'] { background: var(--ink); color: var(--paper); }
   .et-lens[aria-pressed='true'] .et-lens-a { color: var(--paper); }
   .et-lens[aria-pressed='true'] .et-lens-q::before { background: currentColor; }
-  .et-lens-status { margin: var(--space-2) 0 0; min-height: 1lh; font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
-  /* What a pressed question rests on. A ring, never a dimming of the rest. */
-  :global(.evidence-trace .is-marked) { outline: 2px solid var(--ink); outline-offset: 4px; }
-  :global(.evidence-trace[data-lens='open'] .is-marked) { outline-style: dashed; outline-color: var(--accent-text); }
+  .et-lens-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); margin: var(--space-2) 0 0; min-height: 44px; }
+  .et-lens-status { font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
+  .et-jump { appearance: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0; border: 0; background: transparent; font: inherit; font-size: var(--type-action); font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-color: var(--hair-strong); text-underline-offset: 4px; cursor: pointer; }
+  .et-jump[hidden] { display: none; }
+  .et-jump:is(:hover, :focus-visible) { color: var(--accent-text); }
+  .et-jump:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  /* What a pressed question rests on: a heavy ring, and the lines that leave
+     it drawn heavy too, so the marked path can be followed across the trace.
+     Never a dimming of the rest. A broken ring means not established. */
+  :global(.evidence-trace .is-marked) { outline: 3px solid var(--ink); outline-offset: 4px; --et-weight: 3px; --et-line: var(--ink); }
+  :global(.evidence-trace[data-lens='open'] .is-marked) { outline-style: dashed; outline-color: var(--accent-text); --et-line: var(--accent-text); }
+  :global(.evidence-trace .is-marked.is-arriving) { animation: et-arrive 700ms var(--ease-out) 1; }
+  @keyframes et-arrive { from { outline-offset: 14px; } to { outline-offset: 4px; } }
+  @media (prefers-reduced-motion: reduce) { :global(.evidence-trace .is-marked.is-arriving) { animation: none; } }
 
   /* Read right to left on a wide screen: conclusion, findings, records. */
   .et-map { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr); column-gap: var(--et-gap); margin-top: var(--space-5); }
@@ -297,14 +307,26 @@ const lenses = [
   document.querySelectorAll<HTMLElement>('[data-evidence-trace]').forEach((trace) => {
     const lenses = [...trace.querySelectorAll<HTMLButtonElement>('[data-et-lens]')];
     const status = trace.querySelector<HTMLElement>('[data-et-status]');
+    const jump = trace.querySelector<HTMLButtonElement>('[data-et-jump]');
+    let first: HTMLElement | null = null;
+    // The marks are often below the fold, most of all on a phone. The jump
+    // takes the reader to the first of them; it never moves the page unasked.
+    jump?.addEventListener('click', () => {
+      if (!first) return;
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: first.getBoundingClientRect().top + window.scrollY - 140, behavior: reduce ? 'auto' : 'smooth' });
+    });
     const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
     function apply(active: HTMLButtonElement | null) {
-      trace.querySelectorAll('.is-marked').forEach((el) => el.classList.remove('is-marked'));
+      trace.querySelectorAll('.is-marked').forEach((el) => el.classList.remove('is-marked', 'is-arriving'));
+      first = null; if (jump) jump.hidden = true;
       lenses.forEach((lens) => lens.setAttribute('aria-pressed', String(lens === active)));
       if (!active) { delete trace.dataset.lens; if (status) status.textContent = ''; return; }
       trace.dataset.lens = active.dataset.etLens;
       const marked = [...trace.querySelectorAll<HTMLElement>(active.dataset.etMarks!)];
-      marked.forEach((el) => el.classList.add('is-marked'));
+      marked.forEach((el) => el.classList.add('is-marked', 'is-arriving'));
+      first = marked.slice().sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top)[0] ?? null;
+      if (jump) jump.hidden = !first;
       const stages = marked.filter((el) => el.classList.contains('et-stage')).length;
       const records = marked.filter((el) => el.classList.contains('et-record')).length;
       const parts = [stages && plural(stages, 'stage'), records && plural(records, 'record'), marked.some((el) => el.classList.contains('et-none')) && 'one stage with no record', marked.some((el) => el.classList.contains('et-conclusion')) && 'the conclusion'].filter(Boolean);
