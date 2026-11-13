@@ -18,8 +18,11 @@ import { check, review, assessment } from '../lib/offers';
 import { markAgda } from '../lib/marks';
 import Agda from './Agda.astro';
 
-interface Props { headingLevel?: 'h2' | 'h3' }
-const { headingLevel: H = 'h2' } = Astro.props;
+/* `bare` drops the heading and closing note, for use as the full comparison
+   beneath an introduction that already carries them. */
+interface Props { headingLevel?: 'h2' | 'h3'; bare?: boolean }
+const { headingLevel: H = 'h2', bare = false } = Astro.props;
+const Wrap = bare ? 'div' : 'figure';
 
 /** `from` is the first engagement that includes the row: 0 Check, 1 Review, 2 Assessment. */
 const capabilities = [
@@ -40,11 +43,13 @@ const routes = [
 ];
 const fields = ['Question and decision', 'Evidence examined', 'Boundary'];
 ---
-<figure class="offer-choice offer-ladder" aria-labelledby="offer-choice-heading">
-  <figcaption class="ol-caption" data-offer-view="offer_choice">
-    <H class="h2" id="offer-choice-heading">Three questions.</H>
-    <p class="ol-principle">One named system. Each engagement includes the one before it, and none is a prerequisite.</p>
-  </figcaption>
+<Wrap class:list={['offer-ladder', { 'offer-choice': !bare, 'is-bare': bare }]} aria-labelledby={bare ? undefined : 'offer-choice-heading'}>
+  {!bare && (
+    <figcaption class="ol-caption" data-offer-view="offer_choice">
+      <H class="h2" id="offer-choice-heading">Three questions.</H>
+      <p class="ol-principle">One named system. Each engagement includes the one before it, and none is a prerequisite.</p>
+    </figcaption>
+  )}
 
   <div class="ol-grid">
     <div class="ol-labels" aria-hidden="true">
@@ -87,11 +92,13 @@ const fields = ['Question and decision', 'Evidence examined', 'Boundary'];
     </ol>
   </div>
 
+  {!bare && (
   <p class="body muted ol-note">
     The Authority Check is not an <Agda /> verdict. A Review may recommend a
     full Assessment but does not commit you to one or determine its verdict.
   </p>
-</figure>
+  )}
+</Wrap>
 
 <style>
   .offer-ladder { margin: 0; }
@@ -101,6 +108,7 @@ const fields = ['Question and decision', 'Evidence examined', 'Boundary'];
 
   /* One bounded object, like the report above it: three engagements read
      across the same rows. The question each one answers leads its column. */
+  .offer-ladder.is-bare .ol-grid { margin-top: 0; }
   .ol-grid { --ol-pad: clamp(20px, 2.4vw, 36px); margin-top: var(--space-6); border: 1px solid var(--hair-strong); background: var(--paper); }
   .ol-labels { display: none; }
   .ol-routes { list-style: none; margin: 0; padding: 0; display: grid; }

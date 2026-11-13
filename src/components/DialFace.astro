@@ -9,7 +9,7 @@
  * is a fixed picture of the finished chain.
  */
 import { STAGES } from '../lib/window-model';
-import { dialArcs, dash, labelPlacements, fitsLabel, RADIUS } from '../lib/dial-geometry';
+import { dialArcs, dash, labelPlacements, fitsLabel, RADIUS, STROKE } from '../lib/dial-geometry';
 
 interface Props { durations: readonly number[]; window: number; uid: string; live?: boolean }
 const { durations, window, uid, live = false } = Astro.props;
@@ -29,20 +29,19 @@ const along = (at: number) => (at > 0.25 && at < 0.75 ? { dir: 'ccw', offset: (1
   <defs>
     <path id={`${uid}-window-cw`} d={circle(RADIUS.window, 1)} />
     <path id={`${uid}-window-ccw`} d={circle(RADIUS.window, 0)} />
-    <path id={`${uid}-beyond-cw`} d={circle(RADIUS.beyond, 1)} />
-    <path id={`${uid}-beyond-ccw`} d={circle(RADIUS.beyond, 0)} />
   </defs>
   <circle class="df-disc" cx="300" cy="300" r="298" />
   <g class="df-ticks" data-df-ticks={live ? '' : undefined}>
-    {ticks.map((t) => <line class:list={[{ 'is-major': t.major }]} x1="300" x2="300" y1={t.major ? 14 : 22} y2="32" transform={`rotate(${t.angle} 300 300)`} />)}
+    {ticks.map((t) => <line class:list={[{ 'is-major': t.major }]} x1="300" x2="300" y1={t.major ? 12 : 18} y2="26" transform={`rotate(${t.angle} 300 300)`} />)}
   </g>
   <g transform="rotate(-90 300 300)">
-    <circle class="df-track" cx="300" cy="300" r={RADIUS.window} />
-    <circle class="df-track df-track-beyond" cx="300" cy="300" r={RADIUS.beyond} />
+    <circle class="df-track" cx="300" cy="300" r={RADIUS.window} stroke-width={STROKE.window} />
+    <circle class="df-track df-track-beyond" cx="300" cy="300" r={RADIUS.beyond} stroke-width={STROKE.beyond} />
+    <circle class="df-guide" cx="300" cy="300" r={RADIUS.beyond - STROKE.beyond / 2 - 12} />
     {STAGES.map((_, i) => (
       <Fragment>
-        <circle class="df-arc" data-df-arc={live ? i : undefined} cx="300" cy="300" r={RADIUS.window} pathLength="1" stroke-dasharray={arc(i, 'window').array} stroke-dashoffset={arc(i, 'window').offset} />
-        <circle class="df-arc df-arc-beyond" data-df-beyond={live ? i : undefined} cx="300" cy="300" r={RADIUS.beyond} pathLength="1" stroke-dasharray={arc(i, 'beyond').array} stroke-dashoffset={arc(i, 'beyond').offset} />
+        <circle class="df-arc" data-df-arc={live ? i : undefined} cx="300" cy="300" r={RADIUS.window} stroke-width={STROKE.window} pathLength="1" stroke-dasharray={arc(i, 'window').array} stroke-dashoffset={arc(i, 'window').offset} />
+        <circle class="df-arc df-arc-beyond" data-df-beyond={live ? i : undefined} cx="300" cy="300" r={RADIUS.beyond} stroke-width={STROKE.beyond} pathLength="1" stroke-dasharray={arc(i, 'beyond').array} stroke-dashoffset={arc(i, 'beyond').offset} />
       </Fragment>
     ))}
   </g>
@@ -52,12 +51,12 @@ const along = (at: number) => (at > 0.25 && at < 0.75 ? { dir: 'ccw', offset: (1
       const a = along(p.at);
       return (
         <text class:list={['df-name', `on-${p.ring}`, 'is-lit', { 'is-hidden': !fitsLabel(name, p) }]} data-df-name={live ? i : undefined} dy="0.36em">
-          <textPath href={`#${uid}-${p.ring}-${a.dir}`} startOffset={`${a.offset}%`} text-anchor="middle">{name}</textPath>
+          <textPath href={`#${uid}-window-${a.dir}`} startOffset={`${a.offset}%`} text-anchor="middle">{name}</textPath>
         </text>
       );
     })}
   </g>
-  <line class="df-boundary" x1="300" x2="300" y1="40" y2={300 - RADIUS.beyond + 12} />
+  <line class="df-boundary" x1="300" x2="300" y1="34" y2={300 - RADIUS.beyond + STROKE.beyond / 2 + 8} />
   {live && <circle class="df-hand" data-df-hand cx="300" cy={300 - RADIUS.window} r="7" />}
 </svg>
 
@@ -67,14 +66,14 @@ const along = (at: number) => (at > 0.25 && at < 0.75 ? { dir: 'ccw', offset: (1
   :root[data-theme='dark'] .dial-face { --df-disc: #181818; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme]) .dial-face { --df-disc: #181818; } }
   .df-disc { fill: var(--df-disc); stroke: rgba(201, 182, 148, 0.22); stroke-width: 1; }
-  .df-ticks line { stroke: rgba(240, 240, 240, 0.32); stroke-width: 1; }
-  .df-ticks line.is-major { stroke: rgba(240, 240, 240, 0.8); stroke-width: 1.5; }
-  .df-track { fill: none; stroke: rgba(240, 240, 240, 0.13); stroke-width: 38; }
-  .df-track-beyond { stroke: rgba(224, 118, 106, 0.13); stroke-width: 24; }
-  .df-arc { fill: none; stroke: var(--df-ink); stroke-width: 38; transition: opacity 160ms ease; }
-  .df-arc-beyond { stroke: var(--df-warn); stroke-width: 24; }
-  .df-name { font-family: var(--font-sans); font-size: 16px; font-weight: 600; letter-spacing: 0.01em; fill: rgba(240, 240, 240, 0.62); transition: fill 160ms ease, opacity 160ms ease; }
-  .df-name.on-beyond { font-size: 13px; }
+  .df-ticks line { stroke: rgba(240, 240, 240, 0.3); stroke-width: 1; }
+  .df-ticks line.is-major { stroke: rgba(240, 240, 240, 0.85); stroke-width: 1.5; }
+  .df-track { fill: none; stroke: rgba(240, 240, 240, 0.12); }
+  .df-track-beyond { stroke: rgba(224, 118, 106, 0.16); }
+  .df-guide { fill: none; stroke: rgba(240, 240, 240, 0.14); stroke-width: 1; }
+  .df-arc { fill: none; stroke: var(--df-ink); transition: opacity 160ms ease; }
+  .df-arc-beyond { stroke: var(--df-warn); }
+  .df-name { font-family: var(--font-sans); font-size: 15px; font-weight: 600; letter-spacing: 0.01em; fill: rgba(240, 240, 240, 0.62); transition: fill 160ms ease, opacity 160ms ease; }
   .df-name.is-lit { fill: #0a0a0a; }
   .df-name.is-hidden { display: none; }
   .df-boundary { stroke: var(--df-ink); stroke-width: 2; transition: stroke 360ms ease; }

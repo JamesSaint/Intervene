@@ -145,34 +145,36 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
   .window-dial[data-playing] .wd-face-replay { opacity: 0; pointer-events: none; }
   .wd-top { position: absolute; left: 50%; top: -26px; transform: translateX(-50%); font-family: var(--font-mono); font-size: 12px; line-height: 1.4; color: var(--ink); white-space: nowrap; }
   .window-dial[data-closed] .wd-top { color: var(--warn); }
-  .wd-centre { position: absolute; inset: 27% 30% 36%; display: grid; align-content: center; justify-items: center; gap: 8px; text-align: center; color: var(--wd-ink); }
+  .wd-centre { position: absolute; inset: 25% 26% 36%; display: grid; align-content: center; justify-items: center; gap: 8px; text-align: center; color: var(--wd-ink); }
   .wd-scn { font-family: var(--font-mono); font-size: clamp(10px, 1.9vw, 12px); line-height: 1.4; color: var(--wd-faint); min-height: 2.8em; display: flex; align-items: flex-end; }
-  .wd-word { font-size: clamp(26px, 7.2vw, 60px); font-weight: 600; letter-spacing: -0.03em; line-height: 1; white-space: nowrap; }
+  .wd-word { font-size: clamp(28px, 8vw, 68px); font-weight: 600; letter-spacing: -0.03em; line-height: 1; white-space: nowrap; }
   .window-dial[data-closed]:not([data-playing]) .wd-word { color: var(--wd-warn); }
   .wd-caption { font-size: clamp(12px, 2.6vw, 15px); line-height: 1.35; color: var(--wd-muted); min-height: 2.7em; max-width: 17ch; }
 
-  /* Stage list: the key to the dial, the state of each stage, and a way to pick one out. */
-  .wd-stages { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--hair-strong); }
-  .wd-stage { display: grid; grid-template-columns: 15px 96px minmax(0, 1fr) auto; gap: var(--space-3); align-items: center; width: 100%; min-height: 46px; text-align: left; border-top: 1px solid var(--hair-strong); transition: opacity var(--dur-fast) var(--ease); }
+  /* The console under the opening: the four stages across, each with its
+     state in words, then the three figures. It is the key to the dial. */
+  .wd-readout { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
+  .wd-stages { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-3); }
+  .wd-stage { position: relative; display: grid; grid-template-columns: 15px minmax(0, 1fr); gap: 2px var(--space-2); align-content: start; align-items: center; width: 100%; min-height: 64px; padding: var(--space-2) 0; text-align: left; border-top: 1px solid var(--hair-strong); }
   .wd-glyph { width: 15px; height: 15px; border: 1px solid var(--ink); border-radius: 50%; box-sizing: border-box; }
   .wd-stage[data-state='completed'] .wd-glyph { background: var(--ink); }
   .wd-stage[data-state='active'] .wd-glyph { background: var(--sedi-signal); border-color: var(--sedi-signal); }
   .wd-stage[data-state='pending'] .wd-glyph { border-style: dashed; }
   .wd-stage[data-late][data-state='completed'] .wd-glyph { background: var(--warn); border-color: var(--warn); border-radius: 0; }
-  .wd-name { font-size: 18px; font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.2; color: var(--ink); }
-  .wd-action { font-size: var(--type-action); line-height: 1.4; color: var(--muted); }
-  .wd-state { font-family: var(--font-mono); font-size: 12px; line-height: 1.4; color: var(--faint); text-align: right; white-space: nowrap; }
+  .wd-name { font-size: 19px; font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.2; color: var(--ink); }
+  .wd-action { grid-column: 2; font-size: var(--type-action); line-height: 1.4; color: var(--muted); }
+  .wd-state { grid-column: 2; font-family: var(--font-mono); font-size: 12px; line-height: 1.5; color: var(--faint); white-space: nowrap; }
   .wd-stage[data-late][data-state='completed'] .wd-state { color: var(--warn); }
   .wd-stage[data-state='pending'] :is(.wd-name, .wd-action) { color: var(--faint); }
   /* The picked-out stage is marked by a rule, never by dimming the others' text. */
-  .wd-stage.is-focus { box-shadow: inset 3px 0 0 var(--ink); padding-left: var(--space-2); }
+  .wd-stage.is-focus::before { content: ''; position: absolute; left: 0; right: 0; top: -2px; height: 3px; background: var(--ink); }
   .wd-stage:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
 
-  .wd-meter { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); margin: var(--space-3) 0 0; }
+  .wd-meter { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); margin: 0; padding-top: var(--space-2); border-top: 1px solid var(--hair-strong); }
   .wd-meter dt { font-family: var(--font-mono); font-size: 12px; line-height: 1.4; color: var(--faint); }
   .wd-meter dd { margin: 2px 0 0; font-family: var(--font-mono); font-size: 22px; line-height: 1.2; color: var(--ink); }
   .window-dial[data-closed] .wd-beyond dd { color: var(--warn); }
-  .wd-result { margin: var(--space-3) 0 0; min-height: 3lh; font-size: var(--type-small); line-height: 1.6; color: var(--muted); transition: opacity var(--dur-fast) var(--ease); }
+  .wd-result { margin: 0; min-height: 2lh; font-size: var(--type-small); line-height: 1.6; color: var(--muted); transition: opacity var(--dur-fast) var(--ease); }
   /* The sentence states the outcome, so it waits until time has run. */
   .window-dial[data-playing] .wd-result { opacity: 0; }
   .wd-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
@@ -220,28 +222,35 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
   .wd-window input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 3px; }
   .wd-note { margin: 0; font-size: var(--type-caption); line-height: 1.65; color: var(--faint); max-width: 104ch; }
 
-  /* Wide: the question on the left, the dial on the right and larger than it. */
+  /* Wide: the question on the left at full weight, the dial on the right,
+     and the console across beneath both. */
   @media (min-width: 1100px) {
     .window-dial {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 640px); column-gap: var(--space-7); row-gap: var(--space-3); align-items: start;
-      grid-template-areas: 'head face' 'support face' 'cta face' 'readout face' 'bar bar' 'note note';
-      grid-template-rows: auto auto auto 1fr auto auto;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 620px); column-gap: var(--space-7); row-gap: var(--space-4); align-items: start;
+      grid-template-areas: 'head face' 'support face' 'cta face' 'readout readout' 'bar bar' 'note note';
+      grid-template-rows: auto auto 1fr auto auto auto;
     }
-    .wd-face { align-self: center; margin-top: 30px; }
-    .wd-readout { align-self: end; }
+    .wd-face { align-self: center; margin-top: 30px; max-width: 620px; }
+    .wd-readout { grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); gap: var(--space-2) var(--space-6); align-items: start; margin-top: var(--space-2); }
+    .wd-stages { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 var(--space-4); }
+    .wd-result { grid-column: 1 / -1; min-height: 1lh; }
   }
   @media (max-width: 1099px) {
     .wd-readout, .wd-support { max-width: 640px; width: 100%; margin-inline: auto; }
   }
-  /* Phone: the question, one action, then the dial at full width. The stage
-     list directly beneath it is the key; explanation and controls follow. */
+  /* Phone: the question, one action, then the dial at full width. Beneath
+     it the four stages sit two by two with their states; what each stage
+     does, and the supporting copy, wait further down. */
   @media (max-width: 720px) {
     .window-dial { gap: var(--space-3); }
     .wd-face { margin-top: 30px; }
     .wd-face-replay { display: none; }
-    .wd-centre { inset: 30%; }
-    .wd-stage { grid-template-columns: 15px minmax(0, 1fr) auto; gap: var(--space-2) var(--space-3); min-height: 50px; }
+    .wd-centre { inset: 27%; }
+    .wd-stage { min-height: 56px; }
     .wd-action { display: none; }
+    .wd-name { font-size: 17px; }
+    /* The longest state wraps on the narrowest phones; two lines are held for it so nothing moves as states change. */
+    .wd-state { white-space: normal; min-height: 2lh; }
     .wd-meter dd { font-size: 20px; }
     .wd-select { flex: 1 1 100%; }
     .wd-select select { width: 100%; }
@@ -308,7 +317,7 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
         const line = document.createElementNS(NS, 'line');
         const major = i % 4 === 0;
         line.setAttribute('x1', '300'); line.setAttribute('x2', '300');
-        line.setAttribute('y1', major ? '14' : '22'); line.setAttribute('y2', '32');
+        line.setAttribute('y1', major ? '12' : '18'); line.setAttribute('y2', '26');
         line.setAttribute('transform', `rotate(${(i / count) * 360} 300 300)`);
         if (major) line.setAttribute('class', 'is-major');
         return line;
@@ -332,7 +341,7 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
         const place = places[i];
         const bottom = place.at > 0.25 && place.at < 0.75;
         const path = el.querySelector('textPath')!;
-        attr(path, 'href', `#${uid}-${place.ring}-${bottom ? 'ccw' : 'cw'}`);
+        attr(path, 'href', `#${uid}-window-${bottom ? 'ccw' : 'cw'}`);
         attr(path, 'startOffset', `${(bottom ? 1 - place.at : place.at) * 100}%`);
         const drawn = find(i, place.ring);
         el.classList.toggle('on-beyond', place.ring === 'beyond');

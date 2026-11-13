@@ -1,0 +1,112 @@
+---
+/**
+ * Why documented controls are not intervention capability, drawn as a
+ * series circuit. Three conditions stand between a signal and an
+ * intervention. Documents can state all three. The response gets through
+ * only if every one holds at the moment it is needed, and one open
+ * condition stops it however sound the others are.
+ *
+ * An illustration of the argument, not a finding about anyone. The open
+ * condition is authority, the same failure the opening scenario plays.
+ * The three questions are the homepage's own; the "on paper" lines are
+ * generic examples of a documented control.
+ */
+interface Props { questions: Array<{ h: string; p: string }> }
+const { questions } = Astro.props;
+
+const conditions = [
+  { paper: 'Monitoring is documented.', q: questions[1], open: false, state: 'Holds' },
+  { paper: 'A risk owner is named.', q: questions[0], open: true, state: 'Open under pressure' },
+  { paper: 'A halt procedure is written.', q: questions[2], open: false, state: 'Holds, but nothing reaches it' },
+];
+const firstOpen = conditions.findIndex((c) => c.open);
+---
+<figure class="series-circuit" aria-labelledby="circuit-caption">
+  <ol class="sc-chain" role="list">
+    <li class="sc-end sc-start" aria-hidden="true"><span class="sc-terminal"></span><span class="sc-end-label">Signal</span></li>
+    {conditions.map((c, i) => (
+      <li class:list={['sc-cell', { 'is-open': c.open, 'is-dead': i > firstOpen }]}>
+        <p class="sc-paper"><span class="mono">On paper</span>{c.paper}</p>
+        <div class="sc-wire" aria-hidden="true">
+          <span class="sc-line"></span>
+          <svg class="sc-switch" viewBox="0 0 96 48" focusable="false">
+            <circle cx="12" cy="36" r="5" />
+            <circle cx="84" cy="36" r="5" />
+            {c.open ? <line x1="12" y1="36" x2="74" y2="8" /> : <line x1="12" y1="36" x2="84" y2="36" />}
+          </svg>
+          <span class="sc-line sc-line-out"></span>
+        </div>
+        <p class="sc-state mono">{c.state}</p>
+        <h3 class="sc-q">{c.q.h}</h3>
+        <p class="sc-p">{c.q.p}</p>
+      </li>
+    ))}
+    <li class="sc-end sc-finish" aria-hidden="true"><span class="sc-terminal"></span><span class="sc-end-label">Intervention<br />not reached</span></li>
+  </ol>
+  <figcaption id="circuit-caption">
+    Illustration. The three conditions are in series: a response reaches the
+    system only if every one of them holds at the moment it is needed.
+  </figcaption>
+</figure>
+
+<style>
+  .series-circuit { --sc-y: 36px; margin: var(--space-7) 0 0; }
+  .sc-chain { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: auto repeat(3, minmax(0, 1fr)) auto; grid-template-rows: auto 48px auto auto auto; column-gap: 0; }
+  .sc-cell { display: grid; grid-row: 1 / -1; grid-template-rows: subgrid; min-width: 0; }
+  .sc-paper { margin: 0; padding: 0 var(--space-5) var(--space-4) 0; display: grid; gap: 4px; align-content: end; font-size: var(--type-support); line-height: 1.35; color: var(--ink); }
+  .sc-paper .mono { font-size: var(--type-caption); line-height: 1.6; color: var(--faint); }
+
+  /* The wire runs through every cell at one height; the switch sits on it. */
+  .sc-wire { display: grid; grid-template-columns: minmax(0, 1fr) 96px minmax(0, 2.2fr); align-items: start; height: 48px; }
+  .sc-line { height: 0; margin-top: calc(var(--sc-y) - 1px); border-top: 2px solid var(--ink); }
+  .sc-switch { width: 96px; height: 48px; overflow: visible; }
+  .sc-switch circle { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+  .sc-switch line { stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
+  .sc-cell.is-open .sc-switch line { stroke: var(--warn); stroke-width: 3; }
+  .sc-cell.is-open .sc-switch circle { stroke: var(--warn); }
+  /* Past the open condition nothing is carried: the wire is drawn dashed. */
+  .sc-cell.is-open .sc-line-out, .sc-cell.is-dead .sc-line { border-top: 2px dashed var(--hair-strong); }
+  .sc-cell.is-dead .sc-switch :is(circle, line) { stroke: var(--hair-strong); }
+
+  .sc-state { margin: var(--space-3) 0 0; font-size: var(--type-caption); line-height: 1.6; color: var(--faint); }
+  .sc-cell.is-open .sc-state { color: var(--warn); }
+  .sc-q { margin: var(--space-2) var(--space-5) 0 0; font-size: clamp(22px, 2.3vw, 34px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.12; color: var(--ink); }
+  .sc-p { margin: var(--space-2) var(--space-5) 0 0; font-size: var(--type-small); line-height: 1.6; color: var(--muted); }
+  .sc-cell.is-dead :is(.sc-q, .sc-paper) { color: var(--muted); }
+
+  .sc-end { grid-row: 2; display: grid; align-items: start; position: relative; width: 28px; }
+  .sc-finish { width: 28px; }
+  .sc-terminal { width: 14px; height: 14px; margin-top: calc(var(--sc-y) - 7px); border-radius: 50%; background: var(--ink); }
+  .sc-finish .sc-terminal { justify-self: end; background: var(--paper); border: 2px dashed var(--hair-strong); box-sizing: border-box; }
+  .sc-start::after { content: ''; position: absolute; left: 14px; right: 0; top: calc(var(--sc-y) - 1px); border-top: 2px solid var(--ink); }
+  .sc-finish::before { content: ''; position: absolute; left: 0; right: 14px; top: calc(var(--sc-y) - 1px); border-top: 2px dashed var(--hair-strong); }
+  .sc-end-label { position: absolute; top: -6px; left: 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.4; color: var(--faint); white-space: nowrap; }
+  .sc-finish .sc-end-label { left: auto; right: 0; text-align: right; top: -22px; color: var(--warn); }
+  figcaption { margin-top: var(--space-6); padding-top: var(--space-3); border-top: 1px solid var(--hair); font-size: var(--type-caption); line-height: 1.65; color: var(--faint); }
+
+  /* Narrow: the wire runs down the left edge and each condition hangs off it. */
+  @media (max-width: 860px) {
+    .series-circuit { margin-top: var(--space-5); }
+    .sc-chain { grid-template-columns: 40px minmax(0, 1fr); grid-template-rows: none; }
+    .sc-end { display: none; }
+    .sc-cell { grid-column: 1 / -1; grid-row: auto; grid-template-rows: none; grid-template-columns: subgrid; position: relative; padding-bottom: var(--space-5); }
+    .sc-cell > * { grid-column: 2; }
+    .sc-cell::before { content: ''; position: absolute; left: 11px; top: 0; bottom: 0; border-left: 2px solid var(--ink); }
+    .sc-cell.is-open::before { top: 44px; border-left: 2px dashed var(--hair-strong); }
+    .sc-cell.is-open::after { content: ''; position: absolute; left: 11px; top: 0; height: 12px; border-left: 2px solid var(--ink); }
+    .sc-cell.is-dead::before { border-left: 2px dashed var(--hair-strong); }
+    .sc-cell:last-of-type { padding-bottom: 0; }
+    .sc-paper { padding: 0 0 var(--space-1); font-size: 17px; }
+    /* On the rail each condition is a node: solid where it holds, an open ring where it does not. */
+    .sc-wire { grid-column: 1; grid-row: 1; display: block; position: relative; z-index: 1; width: 16px; height: 16px; margin: 4px 0 0 4px; border-radius: 50%; background: var(--ink); box-sizing: border-box; }
+    .sc-wire > * { display: none; }
+    .sc-cell.is-open .sc-wire { background: var(--paper); border: 3px solid var(--warn); }
+    .sc-cell.is-dead .sc-wire { background: var(--paper); border: 2px dashed var(--hair-strong); }
+    .sc-cell.is-open::before { top: 24px; }
+    .sc-cell.is-open::after { display: none; }
+    .sc-state { margin-top: 0; }
+    .sc-q { margin-right: 0; font-size: 22px; }
+    .sc-p { margin-right: 0; }
+    figcaption { margin-top: var(--space-5); }
+  }
+</style>
