@@ -150,24 +150,29 @@ test.describe('buyer journey pass', () => {
     await expect(page.locator('.offer-compare')).toContainText('Only the full Assessment produces an');
     await page.goto('/services/');
     expect(await page.locator('main').innerText()).toMatch(/does not include the AGDA® verdict/);
-    // The three engagements open the page at a glance: question, fee and
-    // boundary for each, the statement that none is a prerequisite, and a
-    // link to each full sheet. The sheets carry the deliverables.
-    const intro = page.locator('.choose .offer-choice');
+    // The page opens on the comparison: question, principal output and fee
+    // for each engagement, and a link to each full sheet. Same component
+    // and data as the homepage. The sheets carry the deliverables.
+    const intro = page.locator('.options-hero .offer-compare');
     const glance = await intro.innerText();
-    expect(glance).toMatch(/none is a prerequisite/);
+    expect(glance).toMatch(/any of the three engagements directly/);
+    expect(glance).toMatch(/Only the full Assessment produces an/);
     expect(glance).toMatch(/does not commit you to one or determine its verdict/);
     expect(glance).not.toMatch(/What you receive/);
-    await expect(intro.locator('.oi-route')).toHaveCount(3);
-    await expect(intro.locator('.oi-alone')).toHaveText(['Commissioned on its own', 'Commissioned on its own', 'Commissioned on its own']);
+    await expect(intro.locator('.cmp-item')).toHaveCount(3);
     const sheetPrices = await page.locator('#engagements .offer .price').allInnerTexts();
-    expect(await intro.locator('.oi-price').allInnerTexts()).toEqual(sheetPrices);
-    expect(await intro.locator('.oi-link').evaluateAll((els) => els.map((el) => el.getAttribute('href')))).toEqual(['/services/#check', '/services/#review', '/services/#assessment']);
-    await expect(intro.locator('.oi-compare')).toHaveCount(0);
+    expect(await intro.locator('.cmp-price').allInnerTexts()).toEqual(sheetPrices);
+    expect(await intro.locator('.cmp-link').evaluateAll((els) => els.map((el) => el.getAttribute('href')))).toEqual(['/services/#check', '/services/#review', '/services/#assessment']);
+    await expect(page.locator('.options-hero .options-terms')).toContainText('Initial pricing remains subject to market validation.');
     const review = await page.locator('#review').innerText();
     expect(review).toMatch(/What it decides/i);
-    expect(review).toMatch(/What you keep/i);
     expect(review).toMatch(/Start here when/i);
+    // What you receive and how it can be used are one row now.
+    expect(review).not.toMatch(/What you keep/i);
+    await expect(page.locator('#review .sheet-use')).toHaveText('The gap register and recommendation stand on their own. They support prioritisation and budget decisions whether or not a full Assessment follows.');
+    await expect(page.locator('#check .sheet-use')).toHaveText('The finding stands on its own. It is a finding about this system only.');
+    await expect(page.locator('#check')).toContainText('stated as one test at one time');
+    await expect(page.locator('#assessment .sheet-use')).toHaveCount(0);
   });
 
   test('the primary action clears the consent banner on first load', async ({ page }) => {

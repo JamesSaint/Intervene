@@ -6,7 +6,7 @@ import Agda from '../../components/Agda.astro';
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xaqrkrpo';
 
 const info: { k: string; v: string; href?: string }[] = [
-  { k: 'Confidentiality', v: 'We handle enquiries discreetly and use them only to respond to you. They are not used for marketing. An NDA is available before substantive discussion. The form is relayed by a third-party service, so keep a first message to the system and the question, and leave out anything that is itself sensitive.' },
+  { k: 'Confidentiality', v: 'We handle enquiries discreetly and use them only to respond to you. They are not used for marketing. An NDA is available before substantive discussion. The form is relayed by a third-party service.' },
   { k: 'Response',        v: 'You receive a direct response. We do not auto-reply.' },
   { k: 'Email',           v: contactEmail, href: `mailto:${contactEmail}` },
   { k: 'No obligation',   v: 'An initial conversation is brief and creates no engagement. We will say if we are not the right fit.' },
@@ -21,13 +21,9 @@ const info: { k: string; v: string; href?: string }[] = [
   ogImage="/assets/og/og-contact.png"
   pageType="ContactPage"
 >
-  <section class="hero">
+  <section class="hero contact-hero">
     <div class="wrap">
       <h1 class="h1">Discuss <em>your system.</em></h1>
-      <p class="lede muted">
-        Name the system, decision or exposure where you need to know whether
-        intervention remains possible.
-      </p>
     </div>
   </section>
 
@@ -35,8 +31,7 @@ const info: { k: string; v: string; href?: string }[] = [
     <div class="wrap">
       <div class="contact-grid">
         <div class="form-col">
-          <h2 class="h2">Tell us what may need to be stopped.</h2>
-          <p class="body muted form-intro">
+          <p class="form-intro">
             The first conversation takes 20 minutes and is free of charge.
             We’ll discuss the system, the decision it supports and whether an
             assessment would answer your question. We reply within one to two
@@ -135,11 +130,10 @@ const info: { k: string; v: string; href?: string }[] = [
         </div>
 
         <aside class="info-col">
-          <h2 class="h2">How we handle your enquiry.</h2>
+          <h2 class="info-heading">How we handle your enquiry</h2>
           <p class="body muted">
-            Include the system, decision, harm window or oversight concern in
-            your message. We do not pre-qualify by email questionnaire, and
-            nothing is committed until scope and fees are agreed in writing.
+            We do not pre-qualify by email questionnaire, and nothing is
+            committed until scope and fees are agreed in writing.
           </p>
 
           <dl class="spec-list info-list">
@@ -168,23 +162,28 @@ const info: { k: string; v: string; href?: string }[] = [
 
   .contact-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
     gap: var(--space-8);
     align-items: start;
   }
-  .contact-body { padding-top: var(--space-6); }
+  /* The heading and the form read as one opening: no rule between them. */
+  .contact-hero { padding-bottom: 0; border-bottom: 0; }
+  /* The same heading size as the other pages' openings, now that it stands without a sentence beside it. */
+  @media (min-width: 1100px) { .contact-hero .h1 { font-size: clamp(40px, 4.6vw, 68px); } }
+  .contact-body { padding-top: var(--space-5); }
 
-  .info-col .body { margin: var(--gap-head) 0 0; }
-  .info-col .body + .body { margin-top: var(--space-3); }
-  .info-list { --spec-col: 130px; margin-top: var(--gap-intro); border-top-color: var(--hair); }
+  /* The sidebar is reference, set a step below the form in weight. */
+  .info-col { padding-top: 6px; }
+  .info-heading { margin: 0; font-size: var(--type-card); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.25; color: var(--ink); }
+  .info-col .body { margin: var(--gap-head) 0 0; font-size: var(--type-small); }
+  .info-list { --spec-col: 130px; margin-top: var(--space-5); border-top-color: var(--hair); }
   .info-list > div { padding: 12px 0; gap: var(--space-3); border-bottom: 0; }
   .info-list dd { font-size: 16px; }
 
   /* Form column. Field, choice, error, status and submit-row styles
      live in src/styles/forms.css so the Snapshot does not duplicate
      them. Only the page layout remains here. */
-  .form-col .h2 { margin: 0 0 var(--space-3); }
-  .form-intro { margin: 0 0 var(--space-5); max-width: 62ch; }
+  .form-intro { margin: 0 0 var(--space-5); font-size: var(--type-support); line-height: 1.6; color: var(--ink); }
   /* The help sits between the label and the field, so it is read before typing. */
   .field-help { margin: 0 0 10px; }
   .choice-set { border: 0; padding: 0; margin: 0; min-width: 0; }

@@ -3,7 +3,7 @@ import IntegrityNote from '../../components/IntegrityNote.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { markAgda } from '../../lib/marks';
 import { offers, activities, offerFaqs, buyingGroup, PRICE_QUALIFIER, FEE_BASIS, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
-import OfferIntro from '../../components/OfferIntro.astro';
+import OfferCompare from '../../components/OfferCompare.astro';
 import PageNav from '../../components/PageNav.astro';
 import Agda from '../../components/Agda.astro';
 
@@ -30,7 +30,6 @@ const excluded = [
 ];
 
 const pageNav = [
-  { href: '#begin', label: 'Where to begin' },
   { href: '#engagements', label: 'The three engagements' },
   { href: '#scope', label: 'Included and excluded' },
   { href: '#how-it-runs', label: 'How it runs' },
@@ -55,11 +54,13 @@ const useCases = [
   ogImage="/assets/og/og-services.png"
   faqs={offerFaqs}
 >
-  <!-- HERO -->
-  <section class="hero">
+  <!-- THE OPENING IS THE COMPARISON. The page heading sits on the three
+       engagements: question, name, principal output and fee, each linking
+       to its sheet below. Same component and data as the homepage. -->
+  <section class="hero options-hero" id="begin">
     <div class="wrap">
-      <h1 class="h1">Three questions. <em>One named system.</em></h1>
-      <p class="lede muted">An Authority Check asks whether anyone can stop it. A Review asks what evidence you have that you can stop it. A full <Agda /> Assessment asks whether you can stop it in time, and is the only one that returns a verdict.</p>
+      <OfferCompare as="h1" lead="Compare assessment options" tail="" />
+      <p class="options-terms">Fees are indicative. {PRICE_QUALIFIER}</p>
       <div class="hero-cta">
         <a data-primary-cta="discuss_system" href="/contact/" class="btn">Discuss your system</a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
@@ -68,15 +69,6 @@ const useCases = [
   </section>
 
   <PageNav items={pageNav} />
-
-  <!-- WHERE TO BEGIN. The three engagements at a glance: question, scope,
-       fee and boundary, each linking to its sheet below. The frames show
-       scope, not a purchasing order. -->
-  <section class="block choose" id="begin">
-    <div class="wrap">
-      <OfferIntro headingLevel="h2" lead="Where to begin." tail="Any of the three." compare={false} />
-    </div>
-  </section>
 
   <!-- THE THREE OFFERS. Spec sheets, from src/lib/offers.ts. Labels sit
        above their content, and each row of the three sheets shares a grid
@@ -123,12 +115,8 @@ const useCases = [
               <ul class="dash-list" role="list">
                 {o.receive.map((x) => <li set:html={markAgda(x)} />)}
               </ul>
+              {o.use && <p class="sheet-use" set:html={markAgda(o.use)} />}
               {o.slug === 'assessment' && <><p class="records-note">{RECORDS_NOTE}</p><IntegrityNote /></>}
-            </div>
-
-            <div class="sheet-row">
-              <h4 class="sheet-label">What you keep</h4>
-              <p set:html={markAgda(o.retain)} />
             </div>
 
             <div class="sheet-row sheet-row-detail">
@@ -397,11 +385,11 @@ const useCases = [
     grid-template-columns: repeat(3, 1fr);
     column-gap: clamp(32px, 4vw, 56px);
   }
-  /* Subgrid keeps the nine rows of the three sheets level. Browsers
+  /* Subgrid keeps the eight rows of the three sheets level. Browsers
      without it fall back to independent sheets. */
   .offer { display: grid; align-content: start; min-width: 0; }
   @supports (grid-template-rows: subgrid) {
-    .offer { grid-template-rows: subgrid; grid-row: span 9; }
+    .offer { grid-template-rows: subgrid; grid-row: span 8; }
   }
 
   .sheet-head { display: grid; gap: var(--gap-item); align-content: start; padding-bottom: var(--space-4); }
@@ -463,8 +451,12 @@ const useCases = [
   /* ----- Beyond one system ----- */
   .wrap-narrow .body { margin: var(--space-3) 0 0; }
 
-  /* ----- Where to begin ----- */
-  .choose { border-bottom: 1px solid var(--hair); }
+  /* ----- The opening comparison ----- */
+  .options-terms { margin: var(--space-3) 0 0; padding-top: var(--space-3); border-top: 1px solid var(--hair); font-size: var(--type-small); line-height: 1.7; color: var(--muted); }
+  .options-hero .hero-cta { margin-top: var(--space-4); }
+  .options-hero :global(.cmp-list) { margin-top: var(--space-5); }
+  .options-hero :global(.cmp-note) { margin-top: var(--space-4); }
+  .sheet-use { padding-top: 2px; }
 
   /* ----- Activity sequence: the SEDI rail, four steps ----- */
   .activity-seq { margin: var(--gap-intro) 0 0; }

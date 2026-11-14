@@ -13,7 +13,7 @@
  * disclosure holding what it supports and what remains open.
  */
 import {
-  evidence, findingStages, recordLinks, ILLUSTRATIVE_CONCLUSION, SAMPLE_SCOPE, WINDOW_LABEL,
+  evidence, findingStages, recordLinks, ILLUSTRATIVE_CONCLUSION, SAMPLE_SCOPE, WINDOW_LABEL, QUORUM_LABEL,
   DECISIVE_CONSTRAINT, DECISION_QUESTION, FINDING_FOOTNOTE, SAMPLE_LIMITS,
 } from '../lib/sample-report';
 
@@ -23,6 +23,8 @@ const rows = findingStages.map((stage) => ({
   records: recordLinks.filter((l) => l.stage === stage.key).map((l) => ({ ...record(l.id), basis: l.basis, support: l.support })),
 }));
 const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...record(l.id), basis: l.basis }));
+const decide = findingStages.find((s) => s.key === 'decide')!;
+const sentenceCase = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 /* The executive reading: four questions answered from the same data the
    trace draws, so the summary cannot say more than the trace does. Each
@@ -42,15 +44,26 @@ const lenses = [
 <div class="evidence-trace" data-evidence-trace>
   <div class="et-strip">
     <span class="et-ref mono">Intervention Readiness verdict · {SAMPLE_SCOPE[0]}</span>
-    <span class="et-stamp">
-      <span class="et-status mono">Constructed illustration</span>
-      <span class="et-flags mono">Not issued · Not signed · No client data</span>
-    </span>
+    <span class="et-flags mono">Not issued · Not signed · No client data</span>
   </div>
 
   <div class="et-title">
-    <h3 class="h3">Detection works. <em>Authority does not.</em></h3>
-    <p class="body muted">Can the auto-decline pathway stop within an assumed six-hour window? No client data; not an issued assessment or a verified outcome.</p>
+    <div class="et-finding">
+      <span class="et-status mono">Constructed illustration</span>
+      <h2 class="h2 et-heading">Detection works. <em>Authority does not.</em></h2>
+    </div>
+    <dl class="et-compare" aria-label="The comparison behind the finding">
+      <div>
+        <dt>Assumed intervention window</dt>
+        <dd class="et-compare-value">{sentenceCase(WINDOW_LABEL)}</dd>
+        <dd class="et-compare-note">A scenario assumption, not a measurement.</dd>
+      </div>
+      <div class="is-over">
+        <dt>Time to obtain the required quorum</dt>
+        <dd class="et-compare-value">{sentenceCase(QUORUM_LABEL)}</dd>
+        <dd class="et-compare-note">{decide.relText}. No out-of-cycle route.</dd>
+      </div>
+    </dl>
   </div>
 
   <div class="et-exec" data-et-exec>
@@ -144,18 +157,30 @@ const lenses = [
 
   .et-strip { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-2) var(--space-5); padding-bottom: var(--space-3); border-bottom: 1px solid var(--hair-strong); }
   .et-ref { font-size: var(--type-caption); line-height: 1.6; color: var(--ink); }
-  .et-stamp { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
-  .et-status { padding: 4px 10px; border: 1px solid var(--accent-text); font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
+  .et-status { justify-self: start; padding: 4px 10px; border: 1px solid var(--accent-text); font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
   .et-flags { font-size: var(--type-caption); line-height: 1.6; color: var(--faint); }
 
-  .et-title { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--space-3) var(--space-7); align-items: end; padding: var(--space-5) 0 0; }
-  .et-title .h3 { margin: 0; font-size: clamp(34px, 4.6vw, 68px); line-height: 1.02; letter-spacing: -0.03em; }
-  .et-title .h3 em { display: block; }
-  .et-title .h3 em { color: var(--faint); }
-  .et-title .body { margin: 0; font-size: var(--type-body); }
+  /* The finding, its status, and the two intervals that explain it: the
+     window on the left, what exceeds it on the right, under one rule each. */
+  .et-title { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); align-items: end; padding: var(--space-4) 0 0; }
+  .et-finding { display: grid; gap: var(--space-3); }
+  .et-heading { margin: 0; font-size: clamp(34px, 4.6vw, 68px); line-height: 1.02; letter-spacing: -0.03em; }
+  .et-heading em { display: block; color: var(--faint); }
+  .et-compare { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, auto); gap: 0 var(--space-5); margin: 0; padding-bottom: 6px; }
+  /* Label, interval and note share rows across the pair, so the two intervals sit level whatever the labels' length. */
+  .et-compare > div { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 4px; align-content: start; padding-top: var(--space-3); border-top: 1px solid var(--hair-strong); }
+  .et-compare > div.is-over { border-top-color: var(--ink); }
+  .et-compare dt { align-self: end; font-family: var(--font-mono); font-size: var(--type-caption); line-height: 1.6; color: var(--faint); }
+  .et-compare dd { margin: 0; }
+  .et-compare-value { font-size: clamp(19px, 1.6vw, 23px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.15; color: var(--ink); }
+  .et-compare-note { font-size: var(--type-action); line-height: 1.5; color: var(--muted); }
   /* The executive reading: four answers on one line. A pressed question is
      filled, and what it rests on is ringed on the trace beneath. */
   .et-exec { margin-top: var(--space-5); }
+  /* The status of a pressed question and the way to its first mark follow
+     the questions, in the order they are read and tabbed. Their line is
+     held open so pressing a question never moves the trace. */
+  .et-exec + noscript + .et-map, .et-exec + .et-map { margin-top: var(--space-2); }
   .et-exec-k { margin-bottom: var(--space-3); }
   .et-exec-hint { color: var(--faint); }
   .et-lenses { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--hair-strong); background: var(--paper); }
@@ -266,13 +291,17 @@ const lenses = [
     .et-lenses > li:nth-child(n + 3) { border-top: 1px solid var(--hair-strong); }
   }
   @media (max-width: 560px) {
+    /* A phone reads the two intervals one above the other. */
+    .et-compare { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; row-gap: var(--space-3); }
+    .et-compare > div { grid-row: auto; grid-template-rows: none; }
     .et-lenses { grid-template-columns: minmax(0, 1fr); }
     .et-lenses > li + li { border-left: 0; border-top: 1px solid var(--hair-strong); }
     .et-lens { padding: var(--space-3) var(--space-4); }
   }
   @media (max-width: 960px) {
     .et-title { grid-template-columns: minmax(0, 1fr); }
-    .et-map { grid-template-columns: minmax(0, 1fr); margin-top: var(--space-4); }
+    .et-compare { padding-bottom: 0; }
+    .et-map { grid-template-columns: minmax(0, 1fr); }
     .et-heads, .et-how { display: none; }
     .et-records > li::after { display: none; }
     .et-conclusion { grid-column: 1; grid-row: 1; }

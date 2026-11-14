@@ -173,14 +173,6 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
   <!-- 3. ESCALATION VIABILITY -->
   <section class="block" id="authority">
     <div class="wrap">
-      <h2 class="h2">The chain breaks <em>at authority.</em></h2>
-      <p class="lede muted">
-        Detection is present in the scenario. The break is between detection
-        and authority: reaching an authority holder can take longer than the
-        window, and the quorum that authority requires takes at least seven
-        days.
-      </p>
-
       <div class="report-trace"><EvidenceTrace /></div>
 
       <dl class="verdict-row">
@@ -190,14 +182,14 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
         <div><dt>Classification</dt><dd><span class="pill pill-red">RED · constrained</span></dd></div>
       </dl>
 
-      <p class="body callout-note">
+      <div class="prose-measure"><p class="body callout-note">
         <strong>Authority lag.</strong> The signal reaches the Model Risk
         Committee. The Committee meets monthly. The window assumed for the
         trigger scenario is approximately six hours. There is no out-of-cycle
         convening authority. There is no on-call halt authority below MRC
         level. The pathway from detection to halt cannot complete inside the
         window. Faster detection cannot by itself resolve that constraint.
-      </p>
+      </p></div>
     </div>
   </section>
 
@@ -421,7 +413,10 @@ signatureCovers    input, output and manifest commitments only. see /verify/`}</
 </BaseLayout>
 
 <style>
-  .report-trace { margin-top: var(--gap-intro); }
+  /* The trace opens its section: the finding is its heading. */
+  .report-trace { margin-top: 0; }
+  /* Prose beneath the diagram takes a reading column; the diagram keeps the full width. */
+  .prose-measure { display: grid; grid-template-columns: minmax(0, 52rem); }
 
   /* The reading path: four linked steps on one line, joined by a rule. */
   .read-path { margin-top: var(--space-5); }
