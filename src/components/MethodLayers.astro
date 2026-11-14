@@ -48,12 +48,14 @@
     </li>
     <li>
       <h3>Judgement</h3>
-      <svg viewBox="0 0 260 44" aria-hidden="true" focusable="false">
+      {/* The first label is set on two lines beneath its own marker, so it stays clear of the middle one. */}
+      <svg viewBox="0 0 260 55" aria-hidden="true" focusable="false">
         <line x1="16" y1="14" x2="244" y2="14" />
         <rect class="ml-fill" x="2" y="7" width="14" height="14" />
         <circle cx="130" cy="14" r="7" />
         <rect class="ml-box" x="244" y="7" width="14" height="14" />
-        {['Engine computation', 'Interpretation', 'Conclusion'].map((t, i) => <text x={[2, 130, 258][i]} y="40" text-anchor={['start', 'middle', 'end'][i]}>{t}</text>)}
+        <text x="2" y="40"><tspan x="2">Engine</tspan><tspan x="2" dy="12">computation</tspan></text>
+        {['Interpretation', 'Conclusion'].map((t, i) => <text x={[130, 258][i]} y="40" text-anchor={['middle', 'end'][i]}>{t}</text>)}
       </svg>
       <p>Repeatable engine computation supports the assessment. Intervene remains responsible for evidence interpretation and the final conclusion.</p>
       <a href="#chain">The three states <span aria-hidden="true">↓</span></a>

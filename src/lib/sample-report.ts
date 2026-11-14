@@ -79,6 +79,8 @@ export const SAMPLE_LIMITS =
 
 /** The window is a scenario assumption: "about six hours". */
 export const WINDOW_LABEL = 'about six hours';
+/** The Decide interval in words, for prose and the finding's comparison. The trace prints it as "≥ 7 days". */
+export const QUORUM_LABEL = 'at least seven days';
 
 export interface FindingStage {
   key: 'detect' | 'escalate' | 'decide' | 'intervene';

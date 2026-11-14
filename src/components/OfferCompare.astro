@@ -17,11 +17,22 @@ import { offers } from '../lib/offers';
 import { markAgda } from '../lib/marks';
 import Agda from './Agda.astro';
 
+interface Props {
+  /** The heading element. /services/ uses the comparison as its opening, so its heading is the page's h1. */
+  as?: 'h1' | 'h2';
+  /** The heading's two halves; the second is set in the lighter tone on its own line. */
+  lead?: string;
+  tail?: string;
+}
+const { as: H = 'h2', lead = 'Three questions.', tail = 'One named system.' } = Astro.props;
+
 const shorts = ['Authority Check', 'Review', 'Assessment'];
+/* The engagement names sit one level beneath the comparison's own heading. */
+const Name = H === 'h1' ? 'h2' : 'h3';
 ---
 <div class="offer-compare">
-  <div class="cmp-caption" data-offer-view="offer_choice">
-    <h2 class="h2" id="offer-compare-heading">Three questions. <em>One named system.</em></h2>
+  <div class:list={['cmp-caption', { 'is-page': H === 'h1' }]} data-offer-view="offer_choice">
+    <H class:list={[H, 'cmp-heading']} id="offer-compare-heading">{lead}{tail && <Fragment> <em>{tail}</em></Fragment>}</H>
     <p class="cmp-intro">You can commission any of the three engagements directly.</p>
   </div>
 
@@ -29,7 +40,7 @@ const shorts = ['Authority Check', 'Review', 'Assessment'];
     {offers.map((o, i) => (
       <li class="cmp-item">
         <p class="cmp-q">{o.question}</p>
-        <h3 class="cmp-name" set:html={markAgda(o.name)} />
+        <Name class="cmp-name" set:html={markAgda(o.name)} />
         <div class="cmp-row">
           <span class="mono cmp-k">Principal output</span>
           <p class="cmp-output" set:html={markAgda(o.output)} />
@@ -52,8 +63,12 @@ const shorts = ['Authority Check', 'Review', 'Assessment'];
 
 <style>
   .cmp-caption { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); align-items: end; }
-  .cmp-caption .h2 { margin: 0; font-size: clamp(32px, 4.4vw, 64px); line-height: 1.04; }
-  .cmp-caption .h2 em { display: block; color: var(--faint); }
+  .cmp-heading { margin: 0; font-size: clamp(32px, 4.4vw, 64px); line-height: 1.04; }
+  .cmp-heading em { display: block; color: var(--faint); }
+  /* As a page heading it runs on one line, with its sentence directly beneath. */
+  .cmp-caption.is-page { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
+  .cmp-caption.is-page .cmp-heading { font-size: clamp(34px, 4.6vw, 68px); line-height: 1.02; }
+  .cmp-caption.is-page .cmp-intro { padding-bottom: 0; color: var(--muted); }
   .cmp-intro { margin: 0; padding-bottom: 6px; font-size: var(--type-support); line-height: 1.5; color: var(--ink); }
 
   /* Five rows shared by the three columns, so questions, outputs, fees and
