@@ -169,7 +169,7 @@ test.describe('offer sheets', () => {
       const rows = (id: string) => Array.from(document.querySelectorAll<HTMLElement>(`#${id} > *`)).map((r) => Math.round(r.getBoundingClientRect().top));
       return { a: rows('review'), b: rows('assessment'), c: rows('check') };
     });
-    expect(tops.a.length).toBe(9);
+    expect(tops.a.length).toBe(8);
     expect(tops.a).toEqual(tops.b);
     expect(tops.a).toEqual(tops.c);
   });
@@ -189,6 +189,8 @@ test.describe('interface feedback', () => {
   test('the primary action clears the consent banner on the dense page too', async ({ page }) => {
     await page.goto('/services/');
     await page.waitForTimeout(500);
+    // The opening is the comparison, so the action follows it: brought into view, it is not under the banner.
+    await page.locator('.hero .btn').scrollIntoViewIfNeeded();
     const clear = await page.evaluate(() => {
       const cta = document.querySelector('.hero .btn')!.getBoundingClientRect();
       const banner = document.querySelector('.consent')!.getBoundingClientRect();

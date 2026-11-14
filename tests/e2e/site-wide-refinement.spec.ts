@@ -34,7 +34,7 @@ test('mobile heroes retain supporting copy before their actions', async ({ page 
   // action and the dial come first, and the supporting copy follows the dial.
   for (const route of ['/services/', '/agda/']) {
     await page.goto(route);
-    const copy = page.locator('.hero-sub, .hero > .wrap > .lede').first();
+    const copy = page.locator('.hero-sub, .hero > .wrap > .lede, .hero .cmp-intro').first();
     const actions = page.locator('.hero-cta').first();
     const copyBox = await copy.boundingBox();
     const actionBox = await actions.boundingBox();

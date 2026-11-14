@@ -267,7 +267,11 @@ test('desktop headings fill their container and only wrap when the next word can
             range.setStart(node, word.index!);
             range.setEnd(node, word.index! + word[0].length);
             const box = range.getBoundingClientRect();
-            words.push({ right: box.right, top: box.top, width: box.width });
+            // A phrase kept together (an inline-block run) moves to the next
+            // line as one unit, so it is measured as one.
+            const kept = node.parentElement !== heading && getComputedStyle(node.parentElement!).display === 'inline-block' ? node.parentElement! : null;
+            const first = kept && word.index === node.textContent!.search(/\S/) && node === kept.firstChild;
+            words.push({ right: box.right, top: box.top, width: first ? kept!.getBoundingClientRect().width : box.width });
           }
         }
         const earlyBreaks = words.slice(1).filter((word, index) => {

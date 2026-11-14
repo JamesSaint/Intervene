@@ -44,8 +44,9 @@ export interface Offer {
   exclusionShort: string;
   /** The practical decision the engagement supports. */
   decision: string;
-  /** What the client keeps if they go no further. */
-  retain: string;
+  /** How the buyer can use the output if they go no further. Shown under
+      the deliverables on /services/; empty where the list says it all. */
+  use: string;
   /** When this engagement is the right starting point. */
   suitable: string;
   timing: string;
@@ -98,7 +99,7 @@ export const offers: Offer[] = [
       'The Authority Check is not an AGDA® verdict, SEDI result or score, and carries no attestation. The finding is prepared without independent review. The live call-out is one test at one time and does not show that anyone can be reached on any other occasion. A finding about one system is not a finding about the organisation. It is a distinct, narrower engagement, not a discounted Review.',
     exclusionShort: 'Not an AGDA® verdict, SEDI result or score, and no attestation. Prepared without independent review.',
     decision: 'Whether anyone can stop this system, who that is, and where the gaps lie in their authority, their reachability and the halt mechanism.',
-    retain: 'The one-page finding stands on its own: who may halt the system, whether they can decide alone, how they were reached and where the halt takes effect, with the gaps found. It is a finding about this system only.',
+    use: 'The finding stands on its own. It is a finding about this system only.',
     suitable: 'You want a bounded answer on whether anyone can stop one named system before looking at the evidence behind every step of its intervention chain.',
     timing: 'Scope, access and timing are agreed in the proposal. The live call-out is run once, at a time agreed in the protocol.',
     price: '£12,500 fixed + VAT',
@@ -131,7 +132,7 @@ export const offers: Offer[] = [
     exclusion: 'The Review does not include the AGDA® verdict, the window set from your records, the end-to-end timing result or signed SEDI result records. It is not a discounted AGDA® Assessment.',
     exclusionShort: 'The Review does not include the AGDA® verdict. It is not a discounted AGDA® Assessment.',
     decision: 'Whether you could prove that this system can be stopped, step by step, and whether a full AGDA® Assessment is warranted.',
-    retain: 'The gap register and recommendation stand on their own: what you can evidence for each step today, what the records show about real timings and where the gaps are. They support prioritisation and budget decisions whether or not a full Assessment follows.',
+    use: 'The gap register and recommendation stand on their own. They support prioritisation and budget decisions whether or not a full Assessment follows.',
     suitable: 'You need to know what you could evidence for one system, not only who could stop it, or you need a documented basis for deciding whether it warrants a full Assessment. If the system, pathway and scenario are already defined and evidence access is available, discuss a full Assessment directly.',
     timing: 'Scope, access and timing are agreed in the proposal.',
     price: 'From £25,000 + VAT',
@@ -171,7 +172,7 @@ export const offers: Offer[] = [
       'Additional systems, pathways or scenarios, enterprise-wide inventory, governance redesign, legal opinion, full regulatory compliance assessment, model validation, penetration or cybersecurity testing, software development, implementation and remediation delivery are separately scoped. It is not regulatory certification.',
     exclusionShort: 'Connected systems, additional scenarios and implementation work are scoped separately. It is not regulatory certification.',
     decision: 'Whether the agreed pathway can continue operating under its present intervention arrangements, and what has to change before the organisation relies on it.',
-    retain: 'The full package: scope record, evidence register, SEDI findings, the verdict with its confidence basis and limitations, executive interpretation and remediation priorities.',
+    use: '',
     suitable: 'The system, pathway and scenario are defined, the stakeholders and evidence are accessible, and the decision cannot wait for a preliminary review.',
     timing: 'Once an engagement begins, a standard assessment is estimated to run over approximately four weeks, subject to scope, stakeholder access and evidence readiness. The proposal sets the detailed timetable.',
     price: 'From £75,000 + VAT',
