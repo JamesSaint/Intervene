@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 import ReadingNav from '../components/ReadingNav.astro';
 import { pageOutline } from '../lib/page-outline';
 import { markAgda } from '../lib/marks';
+import { insights, insightHref, insightDate } from '../lib/insights';
 
 interface Props {
   title: string;
@@ -22,7 +23,15 @@ const dateLabel = new Date(date).toLocaleDateString('en-GB', {
   month: 'long',
   year: 'numeric',
 });
-const outline = pageOutline(await Astro.slots.render('default'));
+const rendered = await Astro.slots.render('default');
+const outline = pageOutline(rendered);
+// Reading time from the note's own word count, at 230 words a minute, rounded up.
+const words = rendered.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+const minutes = Math.max(1, Math.ceil(words / 230));
+// The notes either side of this one, in date order, from the shared list.
+const at = insights.findIndex((i) => Astro.url.pathname.includes(`/${i.slug}/`));
+const later = at > 0 ? insights[at - 1] : null;
+const earlier = at > -1 && at < insights.length - 1 ? insights[at + 1] : null;
 ---
 
 <BaseLayout
@@ -40,7 +49,7 @@ const outline = pageOutline(await Astro.slots.render('default'));
         <span class="label">{kicker}</span>
         <h1 class="h1" set:html={markAgda(title)}></h1>
         <p class="lede dek" set:html={markAgda(dek)}></p>
-        <time class="meta mono" datetime={date}>{dateLabel}</time>
+        <p class="meta mono"><time datetime={date}>{dateLabel}</time><span aria-hidden="true"> · </span><span>{minutes} minute read</span></p>
       </div>
     </header>
 
@@ -48,6 +57,13 @@ const outline = pageOutline(await Astro.slots.render('default'));
       <ReadingNav items={outline.items} />
       <div class="reading-content">
         <div class="prose"><Fragment set:html={outline.html} /></div>
+        {(earlier || later) && (
+          <nav class="note-nav" aria-label="More notes">
+            {later ? <a href={insightHref(later)} class="note-nav-link"><span class="mono">Later note · {insightDate(later.date)}</span><span class="note-nav-title" set:html={markAgda(later.title)} /></a> : <span></span>}
+            {earlier ? <a href={insightHref(earlier)} class="note-nav-link is-earlier"><span class="mono">Earlier note · {insightDate(earlier.date)}</span><span class="note-nav-title" set:html={markAgda(earlier.title)} /></a> : <span></span>}
+            <a href="/insights/" class="note-nav-all">All notes <span aria-hidden="true">→</span></a>
+          </nav>
+        )}
         <div class="insight-close">
           <p class="body muted">
             If this describes a system you are accountable for, look at the
@@ -87,7 +103,8 @@ const outline = pageOutline(await Astro.slots.render('default'));
   }
   .back-link:is(:hover, :focus-visible) { color: var(--accent-text); border-color: var(--accent); }
   .back-link:active { color: var(--accent-text-hover); }
-  .insight-header .h1 { font-size: clamp(32px, 3.6vw, 48px); }
+  .insight-header .h1 { font-size: clamp(34px, 4.6vw, 64px); line-height: 1.04; text-wrap: balance; }
+  .insight-header .dek { font-size: clamp(19px, 1.7vw, 24px); line-height: 1.45; }
   /* On the smallest phones use the H2 scale for long tracked titles. */
   @media (max-width: 360px) {
     .insight-header .h1 { font-size: 30px; line-height: 1.2; }
@@ -117,20 +134,24 @@ const outline = pageOutline(await Astro.slots.render('default'));
   .prose :global(p) {
     font-family: var(--font-sans);
     font-size: 18px;
-    line-height: 1.65;
-    color: var(--muted);
-    margin: 0 0 20px;
+    line-height: 1.7;
+    color: var(--ink);
+    margin: 0 0 22px;
   }
+  /* The opening paragraph is set larger: the note's argument in brief. */
+  .prose > :global(p:first-child) { font-size: clamp(20px, 1.8vw, 24px); line-height: 1.5; margin-bottom: var(--space-5); }
   .prose :global(p.muted) { color: var(--muted); }
   .prose :global(blockquote) {
     margin: var(--space-5) 0;
     padding-left: var(--space-4);
     border-left: 2px solid var(--accent);
-    font-size: 22px;
-    font-style: italic;
-    line-height: 1.4;
-    color: var(--muted);
+    font-size: clamp(22px, 2.2vw, 30px);
+    font-weight: 600;
+    letter-spacing: var(--tracking-heading);
+    line-height: 1.25;
+    color: var(--ink);
   }
+  .prose :global(blockquote p) { font-size: inherit; line-height: inherit; margin: 0; }
   .prose :global(ul) {
     margin: 0 0 var(--space-4);
     padding: 0;
@@ -146,6 +167,17 @@ const outline = pageOutline(await Astro.slots.render('default'));
     color: var(--ink);
   }
   .prose :global(strong) { font-weight: 600; }
+
+  /* Movement between notes: later on the left, earlier on the right. */
+  .note-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-6); margin-top: var(--space-6); border-top: 2px solid var(--ink); }
+  .note-nav-link { display: grid; gap: 6px; align-content: start; padding: var(--space-4) 0; color: var(--ink); }
+  .note-nav-link .mono { font-size: var(--type-caption); line-height: 1.6; color: var(--muted); }
+  .note-nav-title { font-size: var(--type-card); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.25; transition: color var(--dur-fast) var(--ease); }
+  .note-nav-link:is(:hover, :focus-visible) .note-nav-title { color: var(--accent-text); }
+  .note-nav :is(a):focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+  .note-nav-all { grid-column: 1 / -1; display: inline-flex; align-items: center; gap: 8px; justify-self: start; min-height: 44px; border-top: 1px solid var(--hair); width: 100%; font-size: var(--type-small); font-weight: 600; color: var(--ink); }
+  .note-nav-all:is(:hover, :focus-visible) { color: var(--accent-text); }
+  @media (max-width: 640px) { .note-nav { grid-template-columns: minmax(0, 1fr); } .note-nav > span:empty { display: none; } .note-nav-link + .note-nav-link { border-top: 1px solid var(--hair); } }
 
   .insight-close {
     padding-top: var(--space-6);

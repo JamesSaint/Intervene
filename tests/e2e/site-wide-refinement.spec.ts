@@ -30,7 +30,9 @@ for (const width of [320, 375, 430, 768, 1024, 1440, 1920]) {
 
 test('mobile heroes retain supporting copy before their actions', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  for (const route of ['/', '/services/', '/agda/']) {
+  // The homepage is the exception by decision: on a phone the question, one
+  // action and the dial come first, and the supporting copy follows the dial.
+  for (const route of ['/services/', '/agda/']) {
     await page.goto(route);
     const copy = page.locator('.hero-sub, .hero > .wrap > .lede').first();
     const actions = page.locator('.hero-cta').first();
@@ -40,11 +42,13 @@ test('mobile heroes retain supporting copy before their actions', async ({ page 
   }
 });
 
-test('desktop evidence labels, values and explanations align across stages', async ({ page }) => {
+test('on a wide screen each record sits beside the stage finding it is tied to', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
-  for (const selector of ['.fc-n', '.fc-value', '.fc-rel', '.fc-note']) {
-    const tops = await page.locator(selector).evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().top)));
-    expect(new Set(tops).size, selector).toBe(1);
-  }
+  const rows = await page.locator('.et-row').evaluateAll((els) => els.map((row) => {
+    const stage = row.querySelector('.et-stage')!.getBoundingClientRect();
+    const records = Array.from(row.querySelectorAll('.et-record, .et-none')).map((r) => r.getBoundingClientRect());
+    return records.every((r) => r.right < stage.left && r.top >= stage.top - 1 && r.bottom <= stage.bottom + 1);
+  }));
+  expect(rows).toEqual([true, true, true, true]);
 });

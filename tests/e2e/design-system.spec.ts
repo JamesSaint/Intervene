@@ -17,7 +17,7 @@ test.describe('motion opt-in', () => {
       await page.goto(route);
       expect(await page.evaluate(() => document.documentElement.hasAttribute('data-motion'))).toBe(false);
       const hidden = await page.evaluate((sel) => {
-        const els = Array.from(document.querySelectorAll<HTMLElement>(`${sel}, .fc-stage, .oc-head, .chain-flow li, .ev-cap .bar, .ceiling .bar, .seq-step`));
+        const els = Array.from(document.querySelectorAll<HTMLElement>(`${sel}, .et-row, .oc-head, .chain-flow li, .ev-cap .bar, .ceiling .bar, .seq-step`));
         return els.filter((e) => {
           const cs = getComputedStyle(e);
           return parseFloat(cs.opacity) < 1 || (cs.transform !== 'none' && !e.classList.contains('bar'));
@@ -35,18 +35,20 @@ test.describe('motion opt-in', () => {
     const page = await ctx.newPage();
     await page.goto('/');
     expect(await page.evaluate(() => document.documentElement.hasAttribute('data-motion'))).toBe(false);
-    // Nothing waits for an intersection: the decisive node is filled and
-    // every stage is opaque before any scrolling.
+    // Nothing waits for an intersection: the decisive stage of the evidence
+    // trace is the filled block and every stage is opaque before any scrolling.
     const state = await page.evaluate(() => {
-      const node = document.querySelector<HTMLElement>('.fc-exceeds .fc-node')!;
-      const stages = Array.from(document.querySelectorAll<HTMLElement>('.fc-stage'));
+      const node = document.querySelector<HTMLElement>('.et-row.is-decisive .et-stage')!;
+      const stages = Array.from(document.querySelectorAll<HTMLElement>('.et-row'));
+      // Wide screens fill the decisive block; the narrow rail fills its mark instead.
+      const wide = innerWidth > 960;
       return {
-        filled: getComputedStyle(node).backgroundColor,
-        opaque: stages.every((s) => getComputedStyle(s).opacity === '1'),
+        filled: wide ? getComputedStyle(node).backgroundColor : getComputedStyle(node, '::before').backgroundColor,
+        opaque: stages.length === 4 && stages.every((s) => getComputedStyle(s).opacity === '1'),
       };
     });
     expect(state.opaque).toBe(true);
-    expect(state.filled).toBe('rgb(201, 182, 148)');
+    expect(state.filled).toBe('rgb(240, 240, 240)');
     await ctx.close();
   });
 
@@ -54,7 +56,7 @@ test.describe('motion opt-in', () => {
     await page.goto('/');
     await page.addInitScript(() => { delete (window as any).IntersectionObserver; });
     await page.goto('/');
-    const hidden = await page.locator(`${REVEAL_TARGETS}, .fc-stage, .fc-node, .oc-head, .oc-fields`).evaluateAll((els) => els.filter((el) => {
+    const hidden = await page.locator(`${REVEAL_TARGETS}, .et-row, .et-stage, .oc-head, .oc-fields`).evaluateAll((els) => els.filter((el) => {
       const style = getComputedStyle(el);
       return style.opacity !== '1' || style.transform !== 'none';
     }).length);
@@ -179,7 +181,7 @@ test.describe('interface feedback', () => {
     await btn.focus();
     const ring = await btn.evaluate((e) => getComputedStyle(e).outlineStyle);
     expect(ring).toBe('solid');
-    const cursor = await page.locator('.problem-questions li').first().evaluate((e) => getComputedStyle(e).cursor);
+    const cursor = await page.locator('.series-circuit .sc-cell').first().evaluate((e) => getComputedStyle(e).cursor);
     expect(cursor).toBe('auto');
   });
 

@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-for (const route of ['/', '/methodology/']) {
+// The two-outcome comparison lives on the methodology page. The homepage
+// carries the scenario model instead (tests/e2e/homepage-instruments.spec.ts).
+for (const route of ['/methodology/']) {
   test(`${route}: the conceptual window compares both outcomes using the keyboard`, async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('intv-consent', 'denied'));
     await page.goto(route);
@@ -35,7 +37,7 @@ for (const route of ['/', '/methodology/']) {
 test('the window remains usable without JavaScript and with reduced motion', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, reducedMotion: 'reduce' });
   const page = await context.newPage();
-  await page.goto('/');
+  await page.goto('/methodology/');
   const window = page.locator('.intervention-window');
   await window.getByRole('radio', { name: 'Too late', exact: true }).check();
   await expect(window.locator('[data-window-view="too-late"]')).toBeVisible();

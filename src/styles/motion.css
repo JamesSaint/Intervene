@@ -12,11 +12,10 @@
   .takeover[data-menu-enter] .takeover-body li:nth-child(7) { animation-delay: 150ms; }
   .takeover[data-menu-enter] .takeover-body li[data-menu-settled],
   .takeover[data-menu-enter] .takeover-body li:focus-within { animation: none; }
-  .btn, .btn-ghost { transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
-  @media (hover: hover) {
-    :is(.btn, .btn-ghost):not(:disabled):hover { transform: translateY(calc(-1 * var(--feedback-distance))); }
-    :is(.btn, .btn-ghost):not(:disabled):active { transform: translateY(0); }
-  }
+  /* Buttons answer a pointer with colour only. They do not move: a button
+     that lifts leaves the pointer at its lower edge, loses the hover and
+     drops back, which reads as a jump. */
+  .btn, .btn-ghost { transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
 }
 /* Multi-line links use a fragment-safe underline rather than a positioned
    rectangle, so wrapped report and footer links keep the same treatment. */
@@ -26,9 +25,10 @@
   text-decoration-color: var(--hair-strong);
   text-decoration-thickness: 1px;
   text-underline-offset: 5px;
-  transition: text-decoration-color var(--dur-fast) var(--ease), text-underline-offset var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+  transition: text-decoration-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
 }
-:is(.link, .arrow-link):is(:hover, :focus-visible) { border-bottom-color: transparent; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+/* The underline changes colour on hover and stays where it is. */
+:is(.link, .arrow-link):is(:hover, :focus-visible) { border-bottom-color: transparent; text-decoration-color: var(--accent); }
 @keyframes nav-enter { from { transform: translateY(12px); } to { transform: translateY(0); } }
 @media print { *, *::before, *::after { animation: none !important; } }
 

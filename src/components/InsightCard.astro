@@ -26,7 +26,7 @@ const { title, dek, href, kicker = 'Note' } = Astro.props;
 <style>
   .insight-row {
     display: grid;
-    grid-template-columns: 140px 1fr 40px;
+    grid-template-columns: 180px 1fr 40px;
     gap: var(--space-5);
     align-items: start;
     padding: var(--space-5) 0;
@@ -35,8 +35,6 @@ const { title, dek, href, kicker = 'Note' } = Astro.props;
   }
   .insight-meta {
     color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
     font-size: var(--type-caption);
     padding-top: 8px;
   }

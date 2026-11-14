@@ -1,0 +1,104 @@
+---
+/**
+ * How an AGDA® conclusion is reached, as one figure: scope sets the
+ * conditions and the available time; evidence is examined across the four
+ * stages; the chain is read against that time; one of three states follows.
+ *
+ * Every statement is the AGDA® page's own, shortened only by selection.
+ * The figure shows the order of dependence, not a process timetable, and it
+ * draws no result: no stage is marked as failing and no state is selected.
+ */
+import { SELF_APPROVAL } from '../lib/offers';
+import { STAGES } from '../lib/window-model';
+
+const scope = ['The system boundary', 'The consequential decision or action', 'The circumstances requiring intervention'];
+const states = ['Before impact', 'At risk', 'After impact'];
+---
+<figure class="assessment-model" aria-labelledby="am-caption">
+  <ol class="am-flow" role="list">
+    <li class="am-step">
+      <a class="am-k mono" href="#scope">Scope</a>
+      <h3 class="am-h">One system, a defined pathway and a specified scenario.</h3>
+      <ul class="am-list" role="list">
+        {scope.map((s) => <li>{s}</li>)}
+        <li class="am-time">The available time</li>
+      </ul>
+    </li>
+    <li class="am-step">
+      <a class="am-k mono" href="#scope">Evidence</a>
+      <h3 class="am-h">Records, interviews and walkthroughs.</h3>
+      <p class="am-p">Documented arrangements are distinguished from exercised capability. A policy fallback is not a measurement.</p>
+    </li>
+    <li class="am-step am-chain">
+      <a class="am-k mono" href="#verdict">Intervention chain</a>
+      <h3 class="am-h">Four stages, read against the available time.</h3>
+      <div class="am-rail" aria-hidden="true">
+        {STAGES.map((s) => <span class="am-node"><i></i>{s}</span>)}
+        <span class="am-edge"><i></i><b>Available time</b></span>
+      </div>
+      <p class="am-p">Detect to Escalate to Decide to Intervene. Each depends on the one before it.</p>
+    </li>
+    <li class="am-step am-end">
+      <a class="am-k mono" href="#verdict">Conclusion</a>
+      <h3 class="am-h">One of three states.</h3>
+      <ul class="am-states" role="list">{states.map((s) => <li>{s}</li>)}</ul>
+      <p class="am-p">Intervene owns the judgement and the conclusion. {SELF_APPROVAL}</p>
+    </li>
+  </ol>
+  <p class="am-thread"><span>The available time agreed in scope is what the chain is read against.</span></p>
+  <figcaption id="am-caption">The conclusion applies to the assessed conditions. It does not extend automatically to every pathway, future event or system in the organisation.</figcaption>
+</figure>
+
+<style>
+  .assessment-model { margin: var(--gap-intro) 0 0; }
+  .am-flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.5fr) minmax(0, 1fr); }
+  .am-step { position: relative; display: grid; gap: var(--space-3); align-content: start; padding: var(--space-4) var(--space-6) var(--space-5) 0; border-top: 2px solid var(--ink); }
+  /* Each step hands on to the next: an arrowhead on the shared top line. */
+  .am-step:not(:last-child)::after { content: ''; position: absolute; right: var(--space-4); top: -6px; width: 9px; height: 9px; border-top: 2px solid var(--ink); border-right: 2px solid var(--ink); transform: rotate(45deg); background: var(--paper); }
+  .am-end { padding-right: 0; border-top-width: 4px; }
+  .am-k { justify-self: start; display: inline-flex; align-items: center; min-height: 44px; margin: -10px 0; font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 4px; }
+  .am-k:is(:hover, :focus-visible) { text-decoration-color: currentColor; }
+  .am-k:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .am-h { margin: 0; font-size: clamp(19px, 1.7vw, 24px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.2; color: var(--ink); }
+  .am-p { margin: 0; font-size: var(--type-action); line-height: 1.55; color: var(--muted); }
+  .am-list, .am-states { list-style: none; margin: 0; padding: 0; display: grid; }
+  .am-list > li { padding: 8px 0; border-top: 1px solid var(--hair); font-size: var(--type-action); line-height: 1.45; color: var(--ink); }
+  /* The available time is the one item that travels: it is marked in the
+     accent here and again where the chain meets it. */
+  .am-list > .am-time { border-top: 2px solid var(--accent); font-weight: 600; }
+  .am-states > li { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--hair); font-size: var(--type-body); font-weight: 600; line-height: 1.3; color: var(--ink); }
+  .am-states > li::before { content: ''; flex: none; width: 10px; height: 10px; border: 1px solid var(--ink); box-sizing: border-box; }
+  .am-states > li:nth-child(1)::before { border-radius: 50%; background: var(--ink); }
+  .am-states > li:nth-child(2)::before { border-radius: 50%; background: linear-gradient(to right, var(--ink) 50%, transparent 50%); }
+  .am-states > li:nth-child(3)::before { background: var(--warn); border-color: var(--warn); }
+
+  /* The chain: four stages on a line that ends at the available time. */
+  .am-rail { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) 3px; align-items: start; margin: var(--space-2) 0; padding-bottom: 26px; }
+  .am-rail::before { content: ''; position: absolute; left: 6px; right: 0; top: 6px; border-top: 1px solid var(--ink); }
+  .am-node, .am-edge { position: relative; display: grid; gap: 10px; font-size: 13px; font-weight: 600; line-height: 1.3; color: var(--ink); }
+  .am-node i { width: 13px; height: 13px; border: 1px solid var(--ink); border-radius: 50%; background: var(--paper); box-sizing: border-box; }
+  .am-edge { justify-items: end; }
+  .am-edge i { width: 0; height: 58px; margin-top: -6px; border-left: 3px solid var(--accent); }
+  .am-edge b { position: absolute; right: 10px; top: 36px; white-space: nowrap; font-family: var(--font-mono); font-size: var(--type-caption); font-weight: 400; line-height: 1.4; color: var(--accent-text); }
+
+  .am-thread { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.5fr) minmax(0, 1fr); }
+  .am-thread span { grid-column: 1 / 4; margin-right: var(--space-6); padding-top: var(--space-2); border-top: 2px solid var(--accent); font-family: var(--font-mono); font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
+  figcaption { margin-top: var(--space-4); font-size: var(--type-small); line-height: 1.6; color: var(--muted); }
+
+  @media (max-width: 1100px) {
+    .am-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--space-5); }
+    .am-step:nth-child(2n) { padding-right: 0; }
+    .am-step:nth-child(2n)::after { display: none; }
+    .am-thread { display: block; }
+    .am-thread span { display: block; margin-right: 0; }
+  }
+  /* Narrow: the same order read downwards, each step handing on below it. */
+  @media (max-width: 640px) {
+    .am-flow { grid-template-columns: minmax(0, 1fr); row-gap: 0; }
+    .am-step { padding: var(--space-4) 0 var(--space-5) var(--space-4); border-top: 0; border-left: 2px solid var(--ink); }
+    .am-end { border-left-width: 4px; }
+    .am-step::after { display: none; }
+    .am-step:not(:last-child)::before { content: ''; position: absolute; left: -6px; bottom: -2px; width: 9px; height: 9px; border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink); transform: rotate(45deg); background: var(--paper); z-index: 1; }
+    .am-thread span { margin-top: var(--space-4); }
+  }
+</style>
