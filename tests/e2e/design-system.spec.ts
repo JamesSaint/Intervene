@@ -33,7 +33,7 @@ test.describe('motion opt-in', () => {
   test('with reduced motion the complete static explanation is shown at once', async ({ browser }) => {
     const ctx = await browser.newContext({ reducedMotion: 'reduce', colorScheme: 'dark' });
     const page = await ctx.newPage();
-    await page.goto('/');
+    await page.goto('/sample-report/');
     expect(await page.evaluate(() => document.documentElement.hasAttribute('data-motion'))).toBe(false);
     // Nothing waits for an intersection: the decisive stage of the evidence
     // trace is the filled block and every stage is opaque before any scrolling.
@@ -56,7 +56,7 @@ test.describe('motion opt-in', () => {
     await page.goto('/');
     await page.addInitScript(() => { delete (window as any).IntersectionObserver; });
     await page.goto('/');
-    const hidden = await page.locator(`${REVEAL_TARGETS}, .et-row, .et-stage, .oc-head, .oc-fields`).evaluateAll((els) => els.filter((el) => {
+    const hidden = await page.locator(`${REVEAL_TARGETS}, .example-top, .cmp-item`).evaluateAll((els) => els.filter((el) => {
       const style = getComputedStyle(el);
       return style.opacity !== '1' || style.transform !== 'none';
     }).length);
@@ -73,8 +73,9 @@ test.describe('motion opt-in', () => {
     await page.waitForTimeout(100);
     await expect(wrap).toHaveClass(/\bin\b/);
     // The offer-choice branches reveal together: both heads share one delay.
-    const delays = await page.locator('.oc-head').evaluateAll((els) => els.map((e) => getComputedStyle(e).transitionDelay));
-    expect(new Set(delays).size).toBe(1);
+    // The three compared engagements are shown together, with nothing held back.
+    const items = await page.locator('.cmp-item').evaluateAll((els) => els.map((e) => getComputedStyle(e).opacity));
+    expect(items).toEqual(['1', '1', '1']);
   });
 });
 
@@ -168,7 +169,7 @@ test.describe('offer sheets', () => {
       const rows = (id: string) => Array.from(document.querySelectorAll<HTMLElement>(`#${id} > *`)).map((r) => Math.round(r.getBoundingClientRect().top));
       return { a: rows('review'), b: rows('assessment'), c: rows('check') };
     });
-    expect(tops.a.length).toBe(8);
+    expect(tops.a.length).toBe(9);
     expect(tops.a).toEqual(tops.b);
     expect(tops.a).toEqual(tops.c);
   });

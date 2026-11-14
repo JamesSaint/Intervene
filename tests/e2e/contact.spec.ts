@@ -193,3 +193,78 @@ test('the fixed notification subject is available without JavaScript', async ({ 
   await expect(page.locator('input[name="subject"]')).toHaveValue('Intervene | New enquiry');
   await context.close();
 });
+
+test.describe('the chosen engagement is carried into the enquiry form', () => {
+  const links = [
+    ['check', 'Discuss an Authority Check'],
+    ['review', 'Discuss an Intervention Readiness Review'],
+    ['assessment', 'Discuss a full AGDA® Assessment'],
+  ] as const;
+  const checked = (page: import('@playwright/test').Page) => page.locator('input[name="starting_point"]:checked');
+
+  for (const [slug, label] of links) {
+    test(`"${label}" opens the form with ${slug} selected, and the visitor can change it`, async ({ page }) => {
+      await page.addInitScript(() => localStorage.setItem('intv-consent', 'denied'));
+      await page.goto('/services/');
+      const link = page.locator(`#${slug} [data-enquire="${slug}"]`);
+      await expect(link).toHaveAccessibleName(label);
+      await link.click();
+      await expect(page).toHaveURL(new RegExp(`/contact/\\?starting_point=${slug}$`));
+      await expect(checked(page)).toHaveValue(slug);
+      await expect(checked(page)).toHaveCount(1);
+      // The selection is a starting point, not a lock.
+      await page.locator('label.choice', { hasText: 'Not sure yet' }).click();
+      await expect(checked(page)).toHaveValue('not-sure');
+      await page.locator('label.choice', { hasText: 'Authority Check' }).click();
+      await expect(checked(page)).toHaveValue('check');
+    });
+  }
+
+  test('a preselected starting point is what the form posts', async ({ page }) => {
+    let body = '';
+    await page.route('**/formspree.io/**', async (route) => {
+      body = route.request().postData() ?? '';
+      await route.fulfill({ status: 200, body: '{"ok":true}' });
+    });
+    await page.goto('/contact/?starting_point=review');
+    await fill(page);
+    await page.click('button[type="submit"]');
+    await expect(page.locator('.form-status')).toHaveAttribute('data-state', 'ok');
+    expect(body).toContain('name="starting_point"\r\n\r\nreview');
+    expect(body).toContain('name="assessment_offering"\r\n\r\nIntervention Readiness Review');
+  });
+
+  test('the general route, direct visits and unrecognised values default to "Not sure yet"', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('intv-consent', 'denied'));
+    await page.goto('/');
+    await page.locator('main [data-primary-cta="discuss_system"]').first().click();
+    await expect(page).toHaveURL(/\/contact\/$/);
+    await expect(checked(page)).toHaveValue('not-sure');
+    for (const url of ['/contact/', '/contact/?starting_point=', '/contact/?starting_point=platinum', '/contact/?starting_point=CHECK', '/contact/?starting_point=<img src=x onerror=window.__pwned=1>', '/contact/?other=review']) {
+      await page.goto(url);
+      await expect(checked(page), url).toHaveValue('not-sure');
+      expect(await page.evaluate(() => (window as any).__pwned ?? null), url).toBeNull();
+    }
+  });
+});
+
+test('the first conversation is explained above the name field, and the message help is read before typing', async ({ page }) => {
+  await page.goto(ROUTE);
+  const intro = page.locator('.form-intro');
+  await expect(intro).toHaveText('The first conversation takes 20 minutes and is free of charge. We’ll discuss the system, the decision it supports and whether an assessment would answer your question. We reply within one to two working days.');
+  const box = async (sel: string) => (await page.locator(sel).boundingBox())!;
+  const [i, name, help, msg] = [await box('.form-intro'), await box('#f-name'), await box('#f-msg-help'), await box('#f-msg')];
+  expect(i.y + i.height).toBeLessThanOrEqual(name.y);
+  await expect(page.locator('#f-msg-help')).toContainText('One line is enough. Leave out sensitive details.');
+  expect(help.y + help.height).toBeLessThanOrEqual(msg.y);
+  // Moved, not repeated.
+  const main = await page.locator('main').innerText();
+  expect(main.match(/one to two working days/g)).toHaveLength(1);
+  expect(main).not.toMatch(/Twenty minutes|single line/i);
+  await expect(page.locator('#f-msg')).not.toHaveAttribute('placeholder');
+  // What must stay: privacy notice, confidentiality, direct email, the button.
+  await expect(page.locator('.submit-row a[href="/legal/privacy/"]')).toBeVisible();
+  await expect(page.locator('.info-list')).toContainText('Confidentiality');
+  await expect(page.locator('.info-list a[href^="mailto:"]')).toBeVisible();
+  await expect(page.locator('form[data-contact] button[type="submit"]')).toHaveText('Send enquiry');
+});

@@ -11,8 +11,8 @@
  * Illustrative: relative units, not the AGDA® engine, and its outcome words
  * are not the verdict states. The note saying so is always visible.
  *
- * Slots place the page's own opening copy inside the instrument's layout so
- * the order can differ by screen: `head`, `support` and `cta`. The dial is
+ * Slots place the page's own opening copy inside the instrument's layout:
+ * `head`, `support` and `cta`, read in that order at every width. The dial is
  * named once as a figure and its reading is one live sentence in the page
  * flow, so a screen reader meets the outcome once, not twice. The first
  * paint is the finished default scenario, rendered here, so the dial reads
@@ -47,6 +47,7 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
   <div class="wd-cta"><slot name="cta" /></div>
 
   <div class="wd-face">
+    <p class="wd-label">Illustrative scenario</p>
     <div class="wd-figure" role="img" aria-label="Intervention dial. Its reading is given in the sentence that follows the stage list." aria-describedby={`${id}-note`}>
       <DialFace durations={preset.durations} window={window} uid={id} live />
       <span class="wd-top" data-wd-top>{result.outcome === 'too-late' ? 'Window closed' : 'Window closes'}</span>
@@ -126,13 +127,15 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
   .window-dial {
     --wd-ink: #f0f0f0; --wd-muted: #c8c6c4; --wd-faint: #8e8b87; --wd-warn: #e0766a;
     display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4);
-    grid-template-areas: 'head' 'cta' 'face' 'readout' 'support' 'bar' 'note';
+    grid-template-areas: 'head' 'support' 'cta' 'face' 'readout' 'bar' 'note';
   }
   .wd-head { grid-area: head; } .wd-support { grid-area: support; } .wd-cta { grid-area: cta; }
   .wd-face { grid-area: face; } .wd-readout { grid-area: readout; } .wd-bar { grid-area: bar; } .wd-note { grid-area: note; }
 
   /* The face: the largest thing in the opening view. */
-  .wd-face { position: relative; width: 100%; max-width: 640px; aspect-ratio: 1; margin: 28px auto 0; }
+  .wd-face { position: relative; width: 100%; max-width: 640px; aspect-ratio: 1; margin: 50px auto 0; }
+  /* The qualification is read before the result: it sits above the dial, over the window marker. */
+  .wd-label { position: absolute; left: 50%; top: -47px; transform: translateX(-50%); margin: 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.4; color: var(--muted); white-space: nowrap; }
   .wd-face :global(.df-hand) { transition: opacity var(--dur-fast) var(--ease); }
   .window-dial[data-playing] .wd-face :global(.df-hand) { opacity: 1; }
   .window-dial[data-focus] .wd-face :global(.df-arc) { opacity: 0.24; }
@@ -240,20 +243,20 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
       grid-template-areas: 'head face' 'support face' 'cta face' 'readout readout' 'bar bar' 'note note';
       grid-template-rows: auto auto 1fr auto auto auto;
     }
-    .wd-face { align-self: center; margin-top: 30px; max-width: 620px; }
-    .wd-readout { grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); gap: var(--space-2) var(--space-6); align-items: start; margin-top: var(--space-2); }
+    /* The label above the dial takes its height from the dial and the gap beneath, so the stages still close the opening view. */
+    .wd-face { align-self: center; margin-top: 50px; max-width: 608px; }
+    .wd-readout { grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); gap: var(--space-2) var(--space-6); align-items: start; }
     .wd-stages { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 var(--space-4); }
     .wd-result { grid-column: 1 / -1; min-height: 1lh; }
   }
   @media (max-width: 1099px) {
     .wd-readout, .wd-support { max-width: 640px; width: 100%; margin-inline: auto; }
   }
-  /* Phone: the question, one action, then the dial at full width. Beneath
-     it the four stages sit two by two with their states; what each stage
-     does, and the supporting copy, wait further down. */
+  /* Phone: the question, the sentence that explains it, one action, then
+     the dial at full width. Beneath it the four stages sit two by two with
+     their states; what each stage does waits further down. */
   @media (max-width: 720px) {
     .window-dial { gap: var(--space-3); }
-    .wd-face { margin-top: 30px; }
     .wd-face-replay { display: none; }
     .wd-centre { inset: 27%; }
     .wd-stage { min-height: 56px; }
