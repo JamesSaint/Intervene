@@ -44,7 +44,7 @@ test('mobile heroes retain supporting copy before their actions', async ({ page 
 
 test('on a wide screen each record sits beside the stage finding it is tied to', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/');
+  await page.goto('/sample-report/');
   const rows = await page.locator('.et-row').evaluateAll((els) => els.map((row) => {
     const stage = row.querySelector('.et-stage')!.getBoundingClientRect();
     const records = Array.from(row.querySelectorAll('.et-record, .et-none')).map((r) => r.getBoundingClientRect());

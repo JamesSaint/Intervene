@@ -7,7 +7,7 @@ const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xaqrkrpo';
 
 const info: { k: string; v: string; href?: string }[] = [
   { k: 'Confidentiality', v: 'We handle enquiries discreetly and use them only to respond to you. They are not used for marketing. An NDA is available before substantive discussion. The form is relayed by a third-party service, so keep a first message to the system and the question, and leave out anything that is itself sensitive.' },
-  { k: 'Response window', v: 'You receive a direct response within one to two working days. We do not auto-reply.' },
+  { k: 'Response',        v: 'You receive a direct response. We do not auto-reply.' },
   { k: 'Email',           v: contactEmail, href: `mailto:${contactEmail}` },
   { k: 'No obligation',   v: 'An initial conversation is brief and creates no engagement. We will say if we are not the right fit.' },
   { k: 'Office',          v: 'London, United Kingdom.' },
@@ -26,8 +26,7 @@ const info: { k: string; v: string; href?: string }[] = [
       <h1 class="h1">Discuss <em>your system.</em></h1>
       <p class="lede muted">
         Name the system, decision or exposure where you need to know whether
-        intervention remains possible. A single line is enough to establish
-        context.
+        intervention remains possible.
       </p>
     </div>
   </section>
@@ -37,6 +36,12 @@ const info: { k: string; v: string; href?: string }[] = [
       <div class="contact-grid">
         <div class="form-col">
           <h2 class="h2">Tell us what may need to be stopped.</h2>
+          <p class="body muted form-intro">
+            The first conversation takes 20 minutes and is free of charge.
+            We’ll discuss the system, the decision it supports and whether an
+            assessment would answer your question. We reply within one to two
+            working days.
+          </p>
 
           <form class="form" data-contact action={FORMSPREE_ENDPOINT} method="POST">
             <input type="hidden" name="subject" value="Intervene | New enquiry" />
@@ -69,17 +74,17 @@ const info: { k: string; v: string; href?: string }[] = [
 
             <div class="field">
               <label for="f-msg">What must remain stoppable?</label>
+              <p class="small muted field-help" id="f-msg-help">
+                The system, the decision or action it influences, and what
+                might require intervention. One line is enough. Leave out
+                sensitive details.
+              </p>
               <textarea
                 id="f-msg"
                 name="message"
                 rows="5"
                 required
-                aria-describedby="f-msg-help"
-                placeholder="A single line is enough."></textarea>
-              <p class="small muted field-help" id="f-msg-help">
-                The system, the decision or action it influences, and what
-                might require intervention.
-              </p>
+                aria-describedby="f-msg-help"></textarea>
             </div>
             <fieldset class="choice-set">
               <legend class="field-legend">Starting point</legend>
@@ -130,13 +135,7 @@ const info: { k: string; v: string; href?: string }[] = [
         </div>
 
         <aside class="info-col">
-          <h2 class="h2">What the first conversation covers.</h2>
-          <p class="body muted">
-            Twenty minutes, at no charge. We establish which system you mean,
-            the decision it supports, the harm window it runs against, and
-            whether an assessment would answer your question or whether
-            something else would. If it would not, we say so.
-          </p>
+          <h2 class="h2">How we handle your enquiry.</h2>
           <p class="body muted">
             Include the system, decision, harm window or oversight concern in
             your message. We do not pre-qualify by email questionnaire, and
@@ -163,8 +162,9 @@ const info: { k: string; v: string; href?: string }[] = [
 </BaseLayout>
 
 <style>
-  /* The form leads in reading and keyboard order. Context sits beside it
-     on desktop and follows it when the columns stack. */
+  /* The form leads in reading and keyboard order, with what the first
+     conversation involves stated above its first field. Context sits beside
+     it on desktop and follows it when the columns stack. */
 
   .contact-grid {
     display: grid;
@@ -183,8 +183,10 @@ const info: { k: string; v: string; href?: string }[] = [
   /* Form column. Field, choice, error, status and submit-row styles
      live in src/styles/forms.css so the Snapshot does not duplicate
      them. Only the page layout remains here. */
-  .form-col .h2 { margin: 0 0 var(--space-5); }
-  .field-help { margin: 8px 0 0; }
+  .form-col .h2 { margin: 0 0 var(--space-3); }
+  .form-intro { margin: 0 0 var(--space-5); max-width: 62ch; }
+  /* The help sits between the label and the field, so it is read before typing. */
+  .field-help { margin: 0 0 10px; }
   .choice-set { border: 0; padding: 0; margin: 0; min-width: 0; }
   .choice-set legend { padding: 0; }
   .choice-set .choice-list { margin-top: 12px; }

@@ -15,6 +15,12 @@ async function open(page: Page) {
   await page.goto('/');
   await expect(page.locator('.window-dial')).toHaveAttribute('data-ready', '');
 }
+/** The full evidence trace is on the sample verdict; the homepage carries the short example. */
+async function openSample(page: Page) {
+  await page.addInitScript(() => localStorage.setItem('intv-consent', 'denied'));
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/sample-report/');
+}
 const openDiagnostics = async (page: Page) => {
   const diag = page.locator('.wd-diag');
   if ((await diag.getAttribute('open')) === null) await diag.locator('summary').click();
@@ -62,8 +68,11 @@ test.describe('the dial', () => {
     await expect(dial.locator('.wd-note')).toBeVisible();
     await expect(dial.locator('.wd-note')).toContainText('One turn of the dial is the intervention window; time past it runs on the inner ring.');
     await expect(dial.locator('.wd-note')).toContainText('Relative units, not measured durations, and not an assessment result.');
-    const text = await dial.innerText();
-    expect(text).not.toMatch(/Before impact|At risk|After impact|verdict/);
+    await expect(dial.locator('.wd-label')).toHaveText('Illustrative scenario');
+    // The instrument never borrows a verdict word. The page's own link to the sample verdict sits in the action slot, outside it.
+    for (const part of ['.wd-face', '.wd-readout', '.wd-bar', '.wd-note']) {
+      expect(await dial.locator(part).innerText(), part).not.toMatch(/Before impact|At risk|After impact|verdict/);
+    }
   });
 
   test('has a text equivalent that names the scenario, the outcome and where the window closed', async ({ page }) => {
@@ -289,8 +298,10 @@ test.describe('the dial', () => {
     expect(box.face.width).toBeGreaterThan(box.view * 0.85);
     expect(box.head.bottom).toBeLessThanOrEqual(box.face.top);
     expect(box.face.bottom).toBeLessThanOrEqual(box.stages.top);
-    expect(box.stages.bottom).toBeLessThanOrEqual(box.support.top);
-    expect(box.support.bottom).toBeLessThanOrEqual(box.bar.top);
+    // The explanatory sentence is read before the dial, not after it.
+    expect(box.head.bottom).toBeLessThanOrEqual(box.support.top);
+    expect(box.support.bottom).toBeLessThanOrEqual(box.face.top);
+    expect(box.stages.bottom).toBeLessThanOrEqual(box.bar.top);
     // Touch reaches every control without hover.
     await dial.locator('[data-wd-stage="2"]').tap();
     await expect(dial).toHaveAttribute('data-focus', '2');
@@ -313,21 +324,22 @@ test('without JavaScript the dial is a fixed reading and the whole trace is on t
   await expect(dial.locator('.wd-note')).toBeVisible();
   await expect(dial.locator('.wd-bar')).toBeHidden();
   await expect(dial.locator('.wd-face-replay')).toBeHidden();
+  // The short example and the comparison need no script either.
+  await expect(page.locator('.example-status')).toBeVisible();
+  await expect(page.locator('.cmp-item')).toHaveCount(3);
+  await expect(page.locator('.evidence-trace')).toHaveCount(0);
+  await page.goto('/sample-report/');
   const trace = page.locator('.evidence-trace');
   await expect(trace.locator('.et-stage')).toHaveCount(4);
   await expect(trace.locator('.et-record')).toHaveCount(6);
   await trace.locator('.et-record summary').first().click();
   await expect(trace.locator('.et-record').first()).toContainText('What it supports, and what remains open');
-  await expect(page.locator('.offer-intro')).toContainText('none is a prerequisite');
-  await expect(page.locator('.oi-route')).toHaveCount(3);
-  await page.locator('.oi-compare summary').click();
-  await expect(page.locator('.offer-ladder .ol-route').first()).toBeVisible();
   await context.close();
 });
 
 test.describe('evidence trace', () => {
   test('keeps the constructed status in view and never calls the sample issued or signed', async ({ page }) => {
-    await open(page);
+    await openSample(page);
     const trace = page.locator('.evidence-trace');
     await expect(trace.locator('.et-status')).toHaveText('Constructed illustration');
     await expect(trace.locator('.et-flags')).toHaveText('Not issued · Not signed · No client data');
@@ -338,7 +350,7 @@ test.describe('evidence trace', () => {
   });
 
   test('ties a record to a stage only where the sample supports it, and says why', async ({ page }) => {
-    await open(page);
+    await openSample(page);
     const rows = page.locator('.evidence-trace .et-row');
     const ids = await rows.evaluateAll((els) => els.map((row) => Array.from(row.querySelectorAll('.et-id')).map((id) => id.textContent)));
     expect(ids).toEqual([['E-02', 'E-01'], ['E-04'], ['E-08'], []]);
@@ -361,7 +373,7 @@ test.describe('evidence trace', () => {
   });
 
   test('opens each record from the keyboard', async ({ page }) => {
-    await open(page);
+    await openSample(page);
     const record = page.locator('.evidence-trace .et-row').nth(2).locator('.et-record');
     await record.locator('summary').focus();
     await page.keyboard.press('Enter');
@@ -374,7 +386,7 @@ test.describe('evidence trace', () => {
 
   test('on a narrow screen the conclusion comes first and each finding carries its records beneath it', async ({ page, isMobile }) => {
     test.skip(!isMobile, 'A phone composition.');
-    await open(page);
+    await openSample(page);
     const trace = page.locator('.evidence-trace');
     const order = await trace.evaluate((el) => {
       const top = (sel: string) => el.querySelector(sel)!.getBoundingClientRect().top;
@@ -387,67 +399,97 @@ test.describe('evidence trace', () => {
   });
 });
 
-test('the engagements are introduced by question, scope and fee, with boundaries on the page', async ({ page }) => {
+test('the opening explains the offer before the first action, and labels the dial before its result', async ({ page }) => {
   await open(page);
-  const routes = page.locator('.offer-intro .oi-route');
-  await expect(routes).toHaveCount(offers.length);
-  for (let i = 0; i < offers.length; i++) {
-    const route = routes.nth(i);
-    await expect(route.locator('.oi-q')).toHaveText(offers[i].question);
-    await expect(route.locator('.oi-name')).toContainText(offers[i].name.replace('AGDA® ', ''));
-    await expect(route.locator('.oi-price')).toHaveText(offers[i].price);
-    await expect(route.locator('.oi-fee-note')).toHaveText(offers[i].priceNote);
-    await expect(route.locator('.oi-boundary')).toBeVisible();
-    await expect(route.locator('.oi-link')).toHaveAttribute('href', `/services/#${offers[i].slug}`);
-  }
-  // Inclusion is stated in the engagement's own words, and the full comparison starts closed.
-  // The frames show scope, not a purchasing sequence: every one says it stands alone.
-  await expect(routes.locator('.oi-alone')).toHaveText(['Commissioned on its own', 'Commissioned on its own', 'Commissioned on its own']);
-  await expect(page.locator('.oi-principle')).toContainText('Three separate engagements. Each can be commissioned on its own');
-  await expect(routes.nth(1).locator('.oi-includes')).toContainText('Scope includes: everything in the Authority Check.');
-  await expect(routes.nth(2).locator('.oi-includes')).toContainText('Scope includes: everything in the Review.');
-  const intro = await page.locator('.offer-intro').innerText();
-  expect(intro).not.toMatch(/first|then|next step|upgrade|must|required before|progress to/i);
-  await expect(page.locator('.offer-intro')).toContainText('none is a prerequisite');
-  const compare = page.locator('.oi-compare');
-  await expect(compare).not.toHaveAttribute('open');
-  await expect(compare.locator('.ol-route').first()).toBeHidden();
-  await compare.locator('summary').focus();
-  await page.keyboard.press('Enter');
-  await expect(compare.locator('.ol-route').first()).toBeVisible();
+  const sub = page.locator('.hero-home .hero-sub');
+  await expect(sub).toHaveText('We assess whether your organisation can intervene in an AI-enabled system before harm becomes irreversible.');
+  await expect(sub).toBeVisible();
+  const cta = page.locator('.hero-home [data-primary-cta]');
+  await expect(cta).toHaveText('Discuss your system');
+  const secondary = page.locator('.hero-home .hero-secondary');
+  await expect(secondary).toHaveText(/View sample verdict/);
+  await expect(secondary).toHaveAttribute('href', '/sample-report/');
+  const label = page.locator('.window-dial .wd-label');
+  await expect(label).toHaveText('Illustrative scenario');
+  await expect(label).toBeVisible();
+  const y = async (sel: string) => (await page.locator(sel).first().boundingBox())!;
+  const [h, s, c, l, w] = [await y('#home-question'), await y('.hero-home .hero-sub'), await y('.hero-home [data-primary-cta]'), await y('.wd-label'), await y('[data-wd-word]')];
+  // Headline, sentence, action: in that order at every width.
+  expect(h.y + h.height).toBeLessThanOrEqual(s.y);
+  expect(s.y + s.height).toBeLessThanOrEqual(c.y);
+  // The qualification is above the dial's result, and comes first in the document.
+  expect(l.y + l.height).toBeLessThanOrEqual(w.y);
+  expect(await page.evaluate(() => !!(document.querySelector('.wd-label')!.compareDocumentPosition(document.querySelector('[data-wd-word]')!) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
+  // The methodology stays beside the four-stage explanation.
+  await expect(page.locator('.method-block .related-links a[href="/methodology/"]')).toBeVisible();
+  await expect(page.locator('.method-block .related-links a[href="/agda/"]')).toBeVisible();
 });
 
-test('the full comparison includes each earlier engagement and gives every list its own labels', async ({ page }) => {
+test('the constructed credit example follows the opening, in brief, and links to the full sample', async ({ page }) => {
   await open(page);
-  await page.locator('.oi-compare summary').click();
-  const routes = page.locator('.offer-ladder .ol-route');
-  await expect(routes).toHaveCount(offers.length);
-  const included = await routes.evaluateAll((els) => els.map((el) => el.querySelectorAll('.ol-cap.is-on').length));
-  expect(included).toEqual([2, 4, 8]);
-  for (let i = 0; i < offers.length; i++) {
-    const route = routes.nth(i);
-    await expect(route.locator('.ol-cap')).toHaveCount(8);
-    await expect(route).toContainText(offers[i].price);
-    await expect(route.locator('.ol-link')).toHaveAttribute('href', `/services/#${offers[i].slug}`);
-    // The label is in the accessibility tree even where the table hides it visually.
-    await expect(route.getByRole('list').first()).toContainText('Intervention Readiness verdict, with its basis and limitations');
-  }
-  await expect(routes.nth(0).locator('.ol-cap').nth(6)).toContainText('not included');
-  await expect(routes.nth(2).locator('.ol-cap').nth(6)).toContainText(': included');
+  const sections = page.locator('main > section');
+  await expect(sections.nth(1)).toHaveClass(/example/);
+  const example = page.locator('.example');
+  await expect(example.locator('h2')).toHaveText('Detection works. Authority does not.');
+  await expect(example.locator('.example-status')).toHaveText('Constructed illustration');
+  await expect(example.locator('.example-status')).toBeVisible();
+  await expect(example.locator('.example-copy')).toHaveText('In this example, monitoring detects drift in about 12 minutes. Obtaining the required quorum takes at least seven days. The assumed window for stopping automated declines is about six hours.');
+  await expect(example).toContainText('not an issued assessment or a verified outcome');
+  await expect(example).toContainText('not added together');
+  await expect(example.locator('a[href="/sample-report/"]')).toHaveText('View the full sample verdict');
+  await expect(example.locator('.example-qualifier')).toHaveText('This retail credit example uses no client data and is not an issued assessment or a verified outcome. Its three intervals are stated separately and are not added together.');
+  // Lower down, what a full assessment provides links to the trace, and names the sample as constructed.
+  await expect(page.locator('#home-evidence')).toHaveText('What a full assessment provides');
+  const traceLink = page.locator('.finding-block a[href="/sample-report/#authority"]');
+  await expect(traceLink).toHaveText('See the evidence trace in the constructed sample verdict');
+  await expect(page.locator('.finding-block a[href="/verify/"]')).toBeVisible();
+  await expect(page.locator('.finding-block .integrity-note')).toBeVisible();
+  // The full trace is on the sample page only.
+  await expect(page.locator('.evidence-trace')).toHaveCount(0);
+  await example.locator('a[href="/sample-report/"]').click();
+  await expect(page).toHaveURL(/\/sample-report\/$/);
+  await expect(page.locator('.evidence-trace .et-stage')).toHaveCount(4);
 });
 
-test('in the full comparison each engagement leads with its question and states its fee beside it', async ({ page }) => {
+test('the three engagements are compared by question, output and fee, straight after the example', async ({ page }) => {
   await open(page);
-  await page.locator('.oi-compare summary').click();
-  const heads = page.locator('.offer-ladder .ol-head');
+  await expect(page.locator('main > section').nth(2)).toHaveAttribute('id', 'offers');
+  const compare = page.locator('#offers .offer-compare');
+  await expect(compare.locator('.cmp-intro')).toHaveText('You can commission any of the three engagements directly.');
+  const items = compare.locator('.cmp-item');
+  await expect(items).toHaveCount(offers.length);
   for (let i = 0; i < offers.length; i++) {
-    await expect(heads.nth(i).locator('.ol-q')).toHaveText(offers[i].question);
-    await expect(heads.nth(i).locator('.ol-price')).toHaveText(offers[i].price);
-    await expect(heads.nth(i).locator('.ol-price-note')).toHaveText(offers[i].priceNote);
+    const item = items.nth(i);
+    await expect(item.locator('.cmp-q')).toHaveText(offers[i].question);
+    await expect(item.locator('.cmp-name')).toContainText(offers[i].name.replace('AGDA® ', ''));
+    await expect(item.locator('.cmp-output')).toBeVisible();
+    await expect(item.locator('.cmp-price')).toHaveText(offers[i].price);
+    await expect(item.locator('.cmp-k').nth(1)).toHaveText(offers[i].priceNote);
+    await expect(item.locator('.cmp-link')).toHaveAttribute('href', `/services/#${offers[i].slug}`);
   }
-  // Each fee appears once per engagement, not repeated lower in the column.
-  for (const o of offers) await expect(page.locator('.offer-ladder').getByText(o.price, { exact: true })).toHaveCount(1);
-  for (const o of offers) await expect(page.locator('.oi-routes').getByText(o.price, { exact: true })).toHaveCount(1);
+  await expect(items.locator('.cmp-q')).toHaveText(['Can anyone stop this system?', 'What evidence do you have that you can stop this system?', 'Can you stop it in time?']);
+  // Fees keep every published distinction.
+  await expect(items.locator('.cmp-price')).toHaveText(['£12,500 fixed + VAT', 'From £25,000 + VAT', 'From £75,000 + VAT']);
+  await expect(items.nth(2).locator('.cmp-k').nth(1)).toHaveText('Indicative initial fee');
+  await expect(compare.locator('.cmp-note')).toContainText('Only the full Assessment produces an');
+  await expect(compare.locator('.cmp-note')).toContainText('does not commit you to one or determine its verdict');
+  // The pricing qualification sits with the comparison.
+  await expect(page.locator('#offers .engage-terms')).toContainText('Initial pricing remains subject to market validation.');
+  const text = await compare.innerText();
+  expect(text).not.toMatch(/then|next step|upgrade|must|required before|progress to/i);
+});
+
+test('on a phone each engagement keeps its question, output, fee and link together', async ({ page, isMobile }) => {
+  test.skip(!isMobile, 'A phone composition.');
+  await open(page);
+  const boxes = await page.locator('.cmp-item').evaluateAll((els) => els.map((el) => {
+    const b = el.getBoundingClientRect();
+    const inside = ['.cmp-q', '.cmp-output', '.cmp-price', '.cmp-link'].every((sel) => { const c = el.querySelector(sel)!.getBoundingClientRect(); return c.top >= b.top && c.bottom <= b.bottom + 1 && c.right <= innerWidth; });
+    return { top: b.top, bottom: b.bottom, inside };
+  }));
+  expect(boxes.every((b) => b.inside)).toBe(true);
+  expect(boxes[0].bottom).toBeLessThanOrEqual(boxes[1].top);
+  expect(boxes[1].bottom).toBeLessThanOrEqual(boxes[2].top);
 });
 
 test('opening a SEDI stage closes the others and marks every later stage as waiting on it', async ({ page }) => {
@@ -504,7 +546,7 @@ test('the homepage does not overflow at any supported width', async ({ page }) =
     await page.setViewportSize({ width, height: 900 });
     // Layout settles a frame after the resize, as it does on the existing pages.
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth), { message: `${width}px` }).toBeLessThanOrEqual(0);
-    const clipped = await page.locator('.wd-face, .wd-select, .wd-meter, .dial-reading, .et-state, .et-stamp, .oi-q, .oi-price, .sc-q, .step-link').evaluateAll((els) => els.filter((el) => {
+    const clipped = await page.locator('.wd-face, .wd-select, .wd-meter, .dial-reading, .example-heading, .example-status, .cmp-q, .cmp-price, .cmp-link, .sc-q, .step-link').evaluateAll((els) => els.filter((el) => {
       const b = el.getBoundingClientRect();
       return b.width > 0 && (b.left < -1 || b.right > innerWidth + 1);
     }).map((el) => el.className));
@@ -515,7 +557,7 @@ test('the homepage does not overflow at any supported width', async ({ page }) =
 test('each section hands the visitor to the next, ending in one action', async ({ page }) => {
   await open(page);
   const steps = page.locator('main .step-link');
-  await expect(steps).toHaveText([/How is that assessed\?/, /What does an assessment produce\?/, /Which engagement fits your system\?/]);
+  await expect(steps).toHaveText([/How is that assessed\?/, /What does an assessment produce\?/]);
   for (const href of await steps.evaluateAll((els) => els.map((el) => el.getAttribute('href')!))) {
     await expect(page.locator(href)).toHaveCount(1);
   }
@@ -643,7 +685,7 @@ test.describe('one scenario, carried down the page', () => {
 
 test.describe('the executive reading of the evidence', () => {
   test('answers four questions from the trace\'s own data', async ({ page }) => {
-    await open(page);
+    await openSample(page);
     const lenses = page.locator('.evidence-trace .et-lens');
     await expect(lenses.locator('.et-lens-q')).toHaveText(['What was examined', 'What the example establishes', 'What remains uncertain', 'Why the conclusion follows']);
     await expect(lenses.nth(0).locator('.et-lens-a')).toHaveText('Auto-decline pathway, macro shock with model drift. Six records and four stages, against an assumed window of about six hours.');
@@ -655,7 +697,7 @@ test.describe('the executive reading of the evidence', () => {
   });
 
   test('pressing a question marks what it rests on, hides nothing, and clears on a second press', async ({ page, browserName }) => {
-    await open(page);
+    await openSample(page);
     const trace = page.locator('.evidence-trace');
     const marked = () => trace.locator('.is-marked').evaluateAll((els) => els.map((el) => el.querySelector('.et-id, .et-stage-name')?.textContent ?? el.className.split(' ')[0]).sort());
     const visibleBefore = await trace.locator('.et-record, .et-stage, .et-conclusion').evaluateAll((els) => els.filter((el) => (el as HTMLElement).offsetParent !== null).length);
@@ -693,7 +735,7 @@ test.describe('the executive reading of the evidence', () => {
 });
 
 test('each engagement shows how deep it examines, from its own published scope', async ({ page }) => {
-  for (const route of ['/', '/services/']) {
+  for (const route of ['/services/']) {
     await page.goto(route);
     const routes = page.locator('.oi-route');
     expect(await routes.evaluateAll((els) => els.map((el) => el.querySelectorAll('.oi-gauge .is-in').length)), route).toEqual([1, 3, 5]);
@@ -756,7 +798,7 @@ test.describe('the scenario can be read and set from the chain', () => {
 });
 
 test('the evidence lens offers a way to the first marked item, and marks the lines that leave it', async ({ page }) => {
-  await open(page);
+  await openSample(page);
   const trace = page.locator('.evidence-trace');
   await expect(trace.locator('[data-et-jump]')).toBeHidden();
   await trace.locator('[data-et-lens="why"]').click();
@@ -774,7 +816,7 @@ test('the evidence lens offers a way to the first marked item, and marks the lin
 test('without JavaScript the evidence questions are still answered, and offer no control that does nothing', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto('/');
+  await page.goto('/sample-report/');
   await expect(page.locator('.et-lens-a').first()).toBeVisible();
   await expect(page.locator('.et-exec-hint')).toBeHidden();
   await expect(page.locator('.et-lens-foot')).toBeHidden();

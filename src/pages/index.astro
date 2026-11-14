@@ -2,8 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { PRICE_QUALIFIER, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../lib/offers';
 import IntegrityNote from '../components/IntegrityNote.astro';
-import EvidenceTrace from '../components/EvidenceTrace.astro';
-import OfferIntro from '../components/OfferIntro.astro';
+import OfferCompare from '../components/OfferCompare.astro';
 import AgdaLogo from '../components/AgdaLogo.astro';
 import Agda from '../components/Agda.astro';
 import SediExplorer from '../components/SediExplorer.astro';
@@ -29,16 +28,40 @@ const questions = [
           <h1 class="display-xl" id="home-question"><span class="motion-line"><span>Can you </span></span><span class="motion-line"><span>stop it </span></span><em class="motion-line"><span>in time?</span></em></h1>
         </Fragment>
         <Fragment slot="support">
-          <p class="hero-sub">Intervene’s <Agda /> assessment examines whether your organisation can act before harm from an AI-enabled system becomes irreversible.</p>
+          <p class="hero-sub">We assess whether your organisation can intervene in an AI-enabled system before harm becomes irreversible.</p>
           <p class="hero-note">One named system. One defined pathway. One intervention scenario.</p>
         </Fragment>
         <div slot="cta" class="hero-actions">
           <div class="hero-cta">
             <a data-primary-cta="discuss_system" href="/contact/" class="btn">Discuss your system</a>
-            <a href="/agda/" class="link hero-secondary">Explore <Agda /> <span aria-hidden="true">→</span></a>
+            <a href="/sample-report/" class="link hero-secondary">View sample verdict <span aria-hidden="true">→</span></a>
           </div>
         </div>
       </WindowDial>
+    </div>
+  </section>
+
+  <section class="block example" aria-labelledby="home-example">
+    <div class="wrap">
+      <div class="example-top">
+        <div class="example-head">
+          <span class="example-status mono">Constructed illustration</span>
+          <h2 class="h2 example-heading" id="home-example">Detection works. <em>Authority does not.</em></h2>
+        </div>
+        <div class="example-body">
+          <p class="example-copy">In this example, monitoring detects drift in about 12 minutes. Obtaining the required quorum takes at least seven days. The assumed window for stopping automated declines is about six hours.</p>
+          <p class="example-qualifier">This retail credit example uses no client data and is not an issued assessment or a verified outcome. Its three intervals are stated separately and are not added together.</p>
+          <a href="/sample-report/" class="btn-ghost">View the full sample verdict</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block engage" id="offers" aria-labelledby="offer-compare-heading">
+    <div class="wrap">
+      <OfferCompare />
+      <p class="engage-terms">{PRICE_QUALIFIER} The proposal confirms scope, outputs, fee, terms and timetable. {AVAILABILITY} <a href="/services/" class="link">Scope, fees and how an engagement runs</a>.</p>
+      <p class="engage-action"><a data-primary-cta="discuss_system" href="/contact/" class="btn">Discuss your system <span aria-hidden="true">→</span></a></p>
     </div>
   </section>
 
@@ -63,7 +86,7 @@ const questions = [
         </div>
       </div>
       <SediExplorer window={false} scenario />
-      <nav class="related-links" aria-label="Explore the method"><a href="/methodology/" class="link">The methodology and its limits <span aria-hidden="true">→</span></a></nav>
+      <nav class="related-links" aria-label="Explore the method"><a href="/methodology/" class="link">The methodology and its limits <span aria-hidden="true">→</span></a><a href="/agda/" class="link">Explore <Agda /> <span aria-hidden="true">→</span></a></nav>
       <a class="step-link" href="#home-evidence">What does an assessment produce? <span aria-hidden="true">↓</span></a>
     </div>
   </section>
@@ -71,24 +94,14 @@ const questions = [
   <section class="block finding-block" aria-labelledby="home-evidence">
     <div class="wrap">
       <div class="lab-heading">
-        <h2 class="h2 evidence-heading" id="home-evidence">A verdict. <em>Traced to its evidence.</em></h2>
-        <p class="body muted">A full <Agda /> Assessment returns a verdict, evidence register, SEDI findings and executive interpretation. The Authority Check and the Review do not produce a verdict.</p>
+        <h2 class="h2 evidence-heading" id="home-evidence">What a full assessment provides</h2>
+        <p class="body muted">A full <Agda /> Assessment returns a verdict, evidence register, SEDI findings and executive interpretation. <a href="/sample-report/#authority" class="link">See the evidence trace in the constructed sample verdict</a>. The Authority Check and the Review do not produce a verdict.</p>
       </div>
-      <EvidenceTrace />
-      <nav class="related-links" aria-label="Inspect the assessment output"><a href="/sample-report/" class="btn-ghost">View sample verdict</a><a href="/agda/#verdict" class="link">The three verdict states <span aria-hidden="true">→</span></a></nav>
+      <nav class="related-links" aria-label="Inspect the assessment output"><a href="/agda/#verdict" class="link">The three verdict states <span aria-hidden="true">→</span></a></nav>
       <div class="evidence-notes">
         <p>{SELF_APPROVAL} {RECORDS_NOTE} <a href="/verify/" class="link">What verification establishes</a>.</p>
         <IntegrityNote />
       </div>
-      <a class="step-link" href="#offers">Which engagement fits your system? <span aria-hidden="true">↓</span></a>
-    </div>
-  </section>
-
-  <section class="block engage" id="offers">
-    <div class="wrap">
-      <OfferIntro headingLevel="h2" />
-      <p class="engage-terms">{PRICE_QUALIFIER} The proposal confirms scope, outputs, fee, terms and timetable. {AVAILABILITY} <a href="/services/" class="link">Scope, fees and how an engagement runs</a>.</p>
-      <p class="engage-action"><a data-primary-cta="discuss_system" href="/contact/" class="btn">Discuss your system <span aria-hidden="true">→</span></a></p>
     </div>
   </section>
 
@@ -117,7 +130,18 @@ const questions = [
   .evidence-heading { font-size: clamp(32px, 4.4vw, 64px); line-height: 1.04; }
   .evidence-heading em { display: block; }
   .section-heading, .assessment-intro { display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-6); align-items: start; margin-bottom: var(--space-6); }
-  .situations, .method-block, .finding-block, .engage { border-bottom: 1px solid var(--hair); }
+  .example, .situations, .method-block, .finding-block, .engage { border-bottom: 1px solid var(--hair); }
+  /* The constructed example, in brief: its status sits with the heading, and the full trace is on /sample-report/. */
+  .example { background: var(--paper-soft); }
+  .example-top { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); align-items: end; }
+  .example-head { display: grid; gap: var(--space-3); justify-items: start; }
+  .example-status { padding: 4px 10px; border: 1px solid var(--accent-text); font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
+  .example-heading { margin: 0; font-size: clamp(32px, 4.4vw, 64px); line-height: 1.04; }
+  .example-heading em { display: block; }
+  .example-body { display: grid; gap: var(--space-3); justify-items: start; }
+  .example-copy { margin: 0; font-size: var(--type-support); line-height: 1.6; color: var(--ink); }
+  .example-qualifier { margin: 0; font-size: var(--type-small); line-height: 1.65; color: var(--muted); }
+  .example-body .btn-ghost { margin-top: var(--space-2); }
   .lab-heading { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); align-items: end; margin-bottom: var(--space-6); }
   .lab-heading .body { margin: 0; }
   .h2 em { color: var(--faint); }
@@ -166,7 +190,8 @@ const questions = [
     .hero-note { margin-top: 16px; }
     .section-heading, .assessment-intro, .close-wrap { grid-template-columns: 1fr; gap: 24px; }
     .assessment-identity { padding-top: 0; }
-    .lab-heading, .problem-top { grid-template-columns: 1fr; margin-bottom: var(--space-5); }
+    .lab-heading, .problem-top, .example-top { grid-template-columns: 1fr; margin-bottom: var(--space-5); }
+    .example-top { margin-bottom: 0; }
     .problem-top { margin-bottom: 0; }
     .close-wrap { gap: var(--space-5); }
   }
@@ -178,7 +203,8 @@ const questions = [
     .hero-intro { margin-top: 24px; gap: 24px; }
     .hero-cta { flex-direction: column; align-items: stretch; gap: 12px; }
     .hero-secondary { align-self: flex-start; }
-    .hero-sub { font-size: 18px; }
+    /* Seventeen pixels keeps the sentence to three lines on current phones, and its wrap clear of the common widths while fonts load. */
+    .hero-sub { font-size: 17px; }
     .section-heading { margin-bottom: 32px; }
   }
 </style>

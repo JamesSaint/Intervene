@@ -59,7 +59,7 @@ const useCases = [
   <section class="hero">
     <div class="wrap">
       <h1 class="h1">Three questions. <em>One named system.</em></h1>
-      <p class="lede muted">An Authority Check asks whether anyone can stop it. A Review asks whether you could prove it. A full <Agda /> Assessment asks whether you can stop it in time, and is the only one that returns a verdict.</p>
+      <p class="lede muted">An Authority Check asks whether anyone can stop it. A Review asks what evidence you have that you can stop it. A full <Agda /> Assessment asks whether you can stop it in time, and is the only one that returns a verdict.</p>
       <div class="hero-cta">
         <a data-primary-cta="discuss_system" href="/contact/" class="btn">Discuss your system</a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
@@ -161,6 +161,14 @@ const useCases = [
               <h4 class="sheet-label">Timing</h4>
               <p>{o.timing}</p>
             </div>
+
+            <p class="sheet-enquire">
+              <a href={`/contact/?starting_point=${o.slug}`} class="btn-ghost" data-enquire={o.slug}>
+                {o.slug === 'check' && 'Discuss an Authority Check'}
+                {o.slug === 'review' && 'Discuss an Intervention Readiness Review'}
+                {o.slug === 'assessment' && <Fragment>Discuss a full <Agda /> Assessment</Fragment>}
+              </a>
+            </p>
           </article>
         ))}
       </div>
@@ -389,11 +397,11 @@ const useCases = [
     grid-template-columns: repeat(3, 1fr);
     column-gap: clamp(32px, 4vw, 56px);
   }
-  /* Subgrid keeps the eight rows of the three sheets level. Browsers
+  /* Subgrid keeps the nine rows of the three sheets level. Browsers
      without it fall back to independent sheets. */
   .offer { display: grid; align-content: start; min-width: 0; }
   @supports (grid-template-rows: subgrid) {
-    .offer { grid-template-rows: subgrid; grid-row: span 8; }
+    .offer { grid-template-rows: subgrid; grid-row: span 9; }
   }
 
   .sheet-head { display: grid; gap: var(--gap-item); align-content: start; padding-bottom: var(--space-4); }
@@ -421,6 +429,8 @@ const useCases = [
   .sheet-summary .price { font-family: var(--font-mono); font-size: clamp(20px, 1.8vw, 24px); font-weight: 400; letter-spacing: 0; line-height: 1.15; }
   .price-flag { font-size: 13px; color: var(--muted); }
 
+  /* The enquiry link for this engagement closes its sheet, level across the three. */
+  .sheet-enquire { margin: 0; padding-top: var(--space-4); border-top: 1px solid var(--hair-strong); align-self: start; }
   .sheet-row {
     display: grid; gap: 10px; align-content: start;
     padding: var(--space-4) 0;
