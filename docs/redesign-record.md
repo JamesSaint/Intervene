@@ -33,7 +33,8 @@ heading carries the section.
 
 Retired, and in the branch history: `WindowLab`, `WindowRace`,
 `AssessmentArtefact`, `OfferDepth`, `DialReading`, `FindingChain`. The four
-standalone sketches remain in `prototypes/`, outside the build.
+standalone sketches were kept in `prototypes/` during development and were
+removed at release; they are in the history before the release commit.
 
 ## Decisions worth knowing
 
