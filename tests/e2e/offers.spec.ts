@@ -102,12 +102,16 @@ test.describe('navigation', () => {
 test.describe('buyer journey pass', () => {
   test('homepage carries no attestation specimen and one constructed finding', async ({ page }) => {
     await page.goto('/');
-    const example = page.locator('.finding-example');
-    await expect(example).not.toHaveAttribute('open', '');
-    await example.locator('summary').focus();
+    // The constructed finding is drawn as a trace. Its status is on the page
+    // in every state, and opening a record never replaces it.
+    const trace = page.locator('.evidence-trace');
+    await expect(trace.locator('.et-status')).toHaveText('Constructed illustration');
+    const record = trace.locator('.et-record').first();
+    await record.locator('summary').focus();
     await page.keyboard.press('Enter');
-    await expect(example).toHaveAttribute('open', '');
-    await expect(page.locator('.finding-chain')).toBeVisible();
+    await expect(record).toHaveAttribute('open', '');
+    await expect(record).toContainText('What it supports, and what remains open');
+    await expect(trace.locator('.et-status')).toBeVisible();
     const text = await page.locator('main').innerText();
     expect(text).not.toMatch(/engineHash|manifestHash|keyId|scoredAt/);
     expect(text).toMatch(/constructed illustration/i);
@@ -115,7 +119,7 @@ test.describe('buyer journey pass', () => {
     expect(text).toMatch(/≥ 7 days|at least seven days/);
     expect(text).toMatch(/not an issued assessment or a verified outcome/);
     // The fourth stage carries no assessed duration in the illustration.
-    const chain = await page.locator('.finding-chain').innerText();
+    const chain = await trace.innerText();
     expect(chain).toMatch(/Not assessed/);
     expect(chain).not.toMatch(/Cannot recover/);
     expect(chain).toMatch(/not to scale and not added together/);
@@ -126,10 +130,6 @@ test.describe('buyer journey pass', () => {
     expect(fork).not.toMatch(/confirms nothing|predicts nothing/);
     const finding = await page.locator('.finding-block').innerText();
     expect(finding).not.toMatch(/£|\/ 5|108k|EXPOSED/);
-    await example.locator('summary').focus();
-    await page.keyboard.press('Enter');
-    await expect(example.locator('.example-body')).toBeHidden();
-    await expect(page.locator('.finding-chain')).toBeVisible();
   });
 
   test('the Review states its own decision and what the client keeps', async ({ page }) => {
@@ -140,10 +140,20 @@ test.describe('buyer journey pass', () => {
       expect(text, route).toMatch(/does not include the AGDA® verdict/);
     }
     await page.goto('/services/');
-    // The compact fork above the sheets carries no prices or deliverables.
-    const compact = await page.locator('.choose .offer-choice').innerText();
-    expect(compact).not.toMatch(/£|What you receive|Boundary/);
-    expect(compact).toMatch(/Appropriate when/i);
+    // The three engagements open the page at a glance: question, fee and
+    // boundary for each, the statement that none is a prerequisite, and a
+    // link to each full sheet. The sheets carry the deliverables.
+    const intro = page.locator('.choose .offer-choice');
+    const glance = await intro.innerText();
+    expect(glance).toMatch(/none is a prerequisite/);
+    expect(glance).toMatch(/does not commit you to one or determine its verdict/);
+    expect(glance).not.toMatch(/What you receive/);
+    await expect(intro.locator('.oi-route')).toHaveCount(3);
+    await expect(intro.locator('.oi-alone')).toHaveText(['Commissioned on its own', 'Commissioned on its own', 'Commissioned on its own']);
+    const sheetPrices = await page.locator('#engagements .offer .price').allInnerTexts();
+    expect(await intro.locator('.oi-price').allInnerTexts()).toEqual(sheetPrices);
+    expect(await intro.locator('.oi-link').evaluateAll((els) => els.map((el) => el.getAttribute('href')))).toEqual(['/services/#check', '/services/#review', '/services/#assessment']);
+    await expect(intro.locator('.oi-compare')).toHaveCount(0);
     const review = await page.locator('#review').innerText();
     expect(review).toMatch(/What it decides/i);
     expect(review).toMatch(/What you keep/i);

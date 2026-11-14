@@ -1,8 +1,10 @@
 import { test, expect } from '@playwright/test';
 
-const ready = async (page: import('@playwright/test').Page) => {
+// The conceptual window instrument is on the methodology page.
+const WINDOW_ROUTE = '/methodology/';
+const ready = async (page: import('@playwright/test').Page, route = WINDOW_ROUTE) => {
   await page.addInitScript(() => localStorage.setItem('intv-consent', 'denied'));
-  await page.goto('/');
+  await page.goto(route);
   await expect(page.locator('html')).toHaveAttribute('data-motion-ready', '');
 };
 
@@ -60,7 +62,7 @@ test('rapid comparison and replay settle on the requested outcome', async ({ pag
 });
 
 test('homepage links receive focus without moving the surrounding content', async ({ page }) => {
-  await ready(page);
+  await ready(page, '/');
   const action = page.locator('.hero-home [data-primary-cta]');
   await action.focus();
   await expect(action).toBeFocused();

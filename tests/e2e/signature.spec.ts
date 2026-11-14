@@ -96,7 +96,18 @@ test('Copy Signature writes both clipboard types and only the email fragment', a
   // Editor sanitisation must never leave duplicate black and white images.
   await expect(page.locator('[contenteditable] img')).toHaveCount(2);
   await expect(page.locator('[contenteditable] img').first()).toBeVisible();
-  await expect(page.locator('[contenteditable] .sig-link').first()).toHaveCSS('color', 'rgb(201, 182, 148)');
+  // Known limit of the inherited-colour treatment, recorded here as it is:
+  // a rich-text editor discards `color:inherit` on paste (every non-literal
+  // colour was tried), so a pasted link takes the host editor's own link
+  // colour, not the message text colour. The brand gold underline survives.
+  // Where the fragment is rendered without an editor's paste step, the link
+  // text does inherit: see signature-contrast.spec.ts.
+  const pasted = page.locator('[contenteditable] .sig-link').first();
+  expect(await pasted.getAttribute('style')).not.toMatch(/(^|;)\s*color\s*:/);
+  const hostLink = await page.evaluate(() => { const a = document.createElement('a'); a.href = 'https://example.test/'; document.body.append(a); const c = getComputedStyle(a).color; a.remove(); return c; });
+  await expect(pasted).toHaveCSS('color', hostLink);
+  await expect(pasted).toHaveCSS('border-bottom-color', 'rgb(201, 182, 148)');
+  await expect(pasted).toHaveCSS('border-bottom-style', 'solid');
   await expect(page.locator('[contenteditable] .sig-link').first()).toHaveCSS('text-decoration-line', 'none');
   // Chromium's editor normalises NBSP to ordinary spaces during paste. Wording is unchanged.
   for (const [name, wording] of Object.entries(signatureNotices)) expect((await page.locator(`[data-notice="${name}"]`).textContent())?.replace(/\u00a0/g, ' ')).toBe(wording.replace(/\u00a0/g, ' '));
@@ -121,7 +132,8 @@ test('copied HTML opts the host document into both appearances without embedded 
   for (const scheme of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme: scheme });
     await expect(page.locator('.sig-root')).toHaveCSS('color', scheme === 'dark' ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)');
-    await expect(page.locator('.sig-link').first()).toHaveCSS('color', 'rgb(201, 182, 148)');
+    await expect(page.locator('.sig-link').first()).toHaveCSS('color', scheme === 'dark' ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)');
+    await expect(page.locator('.sig-link').first()).toHaveCSS('border-bottom-color', 'rgb(201, 182, 148)');
     await expect(page.locator('[data-notice="environment"]')).toHaveCSS('color', scheme === 'dark' ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)');
     await expect.poll(() => page.locator('img').first().evaluate(image => (image as HTMLImageElement).currentSrc)).toContain(`-${scheme === 'light' ? 'black' : 'white'}-transparent.png`);
     await page.screenshot({ path: `.playwright/signature-review/copied-canvas-${scheme}-${testInfo.project.name}.png`, fullPage:true });
@@ -137,7 +149,11 @@ test('direct Mail HTML preserves appearance declarations without preview body st
   for (const scheme of ['light', 'dark'] as const) {
     await page.emulateMedia({ colorScheme:scheme });
     await expect(page.locator('.sig-root')).toHaveCSS('color', scheme === 'dark' ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)');
-    await expect(page.locator('.sig-link').first()).toHaveCSS('color', 'rgb(201, 182, 148)');
+    await expect(page.locator('.sig-link').first()).toHaveCSS('color', scheme === 'dark' ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)');
+    await expect(page.locator('.sig-link').first()).toHaveCSS('border-bottom-color', 'rgb(201, 182, 148)');
+    // Each appearance loads its own artwork. Let it arrive before moving on, so
+    // the test does not end with a stubbed image request still in flight.
+    await expect.poll(() => page.locator('img').evaluateAll((images) => images.every((image) => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0))).toBe(true);
   }
 });
 

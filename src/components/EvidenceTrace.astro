@@ -1,0 +1,337 @@
+---
+/**
+ * What a full assessment produces, drawn as a trace: a conclusion, the stage
+ * findings it rests on, and the records each finding rests on. Every line is
+ * a dependency, and a stage with no record is drawn as an empty socket.
+ *
+ * Everything is the constructed sample's own (src/lib/sample-report.ts).
+ * A record is tied to a stage only where the sample supports it, and the
+ * supporting wording is quoted; records the sample ties to no single stage
+ * are listed apart, with the reason. The status strip is always visible.
+ *
+ * Connectors are CSS, so the figure needs no script. Each record is a native
+ * disclosure holding what it supports and what remains open.
+ */
+import {
+  evidence, findingStages, recordLinks, ILLUSTRATIVE_CONCLUSION, SAMPLE_SCOPE, WINDOW_LABEL,
+  DECISIVE_CONSTRAINT, DECISION_QUESTION, FINDING_FOOTNOTE, SAMPLE_LIMITS,
+} from '../lib/sample-report';
+
+const record = (id: string) => evidence.find((e) => e.id === id)!;
+const rows = findingStages.map((stage) => ({
+  stage,
+  records: recordLinks.filter((l) => l.stage === stage.key).map((l) => ({ ...record(l.id), basis: l.basis, support: l.support })),
+}));
+const loose = recordLinks.filter((l) => l.stage === null).map((l) => ({ ...record(l.id), basis: l.basis }));
+
+/* The executive reading: four questions answered from the same data the
+   trace draws, so the summary cannot say more than the trace does. Each
+   answer is assembled from the sample's own values and counts; pressing one
+   marks the parts of the trace it rests on (`marks` is a selector list). */
+const words = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight'];
+const stageBy = (rel: string) => findingStages.filter((s) => s.rel === rel);
+const say = (s: (typeof findingStages)[number]) => `${s.name}, ${s.value}: ${s.relText.charAt(0).toLowerCase()}${s.relText.slice(1)}.`;
+const matched = recordLinks.filter((l) => l.support === 'matched').length;
+const lenses = [
+  { key: 'examined', q: 'What was examined', a: `${SAMPLE_SCOPE[2]}, ${SAMPLE_SCOPE[3].charAt(0).toLowerCase()}${SAMPLE_SCOPE[3].slice(1)}. ${words[evidence.length]} records and four stages, against an assumed window of ${WINDOW_LABEL}.`, marks: '.et-record' },
+  { key: 'established', q: 'What the example establishes', a: [...stageBy('within'), ...stageBy('exceeds')].map(say).join(' '), marks: '.et-row.is-within .et-stage, .et-row.is-exceeds .et-stage, .et-rows .et-record.is-stated' },
+  { key: 'open', q: 'What remains uncertain', a: `${stageBy('may').map(say).join(' ')} ${stageBy('after').map((s) => `${s.name}: ${s.value.toLowerCase()}.`).join(' ')} ${words[matched]} records are matched by description only; ${words[loose.length].toLowerCase()} tie to no single stage.`, marks: '.et-row.is-may .et-stage, .et-row.is-after .et-stage, .et-record.is-matched, .et-loose .et-record, .et-none' },
+  { key: 'why', q: 'Why the conclusion follows', a: `${ILLUSTRATIVE_CONCLUSION.lead} ${ILLUSTRATIVE_CONCLUSION.body}`, marks: '.et-row.is-decisive .et-stage, .et-conclusion, .et-constraint' },
+];
+---
+<div class="evidence-trace" data-evidence-trace>
+  <div class="et-strip">
+    <span class="et-ref mono">Intervention Readiness verdict · {SAMPLE_SCOPE[0]}</span>
+    <span class="et-stamp">
+      <span class="et-status mono">Constructed illustration</span>
+      <span class="et-flags mono">Not issued · Not signed · No client data</span>
+    </span>
+  </div>
+
+  <div class="et-title">
+    <h3 class="h3">Detection works. <em>Authority does not.</em></h3>
+    <p class="body muted">Can the auto-decline pathway stop within an assumed six-hour window? No client data; not an issued assessment or a verified outcome.</p>
+  </div>
+
+  <div class="et-exec" data-et-exec>
+    <p class="et-k mono et-exec-k">Executive reading<span class="et-exec-hint"> · select a question to mark its answer on the trace</span></p>
+    <ul class="et-lenses" role="list">
+      {lenses.map((l) => (
+        <li>
+          <button type="button" class="et-lens" data-et-lens={l.key} data-et-marks={l.marks} aria-pressed="false">
+            <span class="et-lens-q">{l.q}</span>
+            <span class="et-lens-a">{l.a}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+    <p class="et-lens-foot"><span class="et-lens-status mono" data-et-status aria-live="polite"></span><button type="button" class="et-jump" data-et-jump hidden>Show the first on the trace <span aria-hidden="true">↓</span></button></p>
+  </div>
+  <noscript><style is:inline>.et-exec-hint, .et-lens-foot { display: none !important; } .et-lens { cursor: default !important; }</style></noscript>
+
+  <div class="et-map">
+    <div class="et-conclusion">
+      <span class="et-k mono">Illustrative</span>
+      <p class="et-state">{ILLUSTRATIVE_CONCLUSION.state}</p>
+      <p class="et-body"><strong>{ILLUSTRATIVE_CONCLUSION.lead}</strong> {ILLUSTRATIVE_CONCLUSION.body}</p>
+      <div class="et-decision">
+        <span class="et-k mono">Decision the finding supports</span>
+        <p>{DECISION_QUESTION}</p>
+      </div>
+      <p class="et-fine">Illustrative, not issued, not signed. A full assessment returns one of three states: Before impact, At risk or After impact.</p>
+    </div>
+
+    <p class="et-how">Read from left to right. Each record supports a finding about one stage, and the four findings lead to the conclusion. A solid line is a link the register states; a dashed line is a match by description.</p>
+    <div class="et-heads" aria-hidden="true">
+      <span class="et-heads-pair"><span>Records examined</span><span>What each stage takes, against a window of {WINDOW_LABEL}</span></span>
+      <span>Conclusion</span>
+    </div>
+
+    <ol class="et-rows" role="list" aria-label="Stage findings and the records each rests on">
+      {rows.map(({ stage, records }) => (
+        <li class:list={['et-row', `is-${stage.rel}`, { 'is-decisive': stage.rel === 'exceeds', 'is-empty': records.length === 0 }]}>
+          <div class="et-stage">
+            <span class="et-stage-name">{stage.name}</span>
+            <span class="et-stage-value">{stage.value}</span>
+            <span class="et-stage-rel mono">{stage.relText}</span>
+            <span class="et-stage-note">{stage.note}</span>
+          </div>
+          <ul class="et-records" role="list" aria-label={`Records bearing on ${stage.name}`}>
+            {records.map((r) => (
+              <li>
+                <details class:list={['et-record', `is-${r.support}`]}>
+                  <summary><span class="et-id mono">{r.id}</span><span class="et-type mono">{r.type}{r.support === 'matched' && <span class="et-match"> · matched by description</span>}</span><span class="et-desc">{r.desc}</span></summary>
+                  <dl>
+                    <div><dt>What it supports, and what remains open</dt><dd>{r.open}</dd></div>
+                    <div><dt>{r.support === 'matched' ? `Why it is matched to ${stage.name}` : `Why it is tied to ${stage.name}`}</dt><dd>{r.basis}</dd></div>
+                  </dl>
+                </details>
+              </li>
+            ))}
+            {records.length === 0 && <li class="et-none">No record examined. No duration is assessed for this stage.</li>}
+          </ul>
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  <div class="et-loose">
+    <span class="et-k mono">Records the sample ties to no single stage</span>
+    <ul role="list">
+      {loose.map((r) => (
+        <li>
+          <details class="et-record">
+            <summary><span class="et-id mono">{r.id}</span><span class="et-type mono">{r.type}</span><span class="et-desc">{r.desc}</span></summary>
+            <dl>
+              <div><dt>What it supports, and what remains open</dt><dd>{r.open}</dd></div>
+              <div><dt>Why it is not tied to a stage</dt><dd>{r.basis}</dd></div>
+            </dl>
+          </details>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="et-notes">
+    <p class="et-constraint"><span class="et-k mono">Decisive constraint in this example</span>{DECISIVE_CONSTRAINT}</p>
+    <p class="et-foot">{FINDING_FOOTNOTE} {SAMPLE_LIMITS}</p>
+  </div>
+</div>
+
+<style>
+  .evidence-trace { --et-gap: clamp(40px, 6vw, 96px); --et-line: var(--hair-strong); }
+  .et-k { display: block; margin-bottom: var(--space-2); font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
+
+  .et-strip { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-2) var(--space-5); padding-bottom: var(--space-3); border-bottom: 1px solid var(--hair-strong); }
+  .et-ref { font-size: var(--type-caption); line-height: 1.6; color: var(--ink); }
+  .et-stamp { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+  .et-status { padding: 4px 10px; border: 1px solid var(--accent-text); font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
+  .et-flags { font-size: var(--type-caption); line-height: 1.6; color: var(--faint); }
+
+  .et-title { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--space-3) var(--space-7); align-items: end; padding: var(--space-5) 0 0; }
+  .et-title .h3 { margin: 0; font-size: clamp(34px, 4.6vw, 68px); line-height: 1.02; letter-spacing: -0.03em; }
+  .et-title .h3 em { display: block; }
+  .et-title .h3 em { color: var(--faint); }
+  .et-title .body { margin: 0; font-size: var(--type-body); }
+  /* The executive reading: four answers on one line. A pressed question is
+     filled, and what it rests on is ringed on the trace beneath. */
+  .et-exec { margin-top: var(--space-5); }
+  .et-exec-k { margin-bottom: var(--space-3); }
+  .et-exec-hint { color: var(--faint); }
+  .et-lenses { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--hair-strong); background: var(--paper); }
+  .et-lenses > li + li { border-left: 1px solid var(--hair-strong); }
+  .et-lens { appearance: none; display: grid; gap: var(--space-2); align-content: start; width: 100%; height: 100%; min-height: 44px; padding: var(--space-4); border: 0; background: transparent; font: inherit; text-align: left; color: var(--ink); cursor: pointer; transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+  .et-lens-q { display: flex; align-items: baseline; gap: 10px; font-size: var(--type-body); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.3; }
+  .et-lens-q::before { content: ''; flex: none; width: 10px; height: 10px; border: 1px solid currentColor; transform: translateY(-1px); transition: background-color var(--dur-fast) var(--ease); }
+  .et-lens-a { font-size: var(--type-action); line-height: 1.55; color: var(--muted); transition: color var(--dur-fast) var(--ease); }
+  .et-lens:hover { background: var(--paper-soft); }
+  .et-lens:focus-visible { outline: 2px solid var(--focus); outline-offset: -4px; }
+  .et-lens[aria-pressed='true'] { background: var(--ink); color: var(--paper); }
+  .et-lens[aria-pressed='true'] .et-lens-a { color: var(--paper); }
+  .et-lens[aria-pressed='true'] .et-lens-q::before { background: currentColor; }
+  .et-lens-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); margin: var(--space-2) 0 0; min-height: 44px; }
+  .et-lens-status { font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
+  .et-jump { appearance: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0; border: 0; background: transparent; font: inherit; font-size: var(--type-action); font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-color: var(--hair-strong); text-underline-offset: 4px; cursor: pointer; }
+  .et-jump[hidden] { display: none; }
+  .et-jump:is(:hover, :focus-visible) { color: var(--accent-text); }
+  .et-jump:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  /* What a pressed question rests on: a heavy ring, and the lines that leave
+     it drawn heavy too, so the marked path can be followed across the trace.
+     Never a dimming of the rest. A broken ring means not established. */
+  :global(.evidence-trace .is-marked) { outline: 3px solid var(--ink); outline-offset: 4px; --et-weight: 3px; --et-line: var(--ink); }
+  :global(.evidence-trace[data-lens='open'] .is-marked) { outline-style: dashed; outline-color: var(--accent-text); --et-line: var(--accent-text); }
+  :global(.evidence-trace .is-marked.is-arriving) { animation: et-arrive 700ms var(--ease-out) 1; }
+  @keyframes et-arrive { from { outline-offset: 14px; } to { outline-offset: 4px; } }
+  @media (prefers-reduced-motion: reduce) { :global(.evidence-trace .is-marked.is-arriving) { animation: none; } }
+
+  /* Read right to left on a wide screen: conclusion, findings, records. */
+  .et-map { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr); column-gap: var(--et-gap); margin-top: var(--space-5); }
+  .et-how { grid-column: 1 / -1; grid-row: 1; margin: 0 0 var(--space-4); max-width: 62ch; font-size: var(--type-body); line-height: 1.6; color: var(--muted); }
+  .et-heads { grid-column: 1 / -1; grid-row: 2; display: grid; grid-template-columns: subgrid; padding-bottom: var(--space-3); }
+  .et-heads > span { font-size: var(--type-action); font-weight: 600; line-height: 1.4; color: var(--ink); }
+  .et-heads-pair { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); column-gap: var(--et-gap); }
+  .et-rows { grid-column: 1; grid-row: 3; list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+  .et-row { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); column-gap: var(--et-gap); align-items: stretch; }
+  .et-records { grid-column: 1; grid-row: 1; list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); align-content: center; }
+  .et-stage { grid-column: 2; grid-row: 1; position: relative; display: grid; gap: 2px; align-content: center; padding: var(--space-3) var(--space-4); border: 1px solid var(--hair-strong); background: var(--paper); }
+  .et-stage-name { font-size: 17px; font-weight: 600; line-height: 1.4; color: var(--ink); }
+  .et-stage-value { font-family: var(--font-mono); font-size: clamp(22px, 2.6vw, 38px); font-weight: 600; line-height: 1.1; color: var(--ink); }
+  .et-stage-rel { font-size: 12px; line-height: 1.5; color: var(--faint); }
+  .et-stage-note { margin-top: 6px; font-size: var(--type-action); line-height: 1.5; color: var(--muted); }
+  /* The decisive stage is the one filled block on the page's light surface;
+     its lines to the conclusion are drawn heavy. */
+  .et-row.is-decisive { --et-line: var(--ink); --et-weight: 3px; }
+  .et-row.is-decisive .et-stage { background: var(--ink); border-color: var(--ink); }
+  .et-row.is-decisive :is(.et-stage-name, .et-stage-value, .et-stage-note) { color: var(--paper); }
+  .et-row.is-decisive .et-stage-rel { color: var(--paper); opacity: 0.78; }
+  .et-row.is-empty .et-stage { border-style: dashed; background: transparent; }
+  .et-row.is-empty .et-stage-value { color: var(--faint); }
+
+  /* Connectors. A stage reaches the conclusion; each record reaches its stage. */
+  .et-stage::after, .et-record::after, .et-none::after {
+    content: ''; position: absolute; top: 50%; left: 100%; width: var(--et-gap); height: 0; border-top: var(--et-weight, 1px) solid var(--et-line); margin-top: calc(var(--et-weight, 1px) / -2);
+  }
+  .et-record, .et-none { position: relative; }
+  /* Arrowheads give the direction of support: record to finding, finding to conclusion. */
+  .et-stage::before, .et-records > li::after { content: ''; position: absolute; z-index: 1; width: 7px; height: 7px; border-top: var(--et-weight, 1px) solid var(--et-line); border-right: var(--et-weight, 1px) solid var(--et-line); transform: rotate(45deg); }
+  .et-stage::before { top: calc(50% - 4px); left: calc(100% + var(--et-gap) - 9px); }
+  .et-records > li { position: relative; }
+  .et-records > li::after { top: 22px; left: calc(100% + var(--et-gap) - 9px); }
+  .et-row.is-empty :is(.et-stage::before, .et-records > li::after) { border-style: dashed; }
+  .et-record::after { top: 26px; }
+  .et-none::after, .et-row.is-empty .et-stage::after { border-top-style: dashed; }
+  /* A record matched by description, not cited by identifier, is joined by a dashed line and says so. */
+  .et-record.is-matched::after { border-top-style: dashed; }
+  .et-match { color: var(--accent-text); }
+
+  .et-record { background: var(--paper); border: 1px solid var(--hair); transition: border-color var(--dur-fast) var(--ease); }
+  .et-record summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 48px minmax(0, 1fr) 16px; gap: 0 var(--space-2); align-items: start; padding: 14px 14px 14px 16px; }
+  .et-record summary::-webkit-details-marker { display: none; }
+  .et-record summary::after { content: ''; grid-column: 3; grid-row: 1; width: 9px; height: 9px; margin-top: 4px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); transform: rotate(45deg); transition: transform var(--dur-fast) var(--ease-out); }
+  .et-record[open] summary::after { transform: translateY(4px) rotate(-135deg); }
+  .et-id { grid-row: 1 / span 2; font-size: var(--type-caption); line-height: 1.7; color: var(--ink); }
+  .et-type { grid-column: 2; font-size: 12px; line-height: 1.7; color: var(--faint); }
+  .et-desc { grid-column: 2 / 4; font-size: var(--type-action); line-height: 1.5; color: var(--ink); }
+  .et-record:is(:hover, :focus-within, [open]) { border-color: var(--ink); }
+  .et-record summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .et-record dl { margin: 0; padding: 0 16px 14px 76px; display: grid; gap: var(--space-2); }
+  .et-record dt { font-family: var(--font-mono); font-size: 12px; line-height: 1.5; color: var(--faint); }
+  .et-record dd { margin: 2px 0 0; font-size: var(--type-action); line-height: 1.55; color: var(--muted); }
+  .et-none { display: flex; align-items: center; min-height: 54px; padding: 0 16px; border: 1px dashed var(--hair-strong); font-size: var(--type-action); line-height: 1.5; color: var(--faint); }
+
+  /* The conclusion: where every line ends. */
+  .et-conclusion { grid-column: 2; grid-row: 3; display: grid; gap: var(--space-4); align-content: space-between; padding: clamp(20px, 2.4vw, 36px); background: var(--paper); border: 3px solid var(--ink); }
+  .et-conclusion .et-k { color: var(--faint); }
+  .et-state { display: flex; align-items: center; gap: 16px; margin: 0; font-size: clamp(40px, 4.4vw, 66px); font-weight: 600; letter-spacing: -0.03em; line-height: 0.98; color: var(--ink); }
+  .et-state::before { content: ''; width: 0.3em; height: 0.3em; flex: none; background: var(--warn); }
+  .et-body { margin: 0; font-size: var(--type-body); line-height: 1.6; color: var(--muted); }
+  .et-body strong { font-weight: 600; color: var(--ink); }
+  .et-decision { padding-top: var(--space-3); border-top: 1px solid var(--hair-strong); }
+  .et-decision p { margin: 0; font-size: clamp(17px, 1.35vw, 20px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.3; color: var(--ink); }
+  .et-fine { margin: 0; font-size: var(--type-caption); line-height: 1.6; color: var(--faint); }
+
+  .et-loose { margin-top: var(--space-5); padding-top: var(--space-3); border-top: 1px solid var(--hair); }
+  .et-loose ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2) var(--space-4); align-items: start; }
+  .et-loose .et-record { border-style: dashed; }
+  .et-loose .et-record::after { display: none; }
+  .et-notes { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--hair-strong); }
+  .et-constraint { margin: 0; font-size: var(--type-body); line-height: 1.6; color: var(--ink); }
+  .et-foot { margin: 0; font-size: var(--type-small); line-height: 1.65; color: var(--faint); }
+
+  /* Narrow: the same dependency read downwards on one rail. The conclusion
+     comes first; each finding follows with its records beneath it. */
+  @media (max-width: 1100px) {
+    .et-lenses { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .et-lenses > li:nth-child(3) { border-left: 0; }
+    .et-lenses > li:nth-child(n + 3) { border-top: 1px solid var(--hair-strong); }
+  }
+  @media (max-width: 560px) {
+    .et-lenses { grid-template-columns: minmax(0, 1fr); }
+    .et-lenses > li + li { border-left: 0; border-top: 1px solid var(--hair-strong); }
+    .et-lens { padding: var(--space-3) var(--space-4); }
+  }
+  @media (max-width: 960px) {
+    .et-title { grid-template-columns: minmax(0, 1fr); }
+    .et-map { grid-template-columns: minmax(0, 1fr); margin-top: var(--space-4); }
+    .et-heads, .et-how { display: none; }
+    .et-records > li::after { display: none; }
+    .et-conclusion { grid-column: 1; grid-row: 1; }
+    .et-rows { grid-row: 2; gap: 0; margin-left: 7px; padding-top: var(--space-5); border-left: 1px solid var(--hair-strong); }
+    .et-rows::before { content: 'Because'; margin: calc(-1 * var(--space-4)) 0 var(--space-2) var(--space-4); font-family: var(--font-mono); font-size: 12px; color: var(--faint); }
+    .et-row { grid-template-columns: minmax(0, 1fr); padding: 0 0 var(--space-4) var(--space-4); }
+    .et-stage { grid-column: 1; grid-row: 1; grid-template-columns: minmax(0, 1fr) auto; gap: 2px var(--space-3); padding: 0 0 var(--space-2); border: 0; background: transparent; }
+    .et-stage::before { content: ''; position: absolute; left: calc(-1 * var(--space-4) - 8px); top: 3px; width: 15px; height: 15px; border: 1px solid var(--ink); border-radius: 50%; background: var(--paper-soft); box-sizing: border-box; transform: none; }
+    .et-stage::after, .et-record::after, .et-none::after { display: none; }
+    .et-stage-name { font-size: 18px; letter-spacing: var(--tracking-heading); }
+    .et-stage-value { grid-column: 2; grid-row: 1; font-size: 17px; text-align: right; align-self: baseline; }
+    .et-stage-rel, .et-stage-note { grid-column: 1 / -1; }
+    .et-row.is-decisive .et-stage { border: 0; background: transparent; }
+    .et-row.is-decisive :is(.et-stage-name, .et-stage-value) { color: var(--ink); }
+    .et-row.is-decisive .et-stage-note { color: var(--muted); }
+    .et-row.is-decisive .et-stage-rel { color: var(--warn); opacity: 1; }
+    /* Records wait behind each finding on a narrow screen. */
+    .et-stage-note { display: none; }
+    .et-row.is-decisive .et-stage::before { background: var(--ink); border-radius: 0; }
+    .et-row.is-empty .et-stage::before { border-style: dashed; }
+    .et-records { grid-column: 1; grid-row: 2; }
+    .et-record dl { padding-left: 16px; }
+    .et-loose ul, .et-notes { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (prefers-reduced-motion: reduce) { .et-record, .et-record summary::after { transition: none; } }
+  @media print { .et-record > dl { display: grid !important; } }
+</style>
+
+<script>
+  // Pressing a question marks what its answer rests on. One question at a
+  // time; pressing it again clears the marks. Nothing is hidden or dimmed.
+  document.querySelectorAll<HTMLElement>('[data-evidence-trace]').forEach((trace) => {
+    const lenses = [...trace.querySelectorAll<HTMLButtonElement>('[data-et-lens]')];
+    const status = trace.querySelector<HTMLElement>('[data-et-status]');
+    const jump = trace.querySelector<HTMLButtonElement>('[data-et-jump]');
+    let first: HTMLElement | null = null;
+    // The marks are often below the fold, most of all on a phone. The jump
+    // takes the reader to the first of them; it never moves the page unasked.
+    jump?.addEventListener('click', () => {
+      if (!first) return;
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: first.getBoundingClientRect().top + window.scrollY - 140, behavior: reduce ? 'auto' : 'smooth' });
+    });
+    const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
+    function apply(active: HTMLButtonElement | null) {
+      trace.querySelectorAll('.is-marked').forEach((el) => el.classList.remove('is-marked', 'is-arriving'));
+      first = null; if (jump) jump.hidden = true;
+      lenses.forEach((lens) => lens.setAttribute('aria-pressed', String(lens === active)));
+      if (!active) { delete trace.dataset.lens; if (status) status.textContent = ''; return; }
+      trace.dataset.lens = active.dataset.etLens;
+      const marked = [...trace.querySelectorAll<HTMLElement>(active.dataset.etMarks!)];
+      marked.forEach((el) => el.classList.add('is-marked', 'is-arriving'));
+      first = marked.slice().sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top)[0] ?? null;
+      if (jump) jump.hidden = !first;
+      const stages = marked.filter((el) => el.classList.contains('et-stage')).length;
+      const records = marked.filter((el) => el.classList.contains('et-record')).length;
+      const parts = [stages && plural(stages, 'stage'), records && plural(records, 'record'), marked.some((el) => el.classList.contains('et-none')) && 'one stage with no record', marked.some((el) => el.classList.contains('et-conclusion')) && 'the conclusion'].filter(Boolean);
+      if (status) status.textContent = `Marked on the trace below: ${parts.join(', ')}.`;
+    }
+    lenses.forEach((lens) => lens.addEventListener('click', () => apply(lens.getAttribute('aria-pressed') === 'true' ? null : lens)));
+  });
+</script>

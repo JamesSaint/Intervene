@@ -5,10 +5,12 @@ import SediExplorer from '../../components/SediExplorer.astro';
 import EvidenceCap from '../../components/EvidenceCap.astro';
 import ChainCeiling from '../../components/ChainCeiling.astro';
 import PageNav from '../../components/PageNav.astro';
+import MethodLayers from '../../components/MethodLayers.astro';
 import { markAgda } from '../../lib/marks';
 import Agda from '../../components/Agda.astro';
 
 const pageNav = [
+  { href: '#layers', label: 'Four layers' },
   { href: '#scope', label: 'Scope first' },
   { href: '#chain', label: 'The chain' },
   { href: '#dimensions', label: 'Eight dimensions' },
@@ -62,6 +64,16 @@ const docs = [
   </section>
 
   <PageNav items={pageNav} />
+
+  <!-- THE EXECUTIVE READING. Four layers the method keeps apart; the page
+       beneath takes each in detail. -->
+  <section class="block" id="layers">
+    <div class="wrap">
+      <h2 class="h2">Four layers, <em>kept apart.</em></h2>
+      <p class="lede muted">What depends on what, the time it is read against, the evidence it needs and how the conclusion is formed. The sections below take each in detail. What an assessment covers and establishes is on <a href="/agda/#model" class="link">the <Agda /> page</a>.</p>
+      <MethodLayers />
+    </div>
+  </section>
 
   <section class="block" id="scope">
     <div class="wrap-narrow">

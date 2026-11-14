@@ -1,14 +1,16 @@
 ---
 import IntegrityNote from '../../components/IntegrityNote.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import VerdictBlock from '../../components/VerdictBlock.astro';
+import VerdictDials from '../../components/VerdictDials.astro';
 import { markAgda } from '../../lib/marks';
 import { assessment, offerFaqs, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
 import AgdaLogo from '../../components/AgdaLogo.astro';
 import Agda from '../../components/Agda.astro';
 import PageNav from '../../components/PageNav.astro';
+import AssessmentModel from '../../components/AssessmentModel.astro';
 
 const pageNav = [
+  { href: '#model', label: 'How a conclusion is reached' },
   { href: '#scope', label: 'Scope and evidence' },
   { href: '#verdict', label: 'Verdict states' },
   { href: '#deliverables', label: 'What you receive' },
@@ -61,6 +63,16 @@ const faqs = [
   </section>
 
   <PageNav items={pageNav} />
+
+  <!-- THE MODEL. One figure for the whole assessment: scope, evidence, the
+       chain against the available time, and the conclusion. The sections
+       beneath take each part in turn. -->
+  <section class="block model-block" id="model">
+    <div class="wrap">
+      <h2 class="h2">How a conclusion <em>is reached.</em></h2>
+      <AssessmentModel />
+    </div>
+  </section>
 
   <section class="block" id="scope">
     <div class="wrap">
@@ -133,8 +145,15 @@ const faqs = [
         <a href="/methodology/" class="arrow-link">How <Agda /> works <span aria-hidden="true">→</span></a>
       </div>
       <div class="verdict-stage">
-        <VerdictBlock />
+        <VerdictDials />
       </div>
+      <!-- This page says what is assessed and what is established. How each
+           stage is examined, and what it depends on, is the methodology's
+           subject and is set out there once. -->
+      <p class="body muted verdict-chain">
+        How each stage is examined, what it depends on and what evidence it
+        needs is set out in <a href="/methodology/#chain" class="link">the methodology</a>.
+      </p>
     </div>
   </section>
 
@@ -225,14 +244,14 @@ const faqs = [
   .verdict-intro { display: grid; gap: var(--space-4); justify-items: start; align-content: start; }
   .verdict-intro :is(.h2, .lede, .arrow-link) { margin: 0; }
   .verdict-stage { margin-top: var(--gap-intro); display: flex; justify-content: flex-start; }
+  .verdict-chain { margin-top: var(--space-5); }
   @media (min-width: 1100px) {
     .product-hero > .wrap { display: grid; grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.65fr); gap: 0 var(--space-7); }
     .product-hero .product-identity { grid-row: 1 / span 4; padding-top: 8px; }
     .product-hero :is(.label, .h1, .lede, .hero-cta) { grid-column: 2; }
-    #verdict > .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: var(--space-4) var(--space-7); align-items: start; }
-    #verdict .verdict-stage { grid-column: 2; grid-row: 1; margin: 0; }
-    #verdict :is(.h2, .lede, .arrow-link) { grid-column: 1; margin: 0; }
-    #verdict .arrow-link { justify-self: start; align-self: start; }
+    /* The heading and its sentence sit side by side; the three states run the full width beneath. */
+    #verdict .verdict-intro { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: var(--space-7); align-items: end; }
+    #verdict .verdict-intro .arrow-link { grid-column: 2; }
   }
 
   .deliver {
