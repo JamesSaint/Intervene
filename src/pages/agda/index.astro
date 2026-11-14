@@ -7,7 +7,6 @@ import { assessment, offerFaqs, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/of
 import AgdaLogo from '../../components/AgdaLogo.astro';
 import Agda from '../../components/Agda.astro';
 import PageNav from '../../components/PageNav.astro';
-import SediExplorer from '../../components/SediExplorer.astro';
 import AssessmentModel from '../../components/AssessmentModel.astro';
 
 const pageNav = [
@@ -148,9 +147,13 @@ const faqs = [
       <div class="verdict-stage">
         <VerdictDials />
       </div>
-      <div class="verdict-chain">
-        <SediExplorer window={false} />
-      </div>
+      <!-- This page says what is assessed and what is established. How each
+           stage is examined, and what it depends on, is the methodology's
+           subject and is set out there once. -->
+      <p class="body muted verdict-chain">
+        How each stage is examined, what it depends on and what evidence it
+        needs is set out in <a href="/methodology/#chain" class="link">the methodology</a>.
+      </p>
     </div>
   </section>
 

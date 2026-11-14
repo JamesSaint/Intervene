@@ -203,16 +203,24 @@ test('AGDA: one figure shows how a conclusion is reached, and draws no result', 
   for (const href of await model.locator('.am-k').evaluateAll((els) => els.map((el) => el.getAttribute('href')!))) await expect(page.locator(href)).toHaveCount(1);
   // The page still carries its verdict specimen and its boundaries.
   await expect(page.locator('#verdict .verdict-dials')).toHaveCount(1);
+  // The page says what is assessed and established; how each stage is examined is set out once, on the methodology page.
+  await expect(page.locator('.sedi-explorer')).toHaveCount(0);
+  await expect(page.locator('#verdict a[href="/methodology/#chain"]')).toHaveCount(1);
   await expect(page.locator('main')).toContainText('AGDA® is not validated against real-world outcomes.');
 });
 
 test('methodology: four layers are kept apart, each linked to its detail, and marked as diagrams', async ({ page }) => {
   await page.goto('/methodology/');
   const layers = page.locator('#layers .method-layers');
-  await expect(layers.locator('h3')).toHaveText(['Operational dependencies', 'Timing', 'Evidence', 'Conclusion']);
+  await expect(layers.locator('h3')).toHaveText(['Operational dependencies', 'Timing', 'Evidence', 'Judgement']);
   await expect(layers.locator('li').nth(1)).toContainText('The stages run against the available time, which is set in scope.');
   await expect(layers.locator('li').nth(2)).toContainText('Confidence cannot outrun the evidence.');
-  await expect(layers.locator('li').nth(3)).toContainText('Intervene remains responsible for evidence interpretation and the final conclusion.');
+  await expect(layers.locator('li').nth(3)).toContainText('Repeatable engine computation supports the assessment. Intervene remains responsible for evidence interpretation and the final conclusion.');
+  // The verdict states are not drawn a second time here: they are listed once on this page, under the chain.
+  await expect(layers).not.toContainText('Before impact');
+  await expect(page.locator('#chain .verdicts .verdict-name')).toHaveText(['Before impact', 'At risk', 'After impact']);
+  // The page says how; what is assessed and established is the AGDA page's subject.
+  await expect(page.locator('#layers a[href="/agda/#model"]')).toHaveCount(1);
   await expect(layers.locator('figcaption')).toHaveText('Diagrams of the method, not measurements. The underlying rubric and protected implementation remain Intervene IP.');
   const hrefs = await layers.locator('li > a').evaluateAll((els) => els.map((el) => el.getAttribute('href')!));
   expect(hrefs).toEqual(['#chain', '#scope', '#evidence', '#chain']);

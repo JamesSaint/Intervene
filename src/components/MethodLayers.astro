@@ -1,8 +1,10 @@
 ---
 /**
  * The method in four layers that the page keeps apart: what depends on
- * what, what time it is read against, what evidence it needs, and what is
- * concluded. An executive reading of the page; each layer links to the
+ * what, what time it is read against, what evidence it needs, and how the
+ * conclusion is formed. The three verdict states themselves are listed once
+ * on this page, under the chain, and shown on the AGDA® page; they are not
+ * drawn again here. An executive reading of the page; each layer links to the
  * section that carries the detail.
  *
  * The statements are the methodology page's own. The marks are diagrams of
@@ -10,7 +12,6 @@
  * result. The four evidence kinds are drawn in the order the page's own
  * evidence ladder gives them.
  */
-import Agda from './Agda.astro';
 ---
 <figure class="method-layers" aria-label="The method in four layers">
   <ol role="list">
@@ -46,15 +47,16 @@ import Agda from './Agda.astro';
       <a href="#evidence">Evidence <span aria-hidden="true">↓</span></a>
     </li>
     <li>
-      <h3>Conclusion</h3>
+      <h3>Judgement</h3>
       <svg viewBox="0 0 260 44" aria-hidden="true" focusable="false">
-        <circle class="ml-fill" cx="9" cy="14" r="7" />
-        <circle cx="98" cy="14" r="7" /><path class="ml-fill" d="M98 7 a7 7 0 0 0 0 14 z" />
-        <rect class="ml-warn" x="184" y="7" width="14" height="14" />
-        {['Before impact', 'At risk', 'After impact'].map((t, i) => <text x={[2, 91, 184][i]} y="40">{t}</text>)}
+        <line x1="16" y1="14" x2="244" y2="14" />
+        <rect class="ml-fill" x="2" y="7" width="14" height="14" />
+        <circle cx="130" cy="14" r="7" />
+        <rect class="ml-box" x="244" y="7" width="14" height="14" />
+        {['Engine computation', 'Interpretation', 'Conclusion'].map((t, i) => <text x={[2, 130, 258][i]} y="40" text-anchor={['start', 'middle', 'end'][i]}>{t}</text>)}
       </svg>
-      <p>A full <Agda /> Assessment returns one of three states. Intervene remains responsible for evidence interpretation and the final conclusion.</p>
-      <a href="#chain">Three states <span aria-hidden="true">↓</span></a>
+      <p>Repeatable engine computation supports the assessment. Intervene remains responsible for evidence interpretation and the final conclusion.</p>
+      <a href="#chain">The three states <span aria-hidden="true">↓</span></a>
     </li>
   </ol>
   <figcaption>Diagrams of the method, not measurements. The underlying rubric and protected implementation remain Intervene IP.</figcaption>
@@ -78,7 +80,7 @@ import Agda from './Agda.astro';
   svg .ml-fill { fill: var(--ink); stroke: none; }
   svg .ml-edge { stroke: var(--accent); stroke-width: 2.5; }
   svg .ml-edge-text { fill: var(--accent-text); }
-  svg .ml-warn { fill: var(--warn); }
+  svg .ml-box { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
   figcaption { margin-top: var(--space-3); font-size: var(--type-small); line-height: 1.6; color: var(--muted); }
   @media (max-width: 1100px) {
     li { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); }
