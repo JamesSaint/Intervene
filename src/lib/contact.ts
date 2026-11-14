@@ -17,6 +17,17 @@ export function initContactForm(root: Document | ParentNode = document): () => v
   const form = root.querySelector<HTMLFormElement>('form[data-contact]');
   if (!form) return () => {};
 
+  // A link from an engagement's details can name the starting point, as
+  // /contact/?starting_point=review. Only the three known values select
+  // anything; every other visit keeps the default, "Not sure yet". The value
+  // is compared against a fixed list and never written to the page.
+  const requested = new URLSearchParams(window.location.search).get('starting_point');
+  if (requested && ['check', 'review', 'assessment'].includes(requested)) {
+    const choice = Array.from(form.querySelectorAll<HTMLInputElement>('input[name="starting_point"]'))
+      .find((input) => input.value === requested);
+    if (choice) choice.checked = true;
+  }
+
   let pending = false;
   let startedTracked = false;
   const onFirstInput = () => {
