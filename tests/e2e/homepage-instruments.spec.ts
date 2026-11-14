@@ -566,7 +566,7 @@ test.describe('one scenario, carried down the page', () => {
     }))).toEqual([[100, 17], [100, 33], [100, 50], [100, 67]]);
     await expect(page.locator('[data-sedi-out]')).toHaveText('Intervention takes effect before the window closes.');
     // In time: the chain is 67% of the window, a third of it remains, nothing lies beyond.
-    await expect(page.locator('.sedi-totals')).toHaveText(/Whole chain\s*67% of the window\s*Window remaining\s*33%\s*Beyond the window\s*0%/);
+    await expect(page.locator('.sedi-figures')).toHaveText(/Whole chain\s*67% of the window[\s\S]*Window remaining\s*33%\s*Beyond the window\s*0%/);
     await expect(page.locator('.sedi-end-text')).toHaveText(['Complete at 17% elapsed', 'Complete at 33% elapsed', 'Complete at 50% elapsed', 'Complete at 67% elapsed']);
 
     // A shorter window closes during Decide, half-way through it, and Intervene falls after it.
@@ -593,7 +593,7 @@ test.describe('one scenario, carried down the page', () => {
     // Duration and elapsed time are stated separately, and elapsed time above 100% is stated as it is.
     await expect(page.locator('.sedi-share-text')).toHaveText(['Takes 11% of the window', 'Takes 67% of the window', 'Takes 44% of the window', 'Takes 22% of the window']);
     await expect(page.locator('.sedi-end-text')).toHaveText(['Complete at 11% elapsed', 'Complete at 78% elapsed', 'Complete at 122% elapsed', 'Complete at 144% elapsed']);
-    await expect(page.locator('.sedi-totals')).toHaveText(/Whole chain\s*144% of the window\s*Window remaining\s*0%\s*Beyond the window\s*44%/);
+    await expect(page.locator('.sedi-figures')).toHaveText(/Whole chain\s*144% of the window[\s\S]*Window remaining\s*0%\s*Beyond the window\s*44%/);
     // The dial's own meter agrees: all of the window is used, and 44% lies beyond it.
     await expect(page.locator('[data-wd-consumed]')).toHaveText('100%');
     await expect(page.locator('[data-wd-remaining]')).toHaveText('0%');
@@ -609,7 +609,7 @@ test.describe('one scenario, carried down the page', () => {
     await page.goto('/');
     await expect(page.locator('.sedi-carry')).toContainText('Authority out of reach.');
     await expect(page.locator('.sedi-explorer [data-sedi-state]')).toHaveText(['Inside the window', 'Inside the window', 'Inside the window', 'Window closes here']);
-    await page.goto('/agda/');
+    await page.goto('/methodology/');
     await expect(page.locator('.sedi-explorer')).toHaveCount(1);
     await expect(page.locator('.sedi-carry, .sedi-scn')).toHaveCount(0);
     await context.close();
@@ -779,4 +779,107 @@ test('without JavaScript the evidence questions are still answered, and offer no
   await expect(page.locator('.et-exec-hint')).toBeHidden();
   await expect(page.locator('.et-lens-foot')).toBeHidden();
   await context.close();
+});
+
+test('on a phone the chain header keeps the scenario, the principal figure and the way back, and folds the rest', async ({ page, isMobile }) => {
+  await open(page);
+  const more = page.locator('[data-sedi-more]');
+  const toggle = page.locator('[data-sedi-more-toggle]');
+  // Always in view: the scenario, its sentence, the whole-chain figure and both links.
+  await expect(page.locator('[data-sedi-preset]')).toBeVisible();
+  await expect(page.locator('.sedi-carry-line')).toBeVisible();
+  await expect(page.locator('.sedi-principal')).toHaveText(/Whole chain\s*108% of the window/);
+  await expect(page.locator('.sedi-principal')).toBeVisible();
+  await expect(page.locator('.sedi-back')).toBeVisible();
+  if (isMobile) {
+    // Secondary figures and the key wait behind one button that names and controls its region.
+    await expect(toggle).toHaveText('More measurements and how to read the bars');
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    await expect(toggle).toHaveAttribute('aria-controls', 'sedi-more');
+    await expect(more).toBeHidden();
+    expect((await toggle.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    await toggle.focus();
+    await page.keyboard.press('Enter');
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.locator('[data-sedi-remaining]')).toBeVisible();
+    await expect(page.locator('[data-sedi-beyond]')).toHaveText('8%');
+    await expect(page.locator('.sedi-key')).toBeVisible();
+    // The folded figures still follow the scenario, and stay open while it changes.
+    await page.locator('[data-sedi-preset]').selectOption('holds');
+    await expect(page.locator('[data-sedi-remaining]')).toHaveText('33%');
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    await page.keyboard.press('Tab');
+    await toggle.click();
+    await expect(more).toBeHidden();
+  } else {
+    // On a wide screen everything is shown and there is no control to operate.
+    await expect(toggle).toBeHidden();
+    await expect(page.locator('[data-sedi-beyond]')).toBeVisible();
+    await expect(page.locator('.sedi-key')).toBeVisible();
+  }
+});
+
+test('without JavaScript every chain figure and the key are shown', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+  await page.goto('/');
+  await expect(page.locator('[data-sedi-more-toggle]')).toBeHidden();
+  await expect(page.locator('[data-sedi-beyond]')).toBeVisible();
+  await expect(page.locator('.sedi-key')).toBeVisible();
+  await context.close();
+});
+
+test.describe('the dial centre fits its word at every width', () => {
+  for (const width of [320, 390, 768, 1000, 1100, 1180, 1280, 1440, 1920]) {
+    test(`at ${width}px every outcome and every stage name sits inside the centre, centred`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await open(page);
+      const fit = () => page.locator('.window-dial').evaluate((dial) => {
+        const face = dial.querySelector('.dial-face')!.getBoundingClientRect();
+        const word = dial.querySelector('[data-wd-word]')!;
+        const range = document.createRange(); range.selectNodeContents(word);
+        const text = range.getBoundingClientRect();
+        // The inner guide circle is 62% of the dial across; the word must sit within it.
+        return { text: word.textContent, fits: text.width <= face.width * 0.58, offCentre: Math.abs((text.left + text.width / 2) - (face.left + face.width / 2)) };
+      });
+      for (const key of ['holds', 'margin', 'reach']) {
+        await page.locator('[data-wd-preset]').selectOption(key);
+        // The size settles over the site's short state transition, so the reading is polled.
+        // Negative tracking leaves a word a pixel or two off its box's centre; more than that is an overflow.
+        await expect.poll(async () => { const r = await fit(); return r.fits && r.offCentre <= 2.5; }, { message: `${key} at ${width}` }).toBe(true);
+      }
+      for (let i = 0; i < 4; i += 1) {
+        await page.locator(`[data-wd-stage="${i}"]`).click();
+        await expect.poll(async () => { const r = await fit(); return r.fits && r.offCentre <= 2.5; }, { message: `stage ${i} at ${width}` }).toBe(true);
+        await page.locator(`[data-wd-stage="${i}"]`).click();
+      }
+    });
+  }
+});
+
+test('buttons and links do not move when hovered', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Hover is a pointer behaviour.');
+  await page.addInitScript(() => localStorage.setItem('intv-consent', 'denied'));
+  // Motion is on: this is the condition under which the buttons used to lift.
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  for (const route of ['/', '/services/', '/agda/', '/insights/']) {
+    await page.goto(route, { waitUntil: 'networkidle' });
+    const targets = page.locator('main :is(a.btn, a.btn-ghost, a.link, a.arrow-link):visible');
+    const count = Math.min(await targets.count(), 12);
+    expect(count, route).toBeGreaterThan(0);
+    for (let i = 0; i < count; i += 1) {
+      const el = targets.nth(i);
+      await el.scrollIntoViewIfNeeded();
+      await page.mouse.move(0, 0);
+      const read = () => el.evaluate((node) => { const r = node.getBoundingClientRect(); const s = getComputedStyle(node); return { y: Math.round(r.y * 10) / 10, x: Math.round(r.x * 10) / 10, h: r.height, transform: s.transform, offset: s.textUnderlineOffset }; });
+      const before = await read();
+      // Hover at the lower edge, where a lifting button would lose the pointer.
+      const box = (await el.boundingBox())!;
+      await page.mouse.move(box.x + box.width / 2, box.y + box.height - 1);
+      await page.waitForTimeout(260);
+      expect(await read(), `${route} ${await el.innerText()}`).toEqual(before);
+      // And it is still hovered: the pointer has not been left behind.
+      expect(await el.evaluate((node) => node.matches(':hover'))).toBe(true);
+    }
+  }
 });

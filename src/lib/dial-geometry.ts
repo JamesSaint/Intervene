@@ -96,6 +96,16 @@ export function dash(arc: DialArc | undefined, gap = 0): { array: string; offset
 
 export const percent = (share: number): string => `${Math.round(share * 100)}%`;
 
+/**
+ * The size of the word in the dial's centre, as a CSS length in units of
+ * the dial's own width. At most 11% of that width, and less for a longer
+ * word, so the word always sits inside the inner ring: a character of the
+ * display face is taken as 0.6 of its size, and the word is given 46% of
+ * the dial across. Written as a whole declaration, not through a custom
+ * property, so the server render and the script write the same thing.
+ */
+export const centreWordSize = (word: string): string => `min(11cqw, ${(Math.floor((46 / (Math.max(word.length, 1) * 0.6)) * 100) / 100).toFixed(2)}cqw)`;
+
 export interface LabelPlacement {
   ring: Ring;
   /** Mid-point of the part of the stage the name is set along, as a turn. */

@@ -22,7 +22,7 @@ import {
   STAGES, STAGE_ACTIONS, STAGE_MIN, STAGE_MAX, WINDOWS, PRESETS, DEFAULT_PRESET,
   OUTCOME_LABEL, evaluate, describe,
 } from '../lib/window-model';
-import { endsBeyond, progress, percent } from '../lib/dial-geometry';
+import { endsBeyond, progress, percent, centreWordSize } from '../lib/dial-geometry';
 import DialFace from './DialFace.astro';
 
 interface Props { id?: string; /** Where on the page this scenario is read next, if anywhere. */ follow?: string }
@@ -52,7 +52,7 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
       <span class="wd-top" data-wd-top>{result.outcome === 'too-late' ? 'Window closed' : 'Window closes'}</span>
       <div class="wd-centre">
         <span class="wd-scn" data-wd-scn>{preset.label}</span>
-        <strong class="wd-word" data-wd-word>{OUTCOME_LABEL[result.outcome]}</strong>
+        <strong class="wd-word" data-wd-word style={`font-size: ${centreWordSize(OUTCOME_LABEL[result.outcome])}`}>{OUTCOME_LABEL[result.outcome]}</strong>
         <span class="wd-caption" data-wd-caption>{closedLine}</span>
       </div>
     </div>
@@ -138,7 +138,9 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
   .window-dial[data-focus] .wd-face :global(.df-arc) { opacity: 0.24; }
   .window-dial[data-focus] .wd-face :global(.df-arc.is-focus) { opacity: 1; }
   .window-dial[data-focus] .wd-face :global(.df-name:not(.is-focus)) { opacity: 0.3; }
-  .wd-figure { position: absolute; inset: 0; }
+  /* The figure is a size container, so the centre's type is set from the
+     dial's own width and not from the page's. */
+  .wd-figure { position: absolute; inset: 0; container-type: inline-size; }
   /* A replay control on the instrument itself, so it is in view with the dial. */
   .wd-face-replay { position: absolute; left: 50%; top: 66%; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 var(--space-3); border: 1px solid rgba(240, 240, 240, 0.34); font-size: 13px; font-weight: 600; letter-spacing: 0.02em; color: var(--wd-ink); transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease); }
   .wd-face-replay[hidden] { display: none; }
@@ -150,7 +152,10 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
   .window-dial[data-closed] .wd-top { color: var(--warn); }
   .wd-centre { position: absolute; inset: 25% 26% 36%; display: grid; align-content: center; justify-items: center; gap: 8px; text-align: center; color: var(--wd-ink); }
   .wd-scn { font-family: var(--font-mono); font-size: clamp(10px, 1.9vw, 12px); line-height: 1.4; color: var(--wd-faint); min-height: 2.8em; display: flex; align-items: flex-end; }
-  .wd-word { font-size: clamp(28px, 8vw, 68px); font-weight: 600; letter-spacing: -0.03em; line-height: 1; white-space: nowrap; }
+  /* The word is sized to fit the dial's centre whatever it says, by a size
+     set on the element from its length (centreWordSize). The size here is
+     the fallback for a browser without container units. */
+  .wd-word { font-size: clamp(20px, 4.4vw, 38px); font-weight: 600; letter-spacing: -0.03em; line-height: 1; white-space: nowrap; max-width: 100%; }
   .window-dial[data-closed]:not([data-playing]):not([data-reading]) .wd-word { color: var(--wd-warn); }
   .wd-caption { font-size: clamp(12px, 2.6vw, 15px); line-height: 1.35; color: var(--wd-muted); min-height: 2.7em; max-width: 17ch; }
 
@@ -272,7 +277,7 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
     STAGES, STAGE_ACTIONS, WINDOWS, PRESETS, OUTCOME_LABEL, evaluate, describe,
     type WindowKey,
   } from '../lib/window-model';
-  import { dialArcs, dash, stageStates, endsBeyond, progress, handPosition, labelPlacements, fitsLabel, percent, RADIUS, STROKE } from '../lib/dial-geometry';
+  import { dialArcs, dash, stageStates, endsBeyond, progress, handPosition, labelPlacements, fitsLabel, percent, centreWordSize, RADIUS, STROKE } from '../lib/dial-geometry';
 
   const NS = 'http://www.w3.org/2000/svg';
   /** Milliseconds of playback for one unit of the model. */
@@ -300,7 +305,12 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
     const replays = $$<HTMLButtonElement>('[data-wd-replay]');
     const word = $<HTMLElement>('[data-wd-word]');
     const caption = $<HTMLElement>('[data-wd-caption]');
-    const set = (el: Element, value: string) => { if (el.textContent !== value) el.textContent = value; };
+    const set = (el: Element, value: string) => {
+      if (el.textContent === value) return;
+      el.textContent = value;
+      // The centre word carries its own length, which its size is set from.
+      if (el === word) word.style.fontSize = centreWordSize(value);
+    };
     const attr = (el: Element, name: string, value: string) => { if (el.getAttribute(name) !== value) el.setAttribute(name, value); };
 
     let frame = 0;

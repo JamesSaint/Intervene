@@ -58,13 +58,25 @@ const stages = [
       </div>
       <div class="sedi-carry-body">
         <p class="sedi-carry-line"><strong data-sedi-label>{preset.label}.</strong> <span data-sedi-text>{preset.text}</span> <span data-sedi-out>{describe(result)}</span></p>
-        <dl class="sedi-totals">
-          <div><dt>Whole chain</dt><dd><span data-sedi-total>{totalText.total}</span> of the window</dd></div>
-          <div><dt>Window remaining</dt><dd data-sedi-remaining>{totalText.remaining}</dd></div>
-          <div class="sedi-total-beyond"><dt>Beyond the window</dt><dd data-sedi-beyond>{totalText.beyond}</dd></div>
-        </dl>
+        <div class="sedi-figures">
+          <dl class="sedi-totals sedi-principal">
+            <div><dt>Whole chain</dt><dd><span data-sedi-total>{totalText.total}</span> of the window</dd></div>
+          </dl>
+          <!-- Secondary figures and the key. Present and shown in the markup,
+               so nothing depends on script. On a narrow screen the script
+               folds them behind the button; wide screens show them with no
+               control. A button and a region, not a details element, so the
+               chain's own stage disclosures stay the only ones here. -->
+          <button type="button" class="sedi-more-toggle" data-sedi-more-toggle aria-expanded="true" aria-controls="sedi-more" hidden><span>More measurements and how to read the bars</span></button>
+          <div class="sedi-more" id="sedi-more" data-sedi-more>
+            <dl class="sedi-totals">
+              <div><dt>Window remaining</dt><dd data-sedi-remaining>{totalText.remaining}</dd></div>
+              <div class="sedi-total-beyond"><dt>Beyond the window</dt><dd data-sedi-beyond>{totalText.beyond}</dd></div>
+            </dl>
+            <p class="sedi-key">Each bar is one stage on the same scale. Its length is how long the stage takes; its right end is the time elapsed when the stage completes. The line is where the window closes.</p>
+          </div>
+        </div>
       </div>
-      <p class="sedi-key">Each bar is one stage on the same scale. Its length is how long the stage takes; its right end is the time elapsed when the stage completes. The line is where the window closes.</p>
     </div>
     <noscript><style is:inline>.sedi-pick { display: none !important; }</style></noscript>
   )}
@@ -161,7 +173,18 @@ const stages = [
   .sedi-pick select:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
   .sedi-back { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-size: var(--type-action); font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-color: var(--hair-strong); text-underline-offset: 4px; }
   .sedi-back:is(:hover, :focus-visible) { color: var(--accent-text); }
-  .sedi-carry-body { display: grid; grid-template-columns: minmax(0, 1.4fr) auto; gap: var(--space-4) var(--space-7); align-items: start; }
+  .sedi-carry-body { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); align-items: start; }
+  .sedi-figures { display: grid; gap: var(--space-3); align-content: start; }
+  .sedi-principal dd { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.2; }
+  .sedi-more { display: grid; gap: var(--space-3); }
+  .sedi-more[hidden] { display: none; }
+  .sedi-more-toggle { appearance: none; display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 0; border: 0; border-top: 1px solid var(--hair); background: transparent; font: inherit; font-size: var(--type-action); font-weight: 600; text-align: left; color: var(--ink); cursor: pointer; }
+  .sedi-more-toggle[hidden] { display: none; }
+  .sedi-more-toggle::before { content: ''; flex: none; width: 8px; height: 8px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); transform: translateY(-2px) rotate(45deg); transition: transform var(--dur-fast) var(--ease-out); }
+  .sedi-more-toggle[aria-expanded='true']::before { transform: translateY(2px) rotate(-135deg); }
+  .sedi-more-toggle span { text-decoration: underline; text-decoration-color: var(--hair-strong); text-underline-offset: 4px; }
+  .sedi-more-toggle:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .sedi-more > .sedi-totals { margin-bottom: var(--space-3); }
   .sedi-carry-line { margin: 0; min-height: 3lh; font-size: var(--type-support); line-height: 1.5; color: var(--muted); }
   .sedi-carry-line strong { color: var(--ink); font-weight: 600; }
   .sedi-totals { margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); padding: 0; }
@@ -209,6 +232,7 @@ const stages = [
   @media (max-width: 1100px) {
     .sedi-carry-body { grid-template-columns: 1fr; }
     .sedi-carry-line { min-height: 4lh; }
+
   }
   @media (max-width: 560px) {
   }
@@ -250,6 +274,21 @@ const stages = [
   // nothing here is announced a second time.
   interface Scenario { key: string; label: string; durations: number[]; window: number }
   const set = (el: Element | null, value: string) => { if (el && el.textContent !== value) el.textContent = value; };
+
+  // On a narrow screen the secondary figures and the key wait behind their
+  // button; on a wide one they are simply shown and the button is absent.
+  // Decided on load and again if the width class changes, never while the
+  // reader is using it.
+  const narrow = matchMedia('(max-width: 1100px)');
+  const toggles = [...document.querySelectorAll<HTMLButtonElement>('[data-sedi-more-toggle]')];
+  const show = (toggle: HTMLButtonElement, open: boolean) => {
+    toggle.setAttribute('aria-expanded', String(open));
+    document.getElementById(toggle.getAttribute('aria-controls')!)!.hidden = !open;
+  };
+  const fold = () => toggles.forEach((toggle) => { toggle.hidden = !narrow.matches; show(toggle, !narrow.matches); });
+  toggles.forEach((toggle) => toggle.addEventListener('click', () => show(toggle, toggle.getAttribute('aria-expanded') !== 'true')));
+  fold();
+  narrow.addEventListener('change', fold);
 
   document.querySelectorAll<HTMLSelectElement>('[data-sedi-preset]').forEach((select) => {
     select.addEventListener('change', () => document.dispatchEvent(new CustomEvent('intervene:scenario-set', { detail: { key: select.value } })));

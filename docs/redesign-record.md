@@ -736,6 +736,76 @@ It changes the appearance of sent email and needs a decision.
 - `/services/` on a phone is still long.
 - Reading time is an estimate at 230 words a minute.
 
+## Twelfth pass: release candidate
+
+Focused work only. No new design.
+
+**Two defects reported from the preview, both fixed.**
+
+- The outcome word overflowed the dial. Its size was set from the page's
+  width, so on a two-column layout where the dial is narrower than the type
+  expected, "Narrow margin" was 504 pixels wide in a centre 397 wide and sat
+  off-centre. The word is now sized from the dial's own width and from its
+  own length (`centreWordSize`), so it fits whatever it says. Tested for
+  all three outcomes and all four stage names at nine widths from 320 to
+  1920 pixels, in Chromium, Firefox and WebKit. Earlier passes had not
+  checked widths between 1000 and 1300 pixels.
+- Buttons and links jumped on hover. Buttons lifted two pixels, which left
+  a pointer resting on the lower edge outside the button: it lost the
+  hover, dropped back and lifted again. Links moved their underline by two
+  pixels. Both now answer with colour only. A test hovers at the lower edge
+  of buttons and links with motion on and asserts nothing moves. This rule
+  predates the redesign; it is recorded here because the fix is in this
+  branch.
+
+**Email signature.** Link text now inherits the surrounding text colour and
+the gold is the underline. The earlier treatment is in the history at
+`f7a13c4`. Rendered directly on seven representative canvases the link text
+meets 4.5:1 on each, and `/signature/` has no accessibility violation in
+either appearance (132 of 132 scans clean). One limit was found and is
+asserted in the tests as it is: a rich-text editor in Chromium discards
+`color: inherit` on paste, so a pasted link takes the editor's own link
+colour. No mail client has been tested. See
+`docs/manual-test-procedures.md`.
+
+**Mobile chain header.** The scenario, its sentence, the whole-chain figure
+and the link to the dial stay in view. "Window remaining", "Beyond the
+window" and the key to the bars are behind one button, "More measurements
+and how to read the bars", which names and controls its region. Wide
+screens show everything with no control. Without script everything is
+shown. Every figure still follows the scenario while folded. It is a button
+and a region, not a details element, so the chain's own stage disclosures
+remain the only ones in it.
+
+**AGDA and methodology.** AGDA says what is assessed and established;
+methodology says how. The stage-by-stage explorer is no longer repeated on
+the AGDA page, which links to it on the methodology page. The methodology
+figure no longer draws the three verdict states a third time: its fourth
+layer is "Judgement" (engine computation, interpretation, conclusion) and
+the states stay listed once, under the chain. Each page links to the other
+for its half. No statement was removed from the site.
+
+**Comparison pages.** Reviewed one by one. Each ledger carries its own
+distinction in its own rows: structures against capability (AI governance),
+retrospective against forward (audit), a point in time against an interval
+(compliance), impact tolerance against the reversibility window
+(operational resilience), likelihood against speed of response (risk
+management). No page needed a graphic of its own and none would be
+supportable from its content. No change.
+
+**Verification.** 234 unit tests; 628 Chromium tests (10 skipped); 287
+Firefox and WebKit tests (7 skipped); type, content and private-path
+checks clean. axe: 132 of 132 clean. Lighthouse mobile: homepage 96, AGDA
+98, methodology 98, services 98; desktop homepage 100. No overflow, console
+error or failed request on twelve pages at five widths in both themes.
+
+One existing test was made more robust without changing what it asserts:
+a signature test could end with a stubbed image request still in flight
+and fail intermittently; it now waits for the artwork to load.
+
+**Not done.** No VoiceOver session. No mail client. No physical device.
+Procedures for the first two are in `docs/manual-test-procedures.md`.
+
 ## Published wording that changed
 
 Prices, offer names, boundaries, the price qualifier, the availability
@@ -882,6 +952,22 @@ Eleventh pass:
 
 No price, scope, deliverable, exclusion, methodology statement or
 verification claim was changed. No comparison cell was changed.
+
+Twelfth pass:
+
+- `/agda/`: the stage explorer is replaced by one sentence, "How each stage
+  is examined, what it depends on and what evidence it needs is set out in
+  the methodology."
+- `/methodology/`: the fourth layer is "Judgement" (was "Conclusion"), with
+  "Repeatable engine computation supports the assessment. Intervene remains
+  responsible for evidence interpretation and the final conclusion." The
+  introduction adds "What an assessment covers and establishes is on the
+  AGDA® page."
+- SEDI chain: "More measurements and how to read the bars".
+- Email signature: no wording change. Link text colour and underline only.
+
+No price, scope, deliverable, exclusion, methodology statement or
+verification claim was changed.
 
 ## Regression checklist
 

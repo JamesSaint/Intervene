@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { dialArcs, stageStates, endsBeyond, progress, handPosition, dash, labelPlacements, fitsLabel } from '../../src/lib/dial-geometry';
+import { dialArcs, stageStates, endsBeyond, progress, handPosition, dash, labelPlacements, fitsLabel, centreWordSize,
+} from '../../src/lib/dial-geometry';
 import { STAGES } from '../../src/lib/window-model';
 import { evaluate, PRESETS, WINDOWS, STAGE_MIN, STAGE_MAX } from '../../src/lib/window-model';
 
@@ -116,5 +117,23 @@ describe('intervention dial geometry', () => {
     expect(dash({ stage: 1, ring: 'window', from: 0.25, to: 0.75 })).toEqual({ array: '0.5 2', offset: '-0.25' });
     expect(dash({ stage: 1, ring: 'window', from: 0.25, to: 0.75 }, 0.01)).toEqual({ array: '0.49 2', offset: '-0.25' });
     expect(dash(undefined)).toEqual({ array: '0 2', offset: '0' });
+  });
+});
+
+describe('the word in the dial centre', () => {
+  it('is never set wider than the centre can hold, whatever it says', () => {
+    // Every word the centre can show: the three outcomes and the four stage names.
+    for (const word of ['In time', 'Narrow margin', 'Too late', ...STAGES]) {
+      const size = centreWordSize(word);
+      const fitted = Number(size.match(/, ([\d.]+)cqw\)$/)![1]);
+      // At 0.6 of its size per character, the word spans at most 46% of the dial.
+      expect(Math.min(11, fitted) * word.length * 0.6).toBeLessThanOrEqual(46);
+    }
+  });
+
+  it('gives a short word the full size and a long word a smaller one', () => {
+    expect(centreWordSize('In time')).toBe('min(11cqw, 10.95cqw)');
+    expect(centreWordSize('Too late')).toBe('min(11cqw, 9.58cqw)');
+    expect(centreWordSize('Narrow margin')).toBe('min(11cqw, 5.89cqw)');
   });
 });

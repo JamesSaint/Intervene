@@ -26,7 +26,7 @@ const signatureAppearanceCss = ':root{color-scheme:light dark;supported-color-sc
 export const signatureCss = `
 .sig-root { color:#1a1a1a !important; }
 .sig-root .sig-secondary { color:#4a4a4a !important; }
-.sig-root .sig-link { color:#c9b694 !important; text-decoration:none !important; }
+.sig-root .sig-link { color:inherit !important; text-decoration:none !important; border-bottom:2px solid #c9b694 !important; }
 .sig-root .sig-environment { color:#7a6c55 !important; }
 @media (prefers-color-scheme:dark) {
   .sig-root { color:#f0f0f0 !important; }
@@ -37,9 +37,11 @@ export const signatureCss = `
 // Mail freezes imported table column widths. Normal blocks let this single-column
 // signature reflow when the compose window or recipient viewport changes.
 const row = (content: string, style: string, className = '') => `<div${className ? ` class="${className}"` : ''} style="padding:${style};color:inherit;">${content}</div>`;
-// Mail resolves conditional link colours when inserting a signature. Keep the
-// established brand gold literal so the requested colour survives insertion.
-const link = (href: string, text: string) => `<a class="sig-link" href="${escapeHtml(href)}" style="color:#c9b694;text-decoration:none;">${escapeHtml(text)}</a>`;
+// Link text inherits the message's text colour, so it is readable on a light
+// or a dark canvas without a stylesheet; the brand gold is carried as a
+// literal underline, which survives insertion. Until commit f7a13c4 the link
+// text itself was gold (#c9b694), which did not meet contrast on white.
+const link = (href: string, text: string) => `<a class="sig-link" href="${escapeHtml(href)}" style="color:inherit;text-decoration:none;border-bottom:2px solid #c9b694;padding-bottom:1px;">${escapeHtml(text)}</a>`;
 
 // Mail already supplies the message gutter. Extra horizontal padding would
 // indent the signature farther than the body text.
