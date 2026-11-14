@@ -37,6 +37,8 @@ export interface Offer {
   /** One line for the "Evidence examined" row on the homepage. */
   examined: string;
   receive: string[];
+  /** The principal output, in one line, for the homepage comparison. */
+  output: string;
   exclusion: string;
   /** One line for the homepage card; the full exclusion is on /services/. */
   exclusionShort: string;
@@ -91,6 +93,7 @@ export const offers: Offer[] = [
       'The gaps found.',
       'When the live call-out was run and what it showed, stated as one test at one time.',
     ],
+    output: 'A one-page finding on authority, reachability and the halt mechanism.',
     exclusion:
       'The Authority Check is not an AGDA® verdict, SEDI result or score, and carries no attestation. The finding is prepared without independent review. The live call-out is one test at one time and does not show that anyone can be reached on any other occasion. A finding about one system is not a finding about the organisation. It is a distinct, narrower engagement, not a discounted Review.',
     exclusionShort: 'Not an AGDA® verdict, SEDI result or score, and no attestation. Prepared without independent review.',
@@ -106,7 +109,7 @@ export const offers: Offer[] = [
   {
     slug: 'review',
     name: 'Intervention Readiness Review',
-    question: 'Could you prove it?',
+    question: 'What evidence do you have that you can stop this system?',
     serviceType: 'Intervention Readiness assessment',
     short: 'A documented executive view of what you could evidence for each step of the intervention chain on one system, the timings in your own records and whether a full assessment is warranted.',
     purpose:
@@ -124,6 +127,7 @@ export const offers: Offer[] = [
       'A gap register: the evidence held for each step, graded, and what is missing.',
       'A recommendation on whether a full AGDA® Assessment is warranted, and the proposed scope if it is.',
     ],
+    output: 'A gap register of the evidence held for each step, and a recommendation on whether a full AGDA® Assessment is warranted.',
     exclusion: 'The Review does not include the AGDA® verdict, the window set from your records, the end-to-end timing result or signed SEDI result records. It is not a discounted AGDA® Assessment.',
     exclusionShort: 'The Review does not include the AGDA® verdict. It is not a discounted AGDA® Assessment.',
     decision: 'Whether you could prove that this system can be stopped, step by step, and whether a full AGDA® Assessment is warranted.',
@@ -162,6 +166,7 @@ export const offers: Offer[] = [
       'An Intervention Readiness verdict (Before impact, At risk or After impact), its confidence basis and material limitations.',
       'Remediation priorities, and a report written for the board and, if you choose, your supervisor.',
     ],
+    output: 'An AGDA® verdict with its evidence register, SEDI findings and executive interpretation.',
     exclusion:
       'Additional systems, pathways or scenarios, enterprise-wide inventory, governance redesign, legal opinion, full regulatory compliance assessment, model validation, penetration or cybersecurity testing, software development, implementation and remediation delivery are separately scoped. It is not regulatory certification.',
     exclusionShort: 'Connected systems, additional scenarios and implementation work are scoped separately. It is not regulatory certification.',

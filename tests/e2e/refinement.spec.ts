@@ -5,23 +5,17 @@ async function dismissConsent(page: import('@playwright/test').Page) {
   if (await deny.isVisible()) await deny.click();
 }
 
-test('homepage follows six stages and exposes the finding before any interaction', async ({ page }) => {
+test('homepage follows seven sections and exposes the example before any interaction', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('main > section')).toHaveCount(6);
-  await expect(page.locator('.hero-secondary')).toHaveAttribute('href', '/agda/');
-  await expect(page.locator('.hero-sub')).toContainText('Intervene’s');
-  await expect(page.locator('.hero-sub')).toContainText('assessment examines');
-  await expect(page.locator('.hero-sub [role="img"]')).toHaveAttribute('aria-label', 'AGDA®');
-  // The finding is on the page before any interaction: four stage findings
-  // and the illustrative conclusion they lead to.
-  await expect(page.locator('.evidence-trace .et-stage')).toHaveCount(4);
-  await expect(page.locator('.evidence-trace .et-state')).toBeVisible();
+  await expect(page.locator('main > section')).toHaveCount(7);
+  await expect(page.locator('.hero-secondary')).toHaveAttribute('href', '/sample-report/');
+  await expect(page.locator('.hero-sub')).toContainText('We assess whether your organisation can intervene');
+  // The constructed example is on the page before any interaction, in
+  // brief; the full trace is on the sample verdict.
+  await expect(page.locator('.example .example-status')).toBeVisible();
+  await expect(page.locator('.evidence-trace')).toHaveCount(0);
   // Three engagements since the Authority Check became the entry offer.
-  await expect(page.locator('.oc-fields')).toHaveCount(3);
-  for (const fields of await page.locator('.oc-fields').all()) {
-    await expect(fields).toContainText('Question and decision');
-    await expect(fields).toContainText('Evidence examined');
-  }
+  await expect(page.locator('.cmp-item')).toHaveCount(3);
 });
 
 for (const route of ['/', '/methodology/']) {

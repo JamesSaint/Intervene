@@ -38,8 +38,14 @@ for (const route of ['/', '/services/']) {
     test('the Review and the Authority Check say they carry no verdict', async ({ page }) => {
       await page.goto(route);
       const text = await bodyText(page);
-      expect(text).toMatch(/does not include the AGDA® verdict/);
-      expect(text).toMatch(/not an AGDA® verdict/i);
+      // The homepage states it once for both; /services/ states each engagement's own exclusion.
+      if (route === '/') {
+        expect(text).toMatch(/Only the full Assessment produces an AGDA® verdict/);
+        expect(text).toMatch(/The Authority Check and the Review do not produce a verdict/);
+      } else {
+        expect(text).toMatch(/does not include the AGDA® verdict/);
+        expect(text).toMatch(/not an AGDA® verdict/i);
+      }
     });
 
     test('carries no retired offer', async ({ page }) => {
@@ -100,10 +106,23 @@ test.describe('navigation', () => {
 });
 
 test.describe('buyer journey pass', () => {
-  test('homepage carries no attestation specimen and one constructed finding', async ({ page }) => {
+  test('homepage carries no attestation specimen and one constructed example, with the trace on the sample', async ({ page }) => {
     await page.goto('/');
-    // The constructed finding is drawn as a trace. Its status is on the page
-    // in every state, and opening a record never replaces it.
+    const text = await page.locator('main').innerText();
+    expect(text).not.toMatch(/engineHash|manifestHash|keyId|scoredAt/);
+    expect(text).toMatch(/constructed illustration/i);
+    expect(text).toMatch(/at least seven days/);
+    expect(text).toMatch(/not an issued assessment or a verified outcome/);
+    // The comparison never makes the Review compulsory or predictive.
+    const fork = await page.locator('.offer-compare').innerText();
+    expect(fork).toMatch(/any of the three engagements directly/);
+    expect(fork).toMatch(/does not commit you to one or determine its verdict/);
+    expect(fork).not.toMatch(/confirms nothing|predicts nothing/);
+    const finding = await page.locator('.finding-block').innerText();
+    expect(finding).not.toMatch(/£|\/ 5|108k|EXPOSED/);
+    // The constructed finding is drawn as a trace on the sample verdict. Its
+    // status is on the page in every state, and opening a record never replaces it.
+    await page.goto('/sample-report/');
     const trace = page.locator('.evidence-trace');
     await expect(trace.locator('.et-status')).toHaveText('Constructed illustration');
     const record = trace.locator('.et-record').first();
@@ -112,34 +131,25 @@ test.describe('buyer journey pass', () => {
     await expect(record).toHaveAttribute('open', '');
     await expect(record).toContainText('What it supports, and what remains open');
     await expect(trace.locator('.et-status')).toBeVisible();
-    const text = await page.locator('main').innerText();
-    expect(text).not.toMatch(/engineHash|manifestHash|keyId|scoredAt/);
-    expect(text).toMatch(/constructed illustration/i);
-    expect(text).toMatch(/4 to 96 hours|four and ninety-six hours/);
-    expect(text).toMatch(/≥ 7 days|at least seven days/);
-    expect(text).toMatch(/not an issued assessment or a verified outcome/);
     // The fourth stage carries no assessed duration in the illustration.
     const chain = await trace.innerText();
+    expect(chain).toMatch(/4 to 96 hours/);
+    expect(chain).toMatch(/≥ 7 days/);
     expect(chain).toMatch(/Not assessed/);
     expect(chain).not.toMatch(/Cannot recover/);
     expect(chain).toMatch(/not to scale and not added together/);
-    // The fork never makes the Review compulsory or predictive.
-    const fork = await page.locator('.offer-choice').innerText();
-    expect(fork).toMatch(/none is a prerequisite/);
-    expect(fork).toMatch(/does not commit you to one or determine its verdict/);
-    expect(fork).not.toMatch(/confirms nothing|predicts nothing/);
-    const finding = await page.locator('.finding-block').innerText();
-    expect(finding).not.toMatch(/£|\/ 5|108k|EXPOSED/);
   });
 
   test('the Review states its own decision and what the client keeps', async ({ page }) => {
     for (const route of ['/', '/services/']) {
       await page.goto(route);
       const text = await page.locator('main').innerText();
-      expect(text, route).toMatch(/could you prove it/i);
-      expect(text, route).toMatch(/does not include the AGDA® verdict/);
+      expect(text, route).toMatch(/What evidence do you have that you can stop this system\?/);
     }
+    await page.goto('/');
+    await expect(page.locator('.offer-compare')).toContainText('Only the full Assessment produces an');
     await page.goto('/services/');
+    expect(await page.locator('main').innerText()).toMatch(/does not include the AGDA® verdict/);
     // The three engagements open the page at a glance: question, fee and
     // boundary for each, the statement that none is a prerequisite, and a
     // link to each full sheet. The sheets carry the deliverables.
