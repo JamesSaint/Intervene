@@ -52,9 +52,8 @@ const faqs = [
   <section class="hero product-hero">
     <div class="wrap">
       <div class="product-identity"><AgdaLogo variant="lockup" /></div>
-      <span class="label">The assessment</span>
-      <h1 class="h1"><Agda /> assesses Intervention Readiness.</h1>
-      <p class="lede muted"><Agda /> assesses whether organisations can detect, escalate, decide and intervene when consequential systems require human intervention.</p>
+      <h1 class="h1">Assessing <span class="keep">Intervention Readiness</span></h1>
+      <p class="lede muted">The assessment examines whether organisations can detect, escalate, decide and intervene when consequential systems require human intervention.</p>
       <div class="hero-cta">
         <a data-primary-cta="discuss_system" href="/contact/" class="btn">Discuss your system</a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
@@ -245,10 +244,17 @@ const faqs = [
   .verdict-intro :is(.h2, .lede, .arrow-link) { margin: 0; }
   .verdict-stage { margin-top: var(--gap-intro); display: flex; justify-content: flex-start; }
   .verdict-chain { margin-top: var(--space-5); }
+  /* One wordmark, then the heading, its sentence and the actions on one
+     left edge. The heading has the full width; the sentence takes a
+     reading column sized from its own type, which is a grid track and not
+     a cap on the paragraph. */
+  @media (min-width: 900px) {
+    .hero.product-hero > .wrap.wrap { display: grid; grid-template-columns: minmax(0, calc(var(--type-support) * 40)) minmax(0, 1fr); column-gap: 0; align-items: start; }
+    .hero.product-hero > .wrap.wrap > * { grid-column: 1 / -1; }
+    .hero.product-hero > .wrap.wrap > .h1 + .lede { grid-column: 1; margin: var(--space-3) 0 0; font-size: var(--type-support); line-height: 1.6; }
+  }
   @media (min-width: 1100px) {
-    .product-hero > .wrap { display: grid; grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.65fr); gap: 0 var(--space-7); }
-    .product-hero .product-identity { grid-row: 1 / span 4; padding-top: 8px; }
-    .product-hero :is(.label, .h1, .lede, .hero-cta) { grid-column: 2; }
+    .hero.product-hero > .wrap.wrap > .h1 { grid-column: 1 / -1; font-size: clamp(44px, 4.6vw, 68px); }
     /* The heading and its sentence sit side by side; the three states run the full width beneath. */
     #verdict .verdict-intro { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: var(--space-7); align-items: end; }
     #verdict .verdict-intro .arrow-link { grid-column: 2; }
@@ -269,12 +275,13 @@ const faqs = [
   .isnot-grid { margin-top: var(--gap-intro); list-style: none; padding: 0; }
   .isnot-grid .h3 { font-size: var(--type-card); }
 
-  /* On a phone the product mark, statement and action lead. The
-     introductory label accompanies the explanation below the actions. */
+  /* The wordmark leads; the term in the heading stays together where the line allows. */
+  .product-identity { margin-bottom: var(--space-5); }
+  .product-hero .h1 .keep { display: inline-block; }
+  .product-hero .lede { margin-top: var(--space-3); }
   @media (max-width: 560px) {
     .hero:has(.product-identity) { padding-top: 24px; }
     .hero .product-identity { margin-bottom: 16px; }
-    .hero > .wrap > .label { order: 2; margin: 24px 0 0; }
     .hero:has(.product-identity) .hero-cta { margin-top: 16px; }
   }
   @media (max-width: 880px) {

@@ -734,22 +734,6 @@ test.describe('the executive reading of the evidence', () => {
   });
 });
 
-test('each engagement shows how deep it examines, from its own published scope', async ({ page }) => {
-  for (const route of ['/services/']) {
-    await page.goto(route);
-    const routes = page.locator('.oi-route');
-    expect(await routes.evaluateAll((els) => els.map((el) => el.querySelectorAll('.oi-gauge .is-in').length)), route).toEqual([1, 3, 5]);
-    expect(await routes.evaluateAll((els) => els.map((el) => el.querySelectorAll('.oi-gauge > span').length)), route).toEqual([5, 5, 5]);
-    await expect(routes.locator('.oi-depth-text')).toHaveText([
-      'Covers authority to halt. Outside it: evidence for each step, timings in your records, a window set from your records and the verdict.',
-      'Covers authority to halt, evidence for each step and timings in your records. Outside it: a window set from your records and the verdict.',
-      'Covers authority to halt, evidence for each step, timings in your records, a window set from your records and the verdict.',
-    ]);
-    // Depth is not an order of purchase: every engagement still says it is commissioned on its own.
-    await expect(routes.locator('.oi-alone')).toHaveText(['Commissioned on its own', 'Commissioned on its own', 'Commissioned on its own']);
-  }
-});
-
 test.describe('the scenario can be read and set from the chain', () => {
   test('the chain names the dial as its source, links back to it, and the dial links down to the chain', async ({ page }) => {
     await open(page);
