@@ -137,7 +137,8 @@ for (const scheme of ['light', 'dark'] as const) {
           weight: getComputedStyle(links[0]).fontWeight,
           lineHeight: parseFloat(getComputedStyle(links[0]).lineHeight) / parseFloat(getComputedStyle(links[0]).fontSize),
           marks: links.map((link) => link.textContent!).filter((text) => text.includes('AGDA')),
-          wrapped: links.some((link) => link.children.length > 0),
+          // The only markup inside a link is the registered mark on AGDA®.
+          wrapped: links.some((link) => [...link.children].some((child) => !child.matches('span.agda-reg') || child.textContent !== '®')),
         };
       });
       expect(layout.scrolled, at).toBe(0);
@@ -148,7 +149,7 @@ for (const scheme of ['light', 'dark'] as const) {
       expect(layout.needsScroll, at).toBe(false);
       expect(layout.oneLine, at).toBe(true);
       expect(layout.targets, at).toBe(true);
-      // The fit comes from spacing: the link type and the plain AGDA® text are as they were.
+      // The fit comes from spacing: the link type and the AGDA® name are as they were.
       expect(layout.font, at).toBe(viewport.font);
       expect(layout.weight, at).toBe('600');
       expect(layout.lineHeight, at).toBeCloseTo(1.15, 2);

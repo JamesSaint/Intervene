@@ -18,7 +18,7 @@ const { items, label = 'On this page' } = Astro.props;
     <span class="page-nav-label" aria-hidden="true">{label}</span>
     <ul role="list">
       {items.map((it) => (
-        <li><a href={it.href} set:html={markAgda(it.label)} /></li>
+        <li><a href={it.href}><span set:html={markAgda(it.label)} /></a></li>
       ))}
     </ul>
   </div>
