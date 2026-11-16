@@ -93,6 +93,128 @@ test('the menu clears consent and remains usable on short screens', async ({ pag
   await expect(page.locator('[data-takeover]')).toBeHidden();
 });
 
+// The appearance control sits under the eight links. On a laptop screen the
+// links used to push it below the fold, so it was only found by scrolling.
+for (const scheme of ['light', 'dark'] as const) {
+  test(`the open menu shows every link and the whole appearance control without scrolling (${scheme})`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme: scheme });
+    await page.addInitScript(() => localStorage.setItem('intv-consent', 'denied'));
+    for (const viewport of [
+      // The two sizes that failed, with the link type they must keep.
+      { width: 1440, height: 900, font: '56px' },
+      { width: 1280, height: 720, font: '38.4px' },
+      // Sizes that already fitted.
+      { width: 1920, height: 1080, font: '56px' },
+      { width: 390, height: 844, font: '23px' },
+    ]) {
+      const at = `${viewport.width}x${viewport.height}`;
+      await page.setViewportSize(viewport);
+      await page.goto('/services/');
+      await page.evaluate(() => document.fonts.ready);
+      // Opened from the keyboard, so focus indicators are shown as a keyboard user sees them.
+      await page.locator('[data-menu-trigger]').focus();
+      await page.keyboard.press('Enter');
+      const menu = page.locator('[data-takeover]');
+      await expect(menu).toHaveClass(/\bopen\b/);
+      await page.waitForTimeout(900);
+      const layout = await menu.evaluate((el) => {
+        const inside = (node: Element) => {
+          const box = node.getBoundingClientRect();
+          return box.height > 0 && box.top >= 0 && box.bottom <= window.innerHeight + 0.5 && box.left >= 0 && box.right <= window.innerWidth + 0.5;
+        };
+        const links = [...el.querySelectorAll('.takeover-body a')];
+        const control = el.querySelector('.takeover-appearance')!;
+        return {
+          scrolled: el.scrollTop,
+          needsScroll: el.scrollHeight > el.clientHeight + 1,
+          links: links.length,
+          linksInside: links.every(inside),
+          oneLine: links.every((link) => link.getClientRects().length === 1),
+          targets: links.every((link) => link.getBoundingClientRect().height >= 48 - 0.5),
+          controlInside: inside(control),
+          partsInside: [...control.querySelectorAll('.appearance-label, button, [data-appearance-current]')].every(inside),
+          font: getComputedStyle(links[0]).fontSize,
+          weight: getComputedStyle(links[0]).fontWeight,
+          lineHeight: parseFloat(getComputedStyle(links[0]).lineHeight) / parseFloat(getComputedStyle(links[0]).fontSize),
+          marks: links.map((link) => link.textContent!).filter((text) => text.includes('AGDA')),
+          wrapped: links.some((link) => link.children.length > 0),
+        };
+      });
+      expect(layout.scrolled, at).toBe(0);
+      expect(layout.links, at).toBe(8);
+      expect(layout.linksInside, at).toBe(true);
+      expect(layout.controlInside, at).toBe(true);
+      expect(layout.partsInside, at).toBe(true);
+      expect(layout.needsScroll, at).toBe(false);
+      expect(layout.oneLine, at).toBe(true);
+      expect(layout.targets, at).toBe(true);
+      // The fit comes from spacing: the link type and the plain AGDA® text are as they were.
+      expect(layout.font, at).toBe(viewport.font);
+      expect(layout.weight, at).toBe('600');
+      expect(layout.lineHeight, at).toBeCloseTo(1.15, 2);
+      expect(layout.marks, at).toEqual(['AGDA®', 'How AGDA® works']);
+      expect(layout.wrapped, at).toBe(false);
+
+      // Keyboard: every control takes focus in order, in view, with a visible indicator.
+      const seen: string[] = [];
+      for (let i = 0; i < 12; i += 1) {
+        const focus = await page.evaluate(() => {
+          const node = document.activeElement as HTMLElement;
+          const box = node.getBoundingClientRect();
+          const style = getComputedStyle(node);
+          return {
+            name: node.getAttribute('aria-label') ?? node.textContent!.trim(),
+            inMenu: !!node.closest('[data-takeover]'),
+            inside: box.top >= 0 && box.bottom <= window.innerHeight + 0.5,
+            indicated: (style.outlineStyle !== 'none' && parseFloat(style.outlineWidth) >= 2) || style.textDecorationLine.includes('underline'),
+          };
+        });
+        expect(focus.inMenu, `${at} ${focus.name}`).toBe(true);
+        expect(focus.inside, `${at} ${focus.name}`).toBe(true);
+        expect(focus.indicated, `${at} ${focus.name}`).toBe(true);
+        seen.push(focus.name);
+        await page.keyboard.press('Tab');
+      }
+      expect(seen, at).toEqual([
+        'Intervention Readiness', 'Why it matters', 'AGDA®', 'How AGDA® works', 'View sample verdict',
+        'Assessment options', 'Insights', 'Discuss your system', 'Light', 'Dark', 'System', 'Intervene · home',
+      ]);
+      await page.keyboard.press('Escape');
+      await expect(menu).toBeHidden();
+    }
+  });
+}
+
+test('on a screen too short for the whole menu it scrolls, and every control stays reachable', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('intv-consent', 'denied'));
+  for (const viewport of [{ width: 1280, height: 520 }, { width: 390, height: 520 }]) {
+    await page.setViewportSize(viewport);
+    await page.goto('/services/');
+    await page.locator('[data-menu-trigger]').click();
+    const menu = page.locator('[data-takeover]');
+    await expect(menu).toHaveClass(/\bopen\b/);
+    expect(await menu.evaluate((el) => getComputedStyle(el).overflowY)).toBe('auto');
+    expect(await menu.evaluate((el) => el.scrollHeight > el.clientHeight)).toBe(true);
+    // By pointer: the control scrolls into view and works.
+    const system = page.locator('.appearance-menu [data-appearance-option="system"]');
+    await system.scrollIntoViewIfNeeded();
+    await expect(system).toBeInViewport({ ratio: 1 });
+    await expect(page.locator('.appearance-menu [data-appearance-current]')).toBeInViewport({ ratio: 1 });
+    // By keyboard: focus brings each appearance button into view, with the close control still on screen.
+    await menu.evaluate((el) => el.scrollTo(0, 0));
+    await page.locator('.takeover-body a').last().focus();
+    for (const option of ['light', 'dark', 'system']) {
+      await page.keyboard.press('Tab');
+      const button = page.locator(`.appearance-menu [data-appearance-option="${option}"]`);
+      await expect(button).toBeFocused();
+      await expect(button).toBeInViewport({ ratio: 1 });
+    }
+    await expect(page.locator('[data-menu-close]')).toBeInViewport();
+    await page.keyboard.press('Escape');
+    await expect(menu).toBeHidden();
+  }
+});
+
 test('the footer can scroll clear of consent, including after resizing', async ({ page }) => {
   await page.goto('/');
   for (const width of [393, 320, 1440]) {

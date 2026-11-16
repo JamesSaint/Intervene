@@ -296,6 +296,15 @@ const isCurrent = (href: string) => {
     }
   }
 
+  /* Below about 1000px of height the eight links and the appearance control
+     no longer fit at full spacing, so the spacing closes up and the type is
+     left alone. A link keeps a 48px target however small its text. The
+     menu still scrolls when a shorter screen or browser zoom needs it. */
+  @media (max-height: 1000px) and (min-width: 721px) {
+    .takeover-body { padding-top: var(--space-4); padding-bottom: var(--space-4); }
+    .takeover-body ul { gap: 4px; }
+    .takeover-body a { padding-block: max(4px, (48px - 1.15em) / 2); }
+  }
   @media (max-height: 880px) and (min-width: 721px) {
     .takeover-body a { font-size: clamp(28px, 4vw, 42px); }
   }
