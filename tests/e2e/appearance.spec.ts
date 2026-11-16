@@ -4,7 +4,8 @@ import { readdirSync } from 'node:fs';
 
 const routes = readdirSync('dist', { recursive: true }).map(String)
   // The email document intentionally has no website chrome or appearance script.
-  .filter(path => path.endsWith('.html') && !path.startsWith('assets/') && path !== 'method/index.html' && path !== 'signature/email.html')
+  // The /r/ campaign links forward at once, as /method/ does; insights.spec.ts covers them.
+  .filter(path => path.endsWith('.html') && !path.startsWith('assets/') && path !== 'method/index.html' && path !== 'signature/email.html' && !path.startsWith('r/'))
   .map(path => path === 'index.html' ? '/' : `/${path.replace(/index\.html$/, '')}`);
 
 async function expectFavicon(page: Page, theme: string) {

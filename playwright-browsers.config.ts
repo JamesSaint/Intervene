@@ -7,7 +7,7 @@ const PORT = Number(process.env.PW_PORT ?? 4173);
 
 export default defineConfig({
   testDir: './tests/e2e',
-  testMatch: ['homepage-instruments.spec.ts', 'site-pages.spec.ts', 'refinement.spec.ts', 'offers.spec.ts'],
+  testMatch: ['homepage-instruments.spec.ts', 'site-pages.spec.ts', 'refinement.spec.ts', 'offers.spec.ts', 'insights.spec.ts'],
   fullyParallel: true,
   reporter: 'list',
   use: { baseURL: `http://127.0.0.1:${PORT}` },
