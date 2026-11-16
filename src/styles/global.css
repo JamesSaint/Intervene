@@ -46,6 +46,18 @@ a, button, summary, input, textarea, select, [tabindex] { scroll-margin-top: var
   background: var(--accent);
 }
 
+/* The registered mark on an inline AGDA®. Only the ® is wrapped (<Agda /> or
+   markAgda()); AGDA itself is plain text. Both measurements are in em, so
+   the mark scales with its context from body copy to display headings: 0.4
+   of the surrounding size, raised by 1.3 of its own size, which is 0.52 of
+   the surrounding size. line-height: 0 keeps it from opening up the line.
+   Colour, family and weight are inherited. */
+.agda-reg {
+  font-size: 0.4em;
+  vertical-align: 1.3em;
+  line-height: 0;
+}
+
 /* ------------------------------------------------------------------
    Section rhythm
    A hero opens every page. Blocks follow. Separation is air, with one
