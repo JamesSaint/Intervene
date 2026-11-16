@@ -6,9 +6,25 @@ James approaches Intervene / AGDA® from a practical engineering mindset. Judge 
 
 ## AGDA® brand treatment
 
-Wherever the product name is part of readable text on the site (headings, paragraphs, navigation, menus, buttons, links, cards, captions, forms, footer copy), write the literal string `AGDA®`. The whole string, including the `®`, inherits the surrounding font, size, weight, colour and baseline. Do not replace it with a logo image or SVG, do not wrap it in a styled element, and do not colour, shrink or raise the `®`. It must read and copy as `AGDA®`, with exactly one `®` and no `role` or `aria-label` of its own.
+Wherever the product name is part of readable text on the site (headings, paragraphs, navigation, the open menu, buttons, links, cards, captions, forms, footer copy), `AGDA` stays plain text in the surrounding typography and only the registered mark is wrapped, with no space before it:
 
-On the site, do not hand-type variants: use `<Agda />` in templates and `markAgda()` for copy held in strings (`src/components/Agda.astro`, `src/lib/marks.ts`). `markAgda()` adds a missing `®` and never doubles one. Plain-text contexts (titles, meta descriptions, JSON-LD, aria-labels, `llms.txt`) use `AGDA®` as well. The footer trade mark notice keeps its own wording.
+```html
+AGDA<span class="agda-reg">®</span>
+```
+
+One shared rule in `src/styles/global.css` sets the mark, with the same values at every breakpoint and in both themes:
+
+```css
+.agda-reg {
+  font-size: 0.4em;
+  vertical-align: 1.3em;
+  line-height: 0;
+}
+```
+
+Both measurements are in `em` so the mark scales from body copy to large headings. The lift is relative to the mark's own size, so `1.3em` raises it by 52% of the surrounding font size. The `®` inherits the surrounding colour, font family and weight. Do not add a second rule, a per-component override or a colour. Do not replace the name with a logo image or SVG, do not wrap the whole name, and do not give it a `role` or `aria-label`. It must read and copy as exactly `AGDA®`, with one `®`, and must not change the line spacing around it.
+
+On the site, do not hand-type the markup: use `<Agda />` in templates and `markAgda()` for copy held in strings (`src/components/Agda.astro`, `src/lib/marks.ts`). `markAgda()` returns markup, so render it with `set:html`; it adds a missing `®` and never doubles one. Contexts that cannot hold markup (titles, meta descriptions, JSON-LD, aria-labels, `llms.txt`, the plain-text email signature) use the plain string `AGDA®`. The footer trade mark notice keeps its own wording.
 
 Standalone identity logos are separate and stay as approved artwork: `AgdaLogo.astro` (homepage and AGDA page identity, the footer hallmark), the email signature wordmark (`markAgdaEmail()`), and the OG cards (`scripts/generate-og-card.mjs`). In that artwork the `®` keeps Intervene's bronze/gold brand colour (`--accent` in `src/styles/tokens.css`). Never use a logo to stand in for the name inside a sentence, heading, link or label.
 

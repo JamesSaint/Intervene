@@ -1,10 +1,11 @@
 ---
 /**
- * AGDA®, as a mention in copy: the literal text, with nothing around it, so
- * it inherits everything from where it sits. The string lives in lib/marks.ts
- * so copy set through markAgda() matches exactly.
+ * AGDA®, as a mention in copy: the letters as plain text in the surrounding
+ * typography, with only the ® wrapped so the shared rule in global.css can
+ * set it small and raised. The markup lives in lib/marks.ts so copy set through
+ * markAgda() matches exactly.
  */
-import { AGDA } from '../lib/marks';
+import { AGDA_MARK } from '../lib/marks';
 ---
 
-{AGDA}
+<Fragment set:html={AGDA_MARK} />

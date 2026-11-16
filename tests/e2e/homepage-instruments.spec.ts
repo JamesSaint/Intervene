@@ -900,7 +900,9 @@ test('buttons and links do not move when hovered', async ({ page, isMobile }) =>
       const read = () => el.evaluate((node) => { const r = node.getBoundingClientRect(); const s = getComputedStyle(node); return { y: Math.round(r.y * 10) / 10, x: Math.round(r.x * 10) / 10, h: r.height, transform: s.transform, offset: s.textUnderlineOffset }; });
       const before = await read();
       // Hover at the lower edge, where a lifting button would lose the pointer.
-      const box = (await el.boundingBox())!;
+      // A link that wraps has one box per line, and the middle of its bounding
+      // box can fall outside all of them: aim at the last line's own box.
+      const box = await el.evaluate((node) => { const r = [...node.getClientRects()].at(-1)!; return { x: r.x, y: r.y, width: r.width, height: r.height }; });
       await page.mouse.move(box.x + box.width / 2, box.y + box.height - 1);
       await page.waitForTimeout(260);
       expect(await read(), `${route} ${await el.innerText()}`).toEqual(before);
