@@ -146,6 +146,49 @@ test('primary CTA and offer links record fixed categories and no query string', 
   expect(JSON.stringify(emitted)).not.toContain('private@example.com');
 });
 
+test('an engagement enquiry link records one fixed selection, on arrival, and nothing without consent', async ({ page }) => {
+  // Without consent: nothing is stored and nothing is sent.
+  await inspect(page, 'denied');
+  await page.goto('/services/');
+  await page.locator('#review [data-enquire="review"]').click();
+  await expect(page).toHaveURL(/\/contact\/\?starting_point=review$/);
+  expect(await events(page)).toEqual([]);
+  expect(await page.evaluate(() => sessionStorage.getItem('intv-pending-offer'))).toBeNull();
+});
+
+test('with consent an enquiry link is recorded once on the contact page, without the query string', async ({ page }) => {
+  await inspect(page, 'granted');
+  await page.goto('/services/');
+  await page.locator('#check [data-enquire="check"]').click();
+  // The form reads the starting point first; the query string is then removed
+  // from the address before Google loads, so the address settles on /contact/.
+  await expect(page).toHaveURL(/\/contact\/$/);
+  await expect(page.locator('input[name="starting_point"]:checked')).toHaveValue('check');
+  await expect.poll(async () => (await events(page)).filter((e: any) => e[1] === 'offer_select').length).toBe(1);
+  expect((await events(page)).filter((e: any) => e[1] === 'offer_select')).toEqual([
+    ['event', 'offer_select', { offer_id: 'check', selection_source: 'enquiry_link', page_path: '/services/' }],
+  ]);
+  expect(JSON.stringify(await events(page))).not.toContain('starting_point');
+  expect(await page.evaluate(() => sessionStorage.getItem('intv-pending-offer'))).toBeNull();
+  // The preselected option is not a second selection; a reload does not replay it.
+  await page.reload();
+  await page.waitForTimeout(300);
+  expect((await events(page)).filter((e: any) => e[1] === 'offer_select')).toEqual([]);
+  // Changing it by hand is a deliberate selection of its own.
+  await page.locator('label.choice', { hasText: 'Intervention Readiness Review' }).click();
+  expect((await events(page)).filter((e: any) => e[1] === 'offer_select').map((e: any) => [e[2].offer_id, e[2].selection_source])).toEqual([['review', 'contact_choice']]);
+});
+
+test('an enquiry link that does not navigate normally is recorded at source', async ({ page }) => {
+  await inspect(page, 'granted');
+  await page.goto('/services/');
+  await page.evaluate(() => document.addEventListener('click', (e) => e.preventDefault(), true));
+  await page.locator('#assessment [data-enquire="assessment"]').click();
+  expect((await events(page)).filter((e: any) => e[1] === 'offer_select')).toEqual([
+    ['event', 'offer_select', { offer_id: 'assessment', selection_source: 'enquiry_link', page_path: '/services/' }],
+  ]);
+});
+
 test('sample viewing after acceptance is preserved without duplicate events', async ({ page }) => {
   await inspect(page);
   await page.goto('/sample-report/');

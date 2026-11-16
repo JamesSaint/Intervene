@@ -116,6 +116,9 @@ https://intervene.uk/methodology/
 Sample AGDA® verdict:
 https://intervene.uk/sample-report/
 
+Sample Authority Check finding (constructed illustration; not issued; no client data; not an AGDA® verdict):
+https://intervene.uk/sample-authority-check/
+
 Assessment options (Authority Check; Intervention Readiness Review; AGDA® Assessment):
 https://intervene.uk/services/
 
