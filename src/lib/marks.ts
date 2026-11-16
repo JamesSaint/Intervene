@@ -1,18 +1,28 @@
 /**
  * The AGDA® product name. AGDA is a registered UK trade mark.
  *
- * Wherever the name is part of readable text it is the literal string AGDA®:
- * no markup, no artwork and no styling of its own, so the whole string,
- * ® included, takes its context's font, size, weight, colour and baseline,
- * and reads and copies as AGDA®. In templates use <Agda />; for copy held in
- * strings, pass it through markAgda(), which also adds a missing ®.
+ * AGDA is the plain string, for contexts that cannot hold markup: titles,
+ * meta descriptions, JSON-LD, aria-labels, llms.txt.
+ *
+ * AGDA_MARK is the name as it is set in readable text. The letters are plain
+ * text in the surrounding typography; only the ® is wrapped, with no space
+ * before it, so one rule (.agda-reg in global.css) can set it small and
+ * raised. The ® still takes its colour, family and weight from its context,
+ * and the name reads and copies as AGDA®. In templates use <Agda />; for copy
+ * held in strings, pass it through markAgda(), which also adds a missing ®.
  * Standalone identity logos are AgdaLogo.astro.
  */
 export const AGDA = 'AGDA®';
 
-/** Writes every AGDA in a string as AGDA®, once. An existing ® is kept, not doubled. */
+export const AGDA_MARK = 'AGDA<span class="agda-reg">®</span>';
+
+/**
+ * Sets every AGDA in a string as the mark, once. A bare AGDA gains its ®; an
+ * AGDA® or an already marked name is not doubled. The result is markup, so
+ * render it with set:html.
+ */
 export function markAgda(value: string): string {
-  return value.replace(/AGDA®?/g, AGDA);
+  return value.replace(/AGDA(?:<span class="agda-reg">®<\/span>|®)?/g, AGDA_MARK);
 }
 
 export type EmailArtworkTone = 'adaptive' | 'black' | 'white';
@@ -32,6 +42,6 @@ export function emailWordmark(brand: 'intervene' | 'agda', tone: EmailArtworkTon
 
 /** Email rendition of the approved mark, including its bronze registration symbol. */
 export function markAgdaEmail(value: string, tone: EmailArtworkTone = 'adaptive'): string {
-  const mark = `<span class="sig-agda" style="display:inline-block;white-space:nowrap;">${emailWordmark('agda', tone)}<span class="agda-reg" style="color:#c9b694;font-size:9px;vertical-align:top;">®</span></span>`;
+  const mark = `<span class="sig-agda" style="display:inline-block;white-space:nowrap;">${emailWordmark('agda', tone)}<span class="sig-agda-reg" style="color:#c9b694;font-size:9px;vertical-align:top;">®</span></span>`;
   return value.replace(/AGDA®?/g, mark);
 }

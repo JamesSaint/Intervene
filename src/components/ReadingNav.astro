@@ -7,11 +7,11 @@ const { items } = Astro.props;
 <aside class="reading-index">
   <nav class="reading-desktop" aria-label="On this page">
     <span class="label">On this page</span>
-    <ul role="list">{items.map(({ href, label }) => <li><a href={href} set:html={markAgda(label)} /></li>)}</ul>
+    <ul role="list">{items.map(({ href, label }) => <li><a href={href}><span set:html={markAgda(label)} /></a></li>)}</ul>
   </nav>
   <details class="reading-mobile" data-disclosure>
     <summary>On this page <span aria-hidden="true">+</span></summary>
-    <nav data-disclosure-body aria-label="On this page"><ul role="list">{items.map(({ href, label }) => <li><a href={href} set:html={markAgda(label)} /></li>)}</ul></nav>
+    <nav data-disclosure-body aria-label="On this page"><ul role="list">{items.map(({ href, label }) => <li><a href={href}><span set:html={markAgda(label)} /></a></li>)}</ul></nav>
   </details>
 </aside>
 <style>
