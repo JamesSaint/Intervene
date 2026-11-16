@@ -25,7 +25,8 @@ const sources = ['src', 'public', 'scripts']
   .filter((f) => /\.(astro|ts|mjs|js|css|txt|json|md)$/.test(f));
 
 const MARK = 'AGDA<span class="agda-reg">®</span>';
-const text = (html: string) => html.replace(/<[^>]+>/g, '');
+/** The marked name as it reads: the one known wrapper taken away, nothing else touched. */
+const text = (html: string) => html.split('<span class="agda-reg">®</span>').join('®');
 
 describe('the AGDA® mark', () => {
   it('wraps only the ®, with no space before it', () => {
