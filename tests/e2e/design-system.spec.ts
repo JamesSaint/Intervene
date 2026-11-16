@@ -169,9 +169,15 @@ test.describe('offer sheets', () => {
       const rows = (id: string) => Array.from(document.querySelectorAll<HTMLElement>(`#${id} > *`)).map((r) => Math.round(r.getBoundingClientRect().top));
       return { a: rows('review'), b: rows('assessment'), c: rows('check') };
     });
-    expect(tops.a.length).toBe(8);
+    // Heading, fee and decision are level; below that each sheet runs at its own length.
+    expect(tops.a.length).toBe(4);
     expect(tops.a).toEqual(tops.b);
     expect(tops.a).toEqual(tops.c);
+    const buttons = await page.locator('.offer [data-enquire]').evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().top + scrollY)));
+    const ends = await page.locator('.offer .sheet-rest').evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().bottom + scrollY)));
+    // Each enquiry link closes its own sheet, so the short sheets' links are not held down by the long one.
+    buttons.forEach((top, i) => expect(ends[i] - top).toBeLessThanOrEqual(80));
+    expect(buttons[0]).toBeLessThan(buttons[2] - 200);
   });
 });
 

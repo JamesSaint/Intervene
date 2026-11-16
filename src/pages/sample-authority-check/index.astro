@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Agda from '../../components/Agda.astro';
+import { markAgda } from '../../lib/marks';
+import { check } from '../../lib/offers';
+import { CHECK_SAMPLE_SYSTEM, CHECK_SAMPLE_FINDING, checkAnswers, checkGaps, CHECK_OUT_OF_HOURS } from '../../lib/sample-authority-check';
+
+/* A constructed sample of the Authority Check's one-page finding. The
+   scenario is the sample verdict's; the boundary text is the offer's own
+   (src/lib/offers.ts). One page, as the engagement delivers. */
+---
+
+<BaseLayout
+  title="Sample Authority Check Finding · Intervene"
+  description="A constructed example of the one-page Authority Check finding: who may halt one named system, whether they can decide alone, how they are reached out of hours and where the halt takes effect."
+  current="sample-authority-check"
+  ogImage="/assets/og/og-sample-report.png"
+>
+  <section class="hero finding-hero">
+    <div class="wrap">
+      <div class="finding-status">
+        <span class="status mono">Constructed illustration</span>
+        <span class="flags mono">Not issued · No client data · Not an <Agda /> verdict</span>
+      </div>
+      <h1 class="h1">{CHECK_SAMPLE_FINDING.lead} <em>{CHECK_SAMPLE_FINDING.tail}</em></h1>
+      <p class="lede muted">{CHECK_SAMPLE_FINDING.body}</p>
+    </div>
+  </section>
+
+  <section class="block finding-page" aria-labelledby="finding-heading">
+    <div class="wrap">
+      <div class="finding-grid">
+        <div class="finding-main">
+          <p class="mono finding-ref">Authority Check finding · {CHECK_SAMPLE_SYSTEM}</p>
+          <h2 class="h2" id="finding-heading">{check.question}</h2>
+
+          <dl class="spec-list answers">
+            {checkAnswers.map((row) => (
+              <div>
+                <dt>{row.q}</dt>
+                <dd>
+                  <p class="answer"><span class="basis-k">Documented</span> {row.documented}</p>
+                  <p class="answer"><span class="basis-k">Not evidenced</span> {row.missing}</p>
+                  <p class="answer conclusion"><span class="basis-k">Conclusion</span> {row.conclusion}</p>
+                  <p class="basis"><span class="basis-k">Basis</span> {row.basis}</p>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        <aside class="finding-side">
+          <div class="side-block">
+            <h3 class="side-heading">The gaps found</h3>
+            <ul class="dash-list" role="list">
+              {checkGaps.map((g) => <li>{g}</li>)}
+            </ul>
+          </div>
+
+          <div class="side-block call-out">
+            <h3 class="side-heading">Out-of-hours reach</h3>
+            <p>{CHECK_OUT_OF_HOURS.finding}</p>
+            <p>{CHECK_OUT_OF_HOURS.conclusion}</p>
+            <p class="limit">{CHECK_OUT_OF_HOURS.note}</p>
+          </div>
+        </aside>
+      </div>
+
+      <div class="finding-limits">
+        <p class="body muted">
+          This is a constructed example, written to show the shape of an
+          Authority Check finding. It uses the same illustrative scenario as
+          the <a href="/sample-report/" class="link">sample verdict</a>, no
+          client data and no real organisation. It is not issued.
+        </p>
+        <p class="body muted" set:html={markAgda(check.exclusion)} />
+      </div>
+    </div>
+  </section>
+
+  <section class="block tight">
+    <div class="wrap">
+      <div class="close-grid">
+        <h2 class="h2">Ask it <em>of your own system.</em></h2>
+        <div class="close-cta">
+          <p class="body muted">{check.short} {check.priceNote}: {check.price}.</p>
+          <div class="cta-row">
+            <a href="/contact/?starting_point=check" class="btn" data-enquire="check">Discuss an Authority Check</a>
+            <a href="/services/#check" class="btn-ghost">Scope and exclusions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* One finding, on one page. The status sits with the heading; the four
+     answers take the wide column and the gaps and out-of-hours reach sit beside
+     them. Reading columns are grid tracks, not caps on the paragraphs. */
+  .finding-status { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin-bottom: var(--space-3); }
+  .status { padding: 4px 10px; border: 1px solid var(--accent-text); font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
+  .flags { font-size: var(--type-caption); line-height: 1.6; color: var(--faint); }
+
+  .finding-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: var(--space-6) var(--space-8); align-items: start; }
+  .finding-ref { margin: 0 0 var(--space-3); font-size: var(--type-caption); line-height: 1.6; color: var(--ink); }
+  .finding-main .h2 { margin: 0; font-size: clamp(28px, 3.2vw, 46px); }
+  .answers { --spec-col: 220px; margin-top: var(--space-5); }
+  .answers dt { text-transform: none; letter-spacing: 0; color: var(--faint); }
+  .answers dd p { margin: 0; }
+  .answer { font-size: var(--type-body); line-height: 1.6; color: var(--ink); }
+  .answers dd .answer + .answer { margin-top: 6px; }
+  .answers dd .conclusion { font-weight: 600; }
+  .answers dd .basis { margin-top: 6px; font-size: var(--type-action); line-height: 1.55; color: var(--muted); }
+  .basis-k { margin-right: 6px; font-family: var(--font-mono); font-size: 12px; color: var(--faint); }
+
+  .finding-side { display: grid; gap: var(--space-5); }
+  .side-block { padding-top: var(--space-3); border-top: 1px solid var(--hair-strong); }
+  .side-heading { margin: 0 0 var(--space-3); font-size: var(--type-card); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.25; color: var(--ink); }
+  .side-block .dash-list > li { font-size: var(--type-small); }
+  .call-out { border-top-color: var(--ink); }
+  .call-out p { margin: 0 0 var(--space-2); font-size: var(--type-small); line-height: 1.6; color: var(--ink); }
+  .call-out .limit { margin-bottom: 0; color: var(--muted); }
+
+  .finding-limits { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); margin-top: var(--space-7); padding-top: var(--space-4); border-top: 1px solid var(--hair); }
+  .finding-limits .body { margin: 0; font-size: var(--type-small); }
+
+  @media (max-width: 960px) {
+    .finding-grid, .finding-limits { grid-template-columns: minmax(0, 1fr); }
+    .finding-grid { gap: var(--space-6); }
+  }
+</style>

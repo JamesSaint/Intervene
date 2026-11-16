@@ -108,7 +108,7 @@ for (const scheme of ['light', 'dark'] as const) {
   test(`principal pages and selector pass WCAG AA scans in ${scheme}`, async ({ page }) => {
     test.setTimeout(120_000);
     await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });
-    for (const route of ['/', '/agda/', '/methodology/', '/sample-report/', '/services/', '/contact/', '/readiness-snapshot/', '/legal/privacy/', '/style-guide/']) {
+    for (const route of ['/', '/agda/', '/methodology/', '/sample-report/', '/sample-authority-check/', '/services/', '/contact/', '/readiness-snapshot/', '/legal/privacy/', '/style-guide/']) {
       await page.goto(route); await page.evaluate(() => document.fonts.ready);
       const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
       expect(result.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) })), route).toEqual([]);
