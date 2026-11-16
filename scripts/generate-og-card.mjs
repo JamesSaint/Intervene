@@ -78,8 +78,8 @@ const CARDS = {
     meta: SEDI,
   },
   insights: {
-    kicker: 'Evidence notes',
-    lines: ['Where accountability', 'fails to evidence', 'intervention.'],
+    kicker: 'Insights',
+    lines: ['Research, analysis', 'and evidence on', 'operational intervention.'],
     meta: SEDI,
   },
   'intervention-chain': {

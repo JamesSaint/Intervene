@@ -23,6 +23,12 @@ The real GA4 tag batches events. A source-page CTA event was lost during immedia
 
 `intv-consent` retains the existing `granted` and `denied` values. With no affirmative choice, the Google script is absent and no Google collection request is initiated. Acceptance queues consent defaults, grants analytics storage, configures GA4 once and loads the tag. Advertising consent remains denied and Google signals and advertising personalisation are disabled. Withdrawal sets Google's disable flag, clears GA cookies and the pending CTA, and reloads to remove the loaded runtime. The reload can clear an unsent form. This is a disclosed implementation trade-off, not a new form-storage mechanism.
 
+## Campaign links are routing, not attribution
+
+Short links under `/r/` (`src/lib/campaign-links.ts`) forward to a card on `/insights/` or to a PDF. GitHub Pages cannot issue an HTTP redirect, so each is a static page that forwards in the browser. A query string such as `?src=li&c=wave1` is carried to the destination URL when JavaScript is available.
+
+That is the whole of what the parameters do. `Analytics.astro` removes the query string from the address before the Google tag loads and sends the canonical URL as `page_location` and a query-free `page_referrer`, so no campaign parameter reaches GA4. There is no campaign, source or conversion reporting from these links, and PDF downloads are not tracked as events. The forwarding pages load no analytics. Measuring campaigns would need a separately approved design with fixed, non-personal categories; it must not be done by relaxing the query-string removal.
+
 ## Account actions
 
 In GA4, use Admin → Data display → Custom definitions to register event-scoped dimensions for `cta_id`, `placement`, `page_path`, `offer_id`, `selection_source` and `offer_section` where reporting needs them. Verify the events in Realtime or DebugView after authorised deployment. Browser generation does not prove that the intended property processes them correctly.

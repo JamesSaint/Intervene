@@ -1,35 +1,78 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import InsightCard from '../../components/InsightCard.astro';
+import Agda from '../../components/Agda.astro';
 
 import { insights, insightHref, insightDate } from '../../lib/insights';
 import { markAgda } from '../../lib/marks';
+import { downloadGroups, downloadHref } from '../../lib/insight-downloads';
 
 // Newest first. The latest note leads the page; the rest follow as an index.
 const [lead, ...rest] = insights;
 ---
 
 <BaseLayout
-  title="Evidence Notes · Intervene"
-  description="Board-grade notes on Intervention Readiness: where accountability, escalation and quiet operating histories fail to evidence intervention capability."
+  title="Insights | Intervene"
+  description="Papers and briefings on one question: when an AI-enabled or automated system starts to cause harm, can someone with authority stop it in time?"
   current="insights"
+  headline="Insights"
+  breadcrumbs={[{ name: 'Intervention Readiness', item: '/' }, { name: 'Insights' }]}
   ogImage="/assets/og/og-insights.png"
   pageType="CollectionPage"
 >
   <section class="hero">
     <div class="wrap-narrow">
-      <h1 class="h1">Evidence notes on <em>intervention failure.</em></h1>
+      <h1 class="h1">Insights</h1>
       <p class="lede muted">
-        Where Intervention Readiness fails, and why control frameworks often
-        miss it. Written for the people accountable when a consequential system
-        runs on.
+        Papers and briefings on one question: when an AI-enabled or automated
+        system starts to cause harm, can someone with authority stop it in
+        time? Each is free to download. No sign-up.
       </p>
-
     </div>
   </section>
 
-  <section class="block notes">
+  <section class="block papers">
     <div class="wrap">
+      {downloadGroups.map((group) => (
+        <div class="paper-group">
+          <h2 class="h3 paper-group-title">{group.heading}</h2>
+          <ul class="paper-list" role="list">
+            {group.items.map((d) => (
+              <li class="paper" id={d.id}>
+                <div class="paper-main">
+                  <p class="label paper-label" set:html={markAgda(d.label)} />
+                  <h3 class="paper-title" set:html={markAgda(d.title)} />
+                  <p class="paper-desc" set:html={markAgda(d.description)} />
+                </div>
+                <div class="paper-get">
+                  <span class="paper-pages mono">{d.pages} {d.pages === 1 ? 'page' : 'pages'}</span>
+                  <a class="link" href={downloadHref(d)} target="_blank" rel="noopener" aria-label={`Download PDF: ${d.title}`}>Download PDF</a>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      <p class="body muted footnote">
+        <Agda /> is in commercial pilot and has been tested on synthetic data.
+        Papers are for orientation and are not legal advice or regulatory
+        certification.
+      </p>
+    </div>
+  </section>
+
+  <section class="block tight">
+    <div class="wrap-narrow cta-band">
+      <h2 class="h2">Which of your systems would you most need to stop at short notice?</h2>
+      <p class="body muted">Twenty minutes is enough to test the question against one of them.</p>
+      <div class="cta-row">
+        <a href="/contact/" class="btn">Talk to us</a>
+      </div>
+    </div>
+  </section>
+  <section class="block notes" id="evidence-notes" aria-labelledby="evidence-notes-title">
+    <div class="wrap">
+      <h2 class="h3 notes-title" id="evidence-notes-title">Evidence notes</h2>
       <a class="note-lead" href={insightHref(lead)}>
         <span class="note-meta mono">Latest · <time datetime={lead.date}>{insightDate(lead.date)}</time></span>
         <h2 class="note-lead-title" set:html={markAgda(lead.title)} />
@@ -52,7 +95,28 @@ const [lead, ...rest] = insights;
 <style>
   /* An editorial front: the latest note at headline scale across the page,
      the earlier notes as a dated index beneath. */
-  .notes { padding-top: var(--space-6); }
+  .notes { padding-top: var(--space-6); border-top: 1px solid var(--hair); scroll-margin-top: var(--anchor-offset); }
+  .notes-title { margin: 0 0 var(--space-4); }
+
+  /* The papers: one ruled row each, in the notes' own grammar. The id on
+     each row is the landing point of a campaign link, so it clears the
+     sticky header and marks itself when it is the target. */
+  .papers { padding-top: var(--space-6); }
+  .paper-group + .paper-group { margin-top: var(--gap-sub); }
+  .paper-group-title { margin: 0 0 var(--space-4); }
+  .paper-list { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--hair-strong); }
+  .paper { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-3) var(--space-7); align-items: end; padding: var(--space-5) 0; border-top: 1px solid var(--hair-strong); scroll-margin-top: var(--anchor-offset); }
+  .paper:target { border-top: 3px solid var(--accent); }
+  .paper-main { display: grid; gap: var(--space-2); max-width: 760px; }
+  .paper-label { margin: 0; }
+  .paper-title { margin: 0; font-size: var(--type-h3); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.3; }
+  .paper-desc { margin: 0; font-size: var(--type-body); line-height: 1.7; color: var(--muted); }
+  .paper-get { display: flex; align-items: center; gap: var(--space-4); white-space: nowrap; }
+  .paper-get .link { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--type-small); font-weight: 600; }
+  .paper-pages { font-size: var(--type-caption); color: var(--muted); }
+  @media (max-width: 720px) {
+    .paper { grid-template-columns: minmax(0, 1fr); }
+  }
   .note-lead { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--space-3) var(--space-7); align-items: end; padding: var(--space-5) 0 var(--space-6); border-top: 3px solid var(--ink); color: var(--ink); }
   .note-meta { grid-column: 1 / -1; font-size: var(--type-caption); line-height: 1.6; color: var(--accent-text); }
   .note-lead-title { grid-column: 1; margin: 0; font-size: clamp(32px, 4.6vw, 68px); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.04; text-wrap: balance; transition: color var(--dur-fast) var(--ease); }
