@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { contactEmail } from '../../lib/social';
+import { contactEmail, founderLine } from '../../lib/social';
 import Agda from '../../components/Agda.astro';
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xaqrkrpo';
@@ -136,6 +136,10 @@ const info: { k: string; v: string; href?: string }[] = [
             committed until scope and fees are agreed in writing.
           </p>
 
+          <p class="body muted">
+            {founderLine} <a href="/about/" class="link">Why Intervene exists</a>.
+          </p>
+
           <dl class="spec-list info-list">
             {info.map((row) => (
               <div>
@@ -176,6 +180,8 @@ const info: { k: string; v: string; href?: string }[] = [
   .info-col { padding-top: 6px; }
   .info-heading { margin: 0; font-size: var(--type-card); font-weight: 600; letter-spacing: var(--tracking-heading); line-height: 1.25; color: var(--ink); }
   .info-col .body { margin: var(--gap-head) 0 0; font-size: var(--type-small); }
+  .info-col .body + .body { margin-top: var(--space-2); }
+  .info-col .body .link { display: inline-block; }
   .info-list { --spec-col: 130px; margin-top: var(--space-5); border-top-color: var(--hair); }
   .info-list > div { padding: 12px 0; gap: var(--space-3); border-bottom: 0; }
   .info-list dd { font-size: 16px; }

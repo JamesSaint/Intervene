@@ -6,6 +6,7 @@ import { offers, activities, offerFaqs, buyingGroup, PRICE_QUALIFIER, FEE_BASIS,
 import OfferCompare from '../../components/OfferCompare.astro';
 import PageNav from '../../components/PageNav.astro';
 import Agda from '../../components/Agda.astro';
+import { founderLine } from '../../lib/social';
 
 /* Everything commercial on this page reads from src/lib/offers.ts so the
    homepage, this page, the shared FAQ and the Offer schema nodes cannot
@@ -31,11 +32,22 @@ const excluded = [
 
 const pageNav = [
   { href: '#engagements', label: 'The three engagements' },
+  { href: '#when', label: 'When to ask' },
   { href: '#scope', label: 'Included and excluded' },
   { href: '#how-it-runs', label: 'How it runs' },
   { href: '#who', label: 'Who takes part' },
   { href: '#control', label: 'How it is controlled' },
   { href: '#faq', label: 'Questions' },
+];
+
+/* Illustrative circumstances in which an assessment may be appropriate.
+   They are examples, not a record of why any client commissioned work, and
+   the page says so. */
+const moments = [
+  { h: 'Before go-live or a change of scope.', p: 'The system is about to make or influence consequential decisions, or to do so at greater volume.' },
+  { h: 'After an incident or a near miss.', p: 'Something went wrong, or nearly did, and it was unclear who could have stopped it.' },
+  { h: 'Before a board, audit or supervisory review.', p: 'An accountable person may be asked whether human oversight is effective, and would need an evidenced answer.' },
+  { h: 'When accountability changes hands.', p: 'A new owner inherits the system and the authority arrangements around it.' },
 ];
 
 const useCases = [
@@ -110,12 +122,16 @@ const useCases = [
               <p set:html={markAgda(o.decision)} />
             </div>
 
+            {/* Below the decision the sheets run independently, so each
+                enquiry link follows its own content. */}
+            <div class="sheet-rest">
             <div class="sheet-row">
               <h4 class="sheet-label">{o.slug === 'assessment' ? 'Full-assessment deliverables' : 'What you receive'}</h4>
               <ul class="dash-list" role="list">
                 {o.receive.map((x) => <li set:html={markAgda(x)} />)}
               </ul>
               {o.use && <p class="sheet-use" set:html={markAgda(o.use)} />}
+              {o.slug === 'check' && <a href="/sample-authority-check/" class="link sheet-sample">See a constructed sample finding <span aria-hidden="true">→</span></a>}
               {o.slug === 'assessment' && <><p class="records-note">{RECORDS_NOTE}</p><IntegrityNote /></>}
             </div>
 
@@ -157,16 +173,34 @@ const useCases = [
                 {o.slug === 'assessment' && <Fragment>Discuss a full <Agda /> Assessment</Fragment>}
               </a>
             </p>
+            </div>
           </article>
         ))}
       </div>
 
       <p class="body muted footnote price-qualifier">{FEE_BASIS} {AVAILABILITY}</p>
+      <p class="body muted footnote founder-line">{founderLine} <a href="/about/" class="link">Why Intervene exists</a>.</p>
 
       <div class="cta-row">
         <a data-primary-cta="discuss_system" href="/contact/" class="btn">Discuss your system</a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
       </div>
+    </div>
+  </section>
+
+  <!-- WHEN TO ASK -->
+  <section class="block" id="when">
+    <div class="wrap">
+      <h2 class="h2">When to ask <em>the question.</em></h2>
+      <p class="lede muted">Four illustrative circumstances in which an assessment may be appropriate.</p>
+      <ul class="feature-grid moments" role="list" style="--cols: 4">
+        {moments.map((m) => (
+          <li>
+            <h3 class="h3">{m.h}</h3>
+            <p class="body muted">{m.p}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
@@ -385,12 +419,21 @@ const useCases = [
     grid-template-columns: repeat(3, 1fr);
     column-gap: clamp(32px, 4vw, 56px);
   }
-  /* Subgrid keeps the eight rows of the three sheets level. Browsers
-     without it fall back to independent sheets. */
+  /* Subgrid keeps the first three rows of the three sheets level: the
+     heading, the fee and what it decides. Below that each sheet runs at its
+     own length, so a short sheet's enquiry link is not held down by a long
+     neighbour. Browsers without subgrid fall back to independent sheets. */
   .offer { display: grid; align-content: start; min-width: 0; }
   @supports (grid-template-rows: subgrid) {
-    .offer { grid-template-rows: subgrid; grid-row: span 8; }
+    .offer { grid-template-rows: subgrid; grid-row: span 4; }
   }
+  .sheet-rest { align-self: start; min-width: 0; }
+  .sheet-sample { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; justify-self: start; font-size: 16px; font-weight: 600; }
+  .moments { margin-top: var(--gap-intro); list-style: none; padding: 0; }
+  .moments .h3 { font-size: var(--type-card); }
+  .founder-line { margin-top: var(--space-3); }
+  /* The link moves to the next line whole; it never breaks across two. */
+  .founder-line .link { display: inline-block; }
 
   .sheet-head { display: grid; gap: var(--gap-item); align-content: start; padding-bottom: var(--space-4); }
   .offer-kicker { font-size: var(--type-caption); letter-spacing: 0; text-transform: none; color: var(--accent-text); }
@@ -418,7 +461,7 @@ const useCases = [
   .price-flag { font-size: 13px; color: var(--muted); }
 
   /* The enquiry link for this engagement closes its sheet, level across the three. */
-  .sheet-enquire { margin: 0; padding-top: var(--space-4); border-top: 1px solid var(--hair-strong); align-self: start; }
+  .sheet-enquire { margin: 0; padding-top: var(--space-4); }
   .sheet-row {
     display: grid; gap: 10px; align-content: start;
     padding: var(--space-4) 0;
