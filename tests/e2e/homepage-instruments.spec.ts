@@ -523,7 +523,7 @@ test('the series circuit shows one open condition stopping a response the docume
   const cells = circuit.locator('.sc-cell');
   await expect(cells).toHaveCount(3);
   // Each condition pairs a documented control with the question that decides it.
-  await expect(cells.locator('.sc-paper')).toHaveText([/On paper\s*Monitoring is documented\./, /On paper\s*A risk owner is named\./, /On paper\s*A halt procedure is written\./]);
+  await expect(cells.locator('.sc-paper')).toHaveText([/On paper\s*Monitoring is documented\./, /On paper\s*A risk owner is named\./, /On paper\s*A procedure for stopping the system is written\./]);
   await expect(cells.locator('.sc-q')).toHaveText(['Will they know in time?', 'Who can actually stop it?', 'What happens when they act?']);
   // Authority is the open condition; what follows it is drawn as carrying nothing.
   await expect(cells.nth(1)).toHaveClass(/is-open/);

@@ -17,7 +17,7 @@ const { questions } = Astro.props;
 const conditions = [
   { paper: 'Monitoring is documented.', q: questions[1], open: false, state: 'Holds' },
   { paper: 'A risk owner is named.', q: questions[0], open: true, state: 'Open under pressure' },
-  { paper: 'A halt procedure is written.', q: questions[2], open: false, state: 'Holds, but nothing reaches it' },
+  { paper: 'A procedure for stopping the system is written.', q: questions[2], open: false, state: 'Holds, but nothing reaches it' },
 ];
 const firstOpen = conditions.findIndex((c) => c.open);
 ---
