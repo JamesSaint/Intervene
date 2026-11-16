@@ -1,10 +1,10 @@
 ---
 /**
- * AGDA®, as the brand mark. The only way to write AGDA in a template:
- * approved wordmark artwork with an accessible name and bronze ®. Markup lives
- * in lib/marks.ts so strings set through markAgda() match exactly.
+ * AGDA®, as a mention in copy: the literal text, with nothing around it, so
+ * it inherits everything from where it sits. The string lives in lib/marks.ts
+ * so copy set through markAgda() matches exactly.
  */
-import { AGDA_MARK } from '../lib/marks';
+import { AGDA } from '../lib/marks';
 ---
 
-<Fragment set:html={AGDA_MARK} />
+{AGDA}
