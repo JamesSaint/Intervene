@@ -75,7 +75,7 @@
       if (!granted) {
         pendingEvents.length = 0;
         removeCookies();
-        try { sessionStorage.removeItem('intv-pending-cta'); } catch (e) {}
+        try { sessionStorage.removeItem('intv-pending-cta'); sessionStorage.removeItem('intv-pending-offer'); } catch (e) {}
         // Do not send a denied-consent update: an already loaded tag can ping.
         // Reload after disabling to remove its timers/listeners and pending queue.
         if (loaded) {

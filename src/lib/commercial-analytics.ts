@@ -3,21 +3,34 @@ import { hasConsent, track } from './snapshot/analytics';
 /** Fixed categories only. Never read labels, form text or URL query strings. */
 export function initCommercialAnalytics(): void {
   const pagePath = new URL(document.querySelector<HTMLLinkElement>('link[rel="canonical"]')!.href).pathname;
+  const offerIds = ['check', 'review', 'assessment'];
   // Consume once. Withdrawal or a mismatched destination drops the pending event.
+  // Two single-use items can arrive at /contact/: the general action, and an
+  // engagement's own enquiry link. Each carries fixed categories only, and
+  // neither reads the destination's query string.
   try {
     const pending = sessionStorage.getItem('intv-pending-cta');
+    const pendingOffer = sessionStorage.getItem('intv-pending-offer');
     sessionStorage.removeItem('intv-pending-cta');
-    if (pending && hasConsent() && pagePath === '/contact/') {
-      const data = JSON.parse(pending);
+    sessionStorage.removeItem('intv-pending-offer');
+    if ((pending || pendingOffer) && hasConsent() && pagePath === '/contact/') {
       const referrer = new URL(document.referrer);
       const sourcePath = referrer.pathname.replace(/index\.html$/, '');
-      if (referrer.origin === location.origin && data.cta_id === 'discuss_system' &&
-          data.page_path === sourcePath && ['header', 'main'].includes(data.placement)) {
-        track('primary_cta_click', { cta_id: 'discuss_system', page_path: sourcePath, placement: data.placement });
+      if (pending) {
+        const data = JSON.parse(pending);
+        if (referrer.origin === location.origin && data.cta_id === 'discuss_system' &&
+            data.page_path === sourcePath && ['header', 'main'].includes(data.placement)) {
+          track('primary_cta_click', { cta_id: 'discuss_system', page_path: sourcePath, placement: data.placement });
+        }
+      }
+      if (pendingOffer) {
+        const data = JSON.parse(pendingOffer);
+        if (referrer.origin === location.origin && offerIds.includes(data.offer_id) && data.page_path === sourcePath) {
+          track('offer_select', { offer_id: data.offer_id, selection_source: 'enquiry_link', page_path: sourcePath });
+        }
       }
     }
   } catch { /* No pending event or unavailable storage/referrer. */ }
-  const offerIds = ['check', 'review', 'assessment'];
   document.addEventListener('click', (event) => {
     const link = (event.target as Element).closest<HTMLAnchorElement>('a');
     if (!link) return;
@@ -39,6 +52,22 @@ export function initCommercialAnalytics(): void {
         } catch { /* Storage blocked: record on the source page as best effort. */ }
       }
       track('primary_cta_click', params);
+    }
+    // An engagement's enquiry link: the same selection event, from a third
+    // source. It navigates to /contact/, so it is carried like the general action.
+    const enquire = link.dataset.enquire;
+    if (enquire && offerIds.includes(enquire)) {
+      const params = { offer_id: enquire, selection_source: 'enquiry_link', page_path: pagePath };
+      const click = event as MouseEvent;
+      if (hasConsent() && !event.defaultPrevented && click.button === 0 &&
+          !click.metaKey && !click.ctrlKey && !click.shiftKey && !click.altKey &&
+          (!link.target || link.target === '_self')) {
+        try {
+          sessionStorage.setItem('intv-pending-offer', JSON.stringify(params));
+          return;
+        } catch { /* Storage blocked: record on the source page as best effort. */ }
+      }
+      track('offer_select', params);
     }
     const offer = link.dataset.offerSelect;
     if (offer && offerIds.includes(offer)) {
