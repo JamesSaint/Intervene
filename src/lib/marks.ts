@@ -1,18 +1,18 @@
 /**
- * The AGDA® brand mark. AGDA is a registered UK trade mark.
+ * The AGDA® product name. AGDA is a registered UK trade mark.
  *
- * AGDA is plain text: titles, meta descriptions, JSON-LD, aria-labels.
- * AGDA_MARK is markup: approved artwork replaces the letters, the ® is set in
- * the accent by .agda-reg (global.css). In templates use <Agda />; for
- * copy held in strings, pass it through markAgda().
+ * Wherever the name is part of readable text it is the literal string AGDA®:
+ * no markup, no artwork and no styling of its own, so the whole string,
+ * ® included, takes its context's font, size, weight, colour and baseline,
+ * and reads and copies as AGDA®. In templates use <Agda />; for copy held in
+ * strings, pass it through markAgda(), which also adds a missing ®.
+ * Standalone identity logos are AgdaLogo.astro.
  */
 export const AGDA = 'AGDA®';
 
-export const AGDA_MARK = '<span class="agda-mark" role="img" aria-label="AGDA®"><span class="agda-text">AGDA</span><img class="agda-wordmark brand-light" src="/assets/brand/agda-small-black.svg" width="1106" height="247" alt="" aria-hidden="true" /><img class="agda-wordmark brand-dark" src="/assets/brand/agda-small-white.svg" width="1106" height="247" alt="" aria-hidden="true" /><span class="agda-reg">®</span></span>';
-
-/** Sets every AGDA in a string as the mark. A trailing ® is absorbed. */
+/** Writes every AGDA in a string as AGDA®, once. An existing ® is kept, not doubled. */
 export function markAgda(value: string): string {
-  return value.replace(/AGDA®?/g, AGDA_MARK);
+  return value.replace(/AGDA®?/g, AGDA);
 }
 
 export type EmailArtworkTone = 'adaptive' | 'black' | 'white';
