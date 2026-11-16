@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
 import { readdirSync } from 'node:fs';
 
+// /method/ and the /r/ campaign links are forwarding stubs with no layout of their own.
 const routes = readdirSync('dist', { recursive: true })
   .map(String)
-  .filter((path) => path.endsWith('.html') && !path.startsWith('assets/') && path !== 'method/index.html')
+  .filter((path) => path.endsWith('.html') && !path.startsWith('assets/') && path !== 'method/index.html' && !path.startsWith('r/'))
   .map((path) => path === 'index.html' ? '/' : `/${path.replace(/index\.html$/, '')}`);
 
 // These checks catch clipped descendants, which body overflow:hidden can

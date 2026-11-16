@@ -44,7 +44,7 @@ Canonical site: `https://intervene.uk/`
 /sample-report/                     Constructed sample AGDA® verdict
 /services/                          Assessment options: the three current engagements
 /sectors/                           Where Intervention Readiness matters
-/insights/                          Evidence notes index
+/insights/                          Insights: PDF downloads and Evidence notes index
 /insights/accountability-theatre/
 /insights/coincidence-is-not-a-margin/
 /insights/the-thirty-six-hour-window/

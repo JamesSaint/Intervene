@@ -19,6 +19,17 @@ test('rendered pages, canonicals, metadata and entity references agree with the 
   const descriptions = new Set<string>();
   const publicUrls: string[] = [];
   for (const path of paths) {
+    if (path.startsWith('/r/')) {
+      // Campaign links forward in the browser. They are never indexable and
+      // never canonical; insights.spec.ts checks where each one lands.
+      const stub = await request.get(path);
+      expect(stub.status(), path).toBe(200);
+      const html = await stub.text();
+      expect(html, path).toContain('<meta name="robots" content="noindex, follow"');
+      expect(html, path).toMatch(/<meta http-equiv="refresh" content="0; url=\/insights\//);
+      expect(html, path).not.toContain('rel="canonical"');
+      continue;
+    }
     if (path === '/method/') {
       // Parse the redirect document without executing its native meta refresh.
       const stub = await request.get(path);
