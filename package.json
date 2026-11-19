@@ -24,13 +24,13 @@
     "check-authorship": "node scripts/check-authorship.mjs"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/sitemap": "^3.7.5",
     "astro": "^7.4.2"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
     "@axe-core/playwright": "^4.14.0",
-    "@playwright/test": "^1.64.1",
+    "@playwright/test": "^1.65.1",
     "typescript": "^5.9.3",
     "vitest": "^4.1.12"
   },
