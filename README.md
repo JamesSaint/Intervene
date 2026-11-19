@@ -2,7 +2,7 @@
 
 ![Status](https://img.shields.io/badge/status-active-111111?style=flat-square)
 ![Identity](https://img.shields.io/badge/identity-Intervene_AGDA-111111?style=flat-square)
-![Stack](https://img.shields.io/badge/stack-Astro_4-111111?style=flat-square)
+![Stack](https://img.shields.io/badge/stack-Astro_7-111111?style=flat-square)
 ![Hosting](https://img.shields.io/badge/hosting-GitHub_Pages-111111?style=flat-square)
 
 ## Overview
@@ -11,14 +11,14 @@ Intervene Limited defines and measures **Intervention Readiness**: the ability o
 
 The public site introduces the category, explains **AGDA®** as Intervene's proprietary assessment of it, sets out the three current engagements (Authority Check; Intervention Readiness Review; AGDA® Assessment), publishes the core vocabulary, and shows a constructed sample finding and how signed SEDI result records are verified where contracted.
 
-Canonical site: `https://intervene.uk/`
+Canonical site: [intervene.uk](https://intervene.uk/)
 
 ## Stack
 
 | Layer | Choice |
 | --- | --- |
-| Framework | [Astro](https://astro.build) 4.x, `output: 'static'`, `trailingSlash: 'always'` |
-| Runtime | Node.js 24.22.1 and npm 11.19.1, pinned in `.nvmrc` and `package.json` `engines`; `.npmrc` sets `engine-strict` so the wrong versions fail fast. CI reads `.nvmrc`. Use `nvm use` before `npm ci`. |
+| Framework | [Astro](https://astro.build) 7.x, `output: 'static'`, `trailingSlash: 'always'` |
+| Runtime | Node.js 24.22.1 and npm 11.19.1, pinned in `.nvmrc` and `package.json` `packageManager` and `engines`; `.npmrc` sets `engine-strict` so the wrong versions fail fast. CI reads `.nvmrc`. Use `nvm use` before `npm ci`. |
 | Type | Montserrat for interface and editorial copy, IBM Plex Mono for proof marks and technical fragments |
 | Theme | Dark advisory surface, warm text hierarchy, muted gold accent, restrained verdict colours |
 | Forms | [Formspree](https://formspree.io) contact endpoint |
@@ -89,8 +89,7 @@ Canonical site: `https://intervene.uk/`
 │   ├── pages/                     File-based routes listed above
 │   └── styles/                    Tokens, fonts, reset, typography, global rules
 ├── .github/workflows/deploy.yml   Build and deploy to GitHub Pages
-├── internal/                      Private source material, not public site copy
-└── skills/                        Local project skills and supporting scripts
+└── .github/CONTRIBUTING.md        Authorship, validation and publication rules
 ```
 
 ## Brand Discipline
@@ -124,14 +123,14 @@ npm run preview        # serves the built site locally (Astro 7 runs it in the b
 npm test               # unit tests (vitest)
 npm run test:e2e       # browser tests (playwright)
 npm run content-check  # Snapshot copy and vocabulary checks
-npm run typecheck      # astro check. Advisory only, see below
+npm run typecheck      # astro check
 ```
 
 `npm run build` runs `prebuild` first, which regenerates `public/question-manifest.json` from the Snapshot question set. Commit the regenerated manifest when the question set changes.
 
 Generation is deterministic: the manifest is a pure function of `src/lib/snapshot/questions.ts`, carries no timestamp, and is byte-identical on any day, machine or time zone. CI regenerates it and fails on any diff, so nothing may be added to it that varies on its own. `tests/unit/question-manifest.test.ts` holds that invariant, and `git log public/question-manifest.json` is the provenance record.
 
-`npm run typecheck` currently reports 0 errors (the 59 earlier errors no longer exist). It still runs advisory in CI; make it blocking when convenient.
+`npm run typecheck` and the dependency audit are required pull-request checks. Type errors and high or critical dependency advisories block merging.
 
 ## Deployment
 
@@ -144,7 +143,7 @@ Push to `main`, or trigger the workflow manually. GitHub Actions runs `.github/w
 5. Upload `./dist`.
 6. Deploy to GitHub Pages.
 
-`.github/workflows/content-checks.yml` runs the same checks on pull requests, plus a staleness check on the question manifest.
+`.github/workflows/content-checks.yml` runs the same checks on pull requests, plus authorship validation, dependency audit, typecheck and a staleness check on the question manifest.
 
 Repo settings required:
 
@@ -178,6 +177,8 @@ The remaining backend work adds a Cloudflare Worker at `api.intervene.uk` and re
 
 The page carries no form. Its one action is a button to `/contact/`. It no longer asks participants to forward an attributed Snapshot link and no link is issued; that material went with the Snapshot's withdrawal rather than being marked paused. The privacy notice keeps its referral-link section for anyone who arrived on such a link while it was live, because the retention rule there still applies to notes already received.
 
-## License
+## Authorship and licence
 
-All content is proprietary to **Intervene Limited**. AGDA® is a trademark of Intervene Limited. Viewing is permitted. Reuse, reproduction, or redistribution is not permitted without explicit written consent.
+James Saint is the author and creative authority for work undertaken under his direction. AI systems are tools and must not be credited as authors, co-authors or owners. Dependency-update automation remains identifiable as automation.
+
+See [LICENSE](LICENSE) for the existing copyright and usage terms, and [repository change guidelines](.github/CONTRIBUTING.md) for the authorship and validation rules.
