@@ -18,6 +18,7 @@ describe('pinned toolchain', () => {
     expect(major > a || (major === a && (minor > b || (minor === b && patch >= c)))).toBe(true);
     expect(major).toBeLessThan(ceil);
     expect(pkg.engines.npm).toMatch(/^>=11\.\d+\.\d+ <12$/);
+    expect(pkg.packageManager).toBe('npm@11.19.1');
   });
 
   it('fails fast on the wrong Node or npm instead of writing an incompatible lockfile', () => {
