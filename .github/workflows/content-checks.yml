@@ -2,6 +2,7 @@ name: Content and unit checks
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, edited]
   workflow_dispatch:
 
 permissions:
@@ -15,12 +16,19 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           cache: npm
+
+      - name: Authorship policy
+        env:
+          AUTHORSHIP_BASE: ${{ github.event.pull_request.base.sha }}
+          AUTHORSHIP_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: npm run check-authorship
 
       # Lifecycle scripts are skipped: nothing in the build needs them, and
       # they are the usual way a compromised dependency runs code in CI.
@@ -40,10 +48,8 @@ jobs:
       - name: No private paths are tracked
         run: npm run check-private-paths
 
-      # Reported, not enforced: the Astro 4 toolchain carries known advisories
-      # that need a major upgrade, which is deferred to a separate change.
-      - name: Dependency audit (advisory)
-        continue-on-error: true
+      # Report dependency advisories alongside the build checks.
+      - name: Dependency audit
         run: npm audit --audit-level=high
 
       - name: Snapshot content checks
@@ -52,12 +58,8 @@ jobs:
       - name: Unit tests
         run: npm test
 
-      # Scoped to the Snapshot only. The rest of the site carries 59
-      # pre-existing type errors in TakeoverMenu, FilmPlayer and
-      # ConsentBanner, so `astro check` cannot be blocking until those
-      # are cleared. Reported, not enforced.
-      - name: Typecheck (advisory)
-        continue-on-error: true
+      # Report type diagnostics alongside the content and build checks.
+      - name: Typecheck
         run: npm run typecheck
 
       # A merge to main publishes. Build on the PR so a broken page is
