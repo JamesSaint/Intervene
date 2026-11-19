@@ -152,7 +152,7 @@ Repo settings required:
 
 ## Forms
 
-The contact form at `/contact/` posts JSON to `https://formspree.io/f/xvzwdyob`. The endpoint is declared as `FORMSPREE_ENDPOINT` in `src/pages/contact/index.astro`.
+The contact form at `/contact/` posts JSON to `https://formspree.io/f/xaqrkrpo`. The endpoint is declared as `FORMSPREE_ENDPOINT` in `src/pages/contact/index.astro`.
 
 Field, choice, error and status styles live in `src/styles/forms.css` and are shared by the contact form and the Snapshot. Do not re-declare them in a page. `tests/e2e/contact-parity.spec.ts` guards the contact form against regressions from that extraction.
 
