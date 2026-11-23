@@ -274,3 +274,71 @@ test.describe('Methodology', () => {
     });
   }
 });
+
+test.describe('Sample Authority Check finding', () => {
+  test('is marked as constructed, separates what is documented from what is concluded, and reports no call-out', async ({ page }) => {
+    await open(page, '/sample-authority-check/');
+    await expect(page.locator('main h1')).toHaveText('Retail credit: intervention authority is not demonstrably established.');
+    await expect(page.locator('.finding-status .status')).toHaveText('Constructed illustration');
+    await expect(page.locator('.finding-status .flags')).toContainText('Not issued · No client data · Not an');
+    await expect(page.locator('#finding-heading')).toHaveText('Can anyone stop this system?');
+    await expect(page.locator('.answers dt')).toHaveText([
+      'Who may halt it, and under which delegation',
+      'Whether they can decide alone or need a quorum',
+      'How they are reached out of hours',
+      'Where the halt takes effect',
+    ]);
+    // Each answer names the record or control it rests on.
+    for (const basis of await page.locator('.answers .basis').allInnerTexts()) expect(basis).toMatch(/[CE]-\d\d/);
+    // Documented evidence, missing evidence and the conclusion are labelled apart in every answer.
+    for (const dd of await page.locator('.answers dd').all()) {
+      await expect(dd.locator('.basis-k')).toHaveText(['Documented', 'Not evidenced', 'Conclusion', 'Basis']);
+    }
+    // Out-of-hours reach is stated from the scenario. No call-out result is invented.
+    const reach = page.locator('.call-out');
+    await expect(reach).toContainText('The scenario identifies no documented on-call rota or reliable weekend escalation arrangement.');
+    await expect(reach).toContainText('The available evidence does not establish that an authorised individual could be reached and an intervention executed outside normal operating hours.');
+    await expect(reach).toContainText('contains no call-out and reports no result from one');
+    expect(await page.locator('main').innerText()).not.toMatch(/Saturday|two hours|was reached|were reached/i);
+    await expect(page.locator('.finding-limits')).toContainText('no real organisation');
+    await expect(page.locator('.finding-limits')).toContainText('prepared without independent review');
+    const text = await page.locator('main').innerText();
+    expect(text).not.toMatch(/Before impact|At risk|After impact|\bscore of\b|signed by/i);
+    // One h1, sequential headings.
+    const levels = await page.locator('main h1, main h2, main h3').evaluateAll((els) => els.map((e) => Number(e.tagName[1])));
+    for (let i = 1; i < levels.length; i += 1) expect(levels[i] - levels[i - 1]).toBeLessThanOrEqual(1);
+  });
+
+  test('is reached from the Authority Check sheet and leads to an enquiry with that option selected', async ({ page }) => {
+    await open(page, '/services/');
+    await page.locator('#check .sheet-sample').click();
+    await expect(page).toHaveURL(/\/sample-authority-check\/$/);
+    await page.locator('main [data-enquire="check"]').click();
+    await expect(page).toHaveURL(/\/contact\/\?starting_point=check$/);
+    await expect(page.locator('input[name="starting_point"]:checked')).toHaveValue('check');
+  });
+
+  test('does not overflow at phone or desktop widths', async ({ page }) => {
+    await open(page, '/sample-authority-check/');
+    for (const width of [320, 390, 1024, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth), { message: `${width}px` }).toBeLessThanOrEqual(0);
+    }
+  });
+});
+
+test.describe('Reasons to act and to believe', () => {
+  test('Assessment options names the moments to ask the question, and both decision points name the founder', async ({ page }) => {
+    await open(page, '/services/');
+    await expect(page.locator('#when h2')).toHaveText('When to ask the question.');
+    await expect(page.locator('#when .lede')).toHaveText('Four illustrative circumstances in which an assessment may be appropriate.');
+    await expect(page.locator('#when .moments > li')).toHaveCount(4);
+    await expect(page.locator('.page-nav a[href="#when"]')).toHaveCount(1);
+    const line = 'Intervene was founded by James Saint, after three decades across technology, systems architecture, digital products, payments and organisational risk.';
+    await expect(page.locator('.founder-line')).toContainText(line);
+    await expect(page.locator('.founder-line a[href="/about/"]')).toBeVisible();
+    await open(page, '/contact/');
+    await expect(page.locator('.info-col')).toContainText(line);
+    await expect(page.locator('.info-col a[href="/about/"]')).toBeVisible();
+  });
+});

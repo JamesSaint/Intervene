@@ -6,9 +6,11 @@ James approaches Intervene / AGDA® from a practical engineering mindset. Judge 
 
 ## AGDA® brand treatment
 
-When AGDA is displayed as a branded product name, use `AGDA®`. The registered trade mark symbol `®` is rendered in Intervene's established bronze/gold brand colour (`--accent` in `src/styles/tokens.css`), using the same treatment historically used for the `™` symbol. The letters `AGDA` retain the typography and colour appropriate to their context. Do not make the entire AGDA word bronze merely because the registration symbol is bronze.
+Wherever the product name is part of readable text on the site (headings, paragraphs, navigation, menus, buttons, links, cards, captions, forms, footer copy), write the literal string `AGDA®`. The whole string, including the `®`, inherits the surrounding font, size, weight, colour and baseline. Do not replace it with a logo image or SVG, do not wrap it in a styled element, and do not colour, shrink or raise the `®`. It must read and copy as `AGDA®`, with exactly one `®` and no `role` or `aria-label` of its own.
 
-On the site, never hand-type the markup or style the symbol inline: use `<Agda />` in templates and `markAgda()` for copy held in strings (both in `src/lib/marks.ts` / `src/components/Agda.astro`; the style is `.agda-reg` in `global.css`). Plain-text contexts (titles, meta descriptions, JSON-LD, aria-labels, `llms.txt`) use `AGDA®` without styling. Apply the same rule to other assets: the OG cards follow it via `scripts/generate-og-card.mjs`.
+On the site, do not hand-type variants: use `<Agda />` in templates and `markAgda()` for copy held in strings (`src/components/Agda.astro`, `src/lib/marks.ts`). `markAgda()` adds a missing `®` and never doubles one. Plain-text contexts (titles, meta descriptions, JSON-LD, aria-labels, `llms.txt`) use `AGDA®` as well.
+
+Standalone identity logos are separate and stay as approved artwork: `AgdaLogo.astro` (homepage and AGDA page identity, the footer hallmark), the email signature wordmark (`markAgdaEmail()`), and the OG cards (`scripts/generate-og-card.mjs`). In that artwork the `®` keeps Intervene's bronze/gold brand colour (`--accent` in `src/styles/tokens.css`). Never use a logo to stand in for the name inside a sentence, heading, link or label.
 
 ## Editorial standards
 

@@ -36,6 +36,14 @@ test('rendered pages, canonicals, metadata and entity references agree with the 
       expect(redirect.refresh).toBe('0; url=/methodology/');
       continue;
     }
+    if (path.startsWith('/r/')) {
+      // Campaign stubs forward at once: read them without following. They stay
+      // out of the index and the sitemap; insights-downloads.spec.ts follows them.
+      const stub = await request.get(path);
+      expect(stub.status(), path).toBe(200);
+      expect(await stub.text(), path).toContain('<meta name="robots" content="noindex, follow" />');
+      continue;
+    }
     const response = await page.goto(path);
     expect(response?.status(), path).toBe(200);
     const data = await page.evaluate(() => {

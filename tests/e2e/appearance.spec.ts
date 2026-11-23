@@ -4,7 +4,8 @@ import { readdirSync } from 'node:fs';
 
 const routes = readdirSync('dist', { recursive: true }).map(String)
   // The email document intentionally has no website chrome or appearance script.
-  .filter(path => path.endsWith('.html') && !path.startsWith('assets/') && path !== 'method/index.html' && path !== 'signature/email.html')
+  // Campaign stubs under /r/ forward at once, one of them to a PDF; insights-downloads.spec.ts covers them.
+  .filter(path => path.endsWith('.html') && !path.startsWith('assets/') && !path.startsWith('r/') && path !== 'method/index.html' && path !== 'signature/email.html')
   .map(path => path === 'index.html' ? '/' : `/${path.replace(/index\.html$/, '')}`);
 
 async function expectFavicon(page: Page, theme: string) {
@@ -108,7 +109,7 @@ for (const scheme of ['light', 'dark'] as const) {
   test(`principal pages and selector pass WCAG AA scans in ${scheme}`, async ({ page }) => {
     test.setTimeout(120_000);
     await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });
-    for (const route of ['/', '/agda/', '/methodology/', '/sample-report/', '/services/', '/contact/', '/readiness-snapshot/', '/legal/privacy/', '/style-guide/']) {
+    for (const route of ['/', '/agda/', '/methodology/', '/sample-report/', '/sample-authority-check/', '/services/', '/contact/', '/readiness-snapshot/', '/legal/privacy/', '/style-guide/']) {
       await page.goto(route); await page.evaluate(() => document.fonts.ready);
       const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
       expect(result.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) })), route).toEqual([]);

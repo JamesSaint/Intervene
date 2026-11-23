@@ -3,7 +3,8 @@ import { readdirSync } from 'node:fs';
 
 const routes = readdirSync('dist', { recursive: true })
   .map(String)
-  .filter((path) => path.endsWith('.html') && !path.startsWith('assets/') && path !== 'method/index.html')
+  // Campaign stubs under /r/ forward at once and have no layout; insights-downloads.spec.ts covers them.
+  .filter((path) => path.endsWith('.html') && !path.startsWith('assets/') && !path.startsWith('r/') && path !== 'method/index.html')
   .map((path) => path === 'index.html' ? '/' : `/${path.replace(/index\.html$/, '')}`);
 
 // These checks catch clipped descendants, which body overflow:hidden can

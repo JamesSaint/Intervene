@@ -105,7 +105,7 @@ The Intervene site is intentionally restrained.
 - The three current engagements (Authority Check, Review, Assessment), their indicative prices, deliverables and exclusions, including the Authority Check's claim limits, live once in `src/lib/offers.ts`. `public/llms.txt` mirrors them by hand; `tests/unit/offers-parity.test.ts` fails on drift. `scripts/lib/retired-claims.mjs` keeps the withdrawn pilot, licence tiers and unsupported claims from returning; `npm run content-check` runs it.
 - Signed SEDI result records are never described as standard. The wording is "where the agreed scope includes them and the delivery configuration supports them". What the signature covers is stated on `/verify/` against the AGDA attestation specification.
 - Avoid em dashes in prose. Use periods, semicolons, commas, or full stops.
-- AGDA is a registered trade mark: write `AGDA®`. Only the `®` takes the accent; the letters keep their context. Set it with `<Agda />` in templates or `markAgda()` for copy held in strings, never by hand. Plain-text contexts (titles, meta, JSON-LD, aria-labels, `llms.txt`) use `AGDA®` unstyled. `tests/unit/agda-mark.test.ts` enforces it.
+- AGDA is a registered trade mark: in readable text write the literal `AGDA®`. The whole string, `®` included, inherits its context's type and colour: no inline logo, wrapper or styling. Set it with `<Agda />` in templates or `markAgda()` for copy held in strings. Standalone identity logos (`AgdaLogo.astro`, the email signature, OG cards) stay as artwork. `tests/unit/agda-mark.test.ts` enforces it; `AGENTS.md` has the full rule.
 
 ## Local Development
 

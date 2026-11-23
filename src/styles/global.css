@@ -46,21 +46,6 @@ a, button, summary, input, textarea, select, [tabindex] { scroll-margin-top: var
   background: var(--accent);
 }
 
-/* Approved AGDA wordmark in copy, with one accessible product name.
-   Use <Agda /> or markAgda(); compact artwork remains at least 80px wide. */
-.agda-mark { display: inline-block; white-space: nowrap; line-height: 0; }
-.agda-wordmark { display: inline-block; width: clamp(80px, 3.36em, 199px); height: auto; vertical-align: baseline; }
-.agda-text { font-size: 0; letter-spacing: 0; }
-.agda-reg {
-  color: var(--accent);
-  display: inline-block;
-  font-size: clamp(8px, 0.24em, 16px);
-  letter-spacing: 0;
-  line-height: 1;
-  margin-left: 0.06em;
-  vertical-align: top;
-}
-
 /* ------------------------------------------------------------------
    Section rhythm
    A hero opens every page. Blocks follow. Separation is air, with one
@@ -780,14 +765,6 @@ a.card:focus-visible::before { transform: scaleX(1); }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) .brand-light { display: none; }
   :root:not([data-theme]) .brand-dark { display: block; }
-}
-.agda-mark .brand-light, .agda-mark .brand-dark { display: none; }
-.agda-mark .brand-light { display: inline-block; }
-:root[data-theme='dark'] .agda-mark .brand-dark { display: inline-block; }
-:root[data-theme='dark'] .agda-mark .brand-light { display: none; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .agda-mark .brand-dark { display: inline-block; }
-  :root:not([data-theme]) .agda-mark .brand-light { display: none; }
 }
 /* Colour only, on bounded surfaces and text. Existing transform, opacity
    and SEDI animation timelines are untouched. First paint never transitions. */
