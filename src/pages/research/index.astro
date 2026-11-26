@@ -1,0 +1,171 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageNav from '../../components/PageNav.astro';
+import Agda from '../../components/Agda.astro';
+import ChainPosition from '../../components/ChainPosition.astro';
+import ResearchProgramme from '../../components/ResearchProgramme.astro';
+
+// The research programme, its status and its boundaries. Intervention
+// readiness is the research subject, SEDI the conceptual framework and AGDA®
+// the commercial instrument; the page keeps the three apart. It names no
+// unpublished manuscript, journal, submission or prospective collaborator.
+const pageNav = [
+  { href: '#programme', label: 'Research and application' },
+  { href: '#current', label: 'Current research' },
+  { href: '#evaluation', label: 'Empirical evaluation' },
+  { href: '#boundaries', label: 'Boundaries' },
+  { href: '#collaboration', label: 'Collaboration' },
+];
+---
+
+<BaseLayout
+  title="Research · Intervene"
+  description="Intervene's research into intervention readiness: whether organisations can detect, escalate, decide and intervene before harm becomes irreversible, and how AGDA® assessments relate to it."
+  current="research"
+>
+  <section class="hero">
+    <div class="wrap">
+      <span class="label">Research</span>
+      <h1 class="h1">Research into intervention <em>readiness.</em></h1>
+      <p class="lede muted">
+        Intervene's research examines whether organisations can detect,
+        escalate, decide and intervene within the time available before harm
+        becomes irreversible.
+      </p>
+    </div>
+  </section>
+
+  <PageNav items={pageNav} />
+
+  <section class="block tight" id="foundations">
+    <div class="wrap-narrow">
+      <p class="body">
+        The work draws on risk science, control theory and the practical
+        challenges of governing automated decision systems. It considers how
+        system velocity, institutional response and evidence quality affect
+        the feasibility of intervention.
+      </p>
+      <ChainPosition at="chain" caption="The research question: whether the four stages can complete before the window to intervene closes." />
+    </div>
+  </section>
+
+  <section class="block" id="programme">
+    <div class="wrap">
+      <h2 class="h2">Research and <em>commercial application.</em></h2>
+      <p class="lede muted">
+        Our academic research and commercial assessments form complementary
+        parts of a programme to develop, test and refine intervention
+        assurance.
+      </p>
+      <ul class="feature-grid terms" role="list" style="--cols: 3" data-reveal="stagger">
+        <li>
+          <h3 class="h3">Intervention readiness</h3>
+          <p class="body muted">The subject of the research: whether an organisation can complete the actions needed to prevent or mitigate a specified harm within the available time.</p>
+        </li>
+        <li>
+          <h3 class="h3">SEDI</h3>
+          <p class="body muted">The conceptual framework for examining the intervention sequence: Detect, Escalate, Decide and Intervene.</p>
+        </li>
+        <li>
+          <h3 class="h3"><Agda /></h3>
+          <p class="body muted">The commercial assurance instrument, with its own implemented scope and validation status. <Agda /> is not validated against real-world outcomes; <a href="/methodology/#basis" class="link">see the measurement basis</a>.</p>
+        </li>
+      </ul>
+      <ResearchProgramme />
+      <div class="programme-copy">
+        <p class="body">
+          SEDI provides a framework for examining the intervention sequence.
+          <Agda /> applies that framework to defined operational pathways,
+          assessing the evidence for intervention capability and identifying
+          constraints on effective action.
+        </p>
+        <p class="body muted">
+          Commercial <Agda /> assessments deliver findings for clients. Where
+          separately agreed, and subject to client consent, confidentiality and
+          research integrity requirements, they can also provide opportunities
+          for prospective empirical evaluation of the methodology under real
+          operating conditions.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="current">
+    <div class="wrap-narrow">
+      <h2 class="h2">Current research.</h2>
+      <p class="body">
+        The current work develops a theoretical model of intervention
+        feasibility as a condition of deploying high-consequence AI systems,
+        including the effects of risk velocity, risk drift and institutional
+        response, and examines documented historical failures.
+      </p>
+      <p class="body muted">
+        Prospective empirical evaluation is a subsequent stage of the research
+        programme.
+      </p>
+    </div>
+  </section>
+
+  <section class="block" id="evaluation">
+    <div class="wrap-narrow">
+      <h2 class="h2">Empirical evaluation.</h2>
+      <p class="body">
+        The research programme will examine how intervention assessments
+        correspond to observed performance, including successful
+        interventions, failures and inconclusive results. Evaluation will
+        distinguish simulated, rehearsed and operational evidence and account
+        for uncertainty and limitations.
+      </p>
+      <p class="body muted">
+        Research participation is separately agreed with clients and is not a
+        condition of receiving commercial assurance. Client confidentiality
+        and applicable data protection requirements govern the use of
+        operational evidence.
+      </p>
+    </div>
+  </section>
+
+  <section class="block" id="boundaries">
+    <div class="wrap-narrow">
+      <h2 class="h2">Research boundaries.</h2>
+      <p class="body">
+        The methodology principally addresses bounded systems and identifiable
+        intervention pathways. Demonstrating that intervention is feasible
+        does not guarantee that harm will be prevented. The research does not
+        claim to resolve the control problem for artificial general
+        intelligence or artificial superintelligence.
+      </p>
+    </div>
+  </section>
+
+  <section class="block tight" id="collaboration">
+    <div class="wrap-narrow cta-band">
+      <h2 class="h2">Collaboration.</h2>
+      <p class="body muted">
+        We welcome enquiries from researchers working in risk science, safety
+        engineering, control theory and AI safety who are interested in
+        intervention feasibility, independent evaluation or collaborative
+        research.
+      </p>
+      <div class="cta-row">
+        <a data-primary-cta="research_enquiry" href="/contact/?enquiry=research" class="btn">Research enquiries</a>
+        <a href="/agda/" class="btn-ghost"><span><Agda /> assessments</span></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Headings take the available width, as on the methodology page; the
+     opening heading's column is wide enough to keep its first line whole. */
+  .hero .h1, .block .h2 { max-width: 100%; }
+  @media (min-width: 1100px) {
+    .hero > .wrap.wrap:has(> .h1 + .lede) { grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); }
+  }
+  /* The short text sections that follow the diagram use the site's tight
+     section rhythm, so consecutive sections do not double the full gap. */
+  #current, #evaluation, #boundaries { padding-block: var(--section-tight); }
+  .terms { margin-top: var(--gap-sub); }
+  .programme-copy { margin-top: var(--space-6); }
+  .programme-copy .body:last-child { margin-bottom: 0; }
+</style>

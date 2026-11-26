@@ -242,3 +242,45 @@ test('unused query strings are removed only after acceptance, with anchors prese
   expect(new URL(page.url()).search).toBe('');
   expect(new URL(page.url()).hash).toBe('#home-question');
 });
+
+test('with consent a research enquiry is recorded apart from commercial conversions', async ({ page }) => {
+  // With consent: the research link records its own cta_id on arrival, and the
+  // form emits research events only, never the commercial enquiry events.
+  await inspect(page, 'granted');
+  let body = '';
+  await page.route(endpoint, (route) => { body = route.request().postData() ?? ''; return route.fulfill({ status: 200, body: '{"ok":true}' }); });
+  await page.goto('/research/');
+  await page.locator('main [data-primary-cta="research_enquiry"]').click();
+  await expect(page).toHaveURL(/\/contact\/$/);
+  await expect.poll(async () => (await events(page)).filter((e: any) => e[1] === 'primary_cta_click').length).toBe(1);
+  expect((await events(page)).filter((e: any) => e[1] === 'primary_cta_click')).toEqual([
+    ['event', 'primary_cta_click', { cta_id: 'research_enquiry', page_path: '/research/', placement: 'main' }],
+  ]);
+  await fill(page);
+  await page.click('button[type="submit"]');
+  await expect(page.locator('.form-status')).toHaveAttribute('data-state', 'ok');
+  const emitted = await events(page);
+  expect(emitted.filter((e: any) => e[1] === 'research_enquiry_started')).toHaveLength(1);
+  expect(emitted.filter((e: any) => e[1] === 'research_enquiry_submitted')).toHaveLength(1);
+  expect(emitted.filter((e: any) => ['enquiry_started', 'enquiry_submitted', 'offer_select'].includes(e[1]))).toEqual([]);
+  expect(body).toContain('name="enquiry_type"\r\n\r\nresearch');
+  expect(body).toContain('name="subject"\r\n\r\nIntervene | Research enquiry');
+  for (const value of ['Consent Test', 'consent-test@example.com', 'TEST DATA']) expect(JSON.stringify(emitted)).not.toContain(value);
+});
+
+test('a research enquiry without consent sends no measurement but is still routed as research', async ({ page }) => {
+  const requests = await inspect(page, 'denied');
+  let body = '';
+  await page.route(endpoint, (route) => { body = route.request().postData() ?? ''; return route.fulfill({ status: 200, body: '{"ok":true}' }); });
+  await page.goto('/research/');
+  await page.locator('main [data-primary-cta="research_enquiry"]').click();
+  await expect(page).toHaveURL(/\/contact\/\?enquiry=research$/);
+  expect(await page.evaluate(() => sessionStorage.getItem('intv-pending-cta'))).toBeNull();
+  await fill(page);
+  await page.click('button[type="submit"]');
+  await expect(page.locator('.form-status')).toHaveAttribute('data-state', 'ok');
+  expect(await events(page)).toEqual([]);
+  expect(requests).toEqual([]);
+  expect(body).toContain('name="enquiry_type"\r\n\r\nresearch');
+  expect(body).toContain('name="subject"\r\n\r\nIntervene | Research enquiry');
+});

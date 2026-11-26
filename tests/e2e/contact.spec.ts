@@ -185,6 +185,20 @@ for (const [selection, offering] of [
   });
 }
 
+test('a commercial enquiry carries no research marker', async ({ page }) => {
+  let body = '';
+  await page.route('**/formspree.io/**', async (route) => {
+    body = route.request().postData() ?? '';
+    await route.fulfill({ status: 200, body: '{"ok":true}' });
+  });
+  await page.goto(ROUTE + '?enquiry=other');
+  await fill(page);
+  await page.click('button[type="submit"]');
+  await expect(page.locator('.form-status')).toHaveAttribute('data-state', 'ok');
+  expect(body).not.toContain('name="enquiry_type"');
+  expect(body).toContain('name="subject"\r\n\r\nIntervene | New enquiry');
+});
+
 test('the fixed notification subject is available without JavaScript', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();

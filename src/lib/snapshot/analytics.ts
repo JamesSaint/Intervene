@@ -22,6 +22,10 @@ type EventName =
   | 'sample_verdict_viewed'
   | 'enquiry_started'
   | 'enquiry_submitted'
+  // Research enquiries use their own names so commercial enquiry counts and
+  // key events never include them. Same gate, no parameters.
+  | 'research_enquiry_started'
+  | 'research_enquiry_submitted'
   | 'primary_cta_click'
   | 'offer_view'
   | 'offer_select';

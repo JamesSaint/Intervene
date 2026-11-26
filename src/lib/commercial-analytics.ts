@@ -4,6 +4,8 @@ import { hasConsent, track } from './snapshot/analytics';
 export function initCommercialAnalytics(): void {
   const pagePath = new URL(document.querySelector<HTMLLinkElement>('link[rel="canonical"]')!.href).pathname;
   const offerIds = ['check', 'review', 'assessment'];
+  // `research_enquiry` keeps research contact apart from the commercial action.
+  const ctaIds = ['discuss_system', 'research_enquiry'];
   // Consume once. Withdrawal or a mismatched destination drops the pending event.
   // Two single-use items can arrive at /contact/: the general action, and an
   // engagement's own enquiry link. Each carries fixed categories only, and
@@ -18,9 +20,9 @@ export function initCommercialAnalytics(): void {
       const sourcePath = referrer.pathname.replace(/index\.html$/, '');
       if (pending) {
         const data = JSON.parse(pending);
-        if (referrer.origin === location.origin && data.cta_id === 'discuss_system' &&
+        if (referrer.origin === location.origin && ctaIds.includes(data.cta_id) &&
             data.page_path === sourcePath && ['header', 'main'].includes(data.placement)) {
-          track('primary_cta_click', { cta_id: 'discuss_system', page_path: sourcePath, placement: data.placement });
+          track('primary_cta_click', { cta_id: data.cta_id, page_path: sourcePath, placement: data.placement });
         }
       }
       if (pendingOffer) {
@@ -34,9 +36,10 @@ export function initCommercialAnalytics(): void {
   document.addEventListener('click', (event) => {
     const link = (event.target as Element).closest<HTMLAnchorElement>('a');
     if (!link) return;
-    if (link.dataset.primaryCta === 'discuss_system') {
+    const ctaId = link.dataset.primaryCta;
+    if (ctaId && ctaIds.includes(ctaId)) {
       const params = {
-        cta_id: 'discuss_system', page_path: pagePath,
+        cta_id: ctaId, page_path: pagePath,
         placement: link.closest('header.site-header') ? 'header' : 'main',
       };
       const click = event as MouseEvent;

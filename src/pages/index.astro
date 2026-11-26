@@ -105,6 +105,17 @@ const questions = [
     </div>
   </section>
 
+  <section class="block research-block" aria-labelledby="home-research">
+    <div class="wrap">
+      <div class="lab-heading">
+        <h2 class="h2" id="home-research">Research and empirical evaluation</h2>
+        <p class="body muted">Intervene develops commercial assurance instruments informed by research into risk, controllability and intervention feasibility.</p>
+      </div>
+      <p class="research-copy">Our academic research and commercial assessments provide complementary means of examining whether intervention is effective within the time available, and of testing and refining the methodology through empirical evidence.</p>
+      <nav class="related-links" aria-label="Explore the research"><a href="/research/" class="link">Explore our research <span aria-hidden="true">→</span></a></nav>
+    </div>
+  </section>
+
   <section class="block close" aria-labelledby="home-decision">
     <div class="wrap close-wrap">
       <h2 class="close-q" id="home-decision">Can you stop it <em>in time?</em></h2>
@@ -130,7 +141,8 @@ const questions = [
   .evidence-heading { font-size: clamp(32px, 4.4vw, 64px); line-height: 1.04; }
   .evidence-heading em { display: block; }
   .section-heading, .assessment-intro { display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-6); align-items: start; margin-bottom: var(--space-6); }
-  .example, .situations, .method-block, .finding-block, .engage { border-bottom: 1px solid var(--hair); }
+  .example, .situations, .method-block, .finding-block, .research-block, .engage { border-bottom: 1px solid var(--hair); }
+  .research-copy { max-width: 40rem; margin: 0; font-size: var(--type-support); line-height: 1.65; color: var(--ink); }
   /* The constructed example, in brief: its status sits with the heading, and the full trace is on /sample-report/. */
   .example { background: var(--paper-soft); }
   .example-top { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); align-items: end; }

@@ -103,7 +103,7 @@ test('sample report: the trace leads the finding and keeps the sample\'s status 
 test('reference pages open with the heading on the left and its sentence low on the right', async ({ page, isMobile }) => {
   test.skip(isMobile, 'A wide-screen composition.');
   await page.setViewportSize({ width: 1440, height: 900 });
-  for (const route of ['/methodology/', '/sectors/', '/intervention-readiness/', '/glossary/']) {
+  for (const route of ['/methodology/', '/sectors/', '/intervention-readiness/', '/glossary/', '/research/']) {
     await page.goto(route);
     const h1 = (await page.locator('main .hero .h1').boundingBox())!;
     const lede = (await page.locator('main .hero .h1 + .lede').boundingBox())!;
@@ -301,4 +301,32 @@ test('a note leads on to the notes either side of it, and adds no animation or d
   const prose = await page.locator('.prose > p').nth(1).evaluate((el) => ({ size: parseFloat(getComputedStyle(el).fontSize), chars: el.getBoundingClientRect().width / (parseFloat(getComputedStyle(el).fontSize) * 0.5) }));
   expect(prose.size).toBeGreaterThanOrEqual(18);
   expect(prose.chars).toBeLessThan(95);
+});
+
+test('the research page keeps research, framework and instrument apart and discloses no unpublished detail', async ({ page }) => {
+  await page.goto('/research/');
+  await expect(page.locator('main h1')).toHaveCount(1);
+  const main = page.locator('main');
+  for (const term of ['Intervention readiness', 'SEDI', 'AGDA®']) await expect(main.locator('.terms .h3', { hasText: term })).toHaveCount(1);
+  await expect(main).toContainText('AGDA® is not validated against real-world outcomes');
+  await expect(main).toContainText('subject to client consent, confidentiality and research integrity requirements');
+  await expect(main.locator('a[href="/contact/?enquiry=research"]')).toHaveText('Research enquiries');
+  await expect(main.locator('a[href="/agda/"]')).toHaveText('AGDA® assessments');
+  const text = ((await page.locator('main').innerText()) + (await page.title()) + (await page.locator('meta[name="description"]').getAttribute('content'))).toLowerCase();
+  for (const banned of ['illusion of control', 'risk analysis', 'wiley', 'risa-', 'ssrn', 'peer-review', 'peer review', 'submitted', 'michalska', 'yampolskiy', 'accepted for publication']) {
+    expect(text, banned).not.toContain(banned);
+  }
+});
+
+test('Research is reachable from the menu, the footer, the homepage and the methodology', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('#takeover-menu a[href$="/research/"]')).toHaveText('Research');
+  await expect(page.locator('footer a[href="/research/"]')).toHaveText('Research');
+  await expect(page.locator('#home-research')).toHaveText('Research and empirical evaluation');
+  await expect(page.locator('main a[href="/research/"]')).toHaveText(/Explore our research/);
+  // The commercial close still follows the research section.
+  await expect(page.locator('.research-block + .close [data-primary-cta="discuss_system"]')).toHaveCount(1);
+  await page.goto('/methodology/');
+  await expect(page.locator('#research-scope a[href="/research/"]')).toHaveCount(1);
+  await expect(page.locator('#basis')).toContainText('is not validated against real-world outcomes');
 });

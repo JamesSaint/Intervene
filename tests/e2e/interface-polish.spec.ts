@@ -93,7 +93,7 @@ test('the menu clears consent and remains usable on short screens', async ({ pag
   await expect(page.locator('[data-takeover]')).toBeHidden();
 });
 
-// The appearance control sits under the eight links. On a laptop screen the
+// The appearance control sits under the nine links. On a laptop screen the
 // links used to push it below the fold, so it was only found by scrolling.
 for (const scheme of ['light', 'dark'] as const) {
   test(`the open menu shows every link and the whole appearance control without scrolling (${scheme})`, async ({ page }) => {
@@ -142,7 +142,7 @@ for (const scheme of ['light', 'dark'] as const) {
         };
       });
       expect(layout.scrolled, at).toBe(0);
-      expect(layout.links, at).toBe(8);
+      expect(layout.links, at).toBe(9);
       expect(layout.linksInside, at).toBe(true);
       expect(layout.controlInside, at).toBe(true);
       expect(layout.partsInside, at).toBe(true);
@@ -158,7 +158,7 @@ for (const scheme of ['light', 'dark'] as const) {
 
       // Keyboard: every control takes focus in order, in view, with a visible indicator.
       const seen: string[] = [];
-      for (let i = 0; i < 12; i += 1) {
+      for (let i = 0; i < 13; i += 1) {
         const focus = await page.evaluate(() => {
           const node = document.activeElement as HTMLElement;
           const box = node.getBoundingClientRect();
@@ -178,7 +178,7 @@ for (const scheme of ['light', 'dark'] as const) {
       }
       expect(seen, at).toEqual([
         'Intervention Readiness', 'Why it matters', 'AGDA®', 'How AGDA® works', 'View sample verdict',
-        'Assessment options', 'Insights', 'Discuss your system', 'Light', 'Dark', 'System', 'Intervene · home',
+        'Assessment options', 'Insights', 'Research', 'Discuss your system', 'Light', 'Dark', 'System', 'Intervene · home',
       ]);
       await page.keyboard.press('Escape');
       await expect(menu).toBeHidden();
@@ -373,7 +373,7 @@ test('desktop headings fill their container and only wrap when the next word can
   test.skip(isMobile, 'Desktop line filling is checked at desktop viewport widths.');
   for (const width of [1024, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });
-    for (const route of ['/services/', '/methodology/']) {
+    for (const route of ['/services/', '/methodology/', '/research/']) {
       await page.goto(route);
       await page.evaluate(() => document.fonts.ready);
       const layout = await page.locator('main h1').evaluate((heading) => {
@@ -417,7 +417,7 @@ test('desktop headings fill their container and only wrap when the next word can
 test('text uses its available column width across page layouts', async ({ page, isMobile }) => {
   const routes = ['/', '/about/', '/agda/', '/services/', '/methodology/', '/intervention-readiness/',
     '/intervention-readiness/halt-authority/', '/intervention-readiness/vs-audit/', '/verify/',
-    '/contact/', '/sectors/', '/network/', '/insights/coincidence-is-not-a-margin/', '/legal/privacy/'];
+    '/contact/', '/sectors/', '/network/', '/insights/coincidence-is-not-a-margin/', '/legal/privacy/', '/research/'];
   for (const width of isMobile ? [320, 393] : [1024, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });
     for (const route of routes) {
