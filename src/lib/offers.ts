@@ -58,6 +58,13 @@ export interface Offer {
 export const PRICE_QUALIFIER =
   'Initial pricing remains subject to market validation.';
 
+/* VAT position, stated wherever fees appear. Intervene is not VAT
+   registered, so fees carry no "+ VAT". If it registers, change this
+   sentence (and its mirror in llms.txt and the collateral sources);
+   the fees themselves stay as stated. */
+export const VAT_NOTE =
+  'Intervene is not currently registered for VAT, so no VAT is charged. If it registers, VAT will be added at the applicable rate.';
+
 /* What moves a quoted fee above its starting price. Shown once beneath the three
    sheets on /services/ and mirrored in llms.txt. Additional systems,
    pathways, scenarios and implementation work are separately scoped;
@@ -102,7 +109,7 @@ export const offers: Offer[] = [
     use: 'The finding stands on its own. It is a finding about this system only.',
     suitable: 'You want a bounded answer on whether anyone can stop one named system before looking at the evidence behind every step of its intervention chain.',
     timing: 'Scope, access and timing are agreed in the proposal. The live call-out is run once, at a time agreed in the protocol.',
-    price: '£12,500 fixed + VAT',
+    price: '£12,500 fixed',
     priceNote: 'Indicative fee',
     schemaDescription:
       'A narrow check of one named system that establishes who may halt it, whether they can decide alone, how they are reached out of hours and where the halt takes effect. Not an AGDA® verdict, SEDI result or score, and carries no attestation.',
@@ -135,7 +142,7 @@ export const offers: Offer[] = [
     use: 'The gap register and recommendation stand on their own. They support prioritisation and budget decisions whether or not a full Assessment follows.',
     suitable: 'You need to know what you could evidence for one system, not only who could stop it, or you need a documented basis for deciding whether it warrants a full Assessment. If the system, pathway and scenario are already defined and evidence access is available, discuss a full Assessment directly.',
     timing: 'Scope, access and timing are agreed in the proposal.',
-    price: 'From £25,000 + VAT',
+    price: 'From £25,000',
     priceNote: 'Indicative fee',
     schemaDescription:
       'A preliminary review of one named system that includes the Authority Check and adds graded evidence for all four steps of the intervention chain, a review of the client\'s own records for real timings and the inputs needed to set the intervention window. Does not include the AGDA® verdict.',
@@ -175,7 +182,7 @@ export const offers: Offer[] = [
     use: '',
     suitable: 'The system, pathway and scenario are defined, the stakeholders and evidence are accessible, and the decision cannot wait for a preliminary review.',
     timing: 'Once an engagement begins, a standard assessment is estimated to run over approximately four weeks, subject to scope, stakeholder access and evidence readiness. The proposal sets the detailed timetable.',
-    price: 'From £75,000 + VAT',
+    price: 'From £75,000',
     priceNote: 'Indicative initial fee',
     schemaDescription:
       'A formal assessment of Intervention Readiness for one named consequential AI-enabled system, examined through a defined decision or action pathway and a specified intervention scenario. Produces an Intervention Readiness verdict with its evidence basis.',

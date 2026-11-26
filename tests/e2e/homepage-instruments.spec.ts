@@ -469,7 +469,7 @@ test('the three engagements are compared by question, output and fee, straight a
   }
   await expect(items.locator('.cmp-q')).toHaveText(['Can anyone stop this system?', 'What evidence do you have that you can stop this system?', 'Can you stop it in time?']);
   // Fees keep every published distinction.
-  await expect(items.locator('.cmp-price')).toHaveText(['£12,500 fixed + VAT', 'From £25,000 + VAT', 'From £75,000 + VAT']);
+  await expect(items.locator('.cmp-price')).toHaveText(['£12,500 fixed', 'From £25,000', 'From £75,000']);
   await expect(items.nth(2).locator('.cmp-k').nth(1)).toHaveText('Indicative initial fee');
   await expect(compare.locator('.cmp-note')).toContainText('Only the full Assessment produces an');
   await expect(compare.locator('.cmp-note')).toContainText('does not commit you to one or determine its verdict');

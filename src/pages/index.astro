@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { PRICE_QUALIFIER, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../lib/offers';
+import { PRICE_QUALIFIER, VAT_NOTE, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../lib/offers';
 import IntegrityNote from '../components/IntegrityNote.astro';
 import OfferCompare from '../components/OfferCompare.astro';
 import AgdaLogo from '../components/AgdaLogo.astro';
@@ -60,7 +60,7 @@ const questions = [
   <section class="block engage" id="offers" aria-labelledby="offer-compare-heading">
     <div class="wrap">
       <OfferCompare />
-      <p class="engage-terms">{PRICE_QUALIFIER} The proposal confirms scope, outputs, fee, terms and timetable. {AVAILABILITY} <a href="/services/" class="link">Scope, fees and how an engagement runs</a>.</p>
+      <p class="engage-terms">{PRICE_QUALIFIER} {VAT_NOTE} The proposal confirms scope, outputs, fee, terms and timetable. {AVAILABILITY} <a href="/services/" class="link">Scope, fees and how an engagement runs</a>.</p>
       <p class="engage-action"><a data-primary-cta="discuss_system" href="/contact/" class="btn">Discuss your system <span aria-hidden="true">→</span></a></p>
     </div>
   </section>
