@@ -24,6 +24,7 @@ The sources were first held in the November 2026 CRO campaign pack (`cro-campaig
 - The fraud white paper and the AGDA® FRAUD overview no longer say AGDA® FRAUD is "in development with design partners", which read as if partners were already engaged. They now say it is in research and development and that design partners are sought.
 - The unlisted overview lists all three entry points (Authority Check, Review, Assessment), as the warm one-pager does, still without prices.
 - The two AGDA® one-pagers no longer say validation against real-world outcomes is "to follow", which presumed a result. They state that AGDA® is not yet validated against real-world outcomes.
+- The HTML titles of the two AGDA® FRAUD sources use the canonical product name, AGDA® FRAUD. The published PDFs are unchanged: their titles are set when stamped and already read AGDA® FRAUD.
 
 ## Rebuild
 
