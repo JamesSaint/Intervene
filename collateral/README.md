@@ -26,6 +26,10 @@ The sources were first held in the November 2026 CRO campaign pack (`cro-campaig
 - The two AGDA® one-pagers no longer say validation against real-world outcomes is "to follow", which presumed a result. They state that AGDA® is not yet validated against real-world outcomes.
 - The HTML titles of the two AGDA® FRAUD sources use the canonical product name, AGDA® FRAUD. The published PDFs are unchanged: their titles are set when stamped and already read AGDA® FRAUD.
 
+## Revision of 26 November 2026: VAT wording
+
+Intervene is not VAT registered. The fee panels in the CRO, CISO and fraud white papers and the two one-pagers said "Fees + VAT"; they now say "No VAT charged", and the footnotes read "No VAT is charged while Intervene is not VAT registered." Fees are unchanged. If Intervene registers, revise this wording with `VAT_NOTE` in `src/lib/offers.ts`. Page counts and published titles are unchanged.
+
 ## Rebuild
 
 Requires Node 24 with the repository's dependencies installed, Python 3 with `pypdf`, and the brand kit's static Montserrat TTFs (Regular, Medium, SemiBold, Bold).

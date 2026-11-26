@@ -2,7 +2,7 @@
 import IntegrityNote from '../../components/IntegrityNote.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { markAgda } from '../../lib/marks';
-import { offers, activities, offerFaqs, buyingGroup, PRICE_QUALIFIER, FEE_BASIS, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
+import { offers, activities, offerFaqs, buyingGroup, PRICE_QUALIFIER, VAT_NOTE, FEE_BASIS, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../lib/offers';
 import OfferCompare from '../../components/OfferCompare.astro';
 import PageNav from '../../components/PageNav.astro';
 import Agda from '../../components/Agda.astro';
@@ -72,7 +72,7 @@ const useCases = [
   <section class="hero options-hero" id="begin">
     <div class="wrap">
       <OfferCompare as="h1" lead="Compare assessment options" tail="" />
-      <p class="options-terms">Fees are indicative. {PRICE_QUALIFIER}</p>
+      <p class="options-terms">Fees are indicative. {PRICE_QUALIFIER} {VAT_NOTE}</p>
       <div class="hero-cta">
         <a data-primary-cta="discuss_system" href="/contact/" class="btn">Discuss your system</a>
         <a href="/sample-report/" class="btn-ghost">View sample verdict</a>
@@ -92,7 +92,7 @@ const useCases = [
       <span class="label section-kicker">Current engagements</span>
       <h2 class="h2" data-offer-view="engagements">The three engagements <em>in full.</em></h2>
       <p class="lede muted">
-        Fees are indicative. {PRICE_QUALIFIER}
+        Fees are indicative. {PRICE_QUALIFIER} {VAT_NOTE}
       </p>
 
       <div class="offers">

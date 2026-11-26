@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { offers, offerFaqs, PRICE_QUALIFIER, FEE_BASIS, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../src/lib/offers';
+import { offers, offerFaqs, PRICE_QUALIFIER, VAT_NOTE, FEE_BASIS, AVAILABILITY, RECORDS_NOTE, SELF_APPROVAL } from '../../src/lib/offers';
 import { terms } from '../../src/lib/terms';
 
 /**
@@ -21,6 +21,8 @@ describe('llms.txt mirrors the offers', () => {
 
   it('carries the price qualifier, the fee basis and the availability wording', () => {
     expect(llms).toContain(PRICE_QUALIFIER);
+    expect(llms).toContain(VAT_NOTE);
+    expect(llms).not.toMatch(/\+ VAT/);
     expect(llms).toContain(FEE_BASIS);
     expect(llms).toContain(AVAILABILITY);
     expect(llms).toContain('Neither the Authority Check nor a Review is required first');
@@ -84,9 +86,10 @@ describe('offers are internally consistent', () => {
   });
 
   it('carries the agreed indicative prices and no retired range', () => {
-    expect(by('check').price).toBe('£12,500 fixed + VAT');
-    expect(by('review').price).toMatch(/£25,000 \+ VAT/);
-    expect(by('assessment').price).toMatch(/£75,000 \+ VAT/);
+    expect(by('check').price).toBe('£12,500 fixed');
+    expect(by('review').price).toBe('From £25,000');
+    expect(by('assessment').price).toBe('From £75,000');
+    for (const o of offers) expect(o.price).not.toMatch(/VAT/);
     for (const o of offers) expect(o.price).not.toMatch(/20,000|35,000|95,000| to /);
   });
 
