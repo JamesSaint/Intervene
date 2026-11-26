@@ -8,7 +8,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { readdirSync, statSync, existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const CHANGED = ['/', '/agda/', '/services/', '/methodology/', '/sample-report/', '/sample-authority-check/', '/verify/', '/contact/', '/about/', '/network/', '/intervention-readiness/', '/intervention-readiness/vs-audit/'];
+const CHANGED = ['/', '/agda/', '/services/', '/methodology/', '/sample-report/', '/sample-authority-check/', '/verify/', '/contact/', '/about/', '/network/', '/intervention-readiness/', '/intervention-readiness/vs-audit/', '/research/'];
 
 function htmlFiles(dir: string): string[] {
   const out: string[] = [];

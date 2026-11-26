@@ -10,6 +10,8 @@
   .takeover[data-menu-enter] .takeover-body li:nth-child(5) { animation-delay: 100ms; }
   .takeover[data-menu-enter] .takeover-body li:nth-child(6) { animation-delay: 125ms; }
   .takeover[data-menu-enter] .takeover-body li:nth-child(7) { animation-delay: 150ms; }
+  .takeover[data-menu-enter] .takeover-body li:nth-child(8) { animation-delay: 175ms; }
+  .takeover[data-menu-enter] .takeover-body li:nth-child(9) { animation-delay: 200ms; }
   .takeover[data-menu-enter] .takeover-body li[data-menu-settled],
   .takeover[data-menu-enter] .takeover-body li:focus-within { animation: none; }
   /* Buttons answer a pointer with colour only. They do not move: a button

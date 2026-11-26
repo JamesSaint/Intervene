@@ -12,6 +12,9 @@ import { contactEmail } from './social';
  * `enquiry_submitted` fires only after the endpoint returns ok, but a
  * successful response is not proof of notification or inbox delivery.
  * Neither carries a field value: no name, no email address, no organisation, no message text.
+ * A research enquiry, arriving as /contact/?enquiry=research, emits
+ * `research_enquiry_started` and `research_enquiry_submitted` instead, so it
+ * never counts as a commercial enquiry.
  */
 export function initContactForm(root: Document | ParentNode = document): () => void {
   const form = root.querySelector<HTMLFormElement>('form[data-contact]');
@@ -28,12 +31,18 @@ export function initContactForm(root: Document | ParentNode = document): () => v
     if (choice) choice.checked = true;
   }
 
+  // A research enquiry from /research/ is routed separately: the submission
+  // carries a fixed marker and subject for the inbox whatever the analytics
+  // consent, and its events never join the commercial enquiry counts. The
+  // value is compared against a fixed string and never written to the page.
+  const research = new URLSearchParams(window.location.search).get('enquiry') === 'research';
+
   let pending = false;
   let startedTracked = false;
   const onFirstInput = () => {
     if (startedTracked || !hasConsent()) return;
     startedTracked = true;
-    track('enquiry_started');
+    track(research ? 'research_enquiry_started' : 'enquiry_started');
   };
 
   const statusEl = form.querySelector<HTMLElement>('.form-status');
@@ -73,13 +82,17 @@ export function initContactForm(root: Document | ParentNode = document): () => v
       } else if (startingPoint === 'assessment') {
         data.set('assessment_offering', 'AGDA® Assessment');
       }
+      if (research) {
+        data.set('enquiry_type', 'research');
+        data.set('subject', 'Intervene | Research enquiry');
+      }
       const res = await fetch(form.action, {
         method: 'POST',
         headers: { Accept: 'application/json' },
         body: data,
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      track('enquiry_submitted');
+      track(research ? 'research_enquiry_submitted' : 'enquiry_submitted');
       form.reset();
       setStatus(
         'Received. A senior advisor will respond directly within one to two working days.',

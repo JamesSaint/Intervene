@@ -5,9 +5,9 @@ async function dismissConsent(page: import('@playwright/test').Page) {
   if (await deny.isVisible()) await deny.click();
 }
 
-test('homepage follows seven sections and exposes the example before any interaction', async ({ page }) => {
+test('homepage follows eight sections and exposes the example before any interaction', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('main > section')).toHaveCount(7);
+  await expect(page.locator('main > section')).toHaveCount(8);
   await expect(page.locator('.hero-secondary')).toHaveAttribute('href', '/sample-report/');
   await expect(page.locator('.hero-sub')).toContainText('We assess whether your organisation can intervene');
   // The constructed example is on the page before any interaction, in

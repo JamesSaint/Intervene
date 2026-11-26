@@ -8,12 +8,16 @@ Every custom event passes through `src/lib/snapshot/analytics.ts`. No event is s
 
 | Event | Trigger | Parameters | Deduplication and meaning |
 | --- | --- | --- | --- |
-| `primary_cta_click` | Activation of an annotated primary contact link in the header or page content | `cta_id=discuss_system`, `page_path` of source, `placement=header/main` | One event per activation. A normal same-tab click is recorded on contact-page arrival; other clicks are recorded at source. It is an interaction, not an enquiry. |
+| `primary_cta_click` | Activation of an annotated primary contact link in the header or page content | `cta_id=discuss_system/research_enquiry`, `page_path` of source, `placement=header/main` | One event per activation. `research_enquiry` is the Research page's enquiry link and is not a commercial action. A normal same-tab click is recorded on contact-page arrival; other clicks are recorded at source. It is an interaction, not an enquiry. |
 | `offer_view` | At least 50% of the offering caption or full-engagement heading is visible for one continuous second, in a visible tab with consent | `page_path`, `offer_section=offer_choice/engagements` | At most once per page load, whichever eligible offering marker is seen first. Does not demonstrate that every offer was read. |
 | `offer_select` | Activation of an Authority Check/Review/Assessment sheet link, activation of an engagement's own enquiry link (“Discuss an Authority Check” and its two counterparts), or a change to the corresponding contact-form radio choice | `page_path`, `offer_id=check/review/assessment`, `selection_source=offer_link/enquiry_link/contact_choice` | One event per deliberate selection. The default “Not sure yet” choice and automatic resets emit nothing. A starting point preselected by an enquiry link emits `enquiry_link` only, not `contact_choice`, unless the visitor then changes it. A normal same-tab click on an enquiry link is recorded on contact-page arrival, as `primary_cta_click` is. |
 | `sample_verdict_viewed` | Sample page is loaded with consent, or consent is accepted while it is open | None | Once per page load. Preserves the existing event name. |
 | `enquiry_started` | First contact-form input while consent is granted | None | Once per form page load. Input before consent is not replayed; subsequent input after acceptance can trigger it. |
 | `enquiry_submitted` | The form endpoint returns an HTTP success response | None | Once per successful response. No event for validation failure, spam trap, failed HTTP response or network failure. This establishes browser handling of endpoint acceptance, not notification delivery or inbox receipt. |
+| `research_enquiry_started` | First contact-form input on `/contact/?enquiry=research` while consent is granted | None | Replaces `enquiry_started` for a research enquiry, so commercial enquiry counts exclude it. Once per form page load. |
+| `research_enquiry_submitted` | The form endpoint returns an HTTP success response for a research enquiry | None | Replaces `enquiry_submitted` for a research enquiry. Do not mark it as a commercial key event. Endpoint acceptance, not inbox receipt. |
+
+`enquiry=research` is a functional routing parameter, not a measurement parameter. The contact module reads it before the query string is removed; the submission then carries `enquiry_type=research` and the subject "Intervene | Research enquiry", with or without analytics consent, so the inbox separates research enquiries from commercial ones. No other value is accepted.
 
 The existing withdrawn Snapshot events retain their names and use the same consent gate. This change does not restore its commercial funnel or alter its result logic.
 
@@ -35,7 +39,7 @@ In GA4, use Admin → Data display → Custom definitions to register event-scop
 
 Review Enhanced measurement → Form interactions on the web stream. The real tag currently generated `form_start` during the intercepted test. Its generic form events describe interaction or submission attempts, whereas `enquiry_submitted` describes an HTTP success response. Disable generic form interactions if they confuse reporting, and never treat `form_submit` as a received qualified enquiry. No account setting was changed. [Google's enhanced-measurement event definitions](https://support.google.com/analytics/answer/9216061?hl=en).
 
-CTA clicks, offering visibility and option choices should remain engagement indicators. If `enquiry_submitted` is marked as a GA4 key event, label it as endpoint acceptance. Keep inbox receipt, qualification, opportunity and paid assessment as separate operational records outside analytics; do not upload enquiry personal data to GA4.
+CTA clicks, offering visibility and option choices should remain engagement indicators. If `enquiry_submitted` is marked as a GA4 key event, label it as endpoint acceptance. Keep `research_enquiry_submitted` and `primary_cta_click` with `cta_id=research_enquiry` out of commercial key events and conversion reporting. Keep inbox receipt, qualification, opportunity and paid assessment as separate operational records outside analytics; do not upload enquiry personal data to GA4.
 
 ## Measurement baseline
 
