@@ -288,17 +288,6 @@ signature          M4Gb2ZqAfD…pLQX7w==`}</code></pre>
   @media (min-width: 1100px) {
     .hero > .wrap.wrap:has(> .h1 + .lede) { grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); }
   }
-  /* A section's introduction takes a reading column of about seventy
-     characters, sized from the introduction's own type so the count holds
-     as the type scales. It is a grid track, not a cap on the paragraph, and
-     the diagrams and tables beneath keep the full width. */
-  @media (min-width: 900px) {
-    .block > :is(.wrap, .wrap-narrow):has(> .h2 + :is(.lede, .body)) { display: grid; grid-template-columns: minmax(0, 40rem) minmax(0, calc(var(--type-support) * 37 - 40rem)) minmax(0, 1fr); }
-    .block > :is(.wrap, .wrap-narrow):has(> .h2 + :is(.lede, .body)) > :global(*) { grid-column: 1 / -1; min-width: 0; }
-    /* Introductions run to the second track; body paragraphs, set smaller, stop at the first. */
-    .block > :is(.wrap, .wrap-narrow):has(> .h2 + :is(.lede, .body)) > .lede { grid-column: 1 / 3; margin-bottom: 0; }
-    .block > :is(.wrap, .wrap-narrow):has(> .h2 + :is(.lede, .body)) > .body { grid-column: 1; margin-bottom: 0; }
-  }
   .verdicts {
     list-style: none;
     margin: var(--gap-sub) 0 0;

@@ -34,5 +34,5 @@ const on = (name: string) => at === 'chain' || at === name.toLowerCase();
   .cp-window.is-on .cp-bound { border-left: 3px solid var(--ink); }
   .cp-window.is-on::before { display: none; }
   figcaption { margin-top: var(--space-4); font-size: var(--type-caption); line-height: 1.65; color: var(--faint); }
-  @media (max-width: 560px) { li { padding-right: var(--space-1); } .cp-window .cp-name { font-size: 11px; white-space: normal; max-width: 6ch; } }
+  @media (max-width: 560px) { li { padding-right: var(--space-1); } .cp-window .cp-name { font-size: 11px; white-space: normal; max-width: 6ch; } } /* text-flow-exception: diagram label in a narrow chain cell; two short lines keep it clear of the stage beside it */
 </style>

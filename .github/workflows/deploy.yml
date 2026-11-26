@@ -41,6 +41,11 @@ jobs:
       - name: Snapshot content checks
         run: npm run content-check
 
+      # Text fills its layout: no unjustified width caps, balanced wraps or
+      # manual line breaks. See docs/design-standards.md.
+      - name: Text flow and content width
+        run: npm run check-text-flow
+
       - name: Unit tests
         run: npm test
 

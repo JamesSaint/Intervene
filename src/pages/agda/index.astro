@@ -245,16 +245,13 @@ const faqs = [
   .verdict-stage { margin-top: var(--gap-intro); display: flex; justify-content: flex-start; }
   .verdict-chain { margin-top: var(--space-5); }
   /* One wordmark, then the heading, its sentence and the actions on one
-     left edge. The heading has the full width; the sentence takes a
-     reading column sized from its own type, which is a grid track and not
-     a cap on the paragraph. */
+     left edge, each using the full width of the page frame. */
   @media (min-width: 900px) {
-    .hero.product-hero > .wrap.wrap { display: grid; grid-template-columns: minmax(0, calc(var(--type-support) * 40)) minmax(0, 1fr); column-gap: 0; align-items: start; }
-    .hero.product-hero > .wrap.wrap > * { grid-column: 1 / -1; }
-    .hero.product-hero > .wrap.wrap > .h1 + .lede { grid-column: 1; margin: var(--space-3) 0 0; font-size: var(--type-support); line-height: 1.6; }
+    .hero.product-hero > .wrap.wrap { display: block; }
+    .hero.product-hero > .wrap.wrap > .h1 + .lede { margin: var(--space-3) 0 0; font-size: var(--type-support); line-height: 1.6; }
   }
   @media (min-width: 1100px) {
-    .hero.product-hero > .wrap.wrap > .h1 { grid-column: 1 / -1; font-size: clamp(44px, 4.6vw, 68px); }
+    .hero.product-hero > .wrap.wrap > .h1 { font-size: clamp(44px, 4.6vw, 68px); }
     /* The heading and its sentence sit side by side; the three states run the full width beneath. */
     #verdict .verdict-intro { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: var(--space-7); align-items: end; }
     #verdict .verdict-intro .arrow-link { grid-column: 2; }

@@ -142,7 +142,7 @@ const questions = [
   .evidence-heading em { display: block; }
   .section-heading, .assessment-intro { display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-6); align-items: start; margin-bottom: var(--space-6); }
   .example, .situations, .method-block, .finding-block, .research-block, .engage { border-bottom: 1px solid var(--hair); }
-  .research-copy { max-width: 40rem; margin: 0; font-size: var(--type-support); line-height: 1.65; color: var(--ink); }
+  .research-copy { margin: 0; font-size: var(--type-support); line-height: 1.65; color: var(--ink); }
   /* The constructed example, in brief: its status sits with the heading, and the full trace is on /sample-report/. */
   .example { background: var(--paper-soft); }
   .example-top { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--space-4) var(--space-7); align-items: end; }
@@ -178,7 +178,6 @@ const questions = [
   @media (prefers-color-scheme: dark) { :global(:root:not([data-theme])) .close { --paper: #141414; } }
   .close-q em { display: block; color: var(--faint); }
   .close-wrap { display: grid; grid-template-columns: 1fr; gap: var(--space-6); }
-  .close-action { max-width: 520px; }
   .close-q { color: var(--ink); font-size: var(--type-display); line-height: 1.02; letter-spacing: var(--tracking-heading); text-transform: none; margin: 0; }
   .close-action { display: grid; justify-items: start; gap: 24px; }
   .close-line { font-size: var(--type-support); line-height: 1.65; color: var(--muted); margin: 0; }

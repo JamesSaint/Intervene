@@ -133,7 +133,7 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
   .wd-face { grid-area: face; } .wd-readout { grid-area: readout; } .wd-bar { grid-area: bar; } .wd-note { grid-area: note; }
 
   /* The face: the largest thing in the opening view. */
-  .wd-face { position: relative; width: 100%; max-width: 640px; aspect-ratio: 1; margin: 50px auto 0; }
+  .wd-face { position: relative; width: 100%; max-width: 640px; aspect-ratio: 1; margin: 50px auto 0; } /* text-flow-exception: the dial is a drawn instrument with a fixed largest size */
   /* The qualification is read before the result: it sits above the dial, over the window marker. */
   .wd-label { position: absolute; left: 50%; top: -47px; transform: translateX(-50%); margin: 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.4; color: var(--muted); white-space: nowrap; }
   .wd-face :global(.df-hand) { transition: opacity var(--dur-fast) var(--ease); }
@@ -160,7 +160,7 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
      the fallback for a browser without container units. */
   .wd-word { font-size: clamp(20px, 4.4vw, 38px); font-weight: 600; letter-spacing: -0.03em; line-height: 1; white-space: nowrap; max-width: 100%; }
   .window-dial[data-closed]:not([data-playing]):not([data-reading]) .wd-word { color: var(--wd-warn); }
-  .wd-caption { font-size: clamp(12px, 2.6vw, 15px); line-height: 1.35; color: var(--wd-muted); min-height: 2.7em; max-width: 17ch; }
+  .wd-caption { font-size: clamp(12px, 2.6vw, 15px); line-height: 1.35; color: var(--wd-muted); min-height: 2.7em; max-width: 17ch; } /* text-flow-exception: caption sits inside the dial's circular centre and must clear its ring */
 
   /* The console under the opening: the four stages across, each with its
      state in words, then the three figures. It is the key to the dial. */
@@ -233,7 +233,7 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
   .wd-window input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 3px; }
   .wd-follow { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-left: auto; font-size: var(--type-action); font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-color: var(--hair-strong); text-underline-offset: 4px; }
   .wd-follow:is(:hover, :focus-visible) { color: var(--accent-text); }
-  .wd-note { margin: 0; font-size: var(--type-caption); line-height: 1.65; color: var(--faint); max-width: 104ch; }
+  .wd-note { margin: 0; font-size: var(--type-caption); line-height: 1.65; color: var(--faint); }
 
   /* Wide: the question on the left at full weight, the dial on the right,
      and the console across beneath both. */
@@ -244,13 +244,13 @@ const closedLine = result.outcome === 'too-late' ? `Window closed during ${STAGE
       grid-template-rows: auto auto 1fr auto auto auto;
     }
     /* The label above the dial takes its height from the dial and the gap beneath, so the stages still close the opening view. */
-    .wd-face { align-self: center; margin-top: 50px; max-width: 608px; }
+    .wd-face { align-self: center; margin-top: 50px; max-width: 608px; } /* text-flow-exception: dial size in the two-column opening view */
     .wd-readout { grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); gap: var(--space-2) var(--space-6); align-items: start; }
     .wd-stages { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 var(--space-4); }
     .wd-result { grid-column: 1 / -1; min-height: 1lh; }
   }
   @media (max-width: 1099px) {
-    .wd-readout, .wd-support { max-width: 640px; width: 100%; margin-inline: auto; }
+    .wd-readout { max-width: 640px; width: 100%; margin-inline: auto; } /* text-flow-exception: the readout is the dial's key and aligns to the dial face above it */
   }
   /* Phone: the question, the sentence that explains it, one action, then
      the dial at full width. Beneath it the four stages sit two by two with
