@@ -21,7 +21,8 @@
     "content-check": "node scripts/content-check.mjs",
     "check-version-supported": "node scripts/check-version-supported.mjs",
     "check-private-paths": "node scripts/check-private-paths.mjs",
-    "check-authorship": "node scripts/check-authorship.mjs"
+    "check-authorship": "node scripts/check-authorship.mjs",
+    "check-text-flow": "node scripts/check-text-flow.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

@@ -103,8 +103,18 @@ export const percent = (share: number): string => `${Math.round(share * 100)}%`;
  * display face is taken as 0.6 of its size, and the word is given 46% of
  * the dial across. Written as a whole declaration, not through a custom
  * property, so the server render and the script write the same thing.
+ *
+ * The third term is the same size at the dial's largest drawn width
+ * (640px). It never binds while the container units resolve against the
+ * dial; it stops the word growing past the dial, and the page, if a browser
+ * briefly resolves them against the viewport instead.
  */
-export const centreWordSize = (word: string): string => `min(11cqw, ${(Math.floor((46 / (Math.max(word.length, 1) * 0.6)) * 100) / 100).toFixed(2)}cqw)`;
+export const DIAL_MAX_PX = 640;
+export const centreWordSize = (word: string): string => {
+  const fitted = Math.floor((46 / (Math.max(word.length, 1) * 0.6)) * 100) / 100;
+  const ceiling = Math.floor(Math.min(11, fitted) * DIAL_MAX_PX) / 100;
+  return `min(11cqw, ${fitted.toFixed(2)}cqw, ${ceiling.toFixed(2)}px)`;
+};
 
 export interface LabelPlacement {
   ring: Ring;

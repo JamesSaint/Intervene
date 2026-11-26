@@ -74,7 +74,7 @@
   a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; white-space: nowrap; font-size: var(--type-action); font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-color: var(--hair-strong); text-underline-offset: 4px; }
   a:is(:hover, :focus-visible) { color: var(--accent-text); }
   a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
-  svg { display: block; width: 100%; max-width: 340px; height: auto; overflow: visible; }
+  svg { display: block; width: 100%; max-width: 340px; height: auto; overflow: visible; } /* text-flow-exception: diagram drawing, not text; keeps the layer figure at its drawn scale */
   svg line { stroke: var(--ink); stroke-width: 1; }
   svg circle { fill: var(--paper); stroke: var(--ink); stroke-width: 1; }
   svg text { font-family: var(--font-mono); font-size: 9.5px; fill: var(--muted); }

@@ -125,15 +125,15 @@ describe('the word in the dial centre', () => {
     // Every word the centre can show: the three outcomes and the four stage names.
     for (const word of ['In time', 'Narrow margin', 'Too late', ...STAGES]) {
       const size = centreWordSize(word);
-      const fitted = Number(size.match(/, ([\d.]+)cqw\)$/)![1]);
+      const fitted = Number(size.match(/, ([\d.]+)cqw, [\d.]+px\)$/)![1]);
       // At 0.6 of its size per character, the word spans at most 46% of the dial.
       expect(Math.min(11, fitted) * word.length * 0.6).toBeLessThanOrEqual(46);
     }
   });
 
   it('gives a short word the full size and a long word a smaller one', () => {
-    expect(centreWordSize('In time')).toBe('min(11cqw, 10.95cqw)');
-    expect(centreWordSize('Too late')).toBe('min(11cqw, 9.58cqw)');
-    expect(centreWordSize('Narrow margin')).toBe('min(11cqw, 5.89cqw)');
+    expect(centreWordSize('In time')).toBe('min(11cqw, 10.95cqw, 70.08px)');
+    expect(centreWordSize('Too late')).toBe('min(11cqw, 9.58cqw, 61.31px)');
+    expect(centreWordSize('Narrow margin')).toBe('min(11cqw, 5.89cqw, 37.69px)');
   });
 });

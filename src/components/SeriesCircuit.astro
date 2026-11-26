@@ -42,7 +42,7 @@ const firstOpen = conditions.findIndex((c) => c.open);
         <p class="sc-p">{c.q.p}</p>
       </li>
     ))}
-    <li class="sc-end sc-finish" aria-hidden="true"><span class="sc-terminal"></span><span class="sc-end-label">Intervention<br />not reached</span></li>
+    <li class="sc-end sc-finish" aria-hidden="true"><span class="sc-terminal"></span><span class="sc-end-label">Intervention<br />not reached</span></li>{/* text-flow-exception: diagram terminal label, set nowrap and pinned to the end of the circuit */}
   </ol>
   <figcaption id="circuit-caption">
     Illustration. The three conditions are in series: a response reaches the

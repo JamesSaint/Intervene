@@ -103,6 +103,7 @@ The Intervene site is intentionally restrained.
 - Preserve the intervention vocabulary exactly where it is canonical: `src/lib/terms.ts`, `public/llms.txt`, glossary copy, metadata, and schema must not drift.
 - The three current engagements (Authority Check, Review, Assessment), their indicative prices, deliverables and exclusions, including the Authority Check's claim limits, live once in `src/lib/offers.ts`. `public/llms.txt` mirrors them by hand; `tests/unit/offers-parity.test.ts` fails on drift. `scripts/lib/retired-claims.mjs` keeps the withdrawn pilot, licence tiers and unsupported claims from returning; `npm run content-check` runs it.
 - Signed SEDI result records are never described as standard. The wording is "where the agreed scope includes them and the delivery configuration supports them". What the signature covers is stated on `/verify/` against the AGDA attestation specification.
+- Text fills the column its layout gives it. No balanced wrapping, character or fixed-width caps on text, reading measures built from grid tracks, or manual line breaks without a written `text-flow-exception`. `docs/design-standards.md` holds the rules and current exceptions; `npm run check-text-flow` and `tests/e2e/text-flow.spec.ts` enforce them.
 - Avoid em dashes in prose. Use periods, semicolons, commas, or full stops.
 - AGDA is a registered trade mark: in readable text the name is `AGDA<span class="agda-reg">®</span>`. `AGDA` stays in the surrounding typography and one rule in `global.css` sets the `®` at `0.4em`, raised `1.3em`, with `line-height: 0`; it inherits colour, family and weight, and the name copies as `AGDA®`. Set it with `<Agda />` in templates or `markAgda()` (with `set:html`) for copy held in strings; plain-text contexts use `AGDA®`. Standalone identity logos (`AgdaLogo.astro`, the email signature, OG cards) stay as artwork. `tests/unit/agda-mark.test.ts` and `tests/e2e/agda-mark.spec.ts` enforce it; `AGENTS.md` has the full rule.
 
@@ -123,6 +124,7 @@ npm run preview        # serves the built site locally (Astro 7 runs it in the b
 npm test               # unit tests (vitest)
 npm run test:e2e       # browser tests (playwright)
 npm run content-check  # Snapshot copy and vocabulary checks
+npm run check-text-flow  # text flow and content-width guard
 npm run typecheck      # astro check
 ```
 

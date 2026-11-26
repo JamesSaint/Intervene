@@ -57,11 +57,12 @@ test.describe('AGDA opening', () => {
       expect(['Assessing Intervention Readiness', 'Assessing|Intervention Readiness']).toContain(heading.join('|'));
       const edges = [await left(page, '.product-identity img:visible'), await left(page, '.product-hero h1'), await left(page, '.product-hero .lede'), await left(page, '.product-hero .hero-cta')];
       expect(new Set(edges).size, String(edges)).toBe(1);
-      // The sentence follows the heading closely and keeps a reading width.
+      // The sentence follows the heading closely and uses the full width of the frame.
       const h1 = (await page.locator('.product-hero h1').boundingBox())!;
       const lede = (await page.locator('.product-hero .lede').boundingBox())!;
       expect(lede.y - (h1.y + h1.height)).toBeLessThanOrEqual(32);
-      for (const line of await lines(page, '.product-hero .lede')) expect(line.length).toBeLessThanOrEqual(80);
+      const frame = await page.locator('.product-hero > .wrap').evaluate((el) => el.clientWidth - parseFloat(getComputedStyle(el).paddingLeft) - parseFloat(getComputedStyle(el).paddingRight));
+      expect(Math.abs(lede.width - frame), 'lede width against the frame').toBeLessThanOrEqual(1);
     });
   }
 });
@@ -142,10 +143,11 @@ test.describe('Sample verdict finding', () => {
     expect(values[0]).toBe(values[1]);
     await expect(page.locator('#authority h2')).toBeInViewport();
     await expect(page.locator('#authority .et-lenses')).toBeInViewport({ ratio: 0.5 });
-    // Prose under the diagram keeps a reading column; the diagram is wider.
+    // Prose under the diagram uses the same width as the diagram above it.
     const note = (await page.locator('#authority .callout-note').boundingBox())!;
     const map = (await page.locator('#authority .et-map').boundingBox())!;
-    expect(note.width).toBeLessThan(map.width * 0.75);
+    expect(Math.abs(note.x - map.x)).toBeLessThanOrEqual(1);
+    expect(note.width).toBeGreaterThanOrEqual(map.width - 1);
   });
 
   test('the four questions still mark the trace, and reach uncertainty and limits', async ({ page }) => {
@@ -244,27 +246,18 @@ test.describe('Methodology', () => {
   }
 
   for (const size of DESKTOP) {
-    test(`at ${size[0]} px section introductions keep a reading width and diagrams keep the page width`, async ({ page, isMobile }) => {
+    test(`at ${size[0]} px section introductions and diagrams use the section width`, async ({ page, isMobile }) => {
       test.skip(isMobile, 'A desktop composition.');
       await open(page, '/methodology/', size);
-      const counts = await page.locator('main .block > .wrap > .h2 + .lede').evaluateAll((els) => els.map((el) => {
-        const range = document.createRange();
-        const rows = new Map<number, number>();
-        const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-        let node: Node | null;
-        while ((node = walker.nextNode())) {
-          const text = (node as Text).data.replace(/\s+/g, ' ');
-          for (let i = 0; i < (node as Text).length; i += 1) {
-            range.setStart(node, i); range.setEnd(node, i + 1);
-            const box = range.getClientRects()[0];
-            if (box && box.width) rows.set(Math.round(box.top / 4) * 4, (rows.get(Math.round(box.top / 4) * 4) ?? 0) + 1);
-          }
-          void text;
-        }
-        return Math.max(...rows.values());
+      // Introductions fill the section's frame: no reading measure narrower than the layout.
+      const fills = await page.locator('main .block > .wrap > .h2 + .lede').evaluateAll((els) => els.map((el) => {
+        const wrap = el.parentElement!;
+        const cs = getComputedStyle(wrap);
+        const inner = wrap.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+        return Math.abs(el.getBoundingClientRect().width - inner);
       }));
-      expect(counts.length).toBeGreaterThan(4);
-      for (const longest of counts) expect(longest).toBeLessThanOrEqual(82);
+      expect(fills.length).toBeGreaterThan(4);
+      for (const gap of fills) expect(gap).toBeLessThanOrEqual(1);
       // The diagram labels are apart: none runs into its neighbour.
       const labels = await page.locator('#layers li:nth-child(4) svg text').evaluateAll((els) => els.map((el) => { const b = el.getBoundingClientRect(); return [b.left, b.right]; }).sort((a, b) => a[0] - b[0]));
       for (let i = 1; i < labels.length; i += 1) expect(labels[i][0] - labels[i - 1][1], 'gap between Judgement labels').toBeGreaterThanOrEqual(4);
