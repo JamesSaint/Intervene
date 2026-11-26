@@ -49,7 +49,7 @@ export const downloadGroups: InsightDownloadGroup[] = [
         label: 'White paper · For Chief Risk Officers',
         title: 'You are accountable. Show us the evidence.',
         description: 'Under SM&CR, accountability for AI sits with the senior managers who already hold it. How to show that someone with authority could stop one named system in time.',
-        pages: 5,
+        pages: 6,
         file: 'intervene-agda-cro-white-paper.pdf',
       },
       {
